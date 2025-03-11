@@ -22,6 +22,12 @@
   font-weight: 100 900;
   font-stretch: 75% 125%;
 }
+@font-face {
+  font-family: "Unbounded";
+  src: url("./fonts/Unbounded-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-stretch: 75% 125%;
+}
 
 html,
 body {
@@ -45,7 +51,7 @@ body {
 
 body {
   color: var(--foreground);
-  font-family: Montserrat;
+  font-family: Unbounded;
   height: 100%;
 }
 

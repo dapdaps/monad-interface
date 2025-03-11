@@ -160,93 +160,30 @@ const ConnectWallet = ({ className }: { className?: string }) => {
         />
       ) : (isConnected) ? (
         <div className="flex justify-start items-center gap-x-[20px] md:gap-x-[8px] pl-2 pr-3 md:min-w-[105px]">
-          {isMobile ? (
-            <>
-              <User
-                handleConnect={handleConnect}
-                isMobile={isMobile}
-                address={address}
-                userInfo={userInfo}
-                walletInfo={walletInfo}
-                handleCopy={handleCopy}
-                tokenLogoShown={tokenLogoShown}
-                chainId={chainId}
-                balanceShown={balanceShown}
-                tokenSymbolShown={tokenSymbolShown}
-                addressShown={addressShown}
-                currentWallet={currentWallet.current}
-                setMobileUserInfoVisible={setMobileUserInfoVisible}
-              />
-              {
-                (
-                  <MobileChain
-                    chainListRef={chainListRef}
-                    handleChainDropdown={handleChainDropdown}
-                  />
-                )
-              }
-            </>
-          ) : (
-            <>
-              <User
-                handleConnect={handleConnect}
-                isMobile={isMobile}
-                address={address}
-                userInfo={userInfo}
-                walletInfo={walletInfo}
-                handleCopy={handleCopy}
-                tokenLogoShown={tokenLogoShown}
-                chainId={chainId}
-                balanceShown={balanceShown}
-                tokenSymbolShown={tokenSymbolShown}
-                addressShown={addressShown}
-                currentWallet={currentWallet.current}
-                setMobileUserInfoVisible={setMobileUserInfoVisible}
-              />
-            </>
-          )}
+          <User
+            handleConnect={handleConnect}
+            isMobile={isMobile}
+            address={address}
+            userInfo={userInfo}
+            walletInfo={walletInfo}
+            handleCopy={handleCopy}
+            tokenLogoShown={tokenLogoShown}
+            chainId={chainId}
+            balanceShown={balanceShown}
+            tokenSymbolShown={tokenSymbolShown}
+            addressShown={addressShown}
+            currentWallet={currentWallet.current}
+            setMobileUserInfoVisible={setMobileUserInfoVisible}
+          />
         </div>
       ) : (
         <>
-          <button
-            className={`click cursor-pointer rounded-full px-[10px] py-[4px] text-[14px] font-semibold bg-black lg:shadow-shadow1 text-white ${className}`}
-            onClick={handleConnect}
-          >
-            Connect Wallet
+          <button className="click cursor-pointer h-[50px] w-[158px]  bg-[url('/images/header/right_bg.svg')] bg-left bg-contain font-Unbounded text-[12px] text-white font-semibold" onClick={handleConnect}>
+            Connect
           </button>
-          {isMobile && (
-            <div className="ml-[10px]">
-              <MobileChain
-                chainListRef={chainListRef}
-                handleChainDropdown={handleChainDropdown}
-              />
-            </div>
-          )}
         </>
       )}
-      <MobileUser
-        visible={mobileUserInfoVisible}
-        setMobileUserInfoVisible={setMobileUserInfoVisible}
-        onClose={() => {
-          setMobileUserInfoVisible(false);
-        }}
-        walletInfo={walletInfo}
-        addressShown={addressShown}
-        address={address}
-        tokenLogoShown={tokenLogoShown}
-        balanceShown={balanceShown}
-        tokenSymbolShown={tokenSymbolShown}
-        chainId={chainId}
-        handleDisconnect={() => void 0}
-        handleCopy={handleCopy}
-        userInfo={userInfo}
-      />
-      <MobileNetworks
-        visible={mobileNetworksVisible}
-        onClose={() => {
-          setMobileNetworksVisible(false);
-        }}
-      />
+      
     </>
   );
 };
