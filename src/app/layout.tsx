@@ -16,9 +16,6 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
-import "@radix-ui/themes/styles.css"
-import "@near-wallet-selector/modal-ui/styles.css"
-import "@near-wallet-selector/account-export/styles.css"
 
 
 
@@ -43,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="md:overflow-hidden">
       <head>
-        <title>BeraTown</title>
+        <title>Monad</title>
         <meta
           name="description"
           content="Effortlessly explore & dive into all dApps in the Bera ecosystem from one streamlined hub."

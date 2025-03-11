@@ -15,7 +15,6 @@ const MobileUser = (props: Props) => {
     tokenSymbolShown,
     chainId,
     userInfo,
-    isNearPage
   } = props;
 
   
@@ -103,8 +102,7 @@ const MobileUser = (props: Props) => {
             {balanceShown} {tokenSymbolShown}
           </div>
         </div>
-        <DisconnectButton isNearPage={isNearPage} setMobileUserInfoVisible={setMobileUserInfoVisible} />
-
+        <DisconnectButton setMobileUserInfoVisible={setMobileUserInfoVisible} />
       </div>
     </Drawer>
   );
@@ -112,7 +110,6 @@ const MobileUser = (props: Props) => {
 
 const DisconnectButton = ({
   setMobileUserInfoVisible,
-  isNearPage,
 } : any) => {
   const { disconnect } = useDisconnect()
 
@@ -120,7 +117,6 @@ const DisconnectButton = ({
     disconnect();
     setMobileUserInfoVisible(false);
   };
-  if (isNearPage) return 
   return <div
   className="cursor-pointer flex gap-2 items-center click mt-[22px] transition-all duration-300 hover:bg-[#f7f7f7]"
   onClick={handleDisconnect}
@@ -149,7 +145,6 @@ interface Props {
   chainId: any;
   userInfo: any;
   setMobileUserInfoVisible: any;
-  isNearPage: boolean;
 
   onClose(): void;
   handleDisconnect(): void;

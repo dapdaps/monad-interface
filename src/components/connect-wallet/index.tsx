@@ -45,27 +45,11 @@ import { useBgtCount } from "@/hooks/use-bgt-count";
 
 const ConnectWallet = ({ className }: { className?: string }) => {
   const modal = useAppKit();
-  const { removeWallet } = useConnectedWalletsStore.getState();
   const currentWallet = useRef<State>();
   const [_, setUpdater] = useState({})
 
-  useEffect(() => {
-    const state = useConnectedWalletsStore.getState();
-    currentWallet.current = state.connectedWallets.length === 0 ? undefined : state.connectedWallets[0];
-
-    const unsubscribe = useConnectedWalletsStore.subscribe((state) => {
-      if (!state) return;
-      currentWallet.current = state.connectedWallets.length === 0 ? undefined : state.connectedWallets[0];
-      setUpdater({})
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
   const pathname = usePathname();
-  const isNearPage = ['/bintent', '/my-near-wallet-gateway'].includes(pathname);
   const isMobile = useIsMobile();
   const total = useToast();
   const { address, isConnected, chainId, chain, isConnecting } = useAccount();
@@ -93,19 +77,12 @@ const ConnectWallet = ({ className }: { className?: string }) => {
   };
 
   const addressShown = useMemo(() => {
-    if (isNearPage && currentWallet.current) {
-      if (currentWallet.current.chainType === ChainType.Near && currentWallet.current?.address && currentWallet.current.address.length < 30) {
-        return currentWallet.current.address;
-      }
-      return currentWallet.current.address && `${currentWallet.current.address.slice(0, 5)}...${currentWallet.current.address.slice(-4)}`;
-    }
     if (!address) return "";
     return `${address.slice(0, 5)}...${address.slice(-4)}`;
-  }, [address, isNearPage, isMobile, currentWallet.current]);
+  }, [address, isMobile, currentWallet.current]);
 
   const handleCopy = () => {
-    const addr = isNearPage && currentWallet.current && currentWallet.current.address ? currentWallet.current.address : address;
-    navigator.clipboard.writeText(addr as string);
+    navigator.clipboard.writeText(address as string);
     total.success({
       title: `Copied address ${address}`
     });
@@ -182,7 +159,7 @@ const ConnectWallet = ({ className }: { className?: string }) => {
           borderRadius={21}
           style={{ transform: "translateY(-4px)" }}
         />
-      ) : (isConnected || (isNearPage && currentWallet.current)) ? (
+      ) : (isConnected) ? (
         <div className="flex justify-start items-center gap-x-[20px] md:gap-x-[8px] pl-2 pr-3 md:min-w-[105px]">
           {isMobile ? (
             <>
@@ -198,12 +175,11 @@ const ConnectWallet = ({ className }: { className?: string }) => {
                 balanceShown={balanceShown}
                 tokenSymbolShown={tokenSymbolShown}
                 addressShown={addressShown}
-                isNearPage={isNearPage}
                 currentWallet={currentWallet.current}
                 setMobileUserInfoVisible={setMobileUserInfoVisible}
               />
               {
-                !isNearPage && (
+                (
                   <MobileChain
                     chainListRef={chainListRef}
                     handleChainDropdown={handleChainDropdown}
@@ -225,9 +201,7 @@ const ConnectWallet = ({ className }: { className?: string }) => {
                 balanceShown={balanceShown}
                 tokenSymbolShown={tokenSymbolShown}
                 addressShown={addressShown}
-                isNearPage={isNearPage}
                 currentWallet={currentWallet.current}
-                removeWallet={removeWallet}
                 setMobileUserInfoVisible={setMobileUserInfoVisible}
               />
             </>
@@ -267,7 +241,6 @@ const ConnectWallet = ({ className }: { className?: string }) => {
         handleDisconnect={() => void 0}
         handleCopy={handleCopy}
         userInfo={userInfo}
-        isNearPage={isNearPage}
       />
       <MobileNetworks
         visible={mobileNetworksVisible}
@@ -294,19 +267,12 @@ const User = (props: any) => {
     balanceShown,
     tokenSymbolShown,
     addressShown,
-    isNearPage,
     currentWallet,
     setMobileUserInfoVisible,
   } = props;
 
   const router = useRouter()
   const { iBGTCount, BGTCount } = useBgtCount();
-
-  if (isNearPage && currentWallet) {
-    return (
-      <div className="h-[30px] border border-black rounded-xl bg-white flex items-center justify-center font-Montserrat text-[14px] font-semibold text-black px-5 py-2">{addressShown}</div>
-    )
-  }
 
   const content = (
     <div className="w-[266px] pt-[24px] pb-[14px] rounded-[20px] bg-[#FFFDEB] border border-black shadow-[10px_10px_0_0_rgba(0, 0, 0, 0.25)]">
@@ -368,14 +334,14 @@ const User = (props: any) => {
           </div>
         </div> */}
       </div>
-      <DisconnectButton isNearPage={isNearPage} setMobileUserInfoVisible={setMobileUserInfoVisible} />
+      <DisconnectButton setMobileUserInfoVisible={setMobileUserInfoVisible} />
     </div>
   );
 
   return (
     <motion.div
       className="relative flex justify-center items-center cursor-pointer transition-all duration-300"
-      onClick={isNearPage ? null : handleConnect}
+      onClick={handleConnect}
       whileHover="active"
       animate="default"
       initial="default"
@@ -402,15 +368,13 @@ const User = (props: any) => {
   );
 };
 
-const DisconnectButton = ({ isNearPage, setMobileUserInfoVisible }: any) => {
+const DisconnectButton = ({ setMobileUserInfoVisible }: any) => {
   const { disconnect } = useDisconnect();
 
   const handleDisconnect = () => {
     disconnect();
     setMobileUserInfoVisible(false);
   };
-
-  if (isNearPage) return null
 
   return (
     <div
