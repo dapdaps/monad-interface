@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("./fonts/Montserrat-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-stretch: 75% 125%;
+}
+
+@font-face {
+  font-family: "Cherry Bomb";
+  src: url("./fonts/CherryBombOne-Regular.ttf") format("truetype");
+  font-weight: 100 900;
+  font-stretch: 75% 125%;
+}
+
+@font-face {
+  font-family: "Fuzzy";
+  src: url("./fonts/FuzzyBubbles-Regular.ttf") format("truetype");
+  font-weight: 100 900;
+  font-stretch: 75% 125%;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  /*overflow: hidden;*/
+}
+
+:root {
+  --background: #96d6ff;
+  --foreground: #000000;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #96d6ff;
+    --foreground: #000000;
+  }
+}
+
+body {
+  color: var(--foreground);
+  font-family: Montserrat;
+  height: 100%;
+}
+
+button,
+a,
+.cursor-pointer {
+  cursor: url("../../public/images/cursor.svg"), auto !important;
+}
+button[disabled="disabled"],
+button[disabled],
+a[disabled="disabled"],
+a[disabled],
+.disabled\:\!cursor-not-allowed:disabled,
+.disabled\:\!cursor-not-allowed:disabled[disabled="disabled"],
+.disabled\:\!cursor-not-allowed:disabled[disabled],
+.cursor-not-allowed {
+  cursor: url("../../public/images/cursor-not-allowed.svg") 12 0, auto !important;
+}
+.cursor-grabbing {
+  cursor: url("../../public/images/cursor-grabbing.svg") 12 0, auto !important;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-stroke-1 {
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #000;
+  }
+  .text-stroke-2-black {
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: #000;
+  }
+  .text-stroke-1-4b371f {
+    -webkit-text-stroke: 1px #4b371f;
+  }
+  .text-stroke-2 {
+    -webkit-text-stroke: 2px #4b371f;
+  }
+  .text-stroke-1-E1FF0A {
+    -webkit-text-stroke: 1px #E1FF0A;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE 和 Edge */
+    scrollbar-width: none;     /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;             /* Chrome, Safari 和 Opera */
+  }
+}
+
+.route-wrapper {
+  & > .flex:not(:last-child) {
+    border-bottom: 1px solid #373a53;
+  }
+}
+
+body::-webkit-scrollbar,
+div::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  /**/
+}
+body::-webkit-scrollbar-track,
+div::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 6px;
+}
+body::-webkit-scrollbar-thumb,
+div::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  cursor: url("../../public/images/cursor.svg") 12 0, auto;
+}
+body::-webkit-scrollbar-thumb:hover,
+div::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+input {
+  outline: none;
+}
+input:disabled {
+  background-color: transparent;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.mp-list .tr:nth-child(odd) .td {
+  background-color: #0000000f;
+}
+.mp-list .tr:nth-child(odd) .td:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+.mp-list .tr:nth-child(odd) .td:last-child {
+  border-radius: 0 10px 10px 0;
+}
+
+.cave-bg {
+  background: var(--background) url(/images/cave/cave-empty.png) center top
+    no-repeat;
+  background-size: 104% 100%;
+  min-height: 890px;
+  min-width: 1200px;
+  .bear-header {
+    background: none;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.invite-page-content {
+  @media (max-width: 375px) {
+    height: 610px;
+  };
+  @media (min-width: 376px) and (max-width: 390px) {
+    height: 636px;
+  };
+  @media (min-width: 391px) and (max-width: 420px) {
+    height: 676px;
+  };
+  @media (min-width: 421px) and (max-width: 768px) {
+    height: 700px;
+  };
+}
