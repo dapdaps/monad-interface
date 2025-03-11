@@ -1,12 +1,8 @@
 'use client';
-
-import BearBackground from '@/components/bear-background/';
 import DAppsView from '@/sections/dapps';
 
-export default function Dapps() {
+export default function DappsPage() {
   return (
-    <BearBackground type='dapps'>
-      <DAppsView />
-    </BearBackground>
+    <DAppsView />
   );
 }

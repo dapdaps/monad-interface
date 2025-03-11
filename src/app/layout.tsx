@@ -1,16 +1,12 @@
 "use client";
 
 import Rpc from "@/components/rpc";
-import TapSound from "@/components/tap-sound";
 import SceneContextProvider from "@/context/scene";
 import WagmiProvider from "@/context/wagmi";
-import useIsMobile from "@/hooks/use-isMobile";
 import MainLayout from "@/layouts/main";
-import MobileLayout from "@/layouts/mobile";
-import { useTapSoundStore } from "@/stores/tap-sound";
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 import Script from 'next/script';
-import React, { Suspense, useEffect, useRef } from "react";
+import React, { Suspense } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { ToastContainer } from "react-toastify";
@@ -24,19 +20,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const isMobile = useIsMobile();
-
-  const tapRef = useRef<any>(null);
-  const tapSound = useTapSoundStore();
-
-  useEffect(() => {
-    tapSound.set({
-      play: () => {
-        tapRef.current?.play?.();
-      }
-    });
-  }, []);
-
   return (
     <html lang="en" className="md:overflow-hidden">
       <head>
@@ -50,18 +33,14 @@ export default function RootLayout({
       </head>
       <body className="md:overflow-hidden">
         <WagmiProvider>
-            <SkeletonTheme baseColor="#7990F4" highlightColor="#FFDC50">
-              <SceneContextProvider>
-                <Suspense>
-                  {isMobile ? (
-                    <MobileLayout>{children}</MobileLayout>
-                  ) : (
-                    <MainLayout>{children}</MainLayout>
-                  )}
-                  <Rpc />
-                </Suspense>
-              </SceneContextProvider>
-            </SkeletonTheme>
+          <SkeletonTheme baseColor="#7990F4" highlightColor="#8B87FF">
+            <SceneContextProvider>
+              <Suspense>
+                <MainLayout>{children}</MainLayout>
+                <Rpc />
+              </Suspense>
+            </SceneContextProvider>
+          </SkeletonTheme>
         </WagmiProvider>
         <ToastContainer
           position="top-right"
@@ -76,11 +55,10 @@ export default function RootLayout({
         />
         <ProgressBar
           height="4px"
-          color="#ffdc50"
+          color="#8B87FF"
           options={{ showSpinner: false }}
           shallowRouting
         />
-        <TapSound ref={tapRef} />
       </body>
       <Script async src="https://www.googletagmanager.com/gtag/js?id=G-SZ82B6ZN43"></Script>
       <Script id="ga-config">
