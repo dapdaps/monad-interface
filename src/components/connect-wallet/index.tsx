@@ -177,11 +177,11 @@ const ConnectWallet = ({ className }: { className?: string }) => {
           />
         </div>
       ) : (
-        <>
-          <button className="click cursor-pointer h-[50px] w-[158px]  bg-[url('/images/header/right_bg.svg')] bg-left bg-contain font-Unbounded text-[12px] text-white font-semibold" onClick={handleConnect}>
+        <div className="flex items-center justify-center h-[50px] w-[158px]  bg-[url('/images/header/right_bg.svg')] bg-left bg-contain">
+          <button className="w-[122px] h-[34px] bg-[url('/images/header/button_bg.svg')] cursor-pointer font-Unbounded text-[12px] text-[#090909] font-semibold" onClick={handleConnect}>
             Connect
           </button>
-        </>
+        </div>
       )}
       
     </>
