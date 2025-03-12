@@ -12,13 +12,11 @@ import useIsMobile from '@/hooks/use-isMobile';
 import MenuButton from '@/components/mobile/menuButton';
 import { useParams } from 'next/navigation';
 import History from './History';
-// import useQuote from './Hooks/Stargate/useQoute';
-// import useBridge from './Hooks/Stargate/useBridge';
 import Big from 'big.js';
 import { useAccount, useSwitchChain } from "wagmi";
 import { formatLongText } from '@/utils/utils';
 import allTokens from './lib/allTokens'
-import { tokenPairs } from './lib/bridges/stargate/config';
+import { tokenPairs } from './lib/bridges/owlto/config';
 import useAddAction from '@/hooks/use-add-action';
 import { useBridgeHistory } from '@/stores/useBridgeHistory';
 import useBridge from './Hooks/useBridge';
@@ -64,7 +62,7 @@ const DappHeader: React.FC = () => {
 };
 
 const ComingSoon = false;
-const chainList = Object.values(chains).filter((chain) => [1, 80094, 42161, 8453, 56, 43114, 59144, 5000, 10, 137, 534352].includes(chain.chainId));
+const chainList = Object.values(chains).filter((chain) => [10143, 11155111].includes(chain.chainId));
 
 export default function Bridge() {
   const [confirmShow, setConfirmShow] = useState(false);
@@ -110,8 +108,8 @@ export default function Bridge() {
     routes,
     executeRoute,
   } = useBridge({
-    originFromChain: chains[1],
-    originToChain: chains[80094],
+    originFromChain: chains[11155111],
+    originToChain: chains[10143],
     derection: 1,
     account: address,
     defaultBridgeText: 'Bridge',
@@ -126,14 +124,13 @@ export default function Bridge() {
     Object.keys(allTokens).map((key: any) => {
       newAllTokens[key] = allTokens[key].filter((token: Token) => {
         let symbol = token.symbol.toUpperCase()
-        if ([5000, 43114, 56].includes(Number(token.chainId)) && fromToken.symbol.toUpperCase() === 'WETH' && token.symbol.toUpperCase() === 'WETH') {
-          symbol = 'ETH'
-        }
         return tokenPairs[fromChain.chainId][fromToken.symbol.toUpperCase()] === symbol
       })
     }); 
 
-    return newAllTokens;
+    console.log('allTokens:', allTokens)
+
+    return allTokens;
   }, [fromToken, fromChain])
 
   useEffect(() => {

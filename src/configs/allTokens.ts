@@ -17,8 +17,8 @@ import { zkSync } from "@/configs/tokens/zkSync";
 import { optimism } from "@/configs/tokens/optimism";
 import { blast } from "@/configs/tokens/blast";
 import { scroll } from "@/configs/tokens/scroll";
-
-
+import { monad } from "@/configs/tokens/monad";
+import { sepolia } from "@/configs/tokens/sepolia";
 const mapFn = (item: Token) => {
   if (item.address === "native") {
     return {
@@ -30,7 +30,7 @@ const mapFn = (item: Token) => {
 };
 
 const allTokens: { [key: number]: Token[] } = {
-  80094: Object.values(bera).map(mapFn),
+  80094: Object.values(monad).map(mapFn),
   // 1101: Object.values(polygonZkevm).map(mapFn),
   1: Object.values(ethereum).map(mapFn),
   534352: Object.values(scroll).map(mapFn),
@@ -56,7 +56,9 @@ const allTokens: { [key: number]: Token[] } = {
   1101: Object.values(polygonZkevm).map(mapFn),
   324: Object.values(zkSync).map(mapFn),
   10: Object.values(optimism).map(mapFn),
-  81457: Object.values(blast).map(mapFn)
+  81457: Object.values(blast).map(mapFn),
+  10143: Object.values(monad).map(mapFn),
+  11155111: Object.values(sepolia).map(mapFn)
 };
 
 export default allTokens;

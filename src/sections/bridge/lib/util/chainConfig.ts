@@ -199,5 +199,22 @@ export default {
       nativeCurrency: { name: 'BERA Token', symbol: 'BERA', decimals: 18 },
       rpcUrls: ['https://rpc.berachain.com'],
       blockExplorers: 'https://berascan.com/',
-    }
+    },
+    11155111: {
+      chainId: 11155111,
+      chainName: 'Sepolia',
+      icon: 'https://assets.dapdap.net/images/bafkreicjsbkvvcxahxjejkctwopcnmzbeskxhfrkg7lyawhkhzrxcmvgfy.svg',
+      nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+      rpcUrls: ['https://rpc.sepolia.org'],
+      blockExplorers: 'https://sepolia.etherscan.io',
+    },
+    10143: {
+      chainId: 10143,
+      chainName: 'Monad',
+      icon: '/assets/tokens/monad.svg',
+      nativeCurrency: { name: 'MONAD', symbol: 'MONAD', decimals: 18 },
+      rpcUrls: ['https://testnet-rpc.monad.xyz'],
+      blockExplorers: 'https://testnet.monadexplorer.com',
+    },
+
   } as { [key: number]: Chain };

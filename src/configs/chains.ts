@@ -18,7 +18,9 @@ import {
   scroll,
   blast,
   mode,
-  aurora
+  aurora,
+  monadTestnet,
+  sepolia,
 } from "@reown/appkit/networks";
 
 
@@ -133,6 +135,14 @@ const chains: Record<number, Chain | any> = {
   },
   [aurora.id]: {
     ...aurora,
+    isWalletSupport: false
+  },
+  [sepolia.id]: {
+    ...sepolia,
+    isWalletSupport: false
+  },
+  [monadTestnet.id]: {
+    ...monadTestnet,
     isWalletSupport: false
   }
 };

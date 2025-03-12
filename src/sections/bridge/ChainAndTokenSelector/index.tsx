@@ -1,6 +1,5 @@
 import { useDebounce } from 'ahooks';
 import { forwardRef, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
 import useTokensBalance from '@/hooks/use-tokens-balance';
@@ -489,7 +488,7 @@ export default function ChainAndTokenSelector({
               setHoverChain(null);
             }}
           >
-            {sortedChainList?.filter((chain) => limitBera ? chain.chainId === 80094 : chain.chainId !== 80094).map((chain) => {
+            {sortedChainList?.filter((chain) => limitBera ? chain.chainId === 10143 : chain.chainId !== 10143).map((chain) => {
               return (
                 <div
                   key={chain.chainId}
