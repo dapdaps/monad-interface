@@ -1,15 +1,14 @@
 "use client";
 
-import MainLayoutHeader from "@/layouts/main/header";
-import React, { useEffect, useMemo } from 'react';
-import { usePathname } from "next/navigation";
-import useUser from "@/hooks/use-user";
-import { useAccount } from "wagmi";
-import Link from "next/link";
-import Image from "next/image";
 import useClickTracking from "@/hooks/use-click-tracking";
 import useRem from "@/hooks/use-rem";
 import useTokenPrice from "@/hooks/use-token-price";
+import useUser from "@/hooks/use-user";
+import MainLayoutFooter from "@/layouts/main/footer";
+import MainLayoutHeader from "@/layouts/main/header";
+import { usePathname } from "next/navigation";
+import React, { useEffect } from 'react';
+import { useAccount } from "wagmi";
 
 
 const MainLayout = (props: Props) => {
@@ -45,6 +44,7 @@ const MainLayout = (props: Props) => {
       <div className="grow">
         {children}
       </div>
+      <MainLayoutFooter />
     </div>
   );
 };

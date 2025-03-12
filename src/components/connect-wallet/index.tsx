@@ -154,12 +154,12 @@ const ConnectWallet = ({ className }: { className?: string }) => {
       {connecting ? (
         <Skeleton
           width={isMobile ? 102 : 125}
-          height={42}
+          height={50}
           borderRadius={21}
           style={{ transform: "translateY(-4px)" }}
         />
       ) : (isConnected) ? (
-        <div className="flex justify-start items-center gap-x-[20px] md:gap-x-[8px] pl-2 pr-3 md:min-w-[105px]">
+        <div className="flex items-center justify-center w-[106px] h-[60px] bg-[url('/images/header/user_bg.svg')] bg-no-repeat bg-center">
           <User
             handleConnect={handleConnect}
             isMobile={isMobile}
