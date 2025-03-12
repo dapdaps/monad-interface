@@ -81,7 +81,7 @@ const Home = () => {
                           src={item.icon}
                           alt={item.name}
                         />
-                        <div className="truncate text-[10px] text-center font-[900] leading-[9px]">
+                        <div className="truncate font-Unbounded text-[10px] text-center font-[900] leading-[9px]">
                           {item.name}
                         </div>
                       </div>
@@ -103,3 +103,5 @@ const Home = () => {
   );
 };
 export default Home;
+
+
