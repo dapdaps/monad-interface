@@ -27,11 +27,11 @@ const Home = () => {
       >
         <div className="relative w-full h-full">
           {/* faucet */}
-          <div className="absolute left-[calc(70/14.4*var(--rem))] bottom-[calc(344/14.4*var(--rem))] w-[380px] h-[463px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/faucet.svg)]"></div>
+          <div className="absolute left-[calc(70/14.4*var(--rem))] bottom-[calc(344/14.4*var(--rem))] w-[calc(380/14.4*var(--rem))] h-[calc(463/14.4*var(--rem))] bg-no-repeat bg-contain bg-[url(/images/monad/entry/faucet.svg)]"></div>
           {/* yapper */}
-          <div className="absolute right-[calc(240/14.4*var(--rem))] -top-[calc(112/14.4*var(--rem))] w-[446px] h-[324px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper.svg)]">
+          <div className="absolute right-[calc(240/14.4*var(--rem))] -top-[calc(112/14.4*var(--rem))] w-[calc(446/14.4*var(--rem))] h-[calc(324/14.4*var(--rem))] bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper.svg)]">
             <div className="w-full h-full relative">
-              <div className="absolute w-[290px] h-[265px] left-1/2 -translate-x-1/2 top-[-38px]">
+              <div className="absolute w-[calc(290/14.4*var(--rem))] h-[calc(265/14.4*var(--rem))] left-1/2 -translate-x-1/2 top-[-38px]">
                 <motion.div
                   animate={{ rotate: [-10, 10] }}
                   transition={{
@@ -47,17 +47,17 @@ const Home = () => {
             </div>
           </div>
           {/* data */}
-          <div className="absolute left-[calc(450/14.4*var(--rem))] bottom-[calc(235/14.4*var(--rem))] w-[514px] h-[330px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/data.svg)]"></div>
+          <div className="absolute left-[calc(450/14.4*var(--rem))] bottom-[calc(235/14.4*var(--rem))] w-[calc(514/14.4*var(--rem))] h-[calc(330/14.4*var(--rem))] bg-no-repeat bg-contain bg-[url(/images/monad/entry/data.svg)]"></div>
           {/* dapps */}
-          <div className="absolute right-[-10px] bottom-[calc(83/14.4*var(--rem))] w-[513px] h-[445px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/dapps.svg)]">
+          <div className="absolute right-[-10px] bottom-[calc(83/14.4*var(--rem))] w-[calc(513/14.4*var(--rem))] h-[calc(445/14.4*var(--rem))] bg-no-repeat bg-contain bg-[url(/images/monad/entry/dapps.svg)]">
             <div className="relative w-full h-full">
               <div
                 style={{
                   clipPath: `path('M92.4244 0C73.8511 2.07096 23.324 0.862899 15.1553 0L0 18.4445V50.4796L15.1553 69.5712C30.117 70.3478 81.0311 69.8948 89.8447 69.5712L105 50.4796V18.4445L92.4244 0Z')`,
                 }}
-                className="absolute left-[202px] top-[147px] w-[105px] h-[70px] overflow-hidden flex items-center justify-center"
+                className="absolute left-[calc(202/14.4*var(--rem))] top-[calc(147/14.4*var(--rem))] w-[calc(105/14.4*var(--rem))] h-[calc(70/14.4*var(--rem))] overflow-hidden flex items-center justify-center"
               >
-                <div className="w-[119px] overflow-hidden">
+                <div className="w-[calc(105/14.4*var(--rem))]] overflow-hidden">
                   <motion.div
                     className="w-full flex gap-[6px] items-center"
                     style={{ width: `${totalItemWidth * 2}px` }}
@@ -92,7 +92,7 @@ const Home = () => {
             </div>
           </div>
           {/* tokens */}
-          <div className="absolute left-[calc(150/14.4*var(--rem))] bottom-[calc(78/14.4*var(--rem))] w-[514px] h-[444px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/tokens.svg)]"></div>
+          <div className="absolute left-[calc(150/14.4*var(--rem))] bottom-[calc(78/14.4*var(--rem))] w-[calc(514/14.4*var(--rem))] h-[calc(444/14.4*var(--rem))] bg-no-repeat bg-contain bg-[url(/images/monad/entry/tokens.svg)]"></div>
         </div>
       </div>
       <div
