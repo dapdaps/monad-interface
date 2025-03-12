@@ -53,9 +53,9 @@ const Home = () => {
             <div className="relative w-full h-full">
               <div
                 style={{
-                  clipPath: `path('M110.595 0.119507C89.3718 2.47753 31.6346 1.10202 22.3002 0.119507L4.9823 21.1207V57.5964L22.3002 79.3344C39.397 80.2187 97.5763 79.7028 107.648 79.3344L124.966 57.5964V21.1207L110.595 0.119507Z')`,
+                  clipPath: `path('M92.4244 0C73.8511 2.07096 23.324 0.862899 15.1553 0L0 18.4445V50.4796L15.1553 69.5712C30.117 70.3478 81.0311 69.8948 89.8447 69.5712L105 50.4796V18.4445L92.4244 0Z')`,
                 }}
-                className="absolute left-[218px] top-[168px] w-[129px] px-[16px] h-[79px] overflow-hidden flex items-center justify-center"
+                className="absolute left-[202px] top-[147px] w-[105px] h-[70px] overflow-hidden flex items-center justify-center"
               >
                 <div className="w-[119px] overflow-hidden">
                   <motion.div
@@ -92,7 +92,7 @@ const Home = () => {
             </div>
           </div>
           {/* tokens */}
-          <div className="absolute left-[calc(150/14.4*var(--rem)] bottom-calc(78/14.4*var(--rem)] w-[514px] h-[444px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/tokens.svg)]"></div>
+          <div className="absolute left-[calc(150/14.4*var(--rem))] bottom-[calc(78/14.4*var(--rem))] w-[514px] h-[444px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/tokens.svg)]"></div>
         </div>
       </div>
       <div
