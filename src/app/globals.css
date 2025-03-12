@@ -106,6 +106,27 @@ a[disabled],
   .scrollbar-hide::-webkit-scrollbar {
     display: none;             /* Chrome, Safari 和 Opera */
   }
+
+
+  .trapezoid-container {
+    position: relative;
+  }
+  .trapezoid {
+    clip-path: polygon(var(--angle) 0%, 100% 0%, 100% 100%, 0% 100%);
+    position: relative;
+  }
+  .trapezoid::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    clip-path: polygon(var(--angle) 0%, 100% 0%, 100% 100%, 0% 100%);
+    border: 1px solid var(--borderColor, #000);
+    border-radius: var(--borderRadius, 6px);
+    pointer-events: none;
+  }
 }
 
 .route-wrapper {

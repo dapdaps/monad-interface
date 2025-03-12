@@ -2,23 +2,42 @@
 
 import ConnectWallet from "@/components/connect-wallet";
 import { useProgressRouter } from "@/hooks/use-progress-router";
+import { usePathname } from "next/navigation";
 
 
 const MainLayoutHeader = (props: Props) => {
   const { className, style } = props;
   const router = useProgressRouter();
+  const pathname = usePathname()
+  const DONT_NEED_SHOW_BACK = [
+    "/"
+  ]
   const goHome = () => {
     router.replace("/");
   };
-
   return (
     <header
-      className={`w-full h-[68px] stroke-black sticky font-CherryBomb top-0 z-50 ${className} bear-header`}
+      className={`flex justify-between w-full h-[60px] stroke-black sticky font-CherryBomb top-0 z-50 ${className} bear-header`}
       style={style}
     >
-      <div>
-        <ConnectWallet />
+      {
+        DONT_NEED_SHOW_BACK.includes(pathname) ? (
+          <div />
+        ) : (
+          <div className="cursor-pointer w-[120px]" onClick={() => {
+            router.back()
+          }}>
+            <img src="/images/header/back_button.svg" alt="back_button" />
+          </div>
+        )
+      }
+
+      <div className="flex items-center justify-center w-[300px] h-[60px] bg-[url('/images/header/logo_bg.svg')]">
+        <div className="w-[169px]">
+          <img src="/images/header/logo.svg" alt="logo" />
+        </div>
       </div>
+      <ConnectWallet />
     </header>
   );
 };
