@@ -1,17 +1,17 @@
-<svg width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_i_31911_3783)">
-<path d="M12.5359 25C14.0755 27.6667 17.9245 27.6667 19.4641 25L29.8564 7C31.396 4.33334 29.4715 1 26.3923 1H5.6077C2.5285 1 0.603992 4.33333 2.14359 7L12.5359 25Z" fill="#BFFF60"/>
+<svg width="30" height="27" viewBox="0 0 30 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_i_31911_3777)">
+<path d="M11.7418 23.5616C13.2814 26.2283 17.1304 26.2283 18.67 23.5616L28.1734 7.1012C29.713 4.43454 27.7885 1.1012 24.7093 1.1012H5.70244C2.62324 1.1012 0.698739 4.43453 2.23834 7.1012L11.7418 23.5616Z" fill="#BFFF60"/>
 </g>
-<path d="M19.8971 25.25C18.1651 28.25 13.8349 28.25 12.1029 25.25L1.71058 7.25C-0.0214713 4.25 2.1436 0.5 5.6077 0.5H26.3923C29.8564 0.5 32.0215 4.25 30.2894 7.25L19.8971 25.25Z" stroke="black"/>
+<path d="M19.103 23.8116C17.3709 26.8116 13.0408 26.8116 11.3088 23.8116L1.80533 7.3512C0.0732763 4.3512 2.23834 0.601202 5.70244 0.601202H24.7093C28.1734 0.601202 30.3385 4.35121 28.6064 7.3512L19.103 23.8116Z" stroke="black"/>
 <defs>
-<filter id="filter0_i_31911_3783" x="0.60025" y="0" width="30.7995" height="28" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_i_31911_3777" x="0.694977" y="0.101196" width="29.0218" height="26.4604" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
 <feOffset dx="-3" dy="-5"/>
 <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
 <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-<feBlend mode="normal" in2="shape" result="effect1_innerShadow_31911_3783"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_31911_3777"/>
 </filter>
 </defs>
 </svg>
