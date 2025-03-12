@@ -16,10 +16,11 @@ import { polygon } from "../../../configs/tokens/polygon";
 import { zkSync } from "../../../configs/tokens/zkSync";
 import { optimism } from "../../../configs/tokens/optimism";
 import { blast } from "../../../configs/tokens/blast";
-import { sepolia } from '../../../configs/tokens/sepolia';
-import { monad } from '../../../configs/tokens/monad';
+import { scroll } from '../../../configs/tokens/scroll';
 
-import { tokenPairs } from './bridges/owlto/config'
+import { tokenPairs } from './bridges/stargate/config'
+import { monad } from "../../../configs/tokens/monad";
+import { sepolia } from "../../../configs/tokens/sepolia";
 
 const mapFn = (item: Token) => {
   if (item.address === "native") {

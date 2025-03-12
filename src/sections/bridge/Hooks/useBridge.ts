@@ -13,7 +13,7 @@ import { addressFormated, balanceFormated, errorFormated, getFullNum, percentFor
 
 import useQuote from './useQuote';
 // import useRouteSorted from './useRouteSorted';
-import useAddAction from '@/hooks/use-add-action';
+// import useAddAction from '@/hooks/use-add-action';
 import { getChainScan } from '../lib/util';
 import useRouteSorted from './useRouteSorted';
 
@@ -48,7 +48,7 @@ export default function useBridge({ originFromChain, originToChain, derection, d
 
   const inputValue = useDebounce(sendAmount, { wait: 500 });
 
-  const { addAction } = useAddAction('bridge');
+  // const { addAction } = useAddAction('bridge');
   const { fail, success } = useToast();
   const [quoteReques, setQuoteRequest] = useState<QuoteRequest | null>(null);
 
@@ -181,18 +181,18 @@ export default function useBridge({ originFromChain, originToChain, derection, d
 
         // saveTransaction(actionParams);
 
-        addAction({
-          type: 'Bridge',
-          fromChainId: fromChain.chainId,
-          toChainId: toChain.chainId,
-          token: fromToken,
-          amount: inputValue,
-          template: selectedRoute.bridgeName,
-          add: false,
-          status: 1,
-          transactionHash: txHash,
-          extra_data: actionParams
-        });
+        // addAction({
+        //   type: 'Bridge',
+        //   fromChainId: fromChain.chainId,
+        //   toChainId: toChain.chainId,
+        //   token: fromToken,
+        //   amount: inputValue,
+        //   template: selectedRoute.bridgeName,
+        //   add: false,
+        //   status: 1,
+        //   transactionHash: txHash,
+        //   extra_data: actionParams
+        // });
 
         success({
           title: 'Transaction success',

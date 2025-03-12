@@ -3,7 +3,7 @@ import { ethers, Contract, Signer, providers } from 'ethers'
 
 import chainConfig from '../../util/chainConfig';
 import { approve } from '../../util/approve'
-import { erc20Abi } from 'viem'
+import { ERC20ABI } from '../../abi/ERC20'
 import { getQuoteInfo, setQuote } from '../../util/routerController'
 import { getIcon, getFullNum, checkTransitionOnlineStatus } from '../../util/index'
 import { QuoteRequest, QuoteResponse, ExecuteRequest, FeeType, StatusParams } from '../../type/index'
@@ -405,7 +405,7 @@ export async function getAllTokens() {
 async function getRouteTransactionData(route: any, amount: Big, signer: Signer) {
     const routerContract = new Contract(
         route.from_token_address,
-        erc20Abi,
+        ERC20ABI,
         signer,
     )
     const transactionData = await routerContract.populateTransaction.transfer(route.maker_address, amount.toString())

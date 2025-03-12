@@ -1,31 +1,32 @@
 "use client";
 
-import { useAppKit } from "@reown/appkit/react";
-import { memo, useEffect, useMemo, useRef, useState, useCallback } from "react";
-import { useAccount, useBalance, useDisconnect, useSwitchChain } from "wagmi";
-import Image from "next/image";
-import { icons } from "@/configs/chains";
-import { motion } from "framer-motion";
-import Big from "big.js";
-import allTokens from "@/configs/allTokens";
-import { utils } from "ethers";
+import MobileNetworks from "@/components/connect-wallet/networks";
+import MobileUser from "@/components/connect-wallet/user";
 import Popover, {
   PopoverPlacement,
   PopoverTrigger
 } from "@/components/popover";
+import allTokens from "@/configs/allTokens";
+import useIsMobile from "@/hooks/use-isMobile";
 import useToast from "@/hooks/use-toast";
 import useUser from "@/hooks/use-user";
-import Skeleton from "react-loading-skeleton";
-import useIsMobile from "@/hooks/use-isMobile";
-import MobileUser from "@/components/connect-wallet/user";
-import MobileNetworks from "@/components/connect-wallet/networks";
-import { useDebounceFn } from 'ahooks';
-import LazyImage from '@/components/layz-image';
 import { useWalletName } from '@/hooks/use-wallet-name';
-import { ChainType, State } from "@/sections/near-intents/hooks/useConnectWallet";
+import { useAppKit } from "@reown/appkit/react";
+import { useDebounceFn } from 'ahooks';
+import Big from "big.js";
+import { utils } from "ethers";
+import { motion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
-import { useConnectedWalletsStore } from "@/stores/useConnectedWalletsStore";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import { useAccount, useBalance, useDisconnect } from "wagmi";
 import MobileChain from "./chain/mobile";
+
+export type State = {
+  chainType?: ChainType
+  network?: string
+  address?: string
+}
 const dropdownAnimations = {
   active: {
     opacity: [0, 1],
@@ -40,8 +41,6 @@ const dropdownAnimations = {
 };
 
 
-import chains from '@/sections/bridge/lib/util/chainConfig'
-import { useBgtCount } from "@/hooks/use-bgt-count";
 
 const ConnectWallet = ({ className }: { className?: string }) => {
   const modal = useAppKit();
@@ -161,93 +160,30 @@ const ConnectWallet = ({ className }: { className?: string }) => {
         />
       ) : (isConnected) ? (
         <div className="flex justify-start items-center gap-x-[20px] md:gap-x-[8px] pl-2 pr-3 md:min-w-[105px]">
-          {isMobile ? (
-            <>
-              <User
-                handleConnect={handleConnect}
-                isMobile={isMobile}
-                address={address}
-                userInfo={userInfo}
-                walletInfo={walletInfo}
-                handleCopy={handleCopy}
-                tokenLogoShown={tokenLogoShown}
-                chainId={chainId}
-                balanceShown={balanceShown}
-                tokenSymbolShown={tokenSymbolShown}
-                addressShown={addressShown}
-                currentWallet={currentWallet.current}
-                setMobileUserInfoVisible={setMobileUserInfoVisible}
-              />
-              {
-                (
-                  <MobileChain
-                    chainListRef={chainListRef}
-                    handleChainDropdown={handleChainDropdown}
-                  />
-                )
-              }
-            </>
-          ) : (
-            <>
-              <User
-                handleConnect={handleConnect}
-                isMobile={isMobile}
-                address={address}
-                userInfo={userInfo}
-                walletInfo={walletInfo}
-                handleCopy={handleCopy}
-                tokenLogoShown={tokenLogoShown}
-                chainId={chainId}
-                balanceShown={balanceShown}
-                tokenSymbolShown={tokenSymbolShown}
-                addressShown={addressShown}
-                currentWallet={currentWallet.current}
-                setMobileUserInfoVisible={setMobileUserInfoVisible}
-              />
-            </>
-          )}
+          <User
+            handleConnect={handleConnect}
+            isMobile={isMobile}
+            address={address}
+            userInfo={userInfo}
+            walletInfo={walletInfo}
+            handleCopy={handleCopy}
+            tokenLogoShown={tokenLogoShown}
+            chainId={chainId}
+            balanceShown={balanceShown}
+            tokenSymbolShown={tokenSymbolShown}
+            addressShown={addressShown}
+            currentWallet={currentWallet.current}
+            setMobileUserInfoVisible={setMobileUserInfoVisible}
+          />
         </div>
       ) : (
         <>
-          <button
-            className={`click cursor-pointer rounded-full px-[10px] py-[4px] text-[14px] font-semibold bg-black lg:shadow-shadow1 text-white ${className}`}
-            onClick={handleConnect}
-          >
-            Connect Wallet
+          <button className="click cursor-pointer h-[50px] w-[158px]  bg-[url('/images/header/right_bg.svg')] bg-left bg-contain font-Unbounded text-[12px] text-white font-semibold" onClick={handleConnect}>
+            Connect
           </button>
-          {isMobile && (
-            <div className="ml-[10px]">
-              <MobileChain
-                chainListRef={chainListRef}
-                handleChainDropdown={handleChainDropdown}
-              />
-            </div>
-          )}
         </>
       )}
-      <MobileUser
-        visible={mobileUserInfoVisible}
-        setMobileUserInfoVisible={setMobileUserInfoVisible}
-        onClose={() => {
-          setMobileUserInfoVisible(false);
-        }}
-        walletInfo={walletInfo}
-        addressShown={addressShown}
-        address={address}
-        tokenLogoShown={tokenLogoShown}
-        balanceShown={balanceShown}
-        tokenSymbolShown={tokenSymbolShown}
-        chainId={chainId}
-        handleDisconnect={() => void 0}
-        handleCopy={handleCopy}
-        userInfo={userInfo}
-      />
-      <MobileNetworks
-        visible={mobileNetworksVisible}
-        onClose={() => {
-          setMobileNetworksVisible(false);
-        }}
-      />
+      
     </>
   );
 };
@@ -272,7 +208,6 @@ const User = (props: any) => {
   } = props;
 
   const router = useRouter()
-  const { iBGTCount, BGTCount } = useBgtCount();
 
   const content = (
     <div className="w-[266px] pt-[24px] pb-[14px] rounded-[20px] bg-[#FFFDEB] border border-black shadow-[10px_10px_0_0_rgba(0, 0, 0, 0.25)]">
@@ -307,32 +242,6 @@ const User = (props: any) => {
             {balanceShown}
           </div>
         </div>
-        {/* <div
-          onClick={() => {
-            router.push("/hall?tab=bgt")
-          }}
-          className="cursor-pointer pl-[9px] pr-[12px] w-full h-[36px] border border-[rgba(0, 0, 0, 0.15)] rounded-[18px] flex items-center justify-between">
-          <div className="flex items-center gap-[8px]">
-            <img className="relative w-[20px] h-[20px] rounded-full shrink-0 bg-[#F0F0F0]" src="/images/icon-bgt.svg" />
-            <div className="text-black text-[14px] font-Montserrat flex-shrink-0">BGT</div>
-          </div>
-          <div className="text-black text-[14px] font-Montserrat flex-shrink-0 overflow-hidden text-nowrap">
-            {Number(BGTCount).toFixed(4)}
-          </div>
-        </div>
-        <div
-          onClick={() => {
-            router.push("/hall?tab=ibgt")
-          }}
-          className="cursor-pointer pl-[9px] pr-[12px] w-full h-[36px] border border-[rgba(0, 0, 0, 0.15)] rounded-[18px] flex items-center justify-between">
-          <div className="flex items-center gap-[8px]">
-            <img className="relative w-[20px] h-[20px] rounded-full shrink-0 bg-[#F0F0F0]" src="/images/icon-iBGT.svg" />
-            <div className="text-black text-[14px] font-Montserrat flex-shrink-0">iBGT</div>
-          </div>
-          <div className="text-black text-[14px] font-Montserrat flex-shrink-0 overflow-hidden text-nowrap">
-            {Number(iBGTCount).toFixed(4)}
-          </div>
-        </div> */}
       </div>
       <DisconnectButton setMobileUserInfoVisible={setMobileUserInfoVisible} />
     </div>

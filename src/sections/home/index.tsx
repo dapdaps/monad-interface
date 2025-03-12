@@ -1,224 +1,107 @@
-"use client";
+import { motion } from "framer-motion";
 
-import BearBackground from "@/components/bear-background/laptop";
-import { SceneContext } from "@/context/scene";
-import { useChristmas } from "@/hooks/use-christmas";
-import useIsMobile from "@/hooks/use-isMobile";
-import { useProgressRouter } from "@/hooks/use-progress-router";
-import HomePrompt from "@/sections/activity/christmas/components/home-prompt";
-import ChristmasEnterance from "@/sections/activity/christmas/enterance";
-import { useBeraciaga } from "@/stores/beraciaga";
-import ArrowTopSvg from "@public/images/background/arrow-top.svg";
-import BridgeSvg from "@public/images/background/bridge.svg";
-import DappsSvg from "@public/images/background/dapps.svg";
-import DashboardSvg from "@public/images/background/dashboard.svg";
-import EarnSvg from "@public/images/background/earn.svg";
-import MarketplaceSvg from "@public/images/background/marketplace.svg";
-import CaveSvg from "@public/images/cave/cave.svg";
-import clsx from "clsx";
-import { memo, useContext } from "react";
-import BeraciagaModal from "./beraciaga-modal";
-import MobileHome from "./mobile";
-import VaultsEnterance from "./vaults-enterance";
-import AirdropModal from '@/components/airdrop/modal';
-import Airdrop from '@/components/airdrop';
+const itemWidth = 51;
+const itemGap = 6;
 
-const Navigation = function () {
-  const router = useProgressRouter();
-  const { isChristmas, path: christmasPath } = useChristmas();
-  const beraciagaStore: any = useBeraciaga((store) => store);
+const Home = () => {
+  // 定义多个 dapp 项
+  const dappItems = [
+    { name: "Lynx", icon: "/images/monad/dapps/lynx.svg" },
+    { name: "DapDap", icon: "/images/monad/dapps/lynx.svg" },
+    { name: "Monad", icon: "/images/monad/dapps/lynx.svg" },
+    { name: "DEX", icon: "/images/monad/dapps/lynx.svg" },
+  ];
 
-  const onNavigateToBridge = () => {
-    router.push("/bridge");
-  };
-  const onNavigateToDapp = () => {
-    router.push("/dapps");
-  };
-  const onNavigateToMarketplace = () => {
-    router.push("/marketplace");
+  const duplicateFunc = (items: typeof dappItems, times: number = 2) => {
+    return Array(times).fill(items).flat();
   };
 
-  const onNavigateToDashBoard = () => {
-    router.push("/portfolio");
-  };
+  const duplicatedDappItems = duplicateFunc(dappItems);
 
-  const onNavigateToCave = () => {
-    router.push("/cave");
-  };
-
-  const onNavigateToEarn = () => {
-    router.push("/earn");
-  };
-
-  const onNavigateToVaults = () => {
-    router.push("/vaults");
-  };
-
-  const onNavigateToBeramas = () => {
-    router.push(christmasPath as string);
-  };
-
+  const totalItemWidth = dappItems.length * (itemWidth + itemGap) - itemGap;
   return (
-    <>
+    <div className="w-full h-[calc(100dvh-68px)] relative overflow-hidden">
       <div
-        className="cursor-pointer absolute left-1/2 top-[31px] flex items-start gap-[14px] translate-x-[-25px]"
-        onClick={onNavigateToMarketplace}
-        data-bp="1010-006"
-        id="btn-group1"
+        className="absolute left-0 bottom-0 w-full bg-[url(/images/monad/background/bg1.svg)] bg-no-repeat bg-contain 
+                        h-[calc(635/14.4*var(--rem))]"
       >
-        <div
-          className={`flex flex-col gap-[19px] items-center pt-[10px] ${
-            isChristmas ? "text-white" : "text-black"
-          }`}
-        >
-          <div className={`text-[20px] font-CherryBomb leading-[90%]`}>
-            Token Marketplace
-          </div>
-          <ArrowTopSvg />
-        </div>
-        <MarketplaceSvg className="hover:scale-110 transition-transform duration-500" />
-      </div>
-      <div
-        className={clsx(
-          "absolute right-[35px] top-1/3 cursor-pointer flex flex-col items-end gap-[16px]",
-          isChristmas ? "top-1/4" : "top-1/3"
-        )}
-        onClick={onNavigateToBridge}
-        data-bp="1010-007"
-        id="btn-group2"
-      >
-        <div
-          className={`flex items-center justify-end gap-[12px] pr-[10px] ${
-            isChristmas ? "text-white" : "text-black"
-          }`}
-        >
-          <ArrowTopSvg style={{ transform: "rotate(90deg)" }} />
-          <div
-            className={clsx(
-              "text-[20px] font-CherryBomb leading-[90%]",
-              isChristmas ? "text-white" : "text-black"
-            )}
-          >
-            Bridge
-          </div>
-        </div>
-        <BridgeSvg className="hover:scale-110 transition-transform duration-500" />
-      </div>
-      {/* <VaultsEnterance
-        imgSrc="/images/background/vaults.svg"
-        onClick={onNavigateToVaults}
-        className={clsx(
-          "absolute right-[35px] hover:scale-110 transition-transform duration-500",
-          isChristmas
-            ? "text-white top-[calc(25%+50px)]"
-            : "text-black] top-[calc(33.333%+50px)]"
-        )}
-      /> */}
-      <div className="absolute left-1/2 translate-x-[-50%] bottom-[19px] z-10 flex gap-[100px]">
-        <div
-          className="cursor-pointer flex items-start gap-[21px] translate-x-[-33px] opacity-50"
-          // onClick={onNavigateToDashBoard}
-          // data-bp="1010-008"
-        >
-          <div className="flex flex-col gap-[19px] items-center pt-[29px]">
-            <ArrowTopSvg style={{ transform: "rotate(180deg)" }} />
-            <div className="text-[20px] text-black font-CherryBomb leading-[90%] whitespace-nowrap">
-              Portfolio
+        <div className="relative w-full h-full">
+          {/* faucet */}
+          <div className="absolute left-[calc(70/14.4*var(--rem))] bottom-[calc(344/14.4*var(--rem))] w-[calc(380/14.4*var(--rem))] h-[calc(463/14.4*var(--rem))] bg-no-repeat bg-contain bg-[url(/images/monad/entry/faucet.svg)]"></div>
+          {/* yapper */}
+          <div className="absolute right-[calc(240/14.4*var(--rem))] -top-[calc(112/14.4*var(--rem))] w-[calc(446/14.4*var(--rem))] h-[calc(324/14.4*var(--rem))] bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper.svg)]">
+            <div className="w-full h-full relative">
+              <div className="absolute w-[calc(290/14.4*var(--rem))] h-[calc(265/14.4*var(--rem))] left-1/2 -translate-x-1/2 top-[-38px]">
+                <motion.div
+                  animate={{ rotate: [-10, 10] }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    ease: "easeInOut",
+                    transformOrigin: "center bottom",
+                  }}
+                  className="relative w-full h-full bg-no-repeat bg-contain bg-[url(/images/monad/entry/radar.svg)]"
+                ></motion.div>
+              </div>
             </div>
           </div>
-          <DashboardSvg
-            className={clsx(
-              "transition-transform duration-500"
-              // "hover:scale-110"
-            )}
-          />
-        </div>
-
-        <div
-          className="cursor-pointer z-10 flex items-start gap-[21px] translate-x-[-33px]"
-          onClick={onNavigateToEarn}
-          data-bp="1010-012"
-        >
-          <EarnSvg
-            className={clsx(
-              "transition-transform duration-500",
-              "hover:scale-110"
-            )}
-          />
-          <div className="flex flex-col gap-[19px] items-center pt-[29px]">
-            <ArrowTopSvg style={{ transform: "rotate(180deg)" }} />
-            <div className="text-[20px] text-black font-CherryBomb leading-[90%]">
-              Earn
+          {/* data */}
+          <div className="absolute left-[calc(450/14.4*var(--rem))] bottom-[calc(235/14.4*var(--rem))] w-[calc(514/14.4*var(--rem))] h-[calc(330/14.4*var(--rem))] bg-no-repeat bg-contain bg-[url(/images/monad/entry/data.svg)]"></div>
+          {/* dapps */}
+          <div className="absolute right-[-10px] bottom-[calc(83/14.4*var(--rem))] w-[calc(513/14.4*var(--rem))] h-[calc(445/14.4*var(--rem))] bg-no-repeat bg-contain bg-[url(/images/monad/entry/dapps.svg)]">
+            <div className="relative w-full h-full">
+              <div
+                style={{
+                  clipPath: `path('M92.4244 0C73.8511 2.07096 23.324 0.862899 15.1553 0L0 18.4445V50.4796L15.1553 69.5712C30.117 70.3478 81.0311 69.8948 89.8447 69.5712L105 50.4796V18.4445L92.4244 0Z')`,
+                }}
+                className="absolute left-[calc(202/14.4*var(--rem))] top-[calc(147/14.4*var(--rem))] w-[calc(105/14.4*var(--rem))] h-[calc(70/14.4*var(--rem))] overflow-hidden flex items-center justify-center"
+              >
+                <div className="w-[calc(105/14.4*var(--rem))]] overflow-hidden">
+                  <motion.div
+                    className="w-full flex gap-[6px] items-center"
+                    style={{ width: `${totalItemWidth * 2}px` }}
+                    animate={{
+                      x: [0, -totalItemWidth],
+                    }}
+                    transition={{
+                      duration: 8,
+                      repeat: Infinity,
+                      repeatType: "loop",
+                      ease: "linear",
+                    }}
+                  >
+                    {duplicatedDappItems.map((item, index) => (
+                      <div
+                        key={`dapp-${index}`}
+                        className="flex-shrink-0 w-[51px] h-[60px] rounded-[10px] border border-black bg-[#A5FFFD] flex flex-col gap-[5px] items-center justify-center"
+                      >
+                        <img
+                          className="w-[33px] h-[32px]"
+                          src={item.icon}
+                          alt={item.name}
+                        />
+                        <div className="truncate font-Unbounded text-[10px] text-center font-[900] leading-[9px]">
+                          {item.name}
+                        </div>
+                      </div>
+                    ))}
+                  </motion.div>
+                </div>
+              </div>
             </div>
           </div>
+          {/* tokens */}
+          <div className="absolute left-[calc(150/14.4*var(--rem))] bottom-[calc(78/14.4*var(--rem))] w-[calc(514/14.4*var(--rem))] h-[calc(444/14.4*var(--rem))] bg-no-repeat bg-contain bg-[url(/images/monad/entry/tokens.svg)]"></div>
         </div>
       </div>
-
       <div
-        className="cursor-pointer absolute left-[45px] top-1/3 z-10 flex flex-col gap-[8px]"
-        onClick={onNavigateToDapp}
-        data-bp="1010-009"
-      >
-        <DappsSvg className="hover:scale-110 transition-transform duration-500" />
-        <div
-          className={`flex gap-[15px] items-center pl-[15px] ${
-            isChristmas ? "text-white" : "text-black"
-          }`}
-        >
-          <div className="text-[20px] font-CherryBomb leading-[90%]">dApps</div>
-          <ArrowTopSvg style={{ transform: "rotate(270deg)" }} />
-        </div>
-      </div>
-
-      {/* <div
-        className="cursor-pointer absolute left-[15px] bottom-[68px] z-10 flex flex-col gap-[8px]"
-        onClick={onNavigateToCave}
-        data-bp="1010-010"
-      >
-        <div className="text-[20px] text-center font-CherryBomb">Bera Cave</div>
-        <CaveSvg className="hover:scale-110 transition-transform duration-500" />
-      </div> */}
-      {/* <div
-        className="absolute top-[40px] left-[40px] w-[96px] h-[136px] flex flex-col cursor-pointer "
-        onClick={() => {
-          // @ts-ignore
-          beraciagaStore.set({
-            openModal: true
-          });
-        }}
-      >
-        <div className="relative w-[96px] h-[114px] hover:scale-110 transition-transform duration-500">
-          <div className="absolute w-[219px] -left-[36px] -bottom-[83px] pointer-events-none">
-            <img
-              src="/images/beraciaga/beraciaga_nav.png"
-              alt="beraciaga_nav"
-            />
-          </div>
-        </div>
-        <div className="text-white font-CherryBomb text-[20px] ledaing-[90%]">
-          Beraciaga
-        </div>
-      </div> */}
-      {isChristmas && <ChristmasEnterance path={christmasPath} />}
-    </>
+        className="absolute left-0 bottom-0 w-full bg-[url(/images/monad/background/bg2.svg)] bg-no-repeat bg-contain 
+                        h-[calc(382/14.4*var(--rem))]"
+      ></div>
+    </div>
   );
 };
+export default Home;
 
-export default memo(function Home() {
-  const isMobile = useIsMobile();
-  const { currentSceneInfoValid } = useContext(SceneContext);
 
-  if (isMobile) {
-    return <MobileHome />;
-  }
-
-  return (
-    <BearBackground type="home">
-      <Navigation />
-      <BeraciagaModal />
-      <AirdropModal />
-      <Airdrop />
-      {currentSceneInfoValid && <HomePrompt />}
-    </BearBackground>
-  );
-});

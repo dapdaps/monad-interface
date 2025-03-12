@@ -22,6 +22,12 @@
   font-weight: 100 900;
   font-stretch: 75% 125%;
 }
+@font-face {
+  font-family: "Unbounded";
+  src: url("./fonts/Unbounded-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-stretch: 75% 125%;
+}
 
 html,
 body {
@@ -32,20 +38,23 @@ body {
 }
 
 :root {
-  --background: #96d6ff;
+  --background: #0E0F29;
   --foreground: #000000;
+  --primary: #836EF9;
+  /* 设计标准是 1440px， 分成 100 份 */
+  --rem: calc(1440 / 100); 
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #96d6ff;
+    --background: #0E0F29;
     --foreground: #000000;
   }
 }
 
 body {
   color: var(--foreground);
-  font-family: Montserrat;
+  font-family: Unbounded;
   height: 100%;
 }
 

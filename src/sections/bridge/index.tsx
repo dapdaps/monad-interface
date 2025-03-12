@@ -9,7 +9,7 @@ import Confirm from './Confrim';
 
 import PageBack from '@/components/back';
 import useIsMobile from '@/hooks/use-isMobile';
-import MenuButton from '@/components/mobile/menuButton';
+// import MenuButton from '@/components/mobile/menuButton';
 import { useParams } from 'next/navigation';
 import History from './History';
 import Big from 'big.js';
@@ -17,8 +17,6 @@ import { useAccount, useSwitchChain } from "wagmi";
 import { formatLongText } from '@/utils/utils';
 import allTokens from './lib/allTokens'
 import { tokenPairs } from './lib/bridges/owlto/config';
-import useAddAction from '@/hooks/use-add-action';
-import { useBridgeHistory } from '@/stores/useBridgeHistory';
 import useBridge from './Hooks/useBridge';
 
 import type { Token, Chain } from '@/types';
@@ -50,7 +48,8 @@ const DappHeader: React.FC = () => {
     <>
       {isMobile ? (
         <div className="relative left-[25%] mt-7 top-5">
-          <MenuButton className="w-[51.282vw]">Bridge</MenuButton>
+          Bridge
+          {/* <MenuButton className="w-[51.282vw]">Bridge</MenuButton> */}
         </div>
       ) : (
         <div className="text-[60px] text-center py-[30px] font-CherryBomb">
@@ -75,9 +74,7 @@ export default function Bridge() {
   const [activeTab, setActiveTab] = useState('pending')
   const isMobile = useIsMobile()
   const { switchChain } = useSwitchChain();
-  const { addAction } = useAddAction("bridge");
   const { address, chainId } = useAccount()
-  const { list, set }: any = useBridgeHistory()
   const [limitBera, setLimitBera] = useState(0)
 
   

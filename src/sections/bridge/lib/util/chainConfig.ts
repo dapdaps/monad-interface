@@ -168,14 +168,14 @@ export default {
     //   rpcUrls: ['https://endpoints.omniatech.io/v1/xlayer/mainnet/public'],
     //   blockExplorers: 'https://astar-zkevm.explorer.startale.com',
     // },
-    // 11155111: {
-    //   chainId: 11155111,
-    //   chainName: 'Sepolia',
-    //   icon: '/images/chains/chain-astar-zkevm.svg',
-    //   nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
-    //   rpcUrls: ['https://rpc.sepolia.org'],
-    //   blockExplorers: 'https://sepolia.etherscan.io',
-    // },
+    11155111: {
+      chainId: 11155111,
+      chainName: 'Sepolia',
+      icon: '/images/chains/chain-astar-zkevm.svg',
+      nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+      rpcUrls: ['https://rpc.sepolia.org'],
+      blockExplorers: 'https://sepolia.etherscan.io',
+    },
     // 80002: {
     //   chainId: 80002,
     //   chainName: 'Polygon Amoy',
@@ -200,21 +200,12 @@ export default {
       rpcUrls: ['https://rpc.berachain.com'],
       blockExplorers: 'https://berascan.com/',
     },
-    11155111: {
-      chainId: 11155111,
-      chainName: 'Sepolia',
-      icon: 'https://assets.dapdap.net/images/bafkreicjsbkvvcxahxjejkctwopcnmzbeskxhfrkg7lyawhkhzrxcmvgfy.svg',
-      nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
-      rpcUrls: ['https://rpc.sepolia.org'],
-      blockExplorers: 'https://sepolia.etherscan.io',
-    },
     10143: {
       chainId: 10143,
-      chainName: 'Monad',
-      icon: '/assets/tokens/monad.svg',
+      chainName: 'Monad Testnet',
+      icon: '/images/monad.png',
       nativeCurrency: { name: 'MONAD', symbol: 'MONAD', decimals: 18 },
       rpcUrls: ['https://testnet-rpc.monad.xyz'],
-      blockExplorers: 'https://testnet.monadexplorer.com',
-    },
-
+      blockExplorers: 'https://testnet.monadexplorer.xyz/',
+    }
   } as { [key: number]: Chain };
