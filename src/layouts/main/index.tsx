@@ -32,6 +32,7 @@ const MainLayout = (props: Props) => {
     getAccessToken();
   }, [address]);
 
+  const hideHeader = ['/']
   return (
     <div
       id="layout"
@@ -40,7 +41,9 @@ const MainLayout = (props: Props) => {
         ...style,
       }}
     >
-      <MainLayoutHeader />
+      {
+        !hideHeader.includes(pathname) && <MainLayoutHeader />
+      }
       <div className="grow">
         {children}
       </div>

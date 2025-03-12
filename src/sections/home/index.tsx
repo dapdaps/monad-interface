@@ -1,3 +1,4 @@
+import MainLayoutHeader from "@/layouts/main/header";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
@@ -24,9 +25,10 @@ const Home = () => {
   const totalWidth = dappItems.length * (itemWidth + itemGap) - itemGap;
 
   return (
-    <div className="w-full h-[calc(100dvh-68px)] relative overflow-hidden">
+    <div className="w-full h-[100dvh] relative overflow-hidden">
+      <MainLayoutHeader />
       <div className="absolute top-0 left-[110px] w-[409px] h-[283px] bg-[url(/images/monad/icon/left-window.svg)]"></div>
-      <div className="absolute top-0 right-[138px] w-[427px] h-[31w3px] bg-[url(/images/monad/icon/right-window.svg)]"></div>
+      <div className="absolute top-0 right-[138px] w-[427px] h-[313px] bg-[url(/images/monad/icon/right-window.svg)]"></div>
       <div
         className="absolute left-0 bottom-0 w-full bg-[url(/images/monad/background/bg1.svg)] bg-no-repeat bg-contain 
                         h-[calc(635/14.4*var(--rem))] min-h-[635px] min-w-[1440px]"
