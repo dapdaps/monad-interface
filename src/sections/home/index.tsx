@@ -23,13 +23,13 @@ const Home = () => {
     <div className="w-full h-[calc(100dvh-68px)] relative overflow-hidden">
       <div
         className="absolute left-0 bottom-0 w-full bg-[url(/images/monad/background/bg1.svg)] bg-no-repeat bg-contain 
-                        h-[calc(735/14.4*var(--rem))]"
+                        h-[calc(635/14.4*var(--rem))]"
       >
         <div className="relative w-full h-full">
           {/* faucet */}
-          <div className="absolute left-[calc(25/14.4*var(--rem))] bottom-[calc(410/14.4*var(--rem))] w-[380px] h-[463px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/faucet.svg)]"></div>
+          <div className="absolute left-[calc(70/14.4*var(--rem))] bottom-[calc(344/14.4*var(--rem))] w-[380px] h-[463px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/faucet.svg)]"></div>
           {/* yapper */}
-          <div className="absolute right-[calc(200/14.4*var(--rem))] -top-[calc(80/14.4*var(--rem))] w-[446px] h-[324px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper.svg)]">
+          <div className="absolute right-[calc(240/14.4*var(--rem))] -top-[calc(112/14.4*var(--rem))] w-[446px] h-[324px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper.svg)]">
             <div className="w-full h-full relative">
               <div className="absolute w-[290px] h-[265px] left-1/2 -translate-x-1/2 top-[-38px]">
                 <motion.div
@@ -47,9 +47,9 @@ const Home = () => {
             </div>
           </div>
           {/* data */}
-          <div className="absolute left-[410px] bottom-[284px] w-[514px] h-[330px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/data.svg)]"></div>
+          <div className="absolute left-[calc(450/14.4*var(--rem))] bottom-[calc(235/14.4*var(--rem))] w-[514px] h-[330px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/data.svg)]"></div>
           {/* dapps */}
-          <div className="absolute right-0 bottom-0 w-[513px] h-[445px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/dapps.svg)]">
+          <div className="absolute right-[-10px] bottom-[calc(83/14.4*var(--rem))] w-[513px] h-[445px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/dapps.svg)]">
             <div className="relative w-full h-full">
               <div
                 style={{
@@ -92,7 +92,7 @@ const Home = () => {
             </div>
           </div>
           {/* tokens */}
-          <div className="absolute left-[100px] bottom-0 w-[514px] h-[444px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/tokens.svg)]"></div>
+          <div className="absolute left-[calc(150/14.4*var(--rem)] bottom-calc(78/14.4*var(--rem)] w-[514px] h-[444px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/tokens.svg)]"></div>
         </div>
       </div>
       <div
