@@ -38,13 +38,16 @@ body {
 }
 
 :root {
-  --background: #96d6ff;
+  --background: #0E0F29;
   --foreground: #000000;
+  --primary: #836EF9;
+  /* 设计标准是 1440px， 分成 100 份 */
+  --rem: calc(1440 / 100); 
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #96d6ff;
+    --background: #0E0F29;
     --foreground: #000000;
   }
 }
