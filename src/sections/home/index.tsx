@@ -20,7 +20,7 @@ const Home = () => {
 
   const totalItemWidth = dappItems.length * (itemWidth + itemGap) - itemGap;
   return (
-    <div className="w-full h-[100dvh] relative overflow-hidden">
+    <div className="w-full h-[calc(100dvh-68px)] relative overflow-hidden">
       <div
         className="absolute left-0 bottom-0 w-full bg-[url(/images/monad/background/bg1.svg)] bg-no-repeat bg-contain 
                         h-[calc(735/14.4*var(--rem))]"
