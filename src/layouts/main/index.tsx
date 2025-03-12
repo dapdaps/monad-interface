@@ -36,7 +36,7 @@ const MainLayout = (props: Props) => {
   return (
     <div
       id="layout"
-      className={`relative flex flex-col items-stretch justify-start transition-background duration-150 bg-[var(--background)]`}
+      className={`min-h-screen relative flex flex-col items-stretch justify-start transition-background duration-150 bg-[var(--background)]`}
       style={{
         ...style,
       }}
