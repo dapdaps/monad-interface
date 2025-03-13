@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import Big from 'big.js';
 
 export enum EStatus {
   Finished,
@@ -21,6 +22,9 @@ export interface IFaucetContext {
   currentMonth: number;
   daysInCurrentMonth: number;
   currentMonthCheckinList: ICheckinItem[];
+  collectedMON: Big.Big;
+  checkinDays: number;
+  collectedToday: boolean;
 
   handleCheckIn(): Promise<void>;
 }
@@ -35,6 +39,7 @@ export interface ICheckedItem {
 export interface ICheckinItem {
   date: number;
   checkin_date: number;
+  checkin_sort: number;
   id: string;
   reward_amount: number;
 }

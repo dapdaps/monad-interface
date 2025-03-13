@@ -6,10 +6,17 @@ export const getMonthlyCheckinList = (month: number, checkedInList?: ICheckedIte
   const daysInCurrentMonth = startOfMonth.daysInMonth();
   return Array.from({ length: daysInCurrentMonth }, (_, index) => {
     const currDate = startOfMonth.add(index, 'day').startOf('day').valueOf();
-    const checked = checkedInList?.find((it) => it.checkin_date === currDate);
+    const checkedIdx = checkedInList?.findIndex?.((it) => it.checkin_date === currDate);
+    let checked;
+    let checkedIndex = 0;
+    if (checkedIdx !== void 0 && checkedIdx > -1) {
+      checkedIndex = checkedIdx;
+      checked = checkedInList?.[checkedIdx];
+    }
     return {
       date: currDate,
       checkin_date: checked?.checkin_date || 0,
+      checkin_sort: checkedIndex,
       id: `${month}-${index}`,
       reward_amount: checked?.reward_amount || 0,
     };

@@ -1,11 +1,10 @@
 "use client";
+
 import { cookieStorage, createStorage, fallback, http } from "wagmi";
-import chains, { turbo } from "./chains";
+import chains from "./chains";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
-import { injected } from "wagmi/connectors";
 import { CreateConnectorFn } from "wagmi";
-import { berachainTestnetbArtio, Chain } from "@reown/appkit/networks";
-import { arbitrum, aurora, base, mainnet } from "wagmi/chains"
+import { DEFAULT_CHAIN_ID } from '@/configs/index';
 
 export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 
@@ -14,52 +13,16 @@ if (!projectId) {
 }
 
 export const metadata = {
-  name: "BeraTown",
-  description: "BeraTown",
+  name: "MonadX",
+  description: "MonadX",
   // origin must match your domain & subdomain
   url: "https://berachain.dapdap.net",
   icons: ["/favicon.ico"]
 };
 
-export const networks = Object.values(chains) //.filter((c) => c.isWalletSupport);
+export const networks = Object.values(chains);
 
 const connectors: CreateConnectorFn[] = [];
-
-// @ts-ignore
-if (typeof window !== "undefined" && window.berasig) {
-  // @ts-ignore
-  const berasig = window.berasig.ethereum;
-  const BeraSig = (config: any) => {
-    const Connector = injected({
-      shimDisconnect: false,
-      target: {
-        id: "BeraSig",
-        icon: "/images/wallets/bera-sig-wallet.avif",
-        name: "BeraSig Wallet (Recommend)",
-        // @ts-ignore
-        provider: berasig
-      }
-    })(config);
-    return {
-      ...Connector,
-      disconnect: async () => {
-        await Connector.disconnect();
-        try {
-          // TODO Useless
-          await berasig.request({
-            method: "eth_requestAccounts",
-            params: [{ eth_accounts: {} }]
-          });
-          console.log("disconnect done");
-        } catch (err: any) {
-          console.log("disconnect failed: %o", err);
-        }
-      }
-    };
-  };
-
-  // connectors.push(BeraSig);
-}
 
 export const wagmiAdapter = new WagmiAdapter({
   // @ts-ignore
@@ -72,12 +35,7 @@ export const wagmiAdapter = new WagmiAdapter({
   // @ts-ignore
   connectors,
   transports: {
-    80094: fallback([http("https://rpc.berachain.com")]),
-    [mainnet.id]: http(),
-    [base.id]: http(),
-    [arbitrum.id]: http(),
-    [turbo.id]: http(),
-    [aurora.id]: http(),
+    [DEFAULT_CHAIN_ID]: fallback([http("https://testnet-rpc.monad.xyz")]),
   }
 });
 

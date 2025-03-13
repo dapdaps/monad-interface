@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { EStatus, IStep } from '@/sections/faucet/config';
 import { useEffect, useState } from 'react';
+import { useFaucetContext } from '@/sections/faucet/context';
 
 const StepList: IStep[] = [
   {
@@ -16,10 +17,10 @@ const StepList: IStep[] = [
         <div className="">GMonad</div>
       </>
     ),
-    status: EStatus.Finished,
+    status: EStatus.Unfinished,
   },
   {
-    value: 2,
+    value: 3,
     amount: 0.05,
     unit: '$MON',
     label: (
@@ -28,10 +29,10 @@ const StepList: IStep[] = [
         <div className="">GMonad</div>
       </>
     ),
-    status: EStatus.Finished,
+    status: EStatus.Unfinished,
   },
   {
-    value: 3,
+    value: 7,
     amount: 0.1,
     unit: '$MON',
     label: (
@@ -43,7 +44,7 @@ const StepList: IStep[] = [
     status: EStatus.Unfinished,
   },
   {
-    value: 4,
+    value: 14,
     amount: 0.1,
     unit: '$MON',
     label: (
@@ -60,20 +61,30 @@ const StepList: IStep[] = [
 const FaucetStep = (props: any) => {
   const { className } = props;
 
+  const { checkinDays } = useFaucetContext();
+
+  const [list, setList] = useState<IStep[]>(StepList);
   const [current, setCurrent] = useState<IStep>();
 
   useEffect(() => {
-    setCurrent(StepList[2]);
-  }, []);
+    const _StepList = StepList.slice();
+    for (const _step of _StepList) {
+      if (checkinDays >= _step.value) {
+        _step.status = EStatus.Finished;
+        setCurrent(_step);
+      }
+    }
+    setList(_StepList);
+  }, [checkinDays]);
 
   return (
     <div className={clsx("w-full flex-1 flex items-center justify-between gap-[3px] pl-[53px] pr-[76px] text-[#A6A6DB] text-[12px] font-[300] font-Unbounded", className)}>
       {
-        StepList.map((item, index) => (
+        list.map((item, index) => (
           <>
             <Step key={`step-${index}`} item={item} current={current} />
             {
-              index < StepList.length - 1 && (
+              index < list.length - 1 && (
                 <div className="flex-1 h-[1px] border-t border-dashed border-t-[#7370C8]" />
               )
             }

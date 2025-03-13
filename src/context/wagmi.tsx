@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createAppKit } from "@reown/appkit/react";
 import React, { type ReactNode } from "react";
 import { cookieToInitialState, WagmiProvider, type Config } from "wagmi";
+import { DEFAULT_CHAIN_ID } from '@/configs';
 
 const queryClient = new QueryClient();
 
@@ -12,18 +13,9 @@ if (!projectId) {
   throw new Error("Project ID is not defined");
 }
 
-const defaultNetwork = networks.find((it) => it.id === 80094);
+const defaultNetwork = networks.find((it) => it.id === DEFAULT_CHAIN_ID);
 
 const customWallets: any = [];
-// @ts-ignore
-if (typeof window !== "undefined" && !window.berasig) {
-  customWallets.push({
-    id: "BeraSig",
-    name: "BeraSig Wallet (Recommend)",
-    homepage: "https://docs.beraji.com/wallet-integration",
-    image_url: "/images/wallets/bera-sig-wallet.avif"
-  });
-}
 
 // Create the modal
 const modal = createAppKit({
@@ -33,8 +25,8 @@ const modal = createAppKit({
   defaultNetwork: defaultNetwork || networks[0],
   metadata: metadata,
   featuredWalletIds: [
-    "BeraSig",
     // Explorer: https://explorer.walletconnect.com/
+    "a797aa35c0fadbfc1a53e7f675162ed5226968b44a19ee3d24385c64d1d3c393", // Phantom
     "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96", // Metamask
     "fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa", // Coinbase
     "971e689d0a5be527bac79629b4ee9b925e82208e5168b733496a09c0faed0709", // OKX

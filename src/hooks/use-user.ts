@@ -6,7 +6,6 @@ import useToast from '@/hooks/use-toast';
 import { useWalletName } from '@/hooks/use-wallet-name';
 import { useConnectedWalletsStore } from '@/stores/useConnectedWalletsStore';
 import { usePathname } from 'next/navigation';
-import { ChainType } from '@/sections/near-intents/hooks/useConnectWallet'
 
 export function useUser() {
   const { address } = useAccount();
@@ -29,7 +28,7 @@ export function useUser() {
   const getUserInfo = useCallback(async () => {
     setUserInfo({ loading: true });
     try {
-      const result = await get('/api/user');
+      const result = await get('/user');
       const data = result?.data || {};
       setUserInfo({ user: data, loading: false });
       return data;
@@ -42,7 +41,6 @@ export function useUser() {
 
   const getAccessToken = async () => {
     setUserInfo({ accessTokenLoading: true });
-    // 获取当前使用的地址
     const currentAddress = isNearPage && near_current_wallet 
       ? near_current_wallet.address 
       : address;
@@ -61,9 +59,9 @@ export function useUser() {
     }
 
     // register
-    const checkedRes = await checkAccount({
-      address: currentAddress,
-    });
+    // const checkedRes = await checkAccount({
+    //   address: currentAddress,
+    // });
     let _walletName = walletName ?? '';
     const isBitget = _walletName.toLowerCase().includes('bitget');
     const isCoin98 = _walletName.toLowerCase().includes('coin98');
@@ -72,27 +70,27 @@ export function useUser() {
       _walletName = 'bitget';
     }
 
-    if (!checkedRes.isActivated) {
-      const activateRes = await activateAccount({
-        address: currentAddress,
-        code: '',
-        source: isBitget ? 'bitget_wallet' : isCoin98 ? 'coin98_wallet' : isOkx ? 'okx_wallet' : '',
-        wallet:  _walletName.toLowerCase(),
-      });
-      if (!activateRes.isSuccess && !isNearPage) {
-        toast.fail({
-          title: 'Account activated failed, please try again later!',
-          message: activateRes?.message ?? '',
-        });
-      }
-    }
+    // if (!checkedRes.isActivated) {
+    //   const activateRes = await activateAccount({
+    //     address: currentAddress,
+    //     code: '',
+    //     source: isBitget ? 'bitget_wallet' : isCoin98 ? 'coin98_wallet' : isOkx ? 'okx_wallet' : '',
+    //     wallet:  _walletName.toLowerCase(),
+    //   });
+    //   if (!activateRes.isSuccess && !isNearPage) {
+    //     toast.fail({
+    //       title: 'Account activated failed, please try again later!',
+    //       message: activateRes?.message ?? '',
+    //     });
+    //   }
+    // }
 
-    const res = await post('/api/auth/access-token', {
+    const res = await post('/login', {
       address: currentAddress,
       wallet:  _walletName.toLowerCase(),
     });
     setUserInfo({
-      accessToken: res,
+      accessToken: res.data,
       accessTokenLoading: false,
     });
     await getUserInfo();
