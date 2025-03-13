@@ -31,13 +31,13 @@ const DappHeader: React.FC = () => {
 
   if (dappName) {
     return (
-      <div className="flex gap-2 my-[30px] w-full justify-center items-center">
+      <div className="text-xl bridge-title flex justify-center items-center font-medium mx-auto text-center h-[50px] w-[205px] bg-[#A6A6DB]">
         <img
           src={`/images/dapps/${(dappName as string).toLowerCase()}.svg`}
           alt={dappName as string}
           className="w-9 h-9"
         />
-        <span className="font-CherryBomb text-xl text-black">
+        <span className=" text-xl text-black">
           {capitalize(dappName as string)}
         </span>
       </div>
@@ -52,7 +52,7 @@ const DappHeader: React.FC = () => {
           {/* <MenuButton className="w-[51.282vw]">Bridge</MenuButton> */}
         </div>
       ) : (
-        <div className="text-[60px] text-center py-[30px] font-CherryBomb">
+        <div className="text-xl bridge-title flex justify-center items-center font-medium mx-auto text-center h-[50px] w-[205px] bg-[#A6A6DB]">
           Bridge
         </div>
       )}
@@ -153,7 +153,7 @@ export default function Bridge() {
 
   return (
     <>
-      <div className='h-full overflow-auto'>
+      <div className='h-full overflow-auto mt-[50px]'>
         {!isMobile ? <PageBack  className="ml-[30px] absolute top-[20px] left-[30px] z-10" /> : null} 
         {isMobile ? null : <div className='absolute left-[36px] md:left-[15px] top-[31px] md:top-[14px] z-[12]' />}
         <div className='lg:w-[520px] md:w-[92.307vw] m-auto relative z-10 '>
