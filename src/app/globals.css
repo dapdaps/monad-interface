@@ -42,7 +42,7 @@ body {
   --foreground: #000000;
   --primary: #836EF9;
   /* 设计标准是 1440px， 分成 100 份 */
-  --rem: calc(1440 / 100); 
+  --rem: calc(1440 / 100) * 1px; 
 }
 
 @media (prefers-color-scheme: dark) {
@@ -61,7 +61,7 @@ body {
 button,
 a,
 .cursor-pointer {
-  cursor: url("../../public/images/cursor.svg"), auto !important;
+  /* cursor: url("../../public/images/cursor.svg"), auto !important; */
 }
 button[disabled="disabled"],
 button[disabled],
@@ -150,7 +150,7 @@ body::-webkit-scrollbar-thumb,
 div::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.1);
   border-radius: 6px;
-  cursor: url("../../public/images/cursor.svg") 12 0, auto;
+  /* cursor: url("../../public/images/cursor.svg") 12 0, auto; */
 }
 body::-webkit-scrollbar-thumb:hover,
 div::-webkit-scrollbar-thumb:hover {

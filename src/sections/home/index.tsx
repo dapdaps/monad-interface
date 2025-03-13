@@ -214,7 +214,7 @@ const Home = () => {
             </div>
           </div>
           {/* tokens */}
-          <div onClick={() => alert(1)} className="z-[5] absolute left-[calc(150/14.4*var(--rem))] bottom-[calc(78/14.4*var(--rem))] w-[514px] h-[444px]">
+          <div onClick={() => router.push('/market-place')} className="hover:cursor-pointer z-[5] absolute left-[calc(150/14.4*var(--rem))] bottom-[calc(78/14.4*var(--rem))] w-[514px] h-[444px]">
             <div className="relative w-full h-full">
               <div className="w-full h-full top-0 left-0 bg-no-repeat bg-contain bg-[url(/images/monad/entry/tokens.svg)]"></div>
               <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">

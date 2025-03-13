@@ -2,10 +2,6 @@ import { useEffect } from 'react';
 import { useEventListener, useDebounceFn } from 'ahooks';
 
 function useRem(designWidth = 1440, baseFontSize = 14.4) {
-  if (typeof document === 'undefined' || !document.documentElement.style.getPropertyValue('--rem')) {
-    document.documentElement.style.setProperty('--rem', `${baseFontSize}px`);
-  }
-
   const setRem = () => {
     const scale = window.innerWidth / designWidth;
     document.documentElement.style.setProperty('--rem', `${baseFontSize * scale}px`);
@@ -18,11 +14,13 @@ function useRem(designWidth = 1440, baseFontSize = 14.4) {
   useEffect(() => {
     setRem();
     return () => {
-      document.documentElement.style.removeProperty('--rem');
+      if (typeof window !== 'undefined') {
+        document.documentElement.style.setProperty('--rem', `${baseFontSize}px`);
+      }
     };
   }, []);
 
-  useEventListener('resize', debounceSetRem);
+  useEventListener('resize', debounceSetRem, { target: typeof window !== 'undefined' ? window : undefined });
 }
 
 export default useRem;
