@@ -212,3 +212,30 @@ input[type="number"]::-webkit-inner-spin-button {
     height: 700px;
   };
 }
+
+.bridge-title {
+  position: relative;
+  border-radius: 6px;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: -15px;
+    width: 35.36px;
+    height: 35.36px;
+    background: #A6A6DB;
+    transform: rotate(45deg);
+    border-radius: 6px;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    right: -15px;
+    width: 35.36px;
+    height: 35.36px;
+    background: #A6A6DB;
+    transform: rotate(45deg);
+    border-radius: 6px;
+  }
+}
