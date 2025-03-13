@@ -1,7 +1,7 @@
 export const RPC_LIST: any = {
   default: {
-    url: "https://rpc.berachain.com",
-    simpleName: "bera rpc"
+    url: "https://testnet-rpc.monad.xyz",
+    simpleName: "Monad RPC"
   }
 };
 

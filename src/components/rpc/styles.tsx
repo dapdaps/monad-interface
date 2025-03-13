@@ -4,7 +4,7 @@ export const StyledRpcContainer = styled.div`
   font-family: Montserrat;
 `;
 export const StyledRpcListDesc = styled.div`
-  color: #000;
+  color: #fff;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -27,7 +27,7 @@ export const StyledRpcItem = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 12px 17px;
-  color: #000;
+  color: #fff;
   text-align: center;
   font-size: 15px;
   font-style: normal;
@@ -50,7 +50,7 @@ export const StyledRpcRadio = styled.div<{ $selected?: boolean }>`
     height: 12px;
     flex-shrink: 0;
     border-radius: 12px;
-    background: #ebf479;
+    background: var(--primary);
   }
 `;
 export const StyledNetworkDelay = styled.div<{ $color?: string }>`

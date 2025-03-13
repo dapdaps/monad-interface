@@ -39,7 +39,7 @@ const RpcList = (props: Props) => {
   }, []);
 
   return (
-    <StyledRpcContainer className="bg-[#FFFDEB] rounded-[8px] p-[20px]">
+    <StyledRpcContainer className="bg-[var(--background)] rounded-[8px] p-[20px]">
       <StyledRpcListDesc>
         Select the available RPC service below and the page will be
         automatically refreshed
