@@ -1,19 +1,24 @@
 import MainLayoutHeader from "@/layouts/main/header";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import MovingGif from "./MovingGif";
 
 const itemWidth = 51;
 const itemGap = 6;
-
 
 const Home = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const dappItems = [
-    { name: "Lynx", icon: "/images/monad/dapps/lynx.svg" },
-    { name: "DapDap", icon: "/images/monad/dapps/lynx.svg" },
-    { name: "Monad", icon: "/images/monad/dapps/lynx.svg" },
-    { name: "DEX", icon: "/images/monad/dapps/lynx.svg" },
+    { name: "Lynex", icon: "/images/monad/dapps/lynx.svg" },
+    { name: "iZumi Finance", icon: "/images/monad/dapps/iZumi.svg" },
+    { name: "Pancake", icon: "/images/monad/dapps/pancake.svg" },
+    { name: "OpenOcean", icon: "/images/monad/dapps/OpenOcean.svg" },
+    { name: "Infinex", icon: "/images/monad/dapps/infinex.svg" },
+    { name: "Orderly", icon: "/images/monad/dapps/orderly.svg" },
+    { name: "D3X", icon: "/images/monad/dapps/d3X.svg" },
+    { name: "LFJ", icon: "/images/monad/dapps/lfj.svg" },
+    { name: "Owlto Finance", icon: "/images/monad/dapps/owltoFinance.svg" },
   ];
 
   const duplicateFunc = (items: typeof dappItems, times: number = 2) => {
@@ -35,9 +40,10 @@ const Home = () => {
       >
         <div className="relative w-full h-full min-h-[635px] min-w-[1440px]">
           {/* Bridge */}
-          <div className="absolute left-[calc(70/14.4*var(--rem))] bottom-[calc(344/14.4*var(--rem))] w-[357px] h-[430px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/bridge.svg)]">
+          <div className="absolute left-[calc(70/14.4*var(--rem))] bottom-[calc(344/14.4*var(--rem))] w-[357px] h-[430px]">
             <div className="relative w-full h-full">
-              <div className="absolute left-1/2 -translate-x-1/2 mr-[50px]">
+              <div className="w-full h-full top-0 left-0 bg-no-repeat bg-contain bg-[url(/images/monad/entry/bridge.svg)]"></div>
+              <div className="absolute left-1/2 -translate-x-1/2 mr-[50px] top-0">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <img src="/images/monad/icon/bridge.svg" alt="" />
                   <motion.img 
@@ -54,9 +60,9 @@ const Home = () => {
             </div>
           </div>
           {/* yapper */}
-          <div className="absolute right-[calc(280/14.4*var(--rem))] -top-[calc(80/14.4*var(--rem))] w-[378px] h-[290px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper.svg)]">
-            <div className="w-full h-full relative">
+          <div className="z-[4] absolute right-[calc(280/14.4*var(--rem))] -top-[calc(80/14.4*var(--rem))] w-[378px] h-[290px]">
             <div className="relative w-full h-full">
+              <div className="w-full h-full top-0 left-0 bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper.svg)]"></div>
               <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <div className="w-full flex items-center justify-center">
@@ -66,8 +72,7 @@ const Home = () => {
                   <img src="/images/monad/icon/disabled-point.svg" className="w-[38px] h-[38px]" alt="" />
                 </div>
               </div>
-            </div>
-              <div className="absolute w-[calc(244/14.4*var(--rem))] h-[calc(223/14.4*var(--rem))] left-1/2 -translate-x-1/2 top-[-38px] ml-[20px]">
+              <div className="absolute w-[244px] h-[223px] left-1/2 -translate-x-1/2 top-[-38px] ml-[20px]">
                 <motion.div
                   // animate={{ rotate: [-10, 10] }}
                   // transition={{
@@ -83,8 +88,9 @@ const Home = () => {
             </div>
           </div>
           {/* Faucet */}
-          <div className="absolute left-[calc(450/14.4*var(--rem))] bottom-[calc(235/14.4*var(--rem))] w-[514px] h-[330px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/data.svg)]">
+          <div className="z-[5] absolute left-[calc(450/14.4*var(--rem))] bottom-[calc(235/14.4*var(--rem))] w-[514px] h-[330px]">
             <div className="relative w-full h-full">
+              <div className="w-full h-full top-0 left-0 bg-no-repeat bg-contain bg-[url(/images/monad/entry/data.svg)]"></div>
               <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <img src="/images/monad/icon/faucet.svg" alt="" />
@@ -105,9 +111,10 @@ const Home = () => {
             </div>
           </div>
           {/* Dapps */}
-          <div className="absolute -right-[calc(10/14.4*var(--rem))] bottom-[calc(83/14.4*var(--rem))] w-[513px] h-[445px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/dapps.svg)]">
+          <div className="z-[7] absolute -right-[calc(10/14.4*var(--rem))] bottom-[calc(83/14.4*var(--rem))] w-[513px] h-[445px]">
             <div className="relative w-full h-full">
-            <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
+              <div className="w-full h-full top-0 left-0 bg-no-repeat bg-contain bg-[url(/images/monad/entry/dapps.svg)]"></div>
+              <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                 <img src="/images/monad/icon/dApps.svg" alt="" />
                   <motion.img 
@@ -135,7 +142,7 @@ const Home = () => {
                       x: [0, -totalWidth],
                     }}
                     transition={{
-                      duration: 10,
+                      duration: 20,
                       repeat: Infinity,
                       repeatType: "loop",
                       ease: "linear",
@@ -162,8 +169,9 @@ const Home = () => {
             </div>
           </div>
           {/* tokens */}
-          <div className="absolute left-[calc(150/14.4*var(--rem))] bottom-[calc(78/14.4*var(--rem))] w-[514px] h-[444px] bg-no-repeat bg-contain bg-[url(/images/monad/entry/tokens.svg)]">
+          <div className="z-[5] absolute left-[calc(150/14.4*var(--rem))] bottom-[calc(78/14.4*var(--rem))] w-[514px] h-[444px]">
             <div className="relative w-full h-full">
+              <div className="w-full h-full top-0 left-0 bg-no-repeat bg-contain bg-[url(/images/monad/entry/tokens.svg)]"></div>
               <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                 <img src="/images/monad/icon/tokens.svg" alt="" />
@@ -191,12 +199,18 @@ const Home = () => {
               </div>
             </div>
           </div>
+          <MovingGif.Moving2sec />
+          <MovingGif.Moving3rd />
         </div>
       </div>
       <div
-        className="absolute left-0 bottom-0 w-full bg-[url(/images/monad/background/bg2.svg)] bg-no-repeat bg-contain 
+        className="z-[8] absolute left-0 bottom-0 w-full bg-[url(/images/monad/background/bg2.svg)] bg-no-repeat bg-contain 
                         h-[calc(382/14.4*var(--rem))]"
-      ></div>
+      >
+        <div className="relative w-full h-full">
+          <MovingGif.Moving1st />
+        </div>
+      </div>
     </div>
   );
 };
