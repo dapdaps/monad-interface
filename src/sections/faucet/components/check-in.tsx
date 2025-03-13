@@ -14,7 +14,7 @@ const FaucetCheckIn = (props: any) => {
   return (
     <button
       type="button"
-      disabled={checkInPending || !accountWithAk || loading || collectedToday}
+      disabled={!account ? false : (checkInPending || !accountWithAk || loading || collectedToday)}
       className={clsx("flex justify-center items-center gap-[10px] w-[227px] h-[50px] rounded-[6px] bg-[#836EF9] disabled:opacity-50 text-white text-[14px] font-[500] font-Unbounded", className)}
       onClick={() => {
         if (!account) {

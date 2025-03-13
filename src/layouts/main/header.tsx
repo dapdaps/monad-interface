@@ -3,7 +3,11 @@
 import ConnectWallet from "@/components/connect-wallet";
 import { useProgressRouter } from "@/hooks/use-progress-router";
 import { usePathname } from "next/navigation";
+import clsx from 'clsx';
 
+const FIXED_HEADER_PATHNAME = [
+  /^\/faucet$/,
+];
 
 const MainLayoutHeader = (props: Props) => {
   const { className, style } = props;
@@ -17,7 +21,11 @@ const MainLayoutHeader = (props: Props) => {
   };
   return (
     <header
-      className={`flex w-full h-[60px] stroke-black sticky font-CherryBomb top-0 z-50 ${className} bear-header`}
+      className={clsx(
+        "flex w-full h-[60px] stroke-black font-CherryBomb top-0 z-50 bear-header",
+        FIXED_HEADER_PATHNAME.some((reg) => reg.test(pathname)) ? "fixed" : "sticky",
+        className
+      )}
       style={style}
     >
       <div className="min-w-[120px]">
