@@ -53,7 +53,6 @@ const MainLayoutHeader = (props: Props) => {
       <div className="min-w-[120px] flex justify-end">
         <ConnectWallet />
       </div>
-      <ConnectWallet />
     </header>
   );
 };
