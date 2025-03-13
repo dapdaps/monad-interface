@@ -2,8 +2,7 @@ import Big from 'big.js';
 import { ethers, Contract, Signer, providers } from 'ethers'
 
 import chainConfig from '../../util/chainConfig';
-import { approve } from '../../util/approve'
-import { ERC20ABI } from '../../abi/ERC20'
+import { erc20Abi } from 'viem'
 import { getQuoteInfo, setQuote } from '../../util/routerController'
 import { getIcon, getFullNum, checkTransitionOnlineStatus } from '../../util/index'
 import { QuoteRequest, QuoteResponse, ExecuteRequest, FeeType, StatusParams } from '../../type/index'
@@ -21,11 +20,15 @@ export async function checkLpInfo(
     toChainId: string,
     account: string
 ) {
+
+    console.log('checkLpInfo:', tokenSymbol, fromChainId, toChainId, account)
     const res = await fetch(
         `${base_url}/lp-info?token=${tokenSymbol}&from_chainid=${fromChainId}&to_chainid=${toChainId}&user=${account}`
-
     );
+
     const resJson = await res.json();
+
+    console.log('checkLpInfo:', resJson)
 
     if (resJson.code === 0 && resJson.msg) {
         return resJson.msg;
@@ -45,9 +48,11 @@ export async function getDynamicDtc(
     );
     const resJson = await res.json();
 
+    console.log('getDynamicDtc:', resJson)
+
     if (resJson.code === 0 && resJson.dtc) {
         return resJson.dtc;
-    }
+    } 
 
     return null;
 }
@@ -202,7 +207,7 @@ export async function execute(request: ExecuteRequest, signer: Signer): Promise<
     if (quoteInfo.isNative) {
         transactionResponse = await signer.sendTransaction({
             from: account,
-            to: quoteInfo.route.maker_address,
+            to: quoteInfo.route.contract_address,
             value: realAmount,
         });
     } else {
@@ -252,12 +257,12 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer): Prom
     for (let i = 0; i < tokens.length; i++) {
         const currentToken = tokens[i]
         if (quoteRequest.fromChainId.toString() === currentToken.chainId.toString()
-            && quoteRequest.fromToken.address === currentToken.address) {
+            && quoteRequest.fromToken.address.toUpperCase() === currentToken.address.toUpperCase()) {
             fromToken = currentToken
         }
 
         if (quoteRequest.toChainId.toString() === currentToken.chainId.toString()
-            && quoteRequest.toToken.address === currentToken.address) {
+            && quoteRequest.toToken.address.toUpperCase() === currentToken.address.toUpperCase()) {
             toToken = currentToken
         }
 
@@ -266,13 +271,15 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer): Prom
         }
     }
 
+    console.log('fromChain:', fromChain)
+
     if (!fromToken || !toToken) {
         return null
     }
 
-    if (fromToken.symbol !== toToken.symbol) {
-        return null
-    }
+    // if (fromToken.symbol !== toToken.symbol) {
+    //     return null
+    // }
 
     const res: any = await getOwltoRoute(
         quoteRequest.fromChainId,
@@ -283,11 +290,13 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer): Prom
         quoteRequest.amount.toString()
     )
 
-    if (res[0] && res[1]) {
-        const { max, min, token_decimal, gas_token_name } = res[0]
+    console.log('res:', res)
 
-        const _max = new Big(max)
-        const _min = new Big(min)
+    if (res[1]) {
+        // const { max, min, token_decimal, gas_token_name } = res[0]
+
+        const _max = new Big(100 * 10 ** 18)
+        const _min = new Big(1)
         const fee = new Big(res[1]).mul(10 ** fromToken.decimal)
 
         if (quoteRequest.amount.lt(_max) && quoteRequest.amount.gt(_min) && quoteRequest.amount.gt(fee)) {
@@ -297,7 +306,12 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer): Prom
             const rpc = chainFrom.rpcUrls[0]
             const provider = new JsonRpcProvider(rpc);
             const newSigner = provider.getSigner(quoteRequest.fromAddress)
-            const gas = await computeGas(res[0], quoteRequest.amount, quoteRequest.fromAddress, isNative, newSigner) 
+
+            console.log(111)
+
+            const gas = await computeGas({
+                contract_address: '0x1f49a3fa2b5B5b61df8dE486aBb6F3b9df066d86'
+            }, quoteRequest.amount, quoteRequest.fromAddress, isNative, newSigner) 
             // const gas = currentChainId === Number(quoteRequest.fromChainId) ? await computeGas(res[0], quoteRequest.amount, signer) : '0'
 
             let networkCode = toChain.networkCode.toString()
@@ -307,14 +321,14 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer): Prom
             }
 
             const uuid = setQuote({
-                route: res[0],
-                amount: quoteRequest.amount,
+                route: { contract_address: '0x1f49a3fa2b5B5b61df8dE486aBb6F3b9df066d86' },
+                amount: quoteRequest.amount.plus(fee),
                 isNative,
                 networkCode: networkCode,
                 bridgeType: 'Owlto',
             })
 
-            const receiveAmount = quoteRequest.amount.minus(fee).div(10 ** quoteRequest.fromToken.decimals).mul(10 ** quoteRequest.toToken.decimals).toString()
+            const receiveAmount = quoteRequest.amount.div(10 ** quoteRequest.fromToken.decimals).mul(10 ** quoteRequest.toToken.decimals).toString()
 
             return {
                 uuid,
@@ -335,24 +349,6 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer): Prom
     return null
 }
 
-// export async function computeGas(route: any, amount: Big, signer: any) {
-//     try {
-//         const transactionData = await getRouteTransactionData(route, amount, signer)
-
-//         const price = await signer.getGasPrice()
-
-//         const gasLimit = await signer.estimateGas({
-//             ...transactionData,
-//             value: '0x00',
-//             gasPrice: price.toString()
-//         });
-
-//         return getFullNum((Number(gasLimit) * Number(price.toString())) / (10 ** 18))
-//     } catch (e) {
-//         console.log(e)
-//     }
-// }
-
 export async function computeGas(route: any, amount: Big, fromAddress: string, isNative: boolean, signer: any) {
     try {
         let transactionData: any = null
@@ -360,12 +356,13 @@ export async function computeGas(route: any, amount: Big, fromAddress: string, i
         if (isNative) {
             transactionData = {
                 from: fromAddress,
-                to: route.endpoint,
+                to: route.contract_address,
                 value: '1',
             }
         } else {
             transactionData = await getRouteTransactionData(route, new Big(1), signer)
         }
+
 
         const gasLimit = await signer.estimateGas({
             ...transactionData,
@@ -375,7 +372,7 @@ export async function computeGas(route: any, amount: Big, fromAddress: string, i
 
         return getFullNum((Number(gasLimit.toString()) * Number(price.toString())) / (10 ** 18))
     } catch (e) {
-        console.log(e)
+        console.log('computeGas error:', e)
     }
 
     return 0
@@ -405,7 +402,7 @@ export async function getAllTokens() {
 async function getRouteTransactionData(route: any, amount: Big, signer: Signer) {
     const routerContract = new Contract(
         route.from_token_address,
-        ERC20ABI,
+        erc20Abi,
         signer,
     )
     const transactionData = await routerContract.populateTransaction.transfer(route.maker_address, amount.toString())

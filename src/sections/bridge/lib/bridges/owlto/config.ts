@@ -1,8 +1,8 @@
 export const tokenPairs: any = {
     11155111: {
-        'ETH': 'WETH',
+        'ETH': 'METH',
     },
     10143: {
-        'WETH': 'ETH',
+        'METH': 'ETH',
     },
 }

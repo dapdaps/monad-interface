@@ -173,7 +173,7 @@ export default {
       chainName: 'Sepolia',
       icon: '/images/chains/chain-astar-zkevm.svg',
       nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
-      rpcUrls: ['https://rpc.sepolia.org'],
+      rpcUrls: ['https://sepolia.drpc.org'],
       blockExplorers: 'https://sepolia.etherscan.io',
     },
     // 80002: {

@@ -125,8 +125,6 @@ export default function Bridge() {
       })
     }); 
 
-    console.log('allTokens:', allTokens)
-
     return allTokens;
   }, [fromToken, fromChain])
 
@@ -148,9 +146,9 @@ export default function Bridge() {
     }
   }, [fromChain, fromToken])
 
-  useEffect(() => {
-    setFromToken(allTokens[1][0])
-    setToToken(allTokens[80094][2])
+  useEffect(() => { 
+    setFromToken(allTokens[11155111][0])
+    setToToken(allTokens[10143][1])
   }, [])
 
   return (
