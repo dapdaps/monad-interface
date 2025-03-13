@@ -51,6 +51,7 @@ function Moving1st() {
         position: "absolute", 
         bottom: "72px", 
         left: "270px",
+        zIndex: 28,
       }}
       alt=""
     />
