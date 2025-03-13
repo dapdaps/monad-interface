@@ -51,8 +51,14 @@ export default function TokenAmout({
   const prices: any = usePriceStore(store => store.price);
 
   return (
-    <div className='border border-[#000] rounded-[12px] p-[14px] bg-white'>
+    <div className=' rounded-[6px] p-[14px] bg-[#FFFFFF0D] font-white'>
       <div className='flex items-center justify-between gap-[10px]'>
+        <div className="flex-1">
+          <input placeholder='0' type='number' className="w-[100%] h-[100%] text-[22px] text-[#fff] bg-transparent" value={amount} onChange={(e) => {
+            onAmountChange?.(e.target.value)
+          }} disabled={disabledInput} />
+        </div>
+
         <div
           onClick={() => {
             if (comingSoon) return;
@@ -62,16 +68,16 @@ export default function TokenAmout({
             }
             setTokenSelectorShow(true);
           }}
-          className='border cursor-pointer flex items-center justify-between border-[#000] rounded-[8px] bg-[#FFFDEB] w-[176px] h-[46px] px-[7px]'
+          className='border cursor-pointer flex items-center justify-between border-[#ACACE2] rounded-[6px] bg-[#4D4D73] w-[176px] h-[46px] px-[7px]'
         >
-          <div className='flex items-center gap-[10px]'>
+          <div className='flex items-center gap-[10px] text-[#fff]'>
             <div className='relative w-[26px]'>
               {
                 token?.icon ? <img
                   key={token?.address}
                   className='w-[26px] h-[26px]'
                   src={token?.icon}
-                /> : <div className='w-[26px] h-[26px] rounded-[50%] bg-[#000]' />  
+                /> : <div className='w-[26px] h-[26px] rounded-[50%] bg-[#000]' />
               }
               <img
                 // key={token?.icon}
@@ -95,7 +101,7 @@ export default function TokenAmout({
               >
                 <path
                   d="M1 1L6 5L11 1"
-                  stroke="black"
+                  stroke="#fff"
                   strokeWidth="2"
                   strokeLinecap="round"
                 />
@@ -103,19 +109,14 @@ export default function TokenAmout({
             )
           }
         </div>
-        <div className="flex-1">
-          <input type='number' className="w-[100%] h-[100%] text-[26px] text-right" value={amount} onChange={(e) => {
-            onAmountChange?.(e.target.value)
-          }} disabled={disabledInput} />
-        </div>
       </div>
 
-      <div className="flex items-center justify-between text-[#3D405A] mt-[10px] font-medium text-[12px]">
-        <div className={"flex items-center cursor-pointer"} onClick={() => {
-          onAmountChange?.(tokenBalance)
-        }}>balance: {isLoading ? <Loading size={12} /> : <span className={(disabledInput ? '' : ' underline')}>{balanceFormated(tokenBalance, 4)}</span>}</div>
+      <div className="flex items-center justify-between text-[#75759D] mt-[10px] font-medium text-[12px]">
         <div >${(token && tokenBalance) ? balanceFormated(prices[token.symbol.toUpperCase()] * (amount as any), 4) : '~'}</div>
-      </div>
+          <div className={"flex items-center cursor-pointer"} onClick={() => {
+            onAmountChange?.(tokenBalance)
+          }}>balance: {isLoading ? <Loading size={12} /> : <span className={(disabledInput ? '' : ' underline')}>{balanceFormated(tokenBalance, 4)}</span>}</div>
+        </div>
 
       {/* <TokenSelector
         show={tokenSelectorShow}
