@@ -1,11 +1,12 @@
 import clsx from 'clsx';
 import { useFaucetContext } from '@/sections/faucet/context';
 import { numberFormatter } from '@/utils/number-formatter';
+import Skeleton from 'react-loading-skeleton';
 
 const FaucetCheckSummary = (props: any) => {
   const { className } = props;
 
-  const { collectedMON, checkinDays } = useFaucetContext();
+  const { collectedMON, checkinDays, loading } = useFaucetContext();
 
   return (
     <div className={clsx("flex justify-between items-center w-full text-white text-[12px] font-[400] font-Unbounded", className)}>
@@ -14,7 +15,15 @@ const FaucetCheckSummary = (props: any) => {
           Collected MON:
         </div>
         <div className="flex items-center ml-[5px] text-[26px] font-[500]">
-          {numberFormatter(collectedMON, 2, true)}
+          {
+            loading ? (
+              <Skeleton
+                width={30}
+                height={39}
+                borderRadius={4}
+              />
+            ) : numberFormatter(collectedMON, 2, true)
+          }
         </div>
         <div className="flex items-center">
           MONAD
@@ -28,7 +37,13 @@ const FaucetCheckSummary = (props: any) => {
           Check-in:
         </div>
         <div className="flex items-center text-[26px] font-[500]">
-          {checkinDays}
+          {loading ? (
+            <Skeleton
+              width={30}
+              height={39}
+              borderRadius={4}
+            />
+          ) : checkinDays}
         </div>
       </div>
     </div>

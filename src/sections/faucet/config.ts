@@ -19,9 +19,7 @@ export interface IFaucetContext {
   loading: boolean;
   checkedList: ICheckedItem[];
   today: dayjs.Dayjs;
-  currentMonth: number;
-  daysInCurrentMonth: number;
-  currentMonthCheckinList: ICheckinItem[];
+  checkinList: ICheckinItem[];
   collectedMON: Big.Big;
   checkinDays: number;
   collectedToday: boolean;
@@ -43,3 +41,5 @@ export interface ICheckinItem {
   id: string;
   reward_amount: number;
 }
+
+export const FaucetStartDate = dayjs("2025-03-01");

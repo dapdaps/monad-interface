@@ -6,7 +6,7 @@ import { get, post } from '@/utils/http';
 import useToast from '@/hooks/use-toast';
 import useCustomAccount from '@/hooks/use-account';
 import dayjs from 'dayjs';
-import { getMonthlyCheckinList } from '@/sections/faucet/utils';
+import { getUntilCurrentMonthCheckinList } from '@/sections/faucet/utils';
 import Big from 'big.js';
 import { HTTP_CODE } from '@/configs';
 
@@ -16,25 +16,12 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
   const toast = useToast();
   const { accountWithAk } = useCustomAccount();
 
-  const [today] = useState<dayjs.Dayjs>(dayjs());
+  const today = dayjs();
+
   const [checkInPending, setCheckInPending] = useState(false);
   const [loading, setLoading] = useState(false);
   const [checkedList, setCheckedList] = useState<ICheckedItem[]>([]);
-
-  const [currentMonth, daysInCurrentMonth, currentMonthCheckinList] = useMemo<[number, number, ICheckinItem[]]>(() => {
-    if (!today) {
-      return [
-        dayjs().month() + 1,
-        dayjs().daysInMonth(),
-        getMonthlyCheckinList(dayjs().month() + 1, checkedList)
-      ];
-    }
-    return [
-      today.month() + 1,
-      today.daysInMonth(),
-      getMonthlyCheckinList(today.month() + 1, checkedList)
-    ];
-  }, [today, checkedList]);
+  const [checkinList, setCheckinList] = useState<ICheckinItem[]>([]);
 
   const [collectedMON, checkinDays, collectedToday] = useMemo(() => {
     return [
@@ -96,6 +83,10 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
     getCheckedList();
   }, [accountWithAk]);
 
+  useEffect(() => {
+    setCheckinList(getUntilCurrentMonthCheckinList(checkedList));
+  }, [checkedList]);
+
   return (
     <FaucetContext.Provider
       value={{
@@ -104,12 +95,10 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
         loading,
         checkedList,
         today,
-        currentMonth,
-        daysInCurrentMonth,
-        currentMonthCheckinList,
         collectedMON,
         checkinDays,
         collectedToday,
+        checkinList,
       }}
     >
       {children}
