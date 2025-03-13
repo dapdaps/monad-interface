@@ -14,7 +14,7 @@ export const FaucetContext = createContext<Partial<IFaucetContext>>({});
 
 function FaucetContextProvider({ children }: { children: ReactNode; }) {
   const toast = useToast();
-  const { accountWithAk } = useCustomAccount();
+  const { account, accountWithAk } = useCustomAccount();
 
   const today = dayjs();
 
@@ -81,7 +81,7 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
   useEffect(() => {
     if (!accountWithAk) return;
     getCheckedList();
-  }, [accountWithAk]);
+  }, [account, accountWithAk]);
 
   useEffect(() => {
     setCheckinList(getUntilCurrentMonthCheckinList(checkedList));
