@@ -17,6 +17,7 @@ import { zkSync } from "@/configs/tokens/zkSync";
 import { optimism } from "@/configs/tokens/optimism";
 import { blast } from "@/configs/tokens/blast";
 import { scroll } from "@/configs/tokens/scroll";
+import { monad } from "@/configs/tokens/monad-testnet";
 
 
 const mapFn = (item: Token) => {
@@ -56,7 +57,8 @@ const allTokens: { [key: number]: Token[] } = {
   1101: Object.values(polygonZkevm).map(mapFn),
   324: Object.values(zkSync).map(mapFn),
   10: Object.values(optimism).map(mapFn),
-  81457: Object.values(blast).map(mapFn)
+  81457: Object.values(blast).map(mapFn),
+  10143: Object.values(monad).map(mapFn),
 };
 
 export default allTokens;

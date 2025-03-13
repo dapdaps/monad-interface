@@ -19,14 +19,11 @@ import { motion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { useAccount, useBalance, useDisconnect } from "wagmi";
+import { useAccount, useBalance, useDisconnect, useConfig } from "wagmi";
 import MobileChain from "./chain/mobile";
+import { monadTestnet } from '@reown/appkit/networks';
 
-export type State = {
-  chainType?: ChainType
-  network?: string
-  address?: string
-}
+
 const dropdownAnimations = {
   active: {
     opacity: [0, 1],
@@ -44,7 +41,6 @@ const dropdownAnimations = {
 
 const ConnectWallet = ({ className }: { className?: string }) => {
   const modal = useAppKit();
-  const currentWallet = useRef<State>();
   const [_, setUpdater] = useState({})
 
 
@@ -57,6 +53,8 @@ const ConnectWallet = ({ className }: { className?: string }) => {
   });
   const { userInfo } = useUser();
   const walletInfo = useWalletName();
+  const config = useConfig()
+
 
   const [connecting, setConnecting] = useState<boolean>(isConnecting);
   const [mobileUserInfoVisible, setMobileUserInfoVisible] =
@@ -64,7 +62,8 @@ const ConnectWallet = ({ className }: { className?: string }) => {
   const [mobileNetworksVisible, setMobileNetworksVisible] =
     useState<boolean>(false);
 
-  const chainListRef = useRef<any>();
+  const currentChainInfo = config.chains.find(c => c.id === chainId)
+
 
   const handleConnect = function () {
     if (isMobile && isConnected) {
@@ -78,7 +77,7 @@ const ConnectWallet = ({ className }: { className?: string }) => {
   const addressShown = useMemo(() => {
     if (!address) return "";
     return `${address.slice(0, 5)}...${address.slice(-4)}`;
-  }, [address, isMobile, currentWallet.current]);
+  }, [address, isMobile]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(address as string);
@@ -108,7 +107,7 @@ const ConnectWallet = ({ className }: { className?: string }) => {
   }, [balance, chain]);
 
   const tokenLogoShown = useMemo(() => {
-    const defaultLogo = "/images/tokens/default_icon.png";
+    const defaultLogo = "/images/monad.svg";
     if (!chainId) {
       return defaultLogo;
     }
@@ -159,7 +158,7 @@ const ConnectWallet = ({ className }: { className?: string }) => {
           style={{ transform: "translateY(-4px)" }}
         />
       ) : (isConnected) ? (
-        <div className="flex items-center justify-center w-[106px] h-[60px] bg-[url('/images/header/user_bg.svg')] bg-no-repeat bg-center">
+        <div className="flex items-center justify-center w-[165px] h-[43px] bg-[url('/images/header/user_bg.svg')] bg-no-repeat bg-center">
           <User
             handleConnect={handleConnect}
             isMobile={isMobile}
@@ -172,8 +171,8 @@ const ConnectWallet = ({ className }: { className?: string }) => {
             balanceShown={balanceShown}
             tokenSymbolShown={tokenSymbolShown}
             addressShown={addressShown}
-            currentWallet={currentWallet.current}
             setMobileUserInfoVisible={setMobileUserInfoVisible}
+            currentChainInfo={currentChainInfo}
           />
         </div>
       ) : (
@@ -203,46 +202,46 @@ const User = (props: any) => {
     balanceShown,
     tokenSymbolShown,
     addressShown,
-    currentWallet,
     setMobileUserInfoVisible,
+    currentChainInfo
   } = props;
 
-  const router = useRouter()
-
   const content = (
-    <div className="w-[266px] pt-[24px] pb-[14px] rounded-[20px] bg-[#FFFDEB] border border-black shadow-[10px_10px_0_0_rgba(0, 0, 0, 0.25)]">
-      <div className="pl-[22px] pr-[26px] text-[#77350F] text-[16px] font-Montserrat text-nowrap leading-[1] overflow-hidden overflow-ellipsis">
-        Connected with {walletInfo.name}
-      </div>
-      <div className="pl-[22px] pr-[26px] flex justify-between items-center mt-[13px]">
-        <div className="text-black text-[18px] font-semibold leading-[1]">
-          {addressShown}
-        </div>
-        <div className="click cursor-pointer" onClick={handleCopy}>
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="1" y="4.73047" width="9.62531" height="10.2668" rx="2" stroke="#77350F" stroke-width="2" />
-            <path d="M5.375 3.33336V3C5.375 1.89543 6.27043 1 7.375 1H13.0003C14.1049 1 15.0003 1.89543 15.0003 3V9.26676C15.0003 10.3713 14.1049 11.2668 13.0003 11.2668H12.3752" stroke="#77350F" stroke-width="2" />
-          </svg>
-        </div>
-      </div>
-      <div className="pl-[22px] pr-[26px] pb-4 mt-3 w-full flex flex-col items-center gap-3 border-b border-[rgba(0, 0, 0, 0.15)]">
-        <div className="pl-[9px] pr-[12px] w-full h-[36px] border border-[rgba(0, 0, 0, 0.15)] rounded-[18px] flex items-center justify-between">
-          <div className="flex items-center gap-[8px]">
-            <div
-              className="relative w-[20px] h-[20px] rounded-full shrink-0 bg-[#F0F0F0]"
-              style={{
-                backgroundImage: `url("${tokenLogoShown}")`,
-                backgroundPosition: "center",
-                backgroundSize: "contain",
-                backgroundRepeat: "no-repeat",
-              }} />
-            <div className="text-black text-[14px] font-Montserrat flex-shrink-0">{tokenSymbolShown}</div>
+    <div className="bg-[url(/images/header/wallet-popover-bg.svg)] w-[205px] h-[218px] overflow-hidden">
+      <div className="px-2.5 mt-[28px]">
+        <div className="flex justify-between mb-5">
+          <div className="flex gap-2">
+            <div className="w-[30px] h-[30px] rounded-[50%] border-2 border-black bg-[conic-gradient(from_180deg_at_50%_50%,#00D1FF_0deg,#FF008A_360deg)]" />
+            <div className="flex flex-col gap-[6px]">
+              <div className="text-white text-[12px] font-[400] leading-[1] font-Unbounded">
+                {addressShown}
+              </div>
+              <div className="flex items-center gap-1">
+                <img src={walletInfo.icon}  className="w-4 object-contain" alt="" />
+                <div className="text-[#A6A6DB] font-Unbounded text-[10px] font-[300] leading-[10px] max-w-[50px] truncate">
+                  {currentChainInfo?.id ===  monadTestnet.id ? 'Monad' : currentChainInfo?.name || ''}
+                </div>
+                  <div className="bg-white bg-opacity-20 p-[1px] rounded-[4px] text-[8px] text-[#A6A6DB] font-Unbounded">
+                    {currentChainInfo?.testnet ? 'Testnet' : 'Mainnet'}
+                  </div>
+              </div>
+            </div>
           </div>
-          <div className="text-black text-[14px] font-Montserrat flex-shrink-0 overflow-hidden text-nowrap">
-            {balanceShown}
+          <img className="cursor-pointer" src="/images/header/copy.svg" onClick={handleCopy} alt="" />
+        </div>
+        <div className="flex px-[6px] h-[40px] items-center justify-between w-full bg-white bg-opacity-20 rounded-[6px]">
+          <div className="flex items-center gap-1">
+            <img src={tokenLogoShown} className="w-5 h-5" alt="" />
+            <div className="text-white text-[12px] font-Unbounded font-[400]">{tokenSymbolShown}</div>
           </div>
+          <div className="text-white text-[12px] font-Unbounded font-[400]">{balanceShown}</div>
+        </div>
+        <div className="flex items-center gap-1 mt-2 ml-[4px]">
+          <img src="/images/icon-faucet.svg" alt="" />
+          <div className="text-[12px] font-[300] leading-[1] font-Unbounded text-[#A6A6DB] underline hover:text-white cursor-pointer">Faucet</div>
         </div>
       </div>
+      <div className="w-full h-[1px] bg-[#A6A6DB] mt-3"></div>
       <DisconnectButton setMobileUserInfoVisible={setMobileUserInfoVisible} />
     </div>
   );
@@ -257,20 +256,32 @@ const User = (props: any) => {
     >
       <Popover
         trigger={PopoverTrigger.Hover}
-        placement={PopoverPlacement.BottomRight}
+        placement={PopoverPlacement.Bottom}
         content={isMobile ? null : content}
         contentStyle={{
-          zIndex: 50
+          zIndex: 100
         }}
       >
         {address && userInfo?.avatar ? (
-          <img
+          <div className="flex items-center w-full">
+            <div className="flex items-center gap-1">
+              <img src="/images/monad/monad.svg" className="w-5 h-5" alt="" />
+              <div className="text-[12px] text-white font-[400] font-Unbounded">{balanceShown || '-'}</div>
+            </div>
+            <img
             src={userInfo?.avatar}
             alt=""
             className="w-[28px] h-[28px] rounded-full"
           />
+          </div>
         ) : (
-          <div className="w-[28px] h-[28px] rounded-[50%] border-[2px] border-black bg-[conic-gradient(from_180deg_at_50%_50%,#00D1FF_0deg,#FF008A_360deg)]" />
+          <div className="flex items-center w-full gap-4">
+            <div className="flex items-center gap-1">
+              <img src="/images/monad.svg" className="w-5 h-5" alt="" />
+              <div className="text-[12px] text-white font-[400] font-Unbounded">{balanceShown || '-'}</div>
+            </div>
+            <div className="w-[28px] h-[28px] rounded-[50%] border-[2px] border-black bg-[conic-gradient(from_180deg_at_50%_50%,#00D1FF_0deg,#FF008A_360deg)]" />
+          </div>
         )}
       </Popover>
     </motion.div>
@@ -290,13 +301,13 @@ const DisconnectButton = ({ setMobileUserInfoVisible }: any) => {
       className="cursor-pointer pl-[22px] pr-[26px] flex justify-between items-center click mt-[10px] pt-[10px] pb-[10px] transition-all duration-300 hover:opacity-50"
       onClick={handleDisconnect}
     >
-      <div className="text-[#77350F] text-[16px] font-medium leading-[1]">
+      <div className="text-white font-Unbounded text-[12px] font-[400] leading-[1]">
         Disconnect
       </div>
       <div>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M1.91613 16H10.5731C11.0656 16 11.4652 15.57 11.4652 15.04C11.4652 14.51 11.0656 14.08 10.5731 14.08H2.00906C1.92728 13.974 1.78417 13.662 1.78417 13.164V2.838C1.78417 2.34 1.92728 2.028 2.00906 1.92H10.5731C11.0656 1.92 11.4652 1.49 11.4652 0.96C11.4652 0.43 11.0656 0 10.5731 0H1.91613C0.823322 0 0 1.22 0 2.838V13.162C0 14.78 0.823322 16 1.91613 16ZM12.3929 12.2771L15.7266 8.69156L15.7383 8.67941C15.913 8.49136 16.0004 8.24579 16.0003 8.00023C16.0003 7.75467 15.913 7.5091 15.7383 7.32106L15.7237 7.30575L12.3948 3.72341C12.0454 3.34741 11.4823 3.34741 11.1329 3.72341C10.7835 4.09941 10.7835 4.70541 11.1329 5.08141L12.953 7.03906H6.83918C6.34667 7.03906 5.94709 7.46906 5.94709 7.99906C5.94709 8.52906 6.34667 8.95906 6.83918 8.95906H12.9542L11.1329 10.9191C10.7835 11.2951 10.7835 11.9011 11.1329 12.2771C11.3057 12.4651 11.5343 12.5591 11.7629 12.5591C11.9915 12.5591 12.2201 12.4651 12.3929 12.2771Z" fill="#FF4F52" />
-        </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.91613 16H10.5731C11.0656 16 11.4652 15.57 11.4652 15.04C11.4652 14.51 11.0656 14.08 10.5731 14.08H2.00906C1.92728 13.974 1.78417 13.662 1.78417 13.164V2.83802C1.78417 2.34002 1.92728 2.02802 2.00906 1.92002H10.5731C11.0656 1.92002 11.4652 1.49002 11.4652 0.960015C11.4652 0.430015 11.0656 1.52588e-05 10.5731 1.52588e-05H1.91613C0.823322 1.52588e-05 0 1.22002 0 2.83802V13.162C0 14.78 0.823322 16 1.91613 16ZM12.3929 12.2771L15.7266 8.69158L15.7383 8.67942C15.913 8.49137 16.0004 8.2458 16.0003 8.00024C16.0003 7.75469 15.913 7.50912 15.7383 7.32108L15.7237 7.30576L12.3948 3.72342C12.0454 3.34742 11.4823 3.34742 11.1329 3.72342C10.7835 4.09942 10.7835 4.70542 11.1329 5.08142L12.953 7.03908H6.83918C6.34667 7.03908 5.94709 7.46908 5.94709 7.99908C5.94709 8.52908 6.34667 8.95908 6.83918 8.95908H12.9542L11.1329 10.9191C10.7835 11.2951 10.7835 11.9011 11.1329 12.2771C11.3057 12.4651 11.5343 12.5591 11.7629 12.5591C11.9915 12.5591 12.2201 12.4651 12.3929 12.2771Z" fill="#836EF9"/>
+      </svg>
       </div>
     </div>
   );

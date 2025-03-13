@@ -8,7 +8,7 @@ import Loading from '../circle-loading';
 const StyledToast = styled.div`
   border-radius: 16px;
   border: 1px solid #000000;
-  background: #fffdeb;
+  background: var(--primary);
   padding: 18px;
   display: flex;
   gap: 10px;
@@ -30,18 +30,21 @@ const StyledDesc = styled.div`
   gap: 5px;
 `;
 const StyledTitle = styled.div`
-  font-size: 16px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
   align-items: center;
+  font-family: 'Unbounded';
+  color: #fff;
 `;
 const StyledSecondaryText = styled.div`
-  color: #8e8e8e;
-  font-size: 12px;
+  color: #fff;
+  font-size: 10px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  font-family: 'Unbounded';
 `;
 const StyledCloseWrapper = styled.div`
   line-height: 22px;
@@ -76,7 +79,7 @@ export default function Toast({
             viewBox='0 0 22 22'
             fill='none'
           >
-            <circle cx='11' cy='11' r='11' fill='#39A156' />
+            <circle cx='11' cy='11' r='11' fill='#0E0F29' />
             <path
               d='M6 10.8571L9.09375 14L15 8'
               stroke='white'

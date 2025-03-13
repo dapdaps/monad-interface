@@ -11,7 +11,7 @@ export const monad: { [key: string]: Token } = {
     symbol: "MON",
     decimals: 18,
     name: "Testnet MON Token",
-    icon: "/assets/tokens/bera.svg",
+    icon: "/images/monad.svg",
     color: "#78350F"
   },
   dak: {
