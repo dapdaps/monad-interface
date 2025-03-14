@@ -6,6 +6,6 @@ export default {
   path: "/dex/openocean",
   defaultInputCurrency: monad["mon"],
   tokens: {
-    10143: [monad["mon"], monad["usdt"]]
+    10143: [monad["mon"], monad["wmon"], monad["usdt"], monad["usdc"]]
   }
 };

@@ -81,7 +81,7 @@ export class OpenOcean {
       outputCurrency
     )}&amount=${inputAmount}&gasPrice=52000000000&disabledDexIds=&slippage=${
       1 * 100
-    }&account=${account}&referrer=${this.options.referrer}&flags=0`;
+    }&account=${account}&flags=0`;
 
     const swapQuoterResult = await axios.get(
       `${swapQuoterPath}?${this.baseParams}&account=${account}`
@@ -107,7 +107,7 @@ export class OpenOcean {
         data: swapData.data,
         value: swapData.value,
         gasLimit: new BigNumber(swapData.estimatedGas)
-          .multipliedBy(1.2)
+          .multipliedBy(2)
           .toFixed(0)
       }
     };
