@@ -13,11 +13,16 @@ const FaucetCheckCard = (props: any) => {
 
   useEffect(() => {
     const todayDate = dayjs(today).startOf("day").valueOf();
-    if (collectedToday && todayDate === item.date) {
-      animate(target.current, {
+    if (todayDate === item.date) {
+      collectedToday ? animate(target.current, {
         rotateY: 180,
       }, {
         duration: 0.6,
+        ease: "easeInOut"
+      }) : animate(target.current, {
+        rotateY: 0,
+      }, {
+        duration: 0,
         ease: "easeInOut"
       });
     }
