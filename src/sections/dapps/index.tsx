@@ -68,7 +68,7 @@ export default memo(function Dapps() {
     link: "",
   },]
 
-  
+
   const FILTER_LEFT_DAPP_LIST = useMemo(() => LEFT_DAPP_LIST.filter((dapp: IDapp) => dapp.type === activeType || activeType === "all"), [activeType])
   const FILTER_RIGHT_DAPP_LIST = useMemo(() => RIGHT_DAPP_LIST.filter((dapp: IDapp) => dapp.type === activeType || activeType === "all"), [activeType])
 
@@ -143,6 +143,20 @@ export default memo(function Dapps() {
 
         </div>
       </div>
+
+
+      <audio
+        src={""}
+        autoPlay
+        style={{
+          width: 0,
+          height: 0,
+          position: "absolute",
+          zIndex: -9999,
+          visibility: "hidden",
+          opacity: 0
+        }}
+      />
     </div>
   )
 })

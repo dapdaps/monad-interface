@@ -11,9 +11,7 @@ export default function () {
     if (pending) return;
     setPending(true);
     try {
-      const res = await http.get(
-        "https://api.dapdap.net/get-token-price-by-dapdap"
-      );
+      const res = await http.get("/token/price");
       setPriceStore({
         price: res.data || {}
       });
