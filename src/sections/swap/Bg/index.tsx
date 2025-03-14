@@ -28,7 +28,7 @@ export default function Bg() {
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -62,8 +62,8 @@ export default function Bg() {
           y2="612"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#9892C0" />
-          <stop offset="1" stop-color="#47445A" />
+          <stop stopColor="#9892C0" />
+          <stop offset="1" stopColor="#47445A" />
         </linearGradient>
       </defs>
     </svg>

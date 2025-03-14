@@ -150,5 +150,13 @@ export default {
     nativeCurrency: { name: "BERA", symbol: "BERA", decimals: 18 },
     rpcUrls: ["https://rpc.berachain.com"],
     blockExplorers: "https://berascan.com/"
+  },
+  10143: {
+    chainId: 10143,
+    chainName: "Monad Testnet",
+    icon: "",
+    nativeCurrency: { name: "MON", symbol: "MON", decimals: 18 },
+    rpcUrls: ["https://testnet-rpc.monad.xyz"],
+    blockExplorers: "https://testnet.monadexplorer.com/"
   }
 } as { [key: string]: any };

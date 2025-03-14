@@ -105,7 +105,7 @@ export default function CurrencySelect({
 
   return (
     <Modal open={display} onClose={handleClose}>
-      <div className="w-[520px] p-[20px] bg-[#2B294A] text-white border border-[#9892C0] rounded-[14px] md:w-full md:rounded-t-[20px]">
+      <div className="w-[520px] p-[20px] bg-[#1A1843] text-white border border-[#9892C0] rounded-[14px] md:w-full md:rounded-t-[20px]">
         <div className="flex items-center gap-[10px] cursor-pointer text-[20px]">
           <div>Select Token</div>
         </div>

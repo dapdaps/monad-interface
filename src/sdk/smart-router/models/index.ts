@@ -1,5 +1,5 @@
 import { iZiSwap } from "./iziswap.model";
 
 export default {
-  iZiSwap
+  iZumi: iZiSwap
 } as { [key: string]: any };

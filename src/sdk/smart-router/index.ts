@@ -2,6 +2,7 @@ import models from "./models";
 
 export default async function quoter(props: any) {
   const { template, templates } = props;
+
   if (template) {
     if (!models[template]) {
       console.error(`can not find ${template} template`);

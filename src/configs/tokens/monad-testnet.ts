@@ -1,5 +1,5 @@
 import type { Token } from "@/types";
-import { monadTestnet } from '@reown/appkit/networks';
+import { monadTestnet } from "@reown/appkit/networks";
 
 const CHAIN_ID = monadTestnet.id;
 
@@ -122,5 +122,5 @@ export const monad: { [key: string]: Token } = {
     name: "Anago's Dog Food",
     icon: "",
     color: "#78350F"
-  },
+  }
 };
