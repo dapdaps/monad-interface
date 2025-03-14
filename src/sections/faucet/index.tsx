@@ -13,7 +13,7 @@ const FaucetView = () => {
   return (
     <FaucetContextProvider>
       <div className="w-full h-screen bg-[#0E0F29]">
-        <div className="w-full h-full bg-[url('/images/faucet/bg.png')] bg-no-repeat bg-[position:center_left_-18.54%] bg-[length:auto_133%]">
+        <div className="w-full h-full bg-[url('/images/faucet/bg.png')] bg-no-repeat bg-top bg-cover">
           <div className="w-full h-full flex justify-center items-start pt-[110px] bg-[linear-gradient(180deg,_#000_0%,_rgba(0,_0,_0,_0.00)_100%)] bg-no-repeat bg-top bg-[length:100%_37.79%]">
             <FaucetCard bodyClassName="pt-[71px]">
               <div className="flex flex-col">

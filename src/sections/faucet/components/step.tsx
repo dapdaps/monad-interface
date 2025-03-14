@@ -103,7 +103,7 @@ const ActiveStepPoint = (props: any) => {
   return (
     <div className={clsx("w-[27px] h-[27px] rounded-full overflow-hidden relative flex items-center justify-center", className)}>
       <motion.div
-        className="absolute z-[1] w-[100%] h-[100%] rounded-full bg-[rgba(191,255,96,0.2)]"
+        className="absolute z-[1] w-[100%] h-[100%] rounded-full bg-[rgba(191,255,96,0.5)]"
         animate={{
           scale: [0.5556, 1, 0.5556],
           opacity: [1, 0, 0]
@@ -116,7 +116,7 @@ const ActiveStepPoint = (props: any) => {
         }}
       />
       <motion.div
-        className="absolute z-[2] w-[100%] h-[100%] rounded-full bg-[rgba(191,255,96,0.2)]"
+        className="absolute z-[2] w-[100%] h-[100%] rounded-full bg-[rgba(191,255,96,0.5)]"
         animate={{
           scale: [0.5556, 1, 0.5556],
           opacity: [1, 0, 0]
