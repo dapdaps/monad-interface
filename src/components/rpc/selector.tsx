@@ -8,7 +8,7 @@ const RpcSelector = (props: Props) => {
     <Modal
       open={visible}
       onClose={onClose}
-      closeIconClassName="right-[-14px] top-[-8px]"
+      isShowCloseIcon={false}
     >
       <RpcList />
     </Modal>

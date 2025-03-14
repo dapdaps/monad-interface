@@ -4,7 +4,7 @@ import { memo } from "react"
 export default memo(function Footer() {
 
   return (
-    <div className="fixed bottom-0 left-0 flex items-center gap-[10px] pl-[15px] w-[194px] h-[38px] bg-[url('/images/footer/footer_bg.svg')] bg-left-top bg-contain bg-no-repeat">
+    <div className="z-[99] fixed bottom-0 left-0 flex items-center gap-[10px] pl-[15px] w-[194px] h-[38px] bg-[url('/images/footer/footer_bg.svg')] bg-left-top bg-contain bg-no-repeat">
       <Link
         className="hover:scale-110 ease-in-out duration-300 w-[17px] h-[18px] cursor-pointer"
         href="https://app.dapdap.net?from=berachain"

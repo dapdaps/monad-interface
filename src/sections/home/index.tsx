@@ -83,7 +83,7 @@ const Home = () => {
             data-bp='1001-005'
             className={clsx(
               "z-[4] w-[378px] h-[290px] absolute right-[calc(280/14.4*var(--rem))]",
-              windowWidth > 1920 ? "0" : "-top-[calc(80/14.4*var(--rem))]"
+              windowWidth >= 1920 ? "0" : "-top-[calc(80/14.4*var(--rem))]"
             )}
           >
             <div className="relative w-full h-full">
@@ -122,7 +122,7 @@ const Home = () => {
           <div
             data-bp='1001-004'
             onClick={() => router.push('/faucet')}
-            className={clsx("z-[5] absolute  w-[514px] h-[330px]", windowWidth > 1920 ? 'left-1/2 -translate-x-1/2 ml-[50px] bottom-[calc(200/14.4*var(--rem))]': 'left-[calc(450/14.4*var(--rem))] bottom-[calc(235/14.4*var(--rem))]')}
+            className={clsx("z-[5] absolute  w-[514px] h-[330px]", windowWidth >= 1920 ? 'left-1/2 -translate-x-1/2 ml-[50px] bottom-[calc(200/14.4*var(--rem))]': 'left-[calc(450/14.4*var(--rem))] bottom-[calc(235/14.4*var(--rem))]')}
           >
             <div className="relative w-full h-full">
               <div className="w-full h-full top-0 left-0 bg-no-repeat bg-contain bg-[url(/images/monad/entry/data.svg)]"></div>
