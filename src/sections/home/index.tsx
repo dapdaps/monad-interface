@@ -60,7 +60,6 @@ const Home = () => {
           <div
             data-bp="1001-002"
             data-click-sound
-            data-hover-sound='/audios/home/hover-bridge.mp3'
             onClick={() => router.push("/bridge")}
             className={
               clsx('absolute left-[calc(70/14.4*var(--rem))] bottom-[calc(344/14.4*var(--rem))] w-[357px] h-[430px]', 
@@ -137,6 +136,7 @@ const Home = () => {
           {/* Faucet */}
           <div
             data-bp="1001-004"
+            data-click-sound
             onClick={() => router.push("/faucet")}
             className={clsx(
               "z-[5] absolute  w-[514px] h-[330px]",
@@ -181,6 +181,7 @@ const Home = () => {
           {/* Dapps */}
           <div
             data-bp="1001-006"
+            data-click-sound
             onClick={() => router.push("/dapps")}
             className={clsx('z-[7] absolute -right-[calc(10/14.4*var(--rem))] bottom-[calc(83/14.4*var(--rem))] w-[513px] h-[445px]', 
               windowWidth >= 1920 ? 'right-0 bottom-[calc(40/14.4*var(--rem))]': '',
@@ -253,6 +254,7 @@ const Home = () => {
           {/* tokens */}
           <div
             data-bp="1001-003"
+            data-click-sound
             onClick={() => router.push("/marketplace")}
             className={clsx(
               windowWidth >= 2560 ? 'scale-[1.3]' : '',
