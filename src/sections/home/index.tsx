@@ -69,7 +69,7 @@ const Home = () => {
             <div className="relative w-full h-full">
               <div
                 className={clsx(
-                  "w-full h-full top-0 left-0 bg-no-repeat bg-contain",
+                  "w-full h-full bg-no-repeat bg-contain",
                   "transition-all duration-200 ease-in-out cursor-pointer",
                   "hover:scale-[1.02]",
                   "bg-[url(/images/monad/entry/bridge.svg)] hover:bg-[url(/images/monad/entry/bridge-hover.svg)]"
@@ -105,7 +105,7 @@ const Home = () => {
             )}
           >
             <div className="relative w-full h-full">
-              <div className="w-full h-full top-0 left-0 bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper-lock.svg)]"></div>
+              <div className="w-full h-full bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper-lock.svg)]"></div>
               <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <div className="w-full flex items-center justify-center">
@@ -151,7 +151,7 @@ const Home = () => {
             <div className="relative w-full h-full">
               <div
                 className={clsx(
-                  "w-full h-full top-0 left-0 bg-no-repeat bg-contain",
+                  "w-full h-full bg-no-repeat bg-contain",
                   "transition-all duration-200 ease-in-out cursor-pointer",
                   "hover:scale-[1.02]",
                   "bg-[url(/images/monad/entry/data.svg)] hover:bg-[url(/images/monad/entry/data-hover.svg)]"
@@ -196,7 +196,7 @@ const Home = () => {
             <div className="relative w-full h-full">
               <div
                 className={clsx(
-                  "w-full h-full top-0 left-0 bg-no-repeat bg-contain",
+                  "w-full h-full bg-no-repeat bg-contain",
                   "transition-all duration-200 ease-in-out cursor-pointer",
                   "hover:scale-[1.02]",
                   "bg-[url(/images/monad/entry/dapps.svg)] hover:bg-[url(/images/monad/entry/dapps-hover.svg)]"
@@ -270,7 +270,7 @@ const Home = () => {
             <div className="relative w-full h-full">
               <div
                 className={clsx(
-                  "w-full h-full top-0 left-0 bg-no-repeat bg-contain",
+                  "w-full h-full bg-no-repeat bg-contain",
                   "transition-all duration-200 ease-in-out cursor-pointer",
                   "hover:scale-[1.02]",
                   "bg-[url(/images/monad/entry/tokens.svg)] hover:bg-[url(/images/monad/entry/tokens-hover.svg)]"
