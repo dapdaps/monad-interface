@@ -20,7 +20,11 @@ const FaucetView = () => {
                 <div className="w-full">
                   <div className="w-full flex items-center pr-[22px]">
                     <FaucetStep />
-                    <img src="/images/faucet/coffee-coins.svg" alt="" className="w-[202px] h-[160px]" />
+                    <div className="relative w-[202px] h-[160px] shrink-0 flex justify-center items-center">
+                      <img src="/images/faucet/coffee-coins.svg" alt="" className="w-[202px] h-[160px]" />
+                      <img src="/images/faucet/heat-smoking.gif" alt="" className="absolute w-[154px] h-[154px] top-[-80px] translate-x-[40px]" />
+                      <img src="/images/faucet/sparkle.gif" alt="" className="absolute w-[92px] h-[92px] translate-y-[20px] translate-x-[-20px]" />
+                    </div>
                   </div>
                   <div className="flex justify-center mt-[5px]">
                     <FaucetCheckIn />
