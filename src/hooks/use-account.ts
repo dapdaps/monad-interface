@@ -57,14 +57,14 @@ export default function useCustomAccount() {
     account: string;  
     provider?: any;
     chain: any;
-    accountWithAk: boolean;
+    accountWithAk?: string;
   }>(
     () => ({
       account: account?.address || '',
-      chainId: account?.chainId || DEFAULT_CHAIN_ID, // 使用默认 chainId
+      chainId: account?.chainId || DEFAULT_CHAIN_ID,
       provider,
       chain: account?.chain || null,
-      accountWithAk: !!account && !!accessToken,
+      accountWithAk: (account && accessToken) ? `${account}-${accessToken}` : void 0,
     }),
     [account, provider, accessToken]
   );
