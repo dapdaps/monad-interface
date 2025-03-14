@@ -8,24 +8,24 @@ import { useFaucetContext } from '@/sections/faucet/context';
 
 const StepList: IStep[] = [
   {
-    value: 1,
+    value: 2,
     amount: 0.05,
     unit: '$MON',
     label: (
       <>
-        <div className="text-white font-[500]">1</div>
+        <div className="text-white font-[500]">2</div>
         <div className="">GMonad</div>
       </>
     ),
     status: EStatus.Unfinished,
   },
   {
-    value: 3,
+    value: 5,
     amount: 0.05,
     unit: '$MON',
     label: (
       <>
-        <div className="text-white font-[500]">3</div>
+        <div className="text-white font-[500]">5</div>
         <div className="">GMonad</div>
       </>
     ),

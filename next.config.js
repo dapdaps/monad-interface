@@ -19,10 +19,6 @@ const nextConfig = {
   },
   rewrites: async () => [
     {
-      source: "/api.monadx.test/:path*",
-      destination: "https://test-api-monad.dapdap.net/api/:path*"
-    },
-    {
       source: "/assets/:path*",
       destination: "https://asset.dapdap.net/:path*"
     },
