@@ -4,12 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import MovingGif from "./MovingGif";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
+import useAudioPlay from "@/hooks/use-audio";
 
 const itemWidth = 51;
 const itemGap = 6;
 
 const Home = () => {
   const router = useRouter();
+  const { play } = useAudioPlay()
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [windowWidth, setWindowWidth] = useState(
