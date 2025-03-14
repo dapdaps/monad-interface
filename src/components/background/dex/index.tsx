@@ -39,7 +39,7 @@ export default function Bg() {
         className="w-[74px] h-[100px] absolute top-[580px] z-[7] right-[-74px]"
       />
       <motion.img
-        animate={{ x: ["0%", "110vw"], rotateY: ["180deg", "180deg"] }}
+        animate={{ x: ["0%", "110vw"] }}
         transition={{
           ease: "linear",
           duration: 20,
