@@ -10,9 +10,9 @@ import allTokens from "@/configs/allTokens";
 import useIsMobile from "@/hooks/use-isMobile";
 import useToast from "@/hooks/use-toast";
 import useUser from "@/hooks/use-user";
-import { useWalletName } from '@/hooks/use-wallet-name';
+import { useWalletName } from "@/hooks/use-wallet-name";
 import { useAppKit } from "@reown/appkit/react";
-import { useDebounceFn } from 'ahooks';
+import { useDebounceFn } from "ahooks";
 import Big from "big.js";
 import { utils } from "ethers";
 import { motion } from "framer-motion";
@@ -21,28 +21,24 @@ import { memo, useEffect, useMemo, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useAccount, useBalance, useDisconnect, useConfig } from "wagmi";
 import MobileChain from "./chain/mobile";
-import { monadTestnet } from '@reown/appkit/networks';
-
+import { monadTestnet } from "@reown/appkit/networks";
 
 const dropdownAnimations = {
   active: {
     opacity: [0, 1],
     y: [10, 0],
-    display: "block",
+    display: "block"
   },
   default: {
     opacity: [1, 0],
     y: [0, 10],
-    display: "none",
-  },
+    display: "none"
+  }
 };
-
-
 
 const ConnectWallet = ({ className }: { className?: string }) => {
   const modal = useAppKit();
-  const [_, setUpdater] = useState({})
-
+  const [_, setUpdater] = useState({});
 
   const pathname = usePathname();
   const isMobile = useIsMobile();
@@ -53,8 +49,7 @@ const ConnectWallet = ({ className }: { className?: string }) => {
   });
   const { userInfo } = useUser();
   const walletInfo = useWalletName();
-  const config = useConfig()
-
+  const config = useConfig();
 
   const [connecting, setConnecting] = useState<boolean>(isConnecting);
   const [mobileUserInfoVisible, setMobileUserInfoVisible] =
@@ -62,8 +57,7 @@ const ConnectWallet = ({ className }: { className?: string }) => {
   const [mobileNetworksVisible, setMobileNetworksVisible] =
     useState<boolean>(false);
 
-  const currentChainInfo = config.chains.find(c => c.id === chainId)
-
+  const currentChainInfo = config.chains.find((c) => c.id === chainId);
 
   const handleConnect = function () {
     if (isMobile && isConnected) {
@@ -85,7 +79,6 @@ const ConnectWallet = ({ className }: { className?: string }) => {
       title: `Copied address ${address}`
     });
   };
-
 
   const balanceShown = useMemo(() => {
     if (balance?.data?.value) {
@@ -157,7 +150,7 @@ const ConnectWallet = ({ className }: { className?: string }) => {
           borderRadius={21}
           style={{ transform: "translateY(-4px)" }}
         />
-      ) : (isConnected) ? (
+      ) : isConnected ? (
         <div className="flex items-center justify-center w-[165px] h-[43px] bg-[url('/images/header/user_bg.svg')] bg-no-repeat bg-center">
           <User
             handleConnect={handleConnect}
@@ -177,12 +170,14 @@ const ConnectWallet = ({ className }: { className?: string }) => {
         </div>
       ) : (
         <div className="flex items-center justify-center h-[50px] w-[158px]  bg-[url('/images/header/right_bg.svg')] bg-left bg-contain">
-          <button className="w-[122px] h-[34px] bg-[url('/images/header/button_bg.svg')] cursor-pointer font-Unbounded text-[12px] text-[#090909] font-semibold" onClick={handleConnect}>
+          <button
+            className="w-[122px] h-[34px] bg-[url('/images/header/button_bg.svg')] cursor-pointer font-Unbounded text-[12px] text-[#090909] font-semibold"
+            onClick={handleConnect}
+          >
             Connect
           </button>
         </div>
       )}
-      
     </>
   );
 };
@@ -217,28 +212,45 @@ const User = (props: any) => {
                 {addressShown}
               </div>
               <div className="flex items-center gap-1">
-                <img src={walletInfo.icon}  className="w-4 object-contain" alt="" />
+                <img
+                  src={walletInfo.icon}
+                  className="w-4 object-contain"
+                  alt=""
+                />
                 <div className="text-[#A6A6DB] font-Unbounded text-[10px] font-[300] leading-[10px] max-w-[50px] truncate">
-                  {currentChainInfo?.id ===  monadTestnet.id ? 'Monad' : currentChainInfo?.name || ''}
+                  {currentChainInfo?.id === monadTestnet.id
+                    ? "Monad"
+                    : currentChainInfo?.name || ""}
                 </div>
-                  <div className="bg-white bg-opacity-20 p-[1px] rounded-[4px] text-[8px] text-[#A6A6DB] font-Unbounded">
-                    {currentChainInfo?.testnet ? 'Testnet' : 'Mainnet'}
-                  </div>
+                <div className="bg-white bg-opacity-20 p-[1px] rounded-[4px] text-[8px] text-[#A6A6DB] font-Unbounded">
+                  {currentChainInfo?.testnet ? "Testnet" : "Mainnet"}
+                </div>
               </div>
             </div>
           </div>
-          <img className="cursor-pointer" src="/images/header/copy.svg" onClick={handleCopy} alt="" />
+          <img
+            className="cursor-pointer"
+            src="/images/header/copy.svg"
+            onClick={handleCopy}
+            alt=""
+          />
         </div>
         <div className="flex px-[6px] h-[40px] items-center justify-between w-full bg-white bg-opacity-20 rounded-[6px]">
           <div className="flex items-center gap-1">
             <img src={tokenLogoShown} className="w-5 h-5" alt="" />
-            <div className="text-white text-[12px] font-Unbounded font-[400]">{tokenSymbolShown}</div>
+            <div className="text-white text-[12px] font-Unbounded font-[400]">
+              {tokenSymbolShown}
+            </div>
           </div>
-          <div className="text-white text-[12px] font-Unbounded font-[400]">{balanceShown}</div>
+          <div className="text-white text-[12px] font-Unbounded font-[400]">
+            {balanceShown}
+          </div>
         </div>
         <div className="flex items-center gap-1 mt-2 ml-[4px]">
           <img src="/images/icon-faucet.svg" alt="" />
-          <div className="text-[12px] font-[300] leading-[1] font-Unbounded text-[#A6A6DB] underline hover:text-white cursor-pointer">Faucet</div>
+          <div className="text-[12px] font-[300] leading-[1] font-Unbounded text-[#A6A6DB] underline hover:text-white cursor-pointer">
+            Faucet
+          </div>
         </div>
       </div>
       <div className="w-full h-[1px] bg-[#A6A6DB] mt-3"></div>
@@ -266,19 +278,23 @@ const User = (props: any) => {
           <div className="flex items-center w-full">
             <div className="flex items-center gap-1">
               <img src="/images/monad/monad.svg" className="w-5 h-5" alt="" />
-              <div className="text-[12px] text-white font-[400] font-Unbounded">{balanceShown || '-'}</div>
+              <div className="text-[12px] text-white font-[400] font-Unbounded">
+                {balanceShown || "-"}
+              </div>
             </div>
             <img
-            src={userInfo?.avatar}
-            alt=""
-            className="w-[28px] h-[28px] rounded-full"
-          />
+              src={userInfo?.avatar}
+              alt=""
+              className="w-[28px] h-[28px] rounded-full"
+            />
           </div>
         ) : (
           <div className="flex items-center w-full gap-4">
             <div className="flex items-center gap-1">
               <img src="/images/monad.svg" className="w-5 h-5" alt="" />
-              <div className="text-[12px] text-white font-[400] font-Unbounded">{balanceShown || '-'}</div>
+              <div className="text-[12px] text-white font-[400] font-Unbounded">
+                {balanceShown || "-"}
+              </div>
             </div>
             <div className="w-[28px] h-[28px] rounded-[50%] border-[2px] border-black bg-[conic-gradient(from_180deg_at_50%_50%,#00D1FF_0deg,#FF008A_360deg)]" />
           </div>
@@ -305,9 +321,20 @@ const DisconnectButton = ({ setMobileUserInfoVisible }: any) => {
         Disconnect
       </div>
       <div>
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.91613 16H10.5731C11.0656 16 11.4652 15.57 11.4652 15.04C11.4652 14.51 11.0656 14.08 10.5731 14.08H2.00906C1.92728 13.974 1.78417 13.662 1.78417 13.164V2.83802C1.78417 2.34002 1.92728 2.02802 2.00906 1.92002H10.5731C11.0656 1.92002 11.4652 1.49002 11.4652 0.960015C11.4652 0.430015 11.0656 1.52588e-05 10.5731 1.52588e-05H1.91613C0.823322 1.52588e-05 0 1.22002 0 2.83802V13.162C0 14.78 0.823322 16 1.91613 16ZM12.3929 12.2771L15.7266 8.69158L15.7383 8.67942C15.913 8.49137 16.0004 8.2458 16.0003 8.00024C16.0003 7.75469 15.913 7.50912 15.7383 7.32108L15.7237 7.30576L12.3948 3.72342C12.0454 3.34742 11.4823 3.34742 11.1329 3.72342C10.7835 4.09942 10.7835 4.70542 11.1329 5.08142L12.953 7.03908H6.83918C6.34667 7.03908 5.94709 7.46908 5.94709 7.99908C5.94709 8.52908 6.34667 8.95908 6.83918 8.95908H12.9542L11.1329 10.9191C10.7835 11.2951 10.7835 11.9011 11.1329 12.2771C11.3057 12.4651 11.5343 12.5591 11.7629 12.5591C11.9915 12.5591 12.2201 12.4651 12.3929 12.2771Z" fill="#836EF9"/>
-      </svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M1.91613 16H10.5731C11.0656 16 11.4652 15.57 11.4652 15.04C11.4652 14.51 11.0656 14.08 10.5731 14.08H2.00906C1.92728 13.974 1.78417 13.662 1.78417 13.164V2.83802C1.78417 2.34002 1.92728 2.02802 2.00906 1.92002H10.5731C11.0656 1.92002 11.4652 1.49002 11.4652 0.960015C11.4652 0.430015 11.0656 1.52588e-05 10.5731 1.52588e-05H1.91613C0.823322 1.52588e-05 0 1.22002 0 2.83802V13.162C0 14.78 0.823322 16 1.91613 16ZM12.3929 12.2771L15.7266 8.69158L15.7383 8.67942C15.913 8.49137 16.0004 8.2458 16.0003 8.00024C16.0003 7.75469 15.913 7.50912 15.7383 7.32108L15.7237 7.30576L12.3948 3.72342C12.0454 3.34742 11.4823 3.34742 11.1329 3.72342C10.7835 4.09942 10.7835 4.70542 11.1329 5.08142L12.953 7.03908H6.83918C6.34667 7.03908 5.94709 7.46908 5.94709 7.99908C5.94709 8.52908 6.34667 8.95908 6.83918 8.95908H12.9542L11.1329 10.9191C10.7835 11.2951 10.7835 11.9011 11.1329 12.2771C11.3057 12.4651 11.5343 12.5591 11.7629 12.5591C11.9915 12.5591 12.2201 12.4651 12.3929 12.2771Z"
+            fill="#836EF9"
+          />
+        </svg>
       </div>
     </div>
   );

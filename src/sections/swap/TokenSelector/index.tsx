@@ -107,11 +107,6 @@ export default function CurrencySelect({
     <Modal open={display} onClose={handleClose}>
       <div className="w-[520px] p-[20px] bg-[#2B294A] text-white border border-[#9892C0] rounded-[14px] md:w-full md:rounded-t-[20px]">
         <div className="flex items-center gap-[10px] cursor-pointer text-[20px]">
-          <button
-            type="button"
-            className="w-[16px] h-[16px] rotate-90 bg-[url('/images/icon-arrow.svg')] bg-no-repeat bg-center"
-            onClick={handleClose}
-          />
           <div>Select Token</div>
         </div>
         {showSearch && (

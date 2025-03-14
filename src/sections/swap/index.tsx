@@ -1,3 +1,5 @@
+"use client";
+
 import Bg from "./Bg";
 import Content from "./Content";
 import DappIcon from "./Icon";
