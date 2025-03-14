@@ -19,7 +19,7 @@ import { blast } from "../../../configs/tokens/blast";
 import { scroll } from '../../../configs/tokens/scroll';
 
 import { tokenPairs } from './bridges/stargate/config'
-import { monad } from "../../../configs/tokens/monad";
+import { monad } from "../../../configs/tokens/monad-testnet";
 import { sepolia } from "../../../configs/tokens/sepolia";
 
 const mapFn = (item: Token) => {

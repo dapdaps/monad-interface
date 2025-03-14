@@ -1,18 +1,35 @@
+import { IDapp } from "@/types";
+import { useSize } from "ahooks";
 import clsx from "clsx";
-import { motion } from "framer-motion";
-import { memo, useEffect, useState, useTransition } from "react";
+import { motion, useAnimation } from "framer-motion";
+import { memo, useEffect, useMemo, useState, useTransition } from "react";
 
 export default memo(function DappsEntry({
   direction,
-  dapps
+  dapps,
 }: {
   direction: 'left' | 'right'
-  dapps: any[]
+  dapps: IDapp[]
 }) {
+  const size = useSize(document.getElementsByTagName("body")[0])
 
+  const controls = useAnimation();
   const [clicked, setClicked] = useState(false)
   const [offsetX, setOffsetX] = useState(0)
   const [isPending, startTransition] = useTransition();
+
+  const needStage2Animate = useMemo(() => (dapps.length * 2 * 180 + (dapps.length * 2 - 1) * 80) > size?.width, [dapps, size])
+  const cycleDapps = useMemo(() => needStage2Animate ? [...dapps, ...dapps] : dapps, [dapps, needStage2Animate])
+
+  const variants = useMemo(() => {
+    return {
+      initial: { transform: direction === "right" ? "translate3d(100%, 0, 0)" : "translate3d(-100%, 0, 0)" },
+      stage1: {
+        transform: needStage2Animate ? (direction === "right" ? "translate3d(50%, 0, 0)" : "translate3d(-50%, 0, 0)") : "translate3d(0%, 0, 0)"
+      },
+      stage2: { transform: "translate3d(0%, 0, 0)" }
+    }
+  }, [direction, needStage2Animate]);
 
   function handleMouseMove(event) {
     startTransition(() => {
@@ -20,6 +37,26 @@ export default memo(function DappsEntry({
     })
   }
 
+  useEffect(() => {
+    const sequence = async () => {
+      // await controls?.stop()
+      controls.set({
+        transform: direction === "right" ? "translate3d(100%, 0, 0)" : "translate3d(-100%, 0, 0)"
+      })
+      await controls.start("stage1", {
+        duration: Math.floor(cycleDapps.length / 2),
+        ease: "linear"
+      })
+      if (needStage2Animate) {
+        await controls.start("stage2", {
+          duration: cycleDapps.length,
+          ease: "linear",
+          repeat: Infinity
+        });
+      }
+    }
+    sequence()
+  }, [controls, needStage2Animate, dapps])
 
   return (
     <div className={clsx("relative h-[304px]", direction === "right" ? "flex justify-end" : "")}
@@ -49,36 +86,44 @@ export default memo(function DappsEntry({
               <img src="/images/dapps/claw.svg" alt="claw" />
             </div>
           </motion.div>
-
         </div>
       </div>
-      <div className="absolute left-0 right-0 bottom-[16px]">
+      <div className={clsx("min-w-full absolute bottom-[16px]", direction === "left" ? "left-0" : "right-0")}>
         <motion.div
           className={clsx("flex items-center gap-[80px]", direction === "right" ? "justify-end pr-[64px]" : "pl-[64px]")}
-          initial={{
-            transform: direction === "right" ? "translate3d(100%, 0, 0)" : "translate3d(-100%, 0, 0)",
-          }}
-          animate={{
-            transform: "translate3d(0, 0, 0)",
-          }}
-          transition={{
-            duration: 2,
-          }}
+          variants={variants}
+          initial="initial"
+          animate={controls}
         >
           {
-            dapps.map((_, index) => (
+            cycleDapps.map((dapp: IDapp, index) => (
               <div
                 className="cursor-pointer w-[180px] h-[155px] bg-[url('/images/dapps/dapp_bg.svg')] bg-contain bg-no-repeat"
+                {...(needStage2Animate ? {
+                  onMouseEnter() {
+                    controls.stop()
+                  },
+                  onMouseLeave() {
+                    controls.start("stage2", {
+                      duration: dapps.length * 4,
+                      ease: "linear",
+                      repeat: Infinity
+                    });
+                  }
+                } : {})}
                 onClick={() => {
                   setClicked(true)
+                  setTimeout(() => {
+                    setClicked(false)
+                  }, 300)
                 }}
               >
-                <div className="m-[32px_auto_9px] w-[64px]">
-                  <img src="/images/dapps/dapp/Lynex.svg" alt="Lynex" />
+                <div className="m-[32px_auto_15px] w-[56px]">
+                  <img src={dapp?.icon} alt={dapp?.name} />
                 </div>
-                <div className="text-center text-black font-Unbounded text-[16px] font-semibold leading-[100%]">Lynex</div>
+                <div className="text-center text-black font-Unbounded text-[16px] font-semibold leading-[100%]">{dapp?.name}</div>
                 <div className="mt-[6px] flex justify-center">
-                  <div className="p-[6px_10px] rounded-[6px] border border-black bg-[#7370C8] text-[#A5FFFD] font-Unbounded text-[12px] leading-[100%]">Dex</div>
+                  <div className="p-[6px_10px] rounded-[6px] border border-black bg-[#7370C8] text-[#A5FFFD] font-Unbounded text-[12px] leading-[100%]">{dapp?.type}</div>
                 </div>
               </div>
             ))

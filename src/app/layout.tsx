@@ -24,7 +24,7 @@ export default function RootLayout({
         <title>Monad</title>
         <meta
           name="description"
-          content="Effortlessly explore & dive into all dApps in the Bera ecosystem from one streamlined hub."
+          content="Effortlessly explore & dive into all dApps in the Monad ecosystem from one streamlined hub."
         />
         <link rel="icon" href="/images/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/images/favicon.ico" />

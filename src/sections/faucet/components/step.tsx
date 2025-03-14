@@ -8,24 +8,24 @@ import { useFaucetContext } from '@/sections/faucet/context';
 
 const StepList: IStep[] = [
   {
-    value: 1,
+    value: 2,
     amount: 0.05,
     unit: '$MON',
     label: (
       <>
-        <div className="text-white font-[500]">1</div>
+        <div className="text-white font-[500]">2</div>
         <div className="">GMonad</div>
       </>
     ),
     status: EStatus.Unfinished,
   },
   {
-    value: 3,
+    value: 5,
     amount: 0.05,
     unit: '$MON',
     label: (
       <>
-        <div className="text-white font-[500]">3</div>
+        <div className="text-white font-[500]">5</div>
         <div className="">GMonad</div>
       </>
     ),
@@ -103,7 +103,7 @@ const ActiveStepPoint = (props: any) => {
   return (
     <div className={clsx("w-[27px] h-[27px] rounded-full overflow-hidden relative flex items-center justify-center", className)}>
       <motion.div
-        className="absolute z-[1] w-[100%] h-[100%] rounded-full bg-[rgba(191,255,96,0.2)]"
+        className="absolute z-[1] w-[100%] h-[100%] rounded-full bg-[rgba(191,255,96,0.5)]"
         animate={{
           scale: [0.5556, 1, 0.5556],
           opacity: [1, 0, 0]
@@ -116,7 +116,7 @@ const ActiveStepPoint = (props: any) => {
         }}
       />
       <motion.div
-        className="absolute z-[2] w-[100%] h-[100%] rounded-full bg-[rgba(191,255,96,0.2)]"
+        className="absolute z-[2] w-[100%] h-[100%] rounded-full bg-[rgba(191,255,96,0.5)]"
         animate={{
           scale: [0.5556, 1, 0.5556],
           opacity: [1, 0, 0]

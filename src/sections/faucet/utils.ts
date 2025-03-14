@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { FaucetStartDate, ICheckedItem, ICheckinItem } from '@/sections/faucet/config';
+import Big from 'big.js';
 
 export const getMonthlyCheckinList = (month: number, checkedInList?: ICheckedItem[]) => {
   const startOfMonth = dayjs().month(month - 1).startOf('month');
@@ -16,9 +17,9 @@ export const getMonthlyCheckinList = (month: number, checkedInList?: ICheckedIte
     return {
       date: currDate,
       checkin_date: checked?.checkin_date || 0,
-      checkin_sort: checkedIndex,
+      checkin_sort: checkedIndex + 1,
       id: `${month}-${index}`,
-      reward_amount: checked?.reward_amount || 0,
+      reward_amount: Big(checked?.reward_amount || 0).gt(0) ? checked?.reward_amount : "0",
     };
   }) as ICheckinItem[];
 };
@@ -44,9 +45,9 @@ export const getUntilCurrentMonthCheckinList = (checkedInList?: ICheckedItem[]) 
     return {
       date: currDate,
       checkin_date: checked?.checkin_date || 0,
-      checkin_sort: checkedIndex,
+      checkin_sort: checkedIndex + 1,
       id: dayjs(currDate).format('YYYY-MM-DD'),
-      reward_amount: checked?.reward_amount || 0,
+      reward_amount: Big(checked?.reward_amount || 0).gt(0) ? checked?.reward_amount : "0",
     };
   }) as ICheckinItem[];
 };

@@ -1,20 +1,83 @@
 import clsx from "clsx"
 import { motion } from "framer-motion"
-import { memo, useState } from "react"
+import { memo, useMemo, useState } from "react"
 import RectangularButton from "./components/rectangular-button"
 import DappsEntry from "./components/dapps-entry"
+import { IDapp } from "@/types"
 
 
 
 export default memo(function Dapps() {
-
   const [activeType, setActiveType] = useState("all")
+
+  const LEFT_DAPP_LIST: IDapp[] = [{
+    name: "Lynex",
+    icon: "/images/dapps/icons/Lynex.svg",
+    type: "dex",
+    link: "",
+  }, {
+    name: "iZumi",
+    icon: "/images/dapps/icons/iZumi.svg",
+    type: "dex",
+    link: "",
+  }, {
+    name: "Pancake",
+    icon: "/images/dapps/icons/Pancake.svg",
+    type: "dex",
+    link: "",
+  }, {
+    name: "OpenOcean",
+    icon: "/images/dapps/icons/OpenOcean.svg",
+    type: "dex",
+    link: "",
+  }, {
+    name: "Infinex",
+    icon: "/images/dapps/icons/Infinex.svg",
+    type: "dex",
+    link: "",
+  },]
+  const RIGHT_DAPP_LIST: IDapp[] = [{
+    name: "Orderly",
+    icon: "/images/dapps/icons/Orderly.svg",
+    type: "dex",
+    link: "",
+  }, {
+    name: "D3X",
+    icon: "/images/dapps/icons/D3X.svg",
+    type: "dex",
+    link: "",
+  }, {
+    name: "LFJ",
+    icon: "/images/dapps/icons/LFJ.svg",
+    type: "dex",
+    link: "",
+  }, {
+    name: "Owlto",
+    icon: "/images/dapps/icons/OwltoFinance.svg",
+    type: "bridge",
+    link: "",
+  }, {
+    name: "Balancer",
+    icon: "/images/dapps/icons/Balancer.svg",
+    type: "dex",
+    link: "",
+  }, {
+    name: "emelverse",
+    icon: "/images/dapps/icons/emelverse.svg",
+    type: "dex",
+    link: "",
+  },]
+
+  
+  const FILTER_LEFT_DAPP_LIST = useMemo(() => LEFT_DAPP_LIST.filter((dapp: IDapp) => dapp.type === activeType || activeType === "all"), [activeType])
+  const FILTER_RIGHT_DAPP_LIST = useMemo(() => RIGHT_DAPP_LIST.filter((dapp: IDapp) => dapp.type === activeType || activeType === "all"), [activeType])
+
+
   return (
     <div className="min-h-[840px] pt-[30px]">
       <div className="flex flex-col gap-[18px]">
-        <DappsEntry direction="left" dapps={new Array(5).fill(null)} />
-
-        <DappsEntry direction="right" dapps={new Array(5).fill(null)} />
+        <DappsEntry direction="left" dapps={FILTER_LEFT_DAPP_LIST} />
+        <DappsEntry direction="right" dapps={FILTER_RIGHT_DAPP_LIST} />
       </div>
 
       <div className="absolute left-0 right-0 bottom-0 h-[87px] bg-[#23243D] border-t-[18px] border-[#273051]">

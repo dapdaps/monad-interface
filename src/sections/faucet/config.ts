@@ -31,7 +31,7 @@ export interface ICheckedItem {
   address: string;
   checkin_date: number;
   id: number;
-  reward_amount: number;
+  reward_amount: string;
 }
 
 export interface ICheckinItem {
@@ -39,7 +39,7 @@ export interface ICheckinItem {
   checkin_date: number;
   checkin_sort: number;
   id: string;
-  reward_amount: number;
+  reward_amount: string;
 }
 
 export const FaucetStartDate = dayjs("2025-03-01");

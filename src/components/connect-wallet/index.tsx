@@ -201,6 +201,8 @@ const User = (props: any) => {
     currentChainInfo
   } = props;
 
+  const router = useRouter();
+
   const content = (
     <div className="bg-[url(/images/header/wallet-popover-bg.svg)] w-[205px] h-[218px] overflow-hidden">
       <div className="px-2.5 mt-[28px]">
@@ -248,12 +250,15 @@ const User = (props: any) => {
         </div>
         <div className="flex items-center gap-1 mt-2 ml-[4px]">
           <img src="/images/icon-faucet.svg" alt="" />
-          <div className="text-[12px] font-[300] leading-[1] font-Unbounded text-[#A6A6DB] underline hover:text-white cursor-pointer">
+          <div
+            onClick={() => router.push("/faucet")}
+            className="text-[12px] font-[300] leading-[1] font-Unbounded text-[#A6A6DB] underline hover:text-white cursor-pointer"
+          >
             Faucet
           </div>
         </div>
       </div>
-      <div className="w-full h-[1px] bg-[#A6A6DB] mt-3"></div>
+      <div className="w-full h-[1px] bg-[#A6A6DB] bg-opacity-10 mt-3"></div>
       <DisconnectButton setMobileUserInfoVisible={setMobileUserInfoVisible} />
     </div>
   );

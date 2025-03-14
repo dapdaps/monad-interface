@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import MovingGif from "./MovingGif";
 import clsx from "clsx";
 import { useRouter } from "next/navigation";
+import useAudioPlay from "@/hooks/use-audio";
+import withSound from "@/hoc/withSound";
 
 const itemWidth = 51;
 const itemGap = 6;
@@ -55,9 +57,21 @@ const Home = () => {
       >
         <div className="relative w-full h-full min-h-[635px] min-w-[1440px]">
           {/* Bridge */}
-          <div data-bp='1001-002' onClick={() => router.push('/bridge')} className="absolute left-[calc(70/14.4*var(--rem))] bottom-[calc(344/14.4*var(--rem))] w-[357px] h-[430px]">
+          <div
+            data-bp="1001-002"
+            data-click-sound
+            onClick={() => router.push("/bridge")}
+            className={
+              clsx('absolute left-[calc(70/14.4*var(--rem))] bottom-[calc(344/14.4*var(--rem))] w-[357px] h-[430px]', 
+                windowWidth >= 2560 ? 'scale-[1.3]' : '',
+                "bg-no-repeat bg-contain",
+                "transition-all duration-200 ease-in-out cursor-pointer",
+                "hover:scale-[1.02]",
+                "bg-[url(/images/monad/entry/bridge.svg)] hover:bg-[url(/images/monad/entry/bridge-hover.svg)]"
+              )
+            }
+          >
             <div className="relative w-full h-full">
-              <div className="w-full h-full top-0 left-0 bg-no-repeat bg-contain bg-[url(/images/monad/entry/bridge.svg)]"></div>
               <div className="absolute left-1/2 -translate-x-1/2 mr-[50px] top-0">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <img src="/images/monad/icon/bridge.svg" alt="" />
@@ -80,14 +94,15 @@ const Home = () => {
           </div>
           {/* yapper */}
           <div
-            data-bp='1001-005'
+            data-bp="1001-005"
             className={clsx(
               "z-[4] w-[378px] h-[290px] absolute right-[calc(280/14.4*var(--rem))]",
-              windowWidth > 1920 ? "0" : "-top-[calc(80/14.4*var(--rem))]"
+              "bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper-lock.svg)]",
+              windowWidth >= 1920 &&  windowWidth < 2560 ? "top-0 right-[calc(190/14.4*var(--rem))]" : "-top-[calc(80/14.4*var(--rem))]",
+              windowWidth >= 2560 ? "top-[80px] right-[calc(190/14.4*var(--rem))] scale-[1.3]" : ""
             )}
           >
             <div className="relative w-full h-full">
-              <div className="w-full h-full top-0 left-0 bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper-lock.svg)]"></div>
               <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <div className="w-full flex items-center justify-center">
@@ -120,12 +135,22 @@ const Home = () => {
           </div>
           {/* Faucet */}
           <div
-            data-bp='1001-004'
-            onClick={() => router.push('/faucet')}
-            className={clsx("z-[5] absolute  w-[514px] h-[330px]", windowWidth > 1920 ? 'left-1/2 -translate-x-1/2 ml-[50px] bottom-[calc(200/14.4*var(--rem))]': 'left-[calc(450/14.4*var(--rem))] bottom-[calc(235/14.4*var(--rem))]')}
+            data-bp="1001-004"
+            data-click-sound
+            onClick={() => router.push("/faucet")}
+            className={clsx(
+              "z-[5] absolute  w-[514px] h-[330px]",
+              windowWidth >= 1920
+                ? "left-1/2 -translate-x-1/2 -ml-[30px] bottom-[calc(200/14.4*var(--rem))]"
+                : "left-[calc(450/14.4*var(--rem))] bottom-[calc(235/14.4*var(--rem))]",
+              windowWidth >= 2560 ? 'scale-[1.3]' : '',
+              "bg-no-repeat bg-contain",
+              "transition-all duration-200 ease-in-out cursor-pointer",
+              "hover:scale-[1.02]",
+              "bg-[url(/images/monad/entry/data.svg)] hover:bg-[url(/images/monad/entry/data-hover.svg)]"
+            )}
           >
             <div className="relative w-full h-full">
-              <div className="w-full h-full top-0 left-0 bg-no-repeat bg-contain bg-[url(/images/monad/entry/data.svg)]"></div>
               <div className="absolute left-1/2 -translate-x-1/2 top-[-70px] cursor-pointer">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <img src="/images/monad/icon/faucet.svg" alt="" />
@@ -154,9 +179,20 @@ const Home = () => {
             </div>
           </div>
           {/* Dapps */}
-          <div data-bp="1001-006" onClick={() => router.push('/dapps')} className="z-[7] absolute -right-[calc(10/14.4*var(--rem))] bottom-[calc(83/14.4*var(--rem))] w-[513px] h-[445px]">
+          <div
+            data-bp="1001-006"
+            data-click-sound
+            onClick={() => router.push("/dapps")}
+            className={clsx('z-[7] absolute -right-[calc(10/14.4*var(--rem))] bottom-[calc(83/14.4*var(--rem))] w-[513px] h-[445px]', 
+              windowWidth >= 1920 ? 'right-0 bottom-[calc(40/14.4*var(--rem))]': '',
+              windowWidth >= 2560 ? 'scale-[1.3]' : '',
+              "bg-no-repeat bg-contain",
+              "transition-all duration-200 ease-in-out cursor-pointer",
+              "hover:scale-[1.02]",
+              "bg-[url(/images/monad/entry/dapps.svg)] hover:bg-[url(/images/monad/entry/dapps-hover.svg)]"
+            )}
+          >
             <div className="relative w-full h-full">
-              <div className="w-full h-full top-0 left-0 bg-no-repeat bg-contain bg-[url(/images/monad/entry/dapps.svg)]"></div>
               <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <img src="/images/monad/icon/dApps.svg" alt="" />
@@ -216,9 +252,20 @@ const Home = () => {
             </div>
           </div>
           {/* tokens */}
-          <div data-bp="1001-003" onClick={() => router.push('/market-place')} className="hover:cursor-pointer z-[5] absolute left-[calc(150/14.4*var(--rem))] bottom-[calc(78/14.4*var(--rem))] w-[514px] h-[444px]">
+          <div
+            data-bp="1001-003"
+            data-click-sound
+            onClick={() => router.push("/marketplace")}
+            className={clsx(
+              windowWidth >= 2560 ? 'scale-[1.3]' : '',
+              "hover:cursor-pointer z-[5] absolute left-[calc(150/14.4*var(--rem))] bottom-[calc(78/14.4*var(--rem))] w-[514px] h-[444px]", 
+              "bg-no-repeat bg-contain",
+              "transition-all duration-200 ease-in-out cursor-pointer",
+              "hover:scale-[1.02]",
+              "bg-[url(/images/monad/entry/tokens.svg)] hover:bg-[url(/images/monad/entry/tokens-hover.svg)]"
+            )}
+          >
             <div className="relative w-full h-full">
-              <div className="w-full h-full top-0 left-0 bg-no-repeat bg-contain bg-[url(/images/monad/entry/tokens.svg)]"></div>
               <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <img src="/images/monad/icon/tokens.svg" alt="" />
@@ -274,4 +321,4 @@ const Home = () => {
     </div>
   );
 };
-export default Home;
+export default withSound(Home);

@@ -27,3 +27,10 @@ export interface Chain {
   rpcUrls: string[];
   blockExplorers: string;
 }
+
+export interface IDapp {
+  name: string
+  icon: string
+  type: "bridge" | "swap" | "dex"
+  link?: string
+}

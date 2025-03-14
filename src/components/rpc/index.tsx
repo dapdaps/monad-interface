@@ -24,7 +24,7 @@ const StyledRpcs = styled.div<{ $color?: string }>`
   cursor: pointer;
   transition: opacity 0.2s linear;
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.50);
+  background: rgba(62, 52, 124, 0.60);
   padding: 4px 10px;
 
   backdrop-filter: blur(5px);
