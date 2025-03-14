@@ -1,10 +1,17 @@
-import { Contract, providers } from "ethers";
+import { Contract, providers, utils } from "ethers";
 import chains from "../config/chains";
 import BigNumber from "bignumber.js";
 import routerAbi from "../config/abi/router-trader-joe";
 import axios from "axios";
 import weth from "../config/weth";
 
+const Interface = new utils.Interface(routerAbi);
+console.log(
+  Interface.decodeFunctionData(
+    "swapExactIn",
+    "0xf1910f70000000000000000000000000b35033d71cf5e13cab5eb8618260f94363dff9cf0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f817257fed379853cde0fa4f97ab987181b1e5ea000000000000000000000000000000000000000000000000002386f26fc1000000000000000000000000000000000000000000000000000000000000000288ea000000000000000000000000229e549c97c22b139b8c05fba770d94c086853d80000000000000000000000000000000000000000000000000000000067d41efa000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000440200760afe86e5de5fa0ee542fc7b7b713e1c5425701f817257fed379853cde0fa4f97ab987181b1e5ea7ee1d8d858a6ca176d8394a2901023ee6748171827100101000100000000000000000000000000000000000000000000000000000000"
+  )
+);
 export class TraderJoe {
   private ROUTER_ABI = routerAbi;
   private BASE_PATH: { [key: number]: string } = {
@@ -69,41 +76,20 @@ export class TraderJoe {
 
     const options: any = {};
 
-    const pairBinSteps: number[] = [];
-    const versions: number[] = [];
-    const tokenPath: string[] = [];
-
-    bestRoute.tokenIn.swaps.forEach((leg: any, i: number) => {
-      pairBinSteps.push(leg.pair.data?.binStep || 0);
-      versions.push(leg.pair.type === "v2" ? 2 : 0);
-      if (i === 0) {
-        tokenPath.push(leg.tokenIn.address);
-      }
-      tokenPath.push(leg.tokenOut.address);
-    });
-
     const params = [
+      "0xb35033d71cf5e13cab5eb8618260f94363dff9cf",
+      inputCurrency.isNative
+        ? "0x0000000000000000000000000000000000000000"
+        : bestRoute.tokenIn.address,
+      outputCurrency.isNative
+        ? "0x0000000000000000000000000000000000000000"
+        : bestRoute.tokenOut.address,
+      bestRoute.amountIn,
       _amountOut,
-      {
-        pairBinSteps,
-        versions,
-        tokenPath
-      },
       account,
       deadline
     ];
-    let method = "";
-
-    if (inputCurrency.isNative) {
-      method = "swapExactNATIVEForTokens";
-      options.value = _amount;
-    } else if (outputCurrency.isNative) {
-      method = "swapExactTokensForNATIVE";
-      params.unshift(_amount);
-    } else {
-      method = "swapExactTokensForTokens";
-      params.unshift(_amount);
-    }
+    let method = "swapExactIn";
 
     const RouterContract = new Contract(
       this.ROUTER[inputCurrency.chainId],
