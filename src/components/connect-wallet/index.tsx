@@ -241,7 +241,7 @@ const User = (props: any) => {
           <div className="text-[12px] font-[300] leading-[1] font-Unbounded text-[#A6A6DB] underline hover:text-white cursor-pointer">Faucet</div>
         </div>
       </div>
-      <div className="w-full h-[1px] bg-[#A6A6DB] mt-3"></div>
+      <div className="w-full h-[1px] bg-[#A6A6DB] bg-opacity-10 mt-3"></div>
       <DisconnectButton setMobileUserInfoVisible={setMobileUserInfoVisible} />
     </div>
   );
