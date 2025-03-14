@@ -103,7 +103,7 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
         }
         const data = await quoter(params);
 
-        if (!data) {
+        if (!data?.outputCurrencyAmount) {
           throw new Error("No Data.");
         }
         setLoading(false);

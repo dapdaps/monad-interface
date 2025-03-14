@@ -1,12 +1,9 @@
 import izumi from "./izumi";
 import lfj from "./lfj";
+import pancake from "./pancake";
 
 export default {
   izumi,
-  lfj
+  lfj,
+  pancake
 } as Record<string, any>;
-
-export const dexs: Record<string, any> = {
-  izumi,
-  lfj
-};

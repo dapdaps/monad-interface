@@ -24,7 +24,7 @@ export default function Routes({
       {show && (
         <motion.div
           initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 160 }}
+          animate={{ opacity: 1, height: 140 }}
           exit={{ opacity: 0, height: 0 }}
           className="border border-[#373A53] rounded-[12px] mt-[10px] p-[10px]"
         >
