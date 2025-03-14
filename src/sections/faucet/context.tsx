@@ -9,12 +9,17 @@ import dayjs from 'dayjs';
 import { getUntilCurrentMonthCheckinList } from '@/sections/faucet/utils';
 import Big from 'big.js';
 import { HTTP_CODE } from '@/configs';
+import useAudioPlay from '@/hooks/use-audio';
 
 export const FaucetContext = createContext<Partial<IFaucetContext>>({});
 
 function FaucetContextProvider({ children }: { children: ReactNode; }) {
   const toast = useToast();
   const { account, accountWithAk } = useCustomAccount();
+  const {
+    playing: checkinPlaying,
+    play: checkinPlay,
+  } = useAudioPlay();
 
   const today = dayjs();
 
@@ -47,7 +52,7 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
       toast.success({
         title: 'Check-in successful!',
       });
-      await getCheckedList();
+      await getCheckedList({ isAfterCheckin: true });
     } catch (err: any) {
       console.log("Failed to check in: %o", err);
       toast.fail({
@@ -58,7 +63,9 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
     setCheckInPending(false);
   };
 
-  const getCheckedList = async () => {
+  const getCheckedList = async (params?: { isAfterCheckin?: boolean; }) => {
+    const { isAfterCheckin } = params || {};
+
     setLoading(true);
     try {
       const res = await get('https://test-api-monad.dapdap.net/api/checkin/list', {});
@@ -72,6 +79,9 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
         item.checkin_date = item.checkin_date > 0 ? dayjs(item.checkin_date * 1000).startOf("day").valueOf() : 0;
       });
       setCheckedList(_list);
+      if (isAfterCheckin) {
+        checkinPlay("/audios/checkin.mp3");
+      }
     } catch (err: any) {
       console.log("Failed to get check-in list: %o", err);
     }
