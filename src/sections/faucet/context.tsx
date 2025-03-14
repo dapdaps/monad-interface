@@ -61,7 +61,7 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
   const getCheckedList = async () => {
     setLoading(true);
     try {
-      const res = await get('/checkin/list', {});
+      const res = await get('https://test-api-monad.dapdap.net/api/checkin/list', {});
       if (res.code !== HTTP_CODE.OK) {
         setLoading(false);
         console.log("Failed to get check-in list: %o", res.message);
