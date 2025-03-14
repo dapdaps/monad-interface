@@ -38,7 +38,7 @@ export default function History({ pendingCount, historyCount, list, setIsOpen, a
                         <path d="M14 2.19995L8 6.99995L2 2.19995" stroke="black" stroke-width="3" stroke-linecap="round" />
                     </svg>
                 </div>
-                <h2 className="text-black text-[16px] font-[600] text-xl mb-3">My transactions</h2>
+                {/* <h2 className="text-black text-[16px] font-[600] text-xl mb-3">My transactions</h2> */}
                 <div className="flex gap-3 mb-4 bg-white border border-[#000] rounded-xl p-1">
                     <div
                         className={`flex flex-1 items-center gap-2 cursor-pointer rounded-xl px-4 py-2 ${activeTab === 'pending' ? 'bg-[#FFDC50]' : ''}`}
