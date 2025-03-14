@@ -1,15 +1,9 @@
-import bex from "./bex";
-import kodiak from "./kodiak";
-import oogaBooga from "./ooga-booga";
+import izumi from "./izumi";
 
 export default {
-  bex,
-  kodiak,
-  "ooga-booga": oogaBooga
+  izumi
 } as Record<string, any>;
 
 export const dexs: Record<string, any> = {
-  bex,
-  kodiak,
-  "ooga booga": oogaBooga
+  izumi
 };

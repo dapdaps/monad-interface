@@ -1,4 +1,4 @@
-import bex from "../swap/bex";
+import bex from "../swap/izumi";
 
 const contracts: { [key: number]: any } = {
   80094: {
