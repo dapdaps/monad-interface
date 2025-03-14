@@ -14,7 +14,15 @@ export const monad: { [key: string]: Token } = {
     icon: "/images/monad.svg",
     color: "#78350F"
   },
-
+  meth: {
+    chainId: CHAIN_ID,
+    address: "0x882c05FCfE15AC9241B9929cD34fE1Ca225d8950",
+    decimals: 18,
+    symbol: "METH",
+    name: "METH",
+    icon: "/assets/tokens/eth.png",
+    color: "#D2D2D2"
+  },
   dak: {
     address: "0x0f0bdebf0f83cd1ee3974779bcb7315f9808c714",
     chainId: CHAIN_ID,

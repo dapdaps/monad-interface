@@ -23,7 +23,7 @@ export default function Confirm({ show, onClose, fromChain, toChain, fromToken, 
   return (
     <Modal open={show} onClose={onClose}>
       <Card>
-        <div className='lg:w-[520px] md:w-full font-CherryBomb'>
+        <div className='lg:w-[520px] md:w-full '>
           <div className='text-center text-[26px] mt-[30px]'>
             Bridged Successful!
           </div>

@@ -111,7 +111,7 @@ export default function TokenAmout({
         </div>
       </div>
 
-      <div className="flex items-center justify-between text-[#75759D] mt-[10px] font-medium text-[12px]">
+      <div className="flex items-center justify-between text-[#A6A6DB] mt-[10px] font-medium text-[12px]">
         <div >${(token && tokenBalance) ? balanceFormated(prices[token.symbol.toUpperCase()] * (amount as any), 4) : '~'}</div>
           <div className={"flex items-center cursor-pointer"} onClick={() => {
             onAmountChange?.(tokenBalance)

@@ -171,7 +171,7 @@ export default {
     11155111: {
       chainId: 11155111,
       chainName: 'Sepolia',
-      icon: '/images/chains/chain-astar-zkevm.svg',
+      icon: 'https://assets.dapdap.net/images/bafkreicjsbkvvcxahxjejkctwopcnmzbeskxhfrkg7lyawhkhzrxcmvgfy.svg',
       nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
       rpcUrls: ['https://sepolia.drpc.org'],
       blockExplorers: 'https://sepolia.etherscan.io',

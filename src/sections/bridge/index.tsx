@@ -77,7 +77,7 @@ export default function Bridge() {
   const { address, chainId } = useAccount()
   const [limitBera, setLimitBera] = useState(0)
 
-  
+
 
   // const inputValue = useDebounce(amount, { wait: 500 });
 
@@ -123,7 +123,7 @@ export default function Bridge() {
         let symbol = token.symbol.toUpperCase()
         return tokenPairs[fromChain.chainId][fromToken.symbol.toUpperCase()] === symbol
       })
-    }); 
+    });
 
     return allTokens;
   }, [fromToken, fromChain])
@@ -146,7 +146,7 @@ export default function Bridge() {
     }
   }, [fromChain, fromToken])
 
-  useEffect(() => { 
+  useEffect(() => {
     setFromToken(allTokens[11155111][0])
     setToToken(allTokens[10143][1])
   }, [])
@@ -187,31 +187,11 @@ export default function Bridge() {
               setToToken(_toToken)
               setLimitBera(limitBera === 0 ? 1 : 0)
             }}>
-              <svg
-                className='cursor-pointer'
-                width='42'
-                height='42'
-                viewBox='0 0 42 42'
-                fill='none'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <rect
-                  x='2'
-                  y='2'
-                  width='38'
-                  height='38'
-                  rx='10'
-                  fill='#BC9549'
-                  stroke='#FFFDEB'
-                  stroke-width='4'
-                />
-                <path
-                  d='M21.4999 16V26.5M21.4999 26.5L16 21M21.4999 26.5L27 21'
-                  stroke='black'
-                  stroke-width='2'
-                  strokeLinecap='round'
-                />
+              <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="1" width="36" height="36" rx="7" fill="#75759D" stroke="#2B294A" stroke-width="2" />
+                <path d="M19.4999 14V24.5M19.4999 24.5L14 19M19.4999 24.5L25 19" stroke="white" stroke-width="2" stroke-linecap="round" />
               </svg>
+
             </div>
             <TokenAmout
               allTokens={_allTokens}
@@ -230,9 +210,9 @@ export default function Bridge() {
               }}
               comingSoon={ComingSoon}
             />
-            <div className='flex items-center justify-between pt-[17px] lg:pl-[20px] text-[14px] text-[#3D405A]'>
+            <div className='flex items-center justify-between pt-[17px] lg:pl-[20px] text-[14px] text-[#A6A6DB]'>
               <div>Receive address</div>
-              <div className='flex items-center gap-2'>
+              <div className='flex items-center gap-2 text-[#fff]'>
                 <div>{formatLongText(address, 6, 6)}</div>
                 {/* <div className='cursor-pointer bg-white w-[26px] h-[26px] border rounded-[8px] flex items-center justify-center'>
                 <svg
