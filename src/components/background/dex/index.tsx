@@ -7,21 +7,21 @@ export default function Bg() {
         animate={{ x: ["0%", "-105vw"] }}
         transition={{
           ease: "linear",
-          duration: 20,
+          duration: 30,
           repeat: Infinity
         }}
         src="/images/dex/car-l.gif"
-        className="w-[168px] h-[80px] absolute top-[480px] z-[2] right-[-168px]"
+        className="w-[164px] h-[80px] absolute top-[480px] z-[2] right-[-168px]"
       />
       <motion.img
         animate={{ x: ["0%", "105vw"] }}
         transition={{
           ease: "linear",
-          duration: 20,
+          duration: 30,
           repeat: Infinity
         }}
         src="/images/dex/car-r.gif"
-        className="w-[168px] h-[80px] absolute top-[480px] z-[2] left-[-168px]"
+        className="w-[164px] h-[80px] absolute top-[480px] z-[2] left-[-168px]"
       />
       <img
         src="/images/dex/p-1.gif"
