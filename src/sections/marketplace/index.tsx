@@ -4,10 +4,13 @@ import Jar from "./components/jar";
 
 export default memo(function MarketPlaceView() {
 
+  const NATIVE = {
+
+  }
   return (
     <Background>
       <div className="h-full flex justify-center">
-        <Jar />
+        <Jar tokens={[]} />
       </div>
     </Background>
   )
