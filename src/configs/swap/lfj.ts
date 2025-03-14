@@ -6,6 +6,6 @@ export default {
   path: "/dex/lfj",
   defaultInputCurrency: monad["mon"],
   tokens: {
-    10143: [monad["mon"], monad["wmon"], monad["usdt"]]
+    10143: [monad["mon"], monad["wmon"], monad["usdt"], monad["usdc"]]
   }
 };
