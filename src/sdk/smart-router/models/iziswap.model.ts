@@ -21,7 +21,7 @@ type QuoterProps = {
 
 export class iZiSwap {
   private MULTI: { [key: number]: string } = {
-    10143: ""
+    10143: "0x78F942F8F9110067c08183183c45903e5Dc2763A"
   };
   private LIQUIDITY_MANAGER: { [key: number]: string } = {
     10143: "0x1eE5eDC5Fe498a2dD82862746D674DB2a5e7fef6"

@@ -94,7 +94,7 @@ export default function CurrencyRow({
           <div className="text-[10px] flex items-center gap-[12px]">
             <div className="">{currency.name}</div>
             {currency.address !== "native" && (
-              <div className="text-[#3D405A] flex items-center gap-[10px] pointer-events-auto opacity-100">
+              <div className="text-[#A6A6DB] flex items-center gap-[10px] pointer-events-auto opacity-100">
                 <div className="">
                   {currency.address
                     ? `${currency.address.slice(

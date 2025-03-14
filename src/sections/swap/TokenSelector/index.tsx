@@ -105,7 +105,7 @@ export default function CurrencySelect({
 
   return (
     <Modal open={display} onClose={handleClose}>
-      <div className="w-[520px] p-[20px] bg-[#FFFDEB] md:w-full md:rounded-t-[20px]">
+      <div className="w-[520px] p-[20px] bg-[#2B294A] text-white border border-[#9892C0] rounded-[14px] md:w-full md:rounded-t-[20px]">
         <div className="flex items-center gap-[10px] cursor-pointer text-[20px]">
           <button
             type="button"
@@ -115,7 +115,7 @@ export default function CurrencySelect({
           <div>Select Token</div>
         </div>
         {showSearch && (
-          <div className="h-[52px] p-[18px] gap-[10px] mt-[25px] flex items-center rounded-[8px] border border-black bg-white">
+          <div className="h-[52px] p-[18px] gap-[10px] mt-[25px] flex items-center rounded-[8px] bg-white/5">
             {!searchVal && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -129,7 +129,7 @@ export default function CurrencySelect({
                   cx="7.01829"
                   cy="7.01829"
                   r="6.01829"
-                  stroke="#3D4159"
+                  stroke="#A6A6DB"
                   strokeWidth="2"
                 />
                 <rect
@@ -139,7 +139,7 @@ export default function CurrencySelect({
                   height="2.63186"
                   rx="1.31593"
                   transform="rotate(30 14.9141 9.6499)"
-                  fill="#3D4159"
+                  fill="#A6A6DB"
                 />
               </svg>
             )}
@@ -175,7 +175,7 @@ export default function CurrencySelect({
             )}
           </div>
         )}
-        <div className="flex items-center gap-[44px] text-[14px] px-[30px] py-[12px] border-b border-[##373A53]">
+        <div className="flex items-center gap-[44px] text-[14px] px-[30px] py-[12px] border-b border-[#373A53]">
           {!!onImport &&
             TABS.map((_tab) => (
               <div

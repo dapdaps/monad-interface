@@ -6,8 +6,8 @@
   width: 100%;
   appearance: none;
   -webkit-appearance: none;
-  background: #dfdcc4;
-  height: 8px;
+  background: #2b294a;
+  height: 4px;
   border-radius: 16px;
   margin: 0 auto;
   outline: none;
@@ -15,10 +15,10 @@
 
 .range input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  background-color: #ffdc50;
+  background-color: #baaffc;
   border: 1px solid #000;
-  width: 22px;
-  height: 22px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   position: relative;
   z-index: 5;

@@ -4,7 +4,6 @@ import { useImportTokensStore } from "@/stores/import-tokens";
 import { useDebounceFn } from "ahooks";
 import { usePriceStore } from "@/stores/usePriceStore";
 import useAccount from "@/hooks/use-account";
-import Card from "@/components/card";
 import Header from "../Header";
 import TokenAmount from "../TokenAmount";
 import Fees from "../Fees";
@@ -128,11 +127,17 @@ export default function Swap({
   }, [trade]);
 
   return (
-    <Card>
+    <>
       <Header
         showSetting={showSetting}
         style={{ justifyContent: "space-between" }}
-        title={from === "marketplace" ? `GET ${outputCurrency.symbol}` : ""}
+        title={
+          from === "marketplace"
+            ? `GET ${outputCurrency.symbol}`
+            : `Swap via ${dapp.name}`
+        }
+        loading={loading}
+        onQuoter={onQuoter}
       />
       <div className="md:max-h-[calc(100dvh-210px)] md:overflow-y-auto">
         <TokenAmount
@@ -244,6 +249,6 @@ export default function Swap({
         }}
         onSelect={onSelectToken}
       />
-    </Card>
+    </>
   );
 }

@@ -6,6 +6,7 @@ import Loading from "@/components/circle-loading";
 import Range from "@/components/range";
 import { motion } from "framer-motion";
 import Big from "big.js";
+import clsx from "clsx";
 
 export default function TokenAmout({
   type,
@@ -19,6 +20,7 @@ export default function TokenAmout({
   onUpdateCurrencyBalance,
   updater
 }: any) {
+  const [focus, setFocus] = useState(false);
   const tokenPrice = useMemo(
     () => (currency ? prices[currency.priceKey || currency.symbol] : 0),
     [prices, currency]
@@ -64,12 +66,36 @@ export default function TokenAmout({
   }, [updater]);
 
   return (
-    <div className="border border-[#000] rounded-[12px] p-[14px] bg-white">
-      <div className="flex items-center justify-between gap-[10px]">
+    <div
+      className={clsx(
+        "border rounded-[6px] p-[14px]",
+        focus ? "border-[#fff] bg-[#4D4D73]" : "border-[transparent] bg-white/5"
+      )}
+      onFocus={() => {
+        setFocus(true);
+      }}
+      onBlur={() => {
+        setFocus(false);
+      }}
+    >
+      <div className="flex items-center justify-between gap-[10px] text-white">
+        <div className="flex-1">
+          <input
+            className="w-[100%] h-[100%] text-[26px] bg-[transparent]"
+            value={amount}
+            onChange={(ev) => {
+              if (isNaN(Number(ev.target.value))) return;
+              const val = ev.target.value.replace(/\s+/g, "");
+              onAmountChange?.(val);
+              setRange(val);
+            }}
+            placeholder="0"
+          />
+        </div>
         <div
           className={`${
-            outputCurrencyReadonly ? "" : "border bg-[#FFFDEB]"
-          } flex items-center justify-between border-[#000] rounded-[8px]  w-[176px] h-[46px] px-[7px] cursor-pointer`}
+            outputCurrencyReadonly ? "" : "border bg-[#4D4D73]"
+          } flex items-center justify-between border-[#ACACE2] rounded-[8px]  w-[176px] h-[46px] px-[7px] cursor-pointer`}
           onClick={() => {
             onCurrencySelectOpen();
           }}
@@ -99,47 +125,34 @@ export default function TokenAmout({
             >
               <path
                 d="M1 1L6 5L11 1"
-                stroke="black"
+                stroke="white"
                 strokeWidth="2"
                 strokeLinecap="round"
               />
             </svg>
           )}
         </div>
-        <div className="flex-1">
-          <input
-            className="w-[100%] h-[100%] text-[26px] text-right"
-            value={amount}
-            onChange={(ev) => {
-              if (isNaN(Number(ev.target.value))) return;
-              const val = ev.target.value.replace(/\s+/g, "");
-              onAmountChange?.(val);
-              setRange(val);
-            }}
-            placeholder="0"
-          />
-        </div>
       </div>
 
       {type === "in" && (
         <div className="flex justify-between md:flex-col md:items-stretch md:justify-start items-center gap-[22px] mt-[12px]">
+          <Range
+            style={{ marginTop: 0, flex: 1 }}
+            value={percent}
+            onChange={handleRangeChange}
+          />
           <div className="flex items-center gap-[8px]">
             {BalancePercentList.map((p) => (
               <motion.div
                 key={p.value}
-                className="cursor-pointer h-[22px] rounded-[6px] border border-[#373A53] text-black text-[14px] font-[400] px-[8px]"
-                animate={percent == p.value ? { background: "#FFDC50" } : {}}
+                className="cursor-pointer h-[22px] rounded-[6px] text-[#A6A6DB] text-[10px] font-[400] px-[8px] hover:underline hover:text-white"
+                animate={percent == p.value ? { color: "#fff" } : {}}
                 onClick={() => handleRangeChange({ target: p })}
               >
                 {p.label}
               </motion.div>
             ))}
           </div>
-          <Range
-            style={{ marginTop: 0, flex: 1 }}
-            value={percent}
-            onChange={handleRangeChange}
-          />
         </div>
       )}
 
@@ -150,8 +163,14 @@ export default function TokenAmout({
           onAmountChange?.(tokenBalance);
           setRange(tokenBalance);
         }}
-        className="flex items-center justify-between text-[#3D405A] mt-[10px] font-medium text-[12px]"
+        className="flex items-center justify-between text-[#75759D] mt-[10px] font-medium text-[12px]"
       >
+        <div>
+          $
+          {amount && tokenPrice
+            ? balanceFormated(Big(amount).mul(tokenPrice).toString())
+            : "-"}
+        </div>
         <div className="flex items-center gap-[4px]">
           balance:{" "}
           {isLoading ? (
@@ -165,12 +184,6 @@ export default function TokenAmout({
               {currency ? balanceFormated(tokenBalance) : "-"}
             </span>
           )}
-        </div>
-        <div>
-          $
-          {amount && tokenPrice
-            ? balanceFormated(Big(amount).mul(tokenPrice).toString())
-            : "-"}
         </div>
       </div>
     </div>

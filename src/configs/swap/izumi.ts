@@ -1,7 +1,7 @@
 import { monad } from "../tokens/monad-testnet";
 
 export default {
-  name: "iZiSwap",
+  name: "iZumi",
   logo: "/assets/dapps/izi-swap.png",
   path: "/dex/izumi",
   defaultInputCurrency: monad["mon"],

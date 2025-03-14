@@ -2,31 +2,30 @@ export default function ExchangeIcon({ onClick }: any) {
   return (
     <div
       onClick={onClick}
-      className='h-[8px] flex justify-center items-center duration-500'
+      className="h-[8px] flex justify-center items-center duration-500"
     >
       <svg
-        className=' cursor-pointer'
-        width='42'
-        height='42'
-        viewBox='0 0 42 42'
-        fill='none'
-        xmlns='http://www.w3.org/2000/svg'
+        xmlns="http://www.w3.org/2000/svg"
+        width="38"
+        height="38"
+        viewBox="0 0 38 38"
+        fill="none"
       >
         <rect
-          x='2'
-          y='2'
-          width='38'
-          height='38'
-          rx='10'
-          fill='#BC9549'
-          stroke='#FFFDEB'
-          stroke-width='4'
+          x="1"
+          y="1"
+          width="36"
+          height="36"
+          rx="7"
+          fill="#75759D"
+          stroke="#2C2A4B"
+          strokeWidth="2"
         />
         <path
-          d='M21.4999 16V26.5M21.4999 26.5L16 21M21.4999 26.5L27 21'
-          stroke='black'
-          stroke-width='2'
-          strokeLinecap='round'
+          d="M19.4999 14V24.5M19.4999 24.5L14 19M19.4999 24.5L25 19"
+          stroke="white"
+          strokeWidth="2"
+          strokeLinecap="round"
         />
       </svg>
     </div>
