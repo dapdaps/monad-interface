@@ -68,7 +68,7 @@ export default memo(function Dapps() {
     link: "",
   },]
 
-  
+
   const FILTER_LEFT_DAPP_LIST = useMemo(() => LEFT_DAPP_LIST.filter((dapp: IDapp) => dapp.type === activeType || activeType === "all"), [activeType])
   const FILTER_RIGHT_DAPP_LIST = useMemo(() => RIGHT_DAPP_LIST.filter((dapp: IDapp) => dapp.type === activeType || activeType === "all"), [activeType])
 
@@ -98,8 +98,8 @@ export default memo(function Dapps() {
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 w-[470px] h-[136px] bg-[url('/images/dapps/operation_panel.svg')] bg-center bg-contain bg-no-repeat">
           <RectangularButton
             type={1}
-            bgColor={activeType === 'all' ? "bg-[#A5FFFD]" : "bg-[#A6A6D2]"}
-            className={clsx("absolute left-[52px] top-[24px] w-[178px] h-[36px]", activeType === 'all' ? 'bg-[#A5FFFD] drop-shadow-[0_0_10px_rgba(165, 255, 253, 0.60)]' : 'bg-[#A6A6D2] drop-shadow-[0_6px_0_#000]')}
+            clicked={activeType === 'all'}
+            className="absolute left-[52px] top-[24px] w-[178px] h-[36px]"
             onClick={() => setActiveType("all")}
           >
             All
@@ -107,8 +107,8 @@ export default memo(function Dapps() {
           <div className="absolute left-[46px] top-[71px] flex gap-[10px]">
             <RectangularButton
               type={1}
-              bgColor={activeType === 'bridge' ? "bg-[#A5FFFD]" : "bg-[#A6A6D2]"}
-              className={clsx("w-[86px] h-[36px]", activeType === 'bridge' ? 'bg-[#A5FFFD] drop-shadow-[0_0_10px_rgba(165, 255, 253, 0.60)]' : 'bg-[#A6A6D2] drop-shadow-[0_6px_0_#000]')}
+              clicked={activeType === 'bridge'}
+              className="w-[86px] h-[36px]"
               onClick={() => setActiveType("bridge")}
             >
               Bridge
@@ -116,8 +116,8 @@ export default memo(function Dapps() {
 
             <RectangularButton
               type={3}
-              bgColor={activeType === 'dex' ? "bg-[#A5FFFD]" : "bg-[#A6A6D2]"}
-              className={clsx("w-[88px] h-[36px]", activeType === 'dex' ? 'bg-[#A5FFFD] drop-shadow-[0_0_10px_rgba(165, 255, 253, 0.60)]' : 'bg-[#A6A6D2] drop-shadow-[0_6px_0_#000]')}
+              clicked={activeType === 'dex'}
+              className="w-[88px] h-[36px]"
               onClick={() => setActiveType("dex")}
             >
               Dex
@@ -125,17 +125,17 @@ export default memo(function Dapps() {
 
             <RectangularButton
               type={3}
-              bgColor={activeType === 'lending' ? "bg-[#A5FFFD]" : "bg-[#A6A6D2]"}
-              className={clsx("w-[86px] h-[36px]", activeType === 'lending' ? 'bg-[#A5FFFD] drop-shadow-[0_0_10px_rgba(165, 255, 253, 0.60)]' : 'bg-[#A6A6D2] drop-shadow-[0_6px_0_#000]')}
-              onClick={() => setActiveType("lending")}
+              disabled
+              clicked={activeType === 'lending'}
+              className="w-[86px] h-[36px]"
             >
               Lending
             </RectangularButton>
             <RectangularButton
               type={2}
-              bgColor={activeType === 'staking' ? "bg-[#A5FFFD]" : "bg-[#A6A6D2]"}
-              className={clsx("w-[86px] h-[36px]", activeType === 'staking' ? 'bg-[#A5FFFD] drop-shadow-[0_0_10px_rgba(165, 255, 253, 0.60)]' : 'bg-[#A6A6D2] drop-shadow-[0_6px_0_#000]')}
-              onClick={() => setActiveType("staking")}
+              disabled
+              clicked={activeType === 'staking'}
+              className="w-[86px] h-[36px]"
             >
               Staking
             </RectangularButton>
@@ -143,6 +143,20 @@ export default memo(function Dapps() {
 
         </div>
       </div>
+
+
+      <audio
+        src={""}
+        autoPlay
+        style={{
+          width: 0,
+          height: 0,
+          position: "absolute",
+          zIndex: -9999,
+          visibility: "hidden",
+          opacity: 0
+        }}
+      />
     </div>
   )
 })
