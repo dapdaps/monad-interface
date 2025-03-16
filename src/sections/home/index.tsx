@@ -73,6 +73,9 @@ const Home = () => {
             }
           >
             <div className="relative w-full h-full">
+              <div className="w-[84px] h-[115px] absolute right-[119px] top-[92px]">
+                <img src="/images/monad/entry/aperture.gif" className="w-full h-full" alt="" />
+              </div>
               <div className="absolute left-1/2 -translate-x-1/2 mr-[50px] top-0">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <img src="/images/monad/icon/bridge.svg" alt="" />
