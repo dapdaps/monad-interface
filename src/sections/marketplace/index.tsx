@@ -77,30 +77,36 @@ export default memo(function MarketPlaceView() {
   }, [market, activeType])
 
 
+  function hasNextLevel(array, i, key) {
+    return i - 1 > -1 && (Big(array?.[i - 1]?.[key] ?? 0).gt(0) && Big(array?.[i]?.[key] ?? 0).eq(0)) ||
+      Big(array?.[i - 1]?.[key] ?? 0).gt(0) && Big(array?.[i - 1]?.[key] ?? 0).lt(0) ||
+      Big(array?.[i - 1]?.[key] ?? 0).eq(0) && Big(array?.[i]?.[key] ?? 0).lt(0)
+  }
   function handleSort(tokens: IToken[], type: "price" | "volume") {
     const key = type === "price" ? "price_change_percent_24h" : "volume_24h"
     const sortTokens = tokens?.sort((prev: IToken, next: IToken) => Big(prev?.[key] ?? 0).gt(next?.[key] ?? 0) ? -1 : 1)
-    const array: IToken[][] = []
-    const max_col = 2
-    const max_row = Math.ceil(sortTokens.length / max_col)
-    const h = 100 / max_row
-    let col = 1, row = 0
+    const array: IToken[] = []
+    // const max_col = 2
+    // const max_row = 3
+    const next_level_length = sortTokens.filter((_, i) => hasNextLevel(sortTokens, i, key))?.length
+    const h = 100 / (sortTokens.length + next_level_length)
     for (let i = 0; i < sortTokens.length; i++) {
-      if (i % max_col === 0) {
-        col = 1
-        row += 1
+      let next_level = false
+      if (hasNextLevel(sortTokens, i, key)) {
+        next_level = true
       } else {
-        col += 1
+        next_level = false
       }
-      const x = col === 1 ? (Math.random() * 20 + 70) : (Math.random() * 20 + 30)
-      const y = col === 1 ? row * h - h / 2 : row * h - h / 4
+      const row = Math.ceil(i / 2)
+      const x = i % 2 === 0 ? (Math.random() * 20 + 70) : (Math.random() * 20 + 30)
+      const y = h * (i + 1) + ((i % 2 === 0 ? 1 / 4 : -1 / 4) + next_level ? 1 : 0) * h / 6
       array.push({
         ...sortTokens[i],
         x,
-        y
+        y //: y - (row - 1) * h * 1 / 4
       })
-
     }
+
     return array
   }
   return (
