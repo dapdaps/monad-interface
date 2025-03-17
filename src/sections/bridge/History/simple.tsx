@@ -10,9 +10,9 @@ export default function Simple({
   setActiveTab: (tab: string) => void;
 }) {
   return (
-    <div className="rounded-2xl p-4 relative font-Unbounded">
+    <div className="p-4 relative font-Unbounded">
       <div
-        className="absolute top-[30px] cursor-pointer right-[20px]"
+        className="absolute top-[30px] cursor-pointer right-[30px]"
         onClick={() => setIsOpen(true)}
       >
         <svg
@@ -75,13 +75,13 @@ export default function Simple({
           </defs>
         </svg>
       </div>
-      <div className="flex gap-3 mr-[100px] py-2">
+      <div className="flex gap-3 mr-[40px] pt-[10px] text-[14px]">
         <div
           onClick={() => {
             setIsOpen(true);
             setActiveTab("pending");
           }}
-          className="flex flex-1 items-center gap-2 cursor-pointer text-[#fff] px-4 text-[14px] border-r border-[#958FBC]"
+          className="flex flex-1 items-center justify-center gap-2 cursor-pointer text-center text-[#fff] px-4 text-[14px] h-[18px] border-r border-[#958FBC4D]"
         >
           <span className="whitespace-nowrap overflow-hidden text-ellipsis">
             {pendingCount} Pending
@@ -93,7 +93,7 @@ export default function Simple({
             setIsOpen(true);
             setActiveTab("history");
           }}
-          className="flex flex-1 items-center text-[#fff] gap-2 cursor-pointer px-4 border-r border-[#958FBC]"
+          className="flex flex-1 items-center justify-center text-[#fff] text-center gap-2 cursor-pointer px-4 border-r h-[18px] border-[#958FBC4D]"
         >
           <span className="whitespace-nowrap overflow-hidden text-ellipsis">
             {historyCount} History

@@ -217,7 +217,6 @@ export async function execute(request: ExecuteRequest, signer: Signer): Promise<
     // const receipt = await transactionResponse.wait()
     // const txHash = receipt.transactionHash;
     return transactionResponse.hash ? transactionResponse.hash : null
-
 }
 
 export async function getQuote(quoteRequest: QuoteRequest, signer: Signer): Promise<QuoteResponse | null> {
