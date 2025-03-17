@@ -100,6 +100,7 @@ export default function Bridge() {
     selectedRoute,
     routes,
     executeRoute,
+    getStatus,
   } = useBridge({
     originFromChain: chains[11155111],
     originToChain: chains[10143],
@@ -269,7 +270,7 @@ export default function Bridge() {
             }}
           />
         </div>
-        <History activeTab={activeTab} setActiveTab={setActiveTab} isOpen={historyShow} setIsOpen={setHistoryShow} />
+        <History activeTab={activeTab} getStatus={getStatus} setActiveTab={setActiveTab} isOpen={historyShow} setIsOpen={setHistoryShow} />
       </div>
     </>
   );
