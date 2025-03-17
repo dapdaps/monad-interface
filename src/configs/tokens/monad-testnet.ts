@@ -41,7 +41,6 @@ export const monad: { [key: string]: Token } = {
     icon: "/assets/tokens/yaki.png",
     color: "#78350F"
   },
-
   chog: {
     address: "0xe0590015a873bf326bd645c3e1266d4db41c4e6b",
     chainId: CHAIN_ID,
@@ -57,7 +56,7 @@ export const monad: { [key: string]: Token } = {
     symbol: "WMON",
     decimals: 18,
     name: "Wrapped Monad",
-    icon: "/assets/tokens/yaki.png",
+    icon: "/assets/tokens/wmon.png",
     color: "#78350F"
   },
   usdc: {
@@ -111,7 +110,7 @@ export const monad: { [key: string]: Token } = {
     symbol: "DOF",
     decimals: 18,
     name: "Doge Face",
-    icon: "",
+    icon: "/assets/tokens/dof.png",
     color: "#78350F"
   },
   b3m: {
@@ -129,7 +128,7 @@ export const monad: { [key: string]: Token } = {
     symbol: "DOGFOOD",
     decimals: 18,
     name: "Anago's Dog Food",
-    icon: "",
+    icon: "/assets/tokens/dogfood.png",
     color: "#78350F"
   }
 };

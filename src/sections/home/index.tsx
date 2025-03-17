@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { useRouter } from "next/navigation";
 import useAudioPlay from "@/hooks/use-audio";
 import withSound from "@/hoc/withSound";
+import LazyImage from "@/components/layz-image";
 
 const itemWidth = 51;
 const itemGap = 6;
@@ -72,6 +73,9 @@ const Home = () => {
             }
           >
             <div className="relative w-full h-full">
+              <div className="w-[84px] h-[115px] absolute right-[119px] top-[92px]">
+                <img src="/images/monad/entry/aperture.gif" className="w-full h-full" alt="" />
+              </div>
               <div className="absolute left-1/2 -translate-x-1/2 mr-[50px] top-0">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <img src="/images/monad/icon/bridge.svg" alt="" />
@@ -183,7 +187,7 @@ const Home = () => {
             data-bp="1001-006"
             data-click-sound
             onClick={() => router.push("/dapps")}
-            className={clsx('z-[7] absolute -right-[calc(10/14.4*var(--rem))] bottom-[calc(83/14.4*var(--rem))] w-[513px] h-[445px]', 
+            className={clsx('z-[7] absolute -right-[calc(10/14.4*var(--rem))] bottom-[calc(83/14.4*var(--rem))] w-[519px] h-[451px]', 
               windowWidth >= 1920 ? 'right-0 bottom-[calc(40/14.4*var(--rem))]': '',
               windowWidth >= 2560 ? 'scale-[1.3]' : '',
               "bg-no-repeat bg-contain",
@@ -248,6 +252,14 @@ const Home = () => {
                     ))}
                   </motion.div>
                 </div>
+              </div>
+              <div className="absolute top-[236px] left-1/2 -translate-x-1/2 w-[100px] h-[100px]">
+                <LazyImage
+                src='/images/monad/entry/dapps.gif'
+                className='w-[100px] h-[100px]'
+                width={100}
+                height={100}
+                fallbackSrc='/images/monad/entry/default-dapps-gif.png' />
               </div>
             </div>
           </div>
