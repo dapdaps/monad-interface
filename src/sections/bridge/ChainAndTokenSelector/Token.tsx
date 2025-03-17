@@ -43,7 +43,6 @@ const Container = styled.div`
     }
     .token-name {
       font-size: 14px;
-      font-weight: 600;
       line-height: 16.8px;
       margin-left: 10px;
     }

@@ -24,12 +24,6 @@ export async function getQuote(request: QuoteRequest, signer: Signer): Promise<Q
 
     let tokenPair = tokenPairs[request.fromChainId][request.fromToken.symbol.toUpperCase()]
 
-    if (Number(request.fromChainId) === 80094
-        && request.fromToken.symbol.toUpperCase() === 'WETH'
-        && [5000, 43114, 56].includes(Number(request.toChainId))
-    ) {
-        tokenPair = 'WETH'
-    }
 
     console.log(tokenPair, request.toToken.symbol.toUpperCase())
 

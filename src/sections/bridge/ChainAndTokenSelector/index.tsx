@@ -106,9 +106,8 @@ const TokenWapper = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 21.6px;
+  font-size: 14px;
+  line-height: 16px;
 `;
 
 const TokenTop = styled.div`
@@ -146,7 +145,6 @@ const ChainGroup = styled.div`
     align-items: center;
     gap: 10px;
     font-size: 14px;
-    font-weight: 600;
     padding-left: 20px;
     margin-top: 10px;
     &.cc-selected {
@@ -312,7 +310,7 @@ const TokenListComp = forwardRef(function TokenListComp(
               </svg>
             </div>
           </div>
-          {newFilterChain?.filter((chain: any) => limitBera ? chain.chainId === 80094 : chain.chainId !== 80094).map((item: any) => {
+          {newFilterChain?.filter((chain: any) => limitBera ? chain.chainId === 10143 : chain.chainId !== 10143).map((item: any) => {
             if (item.chainId === chain.chainId) {
               return;
             }
@@ -473,8 +471,8 @@ export default function ChainAndTokenSelector({
   }, [idSuffix, currentChain]);
 
   return (
-    <Modal open={true} onClose={onClose} >
-      <Container ref={wapperRef} className='border lg:w-[520px] font-[#000000] border-[#000000] rounded-[30px] bg-[#FFFDEB] lg:shadow-[10px_10px_0px_0px_#00000040]'>
+    <Modal open={true} onClose={onClose} closeIconClassName="mt-[-10px]" >
+      <Container ref={wapperRef} className='border lg:w-[520px] font-[#000000] border-[#000000] text-[#fff] rounded-[30px] bg-[#2B294A] lg:shadow-[10px_10px_0px_0px_#00000040]'>
         <ChainWapper>
           <Title style={{ paddingLeft: 20 }}>Chain</Title>
           {hoverChain && (
@@ -489,7 +487,7 @@ export default function ChainAndTokenSelector({
               setHoverChain(null);
             }}
           >
-            {sortedChainList?.filter((chain) => limitBera ? chain.chainId === 80094 : chain.chainId !== 80094).map((chain) => {
+            {sortedChainList?.filter((chain) => limitBera ? chain.chainId === 10143 : chain.chainId !== 10143).map((chain) => {
               return (
                 <div
                   key={chain.chainId}
