@@ -79,11 +79,11 @@ export default function History({ pendingCount, historyCount, list, setIsOpen, a
 }
 
 function HistoryItem({ item }: { item: any }) {
-    const action_tokens = JSON.parse(item.action_tokens)
-    const fromToken = _allTokens[item.chain_id][action_tokens[0].toUpperCase()]
-    let toToken = _allTokens[item.to_chain_id]?.[tokenPairs[item.chain_id]?.[action_tokens[0].toUpperCase()]?.toUpperCase()]
+    // const action_tokens = JSON.parse(item.action_tokens)
+    // const fromToken = _allTokens[item.chain_id][action_tokens[0].toUpperCase()]
+    // let toToken = _allTokens[item.to_chain_id]?.[tokenPairs[item.chain_id]?.[action_tokens[0].toUpperCase()]?.toUpperCase()]
 
-
+    const extra_data = item.extra_data
 
 
     // console.log(_allTokens[item.chain_id], action_tokens)
@@ -94,29 +94,29 @@ function HistoryItem({ item }: { item: any }) {
                 <div className="flex items-center gap-2">
                     <div className="flex items-center gap-2">
                         <div className="w-[30px] h-[30px] relative">
-                            <img className='w-full h-full object-contain' src={fromToken?.icon} />
-                            <img className='w-[10px] h-[10px] object-contain border border-[#000] rounded-full absolute bottom-0 right-0' src={chains[item.chain_id].icon} />
+                            <img className='w-full h-full object-contain' src={extra_data?.fromTokenLogo} />
+                            <img className='w-[10px] h-[10px] object-contain border border-[#000] rounded-full absolute bottom-0 right-0' src={extra_data?.fromChainLogo} />
                         </div>
                         <div>
-                            {balanceFormated(item.action_amount)}<br />{fromToken?.symbol}
+                            {balanceFormated(extra_data?.fromAmount)}<br />{extra_data?.fromTokenSymbol}
                         </div>
                     </div>
                     <span>→</span>
                     <div className="flex items-center gap-2">
                         <div className="w-[30px] h-[30px] relative">
-                            <img className='w-full h-full object-contain' src={toToken?.icon} />
-                            <img className='w-[10px] h-[10px] object-contain border border-[#000] rounded-full absolute bottom-0 right-0' src={chains[item.to_chain_id].icon} />
+                            <img className='w-full h-full object-contain' src={extra_data?.toTokenLogo} />
+                            <img className='w-[10px] h-[10px] object-contain border border-[#000] rounded-full absolute bottom-0 right-0' src={extra_data?.toChainLogo} />
                         </div>
                         <div>
-                            {balanceFormated(item.action_amount)}<br />{toToken?.symbol}
+                            {balanceFormated(extra_data.action_amount)}<br />{extra_data?.toTokenSymbol}
                         </div>
                     </div>
                 </div>
                 <div className="text-sm text-gray-500 flex justify-between items-center">
                     <div>
-                        {formatEnglishDate(new Date(item.create_time).getTime())}
+                        {formatEnglishDate(extra_data.time)}
                         {
-                            <a target='_blank' href={`${chains[item.chain_id].blockExplorers}/tx/${item.tx_id}`} className="ml-2 text-blue-500 underline">Tx</a>
+                            <a target='_blank' href={`${chains[extra_data?.fromChainId].blockExplorers}/tx/${item.tx_id}`} className="ml-2 text-blue-500 underline">Tx</a>
                         }
                     </div>
                     <div>
