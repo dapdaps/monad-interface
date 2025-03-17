@@ -23,11 +23,11 @@ export default function Confirm({ show, onClose, fromChain, toChain, fromToken, 
   return (
     <Modal open={show} onClose={onClose}>
       <Card>
-        <div className='lg:w-[520px] md:w-full '>
+        <div className='lg:w-[520px] md:w-full text-[#fff]'>
           <div className='text-center text-[26px] mt-[30px]'>
             Bridged Successful!
           </div>
-          <div className='flex items-center justify-between mt-[35px] text-[20px]'>
+          <div className='flex items-center justify-between mt-[35px] text-[16px]'>
             <div className='flex-1 text-right pr-[40px]'>
               <div>{amount} {fromToken.symbol} </div>
               <div>on { fromChain.chainName }</div>
@@ -43,7 +43,7 @@ export default function Confirm({ show, onClose, fromChain, toChain, fromToken, 
                 fillRule='evenodd'
                 clipRule='evenodd'
                 d='M15.2436 14.9693C15.2436 15.7893 16.1764 16.2608 16.8367 15.7744L26.3174 8.79067C26.86 8.39101 26.86 7.58004 26.3174 7.18038L16.8367 0.196655C16.1764 -0.289721 15.2436 0.181718 15.2436 1.0018V3.34944C15.2436 3.90173 14.7959 4.34944 14.2436 4.34944H1C0.447715 4.34944 0 4.79716 0 5.34944V10.0622C0 10.6145 0.447716 11.0622 1 11.0622H14.2436C14.7959 11.0622 15.2436 11.5099 15.2436 12.0622V14.9693Z'
-                fill='black'
+                fill='white'
               />
             </svg>
 
@@ -124,11 +124,11 @@ export default function Confirm({ show, onClose, fromChain, toChain, fromToken, 
             <div onClick={() => {
               onClose()
               showHistory()
-            }} className='flex text-[18px] h-[60px] items-center justify-center border border-[#373A53] flex-1 rounded-[12px] bg-white cursor-pointer'>
+            }} className='flex text-[16px] h-[60px] items-center justify-center flex-1 bg-[#8B87FF] rounded-[6px] cursor-pointer'>
               View History
             </div>
-            <div onClick={onClose} className='flex text-[18px] h-[60px] items-center justify-center border border-[#373A53] flex-1 rounded-[12px] bg-white cursor-pointer'>
-              Back to Bera Town
+            <div onClick={onClose} className='flex text-[16px] h-[60px] items-center bg-[#8B87FF] rounded-[6px] justify-center flex-1 cursor-pointer'>
+              Back to Monad
             </div>
           </div>
         </div>

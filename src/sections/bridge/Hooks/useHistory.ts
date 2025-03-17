@@ -17,7 +17,7 @@ export const useHistory = () => {
         const res = await http.get(`/action/get-actions-by-type`, {
             action_type: 'Bridge',
             page: 1,
-            page_size: 99999,
+            page_size: 1000,
         })
 
         setData(res?.data?.data || [])

@@ -5,11 +5,13 @@ import { approve } from './util/approve'
 import { getIcon, getAllToken, getChainScan, getBridgeMsg } from './util/index'
 import { getQuoteInfo, setQuote } from './util/routerController'
 import { getQuote as getOwltoRoute, execute as executeOwlto, getStatus as getOwltoStatus } from './bridges/owlto'
+import { getQuote as getOrbiterRoute, execute as executeOrbiter, getStatus as getOrbiterStatus } from './bridges/orbiter'
 
 import { ExecuteRequest, QuoteRequest, QuoteResponse, StatusParams, StatusRes } from './type'
 
 const executeTypes: any = {
     executeOwlto,
+    executeOrbiter,
 }
 
 
@@ -55,10 +57,14 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer, callb
         case 'owlto':
           quoteP.push(getOwltoRoute(quoteRequest, signer))
           break;
+        case 'orbiter':
+          quoteP.push(getOrbiterRoute(quoteRequest, signer))
+          break;
       }
     }
   } else {
     const owltoRoute = getOwltoRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('owlto:', e))
+    // const orbiterRoute = getOrbiterRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('orbiter:', e))
     quoteP.push(owltoRoute)
   }
 
@@ -93,5 +99,8 @@ export async function getStatus(params: StatusParams, engine: string, signer: Si
   const _engine = engine.toLocaleLowerCase()
   if (_engine === 'owlto') {
     return getOwltoStatus(params)
+  }
+  if (_engine === 'orbiter') {
+    return getOrbiterStatus(params)
   }
 }

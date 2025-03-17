@@ -18,7 +18,6 @@ Object.keys(allTokens).forEach((chainId: string) => {
     })
 })
 
-
 export default function History({ pendingCount, historyCount, list, setIsOpen, activeTab, setActiveTab }: { pendingCount: number, historyCount: number, list: any[], setIsOpen: (isOpen: boolean) => void, activeTab: string, setActiveTab: (tab: string) => void }) {
     const isMobile = useIsMobile();
 

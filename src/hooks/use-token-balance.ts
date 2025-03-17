@@ -44,8 +44,6 @@ export default function useTokenBalance(
     const rpcUrl = chains[chainId as number].rpcUrls.default.http[0];
     const rpcProvider = new providers.JsonRpcProvider(rpcUrl);
 
-    console.log(chainId, address, rpcUrl)
-
     const _provider = rpcProvider;
 
     setIsLoading(true);
