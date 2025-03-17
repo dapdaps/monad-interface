@@ -12,8 +12,10 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
-
+dayjs.extend(utc);
 
 export default function RootLayout({
   children
