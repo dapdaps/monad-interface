@@ -20,6 +20,7 @@ import { tokenPairs } from './lib/bridges/owlto/config';
 import useBridge from './Hooks/useBridge';
 
 import type { Token, Chain } from '@/types';
+import { motion, px } from 'framer-motion';
 
 const DappHeader: React.FC = () => {
   const { dapp: dappName } = useParams();
@@ -148,9 +149,31 @@ export default function Bridge() {
 
   return (
     <>
-      <div style={{ backgroundSize: '100% 100%' }} className='h-[100vh] mt-[-60px] overflow-auto pt-[110px] bg-[url("/images/bridge/full-bg.png")] bg-cover bg-no-repeat'>
+      <div style={{ backgroundSize: '100% auto' }} className='h-[100vh] relative mt-[-60px] overflow-auto pt-[110px] bg-[url("/images/bridge/full-bg.png")] bg-cover bg-right-bottom bg-no-repeat'>
         {isMobile ? null : <div className='absolute left-[36px] md:left-[15px] top-[31px] md:top-[14px] z-[12]' />}
-        <div className='lg:w-[520px] md:w-[92.307vw] m-auto relative z-10 '>
+        <div style={{ backgroundSize: '100% auto' }} className='absolute bottom-0 right-0 w-full'>
+          <motion.div
+            initial={{
+              bottom: 0,
+              right: '42%',
+              scale: 1,
+            }}
+            className='absolute overflow-hidden w-[100px] h-[120px] bg-[url("/images/bridge/man.png")] bg-cover bg-right-bottom bg-no-repeat'
+            animate={{
+              bottom: ['0', '80%'],
+              right: ['42%', '8.5%'],
+              scale: [1, 0.01],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              repeatDelay: 0,
+              ease: "easeOut"
+            }}
+          />
+          <img src="/images/bridge/bg-animate.gif"  />
+        </div>
+        <div className='lg:w-[520px] md:w-[92.307vw] m-auto relative z-10'>
           <DappHeader />
           <Card className='mt-[-35px]'>
             <TokenAmout
