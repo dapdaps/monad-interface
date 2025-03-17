@@ -42,4 +42,4 @@ export interface ICheckinItem {
   reward_amount: string;
 }
 
-export const FaucetStartDate = dayjs("2025-03-01");
+export const FaucetStartDate = dayjs.utc("2025-03-01");

@@ -6,7 +6,7 @@ import Big from "big.js";
 export default function Route({ name, fee, receiveAmount, fromChain, toToken, checked, onChange }: any) {
     const prices: any = usePriceStore(store => store.price);
 
-    return <div className="py-[10px]">
+    return <div className="py-[10px] text-[12px]">
         {/* <div className="flex items-center gap-[10px]">
             <img className="w-[30px] h-[30px]" src="https://s3.amazonaws.com/dapdap.prod/images/stargate.png"/>
             <div className="text-[16px] font-[600]">{ name }</div>

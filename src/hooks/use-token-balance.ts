@@ -37,13 +37,14 @@ export default function useTokenBalance(
   const [isError, setIsError] = useState(false);
   const [fresh, setFresh] = useState(0);
 
-
   const getBalance = async () => {
     if (!account || !address) return;
     // console.log('walletChainId:', walletChainId, chainId)
 
     const rpcUrl = chains[chainId as number].rpcUrls.default.http[0];
     const rpcProvider = new providers.JsonRpcProvider(rpcUrl);
+
+    console.log(chainId, address, rpcUrl)
 
     const _provider = rpcProvider;
 

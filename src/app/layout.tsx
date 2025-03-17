@@ -1,19 +1,22 @@
 "use client";
 
 import Rpc from "@/components/rpc";
+import Sound from "@/components/sound";
 import SceneContextProvider from "@/context/scene";
 import WagmiProvider from "@/context/wagmi";
 import MainLayout from "@/layouts/main";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 import Script from 'next/script';
-import React, { Suspense, useEffect, useRef } from "react";
+import React, { Suspense } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
-import Sound from "@/components/sound";
-import { useSoundStore } from "@/stores/sound";
+
+dayjs.extend(utc);
 
 export default function RootLayout({
   children
