@@ -31,7 +31,7 @@ export default function History({ pendingCount, historyCount, list, setIsOpen, a
 
     return (
         <div className={cls}>
-            <div className="relative p-4">
+            <div className="relative p-4 ">
                 <div className="absolute top-[30px] cursor-pointer right-[30px]" onClick={() => setIsOpen(false)}>
                     <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g filter="url(#filter0_i_31923_1683)">
@@ -51,16 +51,16 @@ export default function History({ pendingCount, historyCount, list, setIsOpen, a
                         </defs>
                     </svg>
                 </div>
-                <div className="flex gap-3 p-[10px] text-[#fff] mr-[30px] text-[14px]">
+                <div className="flex gap-3 py-[10px] text-[#fff] mr-[40px] text-[14px]">
                     <div
-                        className={`flex flex-1 justify-center items-center gap-2 h-[18px] cursor-pointer text-center border-r border-[#958FBC4D]  ${activeTab === 'pending' ? 'text-[rgba(191, 255, 96, 1)]' : ''}`}
+                        className={`flex flex-1 justify-center items-center gap-2 h-[18px] cursor-pointer text-center border-r border-[#958FBC4D]  ${activeTab === 'pending' ? 'text-[#BFFF60] bridge-history-tab-active' : ''}`}
                         onClick={() => setActiveTab('pending')}
                     >
                         <span>{pendingCount} Pending</span>
                     </div>
 
                     <div
-                        className={`flex flex-1 justify-center items-center gap-2 h-[18px] cursor-pointer text-center border-r border-[#958FBC4D] p ${activeTab === 'history' ? 'text-[rgba(191, 255, 96, 1)]' : ''}`}
+                        className={`flex flex-1 justify-center items-center gap-2 h-[18px] cursor-pointer text-center border-r border-[#958FBC4D] ${activeTab === 'history' ? 'text-[#BFFF60] bridge-history-tab-active' : ''}`}
                         onClick={() => setActiveTab('history')}
                     >
                         <span>{historyCount} History</span>
@@ -78,53 +78,43 @@ export default function History({ pendingCount, historyCount, list, setIsOpen, a
 }
 
 function HistoryItem({ item }: { item: any }) {
-    // const action_tokens = JSON.parse(item.action_tokens)
-    // const fromToken = _allTokens[item.chain_id][action_tokens[0].toUpperCase()]
-    // let toToken = _allTokens[item.to_chain_id]?.[tokenPairs[item.chain_id]?.[action_tokens[0].toUpperCase()]?.toUpperCase()]
+    const extra_data = JSON.parse(item.extra_data)
 
-    const extra_data = item.extra_data
-
-
-    // console.log(_allTokens[item.chain_id], action_tokens)
-
-    return <div className="border-b border-gray-200 py-3">
-        <div className="flex justify-between items-center">
-            <div className='flex-1'>
-                <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-2">
-                        <div className="w-[30px] h-[30px] relative">
-                            <img className='w-full h-full object-contain' src={extra_data?.fromTokenLogo} />
-                            <img className='w-[10px] h-[10px] object-contain border border-[#000] rounded-full absolute bottom-0 right-0' src={extra_data?.fromChainLogo} />
-                        </div>
-                        <div>
-                            {balanceFormated(extra_data?.fromAmount)}<br />{extra_data?.fromTokenSymbol}
-                        </div>
-                    </div>
-                    <span>→</span>
-                    <div className="flex items-center gap-2">
-                        <div className="w-[30px] h-[30px] relative">
-                            <img className='w-full h-full object-contain' src={extra_data?.toTokenLogo} />
-                            <img className='w-[10px] h-[10px] object-contain border border-[#000] rounded-full absolute bottom-0 right-0' src={extra_data?.toChainLogo} />
-                        </div>
-                        <div>
-                            {balanceFormated(extra_data.action_amount)}<br />{extra_data?.toTokenSymbol}
-                        </div>
-                    </div>
+    return <div className="border-t border-[#958FBC] py-3">
+        <div className="flex w-full items-center gap-2 justify-between px-4">
+            <div className="flex items-center gap-2 text-[12px]">
+                <div className="w-[30px] h-[30px] relative">
+                    <img className='w-full h-full object-contain' src={extra_data?.fromTokenLogo} />
+                    <img className='w-[10px] h-[10px] object-contain border border-[#000] rounded-full absolute bottom-0 right-0' src={extra_data?.fromChainLogo} />
                 </div>
-                <div className="text-sm text-gray-500 flex justify-between items-center">
-                    <div>
-                        {formatEnglishDate(extra_data.time)}
-                        {
-                            <a target='_blank' href={`${chains[extra_data?.fromChainId].blockExplorers}/tx/${item.tx_id}`} className="ml-2 text-blue-500 underline">Tx</a>
-                        }
-                    </div>
-                    <div>
-                        {Number(item.bridge_status) !== 4 && <span className="text-[#006BFF]">Processing~3min</span>}
-                        {Number(item.bridge_status) === 4 && <span className="text-[#006BFF]">Success</span>}
-                    </div>
+                <div>
+                    <div className='text-[#fff]'>{balanceFormated(extra_data?.fromAmount)}</div>
+                    <div className='text-[#A6A6DB]'>{extra_data?.fromTokenSymbol}</div>
                 </div>
             </div>
-
+            <span className='text-[#75759D] text-[14px]'>→</span>
+            <div className="flex items-center gap-2">
+                <div className="w-[30px] h-[30px] relative">
+                    <img className='w-full h-full object-contain' src={extra_data?.toTokenLogo} />
+                    <img className='w-[10px] h-[10px] object-contain border border-[#000] rounded-full absolute bottom-0 right-0' src={extra_data?.toChainLogo} />
+                </div>
+                <div>
+                    <div className='text-[#fff]'>{balanceFormated(extra_data.action_amount)}</div>
+                    <div className='text-[#A6A6DB]'>{extra_data?.toTokenSymbol}</div>
+                </div>
+            </div>
+        </div>
+        <div className="text-sm text-gray-500 flex justify-between items-center px-2">
+            <div className='text-[10px] text-[#75759D]'>
+                {formatEnglishDate(extra_data.time)}
+                {
+                    <a target='_blank' href={`${chains[extra_data?.fromChainId].blockExplorers}/tx/${item.tx_id}`} className="ml-2 text-blue-500 underline">Tx</a>
+                }
+            </div>
+            <div className='text-[12px]'>
+                {Number(item.bridge_status) !== 4 && <span className="text-[#836EF9]">Processing~3min</span>}
+                {Number(item.bridge_status) === 4 && <span className="text-[#836EF9]">Success</span>}
+            </div>
         </div>
     </div>
 }
