@@ -43,7 +43,9 @@ export default function useBridge({ originFromChain, originToChain, derection, d
   const [isSending, setIsSending] = useState<boolean>(false);
 
   const { tokenBalance: balance } = useTokenBalance(
-    fromToken ? (fromToken.isNative ? 'native' : fromToken.address) : '', fromToken?.decimals ?? 0, fromChain?.chainId ?? 0
+    fromToken ? (fromToken.isNative ? 'native' : fromToken.address) : '',
+    fromToken?.decimals ?? 0, 
+    fromChain?.chainId ?? 0
   );
 
   const inputValue = useDebounce(sendAmount, { wait: 500 });

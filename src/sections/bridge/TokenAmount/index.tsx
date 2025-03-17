@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import TokenSelector from '../TokenSelector';
 
-
+import Range from "@/components/range";
 import useTokenBalance from '@/hooks/use-token-balance';
 import Loading from '@/components/loading';
 import { usePriceStore } from '@/stores/usePriceStore';
@@ -12,6 +12,15 @@ import { tokenPairs } from '../Hooks/Stargate/config';
 
 import type { Chain, Token } from '@/types';
 import ChainAndTokenSelector from '../ChainAndTokenSelector';
+import { motion } from 'framer-motion';
+import Big from 'big.js';
+
+const BalancePercentList = [
+  { value: 25, label: "25%" },
+  { value: 50, label: "50%" },
+  { value: 75, label: "75%" },
+  { value: 100, label: "Max" }
+];
 
 
 interface Props {
@@ -44,14 +53,31 @@ export default function TokenAmout({
   allTokens
 }: Props) {
   const [tokenSelectorShow, setTokenSelectorShow] = useState(false);
+  const [percent, setPercent] = useState<any>(0);
 
   const { tokenBalance, isError, isLoading, update } = useTokenBalance(
     token ? (token.isNative ? 'native' : token.address) : '', token?.decimals ?? 0, token?.chainId ?? 0
   )
   const prices: any = usePriceStore(store => store.price);
 
+  const handleRangeChange = (e: any, isAmountChange = true) => {
+    const formatedBalance = balanceFormated(tokenBalance);
+    if (["-", "Loading", "0"].includes(formatedBalance)) return;
+    const _percent = e.target.value || 0;
+    setPercent(_percent);
+    onAmountChange &&
+      onAmountChange?.(
+        Big(tokenBalance)
+          .times(Big(_percent).div(100))
+          .toFixed(token?.decimals)
+          .replace(/[.]?0+$/, "")
+      );
+  };
+
   return (
     <div className=' rounded-[6px] p-[14px] bg-[#FFFFFF0D] font-white'>
+      <div className='text-[14px] font-[400] text-[#A6A6DB]'>{isDest ? 'To' : 'Send'}</div>
+
       <div className='flex items-center justify-between gap-[10px]'>
         <div className="flex-1">
           <input placeholder='0' type='number' className="w-[100%] h-[100%] text-[22px] text-[#fff] bg-transparent" value={amount} onChange={(e) => {
@@ -80,14 +106,13 @@ export default function TokenAmout({
                 /> : <div className='w-[26px] h-[26px] rounded-[50%] bg-[#000]' />
               }
               <img
-                // key={token?.icon}
                 className='w-[10px] h-[10px] absolute right-0 bottom-0 md:rounded-sm'
                 src={chain.icon}
               />
             </div>
             <div>
               <div className='text-[16px] font-[600] whitespace-nowrap overflow-hidden text-ellipsis'>{token?.symbol}</div>
-              <div className='text-[12px] font-medium whitespace-nowrap overflow-hidden text-ellipsis'>{chain?.chainName}</div>
+              <div className='text-[12px] whitespace-nowrap overflow-hidden text-ellipsis'>{chain?.chainName}</div>
             </div>
           </div>
           {
@@ -111,22 +136,34 @@ export default function TokenAmout({
         </div>
       </div>
 
-      <div className="flex items-center justify-between text-[#A6A6DB] mt-[10px] font-medium text-[12px]">
+      <div className="flex items-center justify-between text-[#A6A6DB] mt-[10px] text-[12px]">
         <div >${(token && tokenBalance) ? balanceFormated(prices[token.symbol.toUpperCase()] * (amount as any), 4) : '~'}</div>
-          <div className={"flex items-center cursor-pointer"} onClick={() => {
-            onAmountChange?.(tokenBalance)
-          }}>balance: {isLoading ? <Loading size={12} /> : <span className={(disabledInput ? '' : ' underline')}>{balanceFormated(tokenBalance, 4)}</span>}</div>
-        </div>
+        <div className={"flex items-center cursor-pointer"} onClick={() => {
+          onAmountChange?.(tokenBalance)
+        }}>balance: {isLoading ? <Loading size={12} /> : <span className={(disabledInput ? '' : ' underline')}>{balanceFormated(tokenBalance, 4)}</span>}</div>
+      </div>
 
-      {/* <TokenSelector
-        show={tokenSelectorShow}
-        tokenList={allTokens[chain.chainId].filter((token: Token) => !!tokenPairs[chain.chainId][(token.symbol).toUpperCase()])}
-        token={token}
-        onTokenSelect={onTokenChange as any}
-        onClose={() => {
-          setTokenSelectorShow(false);
-        }}
-      /> */}
+      {!disabledInput && (
+        <div className="flex justify-between md:flex-col md:items-stretch md:justify-start items-center gap-[22px] mt-[12px]">
+          <Range
+            style={{ marginTop: 0, flex: 1 }}
+            value={percent}
+            onChange={handleRangeChange}
+          />
+          <div className="flex items-center gap-[8px]">
+            {BalancePercentList.map((p) => (
+              <motion.div
+                key={p.value}
+                className="cursor-pointer h-[22px] rounded-[6px] text-[#A6A6DB] text-[10px] font-[400] px-[8px] hover:underline hover:text-white"
+                animate={percent == p.value ? { color: "#fff" } : {}}
+                onClick={() => handleRangeChange({ target: p })}
+              >
+                {p.label}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {
         tokenSelectorShow && <ChainAndTokenSelector

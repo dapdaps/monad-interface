@@ -1,30 +1,24 @@
-import { useDebounce } from "ahooks";
-import {
-  forwardRef,
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from "react";
-import ReactDOM from "react-dom";
-import styled from "styled-components";
+import { useDebounce } from 'ahooks';
+import { forwardRef, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import ReactDOM from 'react-dom';
+import styled from 'styled-components';
 
-import useTokensBalance from "@/hooks/use-tokens-balance";
-import { tokenSortBalance } from "./util";
-import chainCofig from "../lib/util/chainConfig";
-import useAccount from "@/hooks/use-account";
-import { usePriceStore } from "@/stores/usePriceStore";
-import type { Chain, Token } from "@/types";
+import useTokensBalance from '@/hooks/use-tokens-balance';
+import { tokenSortBalance } from './util';
+import chainCofig from '../lib/util/chainConfig';
+import useAccount from '@/hooks/use-account';
+import { usePriceStore } from '@/stores/usePriceStore';
+import type { Chain, Token } from '@/types';
 
-import Modal from "@/components/modal/index";
-import Image from "./Image";
-import TokenRow from "./Token";
+
+import Modal from '@/components/modal/index';
+import Image from './Image';
+import TokenRow from './Token';
 
 const Container = styled.div`
   display: flex;
   height: 500px;
+ 
 `;
 
 const ChainWapper = styled.div`
@@ -43,7 +37,7 @@ const ChainWapper = styled.div`
     display: flex;
     align-items: center;
     z-index: 12;
-    background-color: #fffdeb;
+    background-color: #FFFDEB;
     border-radius: 0 12px 12px 0;
     border: 1px solid rgba(55, 58, 83, 1);
     border-left: 0;
@@ -112,9 +106,8 @@ const TokenWapper = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 21.6px;
+  font-size: 14px;
+  line-height: 16px;
 `;
 
 const TokenTop = styled.div`
@@ -152,7 +145,6 @@ const ChainGroup = styled.div`
     align-items: center;
     gap: 10px;
     font-size: 14px;
-    font-weight: 600;
     padding-left: 20px;
     margin-top: 10px;
     &.cc-selected {
@@ -237,13 +229,9 @@ const TokenListComp = forwardRef(function TokenListComp(
   ref: any
 ) {
   const [searchTokenList, setSearchTokenList] = useState<any>([]);
-  const displayChainId =
-    searchAll && filterChain && filterChain.length
-      ? filterChain[0].chainId
-      : chain.chainId;
+  const displayChainId = searchAll && filterChain && filterChain.length ? filterChain[0].chainId : chain.chainId;
 
-  const disPlayChain =
-    searchAll && filterChain && filterChain.length ? filterChain[0] : chain;
+  const disPlayChain = searchAll && filterChain && filterChain.length ? filterChain[0] : chain;
   const { loading, balances } = useTokensBalance(chainToken[displayChainId]);
   const { account, chainId, provider } = useAccount();
 
@@ -314,55 +302,33 @@ const TokenListComp = forwardRef(function TokenListComp(
             <div className="chain-selected">
               <Image cls="img" src={chain.icon} />
               <div>{chain.chainName}</div>
-              {searchTxt && (
-                <div className="token-amount">
-                  {chainToken[chain.chainId]?.length || 0}
-                </div>
-              )}
+              {searchTxt && <div className="token-amount">{chainToken[chain.chainId]?.length || 0}</div>}
             </div>
-            <div style={{ justifySelf: "end" }}>
-              <svg
-                width="13"
-                height="11"
-                viewBox="0 0 13 11"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M1 4.80952L4.78125 9L12 1"
-                  stroke="#EBF479"
-                  strokeWidth="2"
-                  stroke-linecap="round"
-                />
+            <div style={{ justifySelf: 'end' }}>
+              <svg width="13" height="11" viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 4.80952L4.78125 9L12 1" stroke="#EBF479" stroke-width="2" stroke-linecap="round" />
               </svg>
             </div>
           </div>
-          {newFilterChain
-            ?.filter((chain: any) =>
-              limitBera ? chain.chainId === 80094 : chain.chainId !== 80094
-            )
-            .map((item: any) => {
-              if (item.chainId === chain.chainId) {
-                return;
-              }
-              return (
-                <div
-                  onClick={() => {
-                    onTempChainChange(item);
-                  }}
-                  key={item.chainId}
-                  className="cur-chian can-click-chain"
-                >
-                  <Image cls="img" src={item.icon} />
-                  <div>{item.chainName}</div>
-                  <div className="token-amount">{item.amount}</div>
-                </div>
-              );
-            })}
-          <div
-            className="ct-title"
-            style={{ paddingBottom: 0, paddingTop: 20 }}
-          >
+          {newFilterChain?.filter((chain: any) => limitBera ? chain.chainId === 10143 : chain.chainId !== 10143).map((item: any) => {
+            if (item.chainId === chain.chainId) {
+              return;
+            }
+            return (
+              <div
+                onClick={() => {
+                  onTempChainChange(item);
+                }}
+                key={item.chainId}
+                className="cur-chian can-click-chain"
+              >
+                <Image cls="img" src={item.icon} />
+                <div>{item.chainName}</div>
+                <div className="token-amount">{item.amount}</div>
+              </div>
+            );
+          })}
+          <div className="ct-title" style={{ paddingBottom: 0, paddingTop: 20 }}>
             Token
           </div>
         </>
@@ -372,27 +338,20 @@ const TokenListComp = forwardRef(function TokenListComp(
         {chainToken[displayChainId] &&
           chainToken[displayChainId]
             .sort((a: any, b: any) => {
-              const aAddress = a.isNative ? "native" : a.address;
-              const bAddress = b.isNative ? "native" : b.address;
+              const aAddress = a.isNative ? 'native' : a.address;
+              const bAddress = b.isNative ? 'native' : b.address;
               if (searchAll && account) {
                 // const aBalances = chainsTokensBalance[account][a.chainId] || {};
                 // const bBalances = chainsTokensBalance[account][b.chainId] || {};
                 // return tokenSortBalance(a, b, aBalances[aAddress], bBalances[bAddress]);
               } else {
-                return tokenSortBalance(
-                  a,
-                  b,
-                  balances[aAddress],
-                  balances[bAddress]
-                );
+                return tokenSortBalance(a, b, balances[aAddress], balances[bAddress]);
               }
             })
             .map((token: Token) => {
               return (
                 <TokenRow
-                  isSelected={
-                    currentToken?.symbol === token.symbol && !searchAll
-                  }
+                  isSelected={currentToken?.symbol === token.symbol && !searchAll}
                   key={token.symbol + token.address + token.chainId}
                   token={token}
                   loading={loading}
@@ -424,11 +383,11 @@ export default function ChainAndTokenSelector({
   limitBera
 }: Props) {
   const [tempChain, setTempChain] = useState(currentChain);
-  const [searchVal, setSearchVal] = useState("");
+  const [searchVal, setSearchVal] = useState('');
   const [sortedChainList, setSortedChainList] = useState<Chain[]>([]);
   const [hoverChain, setHoverChain] = useState<Chain | null>(null);
   const [tipTop, setTipTop] = useState(0);
-  const [idSuffix, setIdSuffix] = useState(Date.now() + "");
+  const [idSuffix, setIdSuffix] = useState(Date.now() + '');
   const [filterChainVal, setFilterChainVal] = useState();
   const [filterChain, setSearchedChain] = useState<Chain[] | null>([]);
   const [searchAll, setSearchAll] = useState(false);
@@ -453,18 +412,15 @@ export default function ChainAndTokenSelector({
     if (inputValue) {
       const lowerVal = inputValue.trim().toLowerCase();
       const filterChainToken: any = {};
-      const [keyChainName, tokenSymbol] = lowerVal.split(":");
+      const [keyChainName, tokenSymbol] = lowerVal.split(':');
       if (keyChainName && tokenSymbol) {
-        const filterChain = chainList.filter(
-          (chain) => chain.chainName.toLowerCase().indexOf(keyChainName) > -1
-        );
+        const filterChain = chainList.filter((chain) => chain.chainName.toLowerCase().indexOf(keyChainName) > -1);
         if (filterChain && filterChain.length) {
           filterChain.forEach((chain) => {
             const tokenList = chainToken[chain.chainId];
             const filterList = tokenList.filter((token: Token) => {
               return (
-                token.symbol.toLowerCase().indexOf(tokenSymbol) > -1 ||
-                token.address.toLowerCase() === tokenSymbol
+                token.symbol.toLowerCase().indexOf(tokenSymbol) > -1 || token.address.toLowerCase() === tokenSymbol
               );
             });
             if (filterList && filterList.length) {
@@ -486,10 +442,7 @@ export default function ChainAndTokenSelector({
         Object.keys(chainToken).forEach((key) => {
           const tokenList = chainToken[key];
           const filterList = tokenList.filter((token: Token) => {
-            return (
-              token.symbol.toLowerCase().indexOf(lowerVal) > -1 ||
-              token.address.toLowerCase() === lowerVal
-            );
+            return token.symbol.toLowerCase().indexOf(lowerVal) > -1 || token.address.toLowerCase() === lowerVal;
           });
 
           if (filterList && filterList.length > 0) {
@@ -509,9 +462,7 @@ export default function ChainAndTokenSelector({
   useEffect(() => {
     if (currentChain && idSuffix) {
       setTimeout(() => {
-        const ele = document.getElementById(
-          `${idSuffix}-${currentChain.chainId}`
-        );
+        const ele = document.getElementById(`${idSuffix}-${currentChain.chainId}`);
         if (ele) {
           ele.scrollIntoView();
         }
@@ -520,11 +471,8 @@ export default function ChainAndTokenSelector({
   }, [idSuffix, currentChain]);
 
   return (
-    <Modal open={true} onClose={onClose}>
-      <Container
-        ref={wapperRef}
-        className="border lg:w-[520px] font-[#000000] border-[#000000] rounded-[30px] bg-[#FFFDEB] lg:shadow-[10px_10px_0px_0px_#00000040]"
-      >
+    <Modal open={true} onClose={onClose} closeIconClassName="mt-[-10px]" >
+      <Container ref={wapperRef} className='border lg:w-[520px] font-[#000000] border-[#000000] text-[#fff] rounded-[30px] bg-[#2B294A] lg:shadow-[10px_10px_0px_0px_#00000040]'>
         <ChainWapper>
           <Title style={{ paddingLeft: 20 }}>Chain</Title>
           {hoverChain && (
@@ -532,69 +480,52 @@ export default function ChainAndTokenSelector({
               <div>{hoverChain.chainName}</div>
             </div>
           )}
-
+          
           <div
             className="chain-list"
             onScroll={() => {
               setHoverChain(null);
             }}
           >
-            {sortedChainList
-              ?.filter((chain) =>
-                limitBera ? chain.chainId === 80094 : chain.chainId !== 80094
-              )
-              .map((chain) => {
-                return (
-                  <div
-                    key={chain.chainId}
-                    id={`${idSuffix}-${chain.chainId}-p`}
-                    onClick={() => {
-                      if (disabledChainSelector) {
-                        return;
-                      }
-                      setTempChain(chain);
-                      const ele = document.getElementById(
-                        `${idSuffix}-${chain.chainId}`
-                      );
-                      if (ele) {
-                        ele.scrollIntoView();
-                      }
-                      setSearchVal("");
-                    }}
-                    onMouseEnter={(e) => {
-                      if (
-                        disabledChainSelector &&
-                        currentChain?.chainId !== chain.chainId
-                      ) {
-                        return;
-                      }
-                      setHoverChain(chain);
-                      let ele: any = e.target;
-                      if (ele.tagName.toUpperCase() !== "DIV") {
-                        ele = ele.parentNode;
-                      }
-                      const wapperSize =
-                        wapperRef.current.getBoundingClientRect();
-                      const chainSize = ele.getBoundingClientRect();
-                      const top = chainSize.top - wapperSize.top;
-                      setTipTop(top);
-                    }}
-                    onMouseLeave={() => {
-                      setHoverChain(null);
-                    }}
-                    className={`chain ${
-                      tempChain?.chainId === chain.chainId ? "active" : ""
-                    } ${
-                      disabledChainSelector &&
-                      currentChain?.chainId !== chain.chainId
-                        ? "disabeld"
-                        : ""
-                    }`}
-                  >
-                    <Image cls="img" src={chain.icon} />
-                  </div>
-                );
-              })}
+            {sortedChainList?.filter((chain) => limitBera ? chain.chainId === 10143 : chain.chainId !== 10143).map((chain) => {
+              return (
+                <div
+                  key={chain.chainId}
+                  id={`${idSuffix}-${chain.chainId}-p`}
+                  onClick={() => {
+                    if (disabledChainSelector) {
+                      return;
+                    }
+                    setTempChain(chain);
+                    const ele = document.getElementById(`${idSuffix}-${chain.chainId}`);
+                    if (ele) {
+                      ele.scrollIntoView();
+                    }
+                    setSearchVal('');
+                  }}
+                  onMouseEnter={(e) => {
+                    if (disabledChainSelector && currentChain?.chainId !== chain.chainId) {
+                      return;
+                    }
+                    setHoverChain(chain);
+                    let ele: any = e.target;
+                    if (ele.tagName.toUpperCase() !== 'DIV') {
+                      ele = ele.parentNode;
+                    }
+                    const wapperSize = wapperRef.current.getBoundingClientRect();
+                    const chainSize = ele.getBoundingClientRect();
+                    const top = chainSize.top - wapperSize.top;
+                    setTipTop(top);
+                  }}
+                  onMouseLeave={() => {
+                    setHoverChain(null);
+                  }}
+                  className={`chain ${tempChain?.chainId === chain.chainId ? 'active' : ''} ${disabledChainSelector && currentChain?.chainId !== chain.chainId ? 'disabeld' : ''}`}
+                >
+                  <Image cls="img" src={chain.icon} />
+                </div>
+              );
+            })}
           </div>
         </ChainWapper>
         <TokenWapper>
@@ -602,20 +533,8 @@ export default function ChainAndTokenSelector({
             <Title>Select a token</Title>
             <div className="input-wapper">
               <div className="icon">
-                <svg
-                  width="21"
-                  height="15"
-                  viewBox="0 0 21 15"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle
-                    cx="7.01829"
-                    cy="7.01829"
-                    r="6.01829"
-                    stroke="#3D4159"
-                    strokeWidth="2"
-                  />
+                <svg width="21" height="15" viewBox="0 0 21 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="7.01829" cy="7.01829" r="6.01829" stroke="#3D4159" stroke-width="2" />
                   <rect
                     x="14.9141"
                     y="9.64978"
@@ -658,12 +577,10 @@ export default function ChainAndTokenSelector({
                   onTempChainChange={(item) => {
                     setTempChain(item);
                     setTimeout(() => {
-                      const ele = document.getElementById(
-                        `${idSuffix}-${item.chainId}-p`
-                      );
+                      const ele = document.getElementById(`${idSuffix}-${item.chainId}-p`);
                       if (ele) {
                         ele.scrollIntoView({
-                          behavior: "smooth"
+                          behavior: 'smooth'
                         });
                       }
                     }, 40);
@@ -681,3 +598,4 @@ export default function ChainAndTokenSelector({
     </Modal>
   );
 }
+
