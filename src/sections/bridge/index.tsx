@@ -152,7 +152,7 @@ export default function Bridge() {
         {isMobile ? null : <div className='absolute left-[36px] md:left-[15px] top-[31px] md:top-[14px] z-[12]' />}
         <div className='lg:w-[520px] md:w-[92.307vw] m-auto relative z-10 '>
           <DappHeader />
-          <Card className='mt-[-33px]'>
+          <Card className='mt-[-35px]'>
             <TokenAmout
               isDest={false}
               allTokens={allTokens}

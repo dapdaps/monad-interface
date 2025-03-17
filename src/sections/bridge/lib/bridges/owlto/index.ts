@@ -6,6 +6,7 @@ import { erc20Abi } from 'viem'
 import { getQuoteInfo, setQuote } from '../../util/routerController'
 import { getIcon, getFullNum, checkTransitionOnlineStatus } from '../../util/index'
 import { QuoteRequest, QuoteResponse, ExecuteRequest, FeeType, StatusParams } from '../../type/index'
+import { contractAddresses } from './config';
 
 // https://owlto.finance/doc/api/#/owlto_api/get_api_config_all_tokens
 
@@ -20,15 +21,11 @@ export async function checkLpInfo(
     toChainId: string,
     account: string
 ) {
-
-    console.log('checkLpInfo:', tokenSymbol, fromChainId, toChainId, account)
     const res = await fetch(
         `${base_url}/lp-info?token=${tokenSymbol}&from_chainid=${fromChainId}&to_chainid=${toChainId}&user=${account}`
     );
 
     const resJson = await res.json();
-
-    console.log('checkLpInfo:', resJson)
 
     if (resJson.code === 0 && resJson.msg) {
         return resJson.msg;
@@ -47,8 +44,6 @@ export async function getDynamicDtc(
         `${base_url}/dynamic-dtc?token=${tokenSymbol}&from=${fromChainId}&to=${toChainId}&amount=${amount}`,
     );
     const resJson = await res.json();
-
-    console.log('getDynamicDtc:', resJson)
 
     if (resJson.code === 0 && resJson.dtc) {
         return resJson.dtc;
@@ -211,17 +206,11 @@ export async function execute(request: ExecuteRequest, signer: Signer): Promise<
             value: realAmount,
         });
     } else {
-        // const isApprove = await approve(quoteInfo.route.from_token_address, new Big(realAmount), quoteInfo.route.maker_address, signer)
-        // if (!isApprove) {
-        //     return null
-        // }
 
         const transactionData = await getRouteTransactionData(quoteInfo.route, realAmount, signer)
         transactionResponse = await signer.sendTransaction({
             ...transactionData,
             value: '0x00',
-            // gasPrice: gasPrice,
-            // gasLimit: gasEstimate
         });
     }
 
@@ -271,15 +260,9 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer): Prom
         }
     }
 
-    console.log('fromChain:', fromChain)
-
     if (!fromToken || !toToken) {
         return null
     }
-
-    // if (fromToken.symbol !== toToken.symbol) {
-    //     return null
-    // }
 
     const res: any = await getOwltoRoute(
         quoteRequest.fromChainId,
@@ -290,9 +273,9 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer): Prom
         quoteRequest.amount.toString()
     )
 
-    console.log('res:', res)
+    const contract_address = contractAddresses[quoteRequest.fromChainId]?.ETH
 
-    if (res[1]) {
+    if (res[1] && contract_address) {
         // const { max, min, token_decimal, gas_token_name } = res[0]
 
         const _max = new Big(100 * 10 ** 18)
@@ -307,10 +290,8 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer): Prom
             const provider = new JsonRpcProvider(rpc);
             const newSigner = provider.getSigner(quoteRequest.fromAddress)
 
-            console.log(111)
-
             const gas = await computeGas({
-                contract_address: '0x1f49a3fa2b5B5b61df8dE486aBb6F3b9df066d86'
+                contract_address
             }, quoteRequest.amount, quoteRequest.fromAddress, isNative, newSigner) 
             // const gas = currentChainId === Number(quoteRequest.fromChainId) ? await computeGas(res[0], quoteRequest.amount, signer) : '0'
 
@@ -321,7 +302,7 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer): Prom
             }
 
             const uuid = setQuote({
-                route: { contract_address: '0x1f49a3fa2b5B5b61df8dE486aBb6F3b9df066d86' },
+                route: { contract_address },
                 amount: quoteRequest.amount.plus(fee),
                 isNative,
                 networkCode: networkCode,
