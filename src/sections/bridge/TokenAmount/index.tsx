@@ -52,6 +52,8 @@ export default function TokenAmout({
 
   return (
     <div className=' rounded-[6px] p-[14px] bg-[#FFFFFF0D] font-white'>
+      <div className='text-[14px] font-[400] text-[#A6A6DB]'>{isDest ? 'To' : 'Send' }</div>
+
       <div className='flex items-center justify-between gap-[10px]'>
         <div className="flex-1">
           <input placeholder='0' type='number' className="w-[100%] h-[100%] text-[22px] text-[#fff] bg-transparent" value={amount} onChange={(e) => {
@@ -80,14 +82,13 @@ export default function TokenAmout({
                 /> : <div className='w-[26px] h-[26px] rounded-[50%] bg-[#000]' />
               }
               <img
-                // key={token?.icon}
                 className='w-[10px] h-[10px] absolute right-0 bottom-0 md:rounded-sm'
                 src={chain.icon}
               />
             </div>
             <div>
               <div className='text-[16px] font-[600] whitespace-nowrap overflow-hidden text-ellipsis'>{token?.symbol}</div>
-              <div className='text-[12px] font-medium whitespace-nowrap overflow-hidden text-ellipsis'>{chain?.chainName}</div>
+              <div className='text-[12px] whitespace-nowrap overflow-hidden text-ellipsis'>{chain?.chainName}</div>
             </div>
           </div>
           {
@@ -111,7 +112,7 @@ export default function TokenAmout({
         </div>
       </div>
 
-      <div className="flex items-center justify-between text-[#A6A6DB] mt-[10px] font-medium text-[12px]">
+      <div className="flex items-center justify-between text-[#A6A6DB] mt-[10px] text-[12px]">
         <div >${(token && tokenBalance) ? balanceFormated(prices[token.symbol.toUpperCase()] * (amount as any), 4) : '~'}</div>
           <div className={"flex items-center cursor-pointer"} onClick={() => {
             onAmountChange?.(tokenBalance)

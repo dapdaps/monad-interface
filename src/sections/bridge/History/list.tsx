@@ -80,12 +80,7 @@ function HistoryItem({ item }: { item: any }) {
     const fromToken = _allTokens[item.chain_id][action_tokens[0].toUpperCase()]
     let toToken = _allTokens[item.to_chain_id]?.[tokenPairs[item.chain_id]?.[action_tokens[0].toUpperCase()]?.toUpperCase()]
 
-    if (Number(item.chain_id) === 80094
-        && fromToken?.symbol === 'WETH'
-        && [5000, 43114, 56].includes(Number(item.to_chain_id))
-    ) {
-        toToken = _allTokens[item.to_chain_id]?.['WETH']
-    }
+  
 
     
     // console.log(_allTokens[item.chain_id], action_tokens)

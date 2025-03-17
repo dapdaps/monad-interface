@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import chains from './lib/util/chainConfig'
-import Card from '@/components/card';
+import Card from './Card';
 import TokenAmout from './TokenAmount';
 import Routes from './Routes';
 import SubmitBtn from './SubmitBtn';
@@ -65,11 +65,6 @@ const chainList = Object.values(chains).filter((chain) => [10143, 11155111].incl
 
 export default function Bridge() {
   const [confirmShow, setConfirmShow] = useState(false);
-  // const [fromChain, setFromChain] = useState<Chain>(chains[1])
-  // const [fromToken, setFromToken] = useState<Token>(allTokens[1][0])
-  // const [toChain, setToChain] = useState<Chain>(chains[80094])
-  // const [toToken, setToToken] = useState<Token>(allTokens[80094][2])
-  // const [amount, setAmount] = useState<string>('')
   const [historyShow, setHistoryShow] = useState(false)
   const [activeTab, setActiveTab] = useState('pending')
   const isMobile = useIsMobile()
@@ -153,12 +148,11 @@ export default function Bridge() {
 
   return (
     <>
-      <div className='h-full overflow-auto mt-[50px]'>
-        {/* {!isMobile ? <PageBack  className="ml-[30px] absolute top-[20px] left-[30px] z-10" /> : null}  */}
+      <div style={{ backgroundSize: '100% 100%' }} className='h-[100vh] mt-[-60px] overflow-auto pt-[110px] bg-[url("/images/bridge/full-bg.png")] bg-cover bg-no-repeat'>
         {isMobile ? null : <div className='absolute left-[36px] md:left-[15px] top-[31px] md:top-[14px] z-[12]' />}
         <div className='lg:w-[520px] md:w-[92.307vw] m-auto relative z-10 '>
           <DappHeader />
-          <Card>
+          <Card className='mt-[-33px]'>
             <TokenAmout
               isDest={false}
               allTokens={allTokens}
@@ -210,7 +204,7 @@ export default function Bridge() {
               }}
               comingSoon={ComingSoon}
             />
-            <div className='flex items-center justify-between pt-[17px] lg:pl-[20px] text-[14px] text-[#A6A6DB]'>
+            <div className='flex items-center justify-between pt-[17px] text-[12px] text-[#A6A6DB]'>
               <div>Receive address</div>
               <div className='flex items-center gap-2 text-[#fff]'>
                 <div>{formatLongText(address, 6, 6)}</div>

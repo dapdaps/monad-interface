@@ -14,7 +14,7 @@ export const useHistory = () => {
         if (!address) return
 
         setIsLoading(true)
-        const res = await http.get(`/api/action/get-actions-by-type`, {
+        const res = await http.get(`/action/get-actions-by-type`, {
             action_type: 'Bridge',
             page: 1,
             page_size: 99999,

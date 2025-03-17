@@ -3,10 +3,10 @@ import type { Token } from "@/types";
 const CHAIN_ID = 11155111;
 
 export const sepolia: { [key: string]: Token } = {
-
-  weth: {
+  eth: {
     chainId: CHAIN_ID,
     address: "native",
+    isNative: true,
     decimals: 18,
     symbol: "ETH",
     name: "Ether",
