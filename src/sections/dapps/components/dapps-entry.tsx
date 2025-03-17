@@ -1,52 +1,71 @@
 import { IDapp } from "@/types";
 import { useSize } from "ahooks";
+import { useRouter } from "next-nprogress-bar";
 import clsx from "clsx";
 import { motion, useAnimation } from "framer-motion";
 import { memo, useEffect, useMemo, useState, useTransition } from "react";
 
 export default memo(function DappsEntry({
   direction,
-  dapps,
+  dapps
 }: {
-  direction: 'left' | 'right'
-  dapps: IDapp[]
+  direction: "left" | "right";
+  dapps: IDapp[];
 }) {
-  const size = useSize(document.getElementsByTagName("body")[0])
-
+  const size = useSize(document.getElementsByTagName("body")[0]);
+  const router = useRouter();
   const controls = useAnimation();
-  const [clicked, setClicked] = useState(false)
-  const [offsetX, setOffsetX] = useState(0)
+  const [clicked, setClicked] = useState(false);
+  const [offsetX, setOffsetX] = useState(0);
   const [isPending, startTransition] = useTransition();
 
-  const needStage2Animate = useMemo(() => (dapps.length * 2 * 180 + (dapps.length * 2 - 1) * 80) > size?.width, [dapps, size])
-  const cycleDapps = useMemo(() => needStage2Animate ? [...dapps, ...dapps] : dapps, [dapps, needStage2Animate])
+  const needStage2Animate = useMemo(
+    () => dapps.length * 2 * 180 + (dapps.length * 2 - 1) * 80 > size?.width,
+    [dapps, size]
+  );
+  const cycleDapps = useMemo(
+    () => (needStage2Animate ? [...dapps, ...dapps] : dapps),
+    [dapps, needStage2Animate]
+  );
 
   const variants = useMemo(() => {
     return {
-      initial: { transform: direction === "right" ? "translate3d(100%, 0, 0)" : "translate3d(-100%, 0, 0)" },
+      initial: {
+        transform:
+          direction === "right"
+            ? "translate3d(100%, 0, 0)"
+            : "translate3d(-100%, 0, 0)"
+      },
       stage1: {
-        transform: needStage2Animate ? (direction === "right" ? "translate3d(50%, 0, 0)" : "translate3d(-50%, 0, 0)") : "translate3d(0%, 0, 0)"
+        transform: needStage2Animate
+          ? direction === "right"
+            ? "translate3d(50%, 0, 0)"
+            : "translate3d(-50%, 0, 0)"
+          : "translate3d(0%, 0, 0)"
       },
       stage2: { transform: "translate3d(0%, 0, 0)" }
-    }
+    };
   }, [direction, needStage2Animate]);
 
   function handleMouseMove(event) {
     startTransition(() => {
-      setOffsetX(event.pageX - 34)
-    })
+      setOffsetX(event.pageX - 34);
+    });
   }
 
   useEffect(() => {
     const sequence = async () => {
       // await controls?.stop()
       controls.set({
-        transform: direction === "right" ? "translate3d(100%, 0, 0)" : "translate3d(-100%, 0, 0)"
-      })
+        transform:
+          direction === "right"
+            ? "translate3d(100%, 0, 0)"
+            : "translate3d(-100%, 0, 0)"
+      });
       await controls.start("stage1", {
         duration: Math.floor(cycleDapps.length / 2),
         ease: "linear"
-      })
+      });
       if (needStage2Animate) {
         await controls.start("stage2", {
           duration: cycleDapps.length,
@@ -54,21 +73,28 @@ export default memo(function DappsEntry({
           repeat: Infinity
         });
       }
-    }
-    sequence()
-  }, [controls, needStage2Animate, dapps])
+    };
+    sequence();
+  }, [controls, needStage2Animate, dapps]);
 
   return (
-    <div className={clsx("relative h-[304px]", direction === "right" ? "flex justify-end" : "")}
+    <div
+      className={clsx(
+        "relative h-[304px]",
+        direction === "right" ? "flex justify-end" : ""
+      )}
       onMouseMove={handleMouseMove}
     >
       <div className="relative z-10 w-[64px] h-[304px]">
         <img src="/images/dapps/entry.svg" alt="entry" />
       </div>
       <div className="absolute left-0 right-0 top-[10px] h-[12px] bg-[#1A2647] z-[5]">
-        <div className={"absolute bottom-0"} style={{
-          transform: `translate3d(${offsetX}px,100%,0)`
-        }}>
+        <div
+          className={"absolute bottom-0"}
+          style={{
+            transform: `translate3d(${offsetX}px,100%,0)`
+          }}
+        >
           <motion.div
             className="w-[68px] flex flex-col items-center"
             animate={{
@@ -88,57 +114,70 @@ export default memo(function DappsEntry({
           </motion.div>
         </div>
       </div>
-      <div className={clsx("min-w-full absolute bottom-[16px]", direction === "left" ? "left-0" : "right-0")}>
+      <div
+        className={clsx(
+          "min-w-full absolute bottom-[16px]",
+          direction === "left" ? "left-0" : "right-0"
+        )}
+      >
         <motion.div
-          className={clsx("flex items-center gap-[80px]", direction === "right" ? "justify-end pr-[64px]" : "pl-[64px]")}
+          className={clsx(
+            "flex items-center gap-[80px]",
+            direction === "right" ? "justify-end pr-[64px]" : "pl-[64px]"
+          )}
           variants={variants}
           initial="initial"
           animate={controls}
         >
-          {
-            cycleDapps.map((dapp: IDapp, index) => (
-              <div
-                className="cursor-pointer w-[180px] h-[155px] bg-[url('/images/dapps/dapp_bg.svg')] bg-contain bg-no-repeat"
-                {...(needStage2Animate ? {
-                  onMouseEnter() {
-                    controls.stop()
-                  },
-                  onMouseLeave() {
-                    controls.start("stage2", {
-                      duration: dapps.length * 4,
-                      ease: "linear",
-                      repeat: Infinity
-                    });
+          {cycleDapps.map((dapp: IDapp, index) => (
+            <div
+              className="cursor-pointer w-[180px] h-[155px] bg-[url('/images/dapps/dapp_bg.svg')] bg-contain bg-no-repeat"
+              {...(needStage2Animate
+                ? {
+                    onMouseEnter() {
+                      controls.stop();
+                    },
+                    onMouseLeave() {
+                      controls.start("stage2", {
+                        duration: dapps.length * 4,
+                        ease: "linear",
+                        repeat: Infinity
+                      });
+                    }
                   }
-                } : {})}
-                onClick={() => {
-                  setClicked(true)
-                  setTimeout(() => {
-                    setClicked(false)
-                  }, 300)
-                }}
-              >
-                <div className="m-[32px_auto_15px] w-[56px]">
-                  <img src={dapp?.icon} alt={dapp?.name} />
-                </div>
-                <div className="text-center text-black font-Unbounded text-[16px] font-semibold leading-[100%]">{dapp?.name}</div>
-                <div className="mt-[6px] flex justify-center">
-                  <div className="p-[6px_10px] rounded-[6px] border border-black bg-[#7370C8] text-[#A5FFFD] font-Unbounded text-[12px] leading-[100%]">{dapp?.type}</div>
+                : {})}
+              onClick={() => {
+                setClicked(true);
+                setTimeout(() => {
+                  setClicked(false);
+                }, 300);
+                if (dapp?.link) {
+                  router.push(dapp.link);
+                }
+              }}
+            >
+              <div className="m-[32px_auto_15px] w-[56px]">
+                <img src={dapp?.icon} alt={dapp?.name} />
+              </div>
+              <div className="text-center text-black font-Unbounded text-[16px] font-semibold leading-[100%]">
+                {dapp?.name}
+              </div>
+              <div className="mt-[6px] flex justify-center">
+                <div className="p-[6px_10px] rounded-[6px] border border-black bg-[#7370C8] text-[#A5FFFD] font-Unbounded text-[12px] leading-[100%]">
+                  {dapp?.type}
                 </div>
               </div>
-            ))
-          }
+            </div>
+          ))}
         </motion.div>
         <div className="relative h-[30px]">
-          {
-            new Array(10).fill(null).map((_, index) => (
-              <div className="absolute w-[413px]" style={{ left: index * 380 }}>
-                <img src="/images/dapps/belt.svg" alt="belt" />
-              </div>
-            ))
-          }
+          {new Array(10).fill(null).map((_, index) => (
+            <div className="absolute w-[413px]" style={{ left: index * 380 }}>
+              <img src="/images/dapps/belt.svg" alt="belt" />
+            </div>
+          ))}
         </div>
       </div>
     </div>
-  )
-})
+  );
+});
