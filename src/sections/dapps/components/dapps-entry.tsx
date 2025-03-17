@@ -2,7 +2,9 @@ import { IDapp } from "@/types";
 import { useSize } from "ahooks";
 import clsx from "clsx";
 import { motion, useAnimation } from "framer-motion";
-import { memo, useEffect, useMemo, useState, useTransition } from "react";
+import { memo, useEffect, useMemo, useRef, useState, useTransition } from "react";
+import Sound from "./sound";
+import { useSoundStore } from "@/stores/sound";
 
 export default memo(function DappsEntry({
   direction,
@@ -11,6 +13,7 @@ export default memo(function DappsEntry({
   direction: 'left' | 'right'
   dapps: IDapp[]
 }) {
+  const soundStore = useSoundStore()
   const size = useSize(document.getElementsByTagName("body")[0])
 
   const controls = useAnimation();
@@ -36,6 +39,12 @@ export default memo(function DappsEntry({
       setOffsetX(event.pageX - 34)
     })
   }
+  function handleMouseEnter() {
+    soundStore?.movingMachanicRef?.current?.play()
+  }
+  function handleMouseLeave() {
+    soundStore?.movingMachanicRef?.current?.pause()
+  }
 
   useEffect(() => {
     const sequence = async () => {
@@ -59,86 +68,90 @@ export default memo(function DappsEntry({
   }, [controls, needStage2Animate, dapps])
 
   return (
-    <div className={clsx("relative h-[304px]", direction === "right" ? "flex justify-end" : "")}
-      onMouseMove={handleMouseMove}
-    >
-      <div className="relative z-10 w-[64px] h-[304px]">
-        <img src="/images/dapps/entry.svg" alt="entry" />
-      </div>
-      <div className="absolute left-0 right-0 top-[10px] h-[12px] bg-[#1A2647] z-[5]">
-        <div className={"absolute bottom-0"} style={{
-          transform: `translate3d(${offsetX}px,100%,0)`
-        }}>
+    <>
+      <div className={clsx("relative h-[304px]", direction === "right" ? "flex justify-end" : "")}
+        onMouseEnter={handleMouseEnter}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="relative z-10 w-[64px] h-[304px]">
+          <img src="/images/dapps/entry.svg" alt="entry" />
+        </div>
+        <div className="absolute left-0 right-0 top-[10px] h-[12px] bg-[#1A2647] z-[5]">
+          <div className={"absolute bottom-0"} style={{
+            transform: `translate3d(${offsetX}px,100%,0)`
+          }}>
+            <motion.div
+              className="w-[68px] flex flex-col items-center"
+              animate={{
+                height: clicked ? 120 : 68
+              }}
+              transition={{
+                duration: 0.3
+              }}
+            >
+              <div className="relative w-[21px] flex-1">
+                <img src="/images/dapps/claw_line.svg" alt="claw_line" />
+                <div className="absolute left-1/2 top-[10px] bottom-0 -translate-x-1/2 w-[4px] border-x border-black bg-[#435589]" />
+              </div>
+              <div className="w-[68px] h-[47px]">
+                <img src="/images/dapps/claw.svg" alt="claw" />
+              </div>
+            </motion.div>
+          </div>
+        </div>
+        <div className={clsx("min-w-full absolute bottom-[16px]", direction === "left" ? "left-0" : "right-0")}>
           <motion.div
-            className="w-[68px] flex flex-col items-center"
-            animate={{
-              height: clicked ? 120 : 68
-            }}
-            transition={{
-              duration: 0.3
-            }}
+            className={clsx("flex items-center gap-[80px]", direction === "right" ? "justify-end pr-[64px]" : "pl-[64px]")}
+            variants={variants}
+            initial="initial"
+            animate={controls}
           >
-            <div className="relative w-[21px] flex-1">
-              <img src="/images/dapps/claw_line.svg" alt="claw_line" />
-              <div className="absolute left-1/2 top-[10px] bottom-0 -translate-x-1/2 w-[4px] border-x border-black bg-[#435589]" />
-            </div>
-            <div className="w-[68px] h-[47px]">
-              <img src="/images/dapps/claw.svg" alt="claw" />
-            </div>
+            {
+              cycleDapps.map((dapp: IDapp, index) => (
+                <div
+                  className="cursor-pointer w-[180px] h-[155px] bg-[url('/images/dapps/dapp_bg.svg')] bg-contain bg-no-repeat"
+                  {...(needStage2Animate ? {
+                    onMouseEnter() {
+                      controls.stop()
+                    },
+                    onMouseLeave() {
+                      controls.start("stage2", {
+                        duration: dapps.length * 4,
+                        ease: "linear",
+                        repeat: Infinity
+                      });
+                    }
+                  } : {})}
+                  onClick={() => {
+                    setClicked(true)
+                    setTimeout(() => {
+                      setClicked(false)
+                    }, 300)
+                  }}
+                >
+                  <div className="m-[32px_auto_15px] w-[56px]">
+                    <img src={dapp?.icon} alt={dapp?.name} />
+                  </div>
+                  <div className="text-center text-black font-Unbounded text-[16px] font-semibold leading-[100%]">{dapp?.name}</div>
+                  <div className="mt-[6px] flex justify-center">
+                    <div className="p-[6px_10px] rounded-[6px] border border-black bg-[#7370C8] text-[#A5FFFD] font-Unbounded text-[12px] leading-[100%]">{dapp?.type}</div>
+                  </div>
+                </div>
+              ))
+            }
           </motion.div>
+          <div className="relative h-[30px]">
+            {
+              new Array(10).fill(null).map((_, index) => (
+                <div className="absolute w-[413px]" style={{ left: index * 380 }}>
+                  <img src="/images/dapps/belt.svg" alt="belt" />
+                </div>
+              ))
+            }
+          </div>
         </div>
       </div>
-      <div className={clsx("min-w-full absolute bottom-[16px]", direction === "left" ? "left-0" : "right-0")}>
-        <motion.div
-          className={clsx("flex items-center gap-[80px]", direction === "right" ? "justify-end pr-[64px]" : "pl-[64px]")}
-          variants={variants}
-          initial="initial"
-          animate={controls}
-        >
-          {
-            cycleDapps.map((dapp: IDapp, index) => (
-              <div
-                className="cursor-pointer w-[180px] h-[155px] bg-[url('/images/dapps/dapp_bg.svg')] bg-contain bg-no-repeat"
-                {...(needStage2Animate ? {
-                  onMouseEnter() {
-                    controls.stop()
-                  },
-                  onMouseLeave() {
-                    controls.start("stage2", {
-                      duration: dapps.length * 4,
-                      ease: "linear",
-                      repeat: Infinity
-                    });
-                  }
-                } : {})}
-                onClick={() => {
-                  setClicked(true)
-                  setTimeout(() => {
-                    setClicked(false)
-                  }, 300)
-                }}
-              >
-                <div className="m-[32px_auto_15px] w-[56px]">
-                  <img src={dapp?.icon} alt={dapp?.name} />
-                </div>
-                <div className="text-center text-black font-Unbounded text-[16px] font-semibold leading-[100%]">{dapp?.name}</div>
-                <div className="mt-[6px] flex justify-center">
-                  <div className="p-[6px_10px] rounded-[6px] border border-black bg-[#7370C8] text-[#A5FFFD] font-Unbounded text-[12px] leading-[100%]">{dapp?.type}</div>
-                </div>
-              </div>
-            ))
-          }
-        </motion.div>
-        <div className="relative h-[30px]">
-          {
-            new Array(10).fill(null).map((_, index) => (
-              <div className="absolute w-[413px]" style={{ left: index * 380 }}>
-                <img src="/images/dapps/belt.svg" alt="belt" />
-              </div>
-            ))
-          }
-        </div>
-      </div>
-    </div>
+    </>
   )
 })

@@ -9,10 +9,6 @@ import { useRpcStore } from "@/stores/rpc";
 import useCustomAccount from "@/hooks/use-account";
 
 const StyledRpcs = styled.div<{ $color?: string }>`
-  position: fixed;
-  z-index: 62;
-  bottom: 6px;
-  right: 10px;
   display: flex;
   align-items: center;
   gap: 5px;
