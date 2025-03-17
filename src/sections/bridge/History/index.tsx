@@ -17,7 +17,7 @@ export default function History({ activeTab, setActiveTab, isOpen, setIsOpen }: 
 
     const cls = isMobile 
     ? 'm-auto mt-[10px] md:w-[92.307vw] border border-[#9892C0] rounded-2xl bg-[#2B294A]' 
-    : 'fixed bottom-[0px] w-[350px] right-4 z-50 border border-[#9892C0] rounded-2xl bg-[#2B294A] lg:shadow-[10px_10px_0px_0px_#00000040]'
+    : 'fixed bottom-[0px] w-[350px] right-24 z-50 bg-[url("/images/bridge/history-bg.svg")] bg-no-repeat bg-top rounded-2xl lg:shadow-[10px_10px_0px_0px_#00000040]'
     
     return (
         <div className={cls}>
