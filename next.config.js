@@ -51,8 +51,12 @@ const nextConfig = {
       destination: `https://api.dapdap.net/:path*`
     },
     {
-      source: '/api.db3.app/:path*',
-      destination: 'https://api.db3.app/:path*'
+      source: "/api.db3.app/:path*",
+      destination: "https://api.db3.app/:path*"
+    },
+    {
+      source: "/lfj/:path*",
+      destination: "https://router-testnet.lfj.gg/:path*"
     }
   ],
   webpack: (config, { dev }) => {

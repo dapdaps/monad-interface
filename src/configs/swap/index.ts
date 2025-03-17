@@ -1,15 +1,11 @@
-import bex from "./bex";
-import kodiak from "./kodiak";
-import oogaBooga from "./ooga-booga";
+import izumi from "./izumi";
+import lfj from "./lfj";
+import pancake from "./pancake";
+import openocean from "./openocean";
 
 export default {
-  bex,
-  kodiak,
-  "ooga-booga": oogaBooga
+  izumi,
+  lfj,
+  pancake,
+  openocean
 } as Record<string, any>;
-
-export const dexs: Record<string, any> = {
-  bex,
-  kodiak,
-  "ooga booga": oogaBooga
-};

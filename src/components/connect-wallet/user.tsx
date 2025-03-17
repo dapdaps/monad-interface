@@ -2,7 +2,6 @@ import Drawer from "@/components/drawer";
 import { useDisconnect } from "wagmi";
 
 const MobileUser = (props: Props) => {
-
   const {
     visible,
     onClose,
@@ -14,12 +13,10 @@ const MobileUser = (props: Props) => {
     balanceShown,
     tokenSymbolShown,
     chainId,
-    userInfo,
+    userInfo
   } = props;
 
-  
-
-  const walletName = walletInfo?.name || '';
+  const walletName = walletInfo?.name || "";
 
   return (
     <Drawer
@@ -61,12 +58,12 @@ const MobileUser = (props: Props) => {
                     height="10.2857"
                     rx="2"
                     stroke="#979ABE"
-                    stroke-width="2"
+                    strokeWidth="2"
                   />
                   <path
                     d="M11.2857 4.42857V3C11.2857 1.89543 10.3903 1 9.28571 1H3C1.89543 1 1 1.89543 1 3V9.28571C1 10.3903 1.89543 11.2857 3 11.2857H4.42857"
                     stroke="#979ABE"
-                    stroke-width="2"
+                    strokeWidth="2"
                   />
                 </svg>
               </div>
@@ -108,29 +105,40 @@ const MobileUser = (props: Props) => {
   );
 };
 
-const DisconnectButton = ({
-  setMobileUserInfoVisible,
-} : any) => {
-  const { disconnect } = useDisconnect()
+const DisconnectButton = ({ setMobileUserInfoVisible }: any) => {
+  const { disconnect } = useDisconnect();
 
   const handleDisconnect = () => {
     disconnect();
     setMobileUserInfoVisible(false);
   };
-  return <div
-  className="cursor-pointer flex gap-2 items-center click mt-[22px] transition-all duration-300 hover:bg-[#f7f7f7]"
-  onClick={handleDisconnect}
->
-  <div className="">
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M2.39516 20H13.2164C13.832 20 14.3315 19.4625 14.3315 18.8C14.3315 18.1375 13.832 17.6 13.2164 17.6H2.51132C2.4091 17.4675 2.23022 17.0775 2.23022 16.455V3.5475C2.23022 2.925 2.4091 2.535 2.51132 2.4H13.2164C13.832 2.4 14.3315 1.8625 14.3315 1.2C14.3315 0.5375 13.832 0 13.2164 0H2.39516C1.02915 0 0 1.525 0 3.5475V16.4525C0 18.475 1.02915 20 2.39516 20ZM15.4907 15.3454L19.6329 10.8904C19.6463 10.8774 19.6594 10.864 19.6724 10.8502C19.891 10.6149 20.0002 10.3076 19.9999 10.0003C20.0002 9.69302 19.891 9.38566 19.6724 9.15035C19.6582 9.13507 19.6437 9.12028 19.629 9.106L15.493 4.65523C15.0563 4.18523 14.3524 4.18523 13.9156 4.65523C13.4789 5.12523 13.4789 5.88273 13.9156 6.35273L16.1916 8.80059H8.54917C7.93354 8.80059 7.43406 9.33809 7.43406 10.0006C7.43406 10.6631 7.93354 11.2006 8.54917 11.2006H16.1898L13.9156 13.6479C13.4789 14.1179 13.4789 14.8754 13.9156 15.3454C14.1317 15.5804 14.4174 15.6979 14.7032 15.6979C14.9889 15.6979 15.2747 15.5804 15.4907 15.3454Z" fill="#FF3E78"/>
-    </svg>
-  </div>
-  <div className="text-[#000000] text-[16px] font-semibold leading-[1]">
-    Disconnect
-  </div>
-</div>
-}
+  return (
+    <div
+      className="cursor-pointer flex gap-2 items-center click mt-[22px] transition-all duration-300 hover:bg-[#f7f7f7]"
+      onClick={handleDisconnect}
+    >
+      <div className="">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M2.39516 20H13.2164C13.832 20 14.3315 19.4625 14.3315 18.8C14.3315 18.1375 13.832 17.6 13.2164 17.6H2.51132C2.4091 17.4675 2.23022 17.0775 2.23022 16.455V3.5475C2.23022 2.925 2.4091 2.535 2.51132 2.4H13.2164C13.832 2.4 14.3315 1.8625 14.3315 1.2C14.3315 0.5375 13.832 0 13.2164 0H2.39516C1.02915 0 0 1.525 0 3.5475V16.4525C0 18.475 1.02915 20 2.39516 20ZM15.4907 15.3454L19.6329 10.8904C19.6463 10.8774 19.6594 10.864 19.6724 10.8502C19.891 10.6149 20.0002 10.3076 19.9999 10.0003C20.0002 9.69302 19.891 9.38566 19.6724 9.15035C19.6582 9.13507 19.6437 9.12028 19.629 9.106L15.493 4.65523C15.0563 4.18523 14.3524 4.18523 13.9156 4.65523C13.4789 5.12523 13.4789 5.88273 13.9156 6.35273L16.1916 8.80059H8.54917C7.93354 8.80059 7.43406 9.33809 7.43406 10.0006C7.43406 10.6631 7.93354 11.2006 8.54917 11.2006H16.1898L13.9156 13.6479C13.4789 14.1179 13.4789 14.8754 13.9156 15.3454C14.1317 15.5804 14.4174 15.6979 14.7032 15.6979C14.9889 15.6979 15.2747 15.5804 15.4907 15.3454Z"
+            fill="#FF3E78"
+          />
+        </svg>
+      </div>
+      <div className="text-[#000000] text-[16px] font-semibold leading-[1]">
+        Disconnect
+      </div>
+    </div>
+  );
+};
 
 export default MobileUser;
 

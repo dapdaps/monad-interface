@@ -28,7 +28,7 @@ export const TOKEN_ABI = [
 export default function useTokenBalance(
   address: string | "native",
   decimals: number,
-  chainId: number = 80094
+  chainId: number = 10143
 ) {
   // console.info('use-token-bal:', address, decimals, chainId);
   const { account, chainId: walletChainId } = useAccount();

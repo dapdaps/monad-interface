@@ -1,9 +1,11 @@
-import { Bex } from "./bex.model";
-import { Kodiak } from "./kodiak.model";
-import { OogaBooga } from "./ooga-booga.model";
+import { iZiSwap } from "./iziswap.model";
+import { TraderJoe } from "./trader-joe.model";
+import { PancakeSwap } from "./pancake-swap.model";
+import { OpenOcean } from "./openocean.model";
 
 export default {
-  Bex,
-  Kodiak,
-  "Ooga Booga": OogaBooga
+  iZumi: iZiSwap,
+  LFJ: TraderJoe,
+  Pancake: PancakeSwap,
+  OpenOcean
 } as { [key: string]: any };

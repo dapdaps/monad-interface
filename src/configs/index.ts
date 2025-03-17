@@ -1,9 +1,12 @@
-import { monadTestnet } from '@reown/appkit/networks';
+import { monadTestnet } from "@reown/appkit/networks";
 
-export const DEFAULT_CHAIN_ID = Number(process.env.NEXT_PUBLIC_CHAIN_ID) || monadTestnet.id;
+export const DEFAULT_CHAIN_ID =
+  Number(process.env.NEXT_PUBLIC_CHAIN_ID) || monadTestnet.id;
 
 export const IS_MAINNET = false;
 
 export enum HTTP_CODE {
-  OK = 200,
+  OK = 200
 }
+
+export const DEFAULT_SWAP_DAPP = "izumi";
