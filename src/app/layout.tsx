@@ -1,9 +1,12 @@
 "use client";
 
 import Rpc from "@/components/rpc";
+import Sound from "@/components/sound";
 import SceneContextProvider from "@/context/scene";
 import WagmiProvider from "@/context/wagmi";
 import MainLayout from "@/layouts/main";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 import Script from "next/script";
 import React, { Suspense } from "react";
@@ -12,6 +15,8 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
+
+dayjs.extend(utc);
 
 export default function RootLayout({
   children
@@ -35,7 +40,10 @@ export default function RootLayout({
             <SceneContextProvider>
               <Suspense>
                 <MainLayout>{children}</MainLayout>
-                <Rpc />
+                <div className="fixed right-[10px] bottom-[6px] z-50 flex items-center gap-[8px]">
+                  <Sound />
+                  <Rpc />
+                </div>
               </Suspense>
             </SceneContextProvider>
           </SkeletonTheme>
@@ -57,6 +65,8 @@ export default function RootLayout({
           options={{ showSpinner: false }}
           shallowRouting
         />
+
+
       </body>
       <Script
         async

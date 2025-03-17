@@ -25,8 +25,8 @@ export const getMonthlyCheckinList = (month: number, checkedInList?: ICheckedIte
 };
 
 export const getUntilCurrentMonthCheckinList = (checkedInList?: ICheckedItem[]) => {
-  const startDate = dayjs(FaucetStartDate);
-  const endDate = dayjs().endOf("month");
+  const startDate = dayjs(FaucetStartDate).utc();
+  const endDate = dayjs().utc().endOf("month");
 
   const totalDays = endDate.diff(startDate, "day") + 1;
 

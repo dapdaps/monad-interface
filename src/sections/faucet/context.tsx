@@ -21,7 +21,7 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
     play: checkinPlay,
   } = useAudioPlay();
 
-  const today = dayjs();
+  const today = dayjs().utc();
 
   const [checkInPending, setCheckInPending] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -76,7 +76,7 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
       }
       const _list = res.data || [];
       _list.forEach((item: ICheckedItem) => {
-        item.checkin_date = item.checkin_date > 0 ? dayjs(item.checkin_date * 1000).startOf("day").valueOf() : 0;
+        item.checkin_date = item.checkin_date > 0 ? dayjs.utc(item.checkin_date * 1000).startOf("day").valueOf() : 0;
       });
       setCheckedList(_list);
       if (isAfterCheckin) {

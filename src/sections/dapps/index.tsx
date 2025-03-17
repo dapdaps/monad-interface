@@ -1,99 +1,87 @@
-import clsx from "clsx";
-import { motion } from "framer-motion";
-import { memo, useMemo, useState } from "react";
-import RectangularButton from "./components/rectangular-button";
-import DappsEntry from "./components/dapps-entry";
-import { IDapp } from "@/types";
+import { IDapp } from "@/types"
+import { motion } from "framer-motion"
+import { memo, useEffect, useMemo, useState } from "react"
+import DappsEntry from "./components/dapps-entry"
+import RectangularButton from "./components/rectangular-button"
+import { useSoundStore } from "@/stores/sound"
+
+
 
 export default memo(function Dapps() {
-  const [activeType, setActiveType] = useState("all");
+  const soundStore = useSoundStore()
+  const [activeType, setActiveType] = useState("all")
+  const LEFT_DAPP_LIST: IDapp[] = [{
+    name: "Lynex",
+    icon: "/images/dapps/icons/Lynex.svg",
+    type: "dex",
+    link: "",
+  }, {
+    name: "iZumi",
+    icon: "/images/dapps/icons/iZumi.svg",
+    type: "dex",
+    link: "",
+  }, {
+    name: "Pancake",
+    icon: "/images/dapps/icons/Pancake.svg",
+    type: "dex",
+    link: "",
+  }, {
+    name: "OpenOcean",
+    icon: "/images/dapps/icons/OpenOcean.svg",
+    type: "dex",
+    link: "",
+  }, {
+    name: "Infinex",
+    icon: "/images/dapps/icons/Infinex.svg",
+    type: "dex",
+    link: "",
+  },]
+  const RIGHT_DAPP_LIST: IDapp[] = [{
+    name: "Orderly",
+    icon: "/images/dapps/icons/Orderly.svg",
+    type: "dex",
+    link: "",
+  }, {
+    name: "D3X",
+    icon: "/images/dapps/icons/D3X.svg",
+    type: "dex",
+    link: "",
+  }, {
+    name: "LFJ",
+    icon: "/images/dapps/icons/LFJ.svg",
+    type: "dex",
+    link: "",
+  }, {
+    name: "Owlto",
+    icon: "/images/dapps/icons/OwltoFinance.svg",
+    type: "bridge",
+    link: "",
+  }, {
+    name: "Balancer",
+    icon: "/images/dapps/icons/Balancer.svg",
+    type: "dex",
+    link: "",
+  }, {
+    name: "emelverse",
+    icon: "/images/dapps/icons/emelverse.svg",
+    type: "dex",
+    link: "",
+  },]
 
-  const LEFT_DAPP_LIST: IDapp[] = [
-    {
-      name: "Lynex",
-      icon: "/images/dapps/icons/Lynex.svg",
-      type: "dex",
-      link: ""
-    },
-    {
-      name: "iZumi",
-      icon: "/images/dapps/icons/iZumi.svg",
-      type: "dex",
-      link: "/dex/izumi"
-    },
-    {
-      name: "Pancake",
-      icon: "/images/dapps/icons/Pancake.svg",
-      type: "dex",
-      link: "/dex/pancake"
-    },
-    {
-      name: "OpenOcean",
-      icon: "/images/dapps/icons/OpenOcean.svg",
-      type: "dex",
-      link: "/dex/openocean"
-    },
-    {
-      name: "Infinex",
-      icon: "/images/dapps/icons/Infinex.svg",
-      type: "dex",
-      link: ""
+
+  const FILTER_LEFT_DAPP_LIST = useMemo(() => LEFT_DAPP_LIST.filter((dapp: IDapp) => dapp.type === activeType || activeType === "all"), [activeType])
+  const FILTER_RIGHT_DAPP_LIST = useMemo(() => RIGHT_DAPP_LIST.filter((dapp: IDapp) => dapp.type === activeType || activeType === "all"), [activeType])
+
+  function handleClickButton(type) {
+    setActiveType(type)
+  }
+
+  useEffect(() => {
+    soundStore?.conveyorBeltRef?.current?.play()
+    return () => {
+      soundStore?.conveyorBeltRef?.current?.pause()
     }
-  ];
-  const RIGHT_DAPP_LIST: IDapp[] = [
-    {
-      name: "Orderly",
-      icon: "/images/dapps/icons/Orderly.svg",
-      type: "dex",
-      link: ""
-    },
-    {
-      name: "D3X",
-      icon: "/images/dapps/icons/D3X.svg",
-      type: "dex",
-      link: ""
-    },
-    {
-      name: "LFJ",
-      icon: "/images/dapps/icons/LFJ.svg",
-      type: "dex",
-      link: "/dex/lfj"
-    },
-    {
-      name: "Owlto",
-      icon: "/images/dapps/icons/OwltoFinance.svg",
-      type: "bridge",
-      link: ""
-    },
-    {
-      name: "Balancer",
-      icon: "/images/dapps/icons/Balancer.svg",
-      type: "dex",
-      link: ""
-    },
-    {
-      name: "emelverse",
-      icon: "/images/dapps/icons/emelverse.svg",
-      type: "dex",
-      link: ""
-    }
-  ];
-
-  const FILTER_LEFT_DAPP_LIST = useMemo(
-    () =>
-      LEFT_DAPP_LIST.filter(
-        (dapp: IDapp) => dapp.type === activeType || activeType === "all"
-      ),
-    [activeType]
-  );
-  const FILTER_RIGHT_DAPP_LIST = useMemo(
-    () =>
-      RIGHT_DAPP_LIST.filter(
-        (dapp: IDapp) => dapp.type === activeType || activeType === "all"
-      ),
-    [activeType]
-  );
-
+  }, [])
   return (
     <div className="min-h-[840px] pt-[30px]">
       <div className="flex flex-col gap-[18px]">
@@ -122,7 +110,9 @@ export default memo(function Dapps() {
             type={1}
             clicked={activeType === "all"}
             className="absolute left-[52px] top-[24px] w-[178px] h-[36px]"
-            onClick={() => setActiveType("all")}
+            onClick={() => {
+              handleClickButton("all")
+            }}
           >
             All
           </RectangularButton>
@@ -131,7 +121,7 @@ export default memo(function Dapps() {
               type={1}
               clicked={activeType === "bridge"}
               className="w-[86px] h-[36px]"
-              onClick={() => setActiveType("bridge")}
+              onClick={() => handleClickButton("bridge")}
             >
               Bridge
             </RectangularButton>
@@ -140,7 +130,7 @@ export default memo(function Dapps() {
               type={3}
               clicked={activeType === "dex"}
               className="w-[88px] h-[36px]"
-              onClick={() => setActiveType("dex")}
+              onClick={() => handleClickButton("dex")}
             >
               Dex
             </RectangularButton>
@@ -148,7 +138,6 @@ export default memo(function Dapps() {
             <RectangularButton
               type={3}
               disabled
-              clicked={activeType === "lending"}
               className="w-[86px] h-[36px]"
             >
               Lending
@@ -156,7 +145,6 @@ export default memo(function Dapps() {
             <RectangularButton
               type={2}
               disabled
-              clicked={activeType === "staking"}
               className="w-[86px] h-[36px]"
             >
               Staking
@@ -164,19 +152,6 @@ export default memo(function Dapps() {
           </div>
         </div>
       </div>
-
-      <audio
-        src={""}
-        autoPlay
-        style={{
-          width: 0,
-          height: 0,
-          position: "absolute",
-          zIndex: -9999,
-          visibility: "hidden",
-          opacity: 0
-        }}
-      />
     </div>
   );
 });

@@ -2,8 +2,8 @@
 
 import ConnectWallet from "@/components/connect-wallet";
 import { useProgressRouter } from "@/hooks/use-progress-router";
+import clsx from 'clsx';
 import { usePathname } from "next/navigation";
-import clsx from "clsx";
 
 const FIXED_HEADER_PATHNAME = [/^\/faucet$/];
 
