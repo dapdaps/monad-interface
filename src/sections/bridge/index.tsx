@@ -15,13 +15,12 @@ import History from './History';
 import Big from 'big.js';
 import { useAccount, useSwitchChain } from "wagmi";
 import { formatLongText } from '@/utils/utils';
-import allTokens from './lib/allTokens'
-import { tokenPairs } from './lib/bridges/owlto/config';
+import allTokens from './lib/allTokens';
 import useBridge from './Hooks/useBridge';
 
 import type { Token, Chain } from '@/types';
-import { motion, px } from 'framer-motion';
-
+import { motion } from 'framer-motion';
+import { tokenPairs } from './lib/bridges/orbiter/config';
 const DappHeader: React.FC = () => {
   const { dapp: dappName } = useParams();
   const isMobile = useIsMobile();
