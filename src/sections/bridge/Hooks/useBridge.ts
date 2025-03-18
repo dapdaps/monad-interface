@@ -238,6 +238,7 @@ export default function useBridge({ originFromChain, originToChain, derection, d
     routes,
     selectedRoute,
     setSelectedRoute,
-    executeRoute
+    executeRoute,
+    getStatus
   };
 }

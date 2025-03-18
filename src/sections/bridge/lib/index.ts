@@ -55,17 +55,17 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer, callb
       const key = engine[i]
       switch (key) {
         case 'owlto':
-          quoteP.push(getOwltoRoute(quoteRequest, signer))
+          quoteP.push(getOwltoRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('owlto:', e)))
           break;
         case 'orbiter':
-          quoteP.push(getOrbiterRoute(quoteRequest, signer))
+          quoteP.push(getOrbiterRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('orbiter:', e)))
           break;
       }
     }
   } else {
-    const owltoRoute = getOwltoRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('owlto:', e))
-    // const orbiterRoute = getOrbiterRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('orbiter:', e))
-    quoteP.push(owltoRoute)
+    // const owltoRoute = getOwltoRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('owlto:', e))
+    const orbiterRoute = getOrbiterRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('orbiter:', e))
+    quoteP.push(orbiterRoute)
   }
 
   const resList: (QuoteResponse | QuoteResponse[] | null | void)[] = await Promise.all(quoteP)

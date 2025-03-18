@@ -224,3 +224,16 @@ input[type="number"]::-webkit-inner-spin-button {
     border-radius: 6px;
   }
 }
+
+.bridge-history-tab-active {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background: #fff;
+  }
+}

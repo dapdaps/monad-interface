@@ -25,7 +25,7 @@ export const useHistory = () => {
     }, 5000, { immediate: true })
 
     const updateStatus = useCallback(async (item: any) => {
-        await http.post('/api/action/bridge/status', {
+        await http.post('/action/bridge/status', {
             tx_id: item.tx_id,
             status: '4'
         });

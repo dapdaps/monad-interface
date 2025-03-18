@@ -15,13 +15,12 @@ import History from './History';
 import Big from 'big.js';
 import { useAccount, useSwitchChain } from "wagmi";
 import { formatLongText } from '@/utils/utils';
-import allTokens from './lib/allTokens'
-import { tokenPairs } from './lib/bridges/owlto/config';
+import allTokens from './lib/allTokens';
 import useBridge from './Hooks/useBridge';
 
 import type { Token, Chain } from '@/types';
-import { motion, px } from 'framer-motion';
-
+import { motion } from 'framer-motion';
+import { tokenPairs } from './lib/bridges/orbiter/config';
 const DappHeader: React.FC = () => {
   const { dapp: dappName } = useParams();
   const isMobile = useIsMobile();
@@ -100,6 +99,7 @@ export default function Bridge() {
     selectedRoute,
     routes,
     executeRoute,
+    getStatus,
   } = useBridge({
     originFromChain: chains[11155111],
     originToChain: chains[10143],
@@ -161,7 +161,7 @@ export default function Bridge() {
             className='absolute overflow-hidden w-[100px] h-[120px] bg-[url("/images/bridge/man.png")] bg-cover bg-right-bottom bg-no-repeat'
             animate={{
               bottom: ['0', '80%'],
-              right: ['42%', '8.5%'],
+              right: ['42%', '9.5%'],
               scale: [1, 0.01],
             }}
             transition={{
@@ -269,7 +269,7 @@ export default function Bridge() {
             }}
           />
         </div>
-        <History activeTab={activeTab} setActiveTab={setActiveTab} isOpen={historyShow} setIsOpen={setHistoryShow} />
+        <History activeTab={activeTab} getStatus={getStatus} setActiveTab={setActiveTab} isOpen={historyShow} setIsOpen={setHistoryShow} />
       </div>
     </>
   );

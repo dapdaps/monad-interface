@@ -127,6 +127,7 @@ export async function getStatus(params: StatusParams) {
             params.address as string,
             params.fromChainId as string,
         );
+
         if (status) {
             return {
                 status: 1
