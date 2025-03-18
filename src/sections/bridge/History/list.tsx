@@ -99,7 +99,7 @@ function HistoryItem({ item }: { item: any }) {
                     <img className='w-[10px] h-[10px] object-contain border border-[#000] rounded-full absolute bottom-0 right-0' src={extra_data?.toChainLogo} />
                 </div>
                 <div>
-                    <div className='text-[#fff]'>{balanceFormated(extra_data.action_amount)}</div>
+                    <div className='text-[#fff]'>{balanceFormated(extra_data.toAmout)}</div>
                     <div className='text-[#A6A6DB]'>{extra_data?.toTokenSymbol}</div>
                 </div>
             </div>

@@ -162,7 +162,7 @@ export default function Bridge() {
             className='absolute overflow-hidden w-[100px] h-[120px] bg-[url("/images/bridge/man.png")] bg-cover bg-right-bottom bg-no-repeat'
             animate={{
               bottom: ['0', '80%'],
-              right: ['42%', '8.5%'],
+              right: ['42%', '9.5%'],
               scale: [1, 0.01],
             }}
             transition={{

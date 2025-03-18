@@ -69,10 +69,10 @@ export async function getQuote(request: QuoteRequest, signer: Signer): Promise<Q
   const _crossChainRouter = await getCrossChainRouter()
   const _tokens = await getAllTokens()
 
-  console.log('request: ', _crossChainRouter, _tokens)
+  // console.log('request: ', _crossChainRouter, _tokens)
 
-  request.toToken.symbol = 'ETH'
-  
+  // request.toToken.symbol = 'ETH'
+
   for (let i = 0; i < _crossChainRouter.length; i++) {
     const currentRoute = _crossChainRouter[i]
 
