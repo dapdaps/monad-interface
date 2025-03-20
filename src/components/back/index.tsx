@@ -20,6 +20,7 @@ const PageBack = (props: Props) => {
       <button
         type='button'
         className={`items-center gap-[14px] text-center font-CherryBomb text-[20px] text-black font-[400] hidden lg:flex ${className}`}
+        data-click-sound="/audios/press_button.mp3"
         style={style}
         onClick={handleClick}
       >

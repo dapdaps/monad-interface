@@ -4,10 +4,9 @@ import { memo, useEffect, useMemo, useState } from "react"
 import DappsEntry from "./components/dapps-entry"
 import RectangularButton from "./components/rectangular-button"
 import { useSoundStore } from "@/stores/sound"
+import withSound from "@/hoc/withSound"
 
-
-
-export default memo(function Dapps() {
+function Dapps() {
   const soundStore = useSoundStore()
   const [activeType, setActiveType] = useState("all")
   const LEFT_DAPP_LIST: IDapp[] = [{
@@ -75,20 +74,12 @@ export default memo(function Dapps() {
   function handleClickButton(type) {
     setActiveType(type)
   }
-
-  useEffect(() => {
-    soundStore?.conveyorBeltRef?.current?.play()
-    return () => {
-      soundStore?.conveyorBeltRef?.current?.pause()
-    }
-  }, [])
   return (
     <div className="min-h-[840px] pt-[30px]">
       <div className="flex flex-col gap-[18px]">
         <DappsEntry direction="left" dapps={FILTER_LEFT_DAPP_LIST} />
         <DappsEntry direction="right" dapps={FILTER_RIGHT_DAPP_LIST} />
       </div>
-
       <div className="absolute left-0 right-0 bottom-0 h-[87px] bg-[#23243D] border-t-[18px] border-[#273051]">
         <div className="absolute bottom-[42px] left-1/2 translate-x-[calc(-50%_-_441px)] w-[81px] h-[110px] bg-[url('/images/dapps/body.svg')] bg-contain bg-no-repeat">
           <motion.div className="absolute right-0 top-0 w-[29px] origin-bottom-left"
@@ -154,4 +145,6 @@ export default memo(function Dapps() {
       </div>
     </div>
   )
-})
+}
+
+export default memo(withSound(Dapps))

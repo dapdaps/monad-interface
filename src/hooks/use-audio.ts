@@ -15,6 +15,7 @@ export default function useAudioPlay() {
       setPlayingUrl('');
     }
   }, []);
+  console.log('====muted', muted)
 
   const play = useCallback(
     async (url: string) => {
