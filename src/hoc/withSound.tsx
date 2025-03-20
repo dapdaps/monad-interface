@@ -10,7 +10,7 @@ const withSound = <P extends object>(WrappedComponent: React.ComponentType<P>) =
         const target = (event.target as HTMLElement).closest("[data-click-sound]");
         if (target) {
           const targetSrc = target.getAttribute("data-click-sound") 
-          const soundSrc = !targetSrc || targetSrc === "true" ? "/audios/home/click.mp3" : targetSrc;
+          const soundSrc = !targetSrc || targetSrc === "true" ? "/audios/press_button.mp3" : targetSrc;
           play(soundSrc);
         }
       };
@@ -19,9 +19,8 @@ const withSound = <P extends object>(WrappedComponent: React.ComponentType<P>) =
         const target = (event.target as HTMLElement).closest("[data-hover-sound]");
         if (target) {
           const targetSrc = target.getAttribute("data-hover-sound");
-          if (targetSrc) {
-            play(targetSrc);
-          }
+          const soundSrc = !targetSrc || targetSrc === "true" ? "/audios/hover.mp3" : targetSrc;
+          play(soundSrc);
         }
       };
 

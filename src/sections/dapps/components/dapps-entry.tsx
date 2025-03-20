@@ -62,13 +62,6 @@ export default memo(function DappsEntry({
       setOffsetX(event.pageX - 34);
     });
   }
-  function handleMouseEnter() {
-    soundStore?.movingMachanicRef?.current?.play();
-  }
-  function handleMouseLeave() {
-    soundStore?.movingMachanicRef?.current?.pause();
-  }
-
   useEffect(() => {
     const sequence = async () => {
       // await controls?.stop()
@@ -96,13 +89,9 @@ export default memo(function DappsEntry({
   return (
     <>
       <div
-        className={clsx(
-          "relative h-[304px]",
-          direction === "right" ? "flex justify-end" : ""
-        )}
-        onMouseEnter={handleMouseEnter}
+        className={clsx("relative h-[304px]", direction === "right" ? "flex justify-end" : "")}
+        data-hover-sound="/audios/dapps/moving_machanic_clip.mp3"
         onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
       >
         <div className="relative z-10 w-[64px] h-[304px]">
           <img src="/images/dapps/entry.svg" alt="entry" />

@@ -14,18 +14,13 @@ export default memo(forwardRef(function sound({
       audioRef.current.play();
     }
   };
+
   const pauseSound = () => {
     if (audioRef.current) {
       audioRef.current.pause();
     }
   };
-  const mutedSound = (muted) => {
-    if (audioRef.current) {
-      audioRef.current.muted = muted;
-    }
-  }
   const refs = {
-    muted: mutedSound,
     play: playSound,
     pause: pauseSound
   };

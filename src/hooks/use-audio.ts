@@ -15,11 +15,11 @@ export default function useAudioPlay() {
       setPlayingUrl('');
     }
   }, []);
+  console.log('====muted', muted)
 
   const play = useCallback(
     async (url: string) => {
       if (muted) return;
-      debugger
       try {
         if (audioRef.current && playingUrl === url) {
           if (playing) {
