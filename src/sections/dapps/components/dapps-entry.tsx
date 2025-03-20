@@ -29,14 +29,6 @@ export default memo(function DappsEntry({
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  const needStage2Animate = useMemo(
-    () => dapps.length * 2 * 180 + (dapps.length * 2 - 1) * 80 > size?.width,
-    [dapps, size]
-  );
-  const cycleDapps = useMemo(
-    () => (needStage2Animate ? [...dapps, ...dapps] : dapps),
-    [dapps, needStage2Animate]
-  );
 
   const variants = useMemo(() => {
     return {
@@ -47,15 +39,10 @@ export default memo(function DappsEntry({
             : "translate3d(-100%, 0, 0)"
       },
       stage1: {
-        transform: needStage2Animate
-          ? direction === "right"
-            ? "translate3d(50%, 0, 0)"
-            : "translate3d(-50%, 0, 0)"
-          : "translate3d(0%, 0, 0)"
+        transform: "translate3d(0%, 0, 0)"
       },
-      stage2: { transform: "translate3d(0%, 0, 0)" }
     };
-  }, [direction, needStage2Animate]);
+  }, [direction]);
 
   function handleMouseMove(event) {
     startTransition(() => {
@@ -72,20 +59,12 @@ export default memo(function DappsEntry({
             : "translate3d(-100%, 0, 0)"
       });
       await controls.start("stage1", {
-        duration: Math.floor(cycleDapps.length / 2),
+        duration: 3,
         ease: "linear"
       });
-      if (needStage2Animate) {
-        await controls.start("stage2", {
-          duration: cycleDapps.length,
-          ease: "linear",
-          repeat: Infinity
-        });
-      }
     };
     sequence();
-  }, [controls, needStage2Animate, dapps]);
-
+  }, [controls, dapps]);
   return (
     <>
       <div
@@ -93,7 +72,7 @@ export default memo(function DappsEntry({
         data-hover-sound="/audios/dapps/moving_machanic_clip.mp3"
         onMouseMove={handleMouseMove}
       >
-        <div className="relative z-10 w-[64px] h-[304px]">
+        <div className={clsx("relative z-10 w-[64px] h-[304px]", direction === "right" ? "rotate-180 -right-[1px]" : "-left-[1px]")}>
           <img src="/images/dapps/entry.svg" alt="entry" />
         </div>
         <div className="absolute left-0 right-0 top-[10px] h-[12px] bg-[#1A2647] z-[5]">
@@ -130,30 +109,16 @@ export default memo(function DappsEntry({
         >
           <motion.div
             className={clsx(
-              "flex items-center gap-[80px]",
+              "flex items-center justify-center gap-[80px]",
               direction === "right" ? "justify-end pr-[64px]" : "pl-[64px]"
             )}
             variants={variants}
             initial="initial"
             animate={controls}
           >
-            {cycleDapps.map((dapp: IDapp, index) => (
+            {dapps.map((dapp: IDapp, index) => (
               <div
                 className="cursor-pointer w-[180px] h-[155px] bg-[url('/images/dapps/dapp_bg.svg')] bg-contain bg-no-repeat"
-                {...(needStage2Animate
-                  ? {
-                      onMouseEnter() {
-                        controls.stop();
-                      },
-                      onMouseLeave() {
-                        controls.start("stage2", {
-                          duration: dapps.length * 4,
-                          ease: "linear",
-                          repeat: Infinity
-                        });
-                      }
-                    }
-                  : {})}
                 onClick={() => {
                   setClicked(true);
                   if (dapp?.link) {

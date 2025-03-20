@@ -5,6 +5,7 @@ export const useSoundStore = create(
   persist<RpcStore>(
     (set) => ({
       muted: false,
+      conveyorBeltRef: null,
       set: (params: any) => set(() => ({ ...params })),
     }),
     {

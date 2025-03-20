@@ -1,10 +1,10 @@
+import BackgroundSound from "@/components/background-sound"
+import { useSoundStore } from "@/stores/sound"
 import { IDapp } from "@/types"
 import { motion } from "framer-motion"
 import { memo, useEffect, useMemo, useState } from "react"
 import DappsEntry from "./components/dapps-entry"
 import RectangularButton from "./components/rectangular-button"
-import { useSoundStore } from "@/stores/sound"
-import withSound from "@/hoc/withSound"
 
 function Dapps() {
   const soundStore = useSoundStore()
@@ -85,6 +85,23 @@ function Dapps() {
   function handleClickButton(type: any) {
     setActiveType(type);
   }
+  function handlePlay() {
+    try {
+      soundStore?.conveyorBeltRef?.current?.play?.()
+    } catch (error) {
+      console.log('=====error', error)
+    }
+  }
+  useEffect(() => {
+    soundStore?.conveyorBeltRef?.current?.play?.()
+    setTimeout(() => {
+      soundStore?.conveyorBeltRef?.current?.pause?.()
+    }, 3000)
+    handlePlay()
+    return () => {
+      soundStore?.conveyorBeltRef?.current?.pause?.()
+    }
+  }, [soundStore?.conveyorBeltRef])
   return (
     <div className="h-[calc(100vh-60px)] pt-[30px] overflow-hidden">
       <div className="flex flex-col gap-[18px]">
