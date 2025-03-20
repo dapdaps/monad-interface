@@ -76,7 +76,7 @@ function Dapps() {
   }
   return (
     <div className="min-h-[840px] pt-[30px]">
-      <div className="flex flex-col gap-[18px]">
+      <div className="flex flex-col gap-[18px] overflow-hidden">
         <DappsEntry direction="left" dapps={FILTER_LEFT_DAPP_LIST} />
         <DappsEntry direction="right" dapps={FILTER_RIGHT_DAPP_LIST} />
       </div>
