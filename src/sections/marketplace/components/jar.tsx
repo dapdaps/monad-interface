@@ -83,8 +83,15 @@ const TokenItem = ({
   type: "price" | "volume"
 }) => {
   return (
-    <div
-      className="group absolute -translate-x-[100%] -translate-y-[calc(100%_+_50px)]"
+    <motion.div
+      className="group absolute -translate-x-[100%]"
+      animate={{
+        transform: ["translateY(calc(-100% - 50px)", "translateY(calc(-100% - 56px)", "translateY(calc(-100% - 50px)", "translateY(calc(-100% - 44px)"]
+      }}
+      transition={{
+        duration: 1.5,
+        repeat: Infinity,
+      }}
       style={{
         left: token?.x + "%",
         top: token?.y + "%"
@@ -147,7 +154,7 @@ const TokenItem = ({
         )
       }
 
-    </div>
+    </motion.div>
   )
 }
 export default memo(function jar({
@@ -165,15 +172,19 @@ export default memo(function jar({
   const [top, bottom] = useMemo(() => {
     const key = type === "price" ? "price_change_percent_24h" : "volume_24h"
     let _top = 0
-    // let _middle = 0
     let _bottom = 0
-    for (let i = 0; i < tokens.length; i++) {
-      if (i - 1 > -1 && (Big(tokens?.[i - 1]?.[key] ?? 0).gt(0) && Big(tokens?.[i]?.[key] ?? 0).lte(0))) {
+    const up = 1
+    const down = -1
 
+    for (let i = 0; i < tokens.length; i++) {
+      const prev = tokens?.[i - 1]?.[key] ?? 0
+      const curr = tokens?.[i]?.[key] ?? 0
+
+
+      if (i - 1 > -1 && (Big(prev).gte(up) && (Big(curr).lt(up) && Big(curr).gt(down)))) {
         _top = (tokens?.[i - 1]?.y + tokens?.[i]?.y) / 2 - 14
       }
-
-      if (i - 1 > -1 && (Big(tokens?.[i - 1]?.[key] ?? 0).eq(0) && Big(tokens?.[i]?.[key] ?? 0).lt(0))) {
+      if (i - 1 > -1 && (Big(prev).gte(down) && Big(curr).lt(down))) {
         _bottom = (tokens?.[i - 1]?.y + tokens?.[i]?.y) / 2 - 14
       }
     }
