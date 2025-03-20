@@ -71,10 +71,9 @@ export default function useAudioPlay() {
         pause();
       }
     },
-    [playing, playingUrl, pause], // 移除 muted 依赖
+    [playing, playingUrl, pause]
   );
 
-  // 监听 muted 状态变化
   useEffect(() => {
     if (muted && playing) {
       pause();

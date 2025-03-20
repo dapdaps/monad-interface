@@ -8,6 +8,7 @@ const withSound = <P extends object>(WrappedComponent: React.ComponentType<P>) =
     useEffect(() => {
       const handleClick = (event: MouseEvent) => {
         const target = (event.target as HTMLElement).closest("[data-click-sound]");
+        console.log(target, '<======target')
         if (target) {
           const targetSrc = target.getAttribute("data-click-sound") 
           const soundSrc = !targetSrc || targetSrc === "true" ? "/audios/press_button.mp3" : targetSrc;

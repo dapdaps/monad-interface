@@ -22,6 +22,7 @@ import Skeleton from "react-loading-skeleton";
 import { useAccount, useBalance, useDisconnect, useConfig } from "wagmi";
 import MobileChain from "./chain/mobile";
 import { monadTestnet } from "@reown/appkit/networks";
+import useAudioPlay from "@/hooks/use-audio";
 
 const dropdownAnimations = {
   active: {
@@ -50,6 +51,11 @@ const ConnectWallet = ({ className }: { className?: string }) => {
   const { userInfo } = useUser();
   const walletInfo = useWalletName();
   const config = useConfig();
+  const { play } = useAudioPlay()
+
+  const handlePlay = () => {
+    play('/audios/press_button.mp3')
+  }
 
   const [connecting, setConnecting] = useState<boolean>(isConnecting);
   const [mobileUserInfoVisible, setMobileUserInfoVisible] =
@@ -74,6 +80,7 @@ const ConnectWallet = ({ className }: { className?: string }) => {
   }, [address, isMobile]);
 
   const handleCopy = () => {
+    handlePlay()
     navigator.clipboard.writeText(address as string);
     total.success({
       title: `Copied address ${address}`
@@ -166,11 +173,13 @@ const ConnectWallet = ({ className }: { className?: string }) => {
             addressShown={addressShown}
             setMobileUserInfoVisible={setMobileUserInfoVisible}
             currentChainInfo={currentChainInfo}
+            handlePlay={handlePlay}
           />
         </div>
       ) : (
         <div className="flex items-center justify-center h-[50px] w-[158px]  bg-[url('/images/header/right_bg.svg')] bg-left bg-contain">
           <button
+            data-click-sound
             className="w-[122px] h-[34px] bg-[url('/images/header/button_bg.svg')] cursor-pointer font-Unbounded text-[12px] text-[#090909] font-semibold"
             onClick={handleConnect}
           >
@@ -198,7 +207,8 @@ const User = (props: any) => {
     tokenSymbolShown,
     addressShown,
     setMobileUserInfoVisible,
-    currentChainInfo
+    currentChainInfo,
+    handlePlay
   } = props;
 
   const router = useRouter();
@@ -251,7 +261,10 @@ const User = (props: any) => {
         <div className="flex items-center gap-1 mt-2 ml-[4px]">
           <img src="/images/icon-faucet.svg" alt="" />
           <div
-            onClick={() => router.push("/faucet")}
+            onClick={() => {
+              handlePlay()
+              router.push("/faucet")
+            }}
             className="text-[12px] font-[300] leading-[1] font-Unbounded text-[#A6A6DB] underline hover:text-white cursor-pointer"
           >
             Faucet
@@ -259,7 +272,7 @@ const User = (props: any) => {
         </div>
       </div>
       <div className="w-full h-[1px] bg-[#A6A6DB] bg-opacity-10 mt-3"></div>
-      <DisconnectButton setMobileUserInfoVisible={setMobileUserInfoVisible} />
+            <DisconnectButton handlePlay={handlePlay} setMobileUserInfoVisible={setMobileUserInfoVisible} />
     </div>
   );
 
@@ -309,10 +322,11 @@ const User = (props: any) => {
   );
 };
 
-const DisconnectButton = ({ setMobileUserInfoVisible }: any) => {
+const DisconnectButton = ({ setMobileUserInfoVisible, handlePlay }: any) => {
   const { disconnect } = useDisconnect();
 
   const handleDisconnect = () => {
+    handlePlay()
     disconnect();
     setMobileUserInfoVisible(false);
   };
@@ -320,6 +334,7 @@ const DisconnectButton = ({ setMobileUserInfoVisible }: any) => {
   return (
     <div
       className="cursor-pointer pl-[22px] pr-[26px] flex justify-between items-center click mt-[10px] pt-[10px] pb-[10px] transition-all duration-300 hover:opacity-50"
+      data-click-sound
       onClick={handleDisconnect}
     >
       <div className="text-white font-Unbounded text-[12px] font-[400] leading-[1]">
