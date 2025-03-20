@@ -10,6 +10,7 @@ const BaseButton = ({ loading, onClick, children, disabled = false }: any) => {
     <button
       onClick={onClick}
       disabled={disabled}
+      data-hover-sound
       className="h-[60px] md:h-[46px] w-full text-white duration-500 hover:opacity-70 active:opacity-90 flex items-center justify-center border border-[#8B87FF] rounded-[10px] bg-[#8B87FF] text-[18px] md:text-[16px] font-[600] mt-[16px] cursor-pointer"
     >
       {loading ? <Loading /> : children}
