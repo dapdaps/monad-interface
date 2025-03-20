@@ -6,7 +6,7 @@ import RectangularButton from "./components/rectangular-button";
 import { useSoundStore } from "@/stores/sound";
 
 export default memo(function Dapps() {
-  const soundStore = useSoundStore();
+  const soundStore: any = useSoundStore();
   const [activeType, setActiveType] = useState("all");
   const LEFT_DAPP_LIST: IDapp[] = [
     {
@@ -94,7 +94,7 @@ export default memo(function Dapps() {
     [activeType]
   );
 
-  function handleClickButton(type) {
+  function handleClickButton(type: any) {
     setActiveType(type);
   }
 
