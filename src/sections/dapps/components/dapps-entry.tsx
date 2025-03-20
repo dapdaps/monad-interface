@@ -72,9 +72,7 @@ export default memo(function DappsEntry({
         data-hover-sound="/audios/dapps/moving_machanic_clip.mp3"
         onMouseMove={handleMouseMove}
       >
-        <div className={clsx("relative z-10 w-[64px] h-[304px]", direction === "right" ? "rotate-180 -right-[1px]" : "-left-[1px]")}>
-          <img src="/images/dapps/entry.svg" alt="entry" />
-        </div>
+        <div className={clsx("relative z-10 w-[64px] h-[304px] bg-[#62589C] border border-black", direction === "right" ? "-right-[1px] rounded-[12px_0_0_12px]" : "-left-[1px] rounded-[0_12px_12px_0]")} />
         <div className="absolute left-0 right-0 top-[10px] h-[12px] bg-[#1A2647] z-[5]">
           <div
             className={"absolute bottom-0"}

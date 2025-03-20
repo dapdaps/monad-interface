@@ -1,15 +1,18 @@
-import BackgroundSound from "@/components/background-sound"
 import { useSoundStore } from "@/stores/sound"
 import { IDapp } from "@/types"
+import { useSize } from "ahooks"
 import { motion } from "framer-motion"
 import { memo, useEffect, useMemo, useState } from "react"
 import DappsEntry from "./components/dapps-entry"
 import RectangularButton from "./components/rectangular-button"
 
 function Dapps() {
+  const size = useSize(document.getElementsByTagName("body")[0]);
   const soundStore = useSoundStore()
   const [activeType, setActiveType] = useState("all")
-  const LEFT_DAPP_LIST: IDapp[] = [{
+  // const [dappsArray, setDappsArray] = useState([])
+
+  const ALL_DAPP_LIST = [{
     name: "Lynex",
     icon: "/images/dapps/icons/Lynex.svg",
     type: "dex",
@@ -34,8 +37,7 @@ function Dapps() {
     icon: "/images/dapps/icons/Infinex.svg",
     type: "dex",
     link: "",
-  },]
-  const RIGHT_DAPP_LIST: IDapp[] = [{
+  }, {
     name: "Orderly",
     icon: "/images/dapps/icons/Orderly.svg",
     type: "dex",
@@ -65,48 +67,66 @@ function Dapps() {
     icon: "/images/dapps/icons/emelverse.svg",
     type: "dex",
     link: "",
-  },]
+  }
+  ]
 
-  const FILTER_LEFT_DAPP_LIST = useMemo(
-    () =>
-      LEFT_DAPP_LIST.filter(
-        (dapp: IDapp) => dapp.type === activeType || activeType === "all"
-      ),
-    [activeType]
-  );
-  const FILTER_RIGHT_DAPP_LIST = useMemo(
-    () =>
-      RIGHT_DAPP_LIST.filter(
-        (dapp: IDapp) => dapp.type === activeType || activeType === "all"
-      ),
-    [activeType]
-  );
+  // const FILTER_LEFT_DAPP_LIST = useMemo(
+  //   () =>
+  //     LEFT_DAPP_LIST.filter(
+  //       (dapp: IDapp) => dapp.type === activeType || activeType === "all"
+  //     ),
+  //   [activeType]
+  // );
+  // const FILTER_RIGHT_DAPP_LIST = useMemo(
+  //   () =>
+  //     RIGHT_DAPP_LIST.filter(
+  //       (dapp: IDapp) => dapp.type === activeType || activeType === "all"
+  //     ),
+  //   [activeType]
+  // );
+
+  const dappsArray = useMemo(() => {
+    const maxLength = Math.floor(((size?.width - 64) * 0.8 + 80) / 240)
+    const dapps = ALL_DAPP_LIST.filter(
+      (dapp: IDapp) => dapp.type === activeType || activeType === "all"
+    )
+    const array = []
+
+    for (let i = 0; i < dapps.length; i += maxLength) {
+      array.push(dapps.slice(i, i + maxLength))
+    }
+    console.log('===array', array)
+    return array
+  }, [activeType, size])
 
   function handleClickButton(type: any) {
+    handlePlay()
     setActiveType(type);
   }
   function handlePlay() {
     try {
       soundStore?.conveyorBeltRef?.current?.play?.()
+      setTimeout(() => {
+        soundStore?.conveyorBeltRef?.current?.pause?.()
+      }, 3000)
     } catch (error) {
       console.log('=====error', error)
     }
   }
   useEffect(() => {
-    soundStore?.conveyorBeltRef?.current?.play?.()
-    setTimeout(() => {
-      soundStore?.conveyorBeltRef?.current?.pause?.()
-    }, 3000)
     handlePlay()
     return () => {
       soundStore?.conveyorBeltRef?.current?.pause?.()
     }
   }, [soundStore?.conveyorBeltRef])
   return (
-    <div className="h-[calc(100vh-60px)] pt-[30px] overflow-hidden">
+    <div className="h-[calc(100vh-60px)] p-[30px_0_180px] overflow-x-hidden overflow-y-auto">
       <div className="flex flex-col gap-[18px]">
-        <DappsEntry direction="left" dapps={FILTER_LEFT_DAPP_LIST} />
-        <DappsEntry direction="right" dapps={FILTER_RIGHT_DAPP_LIST} />
+        {
+          dappsArray?.map((dapps: IDapp, index: number) => (
+            <DappsEntry direction={index % 2 ? "right" : "left"} dapps={dapps} />
+          ))
+        }
       </div>
       <div className="absolute left-0 right-0 bottom-0 h-[87px] bg-[#23243D] border-t-[18px] border-[#273051]">
         <div className="absolute bottom-[42px] left-1/2 translate-x-[calc(-50%_-_441px)] w-[81px] h-[110px] bg-[url('/images/dapps/body.svg')] bg-contain bg-no-repeat">
