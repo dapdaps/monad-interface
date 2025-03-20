@@ -1,7 +1,5 @@
 "use client";
 
-import Rpc from "@/components/rpc";
-import Sound from "@/components/sound";
 import SceneContextProvider from "@/context/scene";
 import WagmiProvider from "@/context/wagmi";
 import MainLayout from "@/layouts/main";
@@ -40,10 +38,6 @@ export default function RootLayout({
             <SceneContextProvider>
               <Suspense>
                 <MainLayout>{children}</MainLayout>
-                <div className="fixed right-[10px] bottom-[6px] z-50 flex items-center gap-[8px]">
-                  <Sound />
-                  <Rpc />
-                </div>
               </Suspense>
             </SceneContextProvider>
           </SkeletonTheme>
@@ -65,8 +59,6 @@ export default function RootLayout({
           options={{ showSpinner: false }}
           shallowRouting
         />
-
-
       </body>
       <Script
         async

@@ -1,11 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSoundStore } from '../stores/sound';
 
+export interface SoundStore {
+  muted: boolean;
+  setMuted: (muted: boolean) => void;
+}
+
+
 export default function useAudioPlay() {
   const [playing, setPlaying] = useState(false);
   const [playingUrl, setPlayingUrl] = useState<string>('');
   const audioRef = useRef<HTMLAudioElement | null>();
-  const { muted } = useSoundStore((state: any) => state);
+  const { muted } = useSoundStore((state: SoundStore) => state);
 
   const pause = useCallback(() => {
     if (audioRef.current) {
@@ -15,11 +21,11 @@ export default function useAudioPlay() {
       setPlayingUrl('');
     }
   }, []);
-  console.log('====muted', muted)
 
   const play = useCallback(
     async (url: string) => {
-      if (muted) return;
+      const currentMuted = useSoundStore.getState().muted;
+      if (currentMuted) return;
       try {
         if (audioRef.current && playingUrl === url) {
           if (playing) {
@@ -48,7 +54,8 @@ export default function useAudioPlay() {
           audio.addEventListener('error', reject, { once: true });
         });
 
-        if (!muted) { 
+        const isMuted = useSoundStore.getState().muted;
+        if (!isMuted) { 
           await audio.play();
           setPlayingUrl(url);
           setPlaying(true);
@@ -64,8 +71,15 @@ export default function useAudioPlay() {
         pause();
       }
     },
-    [playing, playingUrl, pause, muted],
+    [playing, playingUrl, pause], // 移除 muted 依赖
   );
+
+  // 监听 muted 状态变化
+  useEffect(() => {
+    if (muted && playing) {
+      pause();
+    }
+  }, [muted, playing, pause]);
 
   useEffect(
     () => () => {

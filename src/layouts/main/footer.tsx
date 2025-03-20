@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { memo } from "react";
+import Rpc from "@/components/rpc";
+import Sound from "@/components/sound";
+
 export default memo(function Footer() {
   return (
     <div className="z-[99] fixed bottom-0 left-0 flex items-center gap-[10px] pl-[15px] w-[194px] h-[38px] bg-[url('/images/footer/footer_bg.svg')] bg-left-top bg-contain bg-no-repeat">
@@ -120,6 +123,10 @@ export default memo(function Footer() {
           className="cursor-pointer"
         />
       </Link>
+      <div className="fixed right-[10px] bottom-[6px] z-50 flex items-center gap-[8px]">
+        <Sound />
+        <Rpc />
+      </div>
     </div>
   );
 });
