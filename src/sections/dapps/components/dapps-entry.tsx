@@ -3,7 +3,14 @@ import { useSize } from "ahooks";
 import { useRouter } from "next-nprogress-bar";
 import clsx from "clsx";
 import { motion, useAnimation } from "framer-motion";
-import { memo, useEffect, useMemo, useRef, useState, useTransition } from "react";
+import {
+  memo,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useTransition
+} from "react";
 import { useSoundStore } from "@/stores/sound";
 
 export default memo(function DappsEntry({
@@ -13,13 +20,14 @@ export default memo(function DappsEntry({
   direction: "left" | "right";
   dapps: IDapp[];
 }) {
-  const soundStore = useSoundStore()
-  const size = useSize(document.getElementsByTagName("body")[0])
+  const soundStore = useSoundStore();
+  const size = useSize(document.getElementsByTagName("body")[0]);
 
   const controls = useAnimation();
   const [clicked, setClicked] = useState(false);
   const [offsetX, setOffsetX] = useState(0);
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const needStage2Animate = useMemo(
     () => dapps.length * 2 * 180 + (dapps.length * 2 - 1) * 80 > size?.width,
@@ -55,10 +63,10 @@ export default memo(function DappsEntry({
     });
   }
   function handleMouseEnter() {
-    soundStore?.movingMachanicRef?.current?.play()
+    soundStore?.movingMachanicRef?.current?.play();
   }
   function handleMouseLeave() {
-    soundStore?.movingMachanicRef?.current?.pause()
+    soundStore?.movingMachanicRef?.current?.pause();
   }
 
   useEffect(() => {
@@ -87,7 +95,11 @@ export default memo(function DappsEntry({
 
   return (
     <>
-      <div className={clsx("relative h-[304px]", direction === "right" ? "flex justify-end" : "")}
+      <div
+        className={clsx(
+          "relative h-[304px]",
+          direction === "right" ? "flex justify-end" : ""
+        )}
         onMouseEnter={handleMouseEnter}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -96,9 +108,12 @@ export default memo(function DappsEntry({
           <img src="/images/dapps/entry.svg" alt="entry" />
         </div>
         <div className="absolute left-0 right-0 top-[10px] h-[12px] bg-[#1A2647] z-[5]">
-          <div className={"absolute bottom-0"} style={{
-            transform: `translate3d(${offsetX}px,100%,0)`
-          }}>
+          <div
+            className={"absolute bottom-0"}
+            style={{
+              transform: `translate3d(${offsetX}px,100%,0)`
+            }}
+          >
             <motion.div
               className="w-[68px] flex flex-col items-center"
               animate={{
@@ -118,58 +133,72 @@ export default memo(function DappsEntry({
             </motion.div>
           </div>
         </div>
-        <div className={clsx("min-w-full absolute bottom-[16px]", direction === "left" ? "left-0" : "right-0")}>
+        <div
+          className={clsx(
+            "min-w-full absolute bottom-[16px]",
+            direction === "left" ? "left-0" : "right-0"
+          )}
+        >
           <motion.div
-            className={clsx("flex items-center gap-[80px]", direction === "right" ? "justify-end pr-[64px]" : "pl-[64px]")}
+            className={clsx(
+              "flex items-center gap-[80px]",
+              direction === "right" ? "justify-end pr-[64px]" : "pl-[64px]"
+            )}
             variants={variants}
             initial="initial"
             animate={controls}
           >
-            {
-              cycleDapps.map((dapp: IDapp, index) => (
-                <div
-                  className="cursor-pointer w-[180px] h-[155px] bg-[url('/images/dapps/dapp_bg.svg')] bg-contain bg-no-repeat"
-                  {...(needStage2Animate ? {
-                    onMouseEnter() {
-                      controls.stop()
-                    },
-                    onMouseLeave() {
-                      controls.start("stage2", {
-                        duration: dapps.length * 4,
-                        ease: "linear",
-                        repeat: Infinity
-                      });
+            {cycleDapps.map((dapp: IDapp, index) => (
+              <div
+                className="cursor-pointer w-[180px] h-[155px] bg-[url('/images/dapps/dapp_bg.svg')] bg-contain bg-no-repeat"
+                {...(needStage2Animate
+                  ? {
+                      onMouseEnter() {
+                        controls.stop();
+                      },
+                      onMouseLeave() {
+                        controls.start("stage2", {
+                          duration: dapps.length * 4,
+                          ease: "linear",
+                          repeat: Infinity
+                        });
+                      }
                     }
-                  } : {})}
-                  onClick={() => {
-                    setClicked(true)
+                  : {})}
+                onClick={() => {
+                  setClicked(true);
+                  if (dapp?.link) {
+                    router.push(dapp.link);
+                  } else {
                     setTimeout(() => {
-                      setClicked(false)
-                    }, 300)
-                  }}
-                >
-                  <div className="m-[32px_auto_15px] w-[56px]">
-                    <img src={dapp?.icon} alt={dapp?.name} />
-                  </div>
-                  <div className="text-center text-black font-Unbounded text-[16px] font-semibold leading-[100%]">{dapp?.name}</div>
-                  <div className="mt-[6px] flex justify-center">
-                    <div className="p-[6px_10px] rounded-[6px] border border-black bg-[#7370C8] text-[#A5FFFD] font-Unbounded text-[12px] leading-[100%]">{dapp?.type}</div>
+                      setClicked(false);
+                    }, 300);
+                  }
+                }}
+              >
+                <div className="m-[32px_auto_15px] w-[56px]">
+                  <img src={dapp?.icon} alt={dapp?.name} />
+                </div>
+                <div className="text-center text-black font-Unbounded text-[16px] font-semibold leading-[100%]">
+                  {dapp?.name}
+                </div>
+                <div className="mt-[6px] flex justify-center">
+                  <div className="p-[6px_10px] rounded-[6px] border border-black bg-[#7370C8] text-[#A5FFFD] font-Unbounded text-[12px] leading-[100%]">
+                    {dapp?.type}
                   </div>
                 </div>
-              ))
-            }
+              </div>
+            ))}
           </motion.div>
           <div className="relative h-[30px]">
-            {
-              new Array(10).fill(null).map((_, index) => (
-                <div className="absolute w-[413px]" style={{ left: index * 380 }}>
-                  <img src="/images/dapps/belt.svg" alt="belt" />
-                </div>
-              ))
-            }
+            {new Array(10).fill(null).map((_, index) => (
+              <div className="absolute w-[413px]" style={{ left: index * 380 }}>
+                <img src="/images/dapps/belt.svg" alt="belt" />
+              </div>
+            ))}
           </div>
         </div>
       </div>
     </>
-  )
-})
+  );
+});
