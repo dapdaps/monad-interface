@@ -1,5 +1,6 @@
 "use client";
 
+import withSound from "@/hoc/withSound";
 import useClickTracking from "@/hooks/use-click-tracking";
 import useRem from "@/hooks/use-rem";
 import useTokenPrice from "@/hooks/use-token-price";
@@ -52,7 +53,7 @@ const MainLayout = (props: Props) => {
   );
 };
 
-export default MainLayout;
+export default withSound(MainLayout);
 
 interface Props {
   children: React.ReactNode;
