@@ -1,133 +1,116 @@
-import { useSoundStore } from "@/stores/sound"
-import { IDapp } from "@/types"
-import { useSize } from "ahooks"
-import { motion } from "framer-motion"
-import { memo, useEffect, useMemo, useState } from "react"
-import DappsEntry from "./components/dapps-entry"
-import RectangularButton from "./components/rectangular-button"
+import { IDapp } from "@/types";
+import { motion } from "framer-motion";
+import { memo, useEffect, useMemo, useState } from "react";
+import DappsEntry from "./components/dapps-entry";
+import RectangularButton from "./components/rectangular-button";
+import { useSoundStore } from "@/stores/sound";
 
-function Dapps() {
-  const size = useSize(document.getElementsByTagName("body")[0]);
-  const soundStore = useSoundStore()
-  const [activeType, setActiveType] = useState("all")
-  // const [dappsArray, setDappsArray] = useState([])
-
-  const ALL_DAPP_LIST = [{
-    name: "Lynex",
-    icon: "/images/dapps/icons/Lynex.svg",
-    type: "dex",
-    link: "",
-  }, {
-    name: "iZumi",
-    icon: "/images/dapps/icons/iZumi.svg",
-    type: "dex",
-    link: "",
-  }, {
-    name: "Pancake",
-    icon: "/images/dapps/icons/Pancake.svg",
-    type: "dex",
-    link: "",
-  }, {
-    name: "OpenOcean",
-    icon: "/images/dapps/icons/OpenOcean.svg",
-    type: "dex",
-    link: "",
-  }, {
-    name: "Infinex",
-    icon: "/images/dapps/icons/Infinex.svg",
-    type: "dex",
-    link: "",
-  }, {
-    name: "Orderly",
-    icon: "/images/dapps/icons/Orderly.svg",
-    type: "dex",
-    link: "",
-  }, {
-    name: "D3X",
-    icon: "/images/dapps/icons/D3X.svg",
-    type: "dex",
-    link: "",
-  }, {
-    name: "LFJ",
-    icon: "/images/dapps/icons/LFJ.svg",
-    type: "dex",
-    link: "",
-  }, {
-    name: "Orbiter",
-    icon: "https://assets.dapdap.net/images/100-obiter.png",
-    type: "bridge",
-    link: "",
-  }, {
-    name: "Balancer",
-    icon: "/images/dapps/icons/Balancer.svg",
-    type: "dex",
-    link: "",
-  }, {
-    name: "emelverse",
-    icon: "/images/dapps/icons/emelverse.svg",
-    type: "dex",
-    link: "",
-  }
-  ]
-
-  // const FILTER_LEFT_DAPP_LIST = useMemo(
-  //   () =>
-  //     LEFT_DAPP_LIST.filter(
-  //       (dapp: IDapp) => dapp.type === activeType || activeType === "all"
-  //     ),
-  //   [activeType]
-  // );
-  // const FILTER_RIGHT_DAPP_LIST = useMemo(
-  //   () =>
-  //     RIGHT_DAPP_LIST.filter(
-  //       (dapp: IDapp) => dapp.type === activeType || activeType === "all"
-  //     ),
-  //   [activeType]
-  // );
-
-  const dappsArray = useMemo(() => {
-    const maxLength = Math.floor(((size?.width ?? 0 - 64) * 0.8 + 80) / 240)
-    const dapps = ALL_DAPP_LIST.filter(
-      (dapp) => dapp.type === activeType || activeType === "all"
-    )
-    const array = []
-
-    for (let i = 0; i < dapps.length; i += maxLength) {
-      array.push(dapps.slice(i, i + maxLength))
+export default memo(function Dapps() {
+  const soundStore: any = useSoundStore();
+  const [activeType, setActiveType] = useState("all");
+  const LEFT_DAPP_LIST: IDapp[] = [
+    {
+      name: "Lynex",
+      icon: "/images/dapps/icons/Lynex.svg",
+      type: "dex",
+      link: ""
+    },
+    {
+      name: "iZumi",
+      icon: "/images/dapps/icons/iZumi.svg",
+      type: "dex",
+      link: "/dex/izumi"
+    },
+    {
+      name: "Pancake",
+      icon: "/images/dapps/icons/Pancake.svg",
+      type: "dex",
+      link: "/dex/pancake"
+    },
+    {
+      name: "OpenOcean",
+      icon: "/images/dapps/icons/OpenOcean.svg",
+      type: "dex",
+      link: "/dex/openocean"
+    },
+    {
+      name: "Infinex",
+      icon: "/images/dapps/icons/Infinex.svg",
+      type: "dex",
+      link: ""
     }
-    console.log('===array', array)
-    return array
-  }, [activeType, size])
+  ];
+  const RIGHT_DAPP_LIST: IDapp[] = [
+    {
+      name: "Orderly",
+      icon: "/images/dapps/icons/Orderly.svg",
+      type: "dex",
+      link: ""
+    },
+    {
+      name: "D3X",
+      icon: "/images/dapps/icons/D3X.svg",
+      type: "dex",
+      link: ""
+    },
+    {
+      name: "LFJ",
+      icon: "/images/dapps/icons/LFJ.svg",
+      type: "dex",
+      link: "/dex/lfj"
+    },
+    {
+      name: "Orbiter",
+      icon: "https://assets.dapdap.net/images/100-obiter.png",
+      type: "bridge",
+      link: ""
+    },
+    {
+      name: "Balancer",
+      icon: "/images/dapps/icons/Balancer.svg",
+      type: "dex",
+      link: ""
+    },
+    {
+      name: "emelverse",
+      icon: "/images/dapps/icons/emelverse.svg",
+      type: "dex",
+      link: ""
+    }
+  ];
+
+  const FILTER_LEFT_DAPP_LIST = useMemo(
+    () =>
+      LEFT_DAPP_LIST.filter(
+        (dapp: IDapp) => dapp.type === activeType || activeType === "all"
+      ),
+    [activeType]
+  );
+  const FILTER_RIGHT_DAPP_LIST = useMemo(
+    () =>
+      RIGHT_DAPP_LIST.filter(
+        (dapp: IDapp) => dapp.type === activeType || activeType === "all"
+      ),
+    [activeType]
+  );
 
   function handleClickButton(type: any) {
-    handlePlay()
     setActiveType(type);
   }
-  function handlePlay() {
-    try {
-      soundStore?.conveyorBeltRef?.current?.play?.()
-      setTimeout(() => {
-        soundStore?.conveyorBeltRef?.current?.pause?.()
-      }, 3000)
-    } catch (error) {
-      console.log('=====error', error)
-    }
-  }
+
   useEffect(() => {
-    handlePlay()
+    soundStore?.conveyorBeltRef?.current?.play();
     return () => {
-      soundStore?.conveyorBeltRef?.current?.pause?.()
-    }
-  }, [soundStore?.conveyorBeltRef])
+      soundStore?.conveyorBeltRef?.current?.pause();
+    };
+  }, []);
   return (
-    <div className="h-[calc(100vh-60px)] p-[30px_0_180px] overflow-x-hidden overflow-y-auto">
+    <div className="h-[calc(100vh-60px)] pt-[30px] overflow-hidden">
       <div className="flex flex-col gap-[18px]">
-        {
-          dappsArray?.map((dapps: any[], index: number) => (
-            <DappsEntry direction={index % 2 ? "right" : "left"} dapps={dapps} />
-          ))
-        }
+        <DappsEntry direction="left" dapps={FILTER_LEFT_DAPP_LIST} />
+        <DappsEntry direction="right" dapps={FILTER_RIGHT_DAPP_LIST} />
       </div>
+
       <div className="absolute left-0 right-0 bottom-0 h-[87px] bg-[#23243D] border-t-[18px] border-[#273051]">
         <div className="absolute bottom-[42px] left-1/2 translate-x-[calc(-50%_-_441px)] w-[81px] h-[110px] bg-[url('/images/dapps/body.svg')] bg-contain bg-no-repeat">
           <motion.div
@@ -184,7 +167,5 @@ function Dapps() {
         </div>
       </div>
     </div>
-  )
-}
-
-export default memo(Dapps)
+  );
+});

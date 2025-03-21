@@ -87,7 +87,7 @@ export default function CurrencyRow({
     >
       <CurrencyLabel>
         <CurrencyIcon
-          src={currency.icon || "/images/tokens/default_icon.png"}
+          src={currency.icon || "/assets/tokens/default_icon.png"}
         />
         <div>
           <CurrencySymbol>{currency.symbol}</CurrencySymbol>
