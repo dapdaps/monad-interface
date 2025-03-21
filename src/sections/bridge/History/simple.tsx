@@ -14,6 +14,7 @@ export default function Simple({
       <div
         className="absolute top-[30px] cursor-pointer right-[30px]"
         onClick={() => setIsOpen(true)}
+        data-click-sound
       >
         <svg
           width="14"
@@ -81,6 +82,7 @@ export default function Simple({
             setIsOpen(true);
             setActiveTab("pending");
           }}
+          data-click-sound
           className="flex flex-1 items-center justify-center gap-2 cursor-pointer text-center text-[#fff] px-4 text-[14px] h-[18px] border-r border-[#958FBC4D]"
         >
           <span className="whitespace-nowrap overflow-hidden text-ellipsis">
@@ -93,6 +95,7 @@ export default function Simple({
             setIsOpen(true);
             setActiveTab("history");
           }}
+          data-click-sound
           className="flex flex-1 items-center justify-center text-[#fff] text-center gap-2 cursor-pointer px-4 border-r h-[18px] border-[#958FBC4D]"
         >
           <span className="whitespace-nowrap overflow-hidden text-ellipsis">

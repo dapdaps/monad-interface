@@ -53,8 +53,8 @@ function Dapps() {
     type: "dex",
     link: "",
   }, {
-    name: "Owlto",
-    icon: "/images/dapps/icons/OwltoFinance.svg",
+    name: "Orbiter",
+    icon: "https://assets.dapdap.net/images/100-obiter.png",
     type: "bridge",
     link: "",
   }, {
@@ -86,9 +86,9 @@ function Dapps() {
   // );
 
   const dappsArray = useMemo(() => {
-    const maxLength = Math.floor(((size?.width - 64) * 0.8 + 80) / 240)
+    const maxLength = Math.floor(((size?.width ?? 0 - 64) * 0.8 + 80) / 240)
     const dapps = ALL_DAPP_LIST.filter(
-      (dapp: IDapp) => dapp.type === activeType || activeType === "all"
+      (dapp) => dapp.type === activeType || activeType === "all"
     )
     const array = []
 
@@ -123,7 +123,7 @@ function Dapps() {
     <div className="h-[calc(100vh-60px)] p-[30px_0_180px] overflow-x-hidden overflow-y-auto">
       <div className="flex flex-col gap-[18px]">
         {
-          dappsArray?.map((dapps: IDapp, index: number) => (
+          dappsArray?.map((dapps: any[], index: number) => (
             <DappsEntry direction={index % 2 ? "right" : "left"} dapps={dapps} />
           ))
         }

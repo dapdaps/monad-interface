@@ -206,6 +206,6 @@ export default {
       icon: '/images/monad.png',
       nativeCurrency: { name: 'MONAD', symbol: 'MONAD', decimals: 18 },
       rpcUrls: ['https://testnet-rpc.monad.xyz'],
-      blockExplorers: 'https://testnet.monadexplorer.xyz/',
+      blockExplorers: 'https://testnet.monadexplorer.com/',
     }
   } as { [key: number]: Chain };

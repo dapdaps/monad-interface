@@ -26,6 +26,7 @@ export default function SubmitBtn(props: any) {
   
   return (
     <button
+      data-click-sound
       type="button"
       className={cls}
       disabled={comingSoon || (chainId === fromChainId && disabled)}

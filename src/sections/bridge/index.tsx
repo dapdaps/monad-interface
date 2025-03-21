@@ -21,24 +21,26 @@ import useBridge from './Hooks/useBridge';
 import type { Token, Chain } from '@/types';
 import { motion } from 'framer-motion';
 import { tokenPairs } from './lib/bridges/orbiter/config';
+import useBridgeType from './useBridgeType';
+
+
+
 const DappHeader: React.FC = () => {
   const { dapp: dappName } = useParams();
   const isMobile = useIsMobile();
+  const { bridgeType } = useBridgeType();
 
-  const capitalize = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1)
-  }
 
   if (dappName) {
     return (
       <div className="text-xl bridge-title flex justify-center items-center font-medium mx-auto text-center h-[50px] w-[205px] bg-[#A6A6DB]">
         <img
-          src={`/images/dapps/${(dappName as string).toLowerCase()}.svg`}
-          alt={dappName as string}
-          className="w-9 h-9"
+          src={bridgeType.icon}
+          alt={bridgeType.name}
+          className="w-[30px] mr-2"
         />
         <span className=" text-xl text-black">
-          {capitalize(dappName as string)}
+          {bridgeType.name}
         </span>
       </div>
     );
@@ -71,10 +73,6 @@ export default function Bridge() {
   const { switchChain } = useSwitchChain();
   const { address, chainId } = useAccount()
   const [limitBera, setLimitBera] = useState(0)
-
-
-
-  // const inputValue = useDebounce(amount, { wait: 500 });
 
   const {
     fromChain,
@@ -156,16 +154,16 @@ export default function Bridge() {
             initial={{
               bottom: 0,
               right: '42%',
-              scale: 1,
+              scale: 1.6,
             }}
             className='absolute overflow-hidden w-[100px] h-[120px] bg-[url("/images/bridge/man.png")] bg-cover bg-right-bottom bg-no-repeat'
             animate={{
               bottom: ['0', '80%'],
               right: ['42%', '9.5%'],
-              scale: [1, 0.01],
+              scale: [1.6, 0.01],
             }}
             transition={{
-              duration: 6,
+              duration: 16,
               repeat: Infinity,
               repeatDelay: 0,
               ease: "easeOut"

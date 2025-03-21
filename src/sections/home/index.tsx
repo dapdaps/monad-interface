@@ -36,7 +36,7 @@ const Home = () => {
     { name: "Orderly", icon: "/images/monad/dapps/orderly.svg" },
     { name: "D3X", icon: "/images/monad/dapps/d3X.svg" },
     { name: "LFJ", icon: "/images/monad/dapps/lfj.svg" },
-    { name: "Owlto Finance", icon: "/images/monad/dapps/owltoFinance.svg" },
+    { name: "orbiter", icon: "https://assets.dapdap.net/images/100-obiter.png" },
   ];
 
   const duplicateFunc = (items: typeof dappItems, times: number = 2) => {

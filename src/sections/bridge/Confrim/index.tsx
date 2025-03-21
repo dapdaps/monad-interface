@@ -1,6 +1,7 @@
 import Card from '@/components/card';
 import Modal from '@/components/modal/index';
 import type { Chain, Token } from '@/types';
+import { balanceFormated, percentFormated } from '@/utils/balance';
 
 interface Props {
   show: boolean;
@@ -29,7 +30,7 @@ export default function Confirm({ show, onClose, fromChain, toChain, fromToken, 
           </div>
           <div className='flex items-center justify-between mt-[35px] text-[16px]'>
             <div className='flex-1 text-right pr-[40px]'>
-              <div>{amount} {fromToken.symbol} </div>
+              <div>{balanceFormated(amount, 4)} {fromToken.symbol} </div>
               <div>on { fromChain.chainName }</div>
             </div>
             <svg
@@ -48,7 +49,7 @@ export default function Confirm({ show, onClose, fromChain, toChain, fromToken, 
             </svg>
 
             <div className='flex-1 pl-[40px]'>
-              <div>{receiveAmount} { toToken.symbol } </div>
+              <div>{balanceFormated(receiveAmount, 4)} { toToken.symbol } </div>
               <div>on {toChain.chainName}</div>
             </div>
           </div>
@@ -121,13 +122,13 @@ export default function Confirm({ show, onClose, fromChain, toChain, fromToken, 
           </div>
 
           <div className='flex gap-[16px] mt-[20px] md:flex-col md:h-[106px]'>
-            <div onClick={() => {
+            <div data-click-sound onClick={() => {
               onClose()
               showHistory()
             }} className='flex text-[16px] h-[60px] items-center justify-center flex-1 bg-[#8B87FF] rounded-[6px] cursor-pointer'>
               View History
             </div>
-            <div onClick={onClose} className='flex text-[16px] h-[60px] items-center bg-[#8B87FF] rounded-[6px] justify-center flex-1 cursor-pointer'>
+            <div data-click-sound onClick={onClose} className='flex text-[16px] h-[60px] items-center bg-[#8B87FF] rounded-[6px] justify-center flex-1 cursor-pointer'>
               Back to Monad
             </div>
           </div>

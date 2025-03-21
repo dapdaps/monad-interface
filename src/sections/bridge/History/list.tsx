@@ -31,8 +31,8 @@ export default function History({ pendingCount, historyCount, list, setIsOpen, a
 
     return (
         <div className={cls}>
-            <div className="relative p-4 ">
-                <div className="absolute top-[30px] cursor-pointer right-[30px]" onClick={() => setIsOpen(false)}>
+            <div className="relative p-[13px]">
+                <div className="absolute top-[30px] cursor-pointer right-[30px]" data-click-sound onClick={() => setIsOpen(false)}>
                     <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g filter="url(#filter0_i_31923_1683)">
                             <path d="M8.73205 2C7.96225 0.666666 6.03775 0.666668 5.26795 2L1.80385 8C1.03405 9.33334 1.9963 11 3.5359 11L10.4641 11C12.0037 11 12.966 9.33333 12.1962 8L8.73205 2Z" fill="#BFFF60" />
@@ -53,6 +53,7 @@ export default function History({ pendingCount, historyCount, list, setIsOpen, a
                 </div>
                 <div className="flex gap-3 py-[10px] text-[#fff] mr-[40px] text-[14px]">
                     <div
+                        data-click-sound
                         className={`flex flex-1 justify-center items-center gap-2 h-[18px] cursor-pointer text-center border-r border-[#958FBC4D]  ${activeTab === 'pending' ? 'text-[#BFFF60] bridge-history-tab-active' : ''}`}
                         onClick={() => setActiveTab('pending')}
                     >
@@ -60,6 +61,7 @@ export default function History({ pendingCount, historyCount, list, setIsOpen, a
                     </div>
 
                     <div
+                        data-click-sound
                         className={`flex flex-1 justify-center items-center gap-2 h-[18px] cursor-pointer text-center border-r border-[#958FBC4D] ${activeTab === 'history' ? 'text-[#BFFF60] bridge-history-tab-active' : ''}`}
                         onClick={() => setActiveTab('history')}
                     >
@@ -67,7 +69,7 @@ export default function History({ pendingCount, historyCount, list, setIsOpen, a
                     </div>
                 </div>
 
-                <div className="max-h-[600px] overflow-y-auto">
+                <div className="max-h-[324px] overflow-y-auto">
                     {filteredList.map((item: any) => (
                         <HistoryItem item={item} key={item.tx_id} />
                     ))}
@@ -80,9 +82,9 @@ export default function History({ pendingCount, historyCount, list, setIsOpen, a
 function HistoryItem({ item }: { item: any }) {
     const extra_data = JSON.parse(item.extra_data)
 
-    return <div className="border-t border-[#958FBC] py-3">
-        <div className="flex w-full items-center gap-2 justify-between px-4">
-            <div className="flex items-center gap-2 text-[12px]">
+    return <div className="border-t border-[#958FBC] bg-[#2B294A] py-3">
+        <div className="flex w-full items-center gap-2 justify-between px-4 text-[12px]">
+            <div className="flex items-center gap-2">
                 <div className="w-[30px] h-[30px] relative">
                     <img className='w-full h-full object-contain' src={extra_data?.fromTokenLogo} />
                     <img className='w-[10px] h-[10px] object-contain border border-[#000] rounded-full absolute bottom-0 right-0' src={extra_data?.fromChainLogo} />
