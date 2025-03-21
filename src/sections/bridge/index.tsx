@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import chains from './lib/util/chainConfig'
 import Card from './Card';
@@ -21,7 +21,7 @@ import useBridge from './Hooks/useBridge';
 import type { Token, Chain } from '@/types';
 import { motion } from 'framer-motion';
 import { tokenPairs } from './lib/bridges/orbiter/config';
-import useBridgeType from './useBridgeType';
+import useBridgeType from './Hooks/useBridgeType';
 
 
 
@@ -73,6 +73,9 @@ export default function Bridge() {
   const { switchChain } = useSwitchChain();
   const { address, chainId } = useAccount()
   const [limitBera, setLimitBera] = useState(0)
+  const targetRef = useRef<HTMLDivElement>(null)
+  const [targetX, setTargetX] = useState('0px')
+  const [targetY, setTargetY] = useState('0px')
 
   const {
     fromChain,
@@ -145,32 +148,55 @@ export default function Bridge() {
     setToToken(allTokens[10143][1])
   }, [])
 
+  useEffect(() => {
+    if (targetRef.current) {
+      const target = targetRef.current
+      const rect = target.getBoundingClientRect()
+
+      console.log('rect:', rect)
+
+      const targetX = rect.left
+      const targetY = rect.top
+
+      setTargetX((targetX - window.innerWidth / 2 - 100) + 'px')
+      setTargetY((targetY - window.innerHeight + 60) + 'px')
+    }
+  }, [targetRef])
+
+  console.log('targetX:', targetX)
+
   return (
     <>
-      <div style={{ backgroundSize: '100% auto' }} className='h-[100vh] relative mt-[-60px] overflow-auto pt-[110px] bg-[url("/images/bridge/full-bg.png")] bg-cover bg-right-bottom bg-no-repeat'>
+      <div style={{ backgroundSize: '100% auto' }} className='h-[100vh] overflow-hidden relative mt-[-60px] pt-[110px] bg-[url("/images/bridge/full-bg.png")] bg-cover bg-right-bottom bg-no-repeat'>
         {isMobile ? null : <div className='absolute left-[36px] md:left-[15px] top-[31px] md:top-[14px] z-[12]' />}
-        <div style={{ backgroundSize: '100% auto' }} className='absolute bottom-0 right-0 w-full'>
+        <div style={{ backgroundSize: '100% auto' }} className='absolute bottom-0 right-0 w-full '>
+
+          <img src="/images/bridge/bg-animate.gif" />
+          <div ref={targetRef} className='w-[1px] h-[1px] absolute bottom-[93%] right-[11%]'></div>
           <motion.div
+            key={targetX}
             initial={{
-              bottom: 0,
-              right: '42%',
-              scale: 1.6,
+              bottom: '0',
+              left: '52%',
+              scale: 2,
             }}
-            className='absolute overflow-hidden w-[100px] h-[120px] bg-[url("/images/bridge/man.png")] bg-cover bg-right-bottom bg-no-repeat'
+            className='absolute w-[100px] h-[120px] bg-[url("/images/bridge/man.png")] bg-cover bg-right-bottom bg-no-repeat'
             animate={{
-              bottom: ['0', '80%'],
-              right: ['42%', '9.5%'],
-              scale: [1.6, 0.01],
+              x: [0, targetX],
+              y: [0, targetY],
+              scale: [2, 0.01],
             }}
             transition={{
-              duration: 16,
+              duration: 24,
               repeat: Infinity,
               repeatDelay: 0,
-              ease: "easeOut"
+              ease: 'easeOut'
             }}
           />
-          <img src="/images/bridge/bg-animate.gif"  />
+
         </div>
+
+
         <div className='lg:w-[520px] md:w-[92.307vw] m-auto relative z-10'>
           <DappHeader />
           <Card className='mt-[-35px]'>
