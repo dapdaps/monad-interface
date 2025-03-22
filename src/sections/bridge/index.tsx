@@ -149,18 +149,19 @@ export default function Bridge() {
   }, [])
 
   useEffect(() => {
-    if (targetRef.current) {
-      const target = targetRef.current
-      const rect = target.getBoundingClientRect()
+    setTimeout(() => {
+      if (targetRef.current) {
+        const target = targetRef.current
+        if (!target) return
+        const rect = target.getBoundingClientRect()
 
-      console.log('rect:', rect)
+        const targetX = rect.left
+        const targetY = rect.top
 
-      const targetX = rect.left
-      const targetY = rect.top
-
-      setTargetX((targetX - window.innerWidth / 2 - 100) + 'px')
-      setTargetY((targetY - window.innerHeight + 60) + 'px')
-    }
+        setTargetX((targetX - window.innerWidth / 2 - 100) + 'px')
+        setTargetY((targetY - window.innerHeight + 60) + 'px')
+      }
+    }, 2000)
   }, [targetRef])
 
   console.log('targetX:', targetX)
