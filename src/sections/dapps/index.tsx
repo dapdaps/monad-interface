@@ -63,7 +63,7 @@ export default memo(function Dapps() {
       name: "Orbiter",
       icon: "https://assets.dapdap.net/images/100-obiter.png",
       type: "bridge",
-      link: ""
+      link: "/bridge/obiter"
     },
     {
       name: "Balancer",
