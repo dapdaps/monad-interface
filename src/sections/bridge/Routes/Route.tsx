@@ -3,7 +3,7 @@ import CheckBox from "../CheckBox";
 import { balanceFormated } from "@/utils/balance";
 import Big from "big.js";
 
-export default function Route({ name, fee, receiveAmount, fromChain, toToken, checked, onChange }: any) {
+export default function Route({ name, fee, receiveAmount, fromChain, toToken, checked, onChange, duration }: any) {
     const prices: any = usePriceStore(store => store.price);
 
     return <div className="py-[10px] text-[12px]">
@@ -19,7 +19,7 @@ export default function Route({ name, fee, receiveAmount, fromChain, toToken, ch
 
         <div className="flex items-center justify-between mt-[5px]">
             <div className="text-[#75759D]">Speed</div>
-            <div className="text-[12px] text-[#fff]">~3 min</div>
+            <div className="text-[12px] text-[#fff]">~{ duration }</div>
         </div>
 
         <div className="flex items-center justify-between mt-[5px]">

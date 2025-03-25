@@ -164,8 +164,6 @@ export default function Bridge() {
     }, 2000)
   }, [targetRef])
 
-  console.log('targetX:', targetX)
-
   return (
     <>
       <div style={{ backgroundSize: '100% auto' }} className='h-[100vh] overflow-hidden relative mt-[-60px] pt-[110px] bg-[url("/images/bridge/full-bg.png")] bg-cover bg-right-bottom bg-no-repeat'>

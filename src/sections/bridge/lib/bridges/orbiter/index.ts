@@ -91,14 +91,14 @@ export async function getQuote(request: QuoteRequest, signer: Signer): Promise<Q
 
       const fromToken = chainTokens.find((item: any) => item.address.toLowerCase() === request.fromToken.address.toLowerCase())
 
-      console.log('fromToken: ', fromToken)
-
       if (!fromToken) {
         return null
       }
 
-      const maxAmt = new Big(currentRoute.maxAmt).mul(10 ** fromToken.decimals)
-      const minAmt = new Big(currentRoute.minAmt).minus(currentRoute.withholdingFee).mul(10 ** fromToken.decimals)
+      console.log('currentRoute: ', currentRoute)
+
+      const maxAmt = currentRoute.maxAmt === 'NaN' ? new Big(100) : new Big(currentRoute.maxAmt).mul(10 ** fromToken.decimals)
+      const minAmt = currentRoute.minAmt === 'NaN' || currentRoute.withholdingFee === 'NaN' ? new Big(0) : new Big(currentRoute.minAmt).minus(currentRoute.withholdingFee).mul(10 ** fromToken.decimals)
 
       if (request.amount.lte(maxAmt) && request.amount.gte(minAmt)) {
         const chainFrom = chainConfig[request.fromChainId as any]
@@ -112,7 +112,7 @@ export async function getQuote(request: QuoteRequest, signer: Signer): Promise<Q
 
         // const fee = withholdingFee.plus(tradeFee)
 
-        const withholdingFee = new Big(currentRoute.withholdingFee).mul(10 ** fromToken.decimals)
+        const withholdingFee = currentRoute.withholdingFee === 'NaN' ? new Big(0) : new Big(currentRoute.withholdingFee).mul(10 ** fromToken.decimals)
         const tradeFee = request.amount.mul(new Big(currentRoute.tradeFee).div(10 ** 6))
 
         const fee = withholdingFee.plus(tradeFee)
@@ -139,7 +139,7 @@ export async function getQuote(request: QuoteRequest, signer: Signer): Promise<Q
           fee: _fee,
           receiveAmount,
           gas,
-          duration: currentRoute.spentTime,
+          duration: currentRoute.spentTime + 's',
           feeType: fromToken.isNative ? FeeType.origin : FeeType.usd,
           gasType: FeeType.origin,
           identification: request.identification,

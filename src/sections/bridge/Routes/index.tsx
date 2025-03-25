@@ -12,7 +12,8 @@ export default function Routes({ routes, fromChain, toToken, selectedRoute, setS
                     toToken={toToken}
                     fee={route.fee}
                     receiveAmount={route.receiveAmount}
-                    fromChain={fromChain} 
+                    fromChain={fromChain}
+                    duration={route.duration}
                     onChange={() => {
                         setSelectedRoute(route)
                     }}

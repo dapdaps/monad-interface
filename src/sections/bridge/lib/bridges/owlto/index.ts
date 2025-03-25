@@ -319,7 +319,7 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer): Prom
                 fee: res[1],
                 receiveAmount,
                 gas: gas,
-                duration: 60,
+                duration: 60 + 's',
                 feeType: isNative ? FeeType.origin : FeeType.usd,
                 gasType: FeeType.origin,
                 identification: quoteRequest.identification,
