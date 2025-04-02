@@ -182,7 +182,6 @@ export default memo(function DappsEntry({
             tvl=""
             volume24h=""
             liquidity=""
-            description="Trade and earn crypto on the all-in-one decentralized exchange. Enjoy low fees, high liquidity, and a user-friendly interface."
             onMouseEnter={() => {
               setHoverDapp(hoverDapp);
             }}
