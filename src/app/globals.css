@@ -38,16 +38,16 @@ body {
 }
 
 :root {
-  --background: #0E0F29;
+  --background: #0e0f29;
   --foreground: #000000;
-  --primary: #836EF9;
+  --primary: #836ef9;
   /* 设计标准是 1440px， 分成 100 份 */
-  --rem: calc(1440 / 100) * 1px; 
+  --rem: calc(1440 / 100) * 1px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0E0F29;
+    --background: #0e0f29;
     --foreground: #000000;
   }
 }
@@ -77,17 +77,16 @@ body {
     -webkit-text-stroke: 2px #4b371f;
   }
   .text-stroke-1-E1FF0A {
-    -webkit-text-stroke: 1px #E1FF0A;
+    -webkit-text-stroke: 1px #e1ff0a;
   }
 
   .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE 和 Edge */
-    scrollbar-width: none;     /* Firefox */
+    -ms-overflow-style: none; /* IE 和 Edge */
+    scrollbar-width: none; /* Firefox */
   }
   .scrollbar-hide::-webkit-scrollbar {
-    display: none;             /* Chrome, Safari 和 Opera */
+    display: none; /* Chrome, Safari 和 Opera */
   }
-
 
   .trapezoid-container {
     position: relative;
@@ -97,7 +96,7 @@ body {
     position: relative;
   }
   .trapezoid::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -109,16 +108,29 @@ body {
     pointer-events: none;
   }
   .mask {
-    mask-image: radial-gradient(circle 8px at 8px 8px, transparent 8px, black 9px);
-    -webkit-mask-image: radial-gradient(circle 8px at 8px 8px, transparent 8px, black 9px);
+    mask-image: radial-gradient(
+      circle 8px at 8px 8px,
+      transparent 8px,
+      black 9px
+    );
+    -webkit-mask-image: radial-gradient(
+      circle 8px at 8px 8px,
+      transparent 8px,
+      black 9px
+    );
   }
-
 }
 
 .route-wrapper {
   & > .flex:not(:last-child) {
     border-bottom: 1px solid #373a53;
   }
+}
+
+button,
+a,
+.cursor-pointer {
+  cursor: url("../../public/images/cursor.svg"), auto !important;
 }
 
 body::-webkit-scrollbar,
@@ -136,6 +148,7 @@ body::-webkit-scrollbar-thumb,
 div::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.1);
   border-radius: 6px;
+  cursor: url("../../public/images/cursor.svg") 12 0, auto;
 }
 body::-webkit-scrollbar-thumb:hover,
 div::-webkit-scrollbar-thumb:hover {
@@ -186,40 +199,40 @@ input[type="number"]::-webkit-inner-spin-button {
 .invite-page-content {
   @media (max-width: 375px) {
     height: 610px;
-  };
+  }
   @media (min-width: 376px) and (max-width: 390px) {
     height: 636px;
-  };
+  }
   @media (min-width: 391px) and (max-width: 420px) {
     height: 676px;
-  };
+  }
   @media (min-width: 421px) and (max-width: 768px) {
     height: 700px;
-  };
+  }
 }
 
 .bridge-title {
   position: relative;
   border-radius: 6px;
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 8px;
     left: -15px;
     width: 35.36px;
     height: 35.36px;
-    background: #A6A6DB;
+    background: #a6a6db;
     transform: rotate(45deg);
     border-radius: 6px;
   }
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     top: 8px;
     right: -15px;
     width: 35.36px;
     height: 35.36px;
-    background: #A6A6DB;
+    background: #a6a6db;
     transform: rotate(45deg);
     border-radius: 6px;
   }
@@ -228,7 +241,7 @@ input[type="number"]::-webkit-inner-spin-button {
 .bridge-history-tab-active {
   position: relative;
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -10px;
     left: 0;

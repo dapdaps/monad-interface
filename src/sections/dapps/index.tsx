@@ -99,9 +99,9 @@ export default memo(function Dapps() {
   }
 
   useEffect(() => {
-    soundStore?.conveyorBeltRef?.current?.play();
+    soundStore?.conveyorBeltRef?.current?.play?.();
     return () => {
-      soundStore?.conveyorBeltRef?.current?.pause();
+      soundStore?.conveyorBeltRef?.current?.pause?.();
     };
   }, []);
   return (
