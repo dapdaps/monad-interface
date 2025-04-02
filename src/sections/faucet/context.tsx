@@ -10,6 +10,8 @@ import { getUntilCurrentMonthCheckinList } from '@/sections/faucet/utils';
 import Big from 'big.js';
 import { HTTP_CODE } from '@/configs';
 import useAudioPlay from '@/hooks/use-audio';
+import { useBalance } from 'wagmi';
+import { mainnet } from '@reown/appkit/networks';
 
 export const FaucetContext = createContext<Partial<IFaucetContext>>({});
 
@@ -20,6 +22,13 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
     playing: checkinPlaying,
     play: checkinPlay,
   } = useAudioPlay();
+  const {
+    data: ethereumMainnetBalance,
+    isLoading: isEthereumMainnetBalanceLoading
+  } = useBalance({
+    address: account as `0x${string}`,
+    chainId: mainnet.id,
+  });
 
   const today = dayjs().utc();
 
@@ -109,6 +118,8 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
         checkinDays,
         collectedToday,
         checkinList,
+        ethereumMainnetBalance,
+        isEthereumMainnetBalanceLoading,
       }}
     >
       {children}
