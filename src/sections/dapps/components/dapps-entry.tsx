@@ -22,6 +22,7 @@ export default memo(function DappsEntry({
   dapps: IDapp[];
 }) {
   const soundStore = useSoundStore();
+  const [hoverDapp, setHoverDapp] = useState<any>(null);
   const size = useSize(document.getElementsByTagName("body")[0]);
   const controls = useAnimation();
   const [clicked, setClicked] = useState(false);
@@ -48,6 +49,7 @@ export default memo(function DappsEntry({
       setOffsetX(event.pageX - 34);
     });
   }
+
   useEffect(() => {
     const sequence = async () => {
       // await controls?.stop()
@@ -125,7 +127,9 @@ export default memo(function DappsEntry({
         >
           {dapps.map((dapp: IDapp, index) => (
             <div
-              className="group cursor-pointer w-[180px] h-[155px] bg-[url('/images/dapps/dapp_bg.svg')] bg-contain bg-no-repeat relative"
+              className="cursor-pointer w-[180px] h-[155px] bg-[url('/images/dapps/dapp_bg.svg')] bg-contain bg-no-repeat relative"
+              data-name={dapp.name}
+              key={dapp.name}
               onClick={() => {
                 setClicked(true);
                 if (dapp?.link) {
@@ -135,6 +139,24 @@ export default memo(function DappsEntry({
                     setClicked(false);
                   }, 300);
                 }
+              }}
+              onMouseEnter={(ev: any) => {
+                if (hoverDapp?.name === dapp?.name) return;
+
+                let ele = ev.target;
+
+                while (ele.getAttribute("data-name") !== dapp.name) {
+                  ele = ele.parentNode;
+                }
+
+                const left =
+                  ele.offsetLeft + 180 + 352 < window.innerWidth - 5
+                    ? ele.offsetLeft + 180
+                    : window.innerWidth - 352;
+                setHoverDapp({ ...dapp, left });
+              }}
+              onMouseLeave={() => {
+                setHoverDapp(null);
               }}
             >
               <div className="m-[32px_auto_15px] w-[56px]">
@@ -148,18 +170,24 @@ export default memo(function DappsEntry({
                   {dapp?.type}
                 </div>
               </div>
-              {/* <DappInfo
-                name={dapp.name}
-                category={dapp.type}
-                icon={dapp.icon}
-                tvl=""
-                volume24h=""
-                liquidity=""
-                description="Trade and earn crypto on the all-in-one decentralized exchange. Enjoy low fees, high liquidity, and a user-friendly interface."
-              /> */}
             </div>
           ))}
         </motion.div>
+        {hoverDapp?.name && (
+          <DappInfo
+            name={hoverDapp.name}
+            category={hoverDapp.type}
+            icon={hoverDapp.icon}
+            left={hoverDapp.left}
+            tvl=""
+            volume24h=""
+            liquidity=""
+            description="Trade and earn crypto on the all-in-one decentralized exchange. Enjoy low fees, high liquidity, and a user-friendly interface."
+            onMouseEnter={() => {
+              setHoverDapp(hoverDapp);
+            }}
+          />
+        )}
         <div className="relative h-[30px]">
           {new Array(10).fill(null).map((_, index) => (
             <div className="absolute w-[413px]" style={{ left: index * 380 }}>

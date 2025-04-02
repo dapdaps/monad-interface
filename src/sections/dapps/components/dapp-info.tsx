@@ -1,18 +1,7 @@
 import { motion } from "framer-motion";
 import { capitalize } from "lodash";
 
-interface DappInfoProps {
-  name: string;
-  category: string;
-  icon: string;
-  tvl: string;
-  volume24h: string;
-  liquidity: string;
-  description: string;
-  isAudited?: boolean;
-}
-
-const DappInfo: React.FC<DappInfoProps> = ({
+const DappInfo: React.FC<any> = ({
   name,
   category,
   icon,
@@ -20,10 +9,16 @@ const DappInfo: React.FC<DappInfoProps> = ({
   volume24h,
   liquidity,
   description,
-  isAudited = true
+  isAudited = true,
+  left,
+  onMouseEnter
 }) => {
   return (
-    <div className="group-hover:block hidden bg-[#1A1843CC] rounded-[6px] p-[20px] absolute top-[78px] left-[178px] z-[10] w-[352px] border border-[#3E347C] backdrop-filter-[10px]">
+    <div
+      style={{ left }}
+      onMouseEnter={onMouseEnter}
+      className="absolute top-[78px] bg-[#1A1843CC] rounded-[6px] p-[20px] left-[178px] z-[10] w-[352px] border border-[#3E347C] backdrop-filter-[10px]"
+    >
       <div className="flex items-center gap-[16px]">
         <div className="rounded-[10px] border border-[#836EF9]">
           <img
