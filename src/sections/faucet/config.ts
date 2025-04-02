@@ -23,6 +23,8 @@ export interface IFaucetContext {
   collectedMON: Big.Big;
   checkinDays: number;
   collectedToday: boolean;
+  ethereumMainnetBalance: any;
+  isEthereumMainnetBalanceLoading: boolean;
 
   handleCheckIn(): Promise<void>;
 }
