@@ -42,10 +42,7 @@ const MainLayoutHeader = (props: Props) => {
       </div>
 
       <div className="flex-1 flex items-center justify-center">
-        <div className="flex items-center justify-center w-[300px] h-[60px] bg-[url('/images/header/logo_bg.svg')] bg-contain">
-          <div className="w-[169px]">
-            <img src="/images/header/logo.svg" alt="logo" />
-          </div>
+        <div className="w-[240px] h-[60px] bg-[url('/images/header/logo_bg.svg')] bg-contain">
         </div>
       </div>
 
