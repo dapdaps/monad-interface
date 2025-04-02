@@ -50,8 +50,7 @@ const Home = () => {
   return (
     <div className="w-full h-[100dvh] relative overflow-hidden">
       <MainLayoutHeader />
-      <div className="absolute top-0 left-[110px] w-[409px] h-[283px] bg-[url(/images/monad/icon/left-window.svg)]"></div>
-      <div className="absolute top-0 right-[138px] w-[427px] h-[313px] bg-[url(/images/monad/icon/right-window.svg)]"></div>
+     <div className="absolute top-0 left-0 right-0 h-[calc(623/14.4*var(--rem))] bg-[url(/images/monad/background/bg3.svg)] bg-no-repeat bg-contain"></div>
       <div
         className="absolute left-0 bottom-0 w-full bg-[url(/images/monad/background/bg1.svg)] bg-no-repeat bg-contain 
                         h-[calc(635/14.4*var(--rem))] min-h-[635px] min-w-[1440px]"
@@ -95,6 +94,14 @@ const Home = () => {
                 </div>
               </div>
             </div>
+          </div>
+          {/* game */}
+          <div className={clsx(
+            'absolute left-[calc(560/14.4*var(--rem))] -top-[115px] w-[275px] h-[210px]',
+            'bg-no-repeat bg-contain bg-[url(/images/monad/entry/game.svg)]',
+             windowWidth >= 1920 &&  windowWidth < 2560 ? "-top-[88px] left-[calc(532/14.4*var(--rem))] scale-[1.2]" : "",
+             windowWidth >= 2560 ? "-top-[30px] left-[calc(710/14.4*var(--rem))] scale-[1.3]" : ""
+          )}>
           </div>
           {/* yapper */}
           <div
