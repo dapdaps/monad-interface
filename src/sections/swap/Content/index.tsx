@@ -133,7 +133,7 @@ export default function Swap({
         style={{ justifyContent: "space-between" }}
         title={
           from === "marketplace"
-            ? `GET ${outputCurrency.symbol}`
+            ? `GET ${outputCurrency?.symbol}`
             : `Swap via ${dapp.name}`
         }
         loading={loading}
@@ -161,7 +161,7 @@ export default function Swap({
         />
         <ExchangeIcon
           onClick={() => {
-            if (loading) return;
+            if (loading || outputCurrencyReadonly) return;
             const [_inputCurrency, _outputCurrency] = [
               outputCurrency,
               inputCurrency
