@@ -132,12 +132,19 @@ export default memo(function DappsEntry({
               key={dapp.name}
               onClick={() => {
                 setClicked(true);
-                if (dapp?.link) {
-                  router.push(dapp.link);
-                } else {
+                if (!dapp?.link) {
                   setTimeout(() => {
                     setClicked(false);
                   }, 300);
+                  return;
+                }
+                if (
+                  dapp.link.startsWith("https://") ||
+                  dapp.link.startsWith("http://")
+                ) {
+                  window.open(dapp.link, "_blank");
+                } else {
+                  router.push(dapp.link);
                 }
               }}
               onMouseEnter={(ev: any) => {
@@ -179,6 +186,7 @@ export default memo(function DappsEntry({
             category={hoverDapp.type}
             icon={hoverDapp.icon}
             left={hoverDapp.left}
+            desc={hoverDapp.desc}
             tvl=""
             volume24h=""
             liquidity=""

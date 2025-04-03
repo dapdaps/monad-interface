@@ -1,95 +1,25 @@
-import { IDapp } from "@/types";
 import { motion } from "framer-motion";
 import { memo, useEffect, useMemo, useState } from "react";
 import DappsEntry from "./components/dapps-entry";
 import RectangularButton from "./components/rectangular-button";
 import { useSoundStore } from "@/stores/sound";
+import { LEFT_DAPP_LIST, RIGHT_DAPP_LIST } from "./config";
 
 export default memo(function Dapps() {
   const soundStore: any = useSoundStore();
   const [activeType, setActiveType] = useState("all");
-  const LEFT_DAPP_LIST: IDapp[] = [
-    {
-      name: "Lynex",
-      icon: "/images/dapps/icons/Lynex.svg",
-      type: "dex",
-      link: ""
-    },
-    {
-      name: "iZumi",
-      icon: "/images/dapps/icons/iZumi.svg",
-      type: "dex",
-      link: "/dex/izumi"
-    },
-    {
-      name: "Pancake",
-      icon: "/images/dapps/icons/Pancake.svg",
-      type: "dex",
-      link: "/dex/pancake"
-    },
-    {
-      name: "OpenOcean",
-      icon: "/images/dapps/icons/OpenOcean.svg",
-      type: "dex",
-      link: "/dex/openocean"
-    },
-    {
-      name: "Infinex",
-      icon: "/images/dapps/icons/Infinex.svg",
-      type: "dex",
-      link: ""
-    }
-  ];
-  const RIGHT_DAPP_LIST: IDapp[] = [
-    {
-      name: "Orderly",
-      icon: "/images/dapps/icons/Orderly.svg",
-      type: "dex",
-      link: ""
-    },
-    {
-      name: "D3X",
-      icon: "/images/dapps/icons/D3X.svg",
-      type: "dex",
-      link: ""
-    },
-    {
-      name: "LFJ",
-      icon: "/images/dapps/icons/LFJ.svg",
-      type: "dex",
-      link: "/dex/lfj"
-    },
-    {
-      name: "Orbiter",
-      icon: "https://assets.dapdap.net/images/100-obiter.png",
-      type: "bridge",
-      link: "/bridge/obiter"
-    },
-    {
-      name: "Balancer",
-      icon: "/images/dapps/icons/Balancer.svg",
-      type: "dex",
-      link: ""
-    },
-    {
-      name: "emelverse",
-      icon: "/images/dapps/icons/emelverse.svg",
-      type: "dex",
-      link: ""
-    }
-  ];
 
   const FILTER_LEFT_DAPP_LIST = useMemo(
     () =>
       LEFT_DAPP_LIST.filter(
-        (dapp: IDapp) => dapp.type === activeType || activeType === "all"
+        (dapp) => dapp.type === activeType || activeType === "all"
       ),
     [activeType]
   );
   const FILTER_RIGHT_DAPP_LIST = useMemo(
     () =>
       RIGHT_DAPP_LIST.filter(
-        (dapp: IDapp) => dapp.type === activeType || activeType === "all"
+        (dapp) => dapp.type === activeType || activeType === "all"
       ),
     [activeType]
   );

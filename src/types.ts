@@ -29,25 +29,26 @@ export interface Chain {
 }
 
 export interface IDapp {
-  name: string
-  icon: string
-  type: "bridge" | "swap" | "dex"
-  link?: string
+  name: string;
+  icon: string;
+  type: "bridge" | "swap" | "dex" | "defi" | "perps" | "nft";
+  link?: string;
+  desc?: string;
 }
 
 export interface IToken {
-  address: string
-  chainId: number
-  symbol: string
-  decimals: number
-  name: string
-  icon: string
-  isNative?: boolean
-  color?: string
-  x?: number
-  y?: number
-  price?: string
-  volume_24h?: string
-  price_7day?: string
-  price_change_percent_24h?: string
+  address: string;
+  chainId: number;
+  symbol: string;
+  decimals: number;
+  name: string;
+  icon: string;
+  isNative?: boolean;
+  color?: string;
+  x?: number;
+  y?: number;
+  price?: string;
+  volume_24h?: string;
+  price_7day?: string;
+  price_change_percent_24h?: string;
 }

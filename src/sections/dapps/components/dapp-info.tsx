@@ -1,5 +1,4 @@
 import { capitalize } from "lodash";
-import { DESC } from "../config";
 
 const DappInfo: React.FC<any> = ({
   name,
@@ -10,6 +9,7 @@ const DappInfo: React.FC<any> = ({
   liquidity,
   isAudited = true,
   left,
+  desc,
   onMouseEnter
 }) => {
   return (
@@ -52,7 +52,7 @@ const DappInfo: React.FC<any> = ({
       </div>
 
       <p className="text-[12px] font-light text-white/60 mt-[12px]">
-        {DESC[name] || "-"}
+        {desc || "-"}
       </p>
 
       {isAudited && (
