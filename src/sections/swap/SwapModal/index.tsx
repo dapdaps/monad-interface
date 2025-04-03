@@ -26,9 +26,14 @@ export default function SwapModal({
     });
     return [_templates, _tokens];
   }, [dexs, protocols]);
-  console.log(defaultInputCurrency, defaultOutputCurrency);
+
   return (
-    <Modal open={show} onClose={onClose} closeIconClassName="md:hidden">
+    <Modal
+      open={show}
+      onClose={onClose}
+      closeIconClassName="md:hidden top-[-10px] right-[-10px]"
+      innerClassName="bg-[#2B294A] p-[30px]"
+    >
       <Content
         dapp={{
           name: templates,

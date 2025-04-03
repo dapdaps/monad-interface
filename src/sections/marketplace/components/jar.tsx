@@ -9,6 +9,7 @@ import Popover, {
   PopoverTrigger
 } from "@/components/popover";
 import { numberFormatter } from "@/utils/number-formatter";
+import SwapModal from "@/sections/swap/SwapModal";
 
 const getRandomDuration = () => Math.random() * 2 + 4;
 const getRandomPosition = (size: any) => {
@@ -74,106 +75,129 @@ const Bubble = ({ size }: any) => {
 };
 
 const TokenItem = ({ token, type }: { token: IToken; type: any }) => {
+  const [showSwapModal, setShowSwapModal] = useState(false);
   return (
-    <motion.div
-      className="group absolute -translate-x-[100%]"
-      animate={{
-        transform: [
-          "translateY(calc(-100% - 50px)",
-          "translateY(calc(-100% - 56px)",
-          "translateY(calc(-100% - 50px)",
-          "translateY(calc(-100% - 44px)"
-        ]
-      }}
-      transition={{
-        duration: 1.5,
-        repeat: Infinity
-      }}
-      style={{
-        left: token?.x + "%",
-        top: token?.y + "%"
-      }}
-    >
-      <Popover
-        trigger={PopoverTrigger.Hover}
-        placement={PopoverPlacement.Right}
-        content={
-          <div
-            className={clsx(
-              "relative w-[193px] h-[118px] bg-no-repeat bg-contain bg-center",
-              Big(token?.price_change_percent_24h ?? 0).gte(0)
-                ? "bg-[url('/images/marketplace/popover_bg_up.svg')]"
-                : "bg-[url('/images/marketplace/popover_bg_down.svg')]"
-            )}
-          >
-            <div className="absolute top-[8px] left-[24px] right-[11px]">
-              <div className="flex items-end gap-[6px]">
-                <div className="text-black text-[14px] font-semibold">DAK</div>
-                <div className="text-black text-[10px]">Molandak</div>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-black text-[10px] opacity-60">Price</span>
-                <span className="text-black text-[10px]">
-                  {numberFormatter(token?.price, 5, true, {
-                    prefix: "$",
-                    isShort: true
-                  })}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-black text-[10px] opacity-60">
-                  Volume
-                </span>
-                <span className="text-black text-[10px]">
-                  {numberFormatter(token?.volume_24h, 2, true, {
-                    prefix: "$",
-                    isShort: true
-                  })}
-                </span>
+    <>
+      <motion.div
+        className="group absolute -translate-x-[100%]"
+        animate={{
+          transform: [
+            "translateY(calc(-100% - 50px)",
+            "translateY(calc(-100% - 56px)",
+            "translateY(calc(-100% - 50px)",
+            "translateY(calc(-100% - 44px)"
+          ]
+        }}
+        transition={{
+          duration: 1.5,
+          repeat: Infinity
+        }}
+        style={{
+          left: token?.x + "%",
+          top: token?.y + "%"
+        }}
+      >
+        <Popover
+          trigger={PopoverTrigger.Hover}
+          placement={PopoverPlacement.Right}
+          content={
+            <div
+              className={clsx(
+                "relative w-[193px] h-[118px] bg-no-repeat bg-contain bg-center",
+                Big(token?.price_change_percent_24h ?? 0).gte(0)
+                  ? "bg-[url('/images/marketplace/popover_bg_up.svg')]"
+                  : "bg-[url('/images/marketplace/popover_bg_down.svg')]"
+              )}
+            >
+              <div className="absolute top-[8px] left-[24px] right-[11px]">
+                <div className="flex items-end gap-[6px]">
+                  <div className="text-black text-[14px] font-semibold">
+                    DAK
+                  </div>
+                  <div className="text-black text-[10px]">Molandak</div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-black text-[10px] opacity-60">
+                    Price
+                  </span>
+                  <span className="text-black text-[10px]">
+                    {numberFormatter(token?.price, 5, true, {
+                      prefix: "$",
+                      isShort: true
+                    })}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-black text-[10px] opacity-60">
+                    Volume
+                  </span>
+                  <span className="text-black text-[10px]">
+                    {numberFormatter(token?.volume_24h, 2, true, {
+                      prefix: "$",
+                      isShort: true
+                    })}
+                  </span>
+                </div>
               </div>
             </div>
+          }
+        >
+          <div className="cursor-pointer w-[60px] rounded-full overflow-hidden border-[3px] border-black group-hover:border-white">
+            <img className="w-full" src={token?.icon} alt={token?.name} />
           </div>
-        }
-      >
-        <div className="cursor-pointer w-[60px] rounded-full overflow-hidden border-[3px] border-black group-hover:border-white">
-          <img className="w-full" src={token?.icon} alt={token?.name} />
+        </Popover>
+        <div
+          onClick={() => {
+            setShowSwapModal(true);
+          }}
+          className="absolute cursor-pointer left-[3px] right-[3px] top-[3px] bottom-[3px] rounded-full bg-black/50 items-center justify-center text-white text-[13px] font-Unbounded font-semibold hidden group-hover:flex"
+        >
+          Swap
         </div>
-      </Popover>
-      <div className="pointer-events-none absolute left-[3px] right-[3px] top-[3px] bottom-[3px] rounded-full bg-black/50 items-center justify-center text-white text-[13px] font-Unbounded font-semibold hidden group-hover:flex">
-        Swap
-      </div>
-      <div className="absolute left-1/2 -bottom-[9px] -translate-x-1/2 p-[2px_8px] rounded-[10px] bg-black text-white font-Unbounded text-[13px] font-semibold border border-transparent group-hover:border-white">
-        {token?.symbol}
-      </div>
-      {type === "price" ? (
-        <div className="absolute left-0 right-0 -bottom-[26px] flex items-center justify-center gap-[2px]">
-          <div className="w-[10px]">
-            {Big(token?.price_change_percent_24h ?? 0).gte(0) ? (
-              <img src="/images/marketplace/up.svg" alt="up" />
-            ) : (
-              <img src="/images/marketplace/down.svg" alt="down" />
-            )}
+        <div className="absolute left-1/2 -bottom-[9px] -translate-x-1/2 p-[2px_8px] rounded-[10px] bg-black text-white font-Unbounded text-[13px] font-semibold border border-transparent group-hover:border-white">
+          {token?.symbol}
+        </div>
+        {type === "price" ? (
+          <div className="absolute left-0 right-0 -bottom-[26px] flex items-center justify-center gap-[2px]">
+            <div className="w-[10px]">
+              {Big(token?.price_change_percent_24h ?? 0).gte(0) ? (
+                <img src="/images/marketplace/up.svg" alt="up" />
+              ) : (
+                <img src="/images/marketplace/down.svg" alt="down" />
+              )}
+            </div>
+            <div
+              className={clsx(
+                "font-Unbounded text-[10px] font-light",
+                Big(token?.price_change_percent_24h ?? 0).gte(0)
+                  ? "text-[#BFFF60]"
+                  : "text-[#FB52D9]"
+              )}
+            >
+              {Big(token?.price_change_percent_24h ?? 0).toFixed(2)}%
+            </div>
           </div>
-          <div
-            className={clsx(
-              "font-Unbounded text-[10px] font-light",
-              Big(token?.price_change_percent_24h ?? 0).gte(0)
-                ? "text-[#BFFF60]"
-                : "text-[#FB52D9]"
-            )}
-          >
-            {Big(token?.price_change_percent_24h ?? 0).toFixed(2)}%
+        ) : (
+          <div className="absolute left-0 right-0 -bottom-[26px] flex items-center justify-center  text-white text-[10px] font-light">
+            {numberFormatter(token?.volume_24h, 2, true, {
+              prefix: "$",
+              isShort: true
+            })}
           </div>
-        </div>
-      ) : (
-        <div className="absolute left-0 right-0 -bottom-[26px] flex items-center justify-center  text-white text-[10px] font-light">
-          {numberFormatter(token?.volume_24h, 2, true, {
-            prefix: "$",
-            isShort: true
-          })}
-        </div>
+        )}
+      </motion.div>
+      {showSwapModal && (
+        <SwapModal
+          show={showSwapModal}
+          defaultOutputCurrency={token}
+          outputCurrencyReadonly
+          onClose={() => {
+            setShowSwapModal(false);
+          }}
+          from="marketplace"
+        />
       )}
-    </motion.div>
+    </>
   );
 };
 export default memo(function jar({

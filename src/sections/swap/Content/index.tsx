@@ -229,8 +229,8 @@ export default function Swap({
         />
         {from === "marketplace" && (
           <div className="text-center  mt-[12px]">
-            <a href="/bridge" className="underline text-[14px] text-[#3D405A]">
-              Bridge Assets to Berachain
+            <a href="/bridge" className="underline text-[14px] text-[#A6A6DB]">
+              Bridge Assets to Monad
             </a>
           </div>
         )}
