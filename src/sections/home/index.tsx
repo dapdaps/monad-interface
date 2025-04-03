@@ -96,9 +96,13 @@ const Home = () => {
             </div>
           </div>
           {/* game */}
-          <div className={clsx(
+          <div
+            data-hover-sound 
+            className={clsx(
             'absolute left-[calc(560/14.4*var(--rem))] -top-[115px] w-[275px] h-[210px]',
-            'bg-no-repeat bg-contain bg-[url(/images/monad/entry/game.svg)]',
+            'bg-no-repeat bg-contain',
+            "transition-all duration-200 ease-in-out cursor-pointer",
+            "bg-[url(/images/monad/entry/game.svg)] hover:bg-[url(/images/monad/entry/game-hover.svg)]",
              windowWidth >= 1920 &&  windowWidth < 2560 ? "-top-[88px] left-[calc(532/14.4*var(--rem))] scale-[1.2]" : "",
              windowWidth >= 2560 ? "-top-[30px] left-[calc(710/14.4*var(--rem))] scale-[1.3]" : ""
           )}>
