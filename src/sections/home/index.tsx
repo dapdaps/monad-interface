@@ -63,8 +63,10 @@ const Home = () => {
             onClick={() => router.push("/bridge")}
             className={
               clsx('absolute left-[calc(70/14.4*var(--rem))] bottom-[calc(344/14.4*var(--rem))] w-[357px] h-[430px]', 
-                windowWidth >= 2560 ? 'scale-[1.3]' : '',
-                windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : 'hover:scale-[1.02]',
+                windowWidth >= 2560 ? 'scale-[1.3] hover:scale-[1.4]' : '',
+                windowWidth >= 1920 && windowWidth < 2560 ? 'hover:scale-[1.1]' : '',
+                windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
+                windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
                 "bg-no-repeat bg-contain",
                 "transition-all duration-200 ease-in-out cursor-pointer",
                 "bg-[url(/images/monad/entry/bridge.svg)] hover:bg-[url(/images/monad/entry/bridge-hover.svg)]"
@@ -97,14 +99,17 @@ const Home = () => {
           </div>
           {/* game */}
           <div
-            data-hover-sound 
+            // data-hover-sound 
             className={clsx(
             'absolute left-[calc(560/14.4*var(--rem))] -top-[115px] w-[275px] h-[210px]',
             'bg-no-repeat bg-contain',
-            "transition-all duration-200 ease-in-out cursor-pointer",
-            "bg-[url(/images/monad/entry/game.svg)] hover:bg-[url(/images/monad/entry/game-hover.svg)]",
-             windowWidth >= 1920 &&  windowWidth < 2560 ? "-top-[88px] left-[calc(532/14.4*var(--rem))] scale-[1.2]" : "",
-             windowWidth >= 2560 ? "-top-[30px] left-[calc(710/14.4*var(--rem))] scale-[1.3]" : ""
+            "transition-all duration-200 ease-in-out",
+            "bg-[url(/images/monad/entry/game-lock.svg)]",
+            // "bg-[url(/images/monad/entry/game.svg)] hover:bg-[url(/images/monad/entry/game-hover.svg)]",
+             windowWidth >= 1920 &&  windowWidth < 2560 ? "-top-[88px] left-[calc(532/14.4*var(--rem))] hover:scale-[1.1]" : "",
+             windowWidth >= 2560 ? "-top-[30px] left-[calc(710/14.4*var(--rem))] scale-[1.3] hover:scale-[1.4]" : "",
+             windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
+             windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
           )}>
           </div>
           {/* yapper */}
@@ -113,9 +118,10 @@ const Home = () => {
             className={clsx(
               "z-[4] w-[378px] h-[290px] absolute right-[calc(280/14.4*var(--rem))]",
               "bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper-lock.svg)]",
-              windowWidth < 1440 ? 'scale-[0.86]' : '',
-              windowWidth >= 1920 &&  windowWidth < 2560 ? "top-0 right-[calc(190/14.4*var(--rem))]" : "-top-[calc(80/14.4*var(--rem))]",
-              windowWidth >= 2560 ? "top-[80px] right-[calc(190/14.4*var(--rem))] scale-[1.3]" : ""
+              windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
+              windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
+              windowWidth >= 1920 &&  windowWidth < 2560 ? "top-0 right-[calc(190/14.4*var(--rem))] hover:scale-[1.1]" : "",
+              windowWidth >= 2560 ? "top-[80px] right-[calc(190/14.4*var(--rem))] scale-[1.3] hover:scale-[1.4]" : ""
             )}
           >
             <div className="relative w-full h-full">
@@ -156,7 +162,8 @@ const Home = () => {
             onClick={() => router.push("/faucet")}
             className={clsx(
               "z-[5] absolute w-[514px] h-[330px]",
-              windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : 'hover:scale-[1.02]',
+              windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
+              windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
               windowWidth >= 1920
                 ? "left-1/2 -translate-x-1/2 -ml-[30px] bottom-[calc(200/14.4*var(--rem))]"
                 : "left-[calc(450/14.4*var(--rem))] bottom-[calc(235/14.4*var(--rem))]",
@@ -200,9 +207,10 @@ const Home = () => {
             data-hover-sound
             onClick={() => router.push("/dapps")}
             className={clsx('z-[7] absolute -right-[calc(10/14.4*var(--rem))] bottom-[calc(83/14.4*var(--rem))] w-[519px] h-[451px]', 
-              windowWidth >= 1920 ? 'right-0 bottom-[calc(40/14.4*var(--rem))]': '',
-              windowWidth >= 2560 ? 'scale-[1.3]' : '',
-              windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : 'hover:scale-[1.02]',
+              windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
+              windowWidth >= 1920 &&  windowWidth < 2560 ? 'right-0 bottom-[calc(40/14.4*var(--rem))] hover:scale-[1.1]': '',
+              windowWidth >= 2560 ? 'scale-[1.3] hover:scale-[1.4]' : '',
+              windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
               "bg-no-repeat bg-contain",
               "transition-all duration-200 ease-in-out cursor-pointer",
               "bg-[url(/images/monad/entry/dapps.svg)] hover:bg-[url(/images/monad/entry/dapps-hover.svg)]"
@@ -281,8 +289,10 @@ const Home = () => {
             data-hover-sound
             onClick={() => router.push("/marketplace")}
             className={clsx(
-              windowWidth >= 2560 ? 'scale-[1.3]' : '',
-              windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : 'hover:scale-[1.02]',
+              windowWidth >= 2560 ? 'scale-[1.3] hover:scale-[1.4]' : '',
+              windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
+              windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
+              windowWidth >= 1920 &&  windowWidth < 2560 ? 'hover:scale-[1.1]': '',
               "hover:cursor-pointer z-[5] absolute left-[calc(150/14.4*var(--rem))] bottom-[calc(78/14.4*var(--rem))] w-[514px] h-[444px]", 
               "bg-no-repeat bg-contain",
               "transition-all duration-200 ease-in-out cursor-pointer",
