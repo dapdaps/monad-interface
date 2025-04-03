@@ -18,8 +18,8 @@ function Moving1st() {
   return (
     <motion.img
       src={gifSrc}
-      className="w-[109px] h-[128px]"
-      initial={{ x: 0, y: 0, rotate: 1, scaleX: -1 }} 
+      className="w-[96px] h-[107px]"
+      initial={{ x: 0, y: 0, rotate: 1, }} 
       animate={{
         x: [0, -300],
         y: [0, -100],
@@ -40,7 +40,7 @@ function Moving1st() {
       }}
       onUpdate={(latest) => {
         if (Number(latest.x) >= -10 && directionRef.current !== "left") {
-          setGifSrc("/images/monad/icon/role-2.gif"); 
+          setGifSrc("/images/monad/icon/role-3-back.gif"); 
           directionRef.current = "left";
         } else if (Number(latest.x) <= -290 && directionRef.current !== "right") {
           setGifSrc("/images/monad/icon/role-3.gif"); 
@@ -59,7 +59,7 @@ function Moving1st() {
 }
 
 function Moving2sec() {
-  const [gifSrc, setGifSrc] = useState("/images/monad/icon/role-1.gif");
+  const [gifSrc, setGifSrc] = useState("/images/monad/icon/role-2-back.gif");
   const directionRef = useRef<"left" | "right">("right");
 
   return (
@@ -87,7 +87,7 @@ function Moving2sec() {
       }}
       onUpdate={(latest) => {
         if (Number(latest.x) >= -10 && directionRef.current !== "left") {
-          setGifSrc("/images/monad/icon/role-1.gif"); 
+          setGifSrc("/images/monad/icon/role-2-back.gif"); 
           directionRef.current = "left";
         } else if (Number(latest.x) <= -235 && directionRef.current !== "right") {
           setGifSrc("/images/monad/icon/role-2.gif"); 
