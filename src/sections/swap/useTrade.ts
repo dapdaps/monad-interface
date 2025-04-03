@@ -97,13 +97,11 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
         if (typeof template === "string") {
           params.template = template;
         } else {
-          params.templates = template.filter(
-            (item: string) => item !== "Ooga Booga"
-          );
+          params.templates = template;
         }
         const data = await quoter(params);
 
-        if (!data?.outputCurrencyAmount) {
+        if (!data) {
           throw new Error("No Data.");
         }
         setLoading(false);
