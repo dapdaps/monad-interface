@@ -42,9 +42,9 @@ export default memo(function Dapps() {
       </div>
 
       <div className="absolute left-0 right-0 bottom-0 h-[87px] bg-[#23243D] border-t-[18px] border-[#273051]">
-        <div className="absolute bottom-[42px] left-1/2 translate-x-[calc(-50%_-_441px)] w-[81px] h-[110px] bg-[url('/images/dapps/body.svg')] bg-contain bg-no-repeat">
+        <div className="absolute bottom-[54px] left-1/2 translate-x-[calc(-50%_-_441px)] w-[63px] h-[87px] bg-[url('/images/dapps/body.svg')] bg-contain bg-no-repeat">
           <motion.div
-            className="absolute right-0 top-0 w-[29px] origin-bottom-left"
+            className="absolute -right-[13.3px] top-[7px] w-[37px] origin-bottom-left"
             animate={{
               rotate: [0, -15, 0, 8]
             }}
