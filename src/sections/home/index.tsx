@@ -163,11 +163,11 @@ const Home = () => {
             className={clsx(
               "z-[5] absolute w-[514px] h-[330px]",
               windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
-              windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
+              windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.1]' : '',
               windowWidth >= 1920
                 ? "left-1/2 -translate-x-1/2 -ml-[30px] bottom-[calc(200/14.4*var(--rem))]"
                 : "left-[calc(450/14.4*var(--rem))] bottom-[calc(235/14.4*var(--rem))]",
-              windowWidth >= 2560 ? 'scale-[1.3]' : '',
+              windowWidth >= 2560 ? 'scale-[1.3] hover:scale-[1.5]' : '',
               "bg-no-repeat bg-contain",
               "transition-all duration-200 ease-in-out cursor-pointer",
               "bg-[url(/images/monad/entry/data.svg)] hover:bg-[url(/images/monad/entry/data-hover.svg)]"
