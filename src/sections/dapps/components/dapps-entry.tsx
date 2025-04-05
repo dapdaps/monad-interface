@@ -166,8 +166,16 @@ export default memo(function DappsEntry({
                 setHoverDapp(null);
               }}
             >
-              <div className="m-[32px_auto_15px] w-[56px]">
+
+              <div className="relative m-[32px_auto_15px] w-[56px]">
                 <img src={dapp?.icon} alt={dapp?.name} />
+                {
+                  dapp?.link?.indexOf("http") > -1 && (
+                    <div className="absolute right-[-6px] bottom-0 w-[16px]">
+                      <img src="/images/dapps/link.svg" alt="link" />
+                    </div>
+                  )
+                }
               </div>
               <div className="text-center text-black font-Unbounded text-[16px] font-semibold leading-[100%]">
                 {dapp?.name}

@@ -1,6 +1,6 @@
 import { IDapp } from "@/types";
 
-export const LEFT_DAPP_LIST: IDapp[] = [
+export const ALL_DAPP_LIST: IDapp[] = [
   {
     name: "Kuru",
     icon: "/images/dapps/icons/kuru.svg",
@@ -35,14 +35,11 @@ export const LEFT_DAPP_LIST: IDapp[] = [
     type: "dex",
     link: "https://app.timeswap.io/markets?chainId=10143",
     desc: "Timeswap is the first oracleless lending/borrowing protocol — enabling the creation of money markets for ANY ERC20 tokens."
-  }
-];
-
-export const RIGHT_DAPP_LIST: IDapp[] = [
+  },
   {
     name: "LEVR",
     icon: "/images/dapps/icons/levr.svg",
-    type: "defi",
+    type: "betting",
     link: "https://app.levr.bet/",
     desc: "Leverage Sports Betting with Fully Liquid Positions."
   },
@@ -68,3 +65,4 @@ export const RIGHT_DAPP_LIST: IDapp[] = [
     desc: "Orbiter Finance is a decentralized cross-rollup bridge that offers secure, low cost and almost instant transfer."
   }
 ];
+
