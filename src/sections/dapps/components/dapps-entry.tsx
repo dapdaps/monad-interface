@@ -13,6 +13,7 @@ import {
 } from "react";
 import { useSoundStore } from "@/stores/sound";
 import DappInfo from "./dapp-info";
+import ExternalLinksModal from "./external-links-modal";
 
 export default memo(function DappsEntry({
   direction,
@@ -23,6 +24,7 @@ export default memo(function DappsEntry({
 }) {
   const soundStore = useSoundStore();
   const [hoverDapp, setHoverDapp] = useState<any>(null);
+  const [targetDapp, setTargetDapp] = useState<any>(null);
   const size = useSize(document.getElementsByTagName("body")[0]);
   const controls = useAnimation();
   const [clicked, setClicked] = useState(false);
@@ -52,7 +54,6 @@ export default memo(function DappsEntry({
 
   useEffect(() => {
     const sequence = async () => {
-      // await controls?.stop()
       controls.set({
         transform:
           direction === "right"
@@ -132,17 +133,15 @@ export default memo(function DappsEntry({
               key={dapp.name}
               onClick={() => {
                 setClicked(true);
-                if (!dapp?.link) {
-                  setTimeout(() => {
-                    setClicked(false);
-                  }, 300);
-                  return;
-                }
+                setTimeout(() => {
+                  setClicked(false);
+                }, 300);
                 if (
                   dapp.link.startsWith("https://") ||
                   dapp.link.startsWith("http://")
                 ) {
-                  window.open(dapp.link, "_blank");
+                  // window.open(dapp.link, "_blank");
+                  setTargetDapp(dapp)
                 } else {
                   router.push(dapp.link);
                 }
@@ -203,6 +202,16 @@ export default memo(function DappsEntry({
             }}
           />
         )}
+        {
+          targetDapp && (
+            <ExternalLinksModal
+              dapp={targetDapp}
+              onClose={() => {
+                setTargetDapp(null)
+              }}
+            />
+          )
+        }
         <div className="relative h-[30px]">
           {new Array(10).fill(null).map((_, index) => (
             <div className="absolute w-[413px]" style={{ left: index * 380 }}>

@@ -59,7 +59,7 @@ export default memo(function Dapps() {
   }, []);
   return (
     <div className="flex flex-col h-[calc(100vh-60px)] pt-[30px] overflow-hidden">
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 overflow-x-hidden overflow-y-auto">
         <div className="flex flex-col gap-[18px]">
           {
             dappsArray?.map((dapps: IDapp, index: number) => (
@@ -90,7 +90,7 @@ export default memo(function Dapps() {
               <RectangularButton
                 type={1}
                 clicked={activeType === "all"}
-                className="w-[178px] h-[36px]"
+                className="w-[76px] h-[36px]"
                 onClick={() => {
                   handleClickButton("all");
                 }}
@@ -101,23 +101,23 @@ export default memo(function Dapps() {
               <RectangularButton
                 type={3}
                 clicked={activeType === "instation"}
-                className="w-[86px] h-[36px]"
+                className="w-[132px] h-[36px]"
                 onClick={() => {
                   handleClickButton("instation");
                 }}
               >
-                Instation
+                Instant Access
               </RectangularButton>
               <RectangularButton
                 type={2}
                 clicked={activeType === "outlink"}
-                className=" w-[80px] h-[36px]"
+                className="w-[136px] h-[36px]"
                 onClick={() => {
                   handleClickButton("outlink");
                 }}
               >
                 <div className="flex items-center gap-[3px]">
-                  <span>Outlink</span>
+                  <span>External Links</span>
                   <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 8L8 1M8 1H1.63636M8 1V7.36364" stroke="black" strokeWidth="1.6" />
                   </svg>
