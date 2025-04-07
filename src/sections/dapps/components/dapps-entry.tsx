@@ -168,8 +168,8 @@ export default memo(function DappsEntry({
                 setHoverDapp(null);
               }}
             >
-              <div className="relative m-[32px_auto_15px] w-[56px]">
-                <img src={dapp?.icon} alt={dapp?.name} />
+              <div className="relative m-[32px_auto_15px] w-[56px] h-[56px]">
+                <img src={dapp?.icon} alt={dapp?.name} className="w-full h-full object-center object-contain" />
                 {
                   dapp?.link?.indexOf("http") > -1 && (
                     <div className="absolute right-[-6px] bottom-0 w-[16px]">
