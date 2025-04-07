@@ -19,7 +19,7 @@ const FaucetCheckIn = (props: any) => {
     isEthereumMainnetBalanceLoading,
   } = useFaucetContext();
 
-  const isETHValidBalance = !isEthereumMainnetBalanceLoading && Big(ethereumMainnetBalance?.formatted || 0).gt(0);
+  const isETHValidBalance = !isEthereumMainnetBalanceLoading && Big(ethereumMainnetBalance?.formatted || 0).gt(0.01);
 
   return (
     <div className="flex flex-col items-center gap-[10px]">
@@ -57,7 +57,7 @@ const FaucetCheckIn = (props: any) => {
       {
         !isETHValidBalance && (
           <div className="text-[#A6A6DB] font-Unbounded text-[12px] font-[300] leading-normal text-center">
-            To check in and get $MON, you need a balance on Ethereum mainnet
+            To check in and get $MON, you need at least 0.01 ETH on Ethereum.
           </div>
         )
       }
