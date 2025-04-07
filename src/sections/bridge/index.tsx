@@ -25,6 +25,7 @@ import useBridgeType from './Hooks/useBridgeType';
 import Nft from './Nft';
 import { Tab } from '@/components/tab/Tab';
 import { TabItem } from '@/components/tab/TabItem';
+import useClickTracking from '@/hooks/use-click-tracking';
 
 
 const DappHeader: React.FC = () => {
@@ -68,6 +69,7 @@ const ComingSoon = false;
 const chainList = Object.values(chains).filter((chain) => [10143, 11155111].includes(chain.chainId));
 
 export default function Bridge() {
+  const { handleReport } = useClickTracking()
   const [confirmShow, setConfirmShow] = useState(false);
   const [historyShow, setHistoryShow] = useState(false)
   const [activeTab, setActiveTab] = useState('pending')
@@ -202,7 +204,9 @@ export default function Bridge() {
           <DappHeader />
           <Card className='mt-[-35px]'>
 
-            <Tab defaultActiveKey="1" onChange={(key) => console.log(key)}>
+            <Tab defaultActiveKey="1" onChange={(key) => {
+              handleReport(key === "1" ? "1005-002" : "1005-001")
+            }}>
               <TabItem tab="Token" tabKey="1">
                 <div>
                   <TokenAmout

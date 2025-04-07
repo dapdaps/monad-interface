@@ -14,6 +14,7 @@ import {
 import { useSoundStore } from "@/stores/sound";
 import DappInfo from "./dapp-info";
 import ExternalLinksModal from "./external-links-modal";
+import useClickTracking from "@/hooks/use-click-tracking";
 
 export default memo(function DappsEntry({
   direction,
@@ -22,6 +23,7 @@ export default memo(function DappsEntry({
   direction: "left" | "right";
   dapps: IDapp[];
 }) {
+  const { handleReport } = useClickTracking()
   const soundStore = useSoundStore();
   const [hoverDapp, setHoverDapp] = useState<any>(null);
   const [targetDapp, setTargetDapp] = useState<any>(null);
@@ -143,6 +145,7 @@ export default memo(function DappsEntry({
                   // window.open(dapp.link, "_blank");
                   setTargetDapp(dapp)
                 } else {
+                  handleReport("1003-001", dapp.name)
                   router.push(dapp.link);
                 }
               }}
@@ -165,7 +168,6 @@ export default memo(function DappsEntry({
                 setHoverDapp(null);
               }}
             >
-
               <div className="relative m-[32px_auto_15px] w-[56px]">
                 <img src={dapp?.icon} alt={dapp?.name} />
                 {

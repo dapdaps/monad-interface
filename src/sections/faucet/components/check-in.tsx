@@ -25,6 +25,7 @@ const FaucetCheckIn = (props: any) => {
     <div className="flex flex-col items-center gap-[10px]">
       <button
         type="button"
+        data-bp="1002-001"
         disabled={!account ? false : (checkInPending || !accountWithAk || loading || collectedToday || !isETHValidBalance)}
         className={clsx("flex justify-center items-center gap-[10px] w-[227px] h-[50px] rounded-[6px] bg-[#836EF9] disabled:opacity-50 text-white text-[14px] font-[500] font-Unbounded", className)}
         onClick={() => {

@@ -61,6 +61,7 @@ const Rpc = ({ className }: { className?: string }) => {
     <div className="md:hidden">
       <StyledRpcs
         $color={renderPingConfig(ping).color}
+        data-bp="1001-008"
         onClick={handleRpc}
         className={className}
       >

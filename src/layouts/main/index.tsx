@@ -38,6 +38,7 @@ const MainLayout = (props: Props) => {
     <div
       id="layout"
       className={`min-h-screen relative flex flex-col items-stretch justify-start transition-background duration-150 bg-[var(--background)]`}
+      onClick={handleTrack}
       style={{
         ...style,
       }}

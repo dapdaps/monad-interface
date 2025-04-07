@@ -100,6 +100,7 @@ export default memo(function Dapps() {
 
               <RectangularButton
                 type={3}
+                data-bp="1003-002"
                 clicked={activeType === "instation"}
                 className="w-[132px] h-[36px]"
                 onClick={() => {
@@ -110,6 +111,7 @@ export default memo(function Dapps() {
               </RectangularButton>
               <RectangularButton
                 type={2}
+                data-bp="1003-003"
                 clicked={activeType === "outlink"}
                 className="w-[136px] h-[36px]"
                 onClick={() => {
@@ -128,6 +130,7 @@ export default memo(function Dapps() {
             <div className="absolute left-[46px] top-[71px] flex gap-[12px]">
               <RectangularButton
                 type={1}
+                data-bp="1003-004"
                 clicked={activeType === "bridge"}
                 className="w-[66px] h-[36px]"
                 onClick={() => handleClickButton("bridge")}
@@ -137,6 +140,7 @@ export default memo(function Dapps() {
 
               <RectangularButton
                 type={3}
+                data-bp="1003-005"
                 clicked={activeType === "dex"}
                 className="w-[58px] h-[36px]"
                 onClick={() => handleClickButton("dex")}
@@ -146,6 +150,7 @@ export default memo(function Dapps() {
 
               <RectangularButton
                 type={3}
+                data-bp="1003-006"
                 clicked={activeType === "perps"}
                 className="w-[69px] h-[36px]"
                 onClick={() => handleClickButton("perps")}
@@ -154,6 +159,7 @@ export default memo(function Dapps() {
               </RectangularButton>
               <RectangularButton
                 type={3}
+                data-bp="1003-007"
                 clicked={activeType === "betting"}
                 className="w-[69px] h-[36px]"
                 onClick={() => handleClickButton("betting")}
@@ -162,6 +168,7 @@ export default memo(function Dapps() {
               </RectangularButton>
               <RectangularButton
                 type={2}
+                data-bp="1003-008"
                 clicked={activeType === "nft"}
                 className="w-[66px] h-[36px]"
                 onClick={() => handleClickButton("nft")}

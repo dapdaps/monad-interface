@@ -133,6 +133,7 @@ export default memo(function MarketPlaceView() {
         <div className="absolute left-0 right-0 bottom-[25px] flex items-center justify-center gap-[24px]">
           <RectangularButton
             type={1}
+            data-bp="1004-001"
             clicked={activeType === "price"}
             className="w-[12.222vw] h-[2.5vw]"
             onClick={() => {
@@ -143,6 +144,7 @@ export default memo(function MarketPlaceView() {
           </RectangularButton>
           <RectangularButton
             type={2}
+            data-bp="1004-002"
             clicked={activeType === "volume"}
             className="w-[12.222vw] h-[2.5vw]"
             onClick={() => {

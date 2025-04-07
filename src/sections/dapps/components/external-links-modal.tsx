@@ -1,4 +1,5 @@
 import Modal from "@/components/modal";
+import useClickTracking from "@/hooks/use-click-tracking";
 import { IDapp } from "@/types";
 import { memo } from "react";
 
@@ -9,7 +10,7 @@ export default memo(function externalLinksModal({
   dapp: IDapp | null
   onClose: VoidFunction
 }) {
-
+  const { handleReport } = useClickTracking()
   return (
     <Modal
       open={dapp}
@@ -35,6 +36,7 @@ export default memo(function externalLinksModal({
         <div
           className="mt-[22px] cursor-pointer w-[253px] h-[42px] rounded-[6px] bg-[#8B87FF] flex items-center justify-center text-white font-Unbounded text-[14px] font-medium leading-[100%]"
           onClick={() => {
+            handleReport("1003-001", dapp.name)
             window.open(dapp.link, "_blank");
           }}
         >Visit</div>

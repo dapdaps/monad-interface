@@ -180,6 +180,7 @@ const ConnectWallet = ({ className }: { className?: string }) => {
         <div className="flex items-center justify-center h-[50px] w-[158px]  bg-[url('/images/header/right_bg.svg')] bg-left bg-contain">
           <button
             data-click-sound
+            data-bp="1001-001"
             className="w-[122px] h-[34px] bg-[url('/images/header/button_bg.svg')] cursor-pointer font-Unbounded text-[12px] text-[#090909] font-semibold"
             onClick={handleConnect}
           >
@@ -272,7 +273,7 @@ const User = (props: any) => {
         </div>
       </div>
       <div className="w-full h-[1px] bg-[#A6A6DB] bg-opacity-10 mt-3"></div>
-            <DisconnectButton handlePlay={handlePlay} setMobileUserInfoVisible={setMobileUserInfoVisible} />
+      <DisconnectButton handlePlay={handlePlay} setMobileUserInfoVisible={setMobileUserInfoVisible} />
     </div>
   );
 

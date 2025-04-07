@@ -11,7 +11,7 @@ export default memo(function Footer() {
         className="hover:scale-110 ease-in-out duration-300 w-[17px] h-[18px] cursor-pointer"
         href="https://app.dapdap.net?from=monad"
         target="_blank"
-        data-bp="1010-011"
+        data-bp="1001-009"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +55,7 @@ export default memo(function Footer() {
         className="ease-in-out duration-300 w-[12px] h-[12px] cursor-pointer"
         href="https://x.com/DapDapMeUp"
         target="_blank"
-        data-bp="1010-015"
+        data-bp="1001-010"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -74,7 +74,7 @@ export default memo(function Footer() {
         className="hover:scale-110 ease-in-out duration-300 w-[15px] h-[13px] cursor-pointer"
         href="https://t.me/DapDapDiscussion"
         target="_blank"
-        data-bp="1010-016"
+        data-bp="1001-011"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +93,7 @@ export default memo(function Footer() {
         className="hover:scale-110 ease-in-out duration-300 w-[16px] h-[10px] cursor-pointer"
         href="https://discord.com/invite/dapdapmeup"
         target="_blank"
-        data-bp="1010-017"
+        data-bp="1001-012"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +113,7 @@ export default memo(function Footer() {
         className="hover:scale-110 ease-in-out duration-300 w-[16px] h-[16px] cursor-pointer"
         href="https://dapdap.mirror.xyz/FSRc-5-o7gHVfTnFDgYPFOMktA7kWreb-m0S3paQCdk"
         target="_blank"
-        data-bp="1010-014"
+        data-bp="1001-013"
       >
         <Image
           src="/images/mirror.png"
