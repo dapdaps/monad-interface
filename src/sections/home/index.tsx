@@ -31,7 +31,7 @@ const Home = () => {
     { name: "Lynex", icon: "/images/monad/dapps/lynx.svg" },
     { name: "iZumi Finance", icon: "/images/monad/dapps/iZumi.svg" },
     { name: "Pancake", icon: "/images/monad/dapps/pancake.svg" },
-    { name: "OpenOcean", icon: "/images/monad/dapps/OpenOcean.svg" },
+    { name: "OpenOcean", icon: "/images/monad/dapps/openOcean.svg" },
     { name: "Infinex", icon: "/images/monad/dapps/infinex.svg" },
     { name: "Orderly", icon: "/images/monad/dapps/orderly.svg" },
     { name: "D3X", icon: "/images/monad/dapps/d3X.svg" },
@@ -239,7 +239,7 @@ const Home = () => {
                 style={{
                   clipPath: `path('M92.4244 0C73.8511 2.07096 23.324 0.862899 15.1553 0L0 18.4445V50.4796L15.1553 69.5712C30.117 70.3478 81.0311 69.8948 89.8447 69.5712L105 50.4796V18.4445L92.4244 0Z')`,
                 }}
-                className="absolute left-[202px] top-[147px] w-[105px] h-[70px] overflow-hidden flex items-center justify-center"
+                className="absolute left-[205px] top-[147px] w-[104px] h-[70px] overflow-hidden flex items-center justify-center"
               >
                 <div className="w-[105px] overflow-hidden" ref={containerRef}>
                   <motion.div
