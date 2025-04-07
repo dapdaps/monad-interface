@@ -65,11 +65,11 @@ const Bubble = ({ size }: any) => {
       variants={variants}
       initial="initial"
       animate={controls}
-      // transition={{
-      //   duration,
-      //   repeat: Infinity,
-      //   ease: "linear",
-      // }}
+    // transition={{
+    //   duration,
+    //   repeat: Infinity,
+    //   ease: "linear",
+    // }}
     />
   );
 };
@@ -145,46 +145,46 @@ const TokenItem = ({ token, type }: { token: IToken; type: any }) => {
           <div className="cursor-pointer w-[60px] rounded-full overflow-hidden border-[3px] border-black group-hover:border-white">
             <img className="w-full" src={token?.icon} alt={token?.name} />
           </div>
+          <div
+            onClick={() => {
+              setShowSwapModal(true);
+            }}
+            className="cursor-pointer absolute left-[3px] right-[3px] top-[3px] bottom-[3px] rounded-full bg-black/50 items-center justify-center text-white text-[13px] font-Unbounded font-semibold hidden group-hover:flex"
+          >
+            Swap
+          </div>
+          <div className="cursor-pointer absolute left-1/2 -bottom-[9px] -translate-x-1/2 p-[2px_8px] rounded-[10px] bg-black text-white font-Unbounded text-[13px] font-semibold border border-transparent group-hover:border-white">
+            {token?.symbol}
+          </div>
+          {type === "price" ? (
+            <div className="absolute left-0 right-0 -bottom-[26px] flex items-center justify-center gap-[2px]">
+              <div className="w-[10px]">
+                {Big(token?.price_change_percent_24h ?? 0).gte(0) ? (
+                  <img src="/images/marketplace/up.svg" alt="up" />
+                ) : (
+                  <img src="/images/marketplace/down.svg" alt="down" />
+                )}
+              </div>
+              <div
+                className={clsx(
+                  "font-Unbounded text-[10px] font-light",
+                  Big(token?.price_change_percent_24h ?? 0).gte(0)
+                    ? "text-[#BFFF60]"
+                    : "text-[#FB52D9]"
+                )}
+              >
+                {Big(token?.price_change_percent_24h ?? 0).toFixed(2)}%
+              </div>
+            </div>
+          ) : (
+            <div className="absolute left-0 right-0 -bottom-[26px] flex items-center justify-center  text-white text-[10px] font-light">
+              {numberFormatter(token?.volume_24h, 2, true, {
+                prefix: "$",
+                isShort: true
+              })}
+            </div>
+          )}
         </Popover>
-        <div
-          onClick={() => {
-            setShowSwapModal(true);
-          }}
-          className="absolute cursor-pointer left-[3px] right-[3px] top-[3px] bottom-[3px] rounded-full bg-black/50 items-center justify-center text-white text-[13px] font-Unbounded font-semibold hidden group-hover:flex"
-        >
-          Swap
-        </div>
-        <div className="absolute left-1/2 -bottom-[9px] -translate-x-1/2 p-[2px_8px] rounded-[10px] bg-black text-white font-Unbounded text-[13px] font-semibold border border-transparent group-hover:border-white">
-          {token?.symbol}
-        </div>
-        {type === "price" ? (
-          <div className="absolute left-0 right-0 -bottom-[26px] flex items-center justify-center gap-[2px]">
-            <div className="w-[10px]">
-              {Big(token?.price_change_percent_24h ?? 0).gte(0) ? (
-                <img src="/images/marketplace/up.svg" alt="up" />
-              ) : (
-                <img src="/images/marketplace/down.svg" alt="down" />
-              )}
-            </div>
-            <div
-              className={clsx(
-                "font-Unbounded text-[10px] font-light",
-                Big(token?.price_change_percent_24h ?? 0).gte(0)
-                  ? "text-[#BFFF60]"
-                  : "text-[#FB52D9]"
-              )}
-            >
-              {Big(token?.price_change_percent_24h ?? 0).toFixed(2)}%
-            </div>
-          </div>
-        ) : (
-          <div className="absolute left-0 right-0 -bottom-[26px] flex items-center justify-center  text-white text-[10px] font-light">
-            {numberFormatter(token?.volume_24h, 2, true, {
-              prefix: "$",
-              isShort: true
-            })}
-          </div>
-        )}
       </motion.div>
       {showSwapModal && (
         <SwapModal
