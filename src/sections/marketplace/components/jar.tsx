@@ -85,11 +85,13 @@ const TokenItem = ({ token, type }: { token: IToken; type: any }) => {
             "translateY(calc(-100% - 50px)",
             "translateY(calc(-100% - 56px)",
             "translateY(calc(-100% - 50px)",
-            "translateY(calc(-100% - 44px)"
+            "translateY(calc(-100% - 44px)",
+            "translateY(calc(-100% - 50px)",
           ]
         }}
         transition={{
-          duration: 1.5,
+          duration: 2,
+          ease: "linear",
           repeat: Infinity
         }}
         style={{

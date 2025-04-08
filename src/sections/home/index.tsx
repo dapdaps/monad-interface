@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import useAudioPlay from "@/hooks/use-audio";
 import withSound from "@/hoc/withSound";
 import LazyImage from "@/components/layz-image";
+import { ALL_DAPP_LIST } from "../dapps/config";
 
 const itemWidth = 51;
 const itemGap = 6;
@@ -27,30 +28,30 @@ const Home = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  const dappItems = [
-    { name: "Lynex", icon: "/images/monad/dapps/lynx.svg" },
-    { name: "iZumi Finance", icon: "/images/monad/dapps/iZumi.svg" },
-    { name: "Pancake", icon: "/images/monad/dapps/pancake.svg" },
-    { name: "OpenOcean", icon: "/images/monad/dapps/openOcean.svg" },
-    { name: "Infinex", icon: "/images/monad/dapps/infinex.svg" },
-    { name: "Orderly", icon: "/images/monad/dapps/orderly.svg" },
-    { name: "D3X", icon: "/images/monad/dapps/d3X.svg" },
-    { name: "LFJ", icon: "/images/monad/dapps/lfj.svg" },
-    { name: "orbiter", icon: "https://assets.dapdap.net/images/100-obiter.png" },
-  ];
+  // const dappItems = [
+  //   { name: "Lynex", icon: "/images/monad/dapps/lynx.svg" },
+  //   { name: "iZumi Finance", icon: "/images/monad/dapps/iZumi.svg" },
+  //   { name: "Pancake", icon: "/images/monad/dapps/pancake.svg" },
+  //   { name: "OpenOcean", icon: "/images/monad/dapps/openOcean.svg" },
+  //   { name: "Infinex", icon: "/images/monad/dapps/infinex.svg" },
+  //   { name: "Orderly", icon: "/images/monad/dapps/orderly.svg" },
+  //   { name: "D3X", icon: "/images/monad/dapps/d3X.svg" },
+  //   { name: "LFJ", icon: "/images/monad/dapps/lfj.svg" },
+  //   { name: "orbiter", icon: "https://assets.dapdap.net/images/100-obiter.png" },
+  // ];
 
   const duplicateFunc = (items: typeof dappItems, times: number = 2) => {
     return Array(times).fill(items).flat();
   };
 
-  const duplicatedDappItems = duplicateFunc(dappItems);
+  const duplicatedDappItems = duplicateFunc(ALL_DAPP_LIST);
 
-  const totalWidth = dappItems.length * (itemWidth + itemGap) - itemGap;
+  const totalWidth = ALL_DAPP_LIST.length * (itemWidth + itemGap) - itemGap;
 
   return (
     <div className="w-full h-[100dvh] relative overflow-hidden">
       <MainLayoutHeader />
-     <div className="absolute top-0 left-0 right-0 h-[calc(623/14.4*var(--rem))] bg-[url(/images/monad/background/bg3.svg)] bg-no-repeat bg-contain"></div>
+      <div className="absolute top-0 left-0 right-0 h-[calc(623/14.4*var(--rem))] bg-[url(/images/monad/background/bg3.svg)] bg-no-repeat bg-contain"></div>
       <div
         className="absolute left-0 bottom-0 w-full bg-[url(/images/monad/background/bg1.svg)] bg-no-repeat bg-contain 
                         h-[calc(635/14.4*var(--rem))] min-h-[635px] min-w-[1440px]"
@@ -62,7 +63,7 @@ const Home = () => {
             data-hover-sound
             onClick={() => router.push("/bridge")}
             className={
-              clsx('absolute left-[calc(70/14.4*var(--rem))] bottom-[calc(344/14.4*var(--rem))] w-[357px] h-[430px]', 
+              clsx('absolute left-[calc(70/14.4*var(--rem))] bottom-[calc(344/14.4*var(--rem))] w-[357px] h-[430px]',
                 windowWidth >= 2560 ? 'scale-[1.3] hover:scale-[1.4]' : '',
                 windowWidth >= 1920 && windowWidth < 2560 ? 'hover:scale-[1.1]' : '',
                 windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
@@ -102,16 +103,16 @@ const Home = () => {
             // data-hover-sound 
             data-bp="1001-007"
             className={clsx(
-            'absolute left-[calc(560/14.4*var(--rem))] -top-[115px] w-[275px] h-[210px]',
-            'bg-no-repeat bg-contain',
-            "transition-all duration-200 ease-in-out",
-            "bg-[url(/images/monad/entry/game-lock.svg)]",
-            // "bg-[url(/images/monad/entry/game.svg)] hover:bg-[url(/images/monad/entry/game-hover.svg)]",
-             windowWidth >= 1920 &&  windowWidth < 2560 ? "-top-[88px] left-[calc(532/14.4*var(--rem))] hover:scale-[1.1]" : "",
-             windowWidth >= 2560 ? "-top-[30px] left-[calc(710/14.4*var(--rem))] scale-[1.3] hover:scale-[1.4]" : "",
-             windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
-             windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
-          )}>
+              'absolute left-[calc(560/14.4*var(--rem))] -top-[115px] w-[275px] h-[210px]',
+              'bg-no-repeat bg-contain',
+              "transition-all duration-200 ease-in-out",
+              "bg-[url(/images/monad/entry/game-lock.svg)]",
+              // "bg-[url(/images/monad/entry/game.svg)] hover:bg-[url(/images/monad/entry/game-hover.svg)]",
+              windowWidth >= 1920 && windowWidth < 2560 ? "-top-[88px] left-[calc(532/14.4*var(--rem))] hover:scale-[1.1]" : "",
+              windowWidth >= 2560 ? "-top-[30px] left-[calc(710/14.4*var(--rem))] scale-[1.3] hover:scale-[1.4]" : "",
+              windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
+              windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
+            )}>
           </div>
           {/* yapper */}
           <div
@@ -121,7 +122,7 @@ const Home = () => {
               "bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper-lock.svg)]",
               windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
               windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
-              windowWidth >= 1920 &&  windowWidth < 2560 ? "top-0 right-[calc(190/14.4*var(--rem))] hover:scale-[1.1]" : "",
+              windowWidth >= 1920 && windowWidth < 2560 ? "top-0 right-[calc(190/14.4*var(--rem))] hover:scale-[1.1]" : "",
               windowWidth >= 2560 ? "top-[80px] right-[calc(190/14.4*var(--rem))] scale-[1.3] hover:scale-[1.4]" : ""
             )}
           >
@@ -207,9 +208,9 @@ const Home = () => {
             data-bp="1001-006"
             data-hover-sound
             onClick={() => router.push("/dapps")}
-            className={clsx('z-[7] absolute -right-[calc(10/14.4*var(--rem))] bottom-[calc(83/14.4*var(--rem))] w-[519px] h-[451px]', 
+            className={clsx('z-[7] absolute -right-[calc(10/14.4*var(--rem))] bottom-[calc(83/14.4*var(--rem))] w-[519px] h-[451px]',
               windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
-              windowWidth >= 1920 &&  windowWidth < 2560 ? 'right-0 bottom-[calc(40/14.4*var(--rem))] hover:scale-[1.1]': '',
+              windowWidth >= 1920 && windowWidth < 2560 ? 'right-0 bottom-[calc(40/14.4*var(--rem))] hover:scale-[1.1]' : '',
               windowWidth >= 2560 ? 'scale-[1.3] hover:scale-[1.4]' : '',
               windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
               "bg-no-repeat bg-contain",
@@ -276,11 +277,11 @@ const Home = () => {
               </div>
               <div className="absolute top-[236px] left-1/2 -translate-x-1/2 w-[100px] h-[100px]">
                 <LazyImage
-                src='/images/monad/entry/dapps.gif'
-                className='w-[100px] h-[100px]'
-                width={100}
-                height={100}
-                fallbackSrc='/images/monad/entry/default-dapps-gif.png' />
+                  src='/images/monad/entry/dapps.gif'
+                  className='w-[100px] h-[100px]'
+                  width={100}
+                  height={100}
+                  fallbackSrc='/images/monad/entry/default-dapps-gif.png' />
               </div>
             </div>
           </div>
@@ -293,8 +294,8 @@ const Home = () => {
               windowWidth >= 2560 ? 'scale-[1.3] hover:scale-[1.4]' : '',
               windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
               windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
-              windowWidth >= 1920 &&  windowWidth < 2560 ? 'hover:scale-[1.1]': '',
-              "hover:cursor-pointer z-[5] absolute left-[calc(150/14.4*var(--rem))] bottom-[calc(78/14.4*var(--rem))] w-[514px] h-[444px]", 
+              windowWidth >= 1920 && windowWidth < 2560 ? 'hover:scale-[1.1]' : '',
+              "hover:cursor-pointer z-[5] absolute left-[calc(150/14.4*var(--rem))] bottom-[calc(78/14.4*var(--rem))] w-[514px] h-[444px]",
               "bg-no-repeat bg-contain",
               "transition-all duration-200 ease-in-out cursor-pointer",
               "bg-[url(/images/monad/entry/tokens.svg)] hover:bg-[url(/images/monad/entry/tokens-hover.svg)]"
