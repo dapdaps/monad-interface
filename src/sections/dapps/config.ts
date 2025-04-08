@@ -64,11 +64,11 @@ export const ALL_DAPP_LIST: IDapp[] = [
     link: "/bridge/obiter",
     desc: "Orbiter Finance is a decentralized cross-rollup bridge that offers secure, low cost and almost instant transfer."
   },
-  {
-    name: "Timeswap",
-    icon: "/images/dapps/icons/timeswap.svg",
-    type: "lending",
-    link: "/lending/timeswap",
-    desc: "Timeswap is the first oracleless lending/borrowing protocol. Timeswap enables the creation of money markets for ANY ERC-20 tokens."
-  },
+  // {
+  //   name: "Timeswap",
+  //   icon: "/images/dapps/icons/timeswap.svg",
+  //   type: "lending",
+  //   link: "/lending/timeswap",
+  //   desc: "Timeswap is the first oracleless lending/borrowing protocol. Timeswap enables the creation of money markets for ANY ERC-20 tokens."
+  // },
 ];
