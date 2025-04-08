@@ -66,7 +66,7 @@ export const ALL_DAPP_LIST: IDapp[] = [
   },
   {
     name: "Timeswap",
-    icon: "/images/dapps/timeswap.svg",
+    icon: "/images/dapps/icons/timeswap.svg",
     type: "lending",
     link: "/lending/timeswap",
     desc: "Timeswap is the first oracleless lending/borrowing protocol. Timeswap enables the creation of money markets for ANY ERC-20 tokens."
