@@ -33,3 +33,18 @@ export const LENDING_ACTION_TYPE_MAP: Record<LendingActionType, LendingAction> =
     icon: '/images/lending/icon-down.png',
   },
 };
+
+export enum LendingAmountChangeType {
+  Input,
+  Balance,
+}
+
+export interface LendingAmountChangeParams {
+  type?: LendingAmountChangeType;
+  value: string;
+}
+
+export enum LendingOrderDirection {
+  Asc,
+  Desc,
+}

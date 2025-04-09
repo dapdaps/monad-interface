@@ -12,7 +12,12 @@ import ExpandIcon from '@/sections/lending/components/expand-icon';
 dayjs.extend(duration);
 
 export const timeswap = async (params: any) => {
-  const { currentMarket } = params;
+  const {
+    currentMarket,
+    marketsOrderKey,
+    marketsOrderDirection,
+    toggleOrderDirection,
+  } = params;
 
   return {
     columns: [
@@ -50,7 +55,12 @@ export const timeswap = async (params: any) => {
           return (
             <>
               <div>TVL</div>
-              <ColumnOrderIcon />
+              <ColumnOrderIcon
+                dataIndex="tvl"
+                orderKey={marketsOrderKey}
+                direction={marketsOrderDirection}
+                onClick={toggleOrderDirection}
+              />
             </>
           );
         },
@@ -67,7 +77,12 @@ export const timeswap = async (params: any) => {
           return (
             <>
               <div>APR</div>
-              <ColumnOrderIcon />
+              <ColumnOrderIcon
+                dataIndex="apr"
+                orderKey={marketsOrderKey}
+                direction={marketsOrderDirection}
+                onClick={toggleOrderDirection}
+              />
             </>
           );
         },
@@ -85,13 +100,18 @@ export const timeswap = async (params: any) => {
             <>
               <DescriptionTitle
                 descriptionClassName="w-[153px]"
-                className="!text-[#FFF] !font-Unbounded !text-[12px] !font-normal !leading-normal"
+                className="!text-[#A6A6DB] !text-[12px]"
                 description="Overcollateralisation at current spot prices"
                 descriptionPlacement={PopoverPlacement.TopRight}
               >
                 CDP
               </DescriptionTitle>
-              <ColumnOrderIcon />
+              <ColumnOrderIcon
+                dataIndex="cdp"
+                orderKey={marketsOrderKey}
+                direction={marketsOrderDirection}
+                onClick={toggleOrderDirection}
+              />
             </>
           );
         },
@@ -108,7 +128,12 @@ export const timeswap = async (params: any) => {
           return (
             <>
               <div>Maturity</div>
-              <ColumnOrderIcon />
+              <ColumnOrderIcon
+                dataIndex="maturity"
+                orderKey={marketsOrderKey}
+                direction={marketsOrderDirection}
+                onClick={toggleOrderDirection}
+              />
             </>
           );
         },

@@ -101,7 +101,12 @@ export const timeswap = (dAppConfig: any) => {
                   </div>
                 </>
               );
-            }
+            },
+            // 👇used for order
+            tvl: _pool?.tvl,
+            apr: _pool?.apr,
+            cdp: _pool?.cdp,
+            maturity: _pool?.maturity,
           };
         })
       );

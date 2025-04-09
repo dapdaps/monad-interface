@@ -9,6 +9,8 @@ const LendingActionCard = (props: any) => {
     className,
     cardClassName,
     children,
+    title,
+    market,
     ...restProps
   } = props;
 
@@ -16,28 +18,28 @@ const LendingActionCard = (props: any) => {
     <MonadBaseCard className={clsx("w-[432px]", cardClassName)}>
       <div className={clsx("px-[26px]", className)}>
         <div className="flex justify-between items-center">
-          <div className="text-white font-Unbounded text-[14px] font-[500] leading-normal">Lend</div>
+          <div className="text-white font-Unbounded text-[14px] font-[500] leading-normal">{title}</div>
           <button
             type="button"
             className="bg-[url('/images/lending/icon-close.svg')] bg-no-repeat bg-contain bg-center w-[15px] h-[15px]"
           />
         </div>
         <div className="flex justify-center items-center">
-          <LazyImage
-            src="/assets/tokens/wmon.png"
-            width={32}
-            height={32}
-            containerClassName="overflow-hidden rounded-full border border-[#3E3965]"
-          />
-          <LazyImage
-            src="/assets/tokens/wmon.png"
-            width={32}
-            height={32}
-            containerClassName="overflow-hidden rounded-full border border-[#3E3965] ml-[-7px]"
-          />
+          {
+            market?.tokens?.map((token: any, index: number) => (
+              <LazyImage
+                key={index}
+                src={token.icon}
+                alt={token.symbol}
+                width={32}
+                height={32}
+                containerClassName={clsx("overflow-hidden rounded-full border border-[#3E3965]", index > 0 && "ml-[-7px]")}
+              />
+            ))
+          }
         </div>
         <div className="mt-[10px] text-white font-[500] text-center text-[14px] leading-normal font-Unbounded">
-          WMONAD / shMON
+          {market?.tokens?.map((token: any) => token.symbol).join("/")}
         </div>
         <div className="mt-[25px]">
           {children}

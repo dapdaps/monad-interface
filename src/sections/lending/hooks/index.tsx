@@ -1,14 +1,13 @@
 import { Tab } from '@/sections/lending/components/tabs';
 import LendingMarket from '@/sections/lending/components/market';
 import LendingYours from '@/sections/lending/components/yours';
-import { useEffect, useState } from 'react';
-import { LendingAction } from '@/sections/lending/config';
+import { useEffect, useMemo, useState } from 'react';
+import { LendingAction, LendingOrderDirection } from '@/sections/lending/config';
 import { Column } from '@/sections/lending/column';
+import Big from 'big.js';
 
 export function useLending(props: any): Lending {
   const { dapp } = props;
-
-  console.log("DAppConfig: %o", dapp);
 
   const TABS: Record<string, Tab> = {
     MARKET: {
@@ -26,11 +25,24 @@ export function useLending(props: any): Lending {
   const [currentTab, setCurrentTab] = useState<Tab>(TABS.MARKET);
   const [currentMarket, setCurrentMarket] = useState();
   const [markets, setMarkets] = useState<any[]>([]);
+  const [marketsOrderKey, setMarketsOrderKey] = useState<string>(dapp.orderKey);
+  const [marketsOrderDirection, setMarketsOrderDirection] = useState<LendingOrderDirection>(LendingOrderDirection.Desc);
   const [marketColumns, setMarketColumns] = useState<Column[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingColumns, setLoadingColumns] = useState(true);
   const [actionVisible, setActionVisible] = useState(false);
   const [currentAction, setCurrentAction] = useState<LendingAction>();
+
+  const marketsList = useMemo(() => {
+    if (loading) return [];
+    return markets.slice().sort((a: any, b: any) => {
+      const valueA = new Big(a[marketsOrderKey] || 0);
+      const valueB = new Big(b[marketsOrderKey] || 0);
+      return marketsOrderDirection === LendingOrderDirection.Asc
+        ? valueA.minus(valueB).toNumber()
+        : valueB.minus(valueA).toNumber();
+    });
+  }, [markets, loading, marketsOrderKey, marketsOrderDirection]);
 
   const toggleCurrentTab = (tab: Tab) => {
     setCurrentTab(tab);
@@ -38,6 +50,24 @@ export function useLending(props: any): Lending {
 
   const toggleCurrentMarket = (market?: any) => {
     setCurrentMarket(market);
+  };
+
+  const toggleOrderDirection = (params?: { orderKey?: string; direction?: LendingOrderDirection }) => {
+    const { orderKey, direction } = params ?? {};
+
+    if (orderKey) {
+      setMarketsOrderKey(orderKey);
+      if (orderKey !== marketsOrderKey) {
+        setMarketsOrderDirection(LendingOrderDirection.Desc);
+        return;
+      }
+    }
+
+    setMarketsOrderDirection(
+      typeof direction === "undefined"
+        ? (marketsOrderDirection === LendingOrderDirection.Desc ? LendingOrderDirection.Asc : LendingOrderDirection.Desc)
+        : direction
+    );
   };
 
   const handleCurrentAction = (params?: { action?: LendingAction; visible?: boolean; market?: any; }) => {
@@ -57,22 +87,31 @@ export function useLending(props: any): Lending {
     setActionVisible(_visible);
   };
 
-  useEffect(() => {
+  const getMarkets = () => {
     setLoading(true);
     dapp.loadData(dapp).then((res: any) => {
       console.log(res);
       setMarkets(res);
       setLoading(false);
     });
+  };
+
+  useEffect(() => {
+    getMarkets();
   }, []);
 
   useEffect(() => {
     setLoadingColumns(true);
-    dapp.loadColumns({ currentMarket }).then((res: { columns: Column[]; }) => {
+    dapp.loadColumns({
+      currentMarket,
+      marketsOrderKey,
+      marketsOrderDirection,
+      toggleOrderDirection,
+    }).then((res: { columns: Column[]; }) => {
       setMarketColumns(res.columns);
       setLoadingColumns(false);
     });
-  }, [currentMarket]);
+  }, [currentMarket, marketsOrderKey, marketsOrderDirection]);
 
   return {
     config: dapp,
@@ -84,10 +123,14 @@ export function useLending(props: any): Lending {
     toggleCurrentTab,
     toggleCurrentMarket,
     currentAction,
-    markets,
+    markets: marketsList,
     loading,
     marketColumns,
     loadingColumns,
+    getMarkets,
+    marketsOrderKey,
+    marketsOrderDirection,
+    toggleOrderDirection,
   };
 }
 
@@ -105,4 +148,8 @@ export interface Lending {
   loading: boolean;
   marketColumns: Column[];
   loadingColumns: boolean;
+  getMarkets: () => void;
+  marketsOrderKey?: string;
+  marketsOrderDirection: LendingOrderDirection;
+  toggleOrderDirection: (params?: { orderKey?: string; direction?: LendingOrderDirection }) => void;
 }

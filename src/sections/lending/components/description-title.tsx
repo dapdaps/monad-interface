@@ -20,7 +20,8 @@ const DescriptionTitle = (props: any) => {
       )}
       trigger={PopoverTrigger.Hover}
       placement={descriptionPlacement || PopoverPlacement.TopLeft}
-      contentClassName="z-[101]"
+      contentClassName="!z-[101]"
+      triggerContainerClassName="inline-block"
       closeDelayDuration={0}
     >
       <button

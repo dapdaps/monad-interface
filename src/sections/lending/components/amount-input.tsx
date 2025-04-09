@@ -3,11 +3,15 @@ import InputNumber from '@/components/input-number';
 import { numberFormatter } from '@/utils/number-formatter';
 import Big from 'big.js';
 import clsx from 'clsx';
+import Loading from '@/components/loading';
+import { LendingAmountChangeType } from '@/sections/lending/config';
 
 const LendingAmountInput = (props: any) => {
   const {
     title,
     balance,
+    balanceLoading,
+    balanceToken,
     className,
     topClassName,
     inputContainerClassName,
@@ -28,16 +32,23 @@ const LendingAmountInput = (props: any) => {
             <button
               type="button"
               className="underline underline-offset-2 disabled:opacity-30 disabled:!cursor-not-allowed"
-              disabled={Big(balance || 0).lte(0)}
+              disabled={Big(balance || 0).lte(0) || balanceLoading}
               onClick={() => {
-                onChange(balance);
+                onChange({ type: LendingAmountChangeType.Balance, value: balance });
               }}
+              title={numberFormatter(balance, balanceToken?.decimals || token?.decimals || 18, true, { round: 0 })}
             >
-              {numberFormatter(balance, 6, true)}
+              {
+                balanceLoading ? (
+                  <div className="translate-y-0.5">
+                    <Loading size={12} />
+                  </div>
+                ) : numberFormatter(balance, 5, true, { round: 0 })
+              }
             </button>
           </div>
           <LazyImage
-            src="/assets/tokens/wmon.png"
+            src={balanceToken?.icon ?? token?.icon}
             width={16}
             height={16}
             containerClassName="overflow-hidden rounded-full border border-[#3E3965] shrink-0"
@@ -48,7 +59,9 @@ const LendingAmountInput = (props: any) => {
         <InputNumber
           placeholder="0.0"
           value={value}
-          onNumberChange={onChange}
+          onNumberChange={(val: string) => {
+            onChange({ type: LendingAmountChangeType.Input, value: val });
+          }}
           className="h-full border border-[#464368] rounded-l-[6px] bg-[rgba(255,255,255,0.05)] flex-1 px-[14px] text-[#FFF] font-Unbounded text-[12px] font-normal leading-normal focus:border-[#FFF] transition-[border] duration-150"
         />
         <div className="h-full border border-[#464368] border-l-[0] rounded-r-[6px] bg-[rgba(255,255,255,0.05)] shrink-0 flex items-center justify-center gap-[6px] px-[10px] text-[#FFF] font-Unbounded text-[12px] font-normal leading-normal">

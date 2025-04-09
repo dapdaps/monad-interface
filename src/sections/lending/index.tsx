@@ -41,13 +41,23 @@ const LendingView = (props: any) => {
         </DAppCard>
         <LendModal
           visible={lending.actionVisible && lending.currentAction?.value === LendingActionType.Lend}
-          onClose={lending.handleCurrentAction}
+          onClose={(params?: { isReload?: boolean; }) => {
+            lending.handleCurrentAction({ visible: false });
+            params?.isReload && lending.getMarkets();
+          }}
           market={lending.currentMarket}
+          config={lending.config}
+          action={lending.currentAction}
         />
         <BorrowModal
           visible={lending.actionVisible && lending.currentAction?.value === LendingActionType.Borrow}
-          onClose={lending.handleCurrentAction}
+          onClose={(params?: { isReload?: boolean; }) => {
+            lending.handleCurrentAction({ visible: false });
+            params?.isReload && lending.getMarkets();
+          }}
           market={lending.currentMarket}
+          config={lending.config}
+          action={lending.currentAction}
         />
       </div>
     </LendingContextProvider>

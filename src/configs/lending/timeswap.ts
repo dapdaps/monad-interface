@@ -15,6 +15,7 @@ const networks = {
     repayContract: "0x6A8f13aCA99A0D4897a4B32B93653d31F586c247",
     timeswapV2TokenNft: "0x57767bD10ddAeE70F382b0c20F78D9194948A08b",
     poolListApi: "https://api-prod.timeswap.io/api/v1/pool-list/",
+    orderKey: "tvl",
     markets: [
       // WMONAD/shMON
       {
@@ -25,6 +26,7 @@ const networks = {
         ],
         transitionPrice01: 1.02040816,
         transitionPrice10: 0.98,
+        duration: 60,
       },
       // USDT/WMONAD
       {
@@ -34,7 +36,8 @@ const networks = {
           monad.wmon,
         ],
         transitionPrice01: 0.66666666,
-        transitionPrice10: 1.50,
+        transitionPrice10: 1.5,
+        duration: 90,
       }
     ],
   }
