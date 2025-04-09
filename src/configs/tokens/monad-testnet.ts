@@ -59,6 +59,15 @@ export const monad: { [key: string]: Token } = {
     icon: "/assets/tokens/wmon.png",
     color: "#78350F"
   },
+  shmon: {
+    address: "0x3a98250F98Dd388C211206983453837C8365BDc1",
+    chainId: CHAIN_ID,
+    symbol: "shMON",
+    decimals: 18,
+    name: "ShMonad",
+    icon: "/assets/tokens/shmon.svg",
+    color: "#5146e6"
+  },
   usdc: {
     address: "0xf817257fed379853cDe0fa4F97AB987181B1E5Ea",
     chainId: CHAIN_ID,

@@ -13,6 +13,8 @@ import {
 } from "react";
 import { useSoundStore } from "@/stores/sound";
 import DappInfo from "./dapp-info";
+import ExternalLinksModal from "./external-links-modal";
+import useClickTracking from "@/hooks/use-click-tracking";
 
 export default memo(function DappsEntry({
   direction,
@@ -21,8 +23,10 @@ export default memo(function DappsEntry({
   direction: "left" | "right";
   dapps: IDapp[];
 }) {
+  const { handleReport } = useClickTracking()
   const soundStore = useSoundStore();
   const [hoverDapp, setHoverDapp] = useState<any>(null);
+  const [targetDapp, setTargetDapp] = useState<any>(null);
   const size = useSize(document.getElementsByTagName("body")[0]);
   const controls = useAnimation();
   const [clicked, setClicked] = useState(false);
@@ -52,7 +56,6 @@ export default memo(function DappsEntry({
 
   useEffect(() => {
     const sequence = async () => {
-      // await controls?.stop()
       controls.set({
         transform:
           direction === "right"
@@ -132,18 +135,17 @@ export default memo(function DappsEntry({
               key={dapp.name}
               onClick={() => {
                 setClicked(true);
-                if (!dapp?.link) {
-                  setTimeout(() => {
-                    setClicked(false);
-                  }, 300);
-                  return;
-                }
+                setTimeout(() => {
+                  setClicked(false);
+                }, 300);
                 if (
                   dapp.link.startsWith("https://") ||
                   dapp.link.startsWith("http://")
                 ) {
-                  window.open(dapp.link, "_blank");
+                  // window.open(dapp.link, "_blank");
+                  setTargetDapp(dapp)
                 } else {
+                  handleReport("1003-001", dapp.name)
                   router.push(dapp.link);
                 }
               }}
@@ -166,8 +168,15 @@ export default memo(function DappsEntry({
                 setHoverDapp(null);
               }}
             >
-              <div className="m-[32px_auto_15px] w-[56px]">
-                <img src={dapp?.icon} alt={dapp?.name} />
+              <div className="relative m-[32px_auto_15px] w-[56px] h-[56px]">
+                <img src={dapp?.icon} alt={dapp?.name} className="w-full h-full object-center object-contain" />
+                {
+                  dapp?.link?.indexOf("http") > -1 && (
+                    <div className="absolute right-[-6px] bottom-0 w-[16px]">
+                      <img src="/images/dapps/link.svg" alt="link" />
+                    </div>
+                  )
+                }
               </div>
               <div className="text-center text-black font-Unbounded text-[16px] font-semibold leading-[100%]">
                 {dapp?.name}
@@ -195,6 +204,16 @@ export default memo(function DappsEntry({
             }}
           />
         )}
+        {
+          targetDapp && (
+            <ExternalLinksModal
+              dapp={targetDapp}
+              onClose={() => {
+                setTargetDapp(null)
+              }}
+            />
+          )
+        }
         <div className="relative h-[30px]">
           {new Array(10).fill(null).map((_, index) => (
             <div className="absolute w-[413px]" style={{ left: index * 380 }}>
