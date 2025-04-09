@@ -41,7 +41,6 @@ function MovingForMobile1st() {
         }
       }}
       onUpdate={(latest) => {
-        console.log(latest, '<=======latest')
         if (Number(latest.x) <= 10 && directionRef.current !== "left") {
           setGifSrc("/images/monad/icon/role-3-back.gif"); 
           directionRef.current = "left";
