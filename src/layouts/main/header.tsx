@@ -39,7 +39,9 @@ const MainLayoutHeader = (props: Props) => {
               router.back();
             }}
           >
-            <img src="/images/header/back_button.svg" alt="back_button" />
+            {
+              isMobile ? <img className="mt-[10px] ml-[10px]" src="/images/header/back_button_mobile.svg" alt="back_button" /> : <img src="/images/header/back_button.svg" alt="back_button" />
+            }
           </div>
         )}
       </div>
