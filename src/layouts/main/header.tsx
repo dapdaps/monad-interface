@@ -1,24 +1,27 @@
 "use client";
 
 import ConnectWallet from "@/components/connect-wallet";
+import Sound from "@/components/sound";
+import useIsMobile from "@/hooks/use-isMobile";
 import { useProgressRouter } from "@/hooks/use-progress-router";
 import clsx from 'clsx';
 import { usePathname } from "next/navigation";
 
-const FIXED_HEADER_PATHNAME = [/^\/faucet$/];
+const FIXED_HEADER_PATHNAME = [/^\/faucet$/, /^\/$/];
 
 const MainLayoutHeader = (props: Props) => {
   const { className, style } = props;
   const router = useProgressRouter();
   const pathname = usePathname();
   const DONT_NEED_SHOW_BACK = ["/"];
+  const isMobile = useIsMobile()
   const goHome = () => {
     router.replace("/");
   };
   return (
     <header
       className={clsx(
-        "flex w-full h-[60px] stroke-black font-CherryBomb top-0 z-50 bear-header",
+        "flex w-full lg:h-[60px] md:h-[40px] stroke-black font-CherryBomb top-0 z-50 bear-header",
         FIXED_HEADER_PATHNAME.some((reg) => reg.test(pathname))
           ? "fixed"
           : "sticky",
@@ -42,13 +45,17 @@ const MainLayoutHeader = (props: Props) => {
       </div>
 
       <div className="flex-1 flex items-center justify-center">
-        <div className="w-[240px] h-[60px] bg-[url('/images/header/logo_bg.svg')] bg-contain">
+        <div className={clsx(`bg-contain bg-no-repeat bg-center`, 
+          isMobile ? "w-[160px] h-[40px] bg-[url('/images/mobile/logo.svg')]" : "w-[240px] h-[60px] bg-[url('/images/header/logo_bg.svg')]",
+        )}>
         </div>
       </div>
 
       <div className="min-w-[120px] flex justify-end">
-        <ConnectWallet />
-      </div>
+            {
+              isMobile ? <div className="w-[40px] h-[40px] flex items-center"><Sound /></div> : <ConnectWallet />
+            }
+          </div>
     </header>
   );
 };

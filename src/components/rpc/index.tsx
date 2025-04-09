@@ -7,8 +7,9 @@ import { renderPing, renderPingConfig } from "@/utils/rpc";
 import { useRpc } from "@/hooks/use-rpc";
 import { useRpcStore } from "@/stores/rpc";
 import useCustomAccount from "@/hooks/use-account";
+import useIsMobile from "@/hooks/use-isMobile";
 
-const StyledRpcs = styled.div<{ $color?: string }>`
+const StyledRpcs = styled.div<{ $color?: string; isMobile?: boolean }>`
   display: flex;
   align-items: center;
   gap: 5px;
@@ -25,29 +26,39 @@ const StyledRpcs = styled.div<{ $color?: string }>`
 
   backdrop-filter: blur(5px);
 
-  /* @media (max-width: 1394px) {
-    bottom: 60px;
-  } */
-
   &:hover {
     opacity: 1;
   }
 
-  &&::after {
-    content: "";
-    display: block;
-    width: 6px;
-    height: 6px;
-    flex-shrink: 0;
-    background: ${({ $color }) => $color || "#57DB64"};
-    border-radius: 50%;
-  }
+  ${({ isMobile, $color }) => isMobile ? `
+    &&::before {
+      content: "";
+      display: block;
+      width: 6px;
+      height: 6px;
+      flex-shrink: 0;
+      background: ${$color || "#57DB64"};
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+  ` : `
+    &&::after {
+      content: "";
+      display: block;
+      width: 6px;
+      height: 6px;
+      flex-shrink: 0;
+      background: ${$color || "#57DB64"};
+      border-radius: 50%;
+    }
+  `}
 `;
 
 const Rpc = ({ className }: { className?: string }) => {
   const rpcStore = useRpcStore();
   const { account } = useCustomAccount();
   const { ping, getCurrentPing } = useRpc();
+  const isMobile = useIsMobile()
 
   const handleRpc = () => {
     rpcStore.setVisible(true);
@@ -58,11 +69,12 @@ const Rpc = ({ className }: { className?: string }) => {
   }, []);
 
   return (
-    <div className="md:hidden">
+    <div>
       <StyledRpcs
         $color={renderPingConfig(ping).color}
         data-bp="1001-008"
         onClick={handleRpc}
+        isMobile={isMobile}
         className={className}
       >
         {renderPing(ping)}
