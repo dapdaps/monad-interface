@@ -47,6 +47,7 @@ const LendingActionCard = (props: any) => {
             chain={{
               chainId: DEFAULT_CHAIN_ID
             }}
+            className="!text-[14px] !font-[500] !h-[50px] disabled:!opacity-30 disabled:!cursor-not-allowed"
             {...restProps}
           />
         </div>

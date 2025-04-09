@@ -4,14 +4,15 @@ import useAccount from "@/hooks/use-account";
 import { useSwitchChain } from "wagmi";
 import { useAppKit } from "@reown/appkit/react";
 import { useEffect } from "react";
+import clsx from 'clsx';
 
-const BaseButton = ({ loading, onClick, children, disabled = false }: any) => {
+const BaseButton = ({ loading, onClick, children, disabled = false, className }: any) => {
   return (
     <button
       onClick={onClick}
       disabled={disabled}
       data-hover-sound
-      className="h-[60px] md:h-[46px] w-full text-white duration-500 hover:opacity-70 active:opacity-90 flex items-center justify-center border border-[#8B87FF] rounded-[10px] bg-[#8B87FF] text-[18px] md:text-[16px] font-[600] mt-[16px] cursor-pointer"
+      className={clsx("h-[60px] md:h-[46px] w-full text-white duration-500 hover:opacity-70 active:opacity-90 flex items-center justify-center border border-[#8B87FF] rounded-[10px] bg-[#8B87FF] text-[18px] md:text-[16px] font-[600] mt-[16px] cursor-pointer", className)}
     >
       {loading ? <Loading /> : children}
     </button>
@@ -28,7 +29,8 @@ export default function SubmitBtn({
   disabled,
   onClick,
   onRefresh,
-  updater
+  updater,
+  className
 }: any) {
   const { approve, approved, approving, checking, checkApproved } = useApprove({
     amount,
@@ -50,6 +52,7 @@ export default function SubmitBtn({
         onClick={() => {
           open();
         }}
+        className={className}
       >
         Connect wallet
       </BaseButton>
@@ -65,6 +68,7 @@ export default function SubmitBtn({
           });
         }}
         loading={switching}
+        className={className}
       >
         Switch Network
       </BaseButton>
@@ -72,21 +76,21 @@ export default function SubmitBtn({
   }
 
   if (checking || approving || loading) {
-    return <BaseButton loading={true} disabled />;
+    return <BaseButton loading={true} disabled className={className} />;
   }
 
   if (errorTips) {
-    return <BaseButton disabled>{errorTips}</BaseButton>;
+    return <BaseButton className={className} disabled>{errorTips}</BaseButton>;
   }
 
-  if (!spender) return <BaseButton disabled>Insufficient Liquidity</BaseButton>;
+  if (!spender) return <BaseButton className={className} disabled>Insufficient Liquidity</BaseButton>;
 
   if (!approved) {
-    return <BaseButton onClick={approve}>Approve {token?.symbol}</BaseButton>;
+    return <BaseButton className={className} onClick={approve}>Approve {token?.symbol}</BaseButton>;
   }
 
   return (
-    <BaseButton onClick={onClick} disabled={disabled}>
+    <BaseButton className={className} onClick={onClick} disabled={disabled}>
       Swap
     </BaseButton>
   );

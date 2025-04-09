@@ -9,6 +9,7 @@ import LendModal from '@/sections/lending/components/lend/modal';
 import LendingContextProvider from '@/sections/lending/context';
 import { useLending } from '@/sections/lending/hooks';
 import { LendingActionType } from '@/sections/lending/config';
+import BorrowModal from '@/sections/lending/components/borrow/modal';
 
 const TAB_WIDTH = 260;
 
@@ -40,6 +41,11 @@ const LendingView = (props: any) => {
         </DAppCard>
         <LendModal
           visible={lending.actionVisible && lending.currentAction?.value === LendingActionType.Lend}
+          onClose={lending.handleCurrentAction}
+          market={lending.currentMarket}
+        />
+        <BorrowModal
+          visible={lending.actionVisible && lending.currentAction?.value === LendingActionType.Borrow}
           onClose={lending.handleCurrentAction}
           market={lending.currentMarket}
         />

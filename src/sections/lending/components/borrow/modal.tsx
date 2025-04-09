@@ -1,6 +1,5 @@
 import Modal from '@/components/modal';
 import Index from './index';
-import MonadBaseCard from '@/components/card/monad-base-card';
 
 const BorrowModal = (props: any) => {
   const { visible, onClose, ...restProps } = props;
@@ -10,9 +9,7 @@ const BorrowModal = (props: any) => {
       open={visible}
       onClose={onClose}
     >
-      <MonadBaseCard className="w-[432px]">
-        <Index {...restProps} onClose={onClose} />
-      </MonadBaseCard>
+      <Index {...restProps} onClose={onClose} />
     </Modal>
   );
 };
