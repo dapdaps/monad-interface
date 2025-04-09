@@ -152,13 +152,13 @@ const ConnectWallet = ({ className }: { className?: string }) => {
     <>
       {connecting ? (
         <Skeleton
-          width={isMobile ? 102 : 125}
-          height={50}
+          width={isMobile ? 128 : 125}
+          height={isMobile ? 36 : 50}
           borderRadius={21}
           style={{ transform: "translateY(-4px)" }}
         />
       ) : isConnected ? (
-        <div className="flex items-center justify-center w-[165px] h-[43px] bg-[url('/images/header/user_bg.svg')] bg-no-repeat bg-center">
+        <div className="flex items-center justify-center w-[165px] lg:h-[43px] md:h-[36px] lg:bg-[url('/images/header/user_bg.svg')] bg-no-repeat bg-center">
           <User
             handleConnect={handleConnect}
             isMobile={isMobile}
@@ -177,20 +177,42 @@ const ConnectWallet = ({ className }: { className?: string }) => {
           />
         </div>
       ) : (
-        <div className="flex items-center justify-center h-[50px] w-[158px]  bg-[url('/images/header/right_bg.svg')] bg-left bg-contain">
-          <button
-            data-click-sound
-            data-bp="1001-001"
-            className="w-[122px] h-[34px] bg-[url('/images/header/button_bg.svg')] cursor-pointer font-Unbounded text-[12px] text-[#090909] font-semibold"
-            onClick={handleConnect}
-          >
-            Connect
-          </button>
-        </div>
+        <ConnectLayout onConnect={handleConnect} />
       )}
     </>
   );
 };
+
+const ConnectLayout = ({
+  onConnect
+}: {
+  onConnect: () => void;
+}) => {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return (
+      <div 
+        onClick={onConnect}
+        data-click-sound
+        data-bp="1001-001"
+        className="w-[128px] h-[36px] bg-no-repeat bg-[url(/images/mobile/connect.svg)]"></div>
+    )
+  }
+
+  return (
+    <div className="flex items-center justify-center h-[50px] w-[158px]  bg-[url('/images/header/right_bg.svg')] bg-left bg-contain">
+      <button
+        data-click-sound
+        data-bp="1001-001"
+        className="w-[122px] h-[34px] bg-[url('/images/header/button_bg.svg')] cursor-pointer font-Unbounded text-[12px] text-[#090909] font-semibold"
+        onClick={onConnect}
+      >
+        Connect
+      </button>
+  </div>
+  )
+}
 
 export default memo(ConnectWallet);
 
@@ -277,6 +299,31 @@ const User = (props: any) => {
     </div>
   );
 
+  const BalanceDisplay = ({ className = "" }) => (
+    <div className={`flex items-center gap-1 ${className}`}>
+      <img 
+        src='/images/monad.svg'
+        className="w-5 h-5" 
+        alt="" 
+      />
+      <div className="text-[12px] text-white font-[400] font-Unbounded">
+        {balanceShown || "-"}
+      </div>
+    </div>
+  );
+
+  const AvatarDisplay = ({ hasAvatar = false }) => (
+    hasAvatar ? (
+      <img
+        src={userInfo?.avatar}
+        alt=""
+        className="w-[28px] h-[28px] rounded-full"
+      />
+    ) : (
+      <div className="w-[28px] h-[28px] rounded-[50%] border-[2px] border-black bg-[conic-gradient(from_180deg_at_50%_50%,#00D1FF_0deg,#FF008A_360deg)]" />
+    )
+  );
+
   return (
     <motion.div
       className="relative flex justify-center items-center cursor-pointer transition-all duration-300"
@@ -293,31 +340,18 @@ const User = (props: any) => {
           zIndex: 100
         }}
       >
-        {address && userInfo?.avatar ? (
-          <div className="flex items-center w-full">
+      {isMobile ? (
             <div className="flex items-center gap-1">
-              <img src="/images/monad/monad.svg" className="w-5 h-5" alt="" />
-              <div className="text-[12px] text-white font-[400] font-Unbounded">
-                {balanceShown || "-"}
-              </div>
+              <AvatarDisplay hasAvatar={address && !!userInfo?.avatar} />
+              <div className="w-[1px] h-[23px] bg-[#A6A6DB] bg-opacity-30 mx-[14px]"></div>
+              <BalanceDisplay />
             </div>
-            <img
-              src={userInfo?.avatar}
-              alt=""
-              className="w-[28px] h-[28px] rounded-full"
-            />
-          </div>
-        ) : (
-          <div className="flex items-center w-full gap-4">
+          ) : (
             <div className="flex items-center gap-1">
-              <img src="/images/monad.svg" className="w-5 h-5" alt="" />
-              <div className="text-[12px] text-white font-[400] font-Unbounded">
-                {balanceShown || "-"}
-              </div>
+              <BalanceDisplay />
+              <AvatarDisplay hasAvatar={address && !!userInfo?.avatar} />
             </div>
-            <div className="w-[28px] h-[28px] rounded-[50%] border-[2px] border-black bg-[conic-gradient(from_180deg_at_50%_50%,#00D1FF_0deg,#FF008A_360deg)]" />
-          </div>
-        )}
+          )}
       </Popover>
     </motion.div>
   );
