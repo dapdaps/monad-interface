@@ -179,14 +179,14 @@ export default function Bridge() {
           <motion.div
             key={targetX}
             initial={{
-              bottom: '0',
+              bottom: '0', 
               left: '52%',
               scale: 2,
             }}
-            className='absolute w-[100px] h-[120px] bg-[url("/images/bridge/man.png")] bg-cover bg-right-bottom bg-no-repeat'
+            className='absolute w-[100px] h-[120px] bg-[url("/images/bridge/man.gif")] bg-cover bg-right-bottom bg-no-repeat'
             animate={{
               x: [0, targetX],
-              y: [0, targetY],
+              y: [0, targetY], 
               scale: [2, 0.01],
             }}
             transition={{
