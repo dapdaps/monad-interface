@@ -1,19 +1,14 @@
-import { DEFAULT_CHAIN_ID } from '@/configs';
 import { Tab } from '@/sections/lending/components/tabs';
 import LendingMarket from '@/sections/lending/components/market';
 import LendingYours from '@/sections/lending/components/yours';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { LendingAction } from '@/sections/lending/config';
+import { Column } from '@/sections/lending/column';
 
 export function useLending(props: any): Lending {
   const { dapp } = props;
 
-  const config = {
-    ...dapp.basic,
-    ...dapp.networks[DEFAULT_CHAIN_ID],
-  };
-
-  console.log("DAppConfig: %o", config);
+  console.log("DAppConfig: %o", dapp);
 
   const TABS: Record<string, Tab> = {
     MARKET: {
@@ -30,6 +25,10 @@ export function useLending(props: any): Lending {
 
   const [currentTab, setCurrentTab] = useState<Tab>(TABS.MARKET);
   const [currentMarket, setCurrentMarket] = useState();
+  const [markets, setMarkets] = useState<any[]>([]);
+  const [marketColumns, setMarketColumns] = useState<Column[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [loadingColumns, setLoadingColumns] = useState(true);
   const [actionVisible, setActionVisible] = useState(false);
   const [currentAction, setCurrentAction] = useState<LendingAction>();
 
@@ -58,8 +57,25 @@ export function useLending(props: any): Lending {
     setActionVisible(_visible);
   };
 
+  useEffect(() => {
+    setLoading(true);
+    dapp.loadData(dapp).then((res: any) => {
+      console.log(res);
+      setMarkets(res);
+      setLoading(false);
+    });
+  }, []);
+
+  useEffect(() => {
+    setLoadingColumns(true);
+    dapp.loadColumns({ currentMarket }).then((res: { columns: Column[]; }) => {
+      setMarketColumns(res.columns);
+      setLoadingColumns(false);
+    });
+  }, [currentMarket]);
+
   return {
-    config,
+    config: dapp,
     TABS,
     currentTab,
     currentMarket,
@@ -68,6 +84,10 @@ export function useLending(props: any): Lending {
     toggleCurrentTab,
     toggleCurrentMarket,
     currentAction,
+    markets,
+    loading,
+    marketColumns,
+    loadingColumns,
   };
 }
 
@@ -81,4 +101,8 @@ export interface Lending {
   currentAction?: LendingAction;
   actionVisible: boolean;
   handleCurrentAction: (params?: { action?: LendingAction; visible?: boolean; market?: any; }) => void;
+  markets: any[];
+  loading: boolean;
+  marketColumns: Column[];
+  loadingColumns: boolean;
 }

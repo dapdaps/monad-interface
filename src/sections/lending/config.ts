@@ -32,4 +32,4 @@ export const LENDING_ACTION_TYPE_MAP: Record<LendingActionType, LendingAction> =
     label: 'Repay',
     icon: '/images/lending/icon-down.png',
   },
-}
+};

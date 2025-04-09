@@ -1,14 +1,27 @@
 "use client";
 
 import dapps from '@/configs/lending';
-import { DEFAULT_LENDING_DAPP } from '@/configs';
+import { DEFAULT_CHAIN_ID, DEFAULT_LENDING_DAPP } from '@/configs';
 import { useParams } from 'next/navigation';
 import LendingView from '@/sections/lending';
+import { useMemo } from 'react';
+import dAppData from '@/sections/lending/data';
+import columns from '@/sections/lending/column';
+
+console.log(columns);
 
 const LendingDappPage = () => {
   const urlParams = useParams();
 
-  const dapp = dapps[urlParams.dapp as string] || dapps[DEFAULT_LENDING_DAPP];
+  const dapp = useMemo(() => {
+    const config = dapps[urlParams.dapp as string] || dapps[DEFAULT_LENDING_DAPP];
+    return {
+      ...config.basic,
+      ...config.networks[DEFAULT_CHAIN_ID],
+      loadData: dAppData[urlParams.dapp as string],
+      loadColumns: columns[urlParams.dapp as string],
+    };
+  }, [urlParams.dapp]);
 
   return <LendingView dapp={dapp} />;
 };

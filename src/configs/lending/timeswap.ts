@@ -23,6 +23,8 @@ const networks = {
           monad.wmon,
           monad.shmon,
         ],
+        transitionPrice01: 1.02040816,
+        transitionPrice10: 0.98,
       },
       // USDT/WMONAD
       {
@@ -31,6 +33,8 @@ const networks = {
           monad.usdt,
           monad.wmon,
         ],
+        transitionPrice01: 0.66666666,
+        transitionPrice10: 1.50,
       }
     ],
   }

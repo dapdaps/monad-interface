@@ -7,7 +7,8 @@ const DescriptionTitle = (props: any) => {
     className,
     descriptionClassName,
     children,
-    description
+    description,
+    descriptionPlacement,
   } = props;
 
   return (
@@ -18,7 +19,7 @@ const DescriptionTitle = (props: any) => {
         </PopoverCard>
       )}
       trigger={PopoverTrigger.Hover}
-      placement={PopoverPlacement.TopLeft}
+      placement={descriptionPlacement || PopoverPlacement.TopLeft}
       contentClassName="z-[101]"
       closeDelayDuration={0}
     >
