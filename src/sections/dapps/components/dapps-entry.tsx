@@ -150,14 +150,15 @@ export default memo(function DappsEntry({
                 key={dapp.name}
                 {...(isMobile ? {
                   onClick() {
-                    if (
-                      dapp.link.startsWith("https://") ||
-                      dapp.link.startsWith("http://")
-                    ) {
-                      setTargetDapp(dapp)
-                    } else {
-                      setHoverDapp(dapp)
-                    }
+                    // if (
+                    //   dapp.link.startsWith("https://") ||
+                    //   dapp.link.startsWith("http://")
+                    // ) {
+                    //   setTargetDapp(dapp)
+                    // } else {
+                    //   setHoverDapp(dapp)
+                    // }
+                    setHoverDapp(dapp)
                   }
                 } : {
                   onClick() {
@@ -181,11 +182,10 @@ export default memo(function DappsEntry({
                     while (ele.getAttribute("data-name") !== dapp.name) {
                       ele = ele.parentNode;
                     }
-                    const left =
-                      ele.offsetLeft + 180 + 352 < window.innerWidth - 5
-                        ? ele.offsetLeft + 180
-                        : window.innerWidth - 352;
-                    setHoverDapp({ ...dapp, left });
+                    
+                    const rect = ele.getBoundingClientRect()
+                    const left = rect.left + 180 + 352 < window.innerWidth - 5 ? rect.left + 180 : window.innerWidth - 352
+                    setHoverDapp({ ...dapp, left, top: rect.top });
                   },
                   onMouseLeave() {
                     setHoverDapp(null);
@@ -214,24 +214,6 @@ export default memo(function DappsEntry({
               </div>
             ))}
           </motion.div>
-          {hoverDapp?.name && (
-            <DappInfo
-              name={hoverDapp.name}
-              category={hoverDapp.type}
-              icon={hoverDapp.icon}
-              left={hoverDapp.left}
-              desc={hoverDapp.desc}
-              tvl=""
-              volume24h=""
-              liquidity=""
-              onMouseEnter={() => {
-                setHoverDapp(hoverDapp);
-              }}
-              onMouseLeave={() => {
-                setHoverDapp(null)
-              }}
-            />
-          )}
           <div className="relative h-[30px]">
             {new Array(10).fill(null).map((_, index) => (
               <div className="absolute md:w-[285px] w-[413px]" style={{ left: index * (isMobile ? 256 : 380) }}>
@@ -242,6 +224,26 @@ export default memo(function DappsEntry({
         </div>
       </div>
 
+      {hoverDapp?.name && (
+        <DappInfo
+          name={hoverDapp.name}
+          category={hoverDapp.type}
+          icon={hoverDapp.icon}
+          left={hoverDapp.left}
+          top={hoverDapp.top}
+          desc={hoverDapp.desc}
+          tvl=""
+          volume24h=""
+          liquidity=""
+          link={hoverDapp.link}
+          onMouseEnter={() => {
+            setHoverDapp(hoverDapp);
+          }}
+          onMouseLeave={() => {
+            setHoverDapp(null)
+          }}
+        />
+      )}
       {
         targetDapp && (
           <ExternalLinksModal

@@ -1,13 +1,7 @@
 import { IDapp } from "@/types";
 
 export const ALL_DAPP_LIST: IDapp[] = [
-  {
-    name: "Kuru",
-    icon: "/images/dapps/icons/kuru.svg",
-    type: "perps",
-    link: "https://www.kuru.io/markets",
-    desc: "Find, trade and launch your coins on a fully on-chain CLOB. Built for traders, powered by Monad."
-  },
+
   {
     name: "iZumi",
     icon: "/images/dapps/icons/iZumi.svg",
@@ -30,6 +24,27 @@ export const ALL_DAPP_LIST: IDapp[] = [
     desc: "A leading DEX aggregator on 30+ chains, with its swap API powering 180+ projects like MetaMask, Rabby, Li.Fi, and more."
   },
   {
+    name: "LFJ",
+    icon: "/images/dapps/icons/LFJ.svg",
+    type: "dex",
+    link: "/dex/lfj",
+    desc: "The onchain trading platform built for winners. One-stop DEX, Aggregator & Screener for Monad. Discover & buy every token at the best prices."
+  },
+  {
+    name: "Orbiter",
+    icon: "https://assets.dapdap.net/images/100-obiter.png",
+    type: "bridge",
+    link: "/bridge/obiter",
+    desc: "Orbiter Finance is a decentralized cross-rollup bridge that offers secure, low cost and almost instant transfer."
+  },
+  {
+    name: "Kuru",
+    icon: "/images/dapps/icons/kuru.svg",
+    type: "perps",
+    link: "https://www.kuru.io/markets",
+    desc: "Find, trade and launch your coins on a fully on-chain CLOB. Built for traders, powered by Monad."
+  },
+  {
     name: "Timeswap",
     icon: "/images/dapps/icons/timeswap.svg",
     type: "dex",
@@ -50,20 +65,7 @@ export const ALL_DAPP_LIST: IDapp[] = [
     link: "https://magiceden.io/monad-testnet",
     desc: "Magic Eden brings all chains and all assets together in one easy-to-use platform."
   },
-  {
-    name: "LFJ",
-    icon: "/images/dapps/icons/LFJ.svg",
-    type: "dex",
-    link: "/dex/lfj",
-    desc: "The onchain trading platform built for winners. One-stop DEX, Aggregator & Screener for Monad. Discover & buy every token at the best prices."
-  },
-  {
-    name: "Orbiter",
-    icon: "https://assets.dapdap.net/images/100-obiter.png",
-    type: "bridge",
-    link: "/bridge/obiter",
-    desc: "Orbiter Finance is a decentralized cross-rollup bridge that offers secure, low cost and almost instant transfer."
-  },
+
   // {
   //   name: "Timeswap",
   //   icon: "/images/dapps/icons/timeswap.svg",

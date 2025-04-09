@@ -15,7 +15,6 @@ export default memo(function externalLinksModal({
     <Modal
       open={dapp}
       onClose={onClose}
-      className="pointer-events-auto"
       closeIcon={(
         <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9" viewBox="0 0 10 9" fill="none">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M2 0H0L4 4.5L0 9H2L5 5.625L8 9H10L6 4.5L10 0H8L5 3.375L2 0Z" fill="#A6A6DB" />
@@ -29,9 +28,9 @@ export default memo(function externalLinksModal({
         <div className="text-white font-Unbounded text-[20px] font-medium leading-[100%]">External Links</div>
         <div className="flex items-center gap-[10px] m-[18px_0_14px]">
           <div className="w-[30px]">
-            <img src="/images/dapps/magic_eden.png" alt="magic_eden" />
+            <img src={dapp?.icon} alt={dapp?.name} />
           </div>
-          <div className="text-white font-Unbounded text-[16px] leading-[100%]">Magic Eden</div>
+          <div className="text-white font-Unbounded text-[16px] leading-[100%]">{dapp?.name}</div>
         </div>
         <div className="text-center text-white font-Unbounded text-[12px] leading-[150%] opacity-60">The app you selected needs to be<br />used on its official website.<br />We will redirect you to an external<br />link shortly.</div>
         <div

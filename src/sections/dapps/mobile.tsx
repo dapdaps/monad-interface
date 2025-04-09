@@ -22,7 +22,7 @@ export default memo(function Mobile() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 w-[390px] h-[115px] bg-[url('/images/dapps/mobile/operation_panel.svg')] bg-center bg-contain bg-no-repeat">
+      <div className="absolute bottom-[50px] left-1/2 -translate-x-1/2 z-20 w-[390px] h-[115px] bg-[url('/images/dapps/mobile/operation_panel.svg')] bg-center bg-contain bg-no-repeat">
         <div className="absolute left-[43px] top-[20px] flex items-center gap-[10px]">
           <RectangularButton
             type={1}
