@@ -15,6 +15,7 @@ export default memo(function externalLinksModal({
     <Modal
       open={dapp}
       onClose={onClose}
+      className="pointer-events-auto"
       closeIcon={(
         <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9" viewBox="0 0 10 9" fill="none">
           <path fill-rule="evenodd" clip-rule="evenodd" d="M2 0H0L4 4.5L0 9H2L5 5.625L8 9H10L6 4.5L10 0H8L5 3.375L2 0Z" fill="#A6A6DB" />
