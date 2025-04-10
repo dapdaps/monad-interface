@@ -68,4 +68,46 @@ export const ALL_DAPP_LIST: IDapp[] = [
     link: "https://magiceden.io/monad-testnet",
     desc: "Magic Eden brings all chains and all assets together in one easy-to-use platform."
   },
+  {
+    name: "WooFi",
+    icon: "/images/dapps/icons/WooFi.jpg",
+    type: "perps",
+    link: "https://testnet-pro.woofi.com/en/trade/ETH_PERP",
+    desc: "Hybrid omnichain perpetual futures orderbook with unparalleled execution and self-custody."
+  },
+  {
+    name: "Kizzy",
+    icon: "/images/dapps/icons/Kizzy.jpg",
+    type: "betting",
+    link: "https://kizzy.io/",
+    desc: "Kizzy is a social media betting app. Bet on how your favorite influencers and celebrities will perform on Twitter and YouTube."
+  },
+  {
+    name: "RareBetSports",
+    icon: "/images/dapps/icons/RareBetSports.jpg",
+    type: "betting",
+    link: "https://rarelink.rarebetsports.io/",
+    desc: "Building consumer sports applications powered by the RBS Oracle. Play RareLink and win up to 100x your crypto."
+  },
+  {
+    name: "LEVR",
+    icon: "/images/dapps/icons/levr.svg",
+    type: "betting",
+    link: "https://app.levr.bet/",
+    desc: "Leverage Sports Betting with Fully Liquid Positions."
+  },
+  {
+    name: "LootGo",
+    icon: "/images/dapps/icons/LootGo.jpg",
+    type: "gaming",
+    link: "https://www.lootgo.app/",
+    desc: "LootGO is a free walk-to-earn mobile app turning your daily life into a treasure hunt for next 100x memecoins."
+  },
+  {
+    name: "OpenSea",
+    icon: "/images/dapps/icons/OpenSea.jpg",
+    type: "nft",
+    link: "https://testnets.opensea.io/",
+    desc: "The world’s first and largest digital marketplace for crypto collectibles and non-fungible tokens (NFTs). Buy, sell, and discover exclusive digital items."
+  },
 ];
