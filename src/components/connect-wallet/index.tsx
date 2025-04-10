@@ -179,6 +179,24 @@ const ConnectWallet = ({ className }: { className?: string }) => {
       ) : (
         <ConnectLayout onConnect={handleConnect} />
       )}
+      <MobileUser
+        visible={mobileUserInfoVisible}
+        setMobileUserInfoVisible={setMobileUserInfoVisible}
+        onClose={() => {
+          setMobileUserInfoVisible(false);
+        }}
+        walletInfo={walletInfo}
+        addressShown={addressShown}
+        address={address}
+        tokenLogoShown={tokenLogoShown}
+        balanceShown={balanceShown}
+        tokenSymbolShown={tokenSymbolShown}
+        chainId={chainId}
+        handleDisconnect={() => void 0}
+        handleCopy={handleCopy}
+        userInfo={userInfo}
+        currentChainInfo={currentChainInfo}
+      />
     </>
   );
 };
