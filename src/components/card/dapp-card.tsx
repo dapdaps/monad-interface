@@ -1,20 +1,40 @@
 import MonadBaseCard from '@/components/card/monad-base-card';
 import clsx from 'clsx';
+import useIsMobile from '@/hooks/use-isMobile';
 
 const DAppCard = (props: any) => {
-  const { icon, iconClassName, children, ...restProps } = props;
+  const { icon, iconClassName, children, config, ...restProps } = props;
+
+  const isMobile = useIsMobile();
 
   return (
-    <MonadBaseCard {...restProps}>
-      {
-        icon && (
-          <DAppName className={clsx("absolute top-[-52px] left-1/2 -translate-x-1/2", iconClassName)}>
-            {icon}
-          </DAppName>
-        )
-      }
-      {children}
-    </MonadBaseCard>
+    isMobile ? (
+      <div className="w-full bg-[#0E0F29]">
+        <div className="flex items-center justify-start gap-[7px] mt-[39px] px-[10px]">
+          {icon}
+          <button
+            type="button"
+            className="flex justify-center items-center h-[19px] flex-shrink-0 rounded-[4px] bg-[rgba(62,52,124,0.6)] backdrop-blur-[5px] text-[#A5FFFD] text-center font-[Unbounded] text-[12px] font-normal leading-[100%] p-[3px_4px_4px_5px]"
+          >
+            {config.type}
+          </button>
+        </div>
+        <div className="text-[#FFF] font-Unbounded text-[14px] font-normal leading-normal mt-[23px]">
+          {children}
+        </div>
+      </div>
+    ) : (
+      <MonadBaseCard {...restProps}>
+        {
+          icon && (
+            <DAppName className={clsx("absolute top-[-52px] left-1/2 -translate-x-1/2", iconClassName)}>
+              {icon}
+            </DAppName>
+          )
+        }
+        {children}
+      </MonadBaseCard>
+    )
   );
 };
 

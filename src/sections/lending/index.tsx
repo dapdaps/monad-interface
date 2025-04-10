@@ -7,23 +7,26 @@ import { LendingActionType } from '@/sections/lending/config';
 import BorrowModal from '@/sections/lending/components/borrow/modal';
 import WithdrawModal from '@/sections/lending/components/withdraw/modal';
 import RepayModal from '@/sections/lending/components/repay/modal';
+import useIsMobile from '@/hooks/use-isMobile';
 
 const TAB_WIDTH = 260;
 
 const LendingView = (props: any) => {
   const lending = useLending(props);
+  const isMobile = useIsMobile();
 
   return (
     <LendingContextProvider value={lending}>
-      <div className="">
+      <div className="w-full">
         <DAppCard
           icon={(
             <img
-              src="/images/lending/dapps/timeswap.svg"
+              src={isMobile ? "/images/lending/dapps/timeswap-mobile.svg" : "/images/lending/dapps/timeswap.svg"}
               alt=""
               className="w-[129px] h-[26px] object-center object-contain"
             />
           )}
+          config={lending.config}
           className="w-[920px] mx-auto mt-[78px]"
           contentClassName="py-[14px]"
           iconClassName="w-[235px] mx-auto"

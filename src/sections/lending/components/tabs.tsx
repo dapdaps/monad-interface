@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMemo } from 'react';
 import clsx from 'clsx';
+import useIsMobile from '@/hooks/use-isMobile';
 
 const LendingTabs = (props: any) => {
   const {
@@ -12,6 +13,7 @@ const LendingTabs = (props: any) => {
     headerClassName,
     bodyClassName
   } = props;
+  const isMobile = useIsMobile();
 
   const currentTabIndex = useMemo(() => {
     let idx = tabs.findIndex((tab: Tab) => tab.value === currentTab.value);
@@ -24,7 +26,7 @@ const LendingTabs = (props: any) => {
       <div
         className={clsx("flex items-center justify-center mx-auto relative", headerClassName)}
         style={{
-          width: tabWidth * tabs.length,
+          width: isMobile ? "100%" : tabWidth * tabs.length,
         }}
       >
         {
@@ -33,7 +35,7 @@ const LendingTabs = (props: any) => {
               key={tab.value}
               className="w-[260px] py-[10px] cursor-pointer shrink-0 justify-center flex items-center text-center text-[#FFF] font-Unbounded text-[16px] font-normal leading-normal"
               style={{
-                width: tabWidth,
+                width: isMobile ? `${100 / tabs.length}%` : tabWidth,
               }}
               onClick={() => onTab(tab)}
             >
@@ -44,7 +46,7 @@ const LendingTabs = (props: any) => {
         <motion.div
           className="h-[3px] bg-[#ACACE2] absolute bottom-0 left-0"
           style={{
-            width: tabWidth,
+            width: isMobile ? `${100 / tabs.length}%` : tabWidth,
           }}
           animate={{
             x: currentTabIndex * 100 + "%",
