@@ -142,7 +142,7 @@ const Mobile = () => {
             )}
           >
             <div className="relative w-full h-full">
-              <div className="absolute left-1/2 -translate-x-1/2 top-[-70px] scale-[1.2]">
+              <div className="absolute left-1/2 -translate-x-1/2 top-[-70px] scale-[1.3]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <img src="/images/monad/icon/dApps.svg" alt="" />
                   <motion.img
@@ -186,7 +186,7 @@ const Mobile = () => {
                         className="flex-shrink-0 w-[51px] h-[60px] rounded-[10px] border border-black bg-[#A5FFFD] flex flex-col gap-[5px] items-center justify-center"
                       >
                         <img
-                          className="w-[33px] h-[32px]"
+                          className="w-[33px] h-[32px] rounded-[10px]"
                           src={item.icon}
                           alt={item.name}
                         />
@@ -208,6 +208,45 @@ const Mobile = () => {
               </div>
             </div>
           </div>
+          {/* yapper */}
+          <div
+            data-bp="1001-005"
+            className={clsx(
+              "z-[4] w-[378px] h-[290px] absolute bottom-[18%] left-[-36%] scale-[0.68]",
+              "bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper-lock.svg)]",
+            )}
+          >
+            <div className="relative w-full h-full">
+              {/* <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
+                <div className="w-full flex flex-col gap-[2px] items-center justify-center">
+                  <div className="w-full flex items-center justify-center">
+                    <img src="/images/monad/icon/yapper.svg" alt="" />
+                    <div className="text-[12px] font-Unbounded font-[500] leading-[90%] text-[#6D7EA5]">
+                      soon
+                    </div>
+                  </div>
+                  <img
+                    src="/images/monad/icon/disabled-point.svg"
+                    className="w-[38px] h-[38px]"
+                    alt=""
+                  />
+                </div>
+              </div> */}
+              {/* <div className="absolute w-[244px] h-[223px] left-1/2 -translate-x-1/2 top-[-38px] ml-[20px]">
+                <motion.div
+                  animate={{ rotate: [-10, 10] }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    ease: "easeInOut",
+                    transformOrigin: "center bottom",
+                  }}
+                  className="relative w-full h-full bg-no-repeat bg-contain bg-[url(/images/monad/entry/radar.svg)]"
+                ></motion.div>
+              </div>*/}
+            </div> 
+          </div> 
         </div>
       </div>
     </div>

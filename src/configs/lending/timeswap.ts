@@ -3,6 +3,7 @@ import { monadTestnet } from '@reown/appkit/networks';
 
 const basic = {
   name: 'Timeswap',
+  type: 'Lending',
   icon: '/images/dapps/icons/timeswap.svg',
   path: '/lending/timeswap',
 };

@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import Loading from '@/components/loading';
 import { AnimatePresence, motion } from 'framer-motion';
 import Empty from '@/components/empty';
+import useIsMobile from '@/hooks/use-isMobile';
 
 function ExpandTable<Item = any>(props: Props<Item>) {
   const {
@@ -14,6 +15,8 @@ function ExpandTable<Item = any>(props: Props<Item>) {
     onCurrentChange,
     expand,
   } = props;
+
+  const isMobile = useIsMobile();
 
   return (
     <div className={clsx("", className)}>

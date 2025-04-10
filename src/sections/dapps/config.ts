@@ -90,13 +90,6 @@ export const ALL_DAPP_LIST: IDapp[] = [
     desc: "Building consumer sports applications powered by the RBS Oracle. Play RareLink and win up to 100x your crypto."
   },
   {
-    name: "LEVR",
-    icon: "/images/dapps/icons/levr.svg",
-    type: "Betting",
-    link: "https://app.levr.bet/",
-    desc: "Leverage Sports Betting with Fully Liquid Positions."
-  },
-  {
     name: "LootGo",
     icon: "/images/dapps/icons/LootGo.jpg",
     type: "Gaming",
