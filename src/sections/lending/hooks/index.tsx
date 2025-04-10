@@ -180,7 +180,10 @@ export function useLending(props: any): Lending {
   };
 
   const getUserData = () => {
-    if (!account || !markets?.length || !dapp.loadUserData) return;
+    if (!account || !markets?.length || !dapp.loadUserData) {
+      setUserData({});
+      return;
+    }
     setUserDataLoading(true);
     dapp.loadUserData({
       config: dapp,
@@ -199,7 +202,7 @@ export function useLending(props: any): Lending {
 
   useEffect(() => {
     getUserData();
-  }, [account, markets]);
+  }, [account, provider, markets]);
 
   useEffect(() => {
     setLoadingColumns(true);
