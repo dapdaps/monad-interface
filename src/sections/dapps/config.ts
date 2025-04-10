@@ -43,7 +43,7 @@ export const ALL_DAPP_LIST: IDapp[] = [
   {
     name: "Kuru",
     icon: "/images/dapps/icons/kuru.svg",
-    type: "perps",
+    type: "CLOB",
     link: "https://www.kuru.io/markets",
     desc: "Find, trade and launch your coins on a fully on-chain CLOB. Built for traders, powered by Monad."
   },
