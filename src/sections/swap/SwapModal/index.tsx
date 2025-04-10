@@ -32,19 +32,21 @@ export default function SwapModal({
       open={show}
       onClose={onClose}
       closeIconClassName="md:hidden top-[-10px] right-[-10px]"
-      innerClassName="bg-[#2B294A] p-[30px]"
+      innerClassName="md:bg-transparent md:w-full bg-[#2B294A] p-[30px]"
     >
-      <Content
-        dapp={{
-          name: templates,
-          tokens: { [DEFAULT_CHAIN_ID]: tokens },
-          defaultInputCurrency,
-          defaultOutputCurrency
-        }}
-        outputCurrencyReadonly={outputCurrencyReadonly}
-        showSetting={true}
-        {...rest}
-      />
+      <div className="md:px-[10px]">
+        <Content
+          dapp={{
+            name: templates,
+            tokens: { [DEFAULT_CHAIN_ID]: tokens },
+            defaultInputCurrency,
+            defaultOutputCurrency
+          }}
+          outputCurrencyReadonly={outputCurrencyReadonly}
+          showSetting={true}
+          {...rest}
+        />
+      </div>
     </Modal>
   );
 }

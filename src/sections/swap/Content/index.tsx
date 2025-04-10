@@ -130,6 +130,7 @@ export default function Swap({
     <>
       <Header
         showSetting={showSetting}
+        from={from}
         dapp={dapp}
         style={{ justifyContent: "space-between" }}
         title={

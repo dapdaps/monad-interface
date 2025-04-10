@@ -23,7 +23,8 @@ export default function Header({
   title,
   loading,
   onQuoter,
-  dapp
+  dapp,
+  from
 }: any) {
 
   const isMobile = useIsMobile()
@@ -34,12 +35,12 @@ export default function Header({
       style={style}
     >
       {
-        isMobile ? (
+        isMobile && from !== "marketplace" ? (
           <MobileHeader dapp={dapp} />
         ) : (
           <div className="text-[18px] font-bold	md:block text-white">
-          {title || "Swap"}
-        </div>
+            {title || "Swap"}
+          </div>
         )
       }
       <div className="flex items-center gap-[15px]">
