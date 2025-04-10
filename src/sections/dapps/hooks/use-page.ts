@@ -14,7 +14,8 @@ export default function usePage() {
       (dapp: IDapp) => {
         if (activeType === "all" ||
           activeType === "instation" && dapp.link.indexOf("http") === -1 ||
-          activeType === "outlink" && dapp.link.indexOf("http") > -1
+          activeType === "outlink" && dapp.link.indexOf("http") > -1 ||
+          activeType === "other" && !["dex", "betting", "nft", "lending"].includes(dapp.type)
         ) {
           return true
         }
@@ -55,7 +56,7 @@ export default function usePage() {
     console.log("array: %o", array);
     console.log("arrayIndex: %o", arrayIndex);
     console.log("maxLength: %o", maxLength);
-    return array;
+    return array.filter((it: any) => !!it && it.length > 0);
   }, [activeType, maxLength]);
 
   function handleClickButton(type: any) {
