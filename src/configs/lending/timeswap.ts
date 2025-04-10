@@ -39,6 +39,7 @@ const networks = {
         transitionPrice01: 0.66666666,
         transitionPrice10: 1.5,
         duration: 90,
+        disabledLend: true,
       },
       // shMON/WBTC
       {

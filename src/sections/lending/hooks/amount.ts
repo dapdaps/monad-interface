@@ -66,6 +66,11 @@ export function useAmount(props: any) {
 
   const errorTips = useMemo(() => {
     if ([LendingActionType.Lend, LendingActionType.Borrow].includes(action.value)) {
+      if (action.value === LendingActionType.Lend) {
+        if (config.name === "Timeswap" && market?.disabledLend) {
+          return "APR is zero";
+        }
+      }
       if (action.value === LendingActionType.Borrow) {
         if (config.name === "Timeswap") {
           if (token0BalanceLoading || token1BalanceLoading) {

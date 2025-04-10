@@ -1,6 +1,7 @@
 import DescriptionTitle from '@/sections/lending/components/description-title';
 import { numberFormatter } from '@/utils/number-formatter';
 import Big from 'big.js';
+import LendingWarning from '@/sections/lending/components/warning';
 
 const TimeSwap = (props: any) => {
   const {
@@ -51,6 +52,13 @@ const TimeSwap = (props: any) => {
           </div>
         </div>
       </div>
+      {
+        market?.disabledLend && (
+          <LendingWarning className="mt-[15px]">
+            Lending will <strong>not accrue any interest</strong> due to the low pool APR. Consider lending to other pools.
+          </LendingWarning>
+        )
+      }
     </>
   );
 };

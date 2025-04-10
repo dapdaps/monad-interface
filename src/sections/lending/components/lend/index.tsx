@@ -37,7 +37,7 @@ const LendForm = (props: any) => {
       onClick={() => {
         onLend();
       }}
-      disabled={pending}
+      disabled={pending || market?.disabledLend}
       onRefresh={() => {}}
       updater={`button-${updater}`}
       text="Lend"
