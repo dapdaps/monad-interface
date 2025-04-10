@@ -15,7 +15,7 @@ export default function usePage() {
         if (activeType === "all" ||
           activeType === "instation" && dapp.link.indexOf("http") === -1 ||
           activeType === "outlink" && dapp.link.indexOf("http") > -1 ||
-          activeType === "other" && !["dex", "betting", "nft", "lending"].includes(dapp.type)
+          activeType === "other" && !["Dex", "Betting", "NFT", "Lending"].includes(dapp.type)
         ) {
           return true
         }
