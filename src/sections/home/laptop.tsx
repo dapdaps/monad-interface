@@ -116,10 +116,10 @@ const Home = () => {
             )}>
           </div>
           {/* yapper */}
-          {/* <div
+          <div
             data-bp="1001-005"
             className={clsx(
-              "z-[4] w-[378px] h-[290px] absolute right-[calc(280/14.4*var(--rem))]",
+              "z-[4] w-[378px] h-[290px] absolute -top-[calc(40/14.4*var(--rem))] right-[calc(260/14.4*var(--rem))]",
               "bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper-lock.svg)]",
               windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
               windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
@@ -128,7 +128,7 @@ const Home = () => {
             )}
           >
             <div className="relative w-full h-full">
-              <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
+              {/* <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <div className="w-full flex items-center justify-center">
                     <img src="/images/monad/icon/yapper.svg" alt="" />
@@ -142,7 +142,7 @@ const Home = () => {
                     alt=""
                   />
                 </div>
-              </div>
+              </div> */}
               {/* <div className="absolute w-[244px] h-[223px] left-1/2 -translate-x-1/2 top-[-38px] ml-[20px]">
                 <motion.div
                   animate={{ rotate: [-10, 10] }}
@@ -155,9 +155,9 @@ const Home = () => {
                   }}
                   className="relative w-full h-full bg-no-repeat bg-contain bg-[url(/images/monad/entry/radar.svg)]"
                 ></motion.div>
-              </div>
-            </div>
-          </div> */}
+              </div>*/}
+            </div> 
+          </div> 
           {/* Faucet */}
           <div
             data-bp="1001-004"
