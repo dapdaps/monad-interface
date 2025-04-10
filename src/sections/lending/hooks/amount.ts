@@ -43,18 +43,6 @@ export function useAmount(props: any) {
       }
       return [token0Balance, token0BalanceLoading, token0];
     }
-    if (action.value === LendingActionType.Withdraw) {
-      if (config.name === "Timeswap") {
-        return [
-          market?.balance,
-          false,
-          {
-            address: config?.timeswapV2TokenNft,
-            decimals: 18,
-          }
-        ];
-      }
-    }
     if (action.value === LendingActionType.Repay) {
       if (config.name === "Timeswap") {
         return [

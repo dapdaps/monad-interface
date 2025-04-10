@@ -3,6 +3,7 @@ export enum LendingActionType {
   Withdraw = 'withdraw',
   Borrow = 'borrow',
   Repay = 'repay',
+  Claim = 'claim',
 }
 
 export interface LendingAction {
@@ -33,6 +34,11 @@ export const LENDING_ACTION_TYPE_MAP: Record<LendingActionType, LendingAction> =
     value: LendingActionType.Repay,
     label: 'Repay',
     icon: '/images/lending/icon-down.png',
+  },
+  [LendingActionType.Claim]: {
+    value: LendingActionType.Claim,
+    label: 'Claim',
+    icon: '/images/lending/icon-up.png',
   },
 };
 

@@ -52,7 +52,11 @@ export default function useApprove(props: Props) {
       let allowanceRes: any;
       // Support custom approve
       if (typeof onCheckApproved === "function") {
-        allowanceRes = await onCheckApproved({ ...props, signer });
+        allowanceRes = await onCheckApproved({
+          ...props,
+          signer,
+          account: address
+        });
       } else {
         const TokenContract = new Contract(
           token.address,
@@ -99,7 +103,11 @@ export default function useApprove(props: Props) {
       let tx: any;
       // Support custom approve
       if (typeof onApprove === "function") {
-        tx = await onApprove({ ...props, signer });
+        tx = await onApprove({
+          ...props,
+          signer,
+          account: address
+        });
       }
       // default approve
       else {

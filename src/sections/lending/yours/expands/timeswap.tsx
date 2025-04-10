@@ -8,7 +8,6 @@ import { LENDING_ACTION_TYPE_MAP, LendingActionType } from '@/sections/lending/c
 import DescriptionTitle from '@/sections/lending/components/description-title';
 import useApprove, { MAX_APPROVE } from '@/hooks/use-approve';
 import { Contract } from 'ethers';
-import useCustomAccount from '@/hooks/use-account';
 import { useMemo } from 'react';
 
 const TimeSwap = (props: any) => {
@@ -25,57 +24,33 @@ const TimeSwap = (props: any) => {
         address: config?.timeswapV2TokenNft,
         decimals: 18,
       },
-      config?.repayContract
+      type.value === LendingActionType.Lend ? config?.withdrawContract : config?.repayContract
     ];
-  }, [config]);
+  }, [config, type]);
 
-  const { account } = useCustomAccount();
-  const { approve, approved, approving, checking } = useApprove({
+  const {
+    approve: onRepayApprove,
+    approved: repayApproved,
+    approving: repayApproving,
+    checking: repayChecking,
+  } = useApprove({
     amount: approveAmount,
     token: approveToken,
     spender: approveSpender,
-    onApprove: (approveProps: any) => {
-      const TokenContract = new Contract(
-        approveProps.token.address,
-        [
-          {
-            inputs: [
-              { internalType: "address", name: "spender", type: "address" },
-              { internalType: "bool", name: "all", type: "bool" }
-            ],
-            name: "setApprovalForAll",
-            outputs: [{ internalType: "bool", name: "", type: "bool" }],
-            stateMutability: "nonpayable",
-            type: "function"
-          }
-        ],
-        approveProps.signer
-      );
-      return TokenContract.setApprovalForAll(approveProps.spender, true);
-    },
-    onCheckApproved: async (approveProps: any) => {
-      const TokenContract = new Contract(
-        approveProps.token.address,
-        [
-          {
-            inputs: [
-              { internalType: "address", name: "account", type: "address" },
-              { internalType: "address", name: "spender", type: "address" }
-            ],
-            name: "isApprovedForAll",
-            outputs: [{ internalType: "bool", name: "", type: "bool" }],
-            stateMutability: "nonpayable",
-            type: "function"
-          }
-        ],
-        approveProps.signer
-      );
-      const approved = await TokenContract.callStatic.isApprovedForAll(account, approveProps.spender);
-      if (approved) {
-        return MAX_APPROVE;
-      }
-      return "0";
-    },
+    onApprove,
+    onCheckApproved,
+  });
+  const {
+    approve: onWithdrawApprove,
+    approved: withdrawApproved,
+    approving: withdrawApproving,
+    checking: withdrawChecking,
+  } = useApprove({
+    amount: approveAmount,
+    token: approveToken,
+    spender: approveSpender,
+    onApprove,
+    onCheckApproved,
   });
 
   const {
@@ -202,30 +177,45 @@ const TimeSwap = (props: any) => {
       <div className="flex items-center justify-end pr-[10px] gap-[12px] w-[384px] shrink-0">
         {
           type.value === LendingActionType.Lend && (
-            <ActionVisibleButton
-              icon={LENDING_ACTION_TYPE_MAP.withdraw.icon}
-              onClick={() => {
-                handleCurrentAction({
-                  action: LENDING_ACTION_TYPE_MAP.withdraw,
-                  visible: true,
-                  market: row,
-                });
-              }}
-            >
-              {LENDING_ACTION_TYPE_MAP.withdraw.labelAlias}
-            </ActionVisibleButton>
+            <>
+              {
+                !withdrawApproved ? (
+                  <ActionVisibleButton
+                    className="whitespace-nowrap !w-[170px]"
+                    onClick={onWithdrawApprove}
+                    disabled={withdrawApproving || withdrawChecking}
+                    loading={withdrawApproving || withdrawChecking}
+                  >
+                    Approve Close
+                  </ActionVisibleButton>
+                ) : (
+                  <ActionVisibleButton
+                    icon={LENDING_ACTION_TYPE_MAP.withdraw.icon}
+                    onClick={() => {
+                      handleCurrentAction({
+                        action: LENDING_ACTION_TYPE_MAP.withdraw,
+                        visible: true,
+                        market: row,
+                      });
+                    }}
+                  >
+                    {LENDING_ACTION_TYPE_MAP.withdraw.labelAlias}
+                  </ActionVisibleButton>
+                )
+              }
+            </>
           )
         }
         {
           type.value === LendingActionType.Borrow && (
             <>
               {
-                !approved ? (
+                !repayApproved ? (
                   <ActionVisibleButton
                     className="whitespace-nowrap !w-[170px]"
-                    onClick={approve}
-                    disabled={approving || checking}
-                    loading={approving || checking}
+                    onClick={onRepayApprove}
+                    disabled={repayApproving || repayChecking}
+                    loading={repayApproving || repayChecking}
                   >
                     Approve Repay
                   </ActionVisibleButton>
@@ -253,3 +243,47 @@ const TimeSwap = (props: any) => {
 };
 
 export default TimeSwap;
+
+const onApprove = (approveProps: any) => {
+  const TokenContract = new Contract(
+    approveProps.token.address,
+    [
+      {
+        inputs: [
+          { internalType: "address", name: "spender", type: "address" },
+          { internalType: "bool", name: "all", type: "bool" }
+        ],
+        name: "setApprovalForAll",
+        outputs: [{ internalType: "bool", name: "", type: "bool" }],
+        stateMutability: "nonpayable",
+        type: "function"
+      }
+    ],
+    approveProps.signer
+  );
+  return TokenContract.setApprovalForAll(approveProps.spender, true);
+};
+
+const onCheckApproved = async (approveProps: any) => {
+  const TokenContract = new Contract(
+    approveProps.token.address,
+    [
+      {
+        inputs: [
+          { internalType: "address", name: "account", type: "address" },
+          { internalType: "address", name: "spender", type: "address" }
+        ],
+        name: "isApprovedForAll",
+        outputs: [{ internalType: "bool", name: "", type: "bool" }],
+        stateMutability: "nonpayable",
+        type: "function"
+      }
+    ],
+    approveProps.signer
+  );
+  const approved = await TokenContract.callStatic.isApprovedForAll(approveProps.account, approveProps.spender);
+  if (approved) {
+    return MAX_APPROVE;
+  }
+  return "0";
+};

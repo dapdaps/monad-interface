@@ -74,7 +74,7 @@ export const timeswap = async (actionParams: any) => {
 
   if (action.value === LendingActionType.Withdraw) {
     contract = new ethers.Contract(
-      config.closeLendContract,
+      config.withdrawContract,
       WITHDRAW_ABI,
       signer
     );

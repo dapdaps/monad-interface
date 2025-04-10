@@ -4,9 +4,6 @@ import LendingAmountInput from '@/sections/lending/components/amount-input';
 import { useAmount } from '@/sections/lending/hooks/amount';
 import { LENDING_ACTION_TYPE_MAP, LendingAmountChangeParams } from '@/sections/lending/config';
 import { useEffect } from 'react';
-import { Contract } from 'ethers';
-import useCustomAccount from '@/hooks/use-account';
-import { MAX_APPROVE } from '@/hooks/use-approve';
 import LendingWithdraw from '@/sections/lending/withdraw';
 
 const WithdrawForm = (props: any) => {
@@ -25,11 +22,11 @@ const WithdrawForm = (props: any) => {
     balanceLoading,
     balanceToken,
   } = data;
-  const { account } = useCustomAccount();
 
   const isTimeSwap = config.name === "Timeswap";
 
-  const actionText = isTimeSwap ? LENDING_ACTION_TYPE_MAP.withdraw.labelAlias : LENDING_ACTION_TYPE_MAP.withdraw.label;
+  const actionTitle = isTimeSwap ? LENDING_ACTION_TYPE_MAP.withdraw.labelAlias : LENDING_ACTION_TYPE_MAP.withdraw.label;
+  const actionText = isTimeSwap ? LENDING_ACTION_TYPE_MAP.claim.label : LENDING_ACTION_TYPE_MAP.withdraw.label;
 
   const WithdrawContent = LendingWithdraw[config.pathName];
 
@@ -40,11 +37,12 @@ const WithdrawForm = (props: any) => {
   return (
     <LendingActionCard
       className={clsx("", className)}
-      title={actionText}
+      title={actionTitle}
       market={market}
       token={balanceToken}
       amount={actionAmount}
-      spender={config?.closeLendContract}
+      spender={config?.withdrawContract}
+      isSkip={isTimeSwap}
       errorTips={errorTips}
       loading={pending}
       onClick={() => {
@@ -54,48 +52,6 @@ const WithdrawForm = (props: any) => {
       onRefresh={() => {}}
       updater={`button-${updater}`}
       text={actionText}
-      onApprove={isTimeSwap ? (approveProps: any) => {
-        const TokenContract = new Contract(
-          approveProps.token.address,
-          [
-            {
-              inputs: [
-                { internalType: "address", name: "spender", type: "address" },
-                { internalType: "bool", name: "all", type: "bool" }
-              ],
-              name: "setApprovalForAll",
-              outputs: [{ internalType: "bool", name: "", type: "bool" }],
-              stateMutability: "nonpayable",
-              type: "function"
-            }
-          ],
-          approveProps.signer
-        );
-        return TokenContract.setApprovalForAll(approveProps.spender, true);
-      } : void 0}
-      onCheckApproved={isTimeSwap ? async (approveProps: any) => {
-        const TokenContract = new Contract(
-          approveProps.token.address,
-          [
-            {
-              inputs: [
-                { internalType: "address", name: "account", type: "address" },
-                { internalType: "address", name: "spender", type: "address" }
-              ],
-              name: "isApprovedForAll",
-              outputs: [{ internalType: "bool", name: "", type: "bool" }],
-              stateMutability: "nonpayable",
-              type: "function"
-            }
-          ],
-          approveProps.signer
-        );
-        const approved = await TokenContract.callStatic.isApprovedForAll(account, approveProps.spender);
-        if (approved) {
-          return MAX_APPROVE;
-        }
-        return "0";
-      } : void 0}
     >
       <LendingAmountInput
         disabled={true}

@@ -34,7 +34,8 @@ export default function SubmitBtn({
   className,
   text = "Swap",
   onApprove,
-  onCheckApproved
+  onCheckApproved,
+  isSkip
 }: any) {
   const { approve, approved, approving, checking, checkApproved } = useApprove({
     amount,
@@ -43,6 +44,7 @@ export default function SubmitBtn({
     onSuccess: onRefresh,
     onApprove,
     onCheckApproved,
+    isSkip,
   });
   const { isPending: switching, switchChain } = useSwitchChain();
   const { open } = useAppKit();
