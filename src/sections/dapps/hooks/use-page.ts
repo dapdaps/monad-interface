@@ -10,24 +10,28 @@ export default function usePage() {
   const [activeType, setActiveType] = useState("all");
   const maxLength = useMemo(() => isMobile ? 2 : Math.floor(((size?.width - 64) * 0.8 + 80) / 240), [size])
   const dappsArray = useMemo(() => {
-    const dapps = ALL_DAPP_LIST.filter(
-      (dapp: IDapp) => {
-        if (activeType === "all" ||
-          activeType === "instation" && dapp.link.indexOf("http") === -1 ||
-          activeType === "outlink" && dapp.link.indexOf("http") > -1
-        ) {
-          return true
-        }
-        return dapp.type === activeType
-      }
-    )
-    const array = []
+    const outlinkDapps = ALL_DAPP_LIST.filter((dapp: IDapp) =>
+      dapp.link.indexOf('http') > -1
+    );
+    const otherDapps = ALL_DAPP_LIST.filter((dapp: IDapp) =>
+      activeType === 'all'
+        ? dapp.link.indexOf('http') === -1 || dapp.link.indexOf('http') > -1
+        : activeType === 'instation'
+          ? dapp.link.indexOf('http') === -1
+          : dapp.type === activeType
+    );
 
-    for (let i = 0; i < dapps.length; i += maxLength) {
-      array.push(dapps.slice(i, i + maxLength))
+    const combinedDapps =
+      activeType === 'all' || activeType === 'outlink'
+        ? [...otherDapps.filter(dapp => outlinkDapps.indexOf(dapp) === -1), ...outlinkDapps]
+        : otherDapps;
+
+    const array = [];
+    for (let i = 0; i < combinedDapps.length; i += maxLength) {
+      array.push(combinedDapps.slice(i, i + maxLength));
     }
-    return array
-  }, [activeType, maxLength])
+    return array;
+  }, [activeType, maxLength]);
 
   function handleClickButton(type: any) {
     setActiveType(type);
