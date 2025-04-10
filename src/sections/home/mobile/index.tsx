@@ -142,7 +142,7 @@ const Mobile = () => {
             )}
           >
             <div className="relative w-full h-full">
-              <div className="absolute left-1/2 -translate-x-1/2 top-[-70px] scale-[1.2]">
+              <div className="absolute left-1/2 -translate-x-1/2 top-[-70px] scale-[1.3]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <img src="/images/monad/icon/dApps.svg" alt="" />
                   <motion.img
