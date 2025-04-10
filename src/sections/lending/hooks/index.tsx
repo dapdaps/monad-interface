@@ -10,6 +10,7 @@ import Big from 'big.js';
 import useCustomAccount from '@/hooks/use-account';
 import LendingYours from '@/sections/lending/yours';
 import LendingMarkets from '@/sections/lending/markets';
+import useIsMobile from '@/hooks/use-isMobile';
 
 export function useLending(props: any): Lending {
   const { dapp } = props;
@@ -33,6 +34,7 @@ export function useLending(props: any): Lending {
     };
   }
 
+  const isMobile = useIsMobile();
   const { account, provider } = useCustomAccount();
 
   const [currentTab, setCurrentTab] = useState<Tab>(TABS.MARKET);
@@ -216,6 +218,7 @@ export function useLending(props: any): Lending {
       toggleMarketsOrderDirection,
       toggleYoursOrderDirection,
       yoursUniqueKey: "uniqueId",
+      isMobile,
     }).then((res: any) => {
       setMarketColumns(res.marketColumns);
       setYoursColumns(res.yoursColumns);
@@ -228,6 +231,7 @@ export function useLending(props: any): Lending {
     marketsOrderDirection,
     yoursOrderKey,
     yoursOrderDirection,
+    isMobile,
   ]);
 
   console.log("marketsList: %o", marketsList);

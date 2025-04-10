@@ -62,7 +62,7 @@ const TimeSwap = (props: any) => {
           </button>
         </LabelValue>
       </div>
-      <div className="flex items-center justify-end pr-[10px] gap-[12px] w-[384px] shrink-0">
+      <div className="flex items-center justify-end pr-[10px] gap-[12px] w-[384px] shrink-0 md:w-full md:justify-between md:pr-0">
         <ActionVisibleButton
           icon={LENDING_ACTION_TYPE_MAP.deposit.icon}
           onClick={() => {
