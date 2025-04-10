@@ -16,6 +16,7 @@ import {
 import DappInfo from "./dapp-info";
 import ExternalLinksModal from "./external-links-modal";
 import Popover, { PopoverPlacement, PopoverTrigger } from '@/components/popover';
+import DappModal from "./dapp-modal";
 
 export default memo(function DappsEntry({
   direction,
@@ -28,6 +29,7 @@ export default memo(function DappsEntry({
   const { handleReport } = useClickTracking()
   const soundStore = useSoundStore();
   const [targetDapp, setTargetDapp] = useState<any>(null);
+  const [clickedDapp, setClickedDapp] = useState(null)
   const size = useSize(document.getElementsByTagName("body")[0]);
   const controls = useAnimation();
   const [clicked, setClicked] = useState(false);
@@ -154,8 +156,9 @@ export default memo(function DappsEntry({
               <Popover
                 key={dapp.name}
                 placement={PopoverPlacement.Bottom}
-                trigger={isMobile ? PopoverTrigger.Click : PopoverTrigger.Hover}
+                trigger={PopoverTrigger.Hover}
                 closeDelayDuration={0}
+                triggerContainerClassName="flex"
                 content={dAppsAnimateDone && (
                   <DappInfo
                     name={dapp.name}
@@ -167,6 +170,10 @@ export default memo(function DappsEntry({
                     liquidity=""
                     link={dapp.link}
                     className="!static"
+                    open={dAppsAnimateDone}
+                    onClose={() => {
+                      setDAppsAnimateDone(false);
+                    }}
                   />
                 )}
               >
@@ -179,14 +186,18 @@ export default memo(function DappsEntry({
                     setTimeout(() => {
                       setClicked(false);
                     }, 300);
-                    if (
-                      dapp.link.startsWith("https://") ||
-                      dapp.link.startsWith("http://")
-                    ) {
-                      setTargetDapp(dapp)
+                    if (isMobile) {
+                      setClickedDapp(dapp)
                     } else {
-                      handleReport("1003-001", dapp.name)
-                      router.push(dapp.link);
+                      if (
+                        dapp.link.startsWith("https://") ||
+                        dapp.link.startsWith("http://")
+                      ) {
+                        setTargetDapp(dapp)
+                      } else {
+                        handleReport("1003-001", dapp.name)
+                        router.push(dapp.link);
+                      }
                     }
                   }}
                 >
@@ -224,6 +235,16 @@ export default memo(function DappsEntry({
         </div>
       </div>
 
+      {
+        isMobile && (
+          <DappModal
+            dapp={clickedDapp}
+            onClose={() => {
+              setClickedDapp(null)
+            }}
+          />
+        )
+      }
       {
         targetDapp && (
           <ExternalLinksModal

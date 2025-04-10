@@ -34,6 +34,9 @@ export interface IDapp {
   type: "Bridge" | "Swap" | "Dex" | "Defi" | "Perps" | "NFT" | "Lending" | "CLOB" | "Betting" | "Gaming";
   link?: string;
   desc?: string;
+  tvl?: string;
+  volume24h?: string;
+  liquidity?: string;
 }
 
 export interface IToken {

@@ -12,7 +12,7 @@ export default memo(function Mobile() {
       <div className="h-[21px] flex justify-center">
         <DappsFontSvg />
       </div>
-      <div className="flex-1 pb-[113px] overflow-auto">
+      <div className="flex-1 mb-[163px] overflow-auto">
         <div className='flex flex-col gap-[28px]'>
           {
             dappsArray?.map((dapps: IDapp, index: number) => (
