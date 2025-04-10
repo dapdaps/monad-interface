@@ -47,8 +47,8 @@ export const ALL_DAPP_LIST: IDapp[] = [
   {
     name: "Timeswap",
     icon: "/images/dapps/icons/timeswap.svg",
-    type: "dex",
-    link: "https://app.timeswap.io/markets?chainId=10143",
+    type: "lending",
+    link: "/lending/timeswap",
     desc: "Timeswap is the first oracleless lending/borrowing protocol — enabling the creation of money markets for ANY ERC20 tokens."
   },
   {
@@ -65,12 +65,4 @@ export const ALL_DAPP_LIST: IDapp[] = [
     link: "https://magiceden.io/monad-testnet",
     desc: "Magic Eden brings all chains and all assets together in one easy-to-use platform."
   },
-
-  // {
-  //   name: "Timeswap",
-  //   icon: "/images/dapps/icons/timeswap.svg",
-  //   type: "lending",
-  //   link: "/lending/timeswap",
-  //   desc: "Timeswap is the first oracleless lending/borrowing protocol. Timeswap enables the creation of money markets for ANY ERC-20 tokens."
-  // },
 ];
