@@ -20,29 +20,33 @@ function ExpandTable<Item = any>(props: Props<Item>) {
 
   return (
     <div className={clsx("", className)}>
-      <div className="flex items-center h-[46px] px-[10px] bg-[rgba(255,255,255,0.05)] border-[#4f4c70] border-t-[1px] border-b-[1px]">
-        {
-          columns?.map((column: Column) => (
-            <div
-              className={clsx(
-                "h-full flex items-center gap-[5px] text-[#A6A6DB] font-Unbounded text-[12px] font-normal leading-normal px-[10px]",
-                column.align === "right" ? "justify-end" : (column.align === "center" ? "justify-center" : "justify-start"),
-              )}
-              style={column.width ? {
-                width: column.width,
-                flexBasis: column.width,
-                flexShrink: 0,
-                flexGrow: 0,
-              } : {
-                flex: 1,
-              }}
-            >
-              {typeof column.title === "function" ? column.title() : column.title}
-            </div>
-          ))
-        }
-      </div>
-      <div className="">
+      {
+        !isMobile && (
+          <div className="flex items-center h-[46px] px-[10px] bg-[rgba(255,255,255,0.05)] border-[#4f4c70] border-t-[1px] border-b-[1px]">
+            {
+              columns?.map((column: Column) => (
+                <div
+                  className={clsx(
+                    "h-full flex items-center gap-[5px] text-[#A6A6DB] font-Unbounded text-[12px] font-normal leading-normal px-[10px]",
+                    column.align === "right" ? "justify-end" : (column.align === "center" ? "justify-center" : "justify-start"),
+                  )}
+                  style={column.width ? {
+                    width: column.width,
+                    flexBasis: column.width,
+                    flexShrink: 0,
+                    flexGrow: 0,
+                  } : {
+                    flex: 1,
+                  }}
+                >
+                  {typeof column.title === "function" ? column.title() : column.title}
+                </div>
+              ))
+            }
+          </div>
+        )
+      }
+      <div className="md:flex md:flex-col md:gap-[10px]">
         {
           loading ? (
             <div className="flex justify-center items-center h-[100px]">
@@ -53,11 +57,11 @@ function ExpandTable<Item = any>(props: Props<Item>) {
               const isExpanded = (current as any)?.[primaryKey] === row[primaryKey];
 
               return (
-                <div className="overflow-hidden">
+                <div className="overflow-hidden md:px-[10px]">
                   <div
                     className={clsx(
-                      "relative z-[2] flex items-center px-[10px] py-[14px] border-[#4f4c70] cursor-pointer transition-[background-color] duration-[150ms] ease-in-out]",
-                      isExpanded ? "bg-[rgba(255,255,255,0.05)] border-b-0" : "bg-[#2B294A] border-b-[1px]",
+                      "relative z-[2] flex items-center md:flex-wrap px-[10px] py-[14px] border-[#4f4c70] md:rounded-[6px] md:border-[#454556] cursor-pointer transition-[background-color] duration-[150ms] ease-in-out",
+                      isExpanded ? "bg-[rgba(255,255,255,0.05)] md:bg-[rgba(45,48,79,0.60)] border-b-0 md:border md:border-b-0 md:rounded-b-[0]" : "bg-[#2B294A] md:bg-[rgba(45,48,79,0.60)] border-b-[1px] md:border-[1px]",
                     )}
                     onClick={() => {
                       if (isExpanded) {
@@ -93,7 +97,7 @@ function ExpandTable<Item = any>(props: Props<Item>) {
                     {
                       isExpanded && expand && (
                         <motion.div
-                          className="relative z-[1] overflow-hidden flex justify-between gap-[35px] items-end px-[10px] pt-[10px] pb-[18px] bg-[rgba(255,255,255,0.05)] border-[#4f4c70] border-b-[1px]"
+                          className="relative z-[1] overflow-hidden flex md:flex-col md:items-stretch justify-between gap-[35px] md:gap-[16px] items-end px-[10px] pt-[10px] pb-[18px] bg-[rgba(255,255,255,0.05)] md:bg-[rgba(49,53,86,0.60)] md:rounded-b-[6px] border-[#4f4c70] md:border-[#454556] border-b-[1px] md:border-[1px] md:border-t-0"
                           initial={{
                             y: -100,
                             opacity: 0,

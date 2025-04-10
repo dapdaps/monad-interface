@@ -2,6 +2,7 @@ import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { useDebounceFn } from 'ahooks';
+import useIsMobile from '@/hooks/use-isMobile';
 
 // Placement:
 //            TopLeft         Top         TopRight
@@ -28,6 +29,8 @@ const Popover = (props: Props) => {
 
   const triggerRef = useRef<any>();
 
+  const isMobile = useIsMobile();
+
   const [visible, setVisible] = useState(false);
   const [realVisible, setRealVisible] = useState(false);
   const [x, setX] = useState(0);
@@ -45,7 +48,10 @@ const Popover = (props: Props) => {
         style={triggerContainerStyle}
         className={triggerContainerClassName}
         onClick={async (e) => {
-          if (trigger === PopoverTrigger.Hover) return;
+          if (!isMobile && trigger === PopoverTrigger.Hover) return;
+          if (isMobile) {
+            e.stopPropagation();
+          }
           if (onClickBefore) {
             const isContinue = await onClickBefore(e);
             if (!isContinue) return;
@@ -53,12 +59,12 @@ const Popover = (props: Props) => {
           setVisible(true);
         }}
         onMouseEnter={() => {
-          if (trigger === PopoverTrigger.Click) return;
+          if (isMobile || trigger === PopoverTrigger.Click) return;
           closeCancel();
           setVisible(true);
         }}
         onMouseLeave={() => {
-          if (trigger === PopoverTrigger.Click) return;
+          if (isMobile || trigger === PopoverTrigger.Click) return;
           closeDelay();
         }}
       >
@@ -157,7 +163,7 @@ const Popover = (props: Props) => {
             setVisible={setVisible}
             closeDelay={closeDelay}
             closeCancel={closeCancel}
-            trigger={trigger}
+            trigger={isMobile ? PopoverTrigger.Click : trigger}
           >
             {content}
           </Card>,

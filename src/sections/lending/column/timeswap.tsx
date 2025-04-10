@@ -23,13 +23,15 @@ export const timeswap = async (params: any) => {
     yoursUniqueKey = "id",
     toggleMarketsOrderDirection,
     toggleYoursOrderDirection,
+    isMobile
   } = params;
 
-  const marketColumns = [
+  let marketColumns = [
     {
       title: "Pools",
       dataIndex: "pools",
       key: "pools",
+      mdSort: 1,
       align: "left",
       render: (record: any, index: number) => {
         return (
@@ -72,6 +74,8 @@ export const timeswap = async (params: any) => {
       dataIndex: "tvl",
       key: "tvl",
       width: 110,
+      mdWidth: "33.33%",
+      mdSort: 3,
       align: "left",
       render: (record: any) => {
         return numberFormatter(record.poolData?.tvl, 2, true, { isShort: true, isShortUppercase: true, prefix: "$" });
@@ -94,6 +98,8 @@ export const timeswap = async (params: any) => {
       dataIndex: "apr",
       key: "apr",
       width: 110,
+      mdWidth: "33.33%",
+      mdSort: 2,
       align: "left",
       render: (record: any) => {
         return numberFormatter(record.poolData?.apr, 2, true, { isShort: true, isShortUppercase: true }) + "%";
@@ -123,6 +129,8 @@ export const timeswap = async (params: any) => {
       dataIndex: "cdp",
       key: "cdp",
       width: 110,
+      mdWidth: "33.33%",
+      mdSort: 4,
       align: "left",
       render: (record: any) => {
         return numberFormatter(record.poolData?.cdp, 2, true, { isShort: true, isShortUppercase: true }) + "%";
@@ -145,41 +153,19 @@ export const timeswap = async (params: any) => {
       dataIndex: "maturity",
       key: "maturity",
       width: 110,
+      mdWidth: "33.33%",
+      mdSort: 5,
       align: "left",
       render: (record: any) => {
         const maturity = dayjs(record.poolData?.maturity * 1000);
-
-        const calc = () => {
-          const now = dayjs(new Date());
-          const diff = Math.max(maturity.diff(now), 0); // Ensure no negative duration
-          const [dayMs, hourMs, minMs, sMs] = [1000 * 60 * 60 * 24, 1000 * 60 * 60, 1000 * 60, 1000];
-          const days = Math.floor(diff / dayMs);
-          const lastHourMs = diff % dayMs;
-          const hours = Math.floor(lastHourMs / hourMs);
-          const lastMinMs = lastHourMs % hourMs;
-          const mins = Math.floor(lastMinMs / minMs);
-          const lastSecMs = lastMinMs % minMs;
-          const secs = Math.floor(lastSecMs / sMs);
-          return `${days.toString().padStart(2, '0')}d : ${hours.toString().padStart(2, '0')}h : ${mins.toString().padStart(2, '0')}m : ${secs.toString().padStart(2, '0')}s left`;
-        };
-
-        const [description, setDescription] = useState(() => {
-          return calc();
-        });
-
-        useEffect(() => {
-          const interval = setInterval(() => {
-            setDescription(calc());
-          }, 1000);
-
-          return () => clearInterval(interval); // Cleanup on unmount
-        }, [maturity]);
 
         return (
           <DescriptionTitle
             descriptionClassName="!pd-[11px_13px]"
             className="!text-[#FFF] !font-Unbounded !text-[12px] !font-normal !leading-normal"
-            description={description}
+            description={(
+              <Countdown endTime={maturity} />
+            )}
             descriptionPlacement={PopoverPlacement.TopRight}
           >
             {dayjs(maturity).format('YYYY-MM-DD')}
@@ -202,66 +188,117 @@ export const timeswap = async (params: any) => {
       }
     },
   ];
+  let yoursColumns = [
+    { ...marketColumns[0] },
+    {
+      title: "Type",
+      dataIndex: "type",
+      key: "type",
+      width: 110,
+      align: "left",
+      render: (record: any) => {
+        return record.type.label;
+      }
+    },
+    {
+      title: "Transition Price",
+      dataIndex: "tp",
+      key: "tp",
+      width: 220,
+      align: "left",
+      render: (record: any) => {
+        return (
+          <div className="flex items-center gap-[4px]">
+            <div className="">
+              {numberFormatter(record.transitionPrice10, 2, true)}
+            </div>
+            <div className="text-[12px] font-[400]">
+              {record.tokens[1].symbol} / {record.tokens[0].symbol}
+            </div>
+          </div>
+        );
+      }
+    },
+    {
+      ...marketColumns[4],
+      title: () => {
+        return (
+          <>
+            <div>Maturity</div>
+            <ColumnOrderIcon
+              dataIndex="maturity"
+              orderKey={yoursOrderKey}
+              direction={yoursOrderDirection}
+              onClick={toggleYoursOrderDirection}
+            />
+          </>
+        );
+      },
+    },
+    {
+      ...marketColumns[5],
+      render: (record: any) => {
+        const isExpanded = currentYoursMarket?.[yoursUniqueKey] === record[yoursUniqueKey];
+
+        return (
+          <ExpandIcon isExpanded={isExpanded} />
+        );
+      }
+    },
+  ];
+
+  if (isMobile) {
+    marketColumns = marketColumns
+      .slice(0, 5)
+      .sort((a: any, b: any) => a.mdSort - b.mdSort)
+      .map((it: any) => {
+        if (it.mdWidth) {
+          return {
+            ...it,
+            width: it.mdWidth,
+          };
+        }
+        return it;
+      })
+  }
 
   return {
     marketColumns,
-    yoursColumns: [
-      { ...marketColumns[0] },
-      {
-        title: "Type",
-        dataIndex: "type",
-        key: "type",
-        width: 110,
-        align: "left",
-        render: (record: any) => {
-          return record.type.label;
-        }
-      },
-      {
-        title: "Transition Price",
-        dataIndex: "tp",
-        key: "tp",
-        width: 220,
-        align: "left",
-        render: (record: any) => {
-          return (
-            <div className="flex items-center gap-[4px]">
-              <div className="">
-                {numberFormatter(record.transitionPrice10, 2, true)}
-              </div>
-              <div className="text-[12px] font-[400]">
-                {record.tokens[1].symbol} / {record.tokens[0].symbol}
-              </div>
-            </div>
-          );
-        }
-      },
-      {
-        ...marketColumns[4],
-        title: () => {
-          return (
-            <>
-              <div>Maturity</div>
-              <ColumnOrderIcon
-                dataIndex="maturity"
-                orderKey={yoursOrderKey}
-                direction={yoursOrderDirection}
-                onClick={toggleYoursOrderDirection}
-              />
-            </>
-          );
-        },
-      },
-      {
-        ...marketColumns[5],
-        render: (record: any) => {
-          const isExpanded = currentYoursMarket?.[yoursUniqueKey] === record[yoursUniqueKey];
-
-          return (
-            <ExpandIcon isExpanded={isExpanded} />
-          );
-        }
-      },
-    ],
+    yoursColumns,
   };
+};
+
+const Countdown = (props: any) => {
+  const {
+    endTime,
+    className,
+  } = props;
+
+  const calc = () => {
+    const now = dayjs(new Date());
+    const diff = Math.max(endTime.diff(now), 0); // Ensure no negative duration
+    const [dayMs, hourMs, minMs, sMs] = [1000 * 60 * 60 * 24, 1000 * 60 * 60, 1000 * 60, 1000];
+    const days = Math.floor(diff / dayMs);
+    const lastHourMs = diff % dayMs;
+    const hours = Math.floor(lastHourMs / hourMs);
+    const lastMinMs = lastHourMs % hourMs;
+    const mins = Math.floor(lastMinMs / minMs);
+    const lastSecMs = lastMinMs % minMs;
+    const secs = Math.floor(lastSecMs / sMs);
+    return `${days.toString().padStart(2, '0')}d : ${hours.toString().padStart(2, '0')}h : ${mins.toString().padStart(2, '0')}m : ${secs.toString().padStart(2, '0')}s left`;
+  };
+
+  const [description, setDescription] = useState<any>(calc());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDescription(calc());
+    }, 1000);
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, [endTime]);
+
+  return (
+    <div className={clsx("", className)}>{description}</div>
+  );
 };

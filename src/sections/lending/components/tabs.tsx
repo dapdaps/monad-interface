@@ -24,7 +24,7 @@ const LendingTabs = (props: any) => {
   return (
     <div className={clsx("", className)}>
       <div
-        className={clsx("flex items-center justify-center mx-auto relative", headerClassName)}
+        className={clsx("flex items-center justify-center mx-auto relative md:border-b md:border-[#464368]", headerClassName)}
         style={{
           width: isMobile ? "100%" : tabWidth * tabs.length,
         }}
