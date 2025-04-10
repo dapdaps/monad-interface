@@ -52,6 +52,7 @@ const WithdrawForm = (props: any) => {
       onRefresh={() => {}}
       updater={`button-${updater}`}
       text={actionText}
+      onClose={onClose}
     >
       <LendingAmountInput
         disabled={true}

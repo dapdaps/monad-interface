@@ -60,7 +60,7 @@ function ExpandTable<Item = any>(props: Props<Item>) {
                 <div className="overflow-hidden md:px-[10px]">
                   <div
                     className={clsx(
-                      "relative z-[2] flex items-center md:flex-wrap px-[10px] py-[14px] border-[#4f4c70] md:rounded-[6px] md:border-[#454556] cursor-pointer transition-[background-color] duration-[150ms] ease-in-out",
+                      "relative z-[2] flex items-center md:flex-wrap px-[10px] md:px-[2px] py-[14px] border-[#4f4c70] md:backdrop-blur-[10px] md:rounded-[6px] md:border-[#454556] cursor-pointer transition-[background-color] duration-[150ms] ease-in-out",
                       isExpanded ? "bg-[rgba(255,255,255,0.05)] md:bg-[rgba(45,48,79,0.60)] border-b-0 md:border md:border-b-0 md:rounded-b-[0]" : "bg-[#2B294A] md:bg-[rgba(45,48,79,0.60)] border-b-[1px] md:border-[1px]",
                     )}
                     onClick={() => {
@@ -76,7 +76,7 @@ function ExpandTable<Item = any>(props: Props<Item>) {
                         <div
                           key={`${rowIndex}-${columnIndex}`}
                           className={clsx(
-                            "flex items-center px-[10px]",
+                            "flex items-center px-[10px] md:px-[6px]",
                             column.align === "right" ? "justify-end" : (column.align === "center" ? "justify-center" : "justify-start"),
                           )}
                           style={column.width ? {

@@ -11,17 +11,19 @@ const LendingActionCard = (props: any) => {
     children,
     title,
     market,
+    onClose,
     ...restProps
   } = props;
 
   return (
-    <MonadBaseCard className={clsx("w-[432px]", cardClassName)}>
+    <MonadBaseCard className={clsx("w-[432px] md:w-full", cardClassName)}>
       <div className={clsx("px-[26px]", className)}>
         <div className="flex justify-between items-center">
           <div className="text-white font-Unbounded text-[14px] font-[500] leading-normal">{title}</div>
           <button
             type="button"
             className="bg-[url('/images/lending/icon-close.svg')] bg-no-repeat bg-contain bg-center w-[15px] h-[15px]"
+            onClick={onClose}
           />
         </div>
         <div className="flex justify-center items-center">

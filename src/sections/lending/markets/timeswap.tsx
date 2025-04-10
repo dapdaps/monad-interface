@@ -16,7 +16,7 @@ const TimeSwap = (props: any) => {
 
   return (
     <ExpandTable
-      className="md:mt-[17px]"
+      className="md:py-[17px]"
       columns={marketColumns}
       data={markets}
       loading={loading}

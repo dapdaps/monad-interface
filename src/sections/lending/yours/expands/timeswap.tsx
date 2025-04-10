@@ -72,6 +72,7 @@ const TimeSwap = (props: any) => {
                     Amount at Maturity
                   </DescriptionTitle>
                 )}
+                className="md:flex-col md:items-start md:gap-[8px]"
               >
                 <div className="flex items-center gap-[8px]">
                   <div className="flex items-center gap-[4px]">
@@ -114,7 +115,7 @@ const TimeSwap = (props: any) => {
         }
         {
           type.value === LendingActionType.Borrow && (
-            <div className="px-[10px]">
+            <div className="px-[10px] md:grid md:grid-cols-2">
               <LabelValue
                 label={(
                   <DescriptionTitle
@@ -124,6 +125,7 @@ const TimeSwap = (props: any) => {
                     Debt to repay
                   </DescriptionTitle>
                 )}
+                className="md:flex-col md:items-start md:gap-[8px]"
               >
                 <div className="flex items-center gap-[4px]">
                   <DescriptionTitle
@@ -151,7 +153,7 @@ const TimeSwap = (props: any) => {
                     Collateral to unlock
                   </DescriptionTitle>
                 )}
-                className="mt-[16px]"
+                className="mt-[16px] md:mt-0 md:flex-col md:items-start md:gap-[8px]"
               >
                 <div className="flex items-center gap-[4px]">
                   <DescriptionTitle
@@ -174,7 +176,7 @@ const TimeSwap = (props: any) => {
           )
         }
       </div>
-      <div className="flex items-center justify-end pr-[10px] gap-[12px] w-[384px] shrink-0">
+      <div className="flex items-center justify-end pr-[10px] gap-[12px] w-[384px] shrink-0 md:w-full md:pr-0">
         {
           type.value === LendingActionType.Lend && (
             <>

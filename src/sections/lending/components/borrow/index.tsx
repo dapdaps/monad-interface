@@ -43,6 +43,7 @@ const BorrowForm = (props: any) => {
       onRefresh={() => {}}
       updater={`button-${updater}`}
       text="Borrow"
+      onClose={onClose}
     >
       <LendingAmountInput
         value={amount}

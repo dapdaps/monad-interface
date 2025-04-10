@@ -41,6 +41,7 @@ const LendForm = (props: any) => {
       onRefresh={() => {}}
       updater={`button-${updater}`}
       text="Lend"
+      onClose={onClose}
     >
       <LendingAmountInput
         value={amount}

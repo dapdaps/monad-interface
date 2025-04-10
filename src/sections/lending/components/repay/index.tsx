@@ -47,6 +47,7 @@ const RepayForm = (props: any) => {
       onRefresh={() => {}}
       updater={`button-${updater}`}
       text={actionText}
+      onClose={onClose}
     >
       <LendingAmountInput
         value={amount}

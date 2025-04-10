@@ -19,7 +19,7 @@ const TimeSwap = (props: any) => {
 
   return (
     <ExpandTable
-      className=""
+      className="md:py-[17px]"
       columns={yoursColumns}
       data={yours}
       loading={loading || userDataLoading}

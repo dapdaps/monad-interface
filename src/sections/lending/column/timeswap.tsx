@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import DescriptionTitle from '@/sections/lending/components/description-title';
 import ColumnOrderIcon from '@/sections/lending/components/column-order-icon';
 import ExpandIcon from '@/sections/lending/components/expand-icon';
+import LabelValue from '@/sections/lending/components/label-value';
 
 dayjs.extend(duration);
 
@@ -31,6 +32,7 @@ export const timeswap = async (params: any) => {
       title: "Pools",
       dataIndex: "pools",
       key: "pools",
+      mdWidth: "66.66%",
       mdSort: 1,
       align: "left",
       render: (record: any, index: number) => {
@@ -78,7 +80,15 @@ export const timeswap = async (params: any) => {
       mdSort: 3,
       align: "left",
       render: (record: any) => {
-        return numberFormatter(record.poolData?.tvl, 2, true, { isShort: true, isShortUppercase: true, prefix: "$" });
+        const _tvl = numberFormatter(record.poolData?.tvl, 2, true, { isShort: true, isShortUppercase: true, prefix: "$" });
+        if (isMobile) {
+          return (
+            <LabelValue label="TVL" className="flex-col gap-[4px] !items-start mt-[20px]">
+              {_tvl}
+            </LabelValue>
+          );
+        }
+        return _tvl;
       }
     },
     {
@@ -102,7 +112,20 @@ export const timeswap = async (params: any) => {
       mdSort: 2,
       align: "left",
       render: (record: any) => {
-        return numberFormatter(record.poolData?.apr, 2, true, { isShort: true, isShortUppercase: true }) + "%";
+        const apr = numberFormatter(record.poolData?.apr, 2, true, { isShort: true, isShortUppercase: true }) + "%";
+        if (isMobile) {
+          return (
+            <div className="flex justify-end items-center gap-[4px] whitespace-nowrap overflow-hidden">
+              <div className="text-[#A6A6DB] font-Unbounded text-[12px] font-normal leading-normal">
+                APR
+              </div>
+              <div className="text-[#BFFF60] font-Unbounded text-[12px] font-normal leading-normal">
+                {apr}
+              </div>
+            </div>
+          );
+        }
+        return apr;
       }
     },
     {
@@ -133,7 +156,15 @@ export const timeswap = async (params: any) => {
       mdSort: 4,
       align: "left",
       render: (record: any) => {
-        return numberFormatter(record.poolData?.cdp, 2, true, { isShort: true, isShortUppercase: true }) + "%";
+        const _cdp = numberFormatter(record.poolData?.cdp, 2, true, { isShort: true, isShortUppercase: true }) + "%";
+        if (isMobile) {
+          return (
+            <LabelValue label="CDP" className="flex-col gap-[4px] !items-start mt-[20px]">
+              {_cdp}
+            </LabelValue>
+          );
+        }
+        return _cdp;
       }
     },
     {
@@ -158,8 +189,7 @@ export const timeswap = async (params: any) => {
       align: "left",
       render: (record: any) => {
         const maturity = dayjs(record.poolData?.maturity * 1000);
-
-        return (
+        const maturityContent = (
           <DescriptionTitle
             descriptionClassName="!pd-[11px_13px]"
             className="!text-[#FFF] !font-Unbounded !text-[12px] !font-normal !leading-normal"
@@ -171,6 +201,16 @@ export const timeswap = async (params: any) => {
             {dayjs(maturity).format('YYYY-MM-DD')}
           </DescriptionTitle>
         );
+
+        if (isMobile) {
+          return (
+            <LabelValue label="Maturity" className="flex-col gap-[4px] !items-start mt-[20px]">
+              {maturityContent}
+            </LabelValue>
+          );
+        }
+
+        return maturityContent;
       }
     },
     {
@@ -195,8 +235,22 @@ export const timeswap = async (params: any) => {
       dataIndex: "type",
       key: "type",
       width: 110,
+      mdSort: 2,
+      mdWidth: "33.33%",
       align: "left",
       render: (record: any) => {
+        if (isMobile) {
+          return (
+            <div className="flex justify-end items-center gap-[4px] whitespace-nowrap overflow-hidden">
+              <div className="text-[#A6A6DB] font-Unbounded text-[12px] font-normal leading-normal">
+                Type
+              </div>
+              <div className="text-[#BFFF60] font-Unbounded text-[12px] font-normal leading-normal">
+                {record.type.label}
+              </div>
+            </div>
+          );
+        }
         return record.type.label;
       }
     },
@@ -205,9 +259,11 @@ export const timeswap = async (params: any) => {
       dataIndex: "tp",
       key: "tp",
       width: 220,
+      mdSort: 3,
+      mdWidth: "66.66%",
       align: "left",
       render: (record: any) => {
-        return (
+        const _tp = (
           <div className="flex items-center gap-[4px]">
             <div className="">
               {numberFormatter(record.transitionPrice10, 2, true)}
@@ -217,10 +273,20 @@ export const timeswap = async (params: any) => {
             </div>
           </div>
         );
+        if (isMobile) {
+          return (
+            <LabelValue label="Transition Price" className="flex-col gap-[4px] !items-start mt-[20px]">
+              {_tp}
+            </LabelValue>
+          );
+        }
+        return _tp;
       }
     },
     {
       ...marketColumns[4],
+      mdSort: 4,
+      mdWidth: "33.33%",
       title: () => {
         return (
           <>
@@ -259,7 +325,19 @@ export const timeswap = async (params: any) => {
           };
         }
         return it;
-      })
+      });
+    yoursColumns = yoursColumns
+      .slice(0, 4)
+      .sort((a: any, b: any) => a.mdSort - b.mdSort)
+      .map((it: any) => {
+        if (it.mdWidth) {
+          return {
+            ...it,
+            width: it.mdWidth,
+          };
+        }
+        return it;
+      });
   }
 
   return {
