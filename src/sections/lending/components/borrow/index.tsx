@@ -1,18 +1,16 @@
 import clsx from 'clsx';
 import LendingActionCard from '@/sections/lending/components/action-card';
 import LendingAmountInput from '@/sections/lending/components/amount-input';
-import DescriptionTitle from '@/sections/lending/components/description-title';
 import { useAmount } from '@/sections/lending/hooks/amount';
-import LendingWarning from '@/sections/lending/components/warning';
 import { LendingAmountChangeParams, LendingAmountChangeType } from '@/sections/lending/config';
-import Big from 'big.js';
-import { numberFormatter, numberRemoveEndZero } from '@/utils/number-formatter';
-import { calculateTimeSwapBorrow, calculateTimeSwapCollateral } from '@/sections/lending/utils';
-import { useMemo } from 'react';
+import { numberRemoveEndZero } from '@/utils/number-formatter';
+import { calculateTimeSwapBorrow } from '@/sections/lending/utils';
+import LendingBorrow from '@/sections/lending/borrow';
 
 const BorrowForm = (props: any) => {
   const { className, market, config, action, onClose } = props;
 
+  const data = useAmount({ market, config, onClose, action });
   const {
     amount,
     actionAmount,
@@ -24,7 +22,9 @@ const BorrowForm = (props: any) => {
     balance,
     balanceLoading,
     balanceToken,
-  } = useAmount({ market, config, onClose, action });
+  } = data;
+
+  const BorrowContent = LendingBorrow[config.pathName];
 
   return (
     <LendingActionCard
@@ -65,54 +65,7 @@ const BorrowForm = (props: any) => {
         balanceLoading={balanceLoading}
         balanceToken={balanceToken}
       />
-      {
-        config.name === "Timeswap" && (
-          <>
-            <div className="mt-[26px]">
-              <div className="flex justify-between items-center">
-                <DescriptionTitle
-                  descriptionClassName="w-[318px]"
-                  description="The amount of debt you have to repay at maturity"
-                >
-                  Debt to Repay
-                </DescriptionTitle>
-                <div className="flex justify-end items-center gap-[4px] text-[#A6A6DB] font-Unbounded text-[12px] font-normal leading-normal">
-                  <div className="text-[#FFF]">
-                    {numberFormatter(amount, 4, true, { round: 0 })}
-                  </div>
-                  <div className="">
-                    {market?.tokens?.[0]?.symbol}
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-between items-center mt-[16px]">
-                <DescriptionTitle
-                  descriptionClassName="w-[318px]"
-                  description="The amount of shMON collateral to be deposited, and the amount withdrawn when the debt is paid."
-                >
-                  Collateral to Lock
-                </DescriptionTitle>
-                <div className="flex justify-end items-center gap-[4px] text-[#A6A6DB] font-Unbounded text-[12px] font-normal leading-normal">
-                  <div className="text-[#FFF]">
-                    {numberFormatter(
-                      calculateTimeSwapCollateral(amount || "0", market?.poolData?.apr, market?.transitionPrice10, market?.duration),
-                      4,
-                      true,
-                      { round: 0 }
-                    )}
-                  </div>
-                  <div className="">
-                    {market?.tokens?.[1]?.symbol}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <LendingWarning className="mt-[15px]">
-              You have to repay the above debt <strong>before maturity</strong>, else you forfeit the collateral deposited.
-            </LendingWarning>
-          </>
-        )
-      }
+      <BorrowContent {...props} {...data} />
     </LendingActionCard>
   );
 };

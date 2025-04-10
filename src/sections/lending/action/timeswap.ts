@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import Big from 'big.js';
 
 export const timeswap = async (actionParams: any) => {
-  const { action, amount, actionAmount, config, market, signer, account } = actionParams;
+  const { action, amount, actionAmount, config, market, signer, account, isCallStatic } = actionParams;
 
   let options: any = {};
   let params: any = [];
@@ -119,9 +119,10 @@ export const timeswap = async (actionParams: any) => {
   }
 
   return new Promise((resolve, reject) => {
+    const _contract = isCallStatic ? contract.callStatic : contract;
     const createTx = (gas?: any) => {
       const _gas = gas ? Big(gas.toString()).mul(1.2).toFixed(0) : 4000000;
-      contract[method](...params, {
+      _contract[method](...params, {
         ...options,
         gasLimit: _gas
       }).then((tx: any) => {

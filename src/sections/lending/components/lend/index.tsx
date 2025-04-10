@@ -2,14 +2,13 @@ import clsx from 'clsx';
 import LendingActionCard from '@/sections/lending/components/action-card';
 import LendingAmountInput from '@/sections/lending/components/amount-input';
 import { useAmount } from '@/sections/lending/hooks/amount';
-import DescriptionTitle from '@/sections/lending/components/description-title';
-import { numberFormatter } from '@/utils/number-formatter';
-import Big from 'big.js';
 import { LendingAmountChangeParams } from '@/sections/lending/config';
+import LendingLend from '@/sections/lending/lend';
 
 const LendForm = (props: any) => {
   const { className, market, config, action, onClose } = props;
 
+  const data = useAmount({ market, config, onClose, action });
   const {
     amount,
     actionAmount,
@@ -21,7 +20,9 @@ const LendForm = (props: any) => {
     balance,
     balanceLoading,
     balanceToken,
-  } = useAmount({ market, config, onClose, action });
+  } = data;
+
+  const LendContent = LendingLend[config.pathName];
 
   return (
     <LendingActionCard
@@ -52,35 +53,7 @@ const LendForm = (props: any) => {
         balanceLoading={balanceLoading}
         balanceToken={balanceToken}
       />
-      <div className="mt-[26px]">
-        <DescriptionTitle
-          descriptionClassName="w-[318px]"
-          description={`The amount you are expected to receive after maturity. When borrowers repay their ${market?.tokens?.[0]?.symbol} debt, expect to receive ${market?.tokens?.[0]?.symbol}. When they forego their ${market?.tokens?.[1]?.symbol} collateral, expect to receive ${market?.tokens?.[1]?.symbol}.`}
-        >
-          Amount at Maturity
-        </DescriptionTitle>
-      </div>
-      <div className="flex justify-between items-start mt-[16px] text-[#A6A6DB] font-Unbounded text-[12px] font-normal leading-normal">
-        <div className="">
-          <div>
-            Est. {market?.tokens?.[0]?.symbol}
-          </div>
-          <div className="text-[#FFF] font-Unbounded text-[12px] font-normal leading-normal mt-[8px]">
-            {numberFormatter(amount, 4, true, { round: 0 })}
-          </div>
-        </div>
-        <div className="">
-          Or
-        </div>
-        <div className="text-right">
-          <div>
-            Est. {market?.tokens?.[1]?.symbol}
-          </div>
-          <div className="text-[#FFF] font-Unbounded text-[12px] font-normal leading-normal mt-[8px]">
-            {numberFormatter(Big(amount || 0).times(market?.transitionPrice01 || 1), 4, true, { round: 0 })}
-          </div>
-        </div>
-      </div>
+      <LendContent {...props} {...data} />
     </LendingActionCard>
   );
 };
