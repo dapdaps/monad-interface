@@ -1,28 +1,30 @@
 import { IDapp } from "@/types";
 
 export const ALL_DAPP_LIST: IDapp[] = [
-
+  // feedback-6
+  // {
+  //   name: "iZumi",
+  //   icon: "/images/dapps/icons/iZumi.svg",
+  //   type: "dex",
+  //   link: "/dex/izumi",
+  //   desc: "iZUMi Finance is a multi-chain DeFi protocol providing one-stop DEX-as-a-Service (DaaS)."
+  // },
   {
-    name: "iZumi",
-    icon: "/images/dapps/icons/iZumi.svg",
-    type: "dex",
-    link: "/dex/izumi",
-    desc: "iZUMi Finance is a multi-chain DeFi protocol providing one-stop DEX-as-a-Service (DaaS)."
-  },
-  {
-    name: "Pancake",
+    // feedback-5
+    name: "PancakeSwap",
     icon: "/images/dapps/icons/Pancake.svg",
     type: "dex",
     link: "/dex/pancake",
     desc: "Trade and earn crypto on the all-in-one decentralized exchange. Enjoy low fees, high liquidity, and a user-friendly interface."
   },
-  {
-    name: "OpenOcean",
-    icon: "/images/dapps/icons/OpenOcean.svg",
-    type: "dex",
-    link: "/dex/openocean",
-    desc: "A leading DEX aggregator on 30+ chains, with its swap API powering 180+ projects like MetaMask, Rabby, Li.Fi, and more."
-  },
+  // feedback-6
+  // {
+  //   name: "OpenOcean",
+  //   icon: "/images/dapps/icons/OpenOcean.svg",
+  //   type: "dex",
+  //   link: "/dex/openocean",
+  //   desc: "A leading DEX aggregator on 30+ chains, with its swap API powering 180+ projects like MetaMask, Rabby, Li.Fi, and more."
+  // },
   {
     name: "LFJ",
     icon: "/images/dapps/icons/LFJ.svg",
@@ -30,13 +32,14 @@ export const ALL_DAPP_LIST: IDapp[] = [
     link: "/dex/lfj",
     desc: "The onchain trading platform built for winners. One-stop DEX, Aggregator & Screener for Monad. Discover & buy every token at the best prices."
   },
-  {
-    name: "Orbiter",
-    icon: "https://assets.dapdap.net/images/100-obiter.png",
-    type: "bridge",
-    link: "/bridge/obiter",
-    desc: "Orbiter Finance is a decentralized cross-rollup bridge that offers secure, low cost and almost instant transfer."
-  },
+  // feedback-6
+  // {
+  //   name: "Orbiter",
+  //   icon: "https://assets.dapdap.net/images/100-obiter.png",
+  //   type: "bridge",
+  //   link: "/bridge/obiter",
+  //   desc: "Orbiter Finance is a decentralized cross-rollup bridge that offers secure, low cost and almost instant transfer."
+  // },
   {
     name: "Kuru",
     icon: "/images/dapps/icons/kuru.svg",
