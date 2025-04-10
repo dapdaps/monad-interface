@@ -1,0 +1,42 @@
+<svg width="390" height="184" viewBox="0 0 390 184" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_ii_33395_4776)">
+<rect width="1041.34" height="25.3103" transform="matrix(1 0 0 -1 -93.8008 56.6826)" fill="#313B58"/>
+</g>
+<rect width="1041.34" height="25.3103" transform="matrix(1 0 0 -1 -93.8008 56.6826)" stroke="black"/>
+<rect width="226.347" height="10.8473" transform="matrix(1 0 0 -1 -93.8008 82.7158)" fill="#313B58" stroke="black"/>
+<rect x="-93.8008" y="56.6826" width="211.884" height="15.1862" fill="#23243D" stroke="black"/>
+<rect x="-93.8008" y="82.7158" width="226.347" height="15.1862" fill="#23243D" stroke="black"/>
+<rect x="-93.8008" y="108.749" width="250.211" height="15.1862" fill="#23243D" stroke="black"/>
+<rect x="-93.8008" y="134.783" width="260.335" height="15.1862" fill="#23243D" stroke="black"/>
+<rect width="250.211" height="10.8473" transform="matrix(1 0 0 -1 -93.8008 108.749)" fill="#313B58" stroke="black"/>
+<rect width="260.335" height="10.8473" transform="matrix(1 0 0 -1 -93.8008 134.783)" fill="#313B58" stroke="black"/>
+<rect x="63.8465" y="43.666" width="72.3153" height="4.33892" fill="#23243D" stroke="black"/>
+<rect x="207.031" y="43.666" width="72.3153" height="4.33892" fill="#23243D" stroke="black"/>
+<rect x="350.215" y="43.666" width="72.3153" height="4.33892" fill="#23243D" stroke="black"/>
+<rect x="195.46" y="2.44629" width="7.23153" height="31.8187" rx="3.61576" fill="#928157" stroke="black" stroke-linecap="round"/>
+<rect x="100.004" y="24.1406" width="7.23153" height="49.8975" fill="#928157" stroke="black" stroke-linecap="round"/>
+<rect x="136.162" y="71.8691" width="7.23153" height="44.1123" fill="#928157" stroke="black" stroke-linecap="round"/>
+<rect x="335.029" y="2.44629" width="7.23153" height="31.8187" rx="3.61576" fill="#928157" stroke="black" stroke-linecap="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M95.3989 18.5129C89.8499 11.3889 94.9264 1 103.957 1H947.54V8.23153H103.957C100.946 8.23153 99.2543 11.6945 101.104 14.0692L173.285 106.738C174.768 108.643 175.574 110.988 175.574 113.403V180.703H168.343V113.403C168.343 112.598 168.074 111.816 167.579 111.181L95.3989 18.5129Z" fill="#CDA954" stroke="black" stroke-linecap="round"/>
+<rect width="390" height="183" transform="matrix(1 0 0 -1 0 184)" fill="url(#paint0_linear_33395_4776)"/>
+<defs>
+<filter id="filter0_ii_33395_4776" x="-94.3008" y="30.8721" width="1042.34" height="26.3105" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="6"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_33395_4776"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dx="-26"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="effect1_innerShadow_33395_4776" result="effect2_innerShadow_33395_4776"/>
+</filter>
+<linearGradient id="paint0_linear_33395_4776" x1="195" y1="0" x2="195" y2="183" gradientUnits="userSpaceOnUse">
+<stop/>
+<stop offset="1" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>

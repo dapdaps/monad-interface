@@ -43,7 +43,7 @@ const MainLayout = (props: Props) => {
       }}
     >
       <MainLayoutHeader />
-      <div className="grow">
+      <div className="relative grow">
         {children}
       </div>
       <MainLayoutFooter />

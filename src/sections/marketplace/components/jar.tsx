@@ -79,14 +79,14 @@ const TokenItem = ({ token, type }: { token: IToken; type: any }) => {
   return (
     <>
       <motion.div
-        className="group absolute -translate-x-[100%]"
+        className="group absolute"
         animate={{
           transform: [
-            "translateY(calc(-100% - 50px)",
-            "translateY(calc(-100% - 56px)",
-            "translateY(calc(-100% - 50px)",
-            "translateY(calc(-100% - 44px)",
-            "translateY(calc(-100% - 50px)",
+            "translate3d(-50%, calc(-100% - 50px), 0)",
+            "translate3d(-50%, calc(-100% - 56px), 0)",
+            "translate3d(-50%, calc(-100% - 50px), 0)",
+            "translate3d(-50%, calc(-100% - 44px), 0)",
+            "translate3d(-50%, calc(-100% - 50px), 0)",
           ]
         }}
         transition={{
@@ -240,16 +240,16 @@ export default memo(function jar({
     return [_top, _bottom];
   }, [tokens]);
   return (
-    <div className="w-[21.667vw] h-full flex flex-col items-center">
-      <div className="relative z-10 w-[19.301vw] h-[10.833vw] bg-[url('/images/marketplace/jar_top.svg')] bg-center bg-contain bg-no-repeat">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[12.639vw] h-[2.639vw] flex items-center justify-center text-[#78FEFF] font-bold">
+    <div className="md:w-[82.564vw] w-[21.667vw] h-full flex flex-col items-center">
+      <div className="relative z-10 md:w-[82.564vw] w-[19.301vw] md:h-[30.256vw] h-[10.833vw] md:bg-[url('/images/marketplace/mobile/jar_top.svg')] bg-[url('/images/marketplace/jar_top.svg')] bg-center bg-contain bg-no-repeat">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 md:w-[44.872vw] w-[12.639vw] md:h-[10.256vw] h-[2.639vw] flex items-center justify-center md:text-[#BFFF60] md:text-stroke-1 text-[#78FEFF] font-bold">
           {title}
         </div>
       </div>
       <div
         ref={jarRef}
         className={clsx(
-          "-mt-[0.8vw] relative flex flex-col w-[18.194vw] flex-1 border border-black bg-black/50 backdrop-blur-[5px]",
+          "-mt-[0.8vw] relative flex flex-col md:w-[76.923vw] w-[18.194vw] flex-1 border border-black bg-black/50 backdrop-blur-[5px]",
           type === "price"
             ? "shadow-[0_0_40px_20px_rgba(0,255,249,0.5)_inset]"
             : "shadow-[0_0_40px_20px_rgba(0,255,249,0.50)_inset]"

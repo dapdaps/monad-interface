@@ -5,9 +5,9 @@ const FaucetCard = (props: any) => {
   const { className, headerClassName, bodyClassName, children } = props;
 
   return (
-    <div className={clsx("w-[828px] min-h-[200px] rounded-[12px] border border-[#3E347C] bg-[#2B294A]", className)}>
+    <div className={clsx("md:w-full w-[828px] min-h-[200px] rounded-[12px] md:border-0 border border-[#3E347C] md:bg-transparent bg-[#2B294A]", className)}>
       <FaucetTitle
-        className={clsx("w-full h-[66px] pl-[22px] pb-[2px] items-end bg-[url('/images/faucet/card-head.svg')] bg-no-repeat bg-[position:center_top] bg-[length:100%]')]", headerClassName)}
+        className={clsx("md:hidden w-full h-[66px] pl-[22px] pb-[2px] items-end bg-[url('/images/faucet/card-head.svg')] bg-no-repeat bg-[position:center_top] bg-[length:100%]')]", headerClassName)}
         textClassName="opacity-100 translate-y-[-4px]"
       >
         <svg width="230" height="39" viewBox="0 0 230 39" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -21,7 +21,7 @@ const FaucetCard = (props: any) => {
           </g>
         </svg>
       </FaucetTitle>
-      <div className={clsx("pt-[32px] pb-[27px] text-[12px] text-white font-[400] font-Unbounded leading-normal", bodyClassName)}>
+      <div className={clsx("md:pt-[40px] pt-[32px] pb-[27px] text-[12px] text-white font-[400] font-Unbounded leading-normal", bodyClassName)}>
         {children}
       </div>
     </div>

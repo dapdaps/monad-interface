@@ -78,7 +78,7 @@ const FaucetStep = (props: any) => {
   }, [checkinDays]);
 
   return (
-    <div className={clsx("w-full flex-1 flex items-center justify-between gap-[3px] pl-[53px] pr-[76px] text-[#A6A6DB] text-[12px] font-[300] font-Unbounded", className)}>
+    <div className={clsx("w-full md:min-h-[114px] md:rounded-[6px] bg-[rgba(45,48,79,0.60)] flex-1 flex items-center justify-between gap-[3px] md:p-[0_33px] p-[0_76px_0_53px] text-[#A6A6DB] text-[12px] font-[300] md:leading-[90%] font-Unbounded", className)}>
       {
         list.map((item, index) => (
           <>
@@ -170,7 +170,7 @@ const Step = (props: any) => {
           <StepPoint item={item} />
         )
       }
-      <div className="absolute bottom-[-13px] flex items-center justify-center gap-[4px]">
+      <div className="md:w-[71px] md:flex-wrap absolute md:bottom-[-26px] bottom-[-13px] flex items-center justify-center gap-[4px]">
         {item.label}
       </div>
     </div>
