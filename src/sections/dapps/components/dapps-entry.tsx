@@ -191,7 +191,7 @@ export default memo(function DappsEntry({
                   }}
                 >
                   <div className="relative m-[32px_auto_15px] w-[56px]">
-                    <img src={dapp?.icon} alt={dapp?.name} />
+                    <img src={dapp?.icon} alt={dapp?.name} className="rounded-[10px] object-center object-contain w-[56px] h-[56px]" />
                     {
                       dapp?.link?.indexOf("http") > -1 && (
                         <div className="absolute right-[-6px] bottom-0 w-[16px]">
