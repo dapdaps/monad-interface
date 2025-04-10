@@ -84,8 +84,8 @@ export function useAmount(props: any) {
             return "";
           }
           // amount = borrow amount, token1Amount = collateral amount
-          const token1Amount = calculateTimeSwapCollateral(amount || "0", market?.poolData?.apr, market?.transitionPrice10, market?.duration);
-          if (Big(amount || 0).gt(0) && (Big(amount || 0).gt(token0Balance || 0) || token1Amount.gt(token1Balance || 0))) {
+          const token1Amount = calculateTimeSwapCollateral(amount || "0", market?.poolData?.apr, market?.transitionPrice10, market?.duration).toFixed(market?.tokens?.[1]?.decimals || 18, 0);
+          if (Big(amount || 0).gt(0) && (Big(amount || 0).gt(token0Balance || 0) || Big(token1Amount).gt(token1Balance || 0))) {
             return "Insufficient balance";
           }
           return "";
