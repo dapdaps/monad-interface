@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Loading from "@/components/circle-loading";
 import { balanceFormated } from "@/utils/balance";
 import useToast from "@/hooks/use-toast";
+import useIsMobile from "@/hooks/use-isMobile";
 
 const StyledCurrencyRow = styled.div`
   padding: 14px 20px;
@@ -73,6 +74,8 @@ export default function CurrencyRow({
 
   const toast = useToast();
 
+  const isMobile = useIsMobile()
+
   const handleCopyAddress = (currency: any) => {
     window?.navigator?.clipboard?.writeText?.(currency.address as string);
     toast.success({
@@ -93,7 +96,7 @@ export default function CurrencyRow({
           <CurrencySymbol>{currency.symbol}</CurrencySymbol>
           <div className="text-[10px] flex items-center gap-[12px]">
             <div className="">{currency.name}</div>
-            {currency.address !== "native" && (
+            {!isMobile && currency.address !== "native" && (
               <div className="text-[#A6A6DB] flex items-center gap-[10px] pointer-events-auto opacity-100">
                 <div className="">
                   {currency.address

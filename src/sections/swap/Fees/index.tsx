@@ -26,20 +26,20 @@ export default function Routes({
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 140 }}
           exit={{ opacity: 0, height: 0 }}
-          className="border border-[#373A53] rounded-[12px] mt-[10px] p-[10px]"
+          className="border lg:border-[#75759D] md:border-[#454556] rounded-[12px] mt-[10px] p-[10px] md:backdrop-blur-[4px]"
         >
-          <Fee
-            name="Price impact"
-            value={`${priceImpact || "-"}%`}
-            valueClassName={COLOR[priceImpactType || 0]}
-          />
-          <Fee name="Gas fee" value={gasUsd} />
           <Fee
             name="Minimum received"
             value={Big(outputCurrencyAmount || 0)
               .mul(1 - slippage / 100)
               .toFixed(8)}
           />
+          <Fee
+            name="Price impact"
+            value={`${priceImpact || "-"}%`}
+            valueClassName={COLOR[priceImpactType || 0]}
+          />
+          <Fee name="Trading fee" value={gasUsd} />
           <Fee name="Route" value={routerStr} />
         </motion.div>
       )}

@@ -64,129 +64,138 @@ export default function TokenAmout({
   useEffect(() => {
     update();
   }, [updater]);
-
   return (
-    <div
-      className={clsx(
-        "border rounded-[6px] p-[14px]",
-        focus ? "border-[#fff] bg-[#4D4D73]" : "border-[transparent] bg-white/5"
-      )}
-      onFocus={() => {
-        setFocus(true);
-      }}
-      onBlur={() => {
-        setFocus(false);
-      }}
-    >
-      <div className="flex items-center justify-between gap-[10px] text-white">
-        <div className="flex-1">
-          <input
-            className="w-[100%] h-[100%] text-[26px] bg-[transparent]"
-            value={amount}
-            onChange={(ev) => {
-              if (isNaN(Number(ev.target.value))) return;
-              const val = ev.target.value.replace(/\s+/g, "");
-              onAmountChange?.(val);
-              setRange(val);
-            }}
-            placeholder="0"
-          />
-        </div>
-        <div
-          className={`${
-            outputCurrencyReadonly ? "" : "border bg-[#4D4D73]"
-          } flex items-center justify-between border-[#ACACE2] rounded-[8px]  w-[176px] h-[46px] px-[7px] cursor-pointer`}
-          onClick={() => {
-            onCurrencySelectOpen();
-          }}
-        >
-          {currency ? (
-            <div className="flex items-center gap-[10px]">
-              <div className="relative shrink-0">
-                <img
-                  className="w-[26px] h-[26px]"
-                  src={currency.icon || "/assets/tokens/default_icon.png"}
-                />
-              </div>
-              <div className="text-[16px] font-[600] max-w-[100px] truncate">
-                {currency?.symbol}
-              </div>
-            </div>
-          ) : (
-            <div className="text-[16px] font-[600]">Select a token</div>
-          )}
-          {!outputCurrencyReadonly && (
-            <svg
-              width="12"
-              height="7"
-              viewBox="0 0 12 7"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1 1L6 5L11 1"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-          )}
-        </div>
-      </div>
+      <div
+        className={clsx(
+          "border rounded-[6px] p-[14px] md:bg-[#2D304F]/60 backdrop-blur-[10px]",
+          focus ? "lg:border-[#fff] lg:bg-[#4D4D73] md:border-[#D7D7F6]" : "border-[transparent] lg:bg-white/5",
+        )}
+        onFocus={() => {
+          setFocus(true);
+        }}
+        onBlur={() => {
+          setFocus(false);
+        }}
+      >
+        <div className="text-[#A6A6DB] font-Unbounded text-[14px]">{type === 'in' ? 'You Pay' : 'Receive'}</div>
+        <div className="flex items-center justify-between gap-[10px] text-white">
 
-      {type === "in" && (
-        <div className="flex justify-between md:flex-col md:items-stretch md:justify-start items-center gap-[22px] mt-[12px]">
-          <Range
-            style={{ marginTop: 0, flex: 1 }}
-            value={percent}
-            onChange={handleRangeChange}
-          />
-          <div className="flex items-center gap-[8px]">
-            {BalancePercentList.map((p) => (
-              <motion.div
-                key={p.value}
-                className="cursor-pointer h-[22px] rounded-[6px] text-[#A6A6DB] text-[10px] font-[400] px-[8px] hover:underline hover:text-white"
-                animate={percent == p.value ? { color: "#fff" } : {}}
-                onClick={() => handleRangeChange({ target: p })}
+          <div className="flex-1">
+            <input
+              className="w-[100%] h-[100%] text-[26px] bg-[transparent]"
+              value={amount}
+              onChange={(ev) => {
+                if (isNaN(Number(ev.target.value))) return;
+                const val = ev.target.value.replace(/\s+/g, "");
+                onAmountChange?.(val);
+                setRange(val);
+              }}
+              placeholder="0"
+            />
+          </div>
+          <div
+            className={`${
+              outputCurrencyReadonly ? "" : "border lg:bg-[#4D4D73] md:bg-[#393959]"
+            } flex items-center justify-between lg:border-[#ACACE2] md:border-[#454556] rounded-[8px]  min-w-[102px] h-[46px] px-[7px] cursor-pointer`}
+            onClick={() => {
+              onCurrencySelectOpen();
+            }}
+          >
+            {currency ? (
+              <div className="flex items-center gap-[10px]">
+                <div className="relative shrink-0">
+                  <img
+                    className="w-[26px] h-[26px]"
+                    src={currency.icon || "/assets/tokens/default_icon.png"}
+                  />
+                </div>
+                <div className="text-[16px] font-[600] max-w-[100px] truncate">
+                  {currency?.symbol}
+                </div>
+              </div>
+            ) : (
+              <div className="text-[16px] font-[600]">Select a token</div>
+            )}
+            {!outputCurrencyReadonly && (
+              <svg
+                width="12"
+                height="7"
+                className="ml-2"
+                viewBox="0 0 12 7"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                {p.label}
-              </motion.div>
-            ))}
+                <path
+                  d="M1 1L6 5L11 1"
+                  stroke="white"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              </svg>
+            )}
           </div>
         </div>
-      )}
 
-      <div
-        onClick={() => {
-          const formatedBalance = balanceFormated(tokenBalance);
-          if (["-", "Loading", "0"].includes(formatedBalance)) return;
-          onAmountChange?.(tokenBalance);
-          setRange(tokenBalance);
-        }}
-        className="flex items-center justify-between text-[#75759D] mt-[10px] font-medium text-[12px]"
-      >
-        <div>
-          $
-          {amount && tokenPrice
-            ? balanceFormated(Big(amount).mul(tokenPrice).toString())
-            : "-"}
+        <div
+          onClick={() => {
+            const formatedBalance = balanceFormated(tokenBalance);
+            if (["-", "Loading", "0"].includes(formatedBalance)) return;
+            onAmountChange?.(tokenBalance);
+            setRange(tokenBalance);
+          }}
+          className="flex items-center justify-between text-[#A6A6DB] mt-[10px] text-[10px]"
+        >
+          <div>
+            $
+            {amount && tokenPrice
+              ? balanceFormated(Big(amount).mul(tokenPrice).toString())
+              : "-"}
+          </div>
+          <div className="flex items-center gap-[4px]">
+            balance:{" "}
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <span
+                style={{
+                  textDecoration: disabled ? "none" : "underline"
+                }}
+              >
+                {currency ? balanceFormated(tokenBalance) : "-"}
+              </span>
+            )}
+          </div>
         </div>
-        <div className="flex items-center gap-[4px]">
-          balance:{" "}
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <span
-              style={{
-                textDecoration: disabled ? "none" : "underline"
-              }}
-            >
-              {currency ? balanceFormated(tokenBalance) : "-"}
-            </span>
-          )}
-        </div>
+
+        {type === "in" && (
+          <div className="flex justify-between md:flex-row items-center gap-[22px] mt-[12px]">
+            <Range
+              style={{ marginTop: 0, flex: 1 }}
+              value={percent}
+              onChange={handleRangeChange}
+            />
+            <div className="flex items-center gap-[8px]">
+            {BalancePercentList.map((p, index) => (
+                <>
+                  {index > 0 && (
+                    <div className="w-[1px] h-[10px] bg-[#75759D] bg-opacity-[0.5]"></div>
+                  )}
+                  <motion.div
+                    key={p.value}
+                    className="cursor-pointer h-[22px] rounded-[6px] text-[#A6A6DB] text-[10px] leading-[22px] font-[400] hover:underline hover:text-white"
+                    animate={percent == p.value ? { color: "#fff" } : {}}
+                    onClick={() => handleRangeChange({ target: p })}
+                  >
+                    {p.label}
+                  </motion.div>
+                </>
+              ))}
+            </div>
+          </div>
+        )}
+
+
       </div>
-    </div>
   );
 }
 
