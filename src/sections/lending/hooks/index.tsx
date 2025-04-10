@@ -230,6 +230,8 @@ export function useLending(props: any): Lending {
     yoursOrderDirection,
   ]);
 
+  console.log("marketsList: %o", marketsList);
+
   return {
     config: dapp,
     TABS,

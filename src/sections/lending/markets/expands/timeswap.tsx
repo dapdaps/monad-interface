@@ -30,7 +30,9 @@ const TimeSwap = (props: any) => {
           />
           <div className="">
             {numberFormatter(
-              Big(row.poolData?.liquidity?.token1LongBalance ?? 0).div(10 ** (row.poolData?.pool?.token1?.decimals ?? 0)),
+              row.poolData?.pool?.isToken1Base
+                ? Big(row.poolData?.liquidity?.token1LongBalance ?? 0).div(10 ** (row.poolData?.pool?.token1?.decimals ?? 0))
+                : Big(row.poolData?.liquidity?.token0LongBalance ?? 0).div(10 ** (row.poolData?.pool?.token0?.decimals ?? 0)),
               0,
               true,
               { round: 0 }
