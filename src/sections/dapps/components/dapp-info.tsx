@@ -17,7 +17,8 @@ const DappInfo: React.FC<any> = ({
   top,
   desc,
   onMouseEnter,
-  onMouseLeave
+  onMouseLeave,
+  className
 }) => {
   const isMobile = useIsMobile()
   const router = useRouter()
@@ -125,7 +126,7 @@ const DappInfo: React.FC<any> = ({
     <div
       style={{ left, top }}
       onMouseEnter={onMouseEnter}
-      className="absolute bg-[#1A1843CC] rounded-[6px] p-[20px] left-[178px] z-[10] w-[352px] border border-[#3E347C] backdrop-filter-[10px]"
+      className={clsx("absolute bg-[#1A1843CC] rounded-[6px] p-[20px] left-[178px] z-[10] w-[352px] border border-[#3E347C] backdrop-filter-[10px]", className)}
     >
       <div className="flex items-center gap-[16px]">
         <div className="rounded-[10px] border border-[#836EF9]">
