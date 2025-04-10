@@ -178,7 +178,7 @@ export default memo(function DappsEntry({
                 )}
               >
                 <div
-                  className="cursor-pointer w-[180px] h-[155px] bg-[url('/images/dapps/dapp_bg.svg')] bg-contain bg-no-repeat relative"
+                  className="cursor-pointer w-[180px] h-[155px] bg-[url('/images/dapps/dapp_bg.png')] bg-contain bg-no-repeat relative"
                   data-name={dapp.name}
                   key={dapp.name}
                   onClick={() => {

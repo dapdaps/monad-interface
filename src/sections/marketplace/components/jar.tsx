@@ -240,7 +240,7 @@ export default memo(function jar({
     return [_top, _bottom];
   }, [tokens]);
   return (
-    <div className="md:w-[82.564vw] w-[21.667vw] h-full flex flex-col items-center">
+    <div className="md:w-[82.564vw] w-[21.667vw] md:h-[260vw] h-full flex flex-col items-center">
       <div className="relative z-10 md:w-[82.564vw] w-[19.301vw] md:h-[30.256vw] h-[10.833vw] md:bg-[url('/images/marketplace/mobile/jar_top.svg')] bg-[url('/images/marketplace/jar_top.svg')] bg-center bg-contain bg-no-repeat">
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 md:w-[44.872vw] w-[12.639vw] md:h-[10.256vw] h-[2.639vw] flex items-center justify-center md:text-[#BFFF60] md:text-stroke-1 text-[#78FEFF] font-bold">
           {title}

@@ -10,7 +10,7 @@ export default memo(function MobileBackground({
       <div className="absolute left-0 right-0 bottom-0">
         <img className="w-full" src="/images/marketplace/mobile/bg_top.svg" alt="bg_top" />
       </div>
-      <div className="absolute flex flex-col left-0 right-0 bottom-0 top-0">
+      <div className="absolute flex flex-col left-0 right-0 bottom-0 top-0 overflow-auto">
         <div className="flex-1">
           {children}
         </div>

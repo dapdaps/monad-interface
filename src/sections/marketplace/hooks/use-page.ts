@@ -136,7 +136,7 @@ export default function usePage() {
     const next_level_length = sortTokens.filter((_, i) =>
       hasNextLevel(sortTokens, i, key)
     )?.length;
-    const col = isMobile ? 4 : 2
+    const col = isMobile ? 3 : 2
     const h = 100 / ((sortTokens.length + next_level_length));
 
     console.log('====h', h)

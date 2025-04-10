@@ -10,10 +10,9 @@ export default memo(function Mobile() {
   const tokens = useMemo(() => tokensArray?.[0] ?? [], [tokensArray])
   return (
     <Background>
-      <div className="flex justify-center h-full">
+      <div className="flex justify-center h-full overflow-auto">
         <Jar title="Tokens" tokens={tokens} type={activeType} />
       </div>
-
       <Operation activeType={activeType} setActiveType={setActiveType} />
       {/* <div className="absolute left-1/2 bottom-0 -translate-x-1/2 w-full h-[28.974vw] bg-[url('/images/marketplace/mobile/op_bg.svg')] bg-contain bg-center bg-no-repeat">
         <div className="absolute left-0 right-0 bottom-[6.41vw] flex items-center justify-center gap-[20px]">
