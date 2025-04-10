@@ -43,7 +43,28 @@ export function useAmount(props: any) {
       }
       return [token0Balance, token0BalanceLoading, token0];
     }
-    return [0, false, token0];
+    if (action.value === LendingActionType.Withdraw) {
+      if (config.name === "Timeswap") {
+        return [
+          market?.balance,
+          false,
+          {
+            address: config?.timeswapV2TokenNft,
+            decimals: 18,
+          }
+        ];
+      }
+    }
+    if (action.value === LendingActionType.Repay) {
+      if (config.name === "Timeswap") {
+        return [
+          numberRemoveEndZero(Big(market.balance || 0).times(market.transitionPrice10 || 1).toFixed(market.tokens[0]?.decimals || 18)),
+          false,
+          token0
+        ];
+      }
+    }
+    return [market?.balance, false, token0];
   }, [
     token0,
     token1,
@@ -67,6 +88,7 @@ export function useAmount(props: any) {
           if (Big(amount || 0).gt(0) && (Big(amount || 0).gt(token0Balance || 0) || token1Amount.gt(token1Balance || 0))) {
             return "Insufficient balance";
           }
+          return "";
         }
       }
 
@@ -75,6 +97,25 @@ export function useAmount(props: any) {
       }
       if (Big(amount || 0).gt(0) && Big(amount || 0).gt(token0Balance || 0)) {
         return "Insufficient balance";
+      }
+    }
+    if ([LendingActionType.Withdraw, LendingActionType.Repay].includes(action.value)) {
+      if (action.value === LendingActionType.Repay) {
+        if (config.name === "Timeswap") {
+          if (token1BalanceLoading) {
+            return "";
+          }
+          if (Big(amount || 0).gt(0) && Big(amount || 0).gt(Big(market.balance || 0).times(market.transitionPrice10 || 1).toFixed(market.tokens[0]?.decimals || 18))) {
+            return "Exceeding total debt";
+          }
+          if (Big(amount || 0).gt(0) && Big(amount || 0).gt(token0Balance || 0)) {
+            return "Insufficient balance";
+          }
+          return "";
+        }
+      }
+      if (Big(amount || 0).gt(0) && Big(amount || 0).gt(market.balance || 0)) {
+        return "Invalid amount";
       }
     }
     return "";
@@ -95,6 +136,11 @@ export function useAmount(props: any) {
         return numberRemoveEndZero(
           calculateTimeSwapCollateral(amount || "0", market?.poolData?.apr, market?.transitionPrice10, market?.duration).toFixed(market?.tokens?.[1]?.decimals || 18, 0)
         );
+      }
+    }
+    if (action.value === LendingActionType.Repay) {
+      if (config.name === "Timeswap") {
+        return numberRemoveEndZero(Big(amount || 0).div(market.transitionPrice10).toFixed(market?.tokens?.[1]?.decimals || 18, 0));
       }
     }
     return amount;
@@ -167,5 +213,7 @@ export function useAmount(props: any) {
     balance,
     balanceLoading,
     balanceToken,
+    token0Balance,
+    token1Balance,
   };
 }

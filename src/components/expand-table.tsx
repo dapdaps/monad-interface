@@ -1,24 +1,24 @@
 import clsx from 'clsx';
-import { useLendingContext } from '@/sections/lending/context';
-import { AnimatePresence, motion } from 'framer-motion';
-import type { Column } from '@/sections/lending/column';
 import Loading from '@/components/loading';
+import { AnimatePresence, motion } from 'framer-motion';
 
-const LendingMarket = (props: any) => {
+function ExpandTable<Item = any>(props: Props<Item>) {
   const {
-    markets,
-    marketColumns,
+    className,
+    columns,
     loading,
-    toggleCurrentMarket,
-    currentMarket,
-    handleCurrentAction,
-  } = useLendingContext();
+    data,
+    current,
+    primaryKey = "id",
+    onCurrentChange,
+    expand,
+  } = props;
 
   return (
-    <div className="">
+    <div className={clsx("", className)}>
       <div className="flex items-center h-[46px] px-[10px] bg-[rgba(255,255,255,0.05)] border-[#4f4c70] border-t-[1px] border-b-[1px]">
         {
-          marketColumns?.map((column: Column) => (
+          columns?.map((column: Column) => (
             <div
               className={clsx(
                 "h-full flex items-center gap-[5px] text-[#A6A6DB] font-Unbounded text-[12px] font-normal leading-normal px-[10px]",
@@ -44,8 +44,8 @@ const LendingMarket = (props: any) => {
             <div className="flex justify-center items-center h-[100px]">
               <Loading size={16} />
             </div>
-          ) : markets.map((row: any, rowIndex: number) => {
-            const isExpanded = currentMarket?.id === row.id;
+          ) : data.map((row: any, rowIndex: number) => {
+            const isExpanded = (current as any)?.[primaryKey] === row[primaryKey];
 
             return (
               <div className="overflow-hidden">
@@ -56,14 +56,14 @@ const LendingMarket = (props: any) => {
                   )}
                   onClick={() => {
                     if (isExpanded) {
-                      toggleCurrentMarket();
+                      onCurrentChange?.();
                       return;
                     }
-                    toggleCurrentMarket(row);
+                    onCurrentChange?.(row);
                   }}
                 >
                   {
-                    marketColumns?.map((column: Column, columnIndex: number) => (
+                    columns?.map((column: Column, columnIndex: number) => (
                       <div
                         key={`${rowIndex}-${columnIndex}`}
                         className={clsx(
@@ -86,7 +86,7 @@ const LendingMarket = (props: any) => {
                 </div>
                 <AnimatePresence>
                   {
-                    isExpanded && row.expandRender && (
+                    isExpanded && expand && (
                       <motion.div
                         className="relative z-[1] overflow-hidden flex justify-between gap-[35px] items-end px-[10px] pt-[10px] pb-[18px] bg-[rgba(255,255,255,0.05)] border-[#4f4c70] border-b-[1px]"
                         initial={{
@@ -102,7 +102,7 @@ const LendingMarket = (props: any) => {
                           opacity: 0,
                         }}
                       >
-                        {row.expandRender(row, rowIndex, { handleCurrentAction })}
+                        {expand({ row, rowIndex })}
                       </motion.div>
                     )
                   }
@@ -114,6 +114,27 @@ const LendingMarket = (props: any) => {
       </div>
     </div>
   );
-};
+}
 
-export default LendingMarket;
+export default ExpandTable;
+
+interface Props<Item> {
+  className?: string;
+  columns: Column[];
+  loading?: boolean;
+  data: Item[];
+  current?: Item;
+  // default value is `id`
+  primaryKey?: string;
+  onCurrentChange?: (row?: Item) => void;
+  expand?(params: { row: Item; rowIndex: number; }): any;
+}
+
+export interface Column {
+  title: string | (() => any);
+  dataIndex: string;
+  width?: number | string;
+  key?: string;
+  align?: "left" | "center" | "right";
+  render?: (record: any, index: number) => any;
+}

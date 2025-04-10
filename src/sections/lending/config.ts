@@ -8,6 +8,7 @@ export enum LendingActionType {
 export interface LendingAction {
   value: string;
   label: string;
+  labelAlias?: string;
   icon: string;
 }
 
@@ -20,6 +21,7 @@ export const LENDING_ACTION_TYPE_MAP: Record<LendingActionType, LendingAction> =
   [LendingActionType.Withdraw]: {
     value: LendingActionType.Withdraw,
     label: 'Withdraw',
+    labelAlias: 'Close',
     icon: '/images/lending/icon-up.png',
   },
   [LendingActionType.Borrow]: {

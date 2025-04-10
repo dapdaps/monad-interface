@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import clsx from 'clsx';
 import Big from 'big.js';
 
-const BaseButton = ({ loading, onClick, children, disabled = false, className }: any) => {
+export const BaseButton = ({ loading, onClick, children, disabled = false, className }: any) => {
   return (
     <button
       onClick={onClick}
@@ -32,13 +32,17 @@ export default function SubmitBtn({
   onRefresh,
   updater,
   className,
-  text = "Swap"
+  text = "Swap",
+  onApprove,
+  onCheckApproved
 }: any) {
   const { approve, approved, approving, checking, checkApproved } = useApprove({
     amount,
     token,
     spender,
-    onSuccess: onRefresh
+    onSuccess: onRefresh,
+    onApprove,
+    onCheckApproved,
   });
   const { isPending: switching, switchChain } = useSwitchChain();
   const { open } = useAppKit();

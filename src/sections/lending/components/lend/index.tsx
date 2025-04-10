@@ -55,7 +55,7 @@ const LendForm = (props: any) => {
       <div className="mt-[26px]">
         <DescriptionTitle
           descriptionClassName="w-[318px]"
-          description="The amount you are expected to receive after maturity. When borrowers repay their WMONAD debt, expect to receive WMONAD. When they forego their shMON collateral, expect to receive shMON."
+          description={`The amount you are expected to receive after maturity. When borrowers repay their ${market?.tokens?.[0]?.symbol} debt, expect to receive ${market?.tokens?.[0]?.symbol}. When they forego their ${market?.tokens?.[1]?.symbol} collateral, expect to receive ${market?.tokens?.[1]?.symbol}.`}
         >
           Amount at Maturity
         </DescriptionTitle>
