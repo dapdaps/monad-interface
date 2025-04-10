@@ -18,9 +18,9 @@ export default memo(function Laptop() {
           }
         </div>
       </div>
-      <div className="flex flex-col justify-end h-[180px]">
+      <div className="flex flex-col justify-end">
         <div className="h-[87px] bg-[#23243D] border-t-[18px] border-[#273051]">
-          <div className="absolute bottom-[54px] left-1/2 translate-x-[calc(-50%_-_441px)] w-[63px] h-[87px] bg-[url('/images/dapps/body.svg')] bg-contain bg-no-repeat">
+          <div className="absolute z-[10] bottom-[54px] left-1/2 translate-x-[calc(-50%_-_441px)] w-[63px] h-[87px] bg-[url('/images/dapps/body.svg')] bg-contain bg-no-repeat">
             <motion.div
               className="absolute -right-[13.3px] top-[7px] w-[37px] origin-bottom-left"
               animate={{
