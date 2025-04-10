@@ -28,7 +28,7 @@ export default memo(function externalLinksModal({
         <div className="text-white font-Unbounded text-[20px] font-medium leading-[100%]">External Links</div>
         <div className="flex items-center gap-[10px] m-[18px_0_14px]">
           <div className="w-[30px]">
-            <img src={dapp?.icon} alt={dapp?.name} />
+            <img src={dapp?.icon} alt={dapp?.name} className="w-[30px] h-[30px] object-center object-contain rounded-[6px]" />
           </div>
           <div className="text-white font-Unbounded text-[16px] leading-[100%]">{dapp?.name}</div>
         </div>

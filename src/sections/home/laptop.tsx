@@ -8,6 +8,7 @@ import useAudioPlay from "@/hooks/use-audio";
 import withSound from "@/hoc/withSound";
 import LazyImage from "@/components/layz-image";
 import { ALL_DAPP_LIST } from "../dapps/config";
+import { IDapp } from "@/types";
 
 const itemWidth = 51;
 const itemGap = 6;
@@ -40,7 +41,7 @@ const Home = () => {
   //   { name: "orbiter", icon: "https://assets.dapdap.net/images/100-obiter.png" },
   // ];
 
-  const duplicateFunc = (items: typeof dappItems, times: number = 2) => {
+  const duplicateFunc = (items: any, times: number = 2) => {
     return Array(times).fill(items).flat();
   };
 
@@ -60,7 +61,7 @@ const Home = () => {
           <div
             data-bp="1001-002"
             data-hover-sound
-            onClick={() => router.push("/bridge")}
+            // onClick={() => router.push("/bridge")}
             className={
               clsx('absolute left-[calc(70/14.4*var(--rem))] bottom-[calc(344/14.4*var(--rem))] w-[357px] h-[430px]',
                 windowWidth >= 2560 ? 'scale-[1.3] hover:scale-[1.4]' : '',
@@ -69,11 +70,12 @@ const Home = () => {
                 windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
                 "bg-no-repeat bg-contain",
                 "transition-all duration-200 ease-in-out cursor-pointer",
-                "bg-[url(/images/monad/entry/bridge.svg)] hover:bg-[url(/images/monad/entry/bridge-hover.svg)]"
+                "bg-[url(/images/monad/entry/bridge-locked.svg)]",
+                // "bg-[url(/images/monad/entry/bridge-locked.svg)] hover:bg-[url(/images/monad/entry/bridge-hover.svg)]"
               )
             }
           >
-            <div className="relative w-full h-full">
+            {/* <div className="relative w-full h-full">
               <div className="w-[84px] h-[115px] absolute right-[119px] top-[92px]">
                 <img src="/images/monad/entry/aperture.gif" className="w-full h-full" alt="" />
               </div>
@@ -95,7 +97,7 @@ const Home = () => {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
           {/* game */}
           <div
@@ -114,7 +116,7 @@ const Home = () => {
             )}>
           </div>
           {/* yapper */}
-          <div
+          {/* <div
             data-bp="1001-005"
             className={clsx(
               "z-[4] w-[378px] h-[290px] absolute right-[calc(280/14.4*var(--rem))]",
@@ -153,9 +155,9 @@ const Home = () => {
                   }}
                   className="relative w-full h-full bg-no-repeat bg-contain bg-[url(/images/monad/entry/radar.svg)]"
                 ></motion.div>
-              </div> */}
+              </div>
             </div>
-          </div>
+          </div> */}
           {/* Faucet */}
           <div
             data-bp="1001-004"

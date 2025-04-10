@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <div className="fixed bottom-0 w-full h-[53px] bg-[url(/images/mobile/footer-container.svg)] bg-cover bg-no-repeat flex items-center">
+    <div className="z-[50] fixed bottom-0 w-full h-[53px] bg-[url(/images/mobile/footer-container.svg)] bg-cover bg-no-repeat flex items-center">
       <div className="w-full flex justify-between items-center mb-2 px-[6px] relative">
         <div className="flex items-center gap-[10px]">
           <Link

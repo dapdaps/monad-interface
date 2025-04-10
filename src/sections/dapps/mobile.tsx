@@ -67,50 +67,48 @@ export default memo(function Mobile() {
         <div className="absolute left-[38px] top-[59px] flex gap-[10px]">
           <RectangularButton
             type={1}
-            data-bp="1003-004"
-            clicked={activeType === "bridge"}
-            className="w-[55px] h-[30px]"
-            onClick={() => handleClickButton("bridge")}
-          >
-            Bridge
-          </RectangularButton>
-
-          <RectangularButton
-            type={3}
             data-bp="1003-005"
-            clicked={activeType === "dex"}
+            clicked={activeType === "Dex"}
             className="w-[48px] h-[30px]"
-            onClick={() => handleClickButton("dex")}
+            onClick={() => handleClickButton("Dex")}
           >
             Dex
-          </RectangularButton>
-
-          <RectangularButton
-            type={3}
-            data-bp="1003-006"
-            clicked={activeType === "perps"}
-            className="w-[57px] h-[30px]"
-            onClick={() => handleClickButton("perps")}
-          >
-            Perps
           </RectangularButton>
           <RectangularButton
             type={3}
             data-bp="1003-007"
-            clicked={activeType === "betting"}
+            clicked={activeType === "Betting"}
             className="w-[57px] h-[30px]"
-            onClick={() => handleClickButton("betting")}
+            onClick={() => handleClickButton("Betting")}
           >
             Betting
           </RectangularButton>
           <RectangularButton
-            type={2}
+            type={3}
             data-bp="1003-008"
-            clicked={activeType === "nft"}
+            clicked={activeType === "NFT"}
             className="w-[55px] h-[30px]"
-            onClick={() => handleClickButton("nft")}
+            onClick={() => handleClickButton("NFT")}
           >
             NFT
+          </RectangularButton>
+          <RectangularButton
+            type={3}
+            data-bp="1003-004"
+            clicked={activeType === "Lending"}
+            className="w-[55px] h-[30px]"
+            onClick={() => handleClickButton("Lending")}
+          >
+            Lending
+          </RectangularButton>
+          <RectangularButton
+            type={2}
+            data-bp="1003-006"
+            clicked={activeType === "other"}
+            className="w-[57px] h-[30px]"
+            onClick={() => handleClickButton("other")}
+          >
+            Other
           </RectangularButton>
         </div>
       </div>

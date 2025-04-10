@@ -14,20 +14,50 @@ export default function usePage() {
       (dapp: IDapp) => {
         if (activeType === "all" ||
           activeType === "instation" && dapp.link.indexOf("http") === -1 ||
-          activeType === "outlink" && dapp.link.indexOf("http") > -1
+          activeType === "outlink" && dapp.link.indexOf("http") > -1 ||
+          activeType === "other" && !["Dex", "Betting", "NFT", "Lending"].includes(dapp.type)
         ) {
           return true
         }
         return dapp.type === activeType
       }
-    )
-    const array = []
+    );
+    const outlinkDApps = dapps.filter((dapp: IDapp) => dapp.link.indexOf("http") > -1);
+    const otherDApps = dapps.filter((dapp: IDapp) => dapp.link.indexOf("http") < 0);
+    const array: any = []
 
-    for (let i = 0; i < dapps.length; i += maxLength) {
-      array.push(dapps.slice(i, i + maxLength))
+    let arrayIndex = 0;
+    for (let i = 0; i < otherDApps.length; i++) {
+      if (!array[arrayIndex]) {
+        array[arrayIndex] = [otherDApps[i]];
+      } else {
+        array[arrayIndex].push(otherDApps[i]);
+      }
+
+      if (i - maxLength * arrayIndex >= maxLength - 1) {
+        arrayIndex += 1;
+      }
     }
-    return array
-  }, [activeType, maxLength])
+    if (!array[arrayIndex] || array[arrayIndex].length < maxLength) {
+      arrayIndex += 1;
+    }
+    const _prevArrayIndex = arrayIndex;
+    for (let i = 0; i < outlinkDApps.length; i++) {
+      if (!array[arrayIndex]) {
+        array[arrayIndex] = [outlinkDApps[i]];
+      } else {
+        array[arrayIndex].push(outlinkDApps[i]);
+      }
+
+      if (i - maxLength * (arrayIndex - _prevArrayIndex) >= maxLength - 1) {
+        arrayIndex += 1;
+      }
+    }
+    console.log("array: %o", array);
+    console.log("arrayIndex: %o", arrayIndex);
+    console.log("maxLength: %o", maxLength);
+    return array.filter((it: any) => !!it && it.length > 0);
+  }, [activeType, maxLength]);
 
   function handleClickButton(type: any) {
     setActiveType(type);

@@ -31,7 +31,7 @@ export interface Chain {
 export interface IDapp {
   name: string;
   icon: string;
-  type: "bridge" | "swap" | "dex" | "defi" | "perps" | "nft" | "lending";
+  type: "Bridge" | "Swap" | "Dex" | "Defi" | "Perps" | "NFT" | "Lending" | "CLOB" | "Betting" | "Gaming";
   link?: string;
   desc?: string;
 }

@@ -5,8 +5,9 @@ import { useSwitchChain } from "wagmi";
 import { useAppKit } from "@reown/appkit/react";
 import { useEffect } from "react";
 import clsx from 'clsx';
+import Big from 'big.js';
 
-const BaseButton = ({ loading, onClick, children, disabled = false, className }: any) => {
+export const BaseButton = ({ loading, onClick, children, disabled = false, className }: any) => {
   return (
     <button
       onClick={onClick}
@@ -30,13 +31,20 @@ export default function SubmitBtn({
   onClick,
   onRefresh,
   updater,
-  className
+  className,
+  text = "Swap",
+  onApprove,
+  onCheckApproved,
+  isSkip
 }: any) {
   const { approve, approved, approving, checking, checkApproved } = useApprove({
     amount,
     token,
     spender,
-    onSuccess: onRefresh
+    onSuccess: onRefresh,
+    onApprove,
+    onCheckApproved,
+    isSkip,
   });
   const { isPending: switching, switchChain } = useSwitchChain();
   const { open } = useAppKit();
@@ -79,6 +87,14 @@ export default function SubmitBtn({
     return <BaseButton loading={true} disabled className={className} />;
   }
 
+  if (!amount || Big(amount || 0).lte(0)) {
+    return (
+      <BaseButton className={className} disabled>
+        {text}
+      </BaseButton>
+    );
+  }
+
   if (errorTips) {
     return <BaseButton className={className} disabled>{errorTips}</BaseButton>;
   }
@@ -91,7 +107,7 @@ export default function SubmitBtn({
 
   return (
     <BaseButton className={className} onClick={onClick} disabled={disabled}>
-      Swap
+      {text}
     </BaseButton>
   );
 }

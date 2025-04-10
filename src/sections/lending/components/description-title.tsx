@@ -9,6 +9,7 @@ const DescriptionTitle = (props: any) => {
     children,
     description,
     descriptionPlacement,
+    triggerContainerClassName,
   } = props;
 
   return (
@@ -20,7 +21,8 @@ const DescriptionTitle = (props: any) => {
       )}
       trigger={PopoverTrigger.Hover}
       placement={descriptionPlacement || PopoverPlacement.TopLeft}
-      contentClassName="z-[101]"
+      contentClassName="!z-[101]"
+      triggerContainerClassName={clsx("inline-block", triggerContainerClassName)}
       closeDelayDuration={0}
     >
       <button

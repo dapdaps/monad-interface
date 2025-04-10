@@ -60,7 +60,7 @@ const Drawer = (props: Props) => {
         >
           <motion.div
             ref={drawerRef}
-            className={`fixed bg-white z-50 ${className}`}
+            className={`fixed z-50 ${className}`}
             style={{
               ...style,
               ...DrawerDirectionStyles[direction],

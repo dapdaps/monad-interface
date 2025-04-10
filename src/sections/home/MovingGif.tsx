@@ -5,10 +5,60 @@ const MovingGif: {
   Moving1st: typeof Moving1st;
   Moving2sec: typeof Moving2sec;
   Moving3rd: typeof Moving3rd;
+  MovingForMobile1st: typeof MovingForMobile1st;
 } = {} as {
   Moving1st: typeof Moving1st;
   Moving2sec: typeof Moving2sec;
   Moving3rd: typeof Moving3rd;
+  MovingForMobile1st: typeof MovingForMobile1st
+}
+
+function MovingForMobile1st() {
+  const [gifSrc, setGifSrc] = useState("/images/monad/icon/role-3.gif");
+  const directionRef = useRef<"left" | "right">("right");
+
+  return (
+    <motion.img
+      src={gifSrc}
+      className="w-[96px] h-[107px]"
+      initial={{ x: 0, y: 0, rotate: 1, scaleX: -1 }} 
+      animate={{
+        x: [0, 173],
+        y: [0, -100],
+        transition: {
+          x: {
+            repeat: Infinity,
+            repeatType: "reverse",
+            duration: 8,
+            ease: "linear"
+          },
+          y: {
+            repeat: Infinity,
+            repeatType: "reverse",
+            duration: 8,
+            ease: "linear"
+          }
+        }
+      }}
+      onUpdate={(latest) => {
+        if (Number(latest.x) <= 10 && directionRef.current !== "left") {
+          setGifSrc("/images/monad/icon/role-3-back.gif"); 
+          directionRef.current = "left";
+        } 
+        else if (Number(latest.x) >= 166 && directionRef.current !== "right") {
+          setGifSrc("/images/monad/icon/role-3.gif"); 
+          directionRef.current = "right";
+        }
+      }}
+      style={{ 
+        position: "absolute", 
+        bottom: "22px", 
+        right: "58px",
+        zIndex: 1,
+      }}
+      alt=""
+    />
+  );
 }
 
 function Moving1st() {
@@ -156,6 +206,7 @@ function Moving3rd() {
 MovingGif.Moving1st = Moving1st;
 MovingGif.Moving2sec = Moving2sec;
 MovingGif.Moving3rd = Moving3rd;
+MovingGif.MovingForMobile1st = MovingForMobile1st;
 
 
 export default MovingGif;

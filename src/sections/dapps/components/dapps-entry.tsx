@@ -15,6 +15,7 @@ import {
 } from "react";
 import DappInfo from "./dapp-info";
 import ExternalLinksModal from "./external-links-modal";
+import Popover, { PopoverPlacement, PopoverTrigger } from '@/components/popover';
 
 export default memo(function DappsEntry({
   direction,
@@ -26,12 +27,12 @@ export default memo(function DappsEntry({
   const isMobile = useIsMobile()
   const { handleReport } = useClickTracking()
   const soundStore = useSoundStore();
-  const [hoverDapp, setHoverDapp] = useState<any>(null);
   const [targetDapp, setTargetDapp] = useState<any>(null);
   const size = useSize(document.getElementsByTagName("body")[0]);
   const controls = useAnimation();
   const [clicked, setClicked] = useState(false);
   const [offsetX, setOffsetX] = useState(0);
+  const [dAppsAnimateDone, setDAppsAnimateDone] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -142,26 +143,38 @@ export default memo(function DappsEntry({
             variants={variants}
             initial="initial"
             animate={controls}
+            onAnimationComplete={() => {
+              setDAppsAnimateDone(true);
+            }}
+            onAnimationStart={() => {
+              setDAppsAnimateDone(false);
+            }}
           >
             {dapps.map((dapp: IDapp, index) => (
-              <div
-                className="cursor-pointer w-[180px] h-[155px] bg-[url('/images/dapps/dapp_bg.svg')] bg-contain bg-no-repeat relative"
-                data-name={dapp.name}
+              <Popover
                 key={dapp.name}
-                {...(isMobile ? {
-                  onClick() {
-                    // if (
-                    //   dapp.link.startsWith("https://") ||
-                    //   dapp.link.startsWith("http://")
-                    // ) {
-                    //   setTargetDapp(dapp)
-                    // } else {
-                    //   setHoverDapp(dapp)
-                    // }
-                    setHoverDapp(dapp)
-                  }
-                } : {
-                  onClick() {
+                placement={PopoverPlacement.Bottom}
+                trigger={isMobile ? PopoverTrigger.Click : PopoverTrigger.Hover}
+                closeDelayDuration={0}
+                content={dAppsAnimateDone && (
+                  <DappInfo
+                    name={dapp.name}
+                    category={dapp.type}
+                    icon={dapp.icon}
+                    desc={dapp.desc}
+                    tvl=""
+                    volume24h=""
+                    liquidity=""
+                    link={dapp.link}
+                    className="!static"
+                  />
+                )}
+              >
+                <div
+                  className="cursor-pointer w-[180px] h-[155px] bg-[url('/images/dapps/dapp_bg.svg')] bg-contain bg-no-repeat relative"
+                  data-name={dapp.name}
+                  key={dapp.name}
+                  onClick={() => {
                     setClicked(true);
                     setTimeout(() => {
                       setClicked(false);
@@ -175,43 +188,30 @@ export default memo(function DappsEntry({
                       handleReport("1003-001", dapp.name)
                       router.push(dapp.link);
                     }
-                  },
-                  onMouseEnter(ev: any) {
-                    if (hoverDapp?.name === dapp?.name) return;
-                    let ele = ev.target;
-                    while (ele.getAttribute("data-name") !== dapp.name) {
-                      ele = ele.parentNode;
+                  }}
+                >
+                  <div className="relative m-[32px_auto_15px] w-[56px]">
+                    <img src={dapp?.icon} alt={dapp?.name} className="rounded-[10px] object-center object-contain w-[56px] h-[56px]" />
+                    {
+                      dapp?.link?.indexOf("http") > -1 && (
+                        <div className="absolute right-[-6px] bottom-0 w-[16px]">
+                          <img src="/images/dapps/link.svg" alt="link" />
+                        </div>
+                      )
                     }
-                    
-                    const rect = ele.getBoundingClientRect()
-                    const left = rect.left + 180 + 352 < window.innerWidth - 5 ? rect.left + 180 : window.innerWidth - 352
-                    setHoverDapp({ ...dapp, left, top: rect.top });
-                  },
-                  onMouseLeave() {
-                    setHoverDapp(null);
-                  }
-                })}
-
-              >
-                <div className="relative m-[32px_auto_15px] w-[56px]">
-                  <img src={dapp?.icon} alt={dapp?.name} />
-                  {
-                    dapp?.link?.indexOf("http") > -1 && (
-                      <div className="absolute right-[-6px] bottom-0 w-[16px]">
-                        <img src="/images/dapps/link.svg" alt="link" />
-                      </div>
-                    )
-                  }
-                </div>
-                <div className="text-center text-black font-Unbounded text-[16px] font-semibold leading-[100%]">
-                  {dapp?.name}
-                </div>
-                <div className="mt-[6px] flex justify-center">
-                  <div className="p-[6px_10px] rounded-[6px] border border-black bg-[#7370C8] text-[#A5FFFD] font-Unbounded text-[12px] leading-[100%]">
-                    {dapp?.type}
+                  </div>
+                  <div
+                    className="text-center text-black font-Unbounded text-[14px] font-semibold leading-[100%]"
+                  >
+                    {dapp?.name}
+                  </div>
+                  <div className="mt-[6px] flex justify-center">
+                    <div className="p-[6px_10px] rounded-[6px] border border-black bg-[#7370C8] text-[#A5FFFD] font-Unbounded text-[12px] leading-[100%]">
+                      {dapp?.type}
+                    </div>
                   </div>
                 </div>
-              </div>
+              </Popover>
             ))}
           </motion.div>
           <div className="relative h-[30px]">
@@ -224,26 +224,6 @@ export default memo(function DappsEntry({
         </div>
       </div>
 
-      {hoverDapp?.name && (
-        <DappInfo
-          name={hoverDapp.name}
-          category={hoverDapp.type}
-          icon={hoverDapp.icon}
-          left={hoverDapp.left}
-          top={hoverDapp.top}
-          desc={hoverDapp.desc}
-          tvl=""
-          volume24h=""
-          liquidity=""
-          link={hoverDapp.link}
-          onMouseEnter={() => {
-            setHoverDapp(hoverDapp);
-          }}
-          onMouseLeave={() => {
-            setHoverDapp(null)
-          }}
-        />
-      )}
       {
         targetDapp && (
           <ExternalLinksModal
