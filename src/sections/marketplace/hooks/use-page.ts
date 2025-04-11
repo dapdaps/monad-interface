@@ -147,7 +147,7 @@ export default function usePage() {
       let next_level = false;
       if (index === col - 1 || hasNextLevel(sortTokens, i, key)) {
         index = 0
-        start_x = Math.random() * 20 + 10
+        start_x = Math.random() * 20 + 15
         start_y += h
       } else {
         index += 1
