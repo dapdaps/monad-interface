@@ -359,7 +359,7 @@ const User = (props: any) => {
         }}
       >
       {isMobile ? (
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1" onClick={handleConnect}>
               <AvatarDisplay hasAvatar={address && !!userInfo?.avatar} />
               <div className="w-[1px] h-[23px] bg-[#A6A6DB] bg-opacity-30 mx-[14px]"></div>
               <BalanceDisplay />
