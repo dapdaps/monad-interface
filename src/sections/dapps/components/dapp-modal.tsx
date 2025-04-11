@@ -16,7 +16,7 @@ export default memo(function DappModal({
   return (
     <Modal open={dapp} onClose={onClose}>
       <div
-        className={clsx("relative w-full drop-shadow-[0_0_10px_rgba(0,0,0,0.05)]", dapp?.link.startsWith("http") ? "h-[410px]" : "h-[370px]")}
+        className={clsx("relative w-full drop-shadow-[0_0_10px_rgba(0,0,0,0.05)]", dapp?.link.startsWith("http") ? "h-[310px]" : "h-[270px]")}
       >
         <div className="flex flex-col absolute left-0 -top-[10px] right-0 bottom-0 z-10">
           <div className="w-full">
@@ -34,7 +34,7 @@ export default memo(function DappModal({
               <div className="text-white font-Unbounded text-[12px] font-light leading-[100%]">{capitalize(dapp?.type)}</div>
             </div>
           </div>
-          <div className="m-[31px_0_16px] flex items-center justify-between">
+          {/* <div className="m-[31px_0_16px] flex items-center justify-between">
             <div className="flex flex-col gap-[4px]">
               <div className="text-white font-Unbounded text-[12px] font-light leading-[150%] opacity-60">TVL</div>
               <div className="text-white font-Unbounded text-[14px] font-normal leading-[150%]">{dapp?.tvl || "-"}</div>
@@ -49,7 +49,7 @@ export default memo(function DappModal({
               <div className="text-white font-Unbounded text-[12px] font-light leading-[150%] opacity-60">Liquidity</div>
               <div className="text-white font-Unbounded text-[14px] font-normal leading-[150%]">{dapp?.liquidity || "-"}</div>
             </div>
-          </div>
+          </div> */}
           <div className="text-white font-Unbounded text-[12px] font-light leading-[150%] opacity-60">
             Trade and earn crypto on the all-in-one<br />decentralized exchange. Enjoy low fees, high<br />liquidity, and a user-friendly interface.
           </div>

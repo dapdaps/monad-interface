@@ -38,7 +38,7 @@ const DappInfo: React.FC<any> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mt-[20px] text-[12px] font-light">
+      {/* <div className="grid grid-cols-3 gap-4 mt-[20px] text-[12px] font-light">
         <div>
           <p className="text-white/60">TVL</p>
           <p className="text-white">{tvl || "-"}</p>
@@ -51,7 +51,7 @@ const DappInfo: React.FC<any> = ({
           <p className="text-white/60">Liquidity</p>
           <p className="text-white">{liquidity || "-"}</p>
         </div>
-      </div>
+      </div> */}
 
       <p className="text-[12px] font-light text-white/60 mt-[12px]">
         {desc || "-"}
