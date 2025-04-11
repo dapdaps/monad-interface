@@ -32,6 +32,7 @@ const Mobile = () => {
                 <MovingGif.MovingForMobile1st />
             </div>
           </div>
+          {/* bridge */}
           <div className="absolute left-[-15%] top-[-10%] w-[254px] h-[228px]">
             <img
               src="/images/mobile/entry/bridge-locked.svg"
@@ -39,7 +40,8 @@ const Mobile = () => {
               alt=""
             />
           </div>
-          <div className="absolute right-[5%] top-[-5%] w-[141px] h-[145px]">
+          {/* game */}
+          <div className="absolute right-[11%] top-[-9%] w-[141px] h-[145px]">
             <img
               src="/images/mobile/entry/game-locked.svg"
               className="w-full h-full"
@@ -92,7 +94,7 @@ const Mobile = () => {
             data-hover-sound
             onClick={() => router.push("/marketplace")}
             className={clsx(
-              "hover:cursor-pointer z-[5] absolute left-0 top-[22%] w-[252px] h-[226px]",
+              "hover:cursor-pointer z-[5] absolute left-[-15%] top-[22%] w-[252px] h-[226px]",
               "bg-no-repeat bg-contain",
               "transition-all duration-200 ease-in-out cursor-pointer",
               "bg-[url(/images/mobile/entry/token.svg)]"
@@ -136,7 +138,7 @@ const Mobile = () => {
             data-bp="1001-006"
             data-hover-sound
             onClick={() => router.push("/dapps")}
-            className={clsx('z-[7] absolute left-0 top-[22%] w-[519px] h-[451px] scale-[0.5]',
+            className={clsx('z-[7] absolute left-[12%] top-[25%] w-[519px] h-[451px] scale-[0.5]',
               "bg-no-repeat bg-contain",
               "bg-[url(/images/monad/entry/dapps.svg)]"
             )}
