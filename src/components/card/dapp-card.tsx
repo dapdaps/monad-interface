@@ -3,13 +3,13 @@ import clsx from 'clsx';
 import useIsMobile from '@/hooks/use-isMobile';
 
 const DAppCard = (props: any) => {
-  const { icon, iconClassName, children, config, ...restProps } = props;
+  const { icon, iconClassName, mobileClassName, children, config, ...restProps } = props;
 
   const isMobile = useIsMobile();
 
   return (
     isMobile ? (
-      <div className="w-full bg-[linear-gradient(to_bottom,_#0E0F29_70dvh,_#0E0F2900)]">
+      <div className={clsx("w-full", mobileClassName)}>
         <div className="flex items-center justify-start gap-[7px] mt-[39px] px-[10px]">
           {icon}
           <button

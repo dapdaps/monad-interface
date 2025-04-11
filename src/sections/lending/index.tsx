@@ -30,6 +30,7 @@ const LendingView = (props: any) => {
           className="w-[920px] mx-auto mt-[78px]"
           contentClassName="py-[14px]"
           iconClassName="w-[235px] mx-auto"
+          mobileClassName="min-h-[calc(100dvh_-_40px)] pb-[40px]"
         >
           <LendingTabs
             tabs={Object.values(lending.TABS)}

@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
+import clsx from 'clsx';
 
-export default function Bg() {
+export default function Bg(props: any) {
+  const { className } = props;
+
   return (
-    <div className="absolute left-[0px] top-[0px] w-full h-[calc(100vh-60px)] overflow-hidden">
+    <div className={clsx("absolute left-[0px] top-[0px] w-full h-[calc(100vh-60px)] overflow-hidden", className)}>
       <motion.img
         animate={{ x: ["0%", "-105vw"] }}
         transition={{
