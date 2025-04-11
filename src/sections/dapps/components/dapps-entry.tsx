@@ -78,12 +78,12 @@ export default memo(function DappsEntry({
     <>
       <div
         className={clsx(
-          "relative",
+          "relative overflow-x-hidden scrollbar-hide",
           isMobile ? "h-[185px]" : "h-[304px]",
           direction === "right" ? "flex justify-end z-[1]" : "z-[2]"
         )}
         data-hover-sound="/audios/dapps/moving_machanic_clip.mp3"
-        onMouseMove={handleMouseMove}
+        onMouseMove={isMobile ? undefined : handleMouseMove}
       >
         {
           isMobile ? <></> : (
@@ -138,9 +138,9 @@ export default memo(function DappsEntry({
 
           <motion.div
             className={clsx(
-              "flex items-center justify-center relative z-[2]",
+              "w-full flex items-center justify-center relative z-[2]",
               isMobile ? "gap-[10px]" : "gap-[80px]",
-              isMobile ? "px-[10px]" : direction === "right" ? "justify-end pr-[64px]" : "pl-[64px]"
+              isMobile ? "px-[10px]" : (direction === "right" ? "justify-end pr-[64px]" : "pl-[64px]")
             )}
             variants={variants}
             initial="initial"
@@ -159,6 +159,7 @@ export default memo(function DappsEntry({
                 trigger={PopoverTrigger.Hover}
                 closeDelayDuration={0}
                 triggerContainerClassName="flex"
+                onClickBefore={() => isMobile ? false : true}
                 content={dAppsAnimateDone && (
                   <DappInfo
                     name={dapp.name}

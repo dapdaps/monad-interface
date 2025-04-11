@@ -10,6 +10,8 @@ import Popover, {
 } from "@/components/popover";
 import { numberFormatter } from "@/utils/number-formatter";
 import SwapModal from "@/sections/swap/SwapModal";
+import TokenModal from "./token-modal";
+import useIsMobile from "@/hooks/use-isMobile";
 
 const getRandomDuration = () => Math.random() * 2 + 4;
 const getRandomPosition = (size: any) => {
@@ -74,8 +76,8 @@ const Bubble = ({ size }: any) => {
   );
 };
 
-const TokenItem = ({ token, type }: { token: IToken; type: any }) => {
-  const [showSwapModal, setShowSwapModal] = useState(false);
+const TokenItem = ({ token, type, onClick }: { token: IToken; type: any; onClick: VoidFunction }) => {
+  const isMobile = useIsMobile()
   return (
     <>
       <motion.div
@@ -102,6 +104,7 @@ const TokenItem = ({ token, type }: { token: IToken; type: any }) => {
         <Popover
           trigger={PopoverTrigger.Hover}
           placement={PopoverPlacement.Right}
+          onClickBefore={() => isMobile ? false : true}
           content={
             <div
               className={clsx(
@@ -148,9 +151,7 @@ const TokenItem = ({ token, type }: { token: IToken; type: any }) => {
             <img className="w-full" src={token?.icon} alt={token?.name} />
           </div>
           <div
-            onClick={() => {
-              setShowSwapModal(true);
-            }}
+            onClick={onClick}
             className="cursor-pointer absolute left-[3px] right-[3px] top-[3px] bottom-[3px] rounded-full bg-black/50 items-center justify-center text-white text-[13px] font-Unbounded font-semibold hidden group-hover:flex"
           >
             Swap
@@ -188,17 +189,8 @@ const TokenItem = ({ token, type }: { token: IToken; type: any }) => {
           )}
         </Popover>
       </motion.div>
-      {showSwapModal && (
-        <SwapModal
-          show={showSwapModal}
-          defaultOutputCurrency={token}
-          outputCurrencyReadonly
-          onClose={() => {
-            setShowSwapModal(false);
-          }}
-          from="marketplace"
-        />
-      )}
+
+
     </>
   );
 };
@@ -211,8 +203,11 @@ export default memo(function jar({
   tokens: any[];
   type: string;
 }) {
+  const isMobile = useIsMobile()
   const jarRef = useRef(null);
   const size = useSize(jarRef);
+  const [showSwapModal, setShowSwapModal] = useState(false);
+  const [clickedToken, setClickedToken] = useState(null)
 
   const [top, bottom] = useMemo(() => {
     const key = type === "price" ? "price_change_percent_24h" : "volume_24h";
@@ -305,7 +300,16 @@ export default memo(function jar({
         )}
         <div className="absolute left-0 right-0 top-0 bottom-0">
           {tokens?.map((token: IToken, index) => (
-            <TokenItem token={token} type={type} />
+            <TokenItem
+              token={token}
+              type={type}
+              onClick={() => {
+                setClickedToken(token)
+                if (!isMobile) {
+                  setShowSwapModal(true)
+                }
+              }}
+            />
           ))}
         </div>
 
@@ -324,6 +328,31 @@ export default memo(function jar({
           alt="jar_bottom"
         />
       </div>
+
+      {showSwapModal && (
+        <SwapModal
+          show={showSwapModal}
+          defaultOutputCurrency={clickedToken}
+          outputCurrencyReadonly
+          onClose={() => {
+            setShowSwapModal(false);
+          }}
+          from="marketplace"
+        />
+      )}
+      {
+        isMobile && (
+          <TokenModal
+            token={clickedToken}
+            onSwap={() => {
+              setShowSwapModal(true)
+            }}
+            onClose={() => {
+              setClickedToken(null)
+            }}
+          />
+        )
+      }
     </div>
   );
 });

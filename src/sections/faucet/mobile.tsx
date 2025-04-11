@@ -10,17 +10,17 @@ export default memo(function Mobile() {
   return (
     <div className="w-full h-screen bg-[#0E0F29]">
       <div className="w-full h-full bg-[url('/images/faucet/mobile/bg.png')] bg-no-repeat bg-top bg-cover">
-        <FaucetCard bodyClassName="p-[71px_10px_0]">
+        <FaucetCard bodyClassName="p-[71px_10px_0] h-screen overflow-auto">
           <div className='my-[20px] flex justify-center'>
             <FaucetFontSvg />
           </div>
           <div className="w-full">
-            <div className="w-full flex flex-col gap-[10px] items-center">
+            <div className="w-full flex flex-col gap-[20px] items-center">
               <FaucetStep />
-              <div className="relative w-[202px] h-[160px] shrink-0 flex justify-center items-center">
-                <img src="/images/faucet/coffee-coins.svg" alt="" className="w-[202px] h-[160px]" />
-                <img src="/images/faucet/heat-smoking.gif" alt="" className="absolute w-[154px] h-[154px] top-[-80px] translate-x-[40px]" />
-                <img src="/images/faucet/sparkle.gif" alt="" className="absolute w-[92px] h-[92px] translate-y-[20px] translate-x-[-20px]" />
+              <div className="relative w-[121px] h-[96px] shrink-0 flex justify-center items-center">
+                <img src="/images/faucet/coffee-coins.svg" alt="" className="w-[121px] h-[96px]" />
+                <img src="/images/faucet/heat-smoking.gif" alt="" className="absolute w-[92px] h-[92px] top-[-48px] translate-x-[24px]" />
+                <img src="/images/faucet/sparkle.gif" alt="" className="absolute w-[55px] h-[55px] translate-y-[12px] translate-x-[-12px]" />
               </div>
             </div>
             <div className="flex justify-center mt-[5px]">

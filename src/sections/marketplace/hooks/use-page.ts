@@ -137,32 +137,29 @@ export default function usePage() {
       hasNextLevel(sortTokens, i, key)
     )?.length;
     const col = isMobile ? 3 : 2
-    const h = 100 / ((sortTokens.length + next_level_length));
-
-    console.log('====h', h)
+    const w = 100 / col
+    const h = 100 / ((sortTokens.length) / col + next_level_length + 1);
     let randomNumbers = null
+    let index = 0
+    let start_x = 0
+    let start_y = h
     for (let i = 0; i < sortTokens.length; i++) {
       let next_level = false;
-      if (hasNextLevel(sortTokens, i, key)) {
-        next_level = true;
+      if (index === col - 1 || hasNextLevel(sortTokens, i, key)) {
+        index = 0
+        start_x = Math.random() * 10 + 10
+        start_y += h
       } else {
-        next_level = false;
+        index += 1
+        const random_x = Math.random() * 5 + w
+        start_x += random_x
       }
-      const row = Math.ceil((i + 1) / col);
-      if (i % col === 0) {
-        randomNumbers = generateCustomRandomNumbers({
-          min: 10,
-          max: 90,
-          groups: col,
-          gap: 15
-        })
-      }
-      const x = randomNumbers[i % col];
-      const y = h * (i + 1) + ((i % col) / 4 + (next_level ? 1 : 0) / 6) * h
+      const x = start_x;
+      const y = start_y
       array.push({
         ...sortTokens[i],
         x,
-        y: y < 20 ? 20 : (y > 100 ? 100 : y)
+        y
       });
     }
 

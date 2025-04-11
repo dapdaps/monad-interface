@@ -31,7 +31,7 @@ const FaucetCheckCard = (props: any) => {
   return (
     <div
       className={clsx(
-        "relative flex justify-center items-center w-[63px] h-[62px] rounded-[6px] shadow-[0_0_10px_0_rgba(0,_0,_0,_0.05)] [perspective:1000px] group",
+        "relative flex justify-center items-center w-full aspect-square rounded-[6px] shadow-[0_0_10px_0_rgba(0,_0,_0,_0.05)] [perspective:1000px] group",
         className
       )}
     >

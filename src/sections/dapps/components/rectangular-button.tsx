@@ -28,7 +28,7 @@ export default memo(function RectangularButton({
     >
       <div className={clsx("absolute left-0 right-0 bottom-0 top-0", type === 1 ? "skew-x-[5deg]" : (type === 2 ? "skew-x-[-5deg]" : ""))}>
         <div className={clsx("absolute w-1/2 top-0 bottom-0 rounded-[6px] border-black", type === 1 ? "-right-[6px] border-r" : (type === 2 ? "-left-[6px] border-l" : "hidden"), clicked ? "bg-[#A5FFFD]" : "bg-[#A6A6D2]")} />
-        <div className="absolute left-0 top-0 right-0 bottom-0 flex justify-center items-center text-black font-Unbounded text-[12px] font-medium ">{children}</div>
+        <div className="absolute left-0 top-0 right-0 bottom-0 flex justify-center items-center text-black font-Unbounded md:text-[10px] text-[12px] font-medium ">{children}</div>
       </div>
     </div>
   );

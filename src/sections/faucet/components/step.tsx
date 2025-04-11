@@ -155,7 +155,7 @@ const Step = (props: any) => {
 
   return (
     <div className={clsx("relative shrink-0 flex flex-col items-center justify-center", className)}>
-      <div className="absolute top-[-13px] flex items-center justify-center gap-[4px]">
+      <div className="absolute md:top-[-26px] top-[-13px] flex md:flex-col items-center justify-center gap-[4px]">
         <div className="text-white font-[500]">
           {item.amount}
         </div>

@@ -8,8 +8,7 @@ export default memo(function Operation({
   activeType: string
   setActiveType: Dispatch<SetStateAction<string>>
 }) {
-
-
+  
   return (
     <div className="fixed left-1/2 md:bottom-[56px] bottom-0 -translate-x-1/2 md:w-full w-[32.639vw] md:h-[28.974vw] h-[8.819vw] md:bg-[url('/images/marketplace/mobile/op_bg.svg')] bg-[url('/images/marketplace/op_bg.svg')] bg-contain bg-center bg-no-repeat">
       <div className="absolute left-0 right-0 md:bottom-[6.41vw] bottom-[1.736vw] flex items-center justify-center md:gap-[20px] gap-[24px]">
