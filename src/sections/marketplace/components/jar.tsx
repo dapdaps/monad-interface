@@ -84,11 +84,11 @@ const TokenItem = ({ token, type, onClick }: { token: IToken; type: any; onClick
         className="group absolute"
         animate={{
           transform: [
-            "translate3d(-50%, calc(-100% - 50px), 0)",
-            "translate3d(-50%, calc(-100% - 56px), 0)",
-            "translate3d(-50%, calc(-100% - 50px), 0)",
-            "translate3d(-50%, calc(-100% - 44px), 0)",
-            "translate3d(-50%, calc(-100% - 50px), 0)",
+            "translate3d(-50%, calc(-50% - 50px), 0)",
+            "translate3d(-50%, calc(-50% - 56px), 0)",
+            "translate3d(-50%, calc(-50% - 50px), 0)",
+            "translate3d(-50%, calc(-50% - 44px), 0)",
+            "translate3d(-50%, calc(-50% - 50px), 0)",
           ]
         }}
         transition={{
@@ -208,8 +208,9 @@ export default memo(function jar({
   const size = useSize(jarRef);
   const [showSwapModal, setShowSwapModal] = useState(false);
   const [clickedToken, setClickedToken] = useState(null)
-
   const [top, bottom] = useMemo(() => {
+    const jarRect = jarRef?.current?.getBoundingClientRect()
+    const token_y_percentage = 30 / jarRect?.height * 100
     const key = type === "price" ? "price_change_percent_24h" : "volume_24h";
     let _top = 0;
     let _bottom = 0;
@@ -219,7 +220,6 @@ export default memo(function jar({
     for (let i = 0; i < tokens.length; i++) {
       const prev = tokens?.[i - 1]?.[key] ?? 0;
       const curr = tokens?.[i]?.[key] ?? 0;
-
       if (
         i - 1 > -1 &&
         Big(prev).gte(up) &&
@@ -232,8 +232,9 @@ export default memo(function jar({
         _bottom = (tokens?.[i - 1]?.y + tokens?.[i]?.y) / 2 - 14;
       }
     }
-    return [_top, _bottom];
-  }, [tokens]);
+
+    return isNaN(token_y_percentage) ? [_top, _bottom] : [Big(_top).gt(0) ? (_top + token_y_percentage) : 0, Big(_bottom).gt(0) ? (_bottom + token_y_percentage) : 0];
+  }, [tokens, jarRef]);
   return (
     <div className="md:w-[82.564vw] w-[21.667vw] md:h-[260vw] h-full flex flex-col items-center">
       <div className="relative z-10 md:w-[82.564vw] w-[19.301vw] md:h-[30.256vw] h-[10.833vw] md:bg-[url('/images/marketplace/mobile/jar_top.svg')] bg-[url('/images/marketplace/jar_top.svg')] bg-center bg-contain bg-no-repeat">
