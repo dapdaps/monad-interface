@@ -1,6 +1,6 @@
 import { useSoundStore } from "@/stores/sound";
 import { useSize } from "ahooks";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ALL_DAPP_LIST } from "../config";
 import useIsMobile from "@/hooks/use-isMobile";
 export default function usePage() {
@@ -8,6 +8,9 @@ export default function usePage() {
   const size = useSize(document.getElementsByTagName("body")[0]);
   const soundStore: any = useSoundStore();
   const [activeType, setActiveType] = useState("all");
+
+  const timerRef = useRef()
+
   const maxLength = useMemo(() => isMobile ? 2 : Math.floor(((size?.width - 64) * 0.8 + 80) / 240), [size])
   const dappsArray = useMemo(() => {
     const dapps = ALL_DAPP_LIST.filter(
@@ -53,9 +56,6 @@ export default function usePage() {
         arrayIndex += 1;
       }
     }
-    console.log("array: %o", array);
-    console.log("arrayIndex: %o", arrayIndex);
-    console.log("maxLength: %o", maxLength);
     return array.filter((it: any) => !!it && it.length > 0);
   }, [activeType, maxLength]);
 
@@ -63,12 +63,24 @@ export default function usePage() {
     setActiveType(type);
   }
 
-  useEffect(() => {
+  function playConveyorBeltSound() {
+    if (timerRef?.current) clearTimeout(timerRef?.current)
     soundStore?.conveyorBeltRef?.current?.play?.();
+    timerRef.current = setTimeout(() => {
+      soundStore?.conveyorBeltRef?.current?.pause?.()
+    }, 3 * 1000)
+  }
+
+  useEffect(() => {
+    playConveyorBeltSound()
     return () => {
       soundStore?.conveyorBeltRef?.current?.pause?.();
     };
   }, []);
+
+  useEffect(() => {
+    playConveyorBeltSound()
+  }, [activeType])
 
   return {
     dappsArray,
