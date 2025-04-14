@@ -47,7 +47,7 @@ const MainLayoutHeader = (props: Props) => {
       </div>
 
       <div className="flex-1 flex items-center justify-center">
-        <div onClick={() => router.push('/')} className={clsx(`bg-contain bg-no-repeat bg-center`, 
+        <div onClick={() => router.push('/')} className={clsx(`bg-contain bg-no-repeat bg-center hover:cursor-pointer`, 
           isMobile ? "w-[160px] h-[40px] bg-[url('/images/mobile/logo.svg')]" : "w-[240px] h-[60px] bg-[url('/images/header/logo_bg.svg')]",
         )}>
         </div>
