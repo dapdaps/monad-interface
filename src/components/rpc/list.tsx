@@ -38,7 +38,7 @@ const RpcList = (props: Props) => {
   }, []);
 
   return (
-    <StyledRpcContainer className="bg-[#2B294A] rounded-[16px] w-[389px] relative p-[1px]">
+    <StyledRpcContainer className="bg-[#2B294A] lg:rounded-[16px] md:rounded-t-[16px] md:w-full lg:w-[389px] relative p-[1px]">
       <div className="relative z-[2] p-4">
         <div className="flex items-center justify-between">
           <div className="text-[18px] text-white font-[400] font-Unbounded leading-[1]">RPC Selector</div>

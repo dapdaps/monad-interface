@@ -188,7 +188,7 @@ const Mobile = () => {
                         className="flex-shrink-0 w-[51px] h-[60px] rounded-[10px] border border-black bg-[#A5FFFD] flex flex-col gap-[5px] items-center justify-center"
                       >
                         <img
-                          className="w-[33px] h-[32px] rounded-[10px]"
+                          className="w-[33px] h-[32px] rounded-[10px] overflow-hidden"
                           src={item.icon}
                           alt={item.name}
                         />
