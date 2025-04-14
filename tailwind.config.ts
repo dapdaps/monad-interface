@@ -25,7 +25,10 @@ const config: Config = {
       boxShadow: {
         shadow1: "10px 10px 0 0 rgba(0, 0, 0, 0.25);",
         shadow2: "6px 6px 0px 0px rgba(0, 0, 0, 0.25)"
-      }
+      },
+      cursor: {
+        'pointer': 'url("/images/cursor.svg"), pointer',
+      },
     },
     screens: {
       md: { max: "768px" },
