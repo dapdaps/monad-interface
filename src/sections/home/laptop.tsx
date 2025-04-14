@@ -50,7 +50,7 @@ const Home = () => {
   const totalWidth = ALL_DAPP_LIST.length * (itemWidth + itemGap) - itemGap;
 
   return (
-    <div className="w-full h-[100dvh] relative overflow-hidden">
+    <div className={`w-full ${window.innerHeight < 900 ? 'min-h-[900px] overflow-y-auto' : 'h-[100dvh]'} relative overflow-hidden`}>
       <div className="absolute top-0 left-0 right-0 h-[calc(623/14.4*var(--rem))] bg-[url(/images/monad/background/bg3.svg)] bg-no-repeat bg-contain"></div>
       <div
         className="absolute left-0 bottom-0 w-full bg-[url(/images/monad/background/bg1.svg)] bg-no-repeat bg-contain 
