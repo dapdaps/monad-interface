@@ -88,14 +88,14 @@ export function useLending(props: any): Lending {
           balance: lendBalance,
         });
       }
-      const borrowBalance = userData?.[market.id]?.[borrowBalanceKey];
-      if (borrowBalance && Big(borrowBalance).gt(0)) {
+      const _borrowBalance = userData?.[market.id]?.[borrowBalanceKey];
+      if (_borrowBalance && Big(_borrowBalance).gt(0)) {
         _yoursList.push({
           ...market,
           uniqueId: market.id + "_borrow",
           type: LENDING_ACTION_TYPE_MAP.borrow,
           ...userData[market.id],
-          balance: borrowBalance,
+          balance: _borrowBalance,
         });
       }
     });

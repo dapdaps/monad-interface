@@ -1,4 +1,6 @@
 import { ethers } from 'ethers';
+import Big from 'big.js';
+import { numberRemoveEndZero } from '@/utils/number-formatter';
 
 export const timeswap = async (params: any) => {
   const { config, markets, provider, account } = params;
@@ -64,9 +66,14 @@ export const timeswap = async (params: any) => {
 
   return markets.reduce((acc: any, market: any) => {
     acc[market.id] = {
-      lendBalance: lendPositionOfs.find((it: any) => it.id === market.id)?.positionOf,
-      borrowBalance: borrowPositionOfs.find((it: any) => it.id === market.id)?.positionOf,
+      lendBalance: lendPositionOfs.find((it: any) => it.id === market.id)?.positionOf ?? "0",
+      borrowBalance: borrowPositionOfs.find((it: any) => it.id === market.id)?.positionOf ?? "0",
     };
+    const currDecimals = market.poolData.pool.isToken1Base ? market.poolData.pool.token1.decimals : market.poolData.pool.token0.decimals;
+    acc[market.id].lendBalance = Big(acc[market.id].lendBalance).div(10 ** (18 - currDecimals)).toFixed(currDecimals, Big.roundDown);
+    acc[market.id].borrowBalance = Big(acc[market.id].borrowBalance).div(10 ** (18 - currDecimals)).toFixed(currDecimals, Big.roundDown);
+    acc[market.id].lendBalance = numberRemoveEndZero(acc[market.id].lendBalance);
+    acc[market.id].borrowBalance = numberRemoveEndZero(acc[market.id].borrowBalance);
     return acc;
   }, {});
 };
