@@ -32,7 +32,12 @@ const TimeSwap = (props: any) => {
             Debt to Repay
           </DescriptionTitle>
           <div className="flex justify-end items-center gap-[4px] text-[#A6A6DB] font-Unbounded text-[12px] font-normal leading-normal">
-            <div className="text-[#FFF]">
+            <div
+              className="text-[#FFF]"
+              title={(
+                numberFormatter(amount, market?.tokens?.[0]?.decimals, true, { round: 0 })
+              )}
+            >
               {numberFormatter(amount, 4, true, { round: 0 })}
             </div>
             <div className="">
@@ -48,7 +53,17 @@ const TimeSwap = (props: any) => {
             Collateral to Lock
           </DescriptionTitle>
           <div className="flex justify-end items-center gap-[4px] text-[#A6A6DB] font-Unbounded text-[12px] font-normal leading-normal">
-            <div className="text-[#FFF]">
+            <div
+              className="text-[#FFF]"
+              title={(
+                numberFormatter(
+                  calculateTimeSwapCollateral(amount || "0", market?.poolData?.apr, market?.transitionPrice10, market?.duration),
+                  market?.tokens?.[1]?.decimals,
+                  true,
+                  { round: 0 }
+                )
+              )}
+            >
               {numberFormatter(
                 calculateTimeSwapCollateral(amount || "0", market?.poolData?.apr, market?.transitionPrice10, market?.duration),
                 4,
