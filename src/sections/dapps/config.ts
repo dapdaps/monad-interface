@@ -17,6 +17,13 @@ export const ALL_DAPP_LIST: IDapp[] = [
     link: "/dex/pancake",
     desc: "Trade and earn crypto on the all-in-one decentralized exchange. Enjoy low fees, high liquidity, and a user-friendly interface."
   },
+  {
+    name: "Uniswap",
+    icon: "/images/dapps/icons/uniswap.png",
+    type: "Dex",
+    link: "/dex/uniswap",
+    desc: "The largest onchain marketplace. Buy and sell crypto on Monad and 11+ other chains."
+  },
   // feedback-6
   // {
   //   name: "OpenOcean",
@@ -102,5 +109,5 @@ export const ALL_DAPP_LIST: IDapp[] = [
     type: "NFT",
     link: "https://testnets.opensea.io/",
     desc: "The world’s first and largest digital marketplace for crypto collectibles and non-fungible tokens (NFTs). Buy, sell, and discover exclusive digital items."
-  },
+  }
 ];
