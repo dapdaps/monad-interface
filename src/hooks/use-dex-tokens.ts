@@ -20,7 +20,7 @@ export default function useDexTokens(dapp: any) {
             icon:
               token.address === "0x0000000000000000000000000000000000000000"
                 ? "/images/monad.svg"
-                : `https://img.lfj.gg/cdn-cgi/image/width=60,height=60/https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists-v2/refs/heads/main/logos/10143/${token.address.toLowerCase()}.png`
+                : `https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists-v2/refs/heads/main/logos/10143/${token.address.toLowerCase()}.png`
           }))
       );
       return;
