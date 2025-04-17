@@ -45,11 +45,20 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
     ];
   }, [checkedList, today]);
 
-  const handleCheckIn = async () => {
+  const handleCheckIn = async (recaptchaToken?: string) => {
     if (checkInPending) return;
+
+    if (!recaptchaToken) {
+      toast.fail({
+        title: 'Check-in failed!',
+        text: 'Please complete the reCAPTCHA verification.',
+      });
+      return;
+    }
+
     setCheckInPending(true);
     try {
-      const res = await post('/checkin', {});
+      const res = await post('/checkin', { recaptchaToken });
       if (res.code !== HTTP_CODE.OK) {
         toast.fail({
           title: 'Check-in failed!',
@@ -131,6 +140,6 @@ export default FaucetContextProvider;
 
 export function useFaucetContext() {
   const context = useContext(FaucetContext);
-  
+
   return context as IFaucetContext;
 }
