@@ -6,7 +6,39 @@ import { bera } from "@/configs/tokens/bera";
 export default function useDexTokens(dapp: any) {
   const [tokens, setTokens] = useState<any>([]);
 
-  const getTokens = useCallback(() => {
+  const getTokens = useCallback(async () => {
+    if (dapp.name === "LFJ") {
+      const tokens = await asyncFetch(
+        "https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists-v2/refs/heads/main/popular_tokenlist.json"
+      );
+
+      setTokens(
+        tokens
+          .filter((token: any) => token.chainId === 10143)
+          .map((token: any) => ({
+            ...token,
+            icon:
+              token.address === "0x0000000000000000000000000000000000000000"
+                ? "/images/monad.svg"
+                : `https://img.lfj.gg/cdn-cgi/image/width=60,height=60/https://raw.githubusercontent.com/traderjoe-xyz/joe-tokenlists-v2/refs/heads/main/logos/10143/${token.address.toLowerCase()}.png`
+          }))
+      );
+      return;
+    }
+    if (dapp.name === "Pancake") {
+      const tokens = await asyncFetch(
+        "https://tokens.pancakeswap.finance/pancakeswap-monad-testnet-default.json"
+      );
+
+      setTokens(
+        tokens.tokens.map((token: any) => ({
+          ...token,
+          icon: token.logoURI
+        }))
+      );
+      return;
+    }
+
     setTokens(dapp.tokens[DEFAULT_CHAIN_ID]);
   }, [dapp]);
 
