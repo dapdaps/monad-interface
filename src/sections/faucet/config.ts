@@ -26,7 +26,7 @@ export interface IFaucetContext {
   ethereumMainnetBalance: any;
   isEthereumMainnetBalanceLoading: boolean;
 
-  handleCheckIn(): Promise<void>;
+  handleCheckIn(recaptchaToken?: string): Promise<void>;
 }
 
 export interface ICheckedItem {

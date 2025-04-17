@@ -12,6 +12,7 @@ import { HTTP_CODE } from '@/configs';
 import useAudioPlay from '@/hooks/use-audio';
 import { useBalance } from 'wagmi';
 import { mainnet } from '@reown/appkit/networks';
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 export const FaucetContext = createContext<Partial<IFaucetContext>>({});
 
@@ -45,11 +46,14 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
     ];
   }, [checkedList, today]);
 
-  const handleCheckIn = async () => {
+  const handleCheckIn = async (recaptchaToken?: string) => {
     if (checkInPending) return;
     setCheckInPending(true);
+    console.log(recaptchaToken);
+    setCheckInPending(false);
+    return;
     try {
-      const res = await post('/checkin', {});
+      const res = await post('/checkin', { recaptchaToken });
       if (res.code !== HTTP_CODE.OK) {
         toast.fail({
           title: 'Check-in failed!',
@@ -107,23 +111,41 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
   }, [checkedList]);
 
   return (
-    <FaucetContext.Provider
-      value={{
-        checkInPending,
-        handleCheckIn,
-        loading,
-        checkedList,
-        today,
-        collectedMON,
-        checkinDays,
-        collectedToday,
-        checkinList,
-        ethereumMainnetBalance,
-        isEthereumMainnetBalanceLoading,
+    <GoogleReCaptchaProvider
+      reCaptchaKey={process.env.NEXT_PUBLIC_GOOGLE_RE_CAPTCHA_CODE as string}
+      scriptProps={{
+        async: true,
+        defer: true,
+        appendTo: 'head',
+      }}
+      language="en"
+      useEnterprise={false}
+      useRecaptchaNet={false}
+      container={{
+        parameters: {
+          badge: 'bottomright',
+          theme: 'light',
+        },
       }}
     >
-      {children}
-    </FaucetContext.Provider>
+      <FaucetContext.Provider
+        value={{
+          checkInPending,
+          handleCheckIn,
+          loading,
+          checkedList,
+          today,
+          collectedMON,
+          checkinDays,
+          collectedToday,
+          checkinList,
+          ethereumMainnetBalance,
+          isEthereumMainnetBalanceLoading,
+        }}
+      >
+        {children}
+      </FaucetContext.Provider>
+    </GoogleReCaptchaProvider>
   );
 }
 
@@ -131,6 +153,6 @@ export default FaucetContextProvider;
 
 export function useFaucetContext() {
   const context = useContext(FaucetContext);
-  
+
   return context as IFaucetContext;
 }
