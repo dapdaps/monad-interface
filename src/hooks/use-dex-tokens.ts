@@ -25,7 +25,7 @@ export default function useDexTokens(dapp: any) {
       );
       return;
     }
-    if (dapp.name === "Pancake") {
+    if (["Pancake", "Uniswap"].includes(dapp.name)) {
       const tokens = await asyncFetch(
         "https://tokens.pancakeswap.finance/pancakeswap-monad-testnet-default.json"
       );
