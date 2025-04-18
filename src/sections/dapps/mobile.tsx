@@ -27,7 +27,7 @@ export default memo(function Mobile() {
           <RectangularButton
             type={1}
             clicked={activeType === "all"}
-            className="w-[127px] h-[30px]"
+            className="w-[127px] h-[30px] uppercase"
             onClick={() => {
               handleClickButton("all");
             }}
@@ -69,7 +69,7 @@ export default memo(function Mobile() {
             type={1}
             data-bp="1003-005"
             clicked={activeType === "Dex"}
-            className="w-[48px] h-[30px]"
+            className="w-[48px] h-[30px] uppercase"
             onClick={() => handleClickButton("Dex")}
           >
             Dex
@@ -78,7 +78,7 @@ export default memo(function Mobile() {
             type={3}
             data-bp="1003-007"
             clicked={activeType === "Betting"}
-            className="w-[57px] h-[30px]"
+            className="w-[67px] h-[30px] uppercase"
             onClick={() => handleClickButton("Betting")}
           >
             Betting
@@ -87,7 +87,7 @@ export default memo(function Mobile() {
             type={3}
             data-bp="1003-008"
             clicked={activeType === "NFT"}
-            className="w-[55px] h-[30px]"
+            className="w-[55px] h-[30px] uppercase"
             onClick={() => handleClickButton("NFT")}
           >
             NFT
@@ -96,7 +96,7 @@ export default memo(function Mobile() {
             type={3}
             data-bp="1003-004"
             clicked={activeType === "Lending"}
-            className="w-[65px] h-[30px]"
+            className="w-[65px] h-[30px] uppercase"
             onClick={() => handleClickButton("Lending")}
           >
             Lending
@@ -105,7 +105,7 @@ export default memo(function Mobile() {
             type={2}
             data-bp="1003-006"
             clicked={activeType === "other"}
-            className="w-[47px] h-[30px]"
+            className="w-[47px] h-[30px] uppercase"
             onClick={() => handleClickButton("other")}
           >
             Other

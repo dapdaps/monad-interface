@@ -192,9 +192,9 @@ const Mobile = () => {
                           src={item.icon}
                           alt={item.name}
                         />
-                        <div className="max-w-[45px] truncate font-Unbounded text-[10px] text-center font-[900] leading-[9px]">
+                        {/* <div className="max-w-[45px] truncate font-Unbounded text-[10px] text-center font-[900] leading-[9px]">
                           {item.name}
-                        </div>
+                        </div> */}
                       </div>
                     ))}
                   </motion.div>

@@ -244,7 +244,7 @@ const Home = () => {
                 }}
                 className="absolute left-[205px] top-[147px] w-[104px] h-[70px] overflow-hidden flex items-center justify-center"
               >
-                <div className="w-[105px] overflow-hidden" ref={containerRef}>
+                <div className="w-[105px] overflow-hidden mt-1" ref={containerRef}>
                   <motion.div
                     className="w-full flex gap-[6px] items-center"
                     style={{ width: `${totalWidth * 2}px` }}
@@ -261,14 +261,14 @@ const Home = () => {
                     {duplicatedDappItems.map((item, index) => (
                       <div
                         key={`dapp-${index}`}
-                        className="flex-shrink-0 w-[75px] h-[70px] rounded-[10px] border border-black bg-[#A5FFFD] flex flex-col gap-[5px] items-center justify-center"
+                        className="flex-shrink-0 w-[98px] h-[60px] rounded-[10px] border border-black bg-[#A5FFFD] flex flex-col gap-[5px] items-center justify-center"
                       >
                         <img
                           className="w-[33px] h-[32px] rounded-[10px] overflow-hidden"
                           src={item.icon}
                           alt={item.name}
                         />
-                        <div className="max-w-[72px] truncate font-Montserrat text-[10px] text-center font-[700] leading-[9px]">
+                        <div className="max-w-[90px] truncate font-Montserrat text-[10px] text-center font-[700] leading-[9px]">
                           {item.name}
                         </div>
                       </div>
