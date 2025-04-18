@@ -32,8 +32,8 @@ const DappInfo: React.FC<any> = ({
         </div>
         <div>
           <h2 className="text-white text-[16px] font-medium">{name}</h2>
-          <p className="text-white text-[12px] font-light mt-[8px]">
-            {capitalize(category)}
+          <p className="text-white text-[12px] font-light mt-[8px] uppercase">
+            {category}
           </p>
         </div>
       </div>

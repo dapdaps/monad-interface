@@ -261,14 +261,14 @@ const Home = () => {
                     {duplicatedDappItems.map((item, index) => (
                       <div
                         key={`dapp-${index}`}
-                        className="flex-shrink-0 w-[51px] h-[60px] rounded-[10px] border border-black bg-[#A5FFFD] flex flex-col gap-[5px] items-center justify-center"
+                        className="flex-shrink-0 w-[75px] h-[70px] rounded-[10px] border border-black bg-[#A5FFFD] flex flex-col gap-[5px] items-center justify-center"
                       >
                         <img
                           className="w-[33px] h-[32px] rounded-[10px] overflow-hidden"
                           src={item.icon}
                           alt={item.name}
                         />
-                        <div className="max-w-[45px] truncate font-Unbounded text-[10px] text-center font-[900] leading-[9px]">
+                        <div className="max-w-[72px] truncate font-Montserrat text-[10px] text-center font-[700] leading-[9px]">
                           {item.name}
                         </div>
                       </div>

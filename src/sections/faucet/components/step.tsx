@@ -10,7 +10,7 @@ const StepList: IStep[] = [
   {
     value: 2,
     amount: 0.05,
-    unit: '$MON',
+    unit: 'MON',
     label: (
       <>
         <div className="text-white font-[500]">2</div>
@@ -22,7 +22,7 @@ const StepList: IStep[] = [
   {
     value: 5,
     amount: 0.05,
-    unit: '$MON',
+    unit: 'MON',
     label: (
       <>
         <div className="text-white font-[500]">5</div>
@@ -34,7 +34,7 @@ const StepList: IStep[] = [
   {
     value: 7,
     amount: 0.1,
-    unit: '$MON',
+    unit: 'MON',
     label: (
       <>
         <div className="text-white font-[500]">7</div>
@@ -46,7 +46,7 @@ const StepList: IStep[] = [
   {
     value: 14,
     amount: 0.1,
-    unit: '$MON',
+    unit: 'MON',
     label: (
       <>
         <div className="">Every</div>

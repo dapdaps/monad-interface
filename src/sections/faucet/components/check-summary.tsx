@@ -27,7 +27,7 @@ const FaucetCheckSummary = (props: any) => {
             }
           </div>
           <div className="flex items-center">
-            MONAD
+          MON
           </div>
           <div className="flex items-center text-[9px] font-[300] justify-center w-[65px] h-[14px] rounded-[8px] bg-[#7370C8]">
             Test Token

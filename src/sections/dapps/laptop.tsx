@@ -40,7 +40,7 @@ export default memo(function Laptop() {
               <RectangularButton
                 type={1}
                 clicked={activeType === "all"}
-                className="w-[76px] h-[36px]"
+                className="w-[76px] h-[36px] uppercase"
                 onClick={() => {
                   handleClickButton("all");
                 }}
@@ -82,7 +82,7 @@ export default memo(function Laptop() {
                 type={1}
                 data-bp="1003-005"
                 clicked={activeType === "Dex"}
-                className="w-[58px] h-[36px]"
+                className="w-[58px] h-[36px] uppercase"
                 onClick={() => handleClickButton("Dex")}
               >
                 Dex
@@ -91,7 +91,7 @@ export default memo(function Laptop() {
                 type={3}
                 data-bp="1003-007"
                 clicked={activeType === "Betting"}
-                className="w-[69px] h-[36px]"
+                className="w-[69px] h-[36px] uppercase"
                 onClick={() => handleClickButton("Betting")}
               >
                 Betting
@@ -100,7 +100,7 @@ export default memo(function Laptop() {
                 type={3}
                 data-bp="1003-008"
                 clicked={activeType === "NFT"}
-                className="w-[66px] h-[36px]"
+                className="w-[66px] h-[36px] uppercase"
                 onClick={() => handleClickButton("NFT")}
               >
                 NFT
@@ -109,7 +109,7 @@ export default memo(function Laptop() {
                 type={3}
                 data-bp="1003-004"
                 clicked={activeType === "Lending"}
-                className="w-[66px] h-[36px]"
+                className="w-[76px] h-[36px] uppercase"
                 onClick={() => handleClickButton("Lending")}
               >
                 Lending
@@ -118,7 +118,7 @@ export default memo(function Laptop() {
                 type={2}
                 data-bp="1003-006"
                 clicked={activeType === "other"}
-                className="w-[69px] h-[36px]"
+                className="w-[69px] h-[36px] uppercase"
                 onClick={() => handleClickButton("other")}
               >
                 Other

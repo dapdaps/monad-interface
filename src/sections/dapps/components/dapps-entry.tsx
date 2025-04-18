@@ -218,7 +218,7 @@ export default memo(function DappsEntry({
                     {dapp?.name}
                   </div>
                   <div className="mt-[6px] flex justify-center">
-                    <div className="p-[6px_10px] rounded-[6px] border border-black bg-[#7370C8] text-[#A5FFFD] font-Unbounded text-[12px] leading-[100%]">
+                    <div className="p-[6px_10px] rounded-[6px] border border-black bg-[#7370C8] text-[#A5FFFD] font-Unbounded text-[12px] leading-[100%] uppercase">
                       {dapp?.type}
                     </div>
                   </div>

@@ -77,7 +77,7 @@ export default function TokenAmout({
           setFocus(false);
         }}
       >
-        <div className="text-[#A6A6DB] font-Unbounded text-[14px]">{type === 'in' ? 'You Pay' : 'Receive'}</div>
+        <div className="text-[#A6A6DB] font-Unbounded text-[14px]">{type === 'in' ? 'You Pay' : 'You Receive'}</div>
         <div className="flex items-center justify-between gap-[10px] text-white">
 
           <div className="flex-1">
@@ -114,7 +114,7 @@ export default function TokenAmout({
                 </div>
               </div>
             ) : (
-              <div className="text-[16px] font-[600]">Select a token</div>
+              <div className="text-[16px] font-[600]">Select token</div>
             )}
             {!outputCurrencyReadonly && (
               <svg
@@ -151,14 +151,16 @@ export default function TokenAmout({
               ? balanceFormated(Big(amount).mul(tokenPrice).toString())
               : "-"}
           </div>
-          <div className="flex items-center gap-[4px]">
-            balance:{" "}
+          <div className="flex items-center gap-[4px] cur">
+            Balance:{" "}
             {isLoading ? (
               <Loading />
             ) : (
               <span
                 style={{
-                  textDecoration: disabled ? "none" : "underline"
+                  // textDecoration: disabled ? "none" : "underline"
+                  textDecoration: "underline",
+                  cursor: disabled ? "none" : "pointer"
                 }}
               >
                 {currency ? balanceFormated(tokenBalance) : "-"}

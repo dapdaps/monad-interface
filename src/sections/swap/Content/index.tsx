@@ -105,7 +105,7 @@ export default function Swap({
 
   useEffect(() => {
     if (!inputCurrency || !outputCurrency) {
-      setErrorTips("Select a token");
+      setErrorTips("Select token");
       return;
     }
     if (Number(inputCurrencyAmount || 0) === 0) {

@@ -116,7 +116,7 @@ export default memo(function Footer() {
         </svg>
       </Link>
 
-      <Link
+      {/* <Link
         className="hover:scale-110 ease-in-out duration-300 w-[16px] h-[16px] cursor-pointer"
         href="https://dapdap.mirror.xyz/FSRc-5-o7gHVfTnFDgYPFOMktA7kWreb-m0S3paQCdk"
         target="_blank"
@@ -129,7 +129,7 @@ export default memo(function Footer() {
           height={16}
           className="cursor-pointer"
         />
-      </Link>
+      </Link> */}
       <div className="fixed right-[10px] bottom-[6px] z-50 flex items-center gap-[8px]">
         {
           !isMobile && <Sound />
