@@ -26,7 +26,7 @@ export default memo(function DappsEntry({
   dapps: IDapp[];
 }) {
   const isMobile = useIsMobile()
-  const { handleReport } = useClickTracking()
+  const { handleReport, handleReportWithoutDebounce } = useClickTracking()
   const soundStore = useSoundStore();
   const [targetDapp, setTargetDapp] = useState<any>(null);
   const [clickedDapp, setClickedDapp] = useState(null)
@@ -190,13 +190,13 @@ export default memo(function DappsEntry({
                     if (isMobile) {
                       setClickedDapp(dapp)
                     } else {
+                      handleReportWithoutDebounce("1003-001", dapp.name)
                       if (
                         dapp.link.startsWith("https://") ||
                         dapp.link.startsWith("http://")
                       ) {
-                        setTargetDapp(dapp)
+                        window.open(dapp.link, "_blank");
                       } else {
-                        handleReport("1003-001", dapp.name)
                         router.push(dapp.link);
                       }
                     }

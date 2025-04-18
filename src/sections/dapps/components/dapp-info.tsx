@@ -38,26 +38,12 @@ const DappInfo: React.FC<any> = ({
         </div>
       </div>
 
-      {/* <div className="grid grid-cols-3 gap-4 mt-[20px] text-[12px] font-light">
-        <div>
-          <p className="text-white/60">TVL</p>
-          <p className="text-white">{tvl || "-"}</p>
-        </div>
-        <div>
-          <p className="text-white/60">Volume 24h</p>
-          <p className="text-white">{volume24h || "-"}</p>
-        </div>
-        <div>
-          <p className="text-white/60">Liquidity</p>
-          <p className="text-white">{liquidity || "-"}</p>
-        </div>
-      </div> */}
 
       <p className="text-[12px] font-light text-white/60 mt-[12px]">
         {desc || "-"}
       </p>
 
-      {
+      {/* {
         isAudited && (
           <div className="flex items-center gap-[4px] text-[12px] font-light text-white/60 mt-[14px]">
             <svg
@@ -75,7 +61,7 @@ const DappInfo: React.FC<any> = ({
             <span>Audit</span>
           </div>
         )
-      }
+      } */}
     </div >
   );
 };

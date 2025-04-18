@@ -116,10 +116,10 @@ const TokenItem = ({ token, type, onClick }: { token: IToken; type: any; onClick
             >
               <div className="absolute top-[8px] left-[24px] right-[11px]">
                 <div className="flex items-end gap-[6px]">
-                  <div className="text-black text-[14px] font-semibold">
-                    DAK
+                  <div className="text-black text-[14px] font-semibold leading-normal">
+                    {token?.symbol}
                   </div>
-                  <div className="text-black text-[10px]">Molandak</div>
+                  <div className="text-black text-[10px] leading-normal">{token?.name}</div>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-black text-[10px] opacity-60">
