@@ -58,7 +58,7 @@ const FaucetCheckIn = (props: any) => {
       {
         !isETHValidBalance && (
           <div className="text-[#A6A6DB] font-Unbounded text-[12px] font-[300] leading-normal text-center">
-            To check in and get $MON, you need at least 0.01 ETH on Ethereum.
+            To check in and get MON, you need at least 0.01 ETH on Ethereum.
           </div>
         )
       }

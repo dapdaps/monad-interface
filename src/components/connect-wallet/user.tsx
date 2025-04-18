@@ -57,7 +57,7 @@ const MobileUser = (props: Props) => {
               {currentChainInfo?.testnet ? "Testnet" : "Mainnet"}
             </div>
           </div>
-          <div className="mt-4 w-full text-[#A6A6DB] text-[12px] font-Unbounded text-nowrap leading-[1]">$MON Amount</div>
+          <div className="mt-4 w-full text-[#A6A6DB] text-[12px] font-Unbounded text-nowrap leading-[1]">MON Amount</div>
         <div className="flex items-center justify-between mt-[10px] pb-4 border-b border-[#A6A6DB] border-opacity-[0.3]">
           <div className="flex items-center gap-2">
             <div
