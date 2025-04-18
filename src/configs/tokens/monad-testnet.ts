@@ -26,7 +26,7 @@ export const monad: { [key: string]: Token } = {
   dak: {
     address: "0x0f0bdebf0f83cd1ee3974779bcb7315f9808c714",
     chainId: CHAIN_ID,
-    symbol: "Molandak",
+    symbol: "DAK",
     decimals: 18,
     name: "Testnet MON Token",
     icon: "/assets/tokens/dak.png",
