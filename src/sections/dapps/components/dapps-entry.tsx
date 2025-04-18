@@ -156,10 +156,10 @@ export default memo(function DappsEntry({
               <Popover
                 key={dapp.name}
                 placement={PopoverPlacement.Bottom}
-                trigger={PopoverTrigger.Hover}
+                trigger={dapp.link.startsWith("http") ? PopoverTrigger.Click : PopoverTrigger.Hover}
                 closeDelayDuration={0}
                 triggerContainerClassName="flex"
-                onClickBefore={() => isMobile ? false : true}
+                onClickBefore={() => (isMobile || dapp.link.startsWith("http")) ? false : true}
                 content={dAppsAnimateDone && (
                   <DappInfo
                     name={dapp.name}
@@ -190,13 +190,13 @@ export default memo(function DappsEntry({
                     if (isMobile) {
                       setClickedDapp(dapp)
                     } else {
-                      handleReportWithoutDebounce("1003-001", dapp.name)
                       if (
                         dapp.link.startsWith("https://") ||
                         dapp.link.startsWith("http://")
                       ) {
-                        window.open(dapp.link, "_blank");
+                        setTargetDapp(dapp)
                       } else {
+                        handleReportWithoutDebounce("1003-001", dapp.name)
                         router.push(dapp.link);
                       }
                     }
