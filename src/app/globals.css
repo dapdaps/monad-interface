@@ -28,6 +28,12 @@
   font-weight: 100 900;
   font-stretch: 75% 125%;
 }
+@font-face {
+  font-family: "Dogica Pixel";
+  src: url("./fonts/Dogica_Pixel.ttf") format("truetype");
+  font-weight: 100 900;
+  font-stretch: 75% 125%;
+}
 
 html,
 body {

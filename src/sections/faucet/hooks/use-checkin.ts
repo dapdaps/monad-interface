@@ -1,0 +1,71 @@
+import useCustomAccount from "@/hooks/use-account";
+import useToast from "@/hooks/use-toast";
+import { get, post } from "@/utils/http";
+import { mainnet } from '@reown/appkit/networks';
+import Big from "big.js";
+import { useState } from "react";
+import { useBalance } from 'wagmi';
+export default function useCheckin() {
+  const { account, accountWithAk } = useCustomAccount();
+  const [captchaLoading, setCaptchaLoading] = useState(false)
+  const [captchaId, setCaptchaId] = useState("")
+  const [captchaSolution, setCaptchaSolution] = useState("")
+  const [errorMsg, setErrorMsg] = useState(null)
+  const [checkinSuccess, setCheckinSuccess] = useState(false)
+
+  const toast = useToast()
+  const {
+    data: ethereumMainnetBalance,
+  } = useBalance({
+    address: account as `0x${string}`,
+    chainId: mainnet.id,
+  });
+  async function handleGetCaptcha() {
+    try {
+      setCaptchaLoading(true)
+      if (ethereumMainnetBalance && Big(ethereumMainnetBalance?.formatted || 0).lt(0.01)) {
+        setErrorMsg("To check in and get $MON, you need at least 0.01 ETH on Ethereum.")
+        setCaptchaLoading(false)
+        return
+      }
+      const result = await get("/captcha/generate")
+      setCaptchaId(result?.data?.captcha_id ?? "")
+      setCaptchaLoading(false)
+    } catch (error) {
+      setCaptchaLoading(false)
+      throw new Error(error)
+    }
+  }
+  async function handleCheckIn() {
+    try {
+      const result = await post("/checkin", null, {
+        CaptchaId: captchaId,
+        CaptchaSolution: captchaSolution
+      })
+      if (result.code === 200) {
+        setCheckinSuccess(true)
+      } else {
+        throw new Error(result?.message)
+      }
+    } catch (error) {
+      toast.fail({
+        title: error?.message
+      })
+      // setErrorMsg(error?.message)
+      handleGetCaptcha()
+    }
+  }
+  return {
+    captchaLoading,
+    captchaId,
+    setCaptchaId,
+    captchaSolution,
+    setCaptchaSolution,
+    errorMsg,
+    setErrorMsg,
+    checkinSuccess,
+    setCheckinSuccess,
+    handleCheckIn,
+    handleGetCaptcha
+  }
+}

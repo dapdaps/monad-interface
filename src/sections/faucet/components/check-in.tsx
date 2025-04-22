@@ -1,68 +1,101 @@
-import clsx from 'clsx';
-import useCustomAccount from '@/hooks/use-account';
-import { useAppKit } from '@reown/appkit/react';
-import { useFaucetContext } from '@/sections/faucet/context';
 import Loading from '@/components/loading';
-import Big from 'big.js';
-
+import useCustomAccount from '@/hooks/use-account';
+import { useFaucetContext } from '@/sections/faucet/context';
+import { useAppKit } from '@reown/appkit/react';
+import clsx from 'clsx';
+import {
+  differenceInMilliseconds,
+  endOfToday,
+  format
+} from 'date-fns';
+import { useEffect, useState } from 'react';
 const FaucetCheckIn = (props: any) => {
   const { className } = props;
 
   const { open } = useAppKit();
   const { account, accountWithAk } = useCustomAccount();
   const {
-    handleCheckIn,
-    checkInPending,
-    loading,
-    collectedToday,
     ethereumMainnetBalance,
     isEthereumMainnetBalanceLoading,
+    checkinInfo,
+    checkinInfoLoading,
+    captchaLoading,
+    handleGetCaptcha
   } = useFaucetContext();
 
-  const isETHValidBalance = !isEthereumMainnetBalanceLoading && Big(ethereumMainnetBalance?.formatted || 0).gt(0.01);
+  const { today_check_in } = checkinInfo ?? {
+
+  }
+
+  const [countdown, setCountdown] = useState('00:00:00');
+
+  const formatCountdown = (milliseconds: number) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    return [
+      hours.toString().padStart(2, '0'),
+      minutes.toString().padStart(2, '0'),
+      seconds.toString().padStart(2, '0')
+    ].join(' : ');
+  };
+  function calculateRemainingTime() {
+    const now = new Date();
+    const endOfDay = endOfToday();
+    const remainingMs = differenceInMilliseconds(endOfDay, now);
+    return formatCountdown(remainingMs)
+  }
+  useEffect(() => {
+    if (today_check_in) {
+      let animationFrameId: number;
+      let lastUpdate = 0;
+      const update = (timestamp: number) => {
+        if (!lastUpdate || timestamp - lastUpdate >= 1000) {
+          lastUpdate = timestamp;
+          setCountdown(calculateRemainingTime());
+        }
+        animationFrameId = requestAnimationFrame(update);
+      };
+      animationFrameId = requestAnimationFrame(update);
+      return () => cancelAnimationFrame(animationFrameId);
+    }
+  }, [today_check_in]);
 
   return (
-    <div className="w-full flex flex-col items-center gap-[10px]">
-      <button
-        type="button"
-        data-bp="1002-001"
-        disabled={!account ? false : (checkInPending || !accountWithAk || loading || collectedToday || !isETHValidBalance)}
-        className={clsx("flex justify-center items-center gap-[10px] md:w-full w-[227px] h-[50px] rounded-[6px] bg-[#836EF9] disabled:opacity-50 text-white text-[14px] font-[500] font-Unbounded", className)}
-        onClick={() => {
-          if (!account) {
-            open();
-            return;
-          }
-          handleCheckIn();
-        }}
-      >
-        {
-          account ? (
-            <>
-              {
-                (checkInPending || loading || isEthereumMainnetBalanceLoading) && (
-                  <Loading size={14} />
-                )
-              }
-              <div className="">
-                {collectedToday ? "Collected Today" : "GMonad"}
-              </div>
-            </>
-          ) : (
-            <div className="">
-              Connect Wallet
-            </div>
-          )
+
+    <button
+      type="button"
+      data-bp="1002-001"
+      disabled={!account ? false : (!accountWithAk || today_check_in)}
+      className={clsx("flex justify-center items-center gap-[10px] md:w-full w-[227px] h-[50px] rounded-[6px] disabled:opacity-50 text-white text-[14px] font-[500] font-Unbounded", today_check_in ? "bg-[rgba(131,110,249,0.3)]" : "bg-[#836EF9]", className)}
+      onClick={() => {
+        if (!account) {
+          open();
+          return;
         }
-      </button>
+        handleGetCaptcha();
+      }}
+    >
       {
-        !isETHValidBalance && (
-          <div className="text-[#A6A6DB] font-Unbounded text-[12px] font-[300] leading-normal text-center">
-            To check in and get MON, you need at least 0.01 ETH on Ethereum.
+        account ? (
+          <>
+            {
+              (captchaLoading || checkinInfoLoading || isEthereumMainnetBalanceLoading) && (
+                <Loading size={14} />
+              )
+            }
+            <div className="">
+              {today_check_in ? countdown : "Daily Check-in"}
+            </div>
+          </>
+        ) : (
+          <div className="">
+            Connect Wallet
           </div>
         )
       }
-    </div>
+    </button>
   );
 };
 

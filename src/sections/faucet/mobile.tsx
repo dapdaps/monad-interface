@@ -9,7 +9,7 @@ import { memo } from "react";
 export default memo(function Mobile() {
   return (
     <div className="w-full h-screen bg-[#0E0F29]">
-      <div className="w-full h-full bg-[url('/images/faucet/mobile/bg.png')] bg-no-repeat bg-top bg-cover">
+      {/* <div className="w-full h-full bg-[url('/images/faucet/mobile/bg.png')] bg-no-repeat bg-top bg-cover">
         <FaucetCard bodyClassName="p-[71px_10px_0] h-screen overflow-auto">
           <div className='my-[20px] flex justify-center'>
             <FaucetFontSvg />
@@ -32,7 +32,7 @@ export default memo(function Mobile() {
             <FaucetCheckCalendar />
           </div>
         </FaucetCard>
-      </div>
+      </div> */}
     </div>
   )
 })

@@ -12,6 +12,8 @@ import { HTTP_CODE } from '@/configs';
 import useAudioPlay from '@/hooks/use-audio';
 import { useBalance } from 'wagmi';
 import { mainnet } from '@reown/appkit/networks';
+import useCheckinInfo from './hooks/use-checkin-info';
+import useCheckin from './hooks/use-checkin';
 
 export const FaucetContext = createContext<Partial<IFaucetContext>>({});
 
@@ -29,97 +31,51 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
     address: account as `0x${string}`,
     chainId: mainnet.id,
   });
+  const {
+    captchaLoading,
+    captchaId,
+    setCaptchaId,
+    captchaSolution,
+    setCaptchaSolution,
+    errorMsg,
+    setErrorMsg,
+    checkinSuccess,
+    setCheckinSuccess,
+    handleCheckIn,
+    handleGetCaptcha,
+  } = useCheckin()
 
-  const today = dayjs().utc();
-
-  const [checkInPending, setCheckInPending] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [checkedList, setCheckedList] = useState<ICheckedItem[]>([]);
-  const [checkinList, setCheckinList] = useState<ICheckinItem[]>([]);
-
-  const [collectedMON, checkinDays, collectedToday] = useMemo(() => {
-    return [
-      checkedList?.reduce?.((acc, cur) => Big(acc).plus(cur.reward_amount), Big(0)) || Big(0),
-      checkedList?.length || 0,
-      checkedList?.some(item => item.checkin_date === today.startOf('day').valueOf())
-    ];
-  }, [checkedList, today]);
-
-  const handleCheckIn = async () => {
-    if (checkInPending) return;
-    setCheckInPending(true);
-    try {
-      const res = await post('/checkin', {});
-      if (res.code !== HTTP_CODE.OK) {
-        toast.fail({
-          title: 'Check-in failed!',
-          text: res?.message ?? '',
-        });
-        setCheckInPending(false);
-        return;
-      }
-      toast.success({
-        title: 'Check-in successful!',
-      });
-      await getCheckedList({ isAfterCheckin: true });
-    } catch (err: any) {
-      console.log("Failed to check in: %o", err);
-      toast.fail({
-        title: 'Check-in failed!',
-        text: err?.message ?? '',
-      });
-    }
-    setCheckInPending(false);
-  };
-
-  const getCheckedList = async (params?: { isAfterCheckin?: boolean; }) => {
-    const { isAfterCheckin } = params || {};
-
-    setLoading(true);
-    try {
-      const res = await get('https://test-api-monad.dapdap.net/api/checkin/list', {});
-      if (res.code !== HTTP_CODE.OK) {
-        setLoading(false);
-        console.log("Failed to get check-in list: %o", res.message);
-        return;
-      }
-      const _list = res.data || [];
-      _list.forEach((item: ICheckedItem) => {
-        item.checkin_date = item.checkin_date > 0 ? dayjs.utc(item.checkin_date * 1000).startOf("day").valueOf() : 0;
-      });
-      setCheckedList(_list);
-      if (isAfterCheckin) {
-        checkinPlay("/audios/checkin.mp3");
-      }
-    } catch (err: any) {
-      console.log("Failed to get check-in list: %o", err);
-    }
-    setLoading(false);
-  };
+  const {
+    loading: checkinInfoLoading,
+    checkinInfo,
+    handleQueryCheckIn
+  } = useCheckinInfo()
 
   useEffect(() => {
-    if (!accountWithAk) return;
-    getCheckedList();
-  }, [account, accountWithAk]);
-
-  useEffect(() => {
-    setCheckinList(getUntilCurrentMonthCheckinList(checkedList));
-  }, [checkedList]);
+    checkinSuccess && handleQueryCheckIn()
+  }, [checkinSuccess])
+  
 
   return (
     <FaucetContext.Provider
       value={{
-        checkInPending,
-        handleCheckIn,
-        loading,
-        checkedList,
-        today,
-        collectedMON,
-        checkinDays,
-        collectedToday,
-        checkinList,
         ethereumMainnetBalance,
         isEthereumMainnetBalanceLoading,
+        checkinInfo,
+        checkinInfoLoading,
+        captchaLoading,
+        captchaId,
+        setCaptchaId,
+        captchaSolution,
+        setCaptchaSolution,
+
+        errorMsg,
+        setErrorMsg,
+        checkinSuccess,
+        setCheckinSuccess,
+
+        handleCheckIn,
+        handleGetCaptcha
       }}
     >
       {children}
@@ -131,6 +87,6 @@ export default FaucetContextProvider;
 
 export function useFaucetContext() {
   const context = useContext(FaucetContext);
-  
+
   return context as IFaucetContext;
 }

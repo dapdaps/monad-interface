@@ -15,6 +15,7 @@ const config: Config = {
       CherryBomb: ["Cherry Bomb"],
       Fuzzy: ["Fuzzy"],
       Unbounded: ["Unbounded"],
+      DogicaPixel: ["Dogica Pixel"]
     },
     backgroundImage: {
       vault: "linear-gradient(245deg, #F18E4E 12.36%, #D5B8DB 63.87%)",
@@ -172,10 +173,10 @@ const config: Config = {
       },
       ping: {
         "75%,to": {
-            transform: "scale(2)",
-            opacity: "0"
+          transform: "scale(2)",
+          opacity: "0"
         }
-    },
+      },
       cloudFloatLeft: {
         "0%": {
           transform: "translateX(0) translateY(0) scale(1)",
