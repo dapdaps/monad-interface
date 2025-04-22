@@ -1,6 +1,6 @@
 import Modal from "@/components/modal";
 import { useFaucetStore } from "@/stores/useFaucet";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useFaucetContext } from "../context";
 
 export default memo(function CongratsModal() {
