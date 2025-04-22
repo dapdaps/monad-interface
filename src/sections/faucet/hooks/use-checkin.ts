@@ -51,7 +51,6 @@ export default function useCheckin() {
       toast.fail({
         title: error?.message
       })
-      // setErrorMsg(error?.message)
       handleGetCaptcha()
     }
   }

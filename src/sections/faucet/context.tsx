@@ -20,10 +20,7 @@ export const FaucetContext = createContext<Partial<IFaucetContext>>({});
 function FaucetContextProvider({ children }: { children: ReactNode; }) {
   const toast = useToast();
   const { account, accountWithAk } = useCustomAccount();
-  const {
-    playing: checkinPlaying,
-    play: checkinPlay,
-  } = useAudioPlay();
+
   const {
     data: ethereumMainnetBalance,
     isLoading: isEthereumMainnetBalanceLoading
@@ -52,9 +49,12 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
   } = useCheckinInfo()
 
   useEffect(() => {
-    checkinSuccess && handleQueryCheckIn()
+    if (checkinSuccess) {
+      setCaptchaId("")
+      handleQueryCheckIn()
+    }
   }, [checkinSuccess])
-  
+
 
   return (
     <FaucetContext.Provider

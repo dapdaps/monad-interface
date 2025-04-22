@@ -27,7 +27,14 @@ export default memo(function RuleModal() {
             Miss a day? Streak resets and starts over</div>
         </div>
         <div className="mt-[48px] flex justify-center">
-          <div className="text-[14px] underline">I See</div>
+          <div
+            className="text-[14px] underline cursor-pointer"
+            onClick={() => {
+              store.set({
+                showRule: false
+              })
+            }}
+          >I See</div>
         </div>
       </div>
     </Modal>
