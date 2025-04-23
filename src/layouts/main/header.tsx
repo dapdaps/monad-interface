@@ -4,6 +4,7 @@ import ConnectWallet from "@/components/connect-wallet";
 import Sound from "@/components/sound";
 import useIsMobile from "@/hooks/use-isMobile";
 import { useProgressRouter } from "@/hooks/use-progress-router";
+import { useSafeBack } from "@/hooks/useSafeBack";
 import clsx from 'clsx';
 import { usePathname } from "next/navigation";
 
@@ -16,7 +17,7 @@ const MainLayoutHeader = (props: Props) => {
   const DONT_NEED_SHOW_BACK = ["/"];
   const isMobile = useIsMobile()
   const goHome = () => {
-    router.replace("/");
+    router.replace("/"); 
   };
   return (
     <header
@@ -34,10 +35,9 @@ const MainLayoutHeader = (props: Props) => {
           <div />
         ) : (
           <div
+            data-click-sound="/audios/back-click-sound.mp3"
             className="cursor-pointer w-[120px]"
-            onClick={() => {
-              router.back();
-            }}
+            onClick={goHome}
           >
             {
               isMobile ? <img className="mt-[10px] ml-[10px]" src="/images/header/back_button_mobile.svg" alt="back_button" /> : <img src="/images/header/back_button.svg" alt="back_button" />

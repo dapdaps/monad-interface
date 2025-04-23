@@ -14,7 +14,7 @@ const StyledRpcs = styled.div<{ $color?: string; isMobile?: boolean }>`
   align-items: center;
   gap: 5px;
   color: ${({ $color }) => $color || "#57DB64"};
-  font-size: 12px;
+  font-size: 10px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
