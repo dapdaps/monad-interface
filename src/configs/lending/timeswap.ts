@@ -23,7 +23,10 @@ const networks = {
       {
         id: "67d12a9d-7d28-4a68-8f1f-227c7c708674",
         tokens: [
-          monad.wmon,
+          {
+            ...monad.wmon,
+            icon: "/images/tokens/WMONAD.svg",
+          },
           monad.shmon,
         ],
         transitionPrice01: 1.02040816,
@@ -35,7 +38,10 @@ const networks = {
         id: "7fd07692-cd2d-4ffc-b19c-5b379d9332ba",
         tokens: [
           monad.usdt,
-          monad.wmon,
+          {
+            ...monad.wmon,
+            icon: "/images/tokens/WMONAD.svg",
+          },
         ],
         transitionPrice01: 0.66666666,
         transitionPrice10: 1.5,
