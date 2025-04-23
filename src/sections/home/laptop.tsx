@@ -9,6 +9,7 @@ import withSound from "@/hoc/withSound";
 import LazyImage from "@/components/layz-image";
 import { ALL_DAPP_LIST } from "../dapps/config";
 import { IDapp } from "@/types";
+import StarrySkyCanvas from "./StarrySky";
 
 const itemWidth = 51;
 const itemGap = 6;
@@ -51,9 +52,11 @@ const Home = () => {
 
   return (
     <div className={`w-full ${window.innerHeight < 900 ? 'min-h-[900px] overflow-y-auto' : 'h-[100dvh]'} relative overflow-hidden`}>
-      <div className="absolute top-0 left-0 right-0 h-[calc(623/14.4*var(--rem))] bg-[url(/images/monad/background/bg3.svg)] bg-no-repeat bg-contain"></div>
+      <StarrySkyCanvas />
+      <div className="absolute top-0 left-0 right-0 h-[calc(623/14.4*var(--rem))] bg-[url(/images/monad/background/bg3.png)] bg-no-repeat bg-contain">
+      </div>
       <div
-        className="absolute left-0 bottom-0 w-full bg-[url(/images/monad/background/bg1.svg)] bg-no-repeat bg-contain 
+        className="z-[7] absolute left-0 bottom-0 w-full bg-[url(/images/monad/background/bg1.svg)] bg-no-repeat bg-contain 
                         h-[calc(635/14.4*var(--rem))] min-h-[635px] min-w-[1440px]"
       >
         <div className="relative w-full h-full min-h-[635px] min-w-[1440px]">
