@@ -67,8 +67,9 @@ const FaucetCheckIn = (props: any) => {
     <button
       type="button"
       data-bp="1002-001"
+      data-click-sound="/audios/faucet/congrats.mp3"
       disabled={!account ? false : (!accountWithAk || today_check_in)}
-      className={clsx("flex justify-center items-center gap-[10px] md:w-full w-[227px] h-[50px] rounded-[6px] disabled:opacity-50 text-white text-[14px] font-[500] font-Unbounded", today_check_in ? "bg-[rgba(131,110,249,0.3)]" : "bg-[#836EF9]", className)}
+      className={clsx("flex justify-center items-center gap-[10px] md:w-[200px] w-[227px] h-[50px] rounded-[6px] disabled:opacity-50 text-white text-[14px] font-[500] font-Unbounded", today_check_in ? "bg-[rgba(131,110,249,0.3)]" : "bg-[#836EF9]", className)}
       onClick={() => {
         if (!account) {
           open();

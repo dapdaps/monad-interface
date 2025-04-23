@@ -24,7 +24,7 @@ export default memo(function Laptop() {
                 })
               }}
             >Rules</div>
-            <div className='m-[25px_32px_0] p-[12px_101px] rounded-[4px] bg-[rgba(165,255,253,0.20)] text-center text-[#A5FFFD] font-Unbounded text-[12px] leading-[150%]'>
+            <div className='m-[25px_32px_17px] p-[12px_101px] rounded-[4px] bg-[rgba(165,255,253,0.20)] text-center text-[#A5FFFD] font-Unbounded text-[12px] leading-[150%]'>
               Testnet tokens are for development purposes only, they do not have real value.
               To check in and get $MON, you need at least 0.01 ETH on Ethereum.
             </div>
@@ -42,7 +42,6 @@ export default memo(function Laptop() {
           </FaucetCard>
         </div>
       </div>
-
       <RuleModal />
       <CongratsModal />
       <VerificationModal />

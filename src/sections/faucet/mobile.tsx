@@ -1,38 +1,90 @@
-import FaucetCard from '@/sections/faucet/components/card';
-import FaucetCardTitle from '@/sections/faucet/components/card/title';
-import FaucetCheckCalendar from '@/sections/faucet/components/check-calendar';
-import FaucetCheckIn from '@/sections/faucet/components/check-in';
-import FaucetCheckSummary from '@/sections/faucet/components/check-summary';
-import FaucetStep from '@/sections/faucet/components/step';
-import FaucetFontSvg from '@public/images/faucet/mobile/faucet_font.svg'
+import FaucetFontSvg from '@public/images/faucet/mobile/faucet_font.svg';
 import { memo } from "react";
+import RuleModal from './components/rule-modal';
+import EnergyBars from './components/energy-bars';
+import { useFaucetContext } from "./context";
+import FaucetCheckIn from './components/check-in';
+import clsx from 'clsx';
+import Big from 'big.js';
+import VerificationModal from './components/verification-modal';
+import { useFaucetStore } from '@/stores/useFaucet';
+import CongratsModal from './components/congrats-modal';
 export default memo(function Mobile() {
+  const {
+    checkinInfo,
+  } = useFaucetContext();
+  const store = useFaucetStore()
   return (
-    <div className="w-full h-screen bg-[#0E0F29]">
-      {/* <div className="w-full h-full bg-[url('/images/faucet/mobile/bg.png')] bg-no-repeat bg-top bg-cover">
-        <FaucetCard bodyClassName="p-[71px_10px_0] h-screen overflow-auto">
-          <div className='my-[20px] flex justify-center'>
-            <FaucetFontSvg />
+    <div className="w-full h-full bg-[#0E0F29] overflow-auto scrollbar-hide">
+      <div className="w-full h-full bg-[url('/images/faucet/mobile/bg.png')] bg-no-repeat bg-top bg-cover">
+        <div className='relative m-[60px_0_20px] flex justify-center'>
+          <FaucetFontSvg />
+          <div
+            className='absolute right-[10px] top-[3px] cursor-pointer text-[#A5FFFD] font-DogicaPixel text-[12px] leading-[150%]'
+            onClick={() => {
+              store.set({
+                showRule: true
+              })
+            }}
+          >Rules</div>
+        </div>
+
+        <div className='m-[20px_10px_0] p-[10px_8px_14px] flex flex-col justify-between h-[114px] rounded-[4px] bg-[rgba(165,255,253,0.20)] text-[#A5FFFD] text-[12px] font-Unbounded leading-[150%]'>
+          <div className='flex font-light before:w-[6px] before:min-w-[6px] before:h-[6px] before:m-[6px_4px_0_0] before:rounded-full before:bg-[#A5FFFD]'>Testnet tokens are for development purposes only, they do not have real value. </div>
+          <div className='flex font-light before:w-[6px] before:min-w-[6px] before:h-[6px] before:m-[6px_4px_0_0] before:rounded-full before:bg-[#A5FFFD]'>To check in and get $MON, you need at least 0.01 ETH on Ethereum.</div>
+        </div>
+        <div className='relative'>
+          <div className="absolute z-10 left-0 top-[130px] flex flex-col items-end w-[390px] h-[350px]  bg-[url('/images/faucet/mobile/summary_bg.svg')] bg-no-repeat" />
+          <div className='relative z-20 w-[390px] h-[643px]'>
+            <EnergyBars />
           </div>
-          <div className="w-full">
-            <div className="w-full flex flex-col gap-[20px] items-center">
-              <FaucetStep />
-              <div className="relative w-[121px] h-[96px] shrink-0 flex justify-center items-center">
-                <img src="/images/faucet/coffee-coins.svg" alt="" className="w-[121px] h-[96px]" />
-                <img src="/images/faucet/heat-smoking.gif" alt="" className="absolute w-[92px] h-[92px] top-[-48px] translate-x-[24px]" />
-                <img src="/images/faucet/sparkle.gif" alt="" className="absolute w-[55px] h-[55px] translate-y-[12px] translate-x-[-12px]" />
+          <div className='absolute z-30 right-[34px] top-[159px]'>
+            <div className='flex flex-col items-center gap-[10px] text-white font-Unbounded '>
+              <div className='text-[42px] font-medium leading-[52px]'>{checkinInfo?.total_reward_amount ?? 0}</div>
+              <div className='flex items-center gap-[6px]'>
+                <span className='text-[12px]'>MONAD</span>
+                <div className='flex items-center justify-center w-[65px] h-[14px] rounded-[8px] bg-[#7370C8] text-[9px] font-light'>Test Token</div>
               </div>
             </div>
-            <div className="flex justify-center mt-[5px]">
+            <div className='m-[29px_0_50px]'>
               <FaucetCheckIn />
             </div>
+
+            <div className='flex flex-col gap-[16px] font-DogicaPixel leading-[180%]'>
+              <div className='flex items-center justify-between'>
+                <div className='flex items-center gap-[11px]'>
+                  <div className='w-[17px]'>
+                    <img src="/images/faucet/icon_lightning.svg" alt="icon_lightning" />
+                  </div>
+                  <span className='text-[#A6A6DB] text-[12px]'>Check-in</span>
+                </div>
+                <span className={clsx('text-white text-[14px] font-bold', Big(checkinInfo?.total_check_in ?? 0).eq(0) ? "opacity-30" : "")}>x{checkinInfo?.total_check_in ?? 0}</span>
+              </div>
+
+              <div className='flex items-center justify-between'>
+                <div className='flex items-center gap-[6px]'>
+                  <div className='w-[24px] -ml-[2.5px]'>
+                    <img src="/images/faucet/icon_capsule.svg" alt="icon_capsule" />
+                  </div>
+                  <span className='text-[#A6A6DB] text-[12px]'>Energy Bar</span>
+                </div>
+                <span className={clsx('text-white text-[14px] font-bold', Big(checkinInfo?.total_energy_bar ?? 0).eq(0) ? "opacity-30" : "")}>x{checkinInfo?.total_energy_bar ?? 0}</span>
+              </div>
+            </div>
+
+            <div className="absolute -right-[23px] -bottom-[134px] w-[101px] h-[80px] shrink-0 flex justify-center items-center">
+              <img src="/images/faucet/coffee-coins.svg" alt="" className="w-[101px] h-[80px]" />
+              <img src="/images/faucet/heat-smoking.gif" alt="" className="absolute w-[77px] h-[77px] top-[-40px] translate-x-[20px]" />
+              <img src="/images/faucet/sparkle.gif" alt="" className="absolute w-[46px] h-[46px] translate-y-[10px] translate-x-[-10px]" />
+            </div>
+
           </div>
-          <div className="w-full rounded-[6px] bg-[rgba(45,48,79,0.60)] backdrop-blur-[10px] mt-[17px]">
-            <FaucetCheckSummary />
-            <FaucetCheckCalendar />
-          </div>
-        </FaucetCard>
-      </div> */}
+        </div>
+      </div>
+
+      <RuleModal />
+      <VerificationModal />
+      <CongratsModal />
     </div>
   )
 })
