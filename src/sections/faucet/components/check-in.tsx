@@ -1,3 +1,4 @@
+import BackgroundSound from '@/components/background-sound';
 import Loading from '@/components/loading';
 import useCustomAccount from '@/hooks/use-account';
 import { useFaucetContext } from '@/sections/faucet/context';
@@ -8,7 +9,7 @@ import {
   endOfToday,
   format
 } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 const FaucetCheckIn = (props: any) => {
   const { className } = props;
 
@@ -28,6 +29,7 @@ const FaucetCheckIn = (props: any) => {
   }
 
   const [countdown, setCountdown] = useState('00:00:00');
+  const checkinRef = useRef(null)
 
   const formatCountdown = (milliseconds: number) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
@@ -63,40 +65,43 @@ const FaucetCheckIn = (props: any) => {
   }, [today_check_in]);
 
   return (
-
-    <button
-      type="button"
-      data-bp="1002-001"
-      data-click-sound="/audios/faucet/congrats.mp3"
-      disabled={!account ? false : (!accountWithAk || today_check_in)}
-      className={clsx("flex justify-center items-center gap-[10px] md:w-[200px] w-[227px] h-[50px] rounded-[6px] disabled:opacity-50 text-white text-[14px] font-[500] font-Unbounded", today_check_in ? "bg-[rgba(131,110,249,0.3)]" : "bg-[#836EF9]", className)}
-      onClick={() => {
-        if (!account) {
-          open();
-          return;
-        }
-        handleGetCaptcha();
-      }}
-    >
-      {
-        account ? (
-          <>
-            {
-              (captchaLoading || checkinInfoLoading || isEthereumMainnetBalanceLoading) && (
-                <Loading size={14} />
-              )
-            }
+    <>
+      <button
+        type="button"
+        data-bp="1002-001"
+        disabled={!account ? false : (!accountWithAk || today_check_in)}
+        className={clsx("flex justify-center items-center gap-[10px] md:w-[200px] w-[227px] h-[50px] rounded-[6px] disabled:opacity-50 text-white text-[14px] font-[500] font-Unbounded", today_check_in ? "bg-[rgba(131,110,249,0.3)]" : "bg-[#836EF9]", className)}
+        onClick={() => {
+          if (!account) {
+            open();
+            return;
+          }
+          checkinRef?.current?.play();
+          handleGetCaptcha();
+        }}
+      >
+        {
+          account ? (
+            <>
+              {
+                (captchaLoading || checkinInfoLoading || isEthereumMainnetBalanceLoading) && (
+                  <Loading size={14} />
+                )
+              }
+              <div className="">
+                {today_check_in ? countdown : "Daily Check-in"}
+              </div>
+            </>
+          ) : (
             <div className="">
-              {today_check_in ? countdown : "Daily Check-in"}
+              Connect Wallet
             </div>
-          </>
-        ) : (
-          <div className="">
-            Connect Wallet
-          </div>
-        )
-      }
-    </button>
+          )
+        }
+      </button>
+
+      <BackgroundSound ref={checkinRef} src="/audios/faucet/checkin.mp3" />
+    </>
   );
 };
 

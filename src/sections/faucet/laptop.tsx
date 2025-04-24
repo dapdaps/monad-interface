@@ -1,16 +1,19 @@
 import FaucetCard from '@/sections/faucet/components/card';
 import FaucetCheckIn from '@/sections/faucet/components/check-in';
 import { useFaucetStore } from '@/stores/useFaucet';
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import CaptchaModal from './components/captcha-modal';
 import CongratsModal from './components/congrats-modal';
 import EnergyBars from './components/energy-bars';
 import RuleModal from './components/rule-modal';
 import Summary from './components/summary';
 import VerificationModal from './components/verification-modal';
+import { useSize } from 'ahooks';
 export default memo(function Laptop() {
   const store = useFaucetStore()
+  const size = useSize(document.getElementsByTagName("body")[0])
 
+  // const scale = useMemo(() => size?.width / 1440, [size])
   return (
     <div className="w-full h-screen bg-[#0E0F29]">
       <div className="w-full h-full bg-[url('/images/faucet/bg.png')] bg-no-repeat bg-top bg-cover">
@@ -31,7 +34,7 @@ export default memo(function Laptop() {
 
             <EnergyBars />
             <Summary />
-            
+
             <FaucetCheckIn className="m-[28px_auto_61px]" />
             <div className="absolute right-[22px] -bottom-[9px] w-[202px] h-[160px] shrink-0 flex justify-center items-center">
               <img src="/images/faucet/coffee-coins.svg" alt="" className="w-[202px] h-[160px]" />

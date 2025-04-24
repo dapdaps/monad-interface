@@ -1,17 +1,23 @@
+import BackgroundSound from "@/components/background-sound";
 import Modal from "@/components/modal";
-import { useFaucetStore } from "@/stores/useFaucet";
-import { memo, useEffect, useState } from "react";
+import useIsMobile from "@/hooks/use-isMobile";
+import CongratsBgSvg from '@public/images/faucet/congrats_bg.svg';
+import ModalBgSvg from '@public/images/faucet/mobile/modal_bg.svg';
+import { memo, useEffect, useRef, useState } from "react";
 import { useFaucetContext } from "../context";
-
 export default memo(function CongratsModal() {
   const {
     checkinInfo,
     checkinSuccess,
     setCheckinSuccess
   } = useFaucetContext();
+  const isMobile = useIsMobile()
   const [showCongratesModal, setShowCongratesModal] = useState(false)
+  const congratsRef = useRef(null)
+
   useEffect(() => {
     if (checkinSuccess && checkinInfo?.consecutive_check_in === 7) {
+      congratsRef?.current?.play()
       setShowCongratesModal(true)
     }
   }, [checkinSuccess, checkinInfo])
@@ -25,27 +31,45 @@ export default memo(function CongratsModal() {
         </svg>
       )}
       className="flex items-center justify-center"
-      closeIconClassName="absolute right-[40px] top-[32px] cursor-pointer"
+      closeIconClassName="absolute md:right-[17px] right-[25px] top-[12px] cursor-pointer"
       onClose={() => {
         setShowCongratesModal(false)
       }}
     >
-      <div className="md:w-[390px] w-[504px] md:h-[400px] h-[330px] md:bg-[url('/images/faucet/mobile/modal_bg.svg')] bg-[url('/images/faucet/congrats_bg.svg')] bg-contain bg-no-repeat md:text-[#A5FFFD] text-white md:font-DogicaPixel font-Unbounded">
-        <div className="relative md:m-[-30px_auto_40px] m-[-30px_auto_20px] md:w-[171px] w-[183px]">
-          <img src="/images/faucet/congrats_capsule.svg" alt="congrats_capsule" />
+      <div className="relative md:w-[368px] w-[462px] md:h-[378px] h-[288px] md:text-[#A5FFFD] text-white md:font-DogicaPixel font-Unbounded">
+        <div className="absolute md:-left-[10px] -left-[20px] md:-top-[20px] -top-[20px] md:w-[390px] w-[504px] md:h-[400px] h-[330px]">
+          {
+            isMobile ? (
+              <ModalBgSvg />
+            ) : (
+              <CongratsBgSvg />
+            )
+          }
         </div>
+        <div className="absolute left-0 top-0 right-0 bottom-0">
+          <div className="relative md:m-[-34px_auto_32px] m-[-50px_auto_20px] md:w-[171px] w-[183px]">
+            <img src="/images/faucet/congrats_capsule.svg" alt="congrats_capsule" />
+          </div>
 
-        <div className="-mt-[30px] text-center md:text-[16px] text-[20px] font-medium md:leading-[180%] leading-[100%]">Congrats!</div>
-        <div className="md:m-[20px_30px_34px] m-[22px_80px_52px_92px] text-[14px] font-light leading-[150%] text-center">You‘ve got 1 Energy Bar,  and you will get extra 0.2 MON </div>
-        <div
-          className="flex justify-center"
-          onClick={() => {
-            setShowCongratesModal(false)
-          }}
-        >
-          <span className="underline text-[14px] cursor-pointer">I See</span>
+          <div className="text-center md:text-[16px] text-[20px] font-medium md:leading-[180%] leading-[100%]">Congrats!</div>
+          <div className="md:m-[20px_30px_34px] m-[22px_80px_52px_92px] text-[14px] font-light leading-[150%] text-center">You‘ve got 1 Energy Bar,  and you will get extra 0.2 MON </div>
+          {
+            isMobile && (
+              <div
+                className="flex justify-center"
+                onClick={() => {
+                  setShowCongratesModal(false)
+                }}
+              >
+                <span className="underline text-[14px] cursor-pointer">I See</span>
+              </div>
+            )
+          }
         </div>
       </div>
+
+
+      <BackgroundSound ref={congratsRef} src="/audios/faucet/congrats.mp3" />
     </Modal>
   )
 })

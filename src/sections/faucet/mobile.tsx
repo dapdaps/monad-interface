@@ -9,6 +9,7 @@ import Big from 'big.js';
 import VerificationModal from './components/verification-modal';
 import { useFaucetStore } from '@/stores/useFaucet';
 import CongratsModal from './components/congrats-modal';
+import CaptchaModal from './components/captcha-modal';
 export default memo(function Mobile() {
   const {
     checkinInfo,
@@ -85,6 +86,7 @@ export default memo(function Mobile() {
       <RuleModal />
       <VerificationModal />
       <CongratsModal />
+      <CaptchaModal />
     </div>
   )
 })

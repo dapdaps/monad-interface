@@ -1,12 +1,16 @@
 import Modal from "@/components/modal";
 import { memo } from "react";
 import { useFaucetContext } from "../context";
+import VerificationBgSvg from '@public/images/faucet/verification_bg.svg'
+import ModalBgSvg from '@public/images/faucet/mobile/modal_bg.svg'
+import useIsMobile from "@/hooks/use-isMobile";
 
 export default memo(function VerificationModal() {
   const {
     errorMsg,
     setErrorMsg
   } = useFaucetContext();
+  const isMobile = useIsMobile()
   return (
     <Modal
       open={errorMsg}
@@ -17,21 +21,32 @@ export default memo(function VerificationModal() {
         </svg>
       )}
       className="flex items-center justify-center"
-      closeIconClassName="absolute right-[40px] top-[32px] cursor-pointer"
+      closeIconClassName="absolute md:right-[17px] right-[25px] top-[12px] cursor-pointer"
       onClose={() => {
         setErrorMsg("")
       }}
     >
-      <div className="p-[61px_48px_0] md:w-[390px] w-[494px] md:h-[400px] h-[300px] md:bg-[url('/images/faucet/mobile/modal_bg.svg')] bg-[url('/images/faucet/verification_bg.svg')] bg-contain bg-no-repeat text-[#A5FFFD] font-DogicaPixel  leading-[180%] text-center">
-        <div className="text-[18px] font-bold">De-bot Verification</div>
-        <div className="m-[25px_0_64px] text-[14px]">{errorMsg}</div>
-        <div
-          className="flex justify-center"
-          onClick={() => {
-            setErrorMsg("")
-          }}
-        >
-          <span className="underline text-[14px] cursor-pointer">I See</span>
+      <div className="md:w-[368px] w-[452px] md:h-[258px]  text-[#A5FFFD] font-DogicaPixel  leading-[180%] text-center">
+        <div className="absolute md:-left-[10px] -left-[20px] md:-top-[20px] -top-[20px] md:w-[390px] w-[494px] md:h-[400px] h-[300px]">
+          {
+            isMobile ? (
+              <ModalBgSvg />
+            ) : (
+              <VerificationBgSvg />
+            )
+          }
+        </div>
+        <div className="absolute p-[40px_28px_0] left-0 top-0 right-0 bottom-0">
+          <div className="text-[18px] font-bold">De-bot Verification</div>
+          <div className="m-[25px_0_64px] text-[14px]">To check in and get $MON, you need at least 0.01 ETH on Ethereum.</div>
+          <div
+            className="flex justify-center"
+            onClick={() => {
+              setErrorMsg("")
+            }}
+          >
+            <span className="underline text-[14px] cursor-pointer">I See</span>
+          </div>
         </div>
       </div>
     </Modal>

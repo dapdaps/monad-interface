@@ -36,7 +36,8 @@ export default memo(function EnergyBars() {
           <div className="absolute left-0 top-0 md:hidden">
             <img src="/images/faucet/tubes.svg" alt="tubes" />
           </div>
-          <div className="absolute -left-[136px] -bottom-[126px] w-[390px] h-[154px] rotate-[90deg] scale-[1.335]">
+          
+          <div className="md:block hidden absolute -left-[136px] -bottom-[126px] w-[390px] h-[154px] rotate-[90deg] scale-[1.335]">
             <img src="/images/faucet/mobile/base.svg" alt="base" />
           </div>
           <div className="absolute right-0 bottom-0">
