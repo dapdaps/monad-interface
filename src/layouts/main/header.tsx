@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 import ConnectWallet from "@/components/connect-wallet";
 import Sound from "@/components/sound";
@@ -8,7 +8,14 @@ import { useSafeBack } from "@/hooks/useSafeBack";
 import clsx from 'clsx';
 import { usePathname } from "next/navigation";
 
+
 const FIXED_HEADER_PATHNAME = [/^\/faucet$/, /^\/$/];
+
+export async function getServerSideProps({ res }) {
+  const is404 = res.statusCode === 404
+  console.log("====is404", is404)
+  return { props: { is404 } }
+}
 
 const MainLayoutHeader = (props: Props) => {
   const { className, style } = props;
@@ -17,7 +24,7 @@ const MainLayoutHeader = (props: Props) => {
   const DONT_NEED_SHOW_BACK = ["/"];
   const isMobile = useIsMobile()
   const goHome = () => {
-    router.replace("/"); 
+    router.replace("/");
   };
   return (
     <header
@@ -47,17 +54,17 @@ const MainLayoutHeader = (props: Props) => {
       </div>
 
       <div className="flex-1 flex items-center justify-center">
-        <div onClick={() => router.push('/')} className={clsx(`bg-contain bg-no-repeat bg-center hover:cursor-pointer`, 
+        <div onClick={() => router.push('/')} className={clsx(`bg-contain bg-no-repeat bg-center hover:cursor-pointer`,
           isMobile ? "w-[160px] h-[40px] bg-[url('/images/mobile/logo.svg')]" : "w-[240px] h-[60px] bg-[url('/images/header/logo_bg.svg')]",
         )}>
         </div>
       </div>
 
       <div className="min-w-[120px] flex justify-end">
-            {
-              isMobile ? <div className="w-[40px] h-[40px] flex items-center"><Sound /></div> : <ConnectWallet />
-            }
-          </div>
+        {
+          isMobile ? <div className="w-[40px] h-[40px] flex items-center"><Sound /></div> : <ConnectWallet />
+        }
+      </div>
     </header>
   );
 };

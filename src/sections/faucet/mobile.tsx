@@ -32,7 +32,7 @@ export default memo(function Mobile() {
 
         <div className='m-[20px_10px_0] p-[10px_8px_14px] flex flex-col justify-between h-[114px] rounded-[4px] bg-[rgba(165,255,253,0.20)] text-[#A5FFFD] text-[12px] font-Unbounded leading-[150%]'>
           <div className='flex font-light before:w-[6px] before:min-w-[6px] before:h-[6px] before:m-[6px_4px_0_0] before:rounded-full before:bg-[#A5FFFD]'>Testnet tokens are for development purposes only, they do not have real value. </div>
-          <div className='flex font-light before:w-[6px] before:min-w-[6px] before:h-[6px] before:m-[6px_4px_0_0] before:rounded-full before:bg-[#A5FFFD]'>To check in and get $MON, you need at least 0.01 ETH on Ethereum.</div>
+          <div className='flex font-light before:w-[6px] before:min-w-[6px] before:h-[6px] before:m-[6px_4px_0_0] before:rounded-full before:bg-[#A5FFFD]'>To check in and get MON, you need at least 0.01 ETH on Ethereum.</div>
         </div>
         <div className='relative'>
           <div className="absolute z-10 left-0 top-[130px] flex flex-col items-end w-[390px] h-[350px]  bg-[url('/images/faucet/mobile/summary_bg.svg')] bg-no-repeat" />
@@ -43,7 +43,7 @@ export default memo(function Mobile() {
             <div className='flex flex-col items-center gap-[10px] text-white font-Unbounded '>
               <div className='text-[42px] font-medium leading-[52px]'>{checkinInfo?.total_reward_amount ?? 0}</div>
               <div className='flex items-center gap-[6px]'>
-                <span className='text-[12px]'>MONAD</span>
+                <span className='text-[12px]'>MON</span>
                 <div className='flex items-center justify-center w-[65px] h-[14px] rounded-[8px] bg-[#7370C8] text-[9px] font-light'>Test Token</div>
               </div>
             </div>

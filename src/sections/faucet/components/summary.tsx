@@ -65,7 +65,7 @@ export default memo(function Summary() {
       <div className='flex flex-col items-center gap-[10px] text-white font-Unbounded '>
         <div className='text-[42px] font-medium leading-[52px]'>{checkinInfo?.total_reward_amount ?? 0}</div>
         <div className='flex items-center gap-[6px]'>
-          <span className='text-[12px]'>MONAD</span>
+          <span className='text-[12px]'>MON</span>
           <div className='flex items-center justify-center w-[65px] h-[14px] rounded-[8px] bg-[#7370C8] text-[9px] font-light'>Test Token</div>
         </div>
       </div>

@@ -24,7 +24,7 @@ export default function useCheckin() {
     try {
       setCaptchaLoading(true)
       if (ethereumMainnetBalance && Big(ethereumMainnetBalance?.formatted || 0).lt(0.01)) {
-        setErrorMsg("To check in and get $MON, you need at least 0.01 ETH on Ethereum.")
+        setErrorMsg("To check in and get MON, you need at least 0.01 ETH on Ethereum.")
         setCaptchaLoading(false)
         return
       }
