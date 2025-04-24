@@ -27,7 +27,6 @@ export default function useCheckin() {
     address: account as `0x${string}`,
     chainId: mainnet.id,
   });
-  console.log("=====txCount", txCount)
   async function handleGetCaptcha() {
     try {
       setCaptchaLoading(true)

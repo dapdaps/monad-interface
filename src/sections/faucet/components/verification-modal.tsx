@@ -26,7 +26,7 @@ export default memo(function VerificationModal() {
         setErrorMsg("")
       }}
     >
-      <div className="md:w-[368px] w-[452px] md:h-[258px]  text-[#A5FFFD] font-DogicaPixel  leading-[180%] text-center">
+      <div className="md:w-[368px] w-[452px] md:h-[358px] h-[258px]  text-[#A5FFFD] font-DogicaPixel  leading-[180%] text-center">
         <div className="absolute md:-left-[10px] -left-[20px] md:-top-[20px] -top-[20px] md:w-[390px] w-[494px] md:h-[400px] h-[300px]">
           {
             isMobile ? (
@@ -36,9 +36,9 @@ export default memo(function VerificationModal() {
             )
           }
         </div>
-        <div className="absolute p-[40px_28px_0] left-0 top-0 right-0 bottom-0">
+        <div className="absolute p-[40px_24px_0] left-0 top-0 right-0 bottom-0">
           <div className="text-[18px] font-bold">De-bot Verification</div>
-          <div className="m-[25px_0_64px] text-[14px]">To check in and get MON, you need at least 0.01 ETH on Ethereum.</div>
+          <div className="m-[25px_0_32px] text-[14px]">{errorMsg}</div>
           <div
             className="flex justify-center"
             onClick={() => {
