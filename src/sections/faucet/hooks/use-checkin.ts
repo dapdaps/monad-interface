@@ -27,6 +27,7 @@ export default function useCheckin() {
     address: account as `0x${string}`,
     chainId: mainnet.id,
   });
+  console.log("=====txCount", txCount)
   async function handleGetCaptcha() {
     try {
       setCaptchaLoading(true)
@@ -35,7 +36,7 @@ export default function useCheckin() {
         setCaptchaLoading(false)
         return
       }
-      if (txCount && txCount < 1) {
+      if (txCount < 1) {
         setErrorMsg("To check in and get MON, you need at least one transaction history on Ethereum.")
         setCaptchaLoading(false)
         return
