@@ -4,16 +4,23 @@ import { get, post } from "@/utils/http";
 import { mainnet } from '@reown/appkit/networks';
 import Big from "big.js";
 import { useState } from "react";
-import { useBalance } from 'wagmi';
+import { useBalance, useTransactionCount } from 'wagmi';
+
 export default function useCheckin() {
   const { account, accountWithAk } = useCustomAccount();
+  const { data: txCount, isLoading } = useTransactionCount({
+    address: account,
+    chainId: mainnet.id,
+  })
+
+
   const [captchaLoading, setCaptchaLoading] = useState(false)
   const [captchaId, setCaptchaId] = useState("")
   const [captchaSolution, setCaptchaSolution] = useState("")
   const [errorMsg, setErrorMsg] = useState(null)
   const [checkinSuccess, setCheckinSuccess] = useState(false)
-
   const toast = useToast()
+
   const {
     data: ethereumMainnetBalance,
   } = useBalance({
@@ -25,6 +32,11 @@ export default function useCheckin() {
       setCaptchaLoading(true)
       if (ethereumMainnetBalance && Big(ethereumMainnetBalance?.formatted || 0).lt(0.01)) {
         setErrorMsg("To check in and get MON, you need at least 0.01 ETH on Ethereum.")
+        setCaptchaLoading(false)
+        return
+      }
+      if (txCount && txCount < 1) {
+        setErrorMsg("To check in and get MON, you need at least one transaction history on Ethereum.")
         setCaptchaLoading(false)
         return
       }
@@ -48,9 +60,7 @@ export default function useCheckin() {
         throw new Error(result?.message)
       }
     } catch (error) {
-      toast.fail({
-        title: error?.message
-      })
+      setErrorMsg(error?.message)
       handleGetCaptcha()
     }
   }
