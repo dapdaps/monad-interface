@@ -7,12 +7,12 @@ export default function NotFound() {
       <div className='absolute left-[33.68vw] bottom-[3.68vw] w-[29.930vw] h-[47.222vw] bg-[url("/images/ufo.svg")] bg-center bg-no-repeat bg-contain'>
         <div className='absolute top-[13.542vw] left-[7.361vw] text-white font-Unbounded text-[0.972vw] text-center leading-[150%]'>
           <span>The URL could not be detected,<br />go back to NADSA spaceship.</span>
-          <div className='m-[3.056vw_auto_0] w-[15.764vw] h-[3.472vw] flex items-center justify-center rounded-[0.417vw] bg-[#836EF9]'>
+          <Link href="/" replace className='m-[3.056vw_auto_0] cursor-pointer w-[15.764vw] h-[3.472vw] flex items-center justify-center gap-[0.556vw] rounded-[0.417vw] bg-[#836EF9]'>
             <span className='font-medium'>NADSA</span>
             <div className='w-[1.111vw]'>
               <img className='w-full' src="/images/icon_right.svg" alt="icon_right" />
             </div>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

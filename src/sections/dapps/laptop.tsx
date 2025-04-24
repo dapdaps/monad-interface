@@ -1,22 +1,42 @@
 import { motion } from "framer-motion";
-import { memo } from "react";
+import { memo, useRef } from "react";
 import DappsEntry from "./components/dapps-entry";
 import RectangularButton from "./components/rectangular-button";
 import usePage from "./hooks/use-page";
+import { useSize } from "ahooks";
 
 export default memo(function Laptop() {
+  const entryScrollRef = useRef(null)
+  const entryContainerRef = useRef(null)
   const { dappsArray, activeType, handleClickButton } = usePage()
 
+  const size = useSize(entryScrollRef?.current)
+  const wrapSize = useSize(entryContainerRef?.current)
+
+
+  console.log("=====size", size)
+  console.log("====wrapSize", wrapSize)
   return (
     <div className="flex flex-col h-[calc(100vh-60px)] pt-[30px] overflow-hidden">
-      <div className="flex-1 overflow-x-hidden overflow-y-auto">
-        <div className="flex flex-col gap-[18px]">
+
+      <div className="relative flex-1 overflow-x-hidden overflow-y-auto" ref={entryContainerRef}>
+        <div className="flex flex-col gap-[18px]" ref={entryScrollRef}>
           {
             dappsArray?.map((dapps: IDapp, index: number) => (
               <DappsEntry direction={index % 2 ? "right" : "left"} dapps={dapps} />
             ))
           }
         </div>
+        {
+          size?.height > wrapSize?.height && (
+            <div className="cursor-pointer fixed right-[15px] bottom-[63px] z-20 w-[36px] h-[60px] flex items-center justify-center rounded-[18px] border border-[#A5FFFD] bg-[rgba(255,255,255,0.10)]">
+              <div className="w-[30px]">
+                <img src="/images/dapps/icon_scroll_down.gif" alt="icon_scroll_down" />
+              </div>
+            </div>
+          )
+        }
+
       </div>
       <div className="flex flex-col justify-end">
         <div className="h-[87px] bg-[#23243D] border-t-[18px] border-[#273051]">

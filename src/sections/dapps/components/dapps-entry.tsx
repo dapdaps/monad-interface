@@ -82,8 +82,13 @@ export default memo(function DappsEntry({
           isMobile ? "h-[185px]" : "h-[304px]",
           direction === "right" ? "flex justify-end z-[1]" : "z-[2]"
         )}
-        data-hover-sound="/audios/dapps/moving_machanic_clip.mp3"
-        onMouseMove={isMobile ? undefined : handleMouseMove}
+        {...(isMobile ? {
+        } : {
+          "data-hover-sound": "/audios/dapps/moving_machanic_clip.mp3",
+          onMouseMove: handleMouseMove
+        }
+        )}
+
       >
         {
           isMobile ? <></> : (
@@ -123,18 +128,6 @@ export default memo(function DappsEntry({
             direction === "left" ? "left-0" : "right-0"
           )}
         >
-          {
-            isMobile ? <></> : (
-              <div
-                className={clsx(
-                  "absolute z-[3] w-[64px] h-[304px] bg-[#62589C] border border-black bottom-0",
-                  direction === "right"
-                    ? "-right-[1px] rounded-[12px_0_0_12px]"
-                    : "-left-[1px] rounded-[0_12px_12px_0]"
-                )}
-              />
-            )
-          }
 
           <motion.div
             className={clsx(
