@@ -78,7 +78,7 @@ export default memo(function DappsEntry({
     <>
       <div
         className={clsx(
-          "relative overflow-x-hidden scrollbar-hide",
+          "relative",
           isMobile ? "h-[185px]" : "h-[304px]",
           direction === "right" ? "flex justify-end z-[1]" : "z-[2]"
         )}

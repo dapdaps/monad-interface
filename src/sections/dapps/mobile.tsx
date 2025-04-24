@@ -8,11 +8,10 @@ export default memo(function Mobile() {
   const { dappsArray, activeType, handleClickButton } = usePage()
 
   return (
-    <div className='flex flex-col gap-[20px] h-[calc(100vh_-_213px)] scrollbar-hide overflow-y-auto'>
+    <div className='flex flex-col gap-[20px] h-[calc(100vh_-_213px)] overflow-x-hidden scrollbar-hide overflow-y-auto'>
       <div className="h-[21px] flex justify-center">
         <DappsFontSvg />
       </div>
-      {/* <div className="flex-1 mb-[163px] overflow-x-hidden overflow-y-auto"> */}
       <div className='flex flex-col gap-[28px]'>
         {
           dappsArray?.map((dapps: IDapp, index: number) => (
@@ -20,8 +19,6 @@ export default memo(function Mobile() {
           ))
         }
       </div>
-      {/* </div> */}
-
       <div className="fixed bottom-[50px] left-1/2 -translate-x-1/2 z-20 w-[390px] h-[115px] bg-[url('/images/dapps/mobile/operation_panel.svg')] bg-center bg-contain bg-no-repeat">
         <div className="absolute left-[43px] top-[20px] flex items-center gap-[10px]">
           <RectangularButton
