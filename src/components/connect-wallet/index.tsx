@@ -23,6 +23,7 @@ import { useAccount, useBalance, useDisconnect, useConfig } from "wagmi";
 import MobileChain from "./chain/mobile";
 import { monadTestnet } from "@reown/appkit/networks";
 import useAudioPlay from "@/hooks/use-audio";
+import { DEFAULT_CHAIN_ID } from "@/configs";
 
 const dropdownAnimations = {
   active: {
@@ -46,7 +47,8 @@ const ConnectWallet = ({ className }: { className?: string }) => {
   const total = useToast();
   const { address, isConnected, chainId, chain, isConnecting } = useAccount();
   const balance = useBalance({
-    address
+    address,
+    chainId: DEFAULT_CHAIN_ID
   });
   const { userInfo } = useUser();
   const walletInfo = useWalletName();
