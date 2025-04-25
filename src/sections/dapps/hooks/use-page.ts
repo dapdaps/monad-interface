@@ -1,8 +1,8 @@
+import useIsMobile from "@/hooks/use-isMobile";
 import { useSoundStore } from "@/stores/sound";
-import { useSize } from "ahooks";
+import { useScroll, useSize } from "ahooks";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ALL_DAPP_LIST } from "../config";
-import useIsMobile from "@/hooks/use-isMobile";
 export default function usePage() {
   const isMobile = useIsMobile()
   const size = useSize(document.getElementsByTagName("body")[0]);
@@ -10,6 +10,12 @@ export default function usePage() {
   const [activeType, setActiveType] = useState("all");
 
   const timerRef = useRef()
+  const entryScrollRef = useRef()
+  const entryContainerRef = useRef()
+
+  const scrollSize = useSize(entryScrollRef?.current)
+  const containerSize = useSize(entryContainerRef?.current)
+  const scroll = useScroll(entryContainerRef)
 
   const maxLength = useMemo(() => isMobile ? 2 : Math.floor(((size?.width - 64) * 0.8 + 80) / 240), [size])
   const dappsArray = useMemo(() => {
@@ -85,6 +91,12 @@ export default function usePage() {
   return {
     dappsArray,
     activeType,
-    handleClickButton
+    handleClickButton,
+    
+    scroll,
+    scrollSize,
+    containerSize,
+    entryScrollRef,
+    entryContainerRef,
   }
 }

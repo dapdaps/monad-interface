@@ -6,22 +6,46 @@ import RectangularButton from './components/rectangular-button';
 import usePage from "./hooks/use-page";
 import { useSize } from 'ahooks';
 export default memo(function Mobile() {
-  const { dappsArray, activeType, handleClickButton } = usePage()
+  const {
+    dappsArray,
+    activeType,
+    scroll,
+    scrollSize,
+    containerSize,
+    entryScrollRef,
+    entryContainerRef,
+
+    handleClickButton
+  } = usePage()
   const size = useSize(document.getElementsByTagName("body")[0]);
 
 
+  console.log("====scrollSize", scrollSize)
+  console.log("====containerSize", containerSize)
+  console.log("====scroll", scroll)
   return (
-    <div className='flex flex-col gap-[20px] overflow-x-hidden scrollbar-hide overflow-y-auto' style={{ height: size?.height - 213 }}>
+    <div ref={entryContainerRef} className='relative flex flex-col gap-[20px] overflow-x-hidden scrollbar-hide overflow-y-auto' style={{ height: size?.height - 213 }}>
       <div className="h-[21px] flex justify-center">
         <DappsFontSvg />
       </div>
-      <div className='flex flex-col gap-[28px]'>
+      <div className='flex flex-col gap-[28px]' ref={entryScrollRef}>
         {
           dappsArray?.map((dapps: IDapp, index: number) => (
             <DappsEntry direction={index % 2 ? "right" : "left"} dapps={dapps} />
           ))
         }
       </div>
+
+
+      {
+        scrollSize?.height >= (containerSize?.height + scroll?.top - 33) && (
+          <div className="cursor-pointer fixed right-[15px] bottom-[176px] z-20 w-[36px] h-[60px] flex items-center justify-center rounded-[18px] border border-[#A5FFFD] bg-[rgba(255,255,255,0.10)]">
+            <div className="w-[30px]">
+              <img src="/images/dapps/icon_scroll_down.gif" alt="icon_scroll_down" />
+            </div>
+          </div>
+        )
+      }
       <div className="fixed bottom-[50px] left-1/2 -translate-x-1/2 z-20 w-[390px] h-[115px] bg-[url('/images/dapps/mobile/operation_panel.svg')] bg-center bg-contain bg-no-repeat">
         <div className="absolute left-[43px] top-[20px] flex items-center gap-[10px]">
           <RectangularButton
