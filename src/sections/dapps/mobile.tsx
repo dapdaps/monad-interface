@@ -38,7 +38,7 @@ export default memo(function Mobile() {
 
 
       {
-        scrollSize?.height >= (containerSize?.height + scroll?.top - 33) && (
+        scrollSize?.height > (containerSize?.height + scroll?.top) && (
           <div className="cursor-pointer fixed right-[15px] bottom-[176px] z-20 w-[36px] h-[60px] flex items-center justify-center rounded-[18px] border border-[#A5FFFD] bg-[rgba(255,255,255,0.10)]">
             <div className="w-[30px]">
               <img src="/images/dapps/icon_scroll_down.gif" alt="icon_scroll_down" />
