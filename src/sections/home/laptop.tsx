@@ -212,11 +212,11 @@ const Home = () => {
             data-bp="1001-006"
             data-hover-sound
             onClick={() => router.push("/dapps")}
-            className={clsx('z-[7] absolute -right-[calc(10/14.4*var(--rem))] bottom-[calc(83/14.4*var(--rem))] w-[519px] h-[451px]',
-              windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
-              windowWidth >= 1920 && windowWidth < 2560 ? 'right-0 bottom-[calc(40/14.4*var(--rem))] hover:scale-[1.1]' : '',
-              windowWidth >= 2560 ? 'scale-[1.3] hover:scale-[1.4]' : '',
-              windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
+            className={clsx('z-[7] absolute right-[calc(70/14.4*var(--rem))] bottom-[calc(83/14.4*var(--rem))] w-[519px] h-[451px]',
+              windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03] bottom-[calc(63/14.4*var(--rem))]' : '',
+              windowWidth >= 1920 && windowWidth < 2560 ? 'hover:scale-[1.1]' : '',
+              windowWidth >= 2560 ? 'scale-[1.3] hover:scale-[1.4] right-[calc(200/14.4*var(--rem))] bottom-[calc(63/14.4*var(--rem))]' : '',
+              windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92] right-[calc(150/14.4*var(--rem))] bottom-[calc(90/14.4*var(--rem))]' : '',
               "bg-no-repeat bg-contain",
               "transition-all duration-200 ease-in-out cursor-pointer",
               "bg-[url(/images/monad/entry/dapps.svg)] hover:bg-[url(/images/monad/entry/dapps-hover.svg)]"
