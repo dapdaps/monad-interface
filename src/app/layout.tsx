@@ -30,7 +30,6 @@ export default function RootLayout({
           content="Effortlessly explore & dive into all dApps in the Monad ecosystem from one streamlined hub."
         />
         <link rel="icon" href="/images/favicon.svg" type="image/svg+xml" />
-        <link rel="icon" href="/images/favicon.ico" />
       </head>
       <body className="md:overflow-hidden">
         <WagmiProvider>
