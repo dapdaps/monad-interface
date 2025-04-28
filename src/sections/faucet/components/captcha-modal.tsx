@@ -2,7 +2,7 @@ import Modal from "@/components/modal";
 import useIsMobile from "@/hooks/use-isMobile";
 import ModalBgSvg from '@public/images/faucet/mobile/modal_bg.svg';
 import VerificationBgSvg from '@public/images/faucet/verification_bg.svg';
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { useFaucetContext } from "../context";
 
 export default memo(function CaptchaModal() {
@@ -15,6 +15,7 @@ export default memo(function CaptchaModal() {
     handleCheckIn
   } = useFaucetContext();
   const isMobile = useIsMobile()
+
   return (
     <Modal
       open={captchaId}
@@ -28,6 +29,7 @@ export default memo(function CaptchaModal() {
       closeIconClassName="absolute md:right-[17px] right-[25px] top-[12px] cursor-pointer"
       onClose={() => {
         setCaptchaId("")
+        setCaptchaSolution("")
       }}
     >
       <div className="md:w-[368px] w-[452px] md:h-[258px] text-[#A5FFFD] font-DogicaPixel">

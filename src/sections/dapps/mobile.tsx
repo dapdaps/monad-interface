@@ -18,11 +18,6 @@ export default memo(function Mobile() {
     handleClickButton
   } = usePage()
   const size = useSize(document.getElementsByTagName("body")[0]);
-
-
-  console.log("====scrollSize", scrollSize)
-  console.log("====containerSize", containerSize)
-  console.log("====scroll", scroll)
   return (
     <div ref={entryContainerRef} className='relative flex flex-col gap-[20px] overflow-x-hidden scrollbar-hide overflow-y-auto' style={{ height: size?.height - 213 }}>
       <div className="h-[21px] flex justify-center">
