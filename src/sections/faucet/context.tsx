@@ -47,6 +47,8 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
     checkinInfo,
     handleQueryCheckIn
   } = useCheckinInfo()
+  
+  const [showHistory, setShowHistory] = useState(false)
 
   useEffect(() => {
     if (checkinSuccess) {
@@ -74,6 +76,8 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
         checkinSuccess,
         setCheckinSuccess,
 
+        showHistory,
+        setShowHistory,
         handleCheckIn,
         handleGetCaptcha
       }}

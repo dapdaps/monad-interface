@@ -9,11 +9,12 @@ import RuleModal from './components/rule-modal';
 import Summary from './components/summary';
 import VerificationModal from './components/verification-modal';
 import { useSize } from 'ahooks';
+import HistoryButton from './components/history-button';
+import HistoryModal from './components/history-modal';
 export default memo(function Laptop() {
   const store = useFaucetStore()
   const size = useSize(document.getElementsByTagName("body")[0])
 
-  // const scale = useMemo(() => size?.width / 1440, [size])
   return (
     <div className="w-full h-screen bg-[#0E0F29]">
       <div className="w-full h-full bg-[url('/images/faucet/bg.png')] bg-no-repeat bg-top bg-cover">
@@ -35,7 +36,9 @@ export default memo(function Laptop() {
             <EnergyBars />
             <Summary />
 
-            <FaucetCheckIn className="m-[28px_auto_61px]" />
+            <FaucetCheckIn className="m-[28px_auto_19px]" />
+            <HistoryButton />
+
             <div className="absolute right-[22px] -bottom-[9px] w-[202px] h-[160px] shrink-0 flex justify-center items-center">
               <img src="/images/faucet/coffee-coins.svg" alt="" className="w-[202px] h-[160px]" />
               <img src="/images/faucet/heat-smoking.gif" alt="" className="absolute w-[154px] h-[154px] top-[-80px] translate-x-[40px]" />
@@ -49,6 +52,9 @@ export default memo(function Laptop() {
       <CongratsModal />
       <VerificationModal />
       <CaptchaModal />
+      <HistoryModal />
+
+
     </div>
   )
 })
