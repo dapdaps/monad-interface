@@ -8,8 +8,9 @@ import useUser from "@/hooks/use-user";
 import MainLayoutFooter from "@/layouts/main/footer";
 import MainLayoutHeader from "@/layouts/main/header";
 import { usePathname } from "next/navigation";
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useAccount } from "wagmi";
+import clsx from 'clsx';
 
 
 const MainLayout = (props: Props) => {
@@ -20,6 +21,13 @@ const MainLayout = (props: Props) => {
   const { initializePrice } = useTokenPrice();
   const { handleReportNoCode } = useClickTracking();
   const pathname = usePathname();
+
+  const [isLoginPage] = useMemo(() => {
+    return [["/login"].includes(pathname)];
+  }, [pathname]);
+  const [isShowHeader, isShowFooter] = useMemo(() => {
+    return [!isLoginPage, !isLoginPage];
+  }, [isLoginPage]);
 
   useEffect(() => {
     handleReportNoCode();
@@ -36,17 +44,28 @@ const MainLayout = (props: Props) => {
   return (
     <div
       id="layout"
-      className={`min-h-screen relative flex flex-col items-stretch justify-start transition-background duration-150 bg-[var(--background)]`}
+      className={clsx(
+        "min-h-screen relative flex flex-col items-stretch justify-start transition-background duration-150",
+        isLoginPage ? "bg-[#010101]" : "bg-[var(--background)]",
+      )}
       onClick={handleTrack}
       style={{
         ...style,
       }}
     >
-      <MainLayoutHeader />
+      {
+        isShowHeader && (
+          <MainLayoutHeader />
+        )
+      }
       <div className="relative grow">
         {children}
       </div>
-      <MainLayoutFooter />
+      {
+        isShowFooter && (
+          <MainLayoutFooter />
+        )
+      }
     </div>
   );
 };
