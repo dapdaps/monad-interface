@@ -1,29 +1,27 @@
 "use client";
 
 import { useEffect, useMemo, useState } from 'react';
-import { useDebounceFn, useRequest } from 'ahooks';
+import { useRequest } from 'ahooks';
 import { useAccount, useDisconnect } from 'wagmi';
 import { useAppKit } from '@reown/appkit/react';
 import { trim } from 'lodash';
+import { useConnecting } from '@/hooks/use-connecting';
+import { usePathname, useRouter } from 'next/navigation';
 
 const LoginView = (props: any) => {
   const {} = props;
 
   const modal = useAppKit();
   const { disconnect } = useDisconnect();
-  const {
-    address,
-    isConnected,
-    chainId,
-    chain,
-    isConnecting
-  } = useAccount();
+  const { address, isConnected } = useAccount();
+  const { walletConnecting } = useConnecting();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const [name, setName] = useState<any>(null);
-  const [connecting, setConnecting] = useState<boolean>(true);
 
   const [buttonText, buttonDisabled] = useMemo(() => {
-    if (connecting) {
+    if (walletConnecting) {
       return ["Connecting...", true];
     }
     if (isConnected) {
@@ -33,7 +31,7 @@ const LoginView = (props: any) => {
       return ["Please Enter a Name", true];
     }
     return ["Connect Wallet to Login", false];
-  }, [isConnected, connecting, name]);
+  }, [isConnected, walletConnecting, name]);
 
   const onNameChange = (val?: string) => {
     setName(val);
@@ -47,22 +45,12 @@ const LoginView = (props: any) => {
     !address && modal.open();
   }, { manual: true });
 
-  const { run: closeConnecting, cancel: cancelCloseConnecting } = useDebounceFn(
-    () => {
-      setConnecting(false);
-    },
-    { wait: 10000 }
-  );
-
   useEffect(() => {
-    cancelCloseConnecting();
-    if (!isConnecting) {
-      setConnecting(false);
+    if (pathname === "/login") {
       return;
     }
-    setConnecting(true);
-    closeConnecting();
-  }, [isConnecting]);
+    router.replace("/login");
+  }, [pathname]);
 
   return (
     <div className="flex flex-col items-center pt-[158px]">
@@ -75,7 +63,8 @@ const LoginView = (props: any) => {
         </div>
         <input
           type="text"
-          className="w-full h-[52px] shrink-0 rounded-[2px] border border-[#8645FF] bg-black text-center mt-[22px]"
+          disabled={walletConnecting}
+          className="w-full h-[52px] disabled:!cursor-not-allowed disabled:opacity-30 shrink-0 rounded-[2px] border border-[#8645FF] bg-black text-center mt-[22px]"
           value={name}
           onChange={(e) => onNameChange(e.target.value)}
           maxLength={50}

@@ -11,6 +11,9 @@ import { usePathname } from "next/navigation";
 import React, { useEffect, useMemo } from 'react';
 import { useAccount } from "wagmi";
 import clsx from 'clsx';
+import { useConnecting } from '@/hooks/use-connecting';
+import LoginLayout from '@/layouts/login';
+import LoginView from '@/sections/login';
 
 
 const MainLayout = (props: Props) => {
@@ -21,6 +24,7 @@ const MainLayout = (props: Props) => {
   const { initializePrice } = useTokenPrice();
   const { handleReportNoCode } = useClickTracking();
   const pathname = usePathname();
+  const { walletConnecting, walletConnected } = useConnecting();
 
   const [isLoginPage] = useMemo(() => {
     return [["/login"].includes(pathname)];
@@ -53,6 +57,17 @@ const MainLayout = (props: Props) => {
         ...style,
       }}
     >
+      {
+        walletConnecting ? (
+          <LoginLayout className="fixed z-[100]" />
+        ) : (
+          !walletConnected && (
+            <LoginLayout className="fixed z-[100]">
+              <LoginView />
+            </LoginLayout>
+          )
+        )
+      }
       {
         isShowHeader && (
           <MainLayoutHeader />
