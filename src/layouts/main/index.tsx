@@ -45,6 +45,20 @@ const MainLayout = (props: Props) => {
     getAccessToken();
   }, [address]);
 
+  if (walletConnecting) {
+    return (
+      <LoginLayout />
+    );
+  }
+
+  if (!walletConnected) {
+    return (
+      <LoginLayout>
+        <LoginView />
+      </LoginLayout>
+    );
+  }
+
   return (
     <div
       id="layout"
@@ -57,17 +71,6 @@ const MainLayout = (props: Props) => {
         ...style,
       }}
     >
-      {
-        walletConnecting ? (
-          <LoginLayout className="fixed z-[100]" />
-        ) : (
-          !walletConnected && (
-            <LoginLayout className="fixed z-[100]">
-              <LoginView />
-            </LoginLayout>
-          )
-        )
-      }
       {
         isShowHeader && (
           <MainLayoutHeader />

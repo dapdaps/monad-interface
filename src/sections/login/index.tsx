@@ -6,7 +6,6 @@ import { useAccount, useDisconnect } from 'wagmi';
 import { useAppKit } from '@reown/appkit/react';
 import { trim } from 'lodash';
 import { useConnecting } from '@/hooks/use-connecting';
-import { usePathname, useRouter } from 'next/navigation';
 
 const LoginView = (props: any) => {
   const {} = props;
@@ -15,8 +14,6 @@ const LoginView = (props: any) => {
   const { disconnect } = useDisconnect();
   const { address, isConnected } = useAccount();
   const { walletConnecting } = useConnecting();
-  const router = useRouter();
-  const pathname = usePathname();
 
   const [name, setName] = useState<any>(null);
 
@@ -44,13 +41,6 @@ const LoginView = (props: any) => {
     }
     !address && modal.open();
   }, { manual: true });
-
-  useEffect(() => {
-    if (pathname === "/login") {
-      return;
-    }
-    router.replace("/login");
-  }, [pathname]);
 
   return (
     <div className="flex flex-col items-center pt-[158px]">
