@@ -9,8 +9,7 @@ export default function useUsersInfo() {
     const needFetchUsers = users.filter((user) => {
       if (!chatStore.users[user]) return true;
       return (
-        chatStore.users[user].fetched_time <
-        Date.now() - 1000 * 60 * 60 * 24 * 7
+        chatStore.users[user].fetched_time < Date.now() - 1000 * 60 * 60 * 24
       );
     });
     if (needFetchUsers.length === 0) return;
