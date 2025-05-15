@@ -131,6 +131,12 @@ const Mobile = () => {
                   alt=""
                 />
               </div>
+              <div className="absolute left-[60px] top-[45px]">
+                <img src="/images/monad/background/tokens-moyaki.gif" className="w-[100px] scale-[0.6]" alt="" />
+              </div>
+              <div className="absolute left-[33px] top-[6px]">
+                  <img src="/images/monad/background/cover.svg" className="scale-[0.5]" alt="" />
+              </div>
             </div>
           </div>
           {/* Dapps */}
