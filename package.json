@@ -28,6 +28,7 @@
     "framer-motion": "^11.7.0",
     "iziswap-sdk": "^3.0.2",
     "jsbi": "^4.3.0",
+    "leancloud-storage": "^4.15.2",
     "lodash": "^4.17.21",
     "next": "14.2.13",
     "next-nprogress-bar": "^2.3.14",
