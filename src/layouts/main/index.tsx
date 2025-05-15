@@ -35,7 +35,7 @@ const MainLayout = (props: Props) => {
     <div
       id="layout"
       className={clsx(
-        "min-h-screen relative flex flex-col items-stretch justify-start transition-background duration-150"
+        "min-h-screen relative flex flex-col items-stretch justify-start transition-background duration-150 bg-[#0E0F29]"
       )}
       onClick={handleTrack}
       style={{
