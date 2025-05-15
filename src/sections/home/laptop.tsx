@@ -337,6 +337,12 @@ const Home = () => {
                   alt=""
                 />
               </div>
+              <div className="absolute left-[170px] top-[125px]">
+                <img src="/images/monad/background/tokens-moyaki.gif" className="w-[100px]" alt="" />
+              </div>
+              <div className="absolute left-[167px] top-[95px]">
+                  <img src="/images/monad/background/cover.svg" alt="" />
+              </div>
             </div>
           </div>
           <MovingGif.Moving2sec />
