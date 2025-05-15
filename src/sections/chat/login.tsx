@@ -65,7 +65,7 @@ const LoginView = (props: any) => {
   }, [isConnecting]);
 
   return (
-    <div className="w-full h-screen bg-[#010101] text-center text-[#7B23FF] font-SpaceMono text-[18px] font-normal leading-[90%]">
+    <div className="fixed top-0 left-0 w-full h-screen bg-[#010101] text-center text-[#7B23FF] font-SpaceMono text-[18px] font-normal leading-[90%]">
       <div className="w-full h-full bg-[url('/images/login/bg-top.png')] bg-no-repeat bg-top bg-[length:100%_136px]">
         <div className="w-full h-full bg-[url('/images/login/bg-bot.png')] bg-no-repeat bg-bottom bg-[length:100%_230px]">
           <div className="flex flex-col items-center pt-[158px]">

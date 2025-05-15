@@ -198,7 +198,7 @@ export default function ChatView({ currentUser }: any) {
   };
 
   return (
-    <div className="flex flex-col h-screen w-screen overflow-hidden pt-[36px] bg-[#010101] font-SpaceMono">
+    <div className="fixed top-0 left-0 z-[2] flex flex-col h-screen w-screen overflow-hidden pt-[36px] bg-[#010101] font-SpaceMono">
       <Header currentUser={currentUser} />
       <Content
         sendMessage={sendMessage}

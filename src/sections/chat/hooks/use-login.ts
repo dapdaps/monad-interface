@@ -9,6 +9,8 @@ export default function useLogin() {
   const { fail } = useToast();
   const { account } = useCustomAccount();
   const [status, setStatus] = useState(0); // 1 for login page, 2 for chat page.
+  const [showLoading, setShowLoading] = useState(true);
+
   const [currentUser, setCurrentUser] = useState<any>({});
 
   const onLogin = useCallback(async () => {
@@ -26,7 +28,12 @@ export default function useLogin() {
         role: res.data.role
       });
       setStatus(2);
-    } catch (err) {}
+    } catch (err) {
+    } finally {
+      setTimeout(() => {
+        setShowLoading(false);
+      }, 2000);
+    }
   }, [account]);
 
   const onUpdateName = async (name: string) => {
@@ -46,7 +53,10 @@ export default function useLogin() {
   const { run: debounceLogin } = useDebounceFn(
     () => {
       setTimeout(() => {
-        if (!account) setStatus(1);
+        if (!account) {
+          setStatus(1);
+          setShowLoading(false);
+        }
       }, 2000);
       if (account) onLogin();
     },
@@ -61,6 +71,7 @@ export default function useLogin() {
     updating,
     status,
     currentUser,
-    onUpdateName
+    onUpdateName,
+    showLoading
   };
 }

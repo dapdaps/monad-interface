@@ -2,13 +2,21 @@
 
 import LoginView from "./login";
 import ChatView from "./chat";
+import LoadingView from "./loading";
 import useLogin from "./hooks/use-login";
+import { useEffect } from "react";
 
 export default function View() {
-  const { status, onUpdateName, updating, currentUser } = useLogin();
+  const { status, onUpdateName, updating, currentUser, showLoading } =
+    useLogin();
 
-  if (status === 1)
-    return <LoginView onUpdateName={onUpdateName} updating={updating} />;
-
-  if (status === 2) return <ChatView currentUser={currentUser} />;
+  return (
+    <>
+      {showLoading && <LoadingView />}
+      {status === 1 && (
+        <LoginView onUpdateName={onUpdateName} updating={updating} />
+      )}
+      {status === 2 && <ChatView currentUser={currentUser} />}
+    </>
+  );
 }
