@@ -1,36 +1,66 @@
 import { useState, useCallback, useEffect } from "react";
 import useToast from "@/hooks/use-toast";
-import { get, post } from "@/utils/http";
+import { post } from "@/utils/http";
 import useCustomAccount from "@/hooks/use-account";
+import { useDebounceFn } from "ahooks";
 
 export default function useLogin() {
   const [updating, setUpdating] = useState(false);
-  const toast = useToast();
+  const { fail } = useToast();
   const { account } = useCustomAccount();
+  const [status, setStatus] = useState(0); // 1 for login page, 2 for chat page.
+  const [currentUser, setCurrentUser] = useState<any>({});
 
-  const onLogin = useCallback(
-    async (name: string) => {
-      try {
-        const res = await post("/chat/login", { address: account });
-      } catch (err) {}
-    },
-    [account]
-  );
+  const onLogin = useCallback(async () => {
+    try {
+      const res = await post("/chat/login", { address: account });
+      if (!res.data.name) {
+        setStatus(1);
+        return;
+      }
+
+      setCurrentUser({
+        address: account,
+        level: res.data.level,
+        name: res.data.name,
+        role: res.data.role
+      });
+      setStatus(2);
+    } catch (err) {}
+  }, [account]);
 
   const onUpdateName = async (name: string) => {
     try {
       setUpdating(true);
-      const res = await post("/chat/user/name", { address: account, name });
+      await post("/chat/user/name", { address: account, name });
+      await onLogin();
     } catch (err) {
+      fail({
+        title: "Login failed!"
+      });
     } finally {
       setUpdating(false);
     }
   };
 
-  useEffect(() => {}, [account]);
+  const { run: debounceLogin } = useDebounceFn(
+    () => {
+      setTimeout(() => {
+        if (!account) setStatus(1);
+      }, 2000);
+      if (account) onLogin();
+    },
+    { wait: 500 }
+  );
+
+  useEffect(() => {
+    debounceLogin();
+  }, [account]);
 
   return {
     updating,
+    status,
+    currentUser,
     onUpdateName
   };
 }

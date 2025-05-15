@@ -6,10 +6,6 @@ export const useChatStore = create(
   persist(
     // @ts-ignore
     (set, get: any) => ({
-      name: "",
-      address: "",
-      level: 0,
-      role: "",
       users: {},
       set: (params: any) => set(() => ({ ...params }))
     }),

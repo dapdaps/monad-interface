@@ -18,9 +18,9 @@ export default function useUsersInfo() {
       `/chat/user/list?address=${[...uniq(needFetchUsers)].join(",")}`
     );
 
-    const formattedUsers = usersInfo.data.data.reduce(
+    const formattedUsers = usersInfo.data.reduce(
       (acc: Record<string, any>, user: any) => {
-        acc[user.id] = user;
+        acc[user.address.toLowerCase()] = user;
         return acc;
       },
       {}

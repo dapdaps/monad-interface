@@ -11,7 +11,6 @@ import {
 import LC from "leancloud-storage";
 import { useEffect, useState, useRef } from "react";
 import { useDebounceFn } from "ahooks";
-import { useChatStore } from "@/stores/chat";
 import useUsersInfo from "./hooks/use-users-info";
 import { redirect } from "next/navigation";
 
@@ -30,7 +29,7 @@ LC.init({
 // Chat room ID
 const CHAT_ROOM_ID = process.env.NEXT_PUBLIC_LEANCLOUD_ROOM_ID;
 
-export default function ChatView() {
+export default function ChatView({ currentUser }: any) {
   const [messages, setMessages] = useState<TextMessage[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isConnected, setIsConnected] = useState(false);
@@ -38,8 +37,8 @@ export default function ChatView() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const hasMoreRef = useRef(true);
   const [onlineUsers, setOnlineUsers] = useState(0);
-  const chatStore: any = useChatStore();
-  const { fetchUsersInfo, users } = useUsersInfo();
+
+  const { fetchUsersInfo } = useUsersInfo();
 
   const fetchHistoryMessages = async () => {
     if (!conversationRef.current) {
@@ -87,13 +86,13 @@ export default function ChatView() {
   );
 
   useEffect(() => {
-    if (!chatStore?.address) {
+    if (!currentUser.address) {
       redirect("/chat/login");
     }
 
     let client: any;
     realtime
-      .createIMClient(String(chatStore?.address))
+      .createIMClient(String(currentUser.address))
       .then(async (_client) => {
         client = _client;
         console.log("IM client created successfully");
@@ -169,14 +168,14 @@ export default function ChatView() {
         client.close();
       }
     };
-  }, [chatStore?.address]);
+  }, [currentUser]);
 
   const sendMessage = async () => {
     if (
       !conversationRef.current ||
       !inputMessage.trim() ||
       !isConnected ||
-      !chatStore?.address
+      !currentUser.address
     ) {
       return;
     }
@@ -200,15 +199,17 @@ export default function ChatView() {
 
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden pt-[36px] bg-[#010101] font-SpaceMono">
-      <Header />
+      <Header currentUser={currentUser} />
       <Content
         sendMessage={sendMessage}
         messages={messages}
         onScroll={fetchHistoryMessagesDebounced}
         messagesEndRef={messagesEndRef}
-        chatStore={chatStore}
+        currentUser={currentUser}
+        setInputMessage={setInputMessage}
+        inputMessage={inputMessage}
       />
-      <Footer />
+      <Footer onlineUsers={onlineUsers} />
     </div>
   );
 }

@@ -2,16 +2,16 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useDebounceFn, useRequest } from "ahooks";
-import { useAccount, useDisconnect } from "wagmi";
+import { useAccount } from "wagmi";
 import { useAppKit } from "@reown/appkit/react";
 import { trim } from "lodash";
+import Button from "@/components/button";
 
 const LoginView = (props: any) => {
-  const {} = props;
+  const { onUpdateName, updating } = props;
 
   const modal = useAppKit();
-  const { disconnect } = useDisconnect();
-  const { address, isConnected, chainId, chain, isConnecting } = useAccount();
+  const { address, isConnected, isConnecting } = useAccount();
 
   const [name, setName] = useState<any>(null);
   const [connecting, setConnecting] = useState<boolean>(true);
@@ -20,13 +20,15 @@ const LoginView = (props: any) => {
     if (connecting) {
       return ["Connecting...", true];
     }
-    if (isConnected) {
-      return ["Disconnect", false];
+
+    if (!address) {
+      return ["Connect Wallet to Login", false];
     }
+
     if (!trim(name || "")) {
       return ["Please Enter a Name", true];
     }
-    return ["Connect Wallet to Login", false];
+    return ["Login", false];
   }, [isConnected, connecting, name]);
 
   const onNameChange = (val?: string) => {
@@ -35,11 +37,12 @@ const LoginView = (props: any) => {
 
   const { runAsync: onConnect } = useRequest(
     async () => {
-      if (isConnected) {
-        disconnect();
+      if (!address) {
+        modal.open();
         return;
       }
-      !address && modal.open();
+      if (!name) return;
+      onUpdateName(name);
     },
     { manual: true }
   );
@@ -90,14 +93,15 @@ const LoginView = (props: any) => {
                 onChange={(e) => onNameChange(e.target.value)}
                 maxLength={50}
               />
-              <button
-                type="button"
-                className="mt-[26px] h-[52px] disabled:!cursor-not-allowed disabled:opacity-30 shrink-0 w-full rounded-[2px] bg-[#7B23FF] text-white text-center font-SpaceMono text-[16px] font-normal leading-[90%]"
+              <Button
+                className="mt-[26px] h-[52px] disabled:!cursor-not-allowed disabled:opacity-30 shrink-0 w-full rounded-[2px] text-white text-center font-SpaceMono text-[16px] font-normal leading-[90%]"
                 disabled={buttonDisabled}
                 onClick={onConnect}
+                bgColor="#7B23FF"
+                loading={updating}
               >
                 {buttonText}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

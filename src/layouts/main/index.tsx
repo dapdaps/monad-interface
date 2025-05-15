@@ -31,18 +31,6 @@ const MainLayout = (props: Props) => {
     getAccessToken();
   }, [address]);
 
-  if (walletConnecting) {
-    return <LoginLayout />;
-  }
-
-  if (!walletConnected) {
-    return (
-      <LoginLayout>
-        <LoginView />
-      </LoginLayout>
-    );
-  }
-
   return (
     <div
       id="layout"
