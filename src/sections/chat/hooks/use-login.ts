@@ -58,6 +58,7 @@ export default function useLogin() {
           setStatus(1);
           setShowLoading(false);
           setCurrentUser({});
+          setLogining(true);
         }
       }, 2000);
 
