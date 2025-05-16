@@ -123,15 +123,26 @@ export const LoginContainer = (props: any) => {
         className
       )}
     >
-      <div className="w-full h-full bg-[url('/images/login/bg-top.png')] bg-no-repeat bg-top bg-[length:100%_136px]">
-        <div
-          className={clsx(
-            "w-full h-full bg-[url('/images/login/bg-bot.png')] bg-no-repeat bg-bottom bg-[length:100%_230px]",
-            contentClassName
-          )}
-        >
-          {children}
-        </div>
+      <video
+        className="w-full h-[272px] absolute top-0 left-0 z-[1] object-fill rotate-180 pointer-events-none"
+        autoPlay
+        loop
+        muted
+        poster="/images/login/bg-top.png"
+      >
+        <source src="/images/login/bg-grid.webm" type="video/webm" />
+      </video>
+      <video
+        className="w-full h-[460px] absolute bottom-0 left-0 z-[1] object-fill pointer-events-none"
+        autoPlay
+        loop
+        muted
+        poster="/images/login/bg-bot.png"
+      >
+        <source src="/images/login/bg-grid.webm" type="video/webm" />
+      </video>
+      <div className={clsx("w-full h-full relative z-[2]", contentClassName)}>
+        {children}
       </div>
     </div>
   );
