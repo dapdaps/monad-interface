@@ -93,7 +93,7 @@ function Moving1st() {
   });
 
   return (
-    <div className="absolute left-[270px] bottom-[72px] z-[28]">
+    <div className="absolute left-[270px] bottom-[72px] z-[58]">
       <div className="relative">
         <div className="relative">
           <img
@@ -175,7 +175,7 @@ function Moving3rd() {
   });
 
   return (
-    <div className="absolute bottom-[28%] right-[45%] z-[6]">
+    <div className="absolute bottom-[28%] right-[45%] z-[58]">
       <div className="relative">
         <div className="relative">
           <img
