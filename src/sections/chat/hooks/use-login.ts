@@ -52,13 +52,18 @@ export default function useLogin() {
 
   const { run: debounceLogin } = useDebounceFn(
     () => {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         if (!account) {
           setStatus(1);
           setShowLoading(false);
+          setCurrentUser({});
         }
       }, 2000);
-      if (account) onLogin();
+
+      if (account) {
+        onLogin();
+        clearTimeout(timer);
+      }
     },
     { wait: 500 }
   );

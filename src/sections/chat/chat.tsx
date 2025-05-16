@@ -40,7 +40,7 @@ export default function ChatView({ currentUser }: any) {
 
   const { fetchUsersInfo } = useUsersInfo();
 
-  const fetchHistoryMessages = async () => {
+  const fetchHistoryMessages = async (isFresh?: boolean) => {
     if (!conversationRef.current) {
       return;
     }
@@ -51,7 +51,7 @@ export default function ChatView({ currentUser }: any) {
       direction: MessageQueryDirection.NEW_TO_OLD
     };
 
-    if (messages.length > 0) {
+    if (messages.length > 0 && !isFresh) {
       options.endMessageId = messages[0].id;
       options.endTime = messages[0].timestamp;
     }
@@ -77,7 +77,7 @@ export default function ChatView({ currentUser }: any) {
     (e: any) => {
       const element = e.target as HTMLDivElement;
       if (element.scrollTop < 30 && hasMoreRef.current) {
-        fetchHistoryMessages();
+        fetchHistoryMessages(false);
       }
     },
     {
@@ -140,7 +140,8 @@ export default function ChatView({ currentUser }: any) {
           await chatroom.join();
           console.log("Successfully joined the chat room");
           setIsConnected(true);
-          await fetchHistoryMessages();
+
+          await fetchHistoryMessages(true);
           messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
           // Listen for new messages
           chatroom.on("message", (message: TextMessage) => {

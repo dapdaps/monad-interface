@@ -38,8 +38,8 @@ export default function Content({
           [{currentUser.name}] <Level level={currentUser.level} />:
         </div>
 
-        {!currentUser.level ||
-        (currentUser.level?.includes("NGMI") && !currentUser.role) ? (
+        {(!currentUser.level || currentUser.level?.includes("NGMI")) &&
+        !currentUser?.role ? (
           <span className="text-[#FFBF49]">
             You don’t have chat permission, you will be able to chat wen 5 txns
             on testnet
