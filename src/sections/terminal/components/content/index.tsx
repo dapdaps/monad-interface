@@ -14,7 +14,8 @@ export default function Content({
   messagesEndRef,
   currentUser,
   setInputMessage,
-  inputMessage
+  inputMessage,
+  scrollToBottom
 }: any) {
   const chatStore: any = useChatStore();
   const { limitProgress } = useLimit();
@@ -81,6 +82,7 @@ export default function Content({
           message={message}
           user={chatStore.users[message.from.toLowerCase()]}
           onAnimationComplete={() => {
+            scrollToBottom();
             if (mergedMessages.length - 1 > displayedMessageIndex) {
               const _displayedMessageIndex = displayedMessageIndex + 1;
               setDisplayedMessageIndex(_displayedMessageIndex);

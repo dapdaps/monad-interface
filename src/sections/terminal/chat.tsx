@@ -44,6 +44,13 @@ export default function ChatView({ currentUser }: any) {
   const { fetchUsersInfo } = useUsersInfo();
   const setLimit = useTerminalStore((store) => store.setLimit);
 
+  const { run: scrollToBottom } = useDebounceFn(() => {
+    if (!messagesEndRef.current) {
+      return;
+    }
+    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+  }, { wait: 300 });
+
   const fetchHistoryMessages = async (isFresh?: boolean) => {
     if (!conversationRef.current) {
       return;
@@ -146,7 +153,7 @@ export default function ChatView({ currentUser }: any) {
           setIsConnected(true);
 
           await fetchHistoryMessages(true);
-          messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+          scrollToBottom();
           // Listen for new messages
           chatroom.on("message", (message: TextMessage) => {
             console.log("New message received:", message);
@@ -192,7 +199,7 @@ export default function ChatView({ currentUser }: any) {
 
       setMessages((prev) => [...prev, message]);
 
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+      scrollToBottom();
       await conversationRef.current.send(message);
       console.log("Message sent successfully");
 
@@ -214,6 +221,7 @@ export default function ChatView({ currentUser }: any) {
         currentUser={currentUser}
         setInputMessage={setInputMessage}
         inputMessage={inputMessage}
+        scrollToBottom={scrollToBottom}
       />
       <Footer onlineUsers={onlineUsers} />
     </div>
