@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useChatStore } from "@/stores/chat";
 import Level from "./level";
 import { motion } from "framer-motion";
+import { useLimit } from '@/sections/terminal/hooks/use-limit';
+import Big from 'big.js';
 
 export default function Content({
   messages,
@@ -15,6 +17,7 @@ export default function Content({
   inputMessage
 }: any) {
   const chatStore: any = useChatStore();
+  const { limitProgress } = useLimit();
   const mergedMessages = useMemo(() => uniqBy(messages, "id"), [messages]);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -56,6 +59,13 @@ export default function Content({
       input?.removeEventListener('blur', handleBlur);
     };
   }, []);
+
+  useEffect(() => {
+    if (!inputRef.current) return;
+    if (Big(limitProgress || 100).gte(100)) {
+      inputRef.current.focus();
+    }
+  }, [limitProgress, inputRef.current]);
 
   return (
     <div
@@ -117,6 +127,8 @@ export default function Content({
               ref={inputRef}
               className="bg-transparent flex-1"
               autoFocus
+              disabled={Big(limitProgress || 100).lt(100)}
+              placeholder={Big(limitProgress || 100).lt(100) ? `Signal reconnecting ${limitProgress}%` : ""}
               onKeyPress={(e) => e.key === "Enter" && sendMessage()}
               onChange={(e) => setInputMessage(e.target.value)}
               value={inputMessage}

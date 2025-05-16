@@ -13,6 +13,8 @@ import { useEffect, useState, useRef } from "react";
 import { useDebounceFn } from "ahooks";
 import useUsersInfo from "./hooks/use-users-info";
 import { redirect } from "next/navigation";
+import { useTerminalStore } from '@/stores/terminal';
+import useCustomAccount from '@/hooks/use-account';
 
 const realtime = new Realtime({
   appId: process.env.NEXT_PUBLIC_LEANCLOUD_APP_ID!,
@@ -38,7 +40,9 @@ export default function ChatView({ currentUser }: any) {
   const hasMoreRef = useRef(true);
   const [onlineUsers, setOnlineUsers] = useState(0);
 
+  const { account } = useCustomAccount();
   const { fetchUsersInfo } = useUsersInfo();
+  const setLimit = useTerminalStore((store) => store.setLimit);
 
   const fetchHistoryMessages = async (isFresh?: boolean) => {
     if (!conversationRef.current) {
@@ -193,6 +197,7 @@ export default function ChatView({ currentUser }: any) {
       console.log("Message sent successfully");
 
       setInputMessage("");
+      setLimit(account, { lastPostTime: Date.now() });
     } catch (error) {
       console.error("Failed to send message:", error);
     }
