@@ -1,7 +1,8 @@
 import dayjs from "dayjs";
 import Level from "./level";
+import Typewriter from '@/sections/chat/components/typewriter';
 
-export default function Item({ message, user }: any) {
+export default function Item({ message, user, onAnimationComplete }: any) {
   return (
     <div
       className="flex gap-[8px] text-[16px] leading-[200%]"
@@ -13,7 +14,10 @@ export default function Item({ message, user }: any) {
         [{dayjs(message.timestamp).format("HH:mm:ss")}] [{user?.name}]{" "}
         <Level level={user?.level} />:
       </div>
-      <div>{message.text}</div>
+      <Typewriter
+        text={message?.text ?? ""}
+        onAnimationComplete={onAnimationComplete}
+      />
     </div>
   );
 }
