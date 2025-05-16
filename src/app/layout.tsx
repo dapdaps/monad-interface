@@ -2,9 +2,9 @@
 
 import SceneContextProvider from "@/context/scene";
 import WagmiProvider from "@/context/wagmi";
-import MainLayout from "@/layouts/main";
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
+import MainLayout from "@/layouts";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 import Script from "next/script";
 import React, { Suspense } from "react";

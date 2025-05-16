@@ -7,19 +7,17 @@ import useTokenPrice from "@/hooks/use-token-price";
 import useUser from "@/hooks/use-user";
 import MainLayoutFooter from "@/layouts/main/footer";
 import MainLayoutHeader from "@/layouts/main/header";
-import { usePathname } from "next/navigation";
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import { useAccount } from "wagmi";
-
+import clsx from "clsx";
 
 const MainLayout = (props: Props) => {
   const { children, style } = props;
-  useRem()
+  useRem();
 
   const { handleTrack } = useClickTracking();
   const { initializePrice } = useTokenPrice();
   const { handleReportNoCode } = useClickTracking();
-  const pathname = usePathname();
 
   useEffect(() => {
     handleReportNoCode();
@@ -36,16 +34,16 @@ const MainLayout = (props: Props) => {
   return (
     <div
       id="layout"
-      className={`min-h-screen relative flex flex-col items-stretch justify-start transition-background duration-150 bg-[var(--background)]`}
+      className={clsx(
+        "min-h-screen relative flex flex-col items-stretch justify-start transition-background duration-150 bg-[#0E0F29]"
+      )}
       onClick={handleTrack}
       style={{
-        ...style,
+        ...style
       }}
     >
       <MainLayoutHeader />
-      <div className="relative grow">
-        {children}
-      </div>
+      <div className="relative grow">{children}</div>
       <MainLayoutFooter />
     </div>
   );

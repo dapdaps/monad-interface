@@ -1,7 +1,7 @@
 import { asyncFetch } from "@/utils/http";
 import { useCallback, useEffect, useState } from "react";
 import { DEFAULT_CHAIN_ID } from "@/configs";
-import { bera } from "@/configs/tokens/bera";
+import { monad } from "@/configs/tokens/monad-testnet";
 
 export default function useDexTokens(dapp: any) {
   const [tokens, setTokens] = useState<any>([]);
@@ -29,11 +29,11 @@ export default function useDexTokens(dapp: any) {
       const tokens = await asyncFetch(
         "https://tokens.pancakeswap.finance/pancakeswap-monad-testnet-default.json"
       );
-
+      tokens.tokens.unshift(monad["mon"]);
       setTokens(
         tokens.tokens.map((token: any) => ({
           ...token,
-          icon: token.logoURI
+          icon: token.logoURI || token.icon
         }))
       );
       return;

@@ -38,37 +38,41 @@ const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
             onClose={onClose}
             className=""
             closeIcon={<IconClose />}
-            innerClassName="w-[800px] max-w-full p-8 bg-[url('/images/lucky777/modal-bg.svg')] bg-cover bg-top bg-no-repeat font-Unbounded"
+            innerClassName="font-Unbounded"
         >
-            <div className="flex flex-col items-center  h-[600px] text-[12px]">
-                <div className="text-center mt-[-48px]">
-                    <img src="/images/lucky777/buy-777-title.svg" alt="LUCKY 777" className="w-[183px] mx-auto" />
+            <div className="relative">
+                <img src="/images/lucky777/modal-bg.png" alt="LUCKY 777" className="absolute z-1 top-0 left-0 w-full h-full" />
+                <div className="flex flex-col items-center w-[692px] pb-[30px] px-[20px] max-w-full z-10 relative text-[12px]">
+                    <div className="text-center mt-[-16px]">
+                        <img src="/images/lucky777/buy-777-title.svg" alt="LUCKY 777" className="w-[183px] mx-auto" />
+                    </div>
+
+                    <div className="flex gap-[2px] mt-[20px] cursor-pointer">
+                        <button className={"w-[100px] h-[30px] text-black font-bold rounded-[4px] " + (activeTab === "winning" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("winning")}>
+                            Winning
+                        </button>
+                        <button className={"w-[100px] h-[30px] text-black font-bold rounded-[4px] " + (activeTab === "purchases" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("purchases")}>
+                            Purchases
+                        </button>
+                        <button className={"w-[100px] h-[30px] text-black font-bold rounded-[4px] " + (activeTab === "payouts" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("payouts")}>
+                            Payouts
+                        </button>
+                    </div>
+
+                    {activeTab === "winning" && (
+                        <List type="winning" />
+                    )}
+
+                    {activeTab === "purchases" && (
+                        <List type="purchases" />
+                    )}
+
+                    {activeTab === "payouts" && (
+                        <List type="payouts" />
+                    )}
                 </div>
-
-                <div className="flex gap-[2px] mt-[20px] cursor-pointer">
-                    <button className={"w-[100px] h-[30px] text-black font-bold rounded-[4px] " + (activeTab === "winning" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("winning")}>
-                        Winning
-                    </button>
-                    <button className={"w-[100px] h-[30px] text-black font-bold rounded-[4px] " + (activeTab === "purchases" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("purchases")}>
-                        Purchases
-                    </button>
-                    <button className={"w-[100px] h-[30px] text-black font-bold rounded-[4px] " + (activeTab === "payouts" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("payouts")}>
-                        Payouts
-                    </button>
-                </div>
-
-                {activeTab === "winning" && (
-                    <List type="winning" />
-                )}
-
-                {activeTab === "purchases" && (
-                    <List type="purchases" />
-                )}
-
-                {activeTab === "payouts" && (
-                    <List type="payouts" />
-                )}
             </div>
+
         </Modal>
     );
 };
@@ -83,7 +87,7 @@ function List({ type }: { type: string }) {
     const [data, setData] = useState<any[]>([]);
     const { address } = useAccount();
 
-    useEffect(() => {   
+    useEffect(() => {
         if (!address) return;
         get(urlMap[type], { address }).then((res) => {
             if (res.code !== 200) {
@@ -93,9 +97,9 @@ function List({ type }: { type: string }) {
             setData(res.data);
         });
     }, [type, address]);
-    
+
     return (
-        <div className="w-full mt-[42px]">
+        <div className="w-full mt-[42px] min-h-[340px]">
             <div className="flex px-6 py-3 text-[#A6A6DB] font-bold-[300] border-b border-[#414266]">
                 <div className="flex-1">Time</div>
                 <div className="flex-1">Item</div>
@@ -104,13 +108,13 @@ function List({ type }: { type: string }) {
             <div className="max-h-[340px] overflow-y-auto">
                 {data.map((item, idx) => (
                     <div key={item.id} className="flex px-6 py-3 text-white text-[12px] border-b border-[#414266] items-center">
-                        <div className="flex-1">{ formatEnglishDate(item.created_at)}</div>
+                        <div className="flex-1">{formatEnglishDate(item.created_at)}</div>
                         <div className="flex-1 flex items-center gap-2">
-                            {item.points} 
-                            {type === "winning" && <span>Spins</span>} 
+                            {item.points}
+                            {type === "winning" && <span>Spins</span>}
                         </div>
                         <div className="flex-1 flex items-center gap-2">
-                            { type === "purchases" && <span>{item.amount} MON</span> }
+                            {type === "purchases" && <span>{item.amount} MON</span>}
                         </div>
                     </div>
                 ))}

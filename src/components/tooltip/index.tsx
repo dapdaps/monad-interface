@@ -1,8 +1,23 @@
-import { useDebounceFn } from 'ahooks';
-import type { MotionValue } from 'framer-motion';
-import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import React, { forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
+"use client";
+
+import { useDebounceFn } from "ahooks";
+import type { MotionValue } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform
+} from "framer-motion";
+import React, {
+  forwardRef,
+  memo,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState
+} from "react";
+import { createPortal } from "react-dom";
 
 // a simple tooltip component that supports rendering content to the root node (document.body)
 const Tooltip = forwardRef<Refs, Props>((props, ref) => {
@@ -25,8 +40,14 @@ const Tooltip = forwardRef<Refs, Props>((props, ref) => {
 
   const springX = useMotionValue(0);
   const springConfig = { stiffness: 100, damping: 5 };
-  const rotate = useSpring(useTransform(springX, [-100, 100], [-45, 45]), springConfig);
-  const translateX = useSpring(useTransform(springX, [-100, 100], [-50, 50]), springConfig);
+  const rotate = useSpring(
+    useTransform(springX, [-100, 100], [-45, 45]),
+    springConfig
+  );
+  const translateX = useSpring(
+    useTransform(springX, [-100, 100], [-50, 50]),
+    springConfig
+  );
 
   const { run: closeTooltip, cancel: cancelCloseTooltip } = useDebounceFn(
     () => {
@@ -49,9 +70,9 @@ const Tooltip = forwardRef<Refs, Props>((props, ref) => {
     const onScroll = () => {
       setVisible(false);
     };
-    document.addEventListener('scroll', onScroll);
+    document.addEventListener("scroll", onScroll);
     return () => {
-      document.removeEventListener('scroll', onScroll);
+      document.removeEventListener("scroll", onScroll);
     };
   }, []);
 
@@ -73,7 +94,7 @@ const Tooltip = forwardRef<Refs, Props>((props, ref) => {
   if (!tooltip) return children;
 
   return (
-    <div className='flex justify-center' style={containerStyle}>
+    <div className="flex justify-center" style={containerStyle}>
       <motion.div
         ref={triggerRef}
         onHoverStart={() => {
@@ -108,7 +129,11 @@ const Tooltip = forwardRef<Refs, Props>((props, ref) => {
               closeTooltip={closeTooltip}
               onLoaded={(elTooltip) => {
                 const el = triggerRef.current;
-                const { width: elW, x: elX, y: elY } = el.getBoundingClientRect();
+                const {
+                  width: elW,
+                  x: elX,
+                  y: elY
+                } = el.getBoundingClientRect();
                 const middleWidth = elX + elW / 2;
 
                 const { clientWidth: w, clientHeight: h } = elTooltip ?? {};
@@ -182,7 +207,7 @@ const Popup = (props: PopupProps) => {
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        className='fixed z-[100] top-0 left-0 flex-shrink-0 rounded-[18px] bg-[#FFE5B8] border border-black shadow-shadow1 flex justify-center items-center whitespace-nowrap px-[17px] py-[12px] leading-none'
+        className="fixed z-[100] top-0 left-0 flex-shrink-0 rounded-[18px] bg-[#FFE5B8] border border-black shadow-shadow1 flex justify-center items-center whitespace-nowrap px-[17px] py-[12px] leading-none"
         ref={tooltipRef}
         style={{
           ...style,
@@ -190,12 +215,17 @@ const Popup = (props: PopupProps) => {
           top: y,
           translateX,
           rotate,
-          visibility: realVisible ? 'visible' : 'hidden'
+          visibility: realVisible ? "visible" : "hidden"
         }}
         animate={{
           opacity: 1,
           y: 0,
-          transition: { type: 'spring', stiffness: 200, damping: 15, duration: 0.5 }
+          transition: {
+            type: "spring",
+            stiffness: 200,
+            damping: 15,
+            duration: 0.5
+          }
         }}
         exit={{
           opacity: 0,

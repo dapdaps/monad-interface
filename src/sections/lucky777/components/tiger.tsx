@@ -7,6 +7,8 @@ import BuyTimesModal from './buyTimes';
 import useToast from '@/hooks/use-toast';
 import Big from 'big.js';
 import HistoryModal from './history';
+import { useAccount } from 'wagmi';
+import { useAppKit } from '@reown/appkit/react';
 
 const WHEEL_SIZE = 500;
 const WHEEL_AREA = 120;
@@ -28,6 +30,8 @@ const WheelInfinityAnimation: any = {
   repeat: Infinity,
 };
 
+const MAX_POINT = 20000;
+
 export default memo(function Tiger(props: any) {
   const {
     spinUserData,
@@ -35,9 +39,13 @@ export default memo(function Tiger(props: any) {
     getSpinUserData,
   } = props;
 
-  const [open, setOpen] = useState(false);
+  const [openBuyTimes, setOpenBuyTimes] = useState(false);
   const [openHistory, setOpenHistory] = useState(false);
   const toast = useToast();
+  const [title, setTitle] = useState('LUCKY 777');
+  const { address } = useAccount();
+  const { open } = useAppKit();
+
 
   const [leftWheel, leftWheelAnimate] = useAnimate();
   const leftWheelRotation = useMotionValue(-1);
@@ -72,14 +80,14 @@ export default memo(function Tiger(props: any) {
   };
 
   const animateCoin = (coin: HTMLDivElement, startX: number, startY: number) => {
-    const horizontalDistance = (Math.random() - 0.5) * 400;
-    const maxHeight = -(Math.random() * 400 + 300);
+    const horizontalDistance = (Math.random() - 0.5) * 2800;
+    const maxHeight = -1 * window.innerHeight;
 
     // Movement and rotation animation keyframes
     const moveKeyframes = [
       // Initial position
       {
-        transform: 'translate(0, 50px) rotate(0deg)',
+        transform: 'translate(0, 0) rotate(0deg)',
         offset: 0
       },
       // First rapid ascent phase
@@ -104,7 +112,7 @@ export default memo(function Tiger(props: any) {
       },
       // Accelerated descent
       {
-        transform: `translate(${horizontalDistance}px, ${Math.abs(maxHeight * 0.5)}px) rotate(${Math.random() * 1080}deg)`,
+        transform: `translate(${horizontalDistance}px, ${Math.abs(maxHeight)}px) rotate(${Math.random() * 1080}deg)`,
         offset: 1
       }
     ];
@@ -144,7 +152,7 @@ export default memo(function Tiger(props: any) {
   };
 
   const createCoinsExplosion = (centerX: number, centerY: number, icon: string) => {
-    const numberOfCoins = 15;
+    const numberOfCoins = 4;
     const delayBetweenCoins = 100; // Delay between each coin's animation
 
     // Create multiple waves of coins with different delays and parameters
@@ -164,18 +172,12 @@ export default memo(function Tiger(props: any) {
   };
 
   const startCoinExplosion = (params: any) => {
-    const { category } = params;
-
-    const currCategory = SPIN_CATEGORIES[category as SpinCategory];
-
-    if (!spinRef.current || !currCategory) return;
-
-    // Calculate center position for coin explosion
     const rect = spinRef.current.getBoundingClientRect();
     const startX = rect.left + rect.width / 2 - EXPLOSION_COIN_SIZE / 2;
-    const startY = rect.top + rect.height / 2 - EXPLOSION_COIN_SIZE;
+    // const startX = 0
+    const startY = 0
 
-    createCoinsExplosion(startX, startY, currCategory.icon);
+    createCoinsExplosion(startX, startY, '/images/lucky777/logo/monad.svg');
   };
 
   const startSlowScroll = () => {
@@ -255,7 +257,6 @@ export default memo(function Tiger(props: any) {
 
     console.log("lottery wheel random area: %o, center: %o, right: %o", leftRandomArea, centerRandomArea, rightRandomArea);
 
-    console.log("lottery wheel random area: %o, center: %o, right: %o", leftCategoryIndex, centerCategoryIndex, rightCategoryIndex);
 
     // const leftWheelCodeRotation = baseRotation + WHEEL_AREA * leftRandomArea + (WHEEL_AREA - leftCategoryIndex * SpinCategoryRotation) - 1;
 
@@ -294,13 +295,16 @@ export default memo(function Tiger(props: any) {
   });
 
   const { run: handleSpin, loading: spinning } = useRequestByToken<any, any>(async () => {
-    console.log('handleSpin');
+    if (!address) {
+      open();
+      return;
+    }
 
     if (!spinUserData?.spin_balance || spinUserData?.spin_balance <= 0) {
       toast.fail({ title: 'No spins left' });
       return;
     }
-
+    setTitle('LUCKY 777');
     console.log('spinUserData:', spinUserData);
 
     // start wheel scroll
@@ -325,7 +329,10 @@ export default memo(function Tiger(props: any) {
       data: res,
     });
 
-    startCoinExplosion(res);
+    if (res.points_balance >= MAX_POINT) {
+      startCoinExplosion(res);
+      setTitle('WON 1 MON!');
+    }
   }, {
     manual: true,
   });
@@ -344,9 +351,6 @@ export default memo(function Tiger(props: any) {
     return Math.floor(spinUserData?.points_balance / 20000);
   }, [spinUserData]);
 
-
-  console.log('spinning:', spinning);
-
   return (
     <div className="w-full flex flex-col items-center justify-center pt-[88px]">
       <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[765px] h-[767px]">
@@ -354,16 +358,16 @@ export default memo(function Tiger(props: any) {
           <img src="/images/lucky777/slot-machine.svg" alt="" className="w-full" />
         </div>
 
-        <div className='absolute font-HackerNoonV2 text-[60px] leading-[110%] top-[20px] left-1/2 -translate-x-1/2 z-[2] w-[514px] h-[72px] flex flex-col items-center'>
-          LUCKY 777
+        <div className='absolute font-HackerNoonV2 text-[60px] leading-[110%] text-[#000] top-[20px] left-1/2 -translate-x-1/2 z-[2] w-[514px] h-[72px] flex flex-col items-center'>
+          { title }
         </div>
 
-        <div className='absolute font-HackerNoonV2 top-[140px] left-1/2 -translate-x-1/2 z-[2] w-[514px] h-[72px] flex flex-col items-center'>
+        <div className='absolute font-HackerNoonV2 top-[145px] left-1/2 -translate-x-1/2 z-[2] w-[514px] h-[72px] flex flex-col items-center'>
           <div className='text-[20px]'>
-            <span className='text-[#A5FFFD]'>{spinUserData?.points_balance} /</span> <span className='text-[#A5FFFD] opacity-50'>20,000</span>
+            <span className='text-[#A5FFFD]'>{numberFormatter(spinUserData?.points_balance || 0, 0, true)} /</span> <span className='text-[#A5FFFD] opacity-50'>{ numberFormatter(MAX_POINT, 0, true)   }</span>
           </div>
 
-          <div className='flex justify-start items-center gap-[0px] w-[438px] pl-[10px] mt-[-3px]'>
+          <div className='flex justify-start items-center gap-[0px] w-[438px] pl-[10px] mt-[5px]'>
             <div className='w-[35px] h-[40px] bg-[url("/images/lucky777/plane.svg")] bg-no-repeat bg-center bg-contain'></div>
             <div className="flex items-center gap-[2px]">
               {Array(20).fill(null).map((_, index) => (
@@ -379,7 +383,7 @@ export default memo(function Tiger(props: any) {
         <div className="absolute w-[386px] h-[168px] left-1/2 top-[255px] -translate-x-1/2 overflow-hidden">
           {/*#region Left*/}
 
-          <motion.div
+          <motion.div 
             className="absolute left-0 top-1/2 translate-x-[calc(-50%_+_60px)] -translate-y-1/2 [perspective:1000px]"
             style={{
               width: WHEEL_SIZE,
@@ -479,6 +483,11 @@ export default memo(function Tiger(props: any) {
             </motion.div>
           </motion.div>
           {/*#endregion*/}
+
+          <img src="/images/lucky777/layer.svg" alt="" className="w-[121px] h-[168px] z-2 absolute top-0 left-0" />
+          <img src="/images/lucky777/layer.svg" alt="" className="w-[121px] h-[168px] z-2 absolute top-0 left-1/2 -translate-x-1/2 ml-[2px]" />
+          <img src="/images/lucky777/layer.svg" alt="" className="w-[121px] h-[168px] z-2 absolute top-0 right-0 mr-[-7px]" />
+
         </div>
 
         <div className="absolute bottom-[240px] left-1/2 -translate-x-1/2 z-[2] w-[202px] h-[86px] flex flex-col items-center  max-w-full  bg-top bg-contain bg-no-repeat">
@@ -511,7 +520,7 @@ export default memo(function Tiger(props: any) {
         <div  className={"absolute bottom-[30px] right-[140px] z-[2] w-[81px] h-[116px] bg-top bg-contain bg-no-repeat " + (spinUserData?.spin_balance > 0 ? "bg-[url('/images/lucky777/switch.svg')]" : "bg-[url('/images/lucky777/switch-no.svg')]")}>
         </div>
 
-        <div className="font-HackerNoonV2 w-[309px] h-[93px] absolute bottom-[40px] left-[200px] z-[2] px-[12px] py-[10px]">
+        <div className="font-HackerNoonV2 w-[309px] h-[93px] absolute bottom-[30px] left-[200px] z-[2] px-[12px] py-[10px]">
           <div className="flex items-center justify-between text-[20px]">
             <div className="text-[#A5FFFD] ">Times:</div>
             <div className="text-[#A5FFFD]">{spinUserData?.spin_balance }</div>
@@ -523,14 +532,14 @@ export default memo(function Tiger(props: any) {
               type="button"
               className=" w-[80px] h-[27px] bg-[#BFFF60] rounded-[6px] text-[14px] text-black border cursor-pointer"
               onClick={() => {
-                setOpen(true)
+                setOpenBuyTimes(true)
               }}
             >Buy</motion.button>
           </div>
         </div>
       </div>
 
-      <BuyTimesModal open={open} onClose={() => setOpen(false)} refreshData={getSpinUserData} />
+      <BuyTimesModal open={openBuyTimes} onClose={() => setOpenBuyTimes(false)} refreshData={getSpinUserData} />
       <HistoryModal open={openHistory} onClose={() => setOpenHistory(false)} />
     </div>
   )

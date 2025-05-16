@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import clsx from 'clsx';
 
 interface Star {
   x: number;
@@ -26,7 +27,9 @@ const generateStars = (
   }));
 };
 
-const StarFieldCanvas = () => {
+const StarFieldCanvas = (props: any) => {
+  const { className } = props;
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const layers = useRef<Star[][]>([]);
 
@@ -82,7 +85,7 @@ const StarFieldCanvas = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed top-0 left-0 w-full h-full z-0"
+      className={clsx("fixed top-0 left-0 w-full h-full z-0", className)}
     />
   );
 };

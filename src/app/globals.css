@@ -34,6 +34,12 @@
   font-weight: 100 900;
   font-stretch: 75% 125%;
 }
+@font-face {
+  font-family: "SpaceMono";
+  src: url("./fonts/SpaceMono-Regular.ttf") format("truetype");
+  font-weight: 100 900;
+  font-stretch: 75% 125%;
+}
 
 @font-face {
   font-family: "HackerNoonV2";
@@ -144,6 +150,9 @@ button,
 a,
 .cursor-pointer {
   cursor: url("../../public/images/cursor.svg"), auto !important;
+}
+.cursor-pointer.terminal {
+  cursor: url("../../public/images/cursor-terminal.svg"), auto !important;
 }
 
 body::-webkit-scrollbar,

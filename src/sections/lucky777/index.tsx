@@ -3,6 +3,7 @@ import React from 'react';
 import Tiger from './components/tiger'
 import { useLuckyBera } from '@/sections/lucky777/hooks';
 import { useBuyHoney } from '@/sections/lucky777/hooks/buy-honey';
+import { LoginContainer } from '@/sections/terminal/login';
 
 const LuckyBeraView: React.FC<any> = () => {
   const {
@@ -18,12 +19,14 @@ const LuckyBeraView: React.FC<any> = () => {
 
   return (
     <div className="w-full h-full  bg-no-repeat bg-cover bg-top">
-      <Tiger
-        spinUserData={spinUserData}
-        lastSpinResult={lastSpinResult}
-        handleSpinResult={handleSpinResult}
-        toggleOutHoneyVisible={toggleVisible}
-      />
+      <LoginContainer>
+        <Tiger
+          spinUserData={spinUserData}
+          lastSpinResult={lastSpinResult}
+          handleSpinResult={handleSpinResult}
+          toggleOutHoneyVisible={toggleVisible}
+        />
+      </LoginContainer>
     </div>
   );
 };
