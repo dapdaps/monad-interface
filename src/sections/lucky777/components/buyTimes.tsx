@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Modal from "@/components/modal";
 import { useAccount, useSendTransaction, useSwitchChain, useConnect, injected } from "wagmi";
 import { post } from "@/utils/http";
@@ -9,6 +9,7 @@ import {
 } from "@reown/appkit/networks";
 import { useAppKit } from "@reown/appkit/react";
 import { toast } from "react-toastify";
+import { numberFormatter } from "@/utils/number-formatter";
 
 interface BuyTimesModalProps {
     open: boolean;
@@ -21,7 +22,7 @@ const amount = 0.01;
 
 const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
     const { address, chainId } = useAccount();
-
+    const [times, setTimes] = useState(1);
     const { data: hash, sendTransactionAsync, isPending, isSuccess } = useSendTransaction();
 
     const handleSelectTimes = useCallback(async (selectedTimes: number) => {
@@ -58,6 +59,10 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
 
     }, [address, sendTransactionAsync]);
 
+    useEffect(() => {
+        setTimes(1);
+    }, [open]);
+
     return (
         <Modal open={open} onClose={onClose} className="" closeIcon={<IconClose />} innerClassName="w-[592px] max-w-full p-8 bg-[url('/images/lucky777/modal-bg.svg')] bg-cover bg-top bg-no-repeat font-HackerNoonV2">
             <div className="flex flex-col items-center">
@@ -67,7 +72,14 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
                 <div className="w-full bg-[#18172B] rounded-[6px] p-[24px] mt-[42px] border-[#414266] rou">
                     <div className="flex justify-between items-center">
                         <span className="text-white text-[14px] font-Unbounded">TIMES</span>
-                        <span className="text-[#BFFF60] font-bold text-[18px]">x1</span>
+                        <span className="text-[#BFFF60] font-bold text-[18px]">x
+                            <input type="number" min="1" step="1" value={times} onChange={(e) => {
+                              const val = Math.floor(Number(e.target.value));
+                              if (val > 0) {
+                                setTimes(val);
+                              }
+                            }} className="w-[40px] text-center text-[18px] font-bold text-[#BFFF60] bg-transparent border-none outline-none" />
+                        </span>
                     </div>
                 </div>
 
@@ -82,10 +94,10 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
                     <svg width="380" height="2" viewBox="0 0 380 2" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 1H380" stroke="white" stroke-opacity="0.2" stroke-dasharray="2 2" />
                     </svg>
-                    <div className="text-white">0.1</div>
+                    <div className="text-white">{ numberFormatter(0.1 * times, 1, true) }</div>
                 </div>
 
-                <MainBtn onClick={() => handleSelectTimes(1)} />
+                <MainBtn onClick={() => handleSelectTimes(times)} />
 
                 <div className="flex w-full justify-between gap-4">
                     <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">

@@ -323,15 +323,18 @@ export default memo(function Tiger(props: any) {
       return;
     }
 
-
     await startWheelResultScroll({
       ...animations,
       data: res,
     });
 
+    toast.success({ title: `Get ${res.draw_points} points` });
+
     if (res.points_balance >= MAX_POINT) {
       startCoinExplosion(res);
       setTitle('WON 1 MON!');
+    } else {
+      setTitle('WON ' + res.draw_points + ' !');
     }
   }, {
     manual: true,
@@ -348,7 +351,7 @@ export default memo(function Tiger(props: any) {
   }, []);
 
   const pointProgress = useMemo(() => {
-    return Math.floor(spinUserData?.points_balance / 20000);
+    return Math.floor(spinUserData?.points_balance / 20000 * 20);
   }, [spinUserData]);
 
   return (
@@ -359,12 +362,12 @@ export default memo(function Tiger(props: any) {
         </div>
 
         <div className='absolute font-HackerNoonV2 text-[60px] leading-[110%] text-[#000] top-[20px] left-1/2 -translate-x-1/2 z-[2] w-[514px] h-[72px] flex flex-col items-center'>
-          { title }
+          {title}
         </div>
 
         <div className='absolute font-HackerNoonV2 top-[145px] left-1/2 -translate-x-1/2 z-[2] w-[514px] h-[72px] flex flex-col items-center'>
           <div className='text-[20px]'>
-            <span className='text-[#A5FFFD]'>{numberFormatter(spinUserData?.points_balance || 0, 0, true)} /</span> <span className='text-[#A5FFFD] opacity-50'>{ numberFormatter(MAX_POINT, 0, true)   }</span>
+            <span className='text-[#A5FFFD]'>{numberFormatter(spinUserData?.points_balance || 0, 0, true)} /</span> <span className='text-[#A5FFFD] opacity-50'>{numberFormatter(MAX_POINT, 0, true)}</span>
           </div>
 
           <div className='flex justify-start items-center gap-[0px] w-[438px] pl-[10px] mt-[5px]'>
@@ -383,7 +386,7 @@ export default memo(function Tiger(props: any) {
         <div className="absolute w-[386px] h-[168px] left-1/2 top-[255px] -translate-x-1/2 overflow-hidden">
           {/*#region Left*/}
 
-          <motion.div 
+          <motion.div
             className="absolute left-0 top-1/2 translate-x-[calc(-50%_+_60px)] -translate-y-1/2 [perspective:1000px]"
             style={{
               width: WHEEL_SIZE,
@@ -490,14 +493,51 @@ export default memo(function Tiger(props: any) {
 
         </div>
 
-        <div className="absolute bottom-[240px] left-1/2 -translate-x-1/2 z-[2] w-[202px] h-[86px] flex flex-col items-center  max-w-full  bg-top bg-contain bg-no-repeat">
+        <motion.div
+          className="absolute top-[310px] left-[130px] z-[2] w-[64px] h-[50px] bg-[url('/images/lucky777/left-arrow.svg')] bg-top bg-contain bg-no-repeat"
+          key={spinning ? "spinning-left" : "static-left"}
+          style={{
+            transformOrigin: "center center",
+            transform: "rotate(0deg)"
+          }}
+          animate={spinning ? {
+            rotate: [-30, 30, -30]
+          } : {}}
+          transition={{
+            duration: 0.1,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+
+        <motion.div
+          className="absolute top-[310px] right-[120px] z-[2] w-[64px] h-[50px] bg-[url('/images/lucky777/right-arrow.svg')] bg-top bg-contain bg-no-repeat"
+          key={spinning ? "spinning-right" : "static-right"}
+          style={{
+            transformOrigin: "center center",
+            transform: "rotate(0deg)"
+          }}
+          animate={spinning ? {
+            rotate: [-30, 30, -30]
+          } : {}}
+          transition={{
+            duration: 0.1,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+
+        {/* <div className="absolute top-[310px] right-[120px] z-[2] w-[64px] h-[50px] bg-[url('/images/lucky777/right-arrow.svg')]  bg-top bg-contain bg-no-repeat">
+        </div> */}
+
+        <div data-click-sound className="absolute bottom-[240px] left-1/2 -translate-x-1/2 z-[2] w-[202px] h-[86px] flex flex-col items-center  max-w-full  bg-top bg-contain bg-no-repeat">
           <motion.button
             ref={spinRef}
             type="button"
             // disabled={spinning}
             className="w-[202px] h-[85px] bg-[url('/images/lucky777/spin-btn.svg')] bg-no-repeat bg-center bg-contain disabled:opacity-50 disabled:cursor-not-allowed"
             whileTap={spinning ? {} : {
-              scaleY: 0.9,
+              backgroundImage: "url('/images/lucky777/spin-btn-press.svg')"
             }}
             style={{
               transformOrigin: "center bottom",
@@ -508,27 +548,44 @@ export default memo(function Tiger(props: any) {
         </div>
 
         <div>
+        <motion.button
+            type="button"
+            data-click-sound
+            className="absolute bottom-[270px] right-[140px] z-[2] w-[116px] h-[32px] bg-[url('/images/lucky777/rules.svg')] bg-no-repeat bg-center bg-contain "
+            whileTap={{
+              backgroundImage: "url('/images/lucky777/rules-press.svg')"
+            }}
+            onClick={() => {
+              setOpenHistory(true);
+            }}
+          />
+
           <motion.button
             type="button"
-            className="absolute bottom-[240px] right-[90px] z-[2] w-[190px] h-[64px] bg-[url('/images/lucky777/history.svg')] bg-no-repeat bg-center bg-contain "
+            data-click-sound
+            className="absolute bottom-[230px] right-[105px] z-[2] w-[136px] h-[32px] bg-[url('/images/lucky777/history-2.svg')] bg-no-repeat bg-center bg-contain"
+            whileTap={{
+              backgroundImage: "url('/images/lucky777/history-2-press.svg')"
+            }}
             onClick={() => {
               setOpenHistory(true);
             }}
           />
         </div>
 
-        <div  className={"absolute bottom-[30px] right-[140px] z-[2] w-[81px] h-[116px] bg-top bg-contain bg-no-repeat " + (spinUserData?.spin_balance > 0 ? "bg-[url('/images/lucky777/switch.svg')]" : "bg-[url('/images/lucky777/switch-no.svg')]")}>
+        <div className={"absolute bottom-[30px] right-[140px] z-[2] w-[81px] h-[116px] bg-top bg-contain bg-no-repeat " + (spinUserData?.spin_balance > 0 ? "bg-[url('/images/lucky777/switch.svg')]" : "bg-[url('/images/lucky777/switch-no.svg')]")}>
         </div>
 
         <div className="font-HackerNoonV2 w-[309px] h-[93px] absolute bottom-[30px] left-[200px] z-[2] px-[12px] py-[10px]">
           <div className="flex items-center justify-between text-[20px]">
             <div className="text-[#A5FFFD] ">Times:</div>
-            <div className="text-[#A5FFFD]">{spinUserData?.spin_balance }</div>
+            <div className="text-[#A5FFFD]">{spinUserData?.spin_balance}</div>
           </div>
 
           <div className="flex items-center justify-between mt-[10px]">
             <div className="text-[#A5FFFD] text-[12px] opacity-30">1 Free daily</div>
             <motion.button
+              data-click-sound
               type="button"
               className=" w-[80px] h-[27px] bg-[#BFFF60] rounded-[6px] text-[14px] text-black border cursor-pointer"
               onClick={() => {
