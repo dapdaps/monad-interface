@@ -9,7 +9,7 @@ import Button from "@/components/button";
 import clsx from "clsx";
 
 const LoginView = (props: any) => {
-  const { onUpdateName, updating } = props;
+  const { onUpdateName, updating, logining } = props;
 
   const modal = useAppKit();
   const { address, isConnected, isConnecting } = useAccount();
@@ -22,15 +22,15 @@ const LoginView = (props: any) => {
       return ["Connecting...", true];
     }
 
-    if (!address) {
+    if (!isConnected) {
       return ["Connect Wallet to Login", false];
     }
 
-    if (!trim(name || "")) {
+    if (!trim(name || "") && !logining) {
       return ["Please Enter a Name", true];
     }
     return ["Login", false];
-  }, [isConnected, connecting, name]);
+  }, [isConnected, connecting, name, logining]);
 
   const onNameChange = (val?: string) => {
     setName(val);
@@ -84,7 +84,7 @@ const LoginView = (props: any) => {
           className="mt-[33px] w-[445px] h-[22px] object-center object-contain shrink-0"
         />
         <div className="mt-[50px] w-[440px] shrink-0 flex flex-col items-center">
-          {address && (
+          {isConnected && !logining && (
             <>
               <div className="shrink-0">Enter Name</div>
               <input
@@ -101,7 +101,7 @@ const LoginView = (props: any) => {
             disabled={buttonDisabled}
             onClick={onConnect}
             bgColor="#7B23FF"
-            loading={updating}
+            loading={updating || (address && logining)}
           >
             {buttonText}
           </Button>

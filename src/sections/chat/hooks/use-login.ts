@@ -6,6 +6,7 @@ import { useDebounceFn } from "ahooks";
 
 export default function useLogin() {
   const [updating, setUpdating] = useState(false);
+  const [logining, setLogining] = useState(true);
   const { fail } = useToast();
   const { account } = useCustomAccount();
   const [status, setStatus] = useState(0); // 1 for login page, 2 for chat page.
@@ -15,6 +16,7 @@ export default function useLogin() {
 
   const onLogin = useCallback(async () => {
     try {
+      setLogining(true);
       const res = await post("/chat/login", { address: account });
       if (!res.data.name) {
         setStatus(1);
@@ -30,9 +32,8 @@ export default function useLogin() {
       setStatus(2);
     } catch (err) {
     } finally {
-      setTimeout(() => {
-        setShowLoading(false);
-      }, 2000);
+      setLogining(false);
+      setShowLoading(false);
     }
   }, [account]);
 
@@ -77,6 +78,7 @@ export default function useLogin() {
     status,
     currentUser,
     onUpdateName,
-    showLoading
+    showLoading,
+    logining
   };
 }
