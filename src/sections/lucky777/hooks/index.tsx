@@ -1,0 +1,66 @@
+import { useDebounceFn, useRequest } from 'ahooks';
+import { get, post } from '@/utils/http';
+import { useEffect, useState } from 'react';
+import { SpinResultData, SpinUserData } from '@/sections/lucky777/config';
+import useToast from '@/hooks/use-toast';
+import { useLuckyBeraStore } from '@/sections/lucky777/store';
+import { useRequestByToken } from './use-request-by-token';
+import { useAccount } from 'wagmi';
+
+
+
+export function useLuckyBera() {
+
+  const toast = useToast();
+  const { setLastSpinResult, lastSpinResult } = useLuckyBeraStore();
+  const { address } = useAccount();
+
+
+  const { run: getSpinUserData, data: spinUserData, loading: spinUserDataLoading } = useRequest<SpinUserData, any>(async () => {
+    const res = await get("/game/user", {
+      address: address,
+    });
+
+    console.log('getSpinUserData:', res);
+
+    if (res.code !== 200) {
+      return {}; 
+    }
+    return res.data;
+
+  }, {
+    manual: true,
+  });
+
+  const { run: reloadSpinData } = useDebounceFn((lastSpinResult: any) => {
+    getSpinUserData();
+    setLastSpinResult(lastSpinResult);
+  }, { wait: 5000 });
+
+  const { runAsync: handleSpinResult, data: spinResultData, loading: spinResultDataLoading } = useRequestByToken<SpinResultData | boolean, any>(async () => {
+    const res = await post("/game/draw");
+    if (res.code !== 200) {
+      toast.fail({ title: `Spin failed: ${res.message || res.data}` });
+      return false;
+    }
+    reloadSpinData(res.data);
+    return res.data;
+  }, {
+    manual: true,
+  });
+
+  useEffect(() => {
+    if (!address) return;
+    getSpinUserData();
+  }, [address]);
+
+  return {
+    spinUserData,
+    spinUserDataLoading,
+    handleSpinResult,
+    getSpinUserData,
+    spinResultData,
+    spinResultDataLoading,
+    lastSpinResult,
+  };
+}

@@ -16,6 +16,7 @@ const config: Config = {
       Fuzzy: ["Fuzzy"],
       Unbounded: ["Unbounded"],
       DogicaPixel: ["Dogica Pixel"],
+      HackerNoonV2: ["HackerNoonV2"],
       SpaceMono: ["SpaceMono"],
     },
     backgroundImage: {
