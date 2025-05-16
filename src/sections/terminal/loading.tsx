@@ -22,7 +22,7 @@ const ChatLoading = (props: any, ref: any) => {
   }, { wait: 1000 });
   const { run: onCompleteAnimate } = useDebounceFn(() => {
     onComplete?.();
-  }, { wait: 1300 });
+  }, { wait: 2000 });
   const { run: onCompleteAnimateTimeout } = useDebounceFn(() => {
     console.log('timeout...');
     setBoatDone(true);
@@ -101,7 +101,7 @@ const ChatLoading = (props: any, ref: any) => {
             <LoginContainer className="!static">
               <div className="flex flex-col items-center !w-[1202px] mx-auto">
                 <div className="w-full flex">
-                  <img src="/images/logo-white.svg" alt="" className="mt-[163px] w-[147px] h-[40px] object-center object-contain pointer-events-none shrink-0" />
+                  <img src="/images/logo.svg" alt="" className="mt-[163px] w-[148px] h-[61px] object-center object-contain pointer-events-none shrink-0" />
                 </div>
                 <img src="/images/chat/loading-title.png" alt="" className="mt-[26px] w-full h-[442px] object-center object-contain pointer-events-none shrink-0" />
               </div>
