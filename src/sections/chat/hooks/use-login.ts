@@ -61,8 +61,8 @@ export default function useLogin() {
       }, 2000);
 
       if (account) {
-        onLogin();
         clearTimeout(timer);
+        onLogin();
       }
     },
     { wait: 500 }
