@@ -5,7 +5,7 @@ import StarFieldCanvas from "@/sections/home/StarrySky";
 import { AnimatePresence, motion, useAnimate } from 'framer-motion';
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { useDebounceFn } from 'ahooks';
-import { LoginContainer } from '@/sections/chat/login';
+import { LoginContainer } from '@/sections/terminal/login';
 
 const SCALE = 10;
 // loading timeout is 13 s (include animation duration)

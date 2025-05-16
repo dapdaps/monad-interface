@@ -9,7 +9,7 @@ export default function useLogin() {
   const [logining, setLogining] = useState(true);
   const { fail } = useToast();
   const { account } = useCustomAccount();
-  const [status, setStatus] = useState(0); // 1 for login page, 2 for chat page.
+  const [status, setStatus] = useState(0); // 1 for login page, 2 for terminal page.
   const [showLoading, setShowLoading] = useState(true);
 
   const [currentUser, setCurrentUser] = useState<any>({});

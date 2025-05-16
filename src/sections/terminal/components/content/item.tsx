@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import Level from "./level";
-import Typewriter from '@/sections/chat/components/typewriter';
+import Typewriter from '@/sections/terminal/components/typewriter';
 
 export default function Item({ message, user, onAnimationComplete }: any) {
   return (

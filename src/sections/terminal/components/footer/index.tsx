@@ -29,7 +29,7 @@ export default function Footer({ onlineUsers }: any) {
           <span
             className="underline"
             style={{
-              cursor: 'url("/images/chat/cursor-pointer.svg"), auto'
+              cursor: 'url("/images/terminal/cursor-pointer.svg"), auto'
             }}
           >
             [Meaning of marks]

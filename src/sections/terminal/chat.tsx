@@ -93,7 +93,7 @@ export default function ChatView({ currentUser }: any) {
     let client: any;
     realtime
       .createIMClient(String(currentUser.address))
-      .then(async (_client) => {
+      .then(async (_client: any) => {
         client = _client;
         console.log("IM client created successfully");
 
@@ -101,7 +101,7 @@ export default function ChatView({ currentUser }: any) {
           if (!CHAT_ROOM_ID) {
             throw Error("room not esit");
           }
-          // Try to get the chat room
+          // Try to get the terminal room
           const existingConversation = await _client.getConversation(
             CHAT_ROOM_ID
           );
@@ -114,31 +114,31 @@ export default function ChatView({ currentUser }: any) {
           }
           return existingConversation;
         } catch (error) {
-          console.error("Failed to get chat room:", error);
+          console.error("Failed to get terminal room:", error);
 
-          // Create a new chat room if it doesn't exist
-          console.log("Attempting to create a new chat room");
+          // Create a new terminal room if it doesn't exist
+          console.log("Attempting to create a new terminal room");
           try {
             const newChatRoom = await _client.createChatRoom({
               name: "One Won Chat"
             });
-            console.log("New chat room created successfully:", newChatRoom.id);
+            console.log("New terminal room created successfully:", newChatRoom.id);
             return newChatRoom;
           } catch (createError) {
-            console.error("Failed to create chat room:", createError);
+            console.error("Failed to create terminal room:", createError);
             throw createError;
           }
         }
       })
-      .then(async (chatroom) => {
+      .then(async (chatroom: any) => {
         conversationRef.current = chatroom;
         console.log("conversationRef.current", conversationRef.current);
         console.log("Chat room connected successfully:", chatroom.id);
 
         try {
-          // Join the chat room
+          // Join the terminal room
           await chatroom.join();
-          console.log("Successfully joined the chat room");
+          console.log("Successfully joined the terminal room");
           setIsConnected(true);
 
           await fetchHistoryMessages(true);
@@ -155,12 +155,12 @@ export default function ChatView({ currentUser }: any) {
 
           return chatroom;
         } catch (error) {
-          console.error("Failed to join chat room:", error);
+          console.error("Failed to join terminal room:", error);
 
           throw error;
         }
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.error("Chat room setup error:", error);
       });
 

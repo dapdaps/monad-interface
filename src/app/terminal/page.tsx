@@ -1,4 +1,4 @@
-import View from "@/sections/chat";
+import View from "../../sections/terminal";
 
 export default function Page() {
   return <View />;

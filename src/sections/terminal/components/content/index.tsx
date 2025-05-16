@@ -48,12 +48,12 @@ export default function Content({
     };
 
     const input: any = inputRef.current;
-    input.addEventListener('focus', handleFocus);
-    input.addEventListener('blur', handleBlur);
+    input?.addEventListener('focus', handleFocus);
+    input?.addEventListener('blur', handleBlur);
 
     return () => {
-      input.removeEventListener('focus', handleFocus);
-      input.removeEventListener('blur', handleBlur);
+      input?.removeEventListener('focus', handleFocus);
+      input?.removeEventListener('blur', handleBlur);
     };
   }, []);
 
