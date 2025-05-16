@@ -63,7 +63,7 @@ const ChatLoading = (props: any, ref: any) => {
           <AnimateOpacityContainer
             key="boat"
             className={clsx(
-              "fixed left-0 top-0 w-screen h-screen bg-[#000] overflow-hidden z-[10]",
+              "fixed left-0 top-0 w-screen h-screen bg-[#000] overflow-hidden z-[10] cursor-pointer terminal",
               className
             )}
           >
@@ -94,7 +94,7 @@ const ChatLoading = (props: any, ref: any) => {
           <AnimateOpacityContainer
             key="title"
             className={clsx(
-              "fixed left-0 top-0 w-screen h-screen bg-[#000] overflow-hidden z-[10]",
+              "fixed left-0 top-0 w-screen h-screen bg-[#000] overflow-hidden z-[10] cursor-pointer terminal",
               className
             )}
           >

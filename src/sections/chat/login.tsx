@@ -119,7 +119,7 @@ export const LoginContainer = (props: any) => {
   return (
     <div
       className={clsx(
-        "fixed top-0 left-0 w-full h-screen bg-[#010101] text-center text-[#7B23FF] font-SpaceMono text-[18px] font-normal leading-[90%]",
+        "cursor-pointer terminal fixed top-0 left-0 w-full h-screen bg-[#010101] text-center text-[#7B23FF] font-SpaceMono text-[18px] font-normal leading-[90%]",
         className
       )}
     >
