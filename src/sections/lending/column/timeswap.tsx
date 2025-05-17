@@ -188,7 +188,7 @@ export const timeswap = async (params: any) => {
       mdSort: 5,
       align: "left",
       render: (record: any) => {
-        const maturity = dayjs(record.poolData?.maturity * 1000);
+        const maturity = record.poolData?.maturity ? dayjs(record.poolData?.maturity * 1000) : null;
         const maturityContent = (
           <DescriptionTitle
             descriptionClassName="!pd-[11px_13px]"
@@ -198,7 +198,7 @@ export const timeswap = async (params: any) => {
             )}
             descriptionPlacement={PopoverPlacement.TopRight}
           >
-            {dayjs(maturity).format('YYYY-MM-DD')}
+            {maturity ? dayjs(maturity).format('YYYY-MM-DD') : ""}
           </DescriptionTitle>
         );
 
@@ -353,6 +353,7 @@ const Countdown = (props: any) => {
   } = props;
 
   const calc = () => {
+    if (!endTime) return "";
     const now = dayjs(new Date());
     const diff = Math.max(endTime.diff(now), 0); // Ensure no negative duration
     const [dayMs, hourMs, minMs, sMs] = [1000 * 60 * 60 * 24, 1000 * 60 * 60, 1000 * 60, 1000];
