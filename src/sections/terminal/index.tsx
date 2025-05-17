@@ -1,7 +1,7 @@
 "use client";
 
 import LoginView from "./login";
-import ChatView from "./chat";
+import ChatView from "./chat-v2";
 import LoadingView from "./loading";
 import useLogin from "./hooks/use-login";
 import { useEffect, useRef, useState } from "react";

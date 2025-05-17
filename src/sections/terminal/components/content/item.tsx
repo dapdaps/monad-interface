@@ -1,23 +1,30 @@
 import dayjs from "dayjs";
 import Level from "./level";
 import Typewriter from '@/sections/terminal/components/typewriter';
+import clsx from 'clsx';
 
-export default function Item({ message, user, onAnimationComplete }: any) {
+export default function Item({ message, user, onAnimationComplete, className, isTypewriter = true, roleColor = "#7B23FF" }: any) {
   return (
     <div
-      className="flex gap-[8px] text-[16px] leading-[200%]"
+      className={clsx("flex gap-[8px] text-[16px] leading-[200%]", className)}
       style={{
-        color: user?.role ? "#7B23FF" : "white"
+        color: user?.role ? roleColor : "white"
       }}
     >
       <div className="shrink-0">
-        [{dayjs(message.timestamp).format("HH:mm:ss")}] [{user?.name}]{" "}
+        [{dayjs(message.timestamp).format("HH:mm:ss")}] [{user?.name}]{!!user?.level ? " " : ""}
         <Level level={user?.level} />:
       </div>
-      <Typewriter
-        text={message?.text ?? ""}
-        onAnimationComplete={onAnimationComplete}
-      />
+      {
+        isTypewriter ? (
+          <Typewriter
+            text={message?.text ?? ""}
+            onAnimationComplete={onAnimationComplete}
+          />
+        ) : (
+          <div>{message?.text ?? ""}</div>
+        )
+      }
     </div>
   );
 }
