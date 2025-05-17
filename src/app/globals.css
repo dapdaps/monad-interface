@@ -149,7 +149,7 @@ body {
 button,
 a,
 .cursor-pointer {
-  cursor: url("../../public/images/cursor.svg"), auto !important;
+  cursor: url("../../public/images/cursor.svg") 10 6, auto !important;
 }
 .cursor-pointer.terminal {
   cursor: url("../../public/images/cursor-terminal.svg"), auto !important;

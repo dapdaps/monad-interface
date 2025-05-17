@@ -26,12 +26,7 @@ export default function Footer({ onlineUsers }: any) {
             fontFamily: "SpaceMono"
           }}
         >
-          <span
-            className="underline"
-            style={{
-              cursor: 'url("/images/terminal/cursor-pointer.svg"), auto'
-            }}
-          >
+          <span className="underline">
             [Meaning of marks]
           </span>
         </Tooltip>
