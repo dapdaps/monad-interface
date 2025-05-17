@@ -31,6 +31,7 @@ const WheelInfinityAnimation: any = {
 };
 
 const MAX_POINT = 20000;
+const DEFAULT_TITLE = 'LUCKY 777';
 
 export default memo(function Tiger(props: any) {
   const {
@@ -42,7 +43,7 @@ export default memo(function Tiger(props: any) {
   const [openBuyTimes, setOpenBuyTimes] = useState(false);
   const [openHistory, setOpenHistory] = useState(false);
   const toast = useToast();
-  const [title, setTitle] = useState('LUCKY 777');
+  const [title, setTitle] = useState(DEFAULT_TITLE);
   const { address } = useAccount();
   const { open } = useAppKit();
 
@@ -304,7 +305,7 @@ export default memo(function Tiger(props: any) {
       toast.fail({ title: 'No spins left' });
       return;
     }
-    setTitle('LUCKY 777');
+    setTitle(DEFAULT_TITLE);
     console.log('spinUserData:', spinUserData);
 
     // start wheel scroll
@@ -361,7 +362,7 @@ export default memo(function Tiger(props: any) {
           <img src="/images/lucky777/slot-machine.svg" alt="" className="w-full" />
         </div>
 
-        <div className='absolute font-HackerNoonV2 text-[60px] leading-[110%] text-[#000] top-[20px] left-1/2 -translate-x-1/2 z-[2] w-[514px] h-[72px] flex flex-col items-center'>
+        <div data-glitch={title} className={'ml-[10px] absolute font-HackerNoonV2 text-[60px] leading-[110%] text-[#000] top-[20px] left-1/2 -translate-x-1/2 z-[2] w-[490px] h-[72px] flex flex-col items-center ' + (title !== DEFAULT_TITLE ? 'glitch' : '')}>
           {title}
         </div>
 
