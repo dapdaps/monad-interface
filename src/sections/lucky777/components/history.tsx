@@ -102,20 +102,63 @@ function List({ type }: { type: string }) {
         <div className="w-full mt-[42px] min-h-[340px]">
             <div className="flex px-6 py-3 text-[#A6A6DB] font-bold-[300] border-b border-[#414266]">
                 <div className="flex-1">Time</div>
-                <div className="flex-1">Item</div>
-                <div className="flex-1">Paid</div>
+                {
+                    type === "winning" && (
+                        <div className="flex-1">Result</div>
+                    )
+                }
+                {
+                    type === "purchases" && (
+                        <>
+                            <div className="flex-1">Item</div>
+                            <div className="flex-1">Paid</div>
+                        </>
+                    )
+                }
+                {
+                    type === "payouts" && (
+                        <>
+                            <div className="flex-1">Amount</div>
+                            <div className="flex-1">State</div>
+                        </>
+                    )
+                }
             </div>
             <div className="max-h-[340px] overflow-y-auto">
                 {data.map((item, idx) => (
                     <div key={item.id} className="flex px-6 py-3 text-white text-[12px] border-b border-[#414266] items-center">
                         <div className="flex-1">{formatEnglishDate(item.created_at)}</div>
-                        <div className="flex-1 flex items-center gap-2">
-                            {item.points}
-                            {type === "winning" && <span>Spins</span>}
-                        </div>
-                        <div className="flex-1 flex items-center gap-2">
-                            {type === "purchases" && <span>{item.amount} MON</span>}
-                        </div>
+                        {
+                            type === "winning" && (
+                                <div className="flex-1 justify-end">{item.points} points</div>
+                            )
+                        }
+                        {
+                            type === "purchases" && (
+                                <>
+                                    <div className="flex-1">{item.spin} Spins</div>
+                                    <div className="flex-1">{item.amount} MON</div>
+                                </>
+                            )
+                        }
+                        {
+                            type === "payouts" && (
+                                <>
+                                    <div className="flex-1">{item.amount} MON</div>
+                                    <div className="flex-1">
+                                        <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
+                                        </svg>
+                                        <a href={`https://testnet.monvision.io/tx/${item.tx_hash}`} target="_blank" rel="noreferrer">
+                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M5.36364 9.18182L13 1M13 1H7M13 1V7M4.81818 1H1V13H13V9.18182" stroke="#A9ADB8" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </>
+                            )
+                        }
+
                     </div>
                 ))}
             </div>

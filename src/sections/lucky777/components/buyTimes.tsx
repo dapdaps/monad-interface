@@ -57,7 +57,7 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
         }
 
 
-    }, [address, sendTransactionAsync]);
+    }, [address, refreshData, sendTransactionAsync]);
 
     useEffect(() => {
         setTimes(1);
