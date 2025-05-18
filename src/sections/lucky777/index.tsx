@@ -10,6 +10,7 @@ const LuckyBeraView: React.FC<any> = () => {
     spinUserData,
     lastSpinResult,
     handleSpinResult,
+    getSpinUserData,
   } = useLuckyBera();
   const { visible, toggleVisible } = useBuyHoney();
 
@@ -23,6 +24,7 @@ const LuckyBeraView: React.FC<any> = () => {
         <Tiger
           spinUserData={spinUserData}
           lastSpinResult={lastSpinResult}
+          getSpinUserData={getSpinUserData}
           handleSpinResult={handleSpinResult}
           toggleOutHoneyVisible={toggleVisible}
         />
