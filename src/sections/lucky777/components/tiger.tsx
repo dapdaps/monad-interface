@@ -9,6 +9,23 @@ import Big from 'big.js';
 import HistoryModal from './history';
 import { useAccount } from 'wagmi';
 import { useAppKit } from '@reown/appkit/react';
+import { useCountDown, useInterval } from 'ahooks';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+dayjs.extend(duration);
+
+function getTimeLeftToUTC24() {
+  const nowUtc = dayjs.utc();
+  const nextUtcMidnight = nowUtc.startOf('day').add(1, 'day');
+  const diff = nextUtcMidnight.diff(nowUtc);
+  const _duration = dayjs.duration(diff);
+
+  return {
+    hours: Math.floor(_duration.asHours()),
+    minutes: _duration.minutes(), 
+    seconds: _duration.seconds()
+  };
+}
 
 const WHEEL_SIZE = 500;
 const WHEEL_AREA = 120;
@@ -46,6 +63,12 @@ export default memo(function Tiger(props: any) {
   const [title, setTitle] = useState(DEFAULT_TITLE);
   const { address } = useAccount();
   const { open } = useAppKit();
+  const [freeTimes, setFreeTimes] = useState(getTimeLeftToUTC24());
+  // const [countdown] = useCountDown({ targetDate: freeTimes });
+
+  useInterval(() => {
+    setFreeTimes(getTimeLeftToUTC24());
+  }, 1000);
 
 
   const [leftWheel, leftWheelAnimate] = useAnimate();
@@ -355,6 +378,9 @@ export default memo(function Tiger(props: any) {
     return Math.floor(spinUserData?.points_balance / 20000 * 20);
   }, [spinUserData]);
 
+
+
+
   return (
     <div className="w-full flex flex-col items-center justify-center pt-[88px]">
       <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[765px] h-[767px]">
@@ -584,7 +610,7 @@ export default memo(function Tiger(props: any) {
           </div>
 
           <div className="flex items-center justify-between mt-[10px]">
-            <div className="text-[#A5FFFD] text-[12px] opacity-30">1 Free daily</div>
+            <div className="text-[#A5FFFD] text-[12px]">1 FREE IN {freeTimes.hours}:{freeTimes.minutes}:{freeTimes.seconds}</div>
             <motion.button
               data-click-sound
               type="button"
