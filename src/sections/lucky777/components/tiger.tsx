@@ -13,6 +13,7 @@ import { useCountDown, useInterval } from 'ahooks';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import RulesModal from './rules';
+import { useSoundStore } from '@/stores/sound';
 dayjs.extend(duration);
 
 function getTimeLeftToUTC24() {
@@ -68,6 +69,9 @@ export default memo(function Tiger(props: any) {
   const { open } = useAppKit();
   const [freeTimes, setFreeTimes] = useState(getTimeLeftToUTC24());
   const [animateSpinning, setAnimateSpinning] = useState(false);
+  const soundStore = useSoundStore()
+
+  console.log(soundStore, '<======soundStore')
 
   useInterval(() => {
     setFreeTimes(getTimeLeftToUTC24());
@@ -109,6 +113,7 @@ export default memo(function Tiger(props: any) {
   const animateCoin = (coin: HTMLDivElement, startX: number, startY: number) => {
     const horizontalDistance = (Math.random() - 0.5) * 2800;
     const maxHeight = -1 * window.innerHeight;
+   
 
     // Movement and rotation animation keyframes
     const moveKeyframes = [
@@ -354,8 +359,10 @@ export default memo(function Tiger(props: any) {
       // animations.centerWheelAnimation.pause();
       // animations.rightWheelAnimation.pause();
       startSlowScroll();
-      machineSoundAudio.pause();
-      machineSoundAudio.currentTime = 0;
+      if (machineSoundAudio) {
+        machineSoundAudio.pause();
+        machineSoundAudio.currentTime = 0;
+      }
       return;
     }
 
@@ -364,8 +371,10 @@ export default memo(function Tiger(props: any) {
       data: res,
     });
 
-    machineSoundAudio.pause();
-    machineSoundAudio.currentTime = 0;
+    if (machineSoundAudio) {
+      machineSoundAudio.pause();
+      machineSoundAudio.currentTime = 0;
+    }
 
     if (res.draw_points > 0) {
       toast.success({ title: `Get ${res.draw_points} points` });
@@ -397,7 +406,7 @@ export default memo(function Tiger(props: any) {
   }, []);
 
   const pointProgress = useMemo(() => {
-    return Math.floor(spinUserData?.points_balance / MAX_POINT * 20);
+    return Math.floor(((spinUserData?.points_balance || 0) % MAX_POINT) / MAX_POINT * 20);
   }, [spinUserData]);
 
   useEffect(() => {
@@ -426,17 +435,21 @@ export default memo(function Tiger(props: any) {
   }, []);
 
   const playSound = useCallback((soundType: number) => {
+    if (soundStore?.muted) {
+      return;
+    }
+
     const soundName = soundType === 1 ? 'slot-machine-sound' : 'winning-sound-effect'
 
     const audio = new Audio(`/audios/lucky777/${soundName}.mp3`);
-    audio.volume = 0.5;
+    audio.volume = 1;
     if (soundType === 1) {
       audio.loop = true;
     }
     audio.play();
 
     return audio
-  }, []);
+  }, [soundStore]);
 
   return (
     <div className="w-full flex flex-col items-center justify-center pt-[88px]">
