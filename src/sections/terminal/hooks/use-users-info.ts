@@ -5,7 +5,8 @@ import { uniq } from "lodash";
 export default function useUsersInfo() {
   const chatStore: any = useChatStore();
 
-  const fetchUsersInfo = async (users: string[], from?: string) => {
+  const fetchUsersInfo = async (users: string[], opts?: { from?: string; isMergeStore?: boolean; }) => {
+    const { from, isMergeStore } = opts ?? {};
     console.log('reload users from :%o', from);
     const needFetchUsers = users.filter((user) => {
       if (!chatStore.users[user]) return true;
@@ -25,7 +26,11 @@ export default function useUsersInfo() {
       },
       {}
     );
-    chatStore.set({ users: formattedUsers });
+    if (isMergeStore) {
+      chatStore.setUsers(formattedUsers);
+    } else {
+      chatStore.set({ users: formattedUsers });
+    }
   };
 
   return { fetchUsersInfo, users: chatStore.users };
