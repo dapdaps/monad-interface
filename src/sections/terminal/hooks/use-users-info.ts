@@ -5,7 +5,8 @@ import { uniq } from "lodash";
 export default function useUsersInfo() {
   const chatStore: any = useChatStore();
 
-  const fetchUsersInfo = async (users: string[]) => {
+  const fetchUsersInfo = async (users: string[], from?: string) => {
+    console.log('reload users from :%o', from);
     const needFetchUsers = users.filter((user) => {
       if (!chatStore.users[user]) return true;
       return (

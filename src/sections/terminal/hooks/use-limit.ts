@@ -18,7 +18,7 @@ export function useLimit(props?: any) {
   const currentUserLimit = useMemo<any>(() => {
     if (!account) return {};
     return limit?.[account] || {};
-  }, [account]);
+  }, [account, limit]);
 
   useEffect(() => {
     if (!account || !limit || !limit[account]) {

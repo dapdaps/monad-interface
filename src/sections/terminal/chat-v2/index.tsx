@@ -133,7 +133,8 @@ export default function ChatView({ currentUser }: any) {
     );
 
     await fetchUsersInfo(
-      sortedMessages.map((message: TextMessage) => message.from)
+      [...sortedMessages.map((message: TextMessage) => message.from), account],
+      "HistoryMessages"
     );
 
     setMessages((prevMessages) => {
@@ -286,7 +287,8 @@ export default function ChatView({ currentUser }: any) {
     const currentBufferMessage = getCurrentBufferMessage(messages);
     const currTime = Date.now();
     const diff = Math.max(currTime - currentUserLimit.lastPostTime, 0);
-    if (!currentBufferMessage || (Big(diff).gt(Big(POST_LIMIT_SECONDS || 5).times(1000)) && /100%$/.test(currentBufferMessage.text))) {
+
+    if (!currentBufferMessage || (currentUserLimit?.lastPostTime && Big(diff).gt(Big(POST_LIMIT_SECONDS || 5).times(1000)) && /100%$/.test(currentBufferMessage.text))) {
       return;
     }
 
