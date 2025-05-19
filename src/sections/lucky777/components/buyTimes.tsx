@@ -82,7 +82,7 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
                               if (val > 0) {
                                 setTimes(val);
                               }
-                            }} className="w-[40px] text-center text-[18px] font-bold text-[#BFFF60] bg-transparent border-none outline-none" />
+                            }} className="w-[80px] text-center text-[18px] font-bold text-[#BFFF60] bg-transparent border-none outline-none" />
                         </span>
                     </div>
                 </div>
