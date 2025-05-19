@@ -382,8 +382,6 @@ export default memo(function Tiger(props: any) {
       machineSoundAudio.currentTime = 0;
     }
 
-    
-
     if (res.draw_points > 0) {
       toast.success({ title: `Get ${res.draw_points} points` });
       setTitle('WON ' + res.draw_points + ' !');
@@ -396,7 +394,7 @@ export default memo(function Tiger(props: any) {
       startCoinExplosion(res);
     }
 
-    if (res.points_balance >= MAX_POINT) {
+    if (res.points_balance >= MAX_POINT && spinUserData?.points_balance < MAX_POINT) {
       startCoinExplosion(res);
       setTitle('WON 1 MON!');
     }
@@ -467,8 +465,17 @@ export default memo(function Tiger(props: any) {
   }, [soundStore]);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center pt-[88px]">
-      <div className="absolute left-1/2 -translate-x-1/2 bottom-0 mb-[-2px] w-[765px] h-[767px]">
+    <div className="w-full flex flex-col items-center justify-center pt-[88px] ">
+      <div style={{
+        position: 'absolute',
+        left: '50%',
+        bottom: 0,
+        marginBottom: '-2px',
+        width: '765px',
+        height: '767px',
+        transform: `translate(-50%, 0) scale(${Math.min(window.innerHeight / 1200, 2)})`,
+        transformOrigin: 'bottom center'
+      }}>
         <div className="absolute top-0 left-0 w-full h-full">
           <img src="/images/lucky777/slot-machine.svg" alt="" className="w-full" />
         </div>
