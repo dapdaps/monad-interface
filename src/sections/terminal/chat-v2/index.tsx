@@ -20,7 +20,7 @@ import ChatBg from '@/sections/terminal/chat-v2/bg';
 import { FE_SYSTEM_KEY, VERSION } from '@/sections/terminal/config';
 import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
-import { useLimit } from '@/sections/terminal/hooks/use-limit';
+import { POST_LIMIT_SECONDS, useLimit } from '@/sections/terminal/hooks/use-limit';
 import Big from 'big.js';
 
 const realtime = new Realtime({
@@ -284,9 +284,12 @@ export default function ChatView({ currentUser }: any) {
       return _messages.find((m: any) => dayjs(m.timestamp).valueOf() === currentUserLimit.lastPostTime && m.from === FE_SYSTEM_KEY);
     };
     const currentBufferMessage = getCurrentBufferMessage(messages);
-    if (!currentBufferMessage) {
+    const currTime = Date.now();
+    const diff = Math.max(currTime - currentUserLimit.lastPostTime, 0);
+    if (!currentBufferMessage || (Big(diff).gt(Big(POST_LIMIT_SECONDS || 5).times(1000)) && /100%$/.test(currentBufferMessage.text))) {
       return;
     }
+
     setMessages((prev) => {
       const currentBUFFERMessage = getCurrentBufferMessage(prev);
       if (!currentBUFFERMessage) {

@@ -7,6 +7,8 @@ export const letterVariants = {
   visible: { opacity: 1, transition: { opacity: { duration: 0 } } },
 };
 
+const WAIT = 150;
+
 const Typewriter = ({ text, onAnimationComplete, ...rest }: any) => {
 
   const length = text?.length || 0;
@@ -23,7 +25,7 @@ const Typewriter = ({ text, onAnimationComplete, ...rest }: any) => {
     return Math.max(0.001, Math.min(0.1, number));
   }, []);
 
-  const { run: handleAnimationComplete } = useDebounceFn(onAnimationComplete, { wait: 300 });
+  const { run: handleAnimationComplete, cancel } = useDebounceFn(onAnimationComplete, { wait: WAIT });
 
   return (
     <motion.p
@@ -35,7 +37,10 @@ const Typewriter = ({ text, onAnimationComplete, ...rest }: any) => {
       }}
       initial="hidden"
       animate="visible"
-      onAnimationComplete={handleAnimationComplete}
+      onAnimationComplete={() => {
+        cancel();
+        handleAnimationComplete();
+      }}
       {...rest}
     >
       {text.split("").map((char: any, i: number) => (

@@ -50,6 +50,7 @@ const ChatContent = (props: any) => {
         const _displayedMessageIndex = displayedMessageIndex + 1;
         setDisplayedMessageIndex(_displayedMessageIndex);
         setDisplayedMessages((prev: any) => [...prev, mergedMessages[_displayedMessageIndex]]);
+        setDisplayedAllHistoryMessages(false);
       }
     } else {
       // init
@@ -58,7 +59,7 @@ const ChatContent = (props: any) => {
         setDisplayedMessages([mergedMessages[0]]);
       }
     }
-  }, [displayedMessages, mergedMessages, displayedAllHistoryMessages]);
+  }, [displayedMessages, mergedMessages, displayedAllHistoryMessages, displayedMessageIndex]);
 
   useEffect(() => {
     const handleFocus = () => {
