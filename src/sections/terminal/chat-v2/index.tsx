@@ -1,16 +1,11 @@
 "use client";
 
-import {
-  Realtime,
-  TextMessage,
-  MessageQueryDirection
-  // @ts-ignore
-} from "leancloud-realtime";
-import LC from "leancloud-storage";
-import { useEffect, useState, useRef } from "react";
+import { MessageQueryDirection, Realtime, TextMessage } from 'leancloud-realtime';
+import LC from 'leancloud-storage';
+import { useEffect, useRef, useState } from 'react';
 import { useDebounceFn, useRequest } from 'ahooks';
-import useUsersInfo from "../hooks/use-users-info";
-import { redirect } from "next/navigation";
+import useUsersInfo from '../hooks/use-users-info';
+import { redirect } from 'next/navigation';
 import { useTerminalStore } from '@/stores/terminal';
 import useCustomAccount from '@/hooks/use-account';
 import ChatCard from '@/sections/terminal/chat-v2/card';
@@ -87,11 +82,13 @@ const SYSTEM_CHECK_MESSAGES = [
 
 export default function ChatView({ currentUser }: any) {
   const [messages, setMessages] = useState<TextMessage[]>([...SYSTEM_CHECK_MESSAGES]);
+  const [previousPageMessages, setPagePreviousMessages] = useState<TextMessage[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isConnected, setIsConnected] = useState(false);
   const conversationRef = useRef<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const hasMoreRef = useRef(true);
+  const messagesRef = useRef<any>();
   const [onlineUsers, setOnlineUsers] = useState(0);
 
   const { account } = useCustomAccount();
@@ -106,10 +103,12 @@ export default function ChatView({ currentUser }: any) {
     messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
   }, { wait: 300 });
 
-  const fetchHistoryMessages = async (isFresh?: boolean) => {
+  const { runAsync: fetchHistoryMessages, loading: historyMessagesLoading } = useRequest(async (isFresh?: boolean) => {
     if (!conversationRef.current) {
       return;
     }
+
+    const isPrevious = messages.length > 0 && !isFresh;
 
     // https://leancloud.github.io/js-realtime-sdk/docs/ChatRoom.html#queryMessages
     let options: any = {
@@ -117,9 +116,16 @@ export default function ChatView({ currentUser }: any) {
       direction: MessageQueryDirection.NEW_TO_OLD
     };
 
-    if (messages.length > 0 && !isFresh) {
-      options.endMessageId = messages.filter((m) => m.from !== FE_SYSTEM_KEY)[0].id;
-      options.endTime = messages.filter((m) => m.from !== FE_SYSTEM_KEY)[0].timestamp;
+    if (isPrevious) {
+      options.limit = 20;
+      options.direction = MessageQueryDirection.OLD_TO_NEW;
+      if (previousPageMessages.length) {
+        options.beforeMessageId = previousPageMessages[0].id;
+        options.beforeTime = previousPageMessages[0].timestamp;
+      } else {
+        options.beforeMessageId = messages.filter((m) => m.from !== FE_SYSTEM_KEY)[0].id;
+        options.beforeTime = messages.filter((m) => m.from !== FE_SYSTEM_KEY)[0].timestamp;
+      }
     }
 
     const historyMessages = await conversationRef.current.queryMessages(
@@ -128,8 +134,13 @@ export default function ChatView({ currentUser }: any) {
 
     hasMoreRef.current = historyMessages.length >= 20;
 
-    const sortedMessages = historyMessages.sort(
-      (a: any, b: any) => a.timestamp - b.timestamp
+    const sortedMessages = historyMessages.map((m: any) => {
+      if (isPrevious) {
+        m.localType = "prevPage";
+      }
+      return m;
+    }).sort(
+      (a: any, b: any) => dayjs(a.timestamp).valueOf() - dayjs(b.timestamp).valueOf()
     );
 
     await fetchUsersInfo(
@@ -137,14 +148,28 @@ export default function ChatView({ currentUser }: any) {
       { from: "HistoryMessages" }
     );
 
-    setMessages((prevMessages) => {
-      const nextMessages = [...prevMessages, ...sortedMessages] as TextMessage[];
-      return [
-        ...nextMessages.slice(0, SYSTEM_CHECK_MESSAGES.length),
-        ...nextMessages.slice(SYSTEM_CHECK_MESSAGES.length - 1).sort((a: any, b: any) => a.timestamp - b.timestamp),
-      ];
-    });
-  };
+    if (isPrevious) {
+      const scrollHeightBefore = messagesRef.current?.scrollHeight;
+      const scrollTopBefore = messagesRef.current?.scrollTop;
+      setPagePreviousMessages((prevMessages) => {
+        return [...prevMessages, ...sortedMessages].sort((a: any, b: any) => dayjs(a.timestamp).valueOf() - dayjs(b.timestamp).valueOf()) as TextMessage[];
+      });
+      const _timer = setTimeout(() => {
+        clearTimeout(_timer);
+        const scrollHeightAfter = messagesRef.current.scrollHeight;
+        const heightDifference = scrollHeightAfter - scrollHeightBefore;
+        messagesRef.current.scrollTop = scrollTopBefore + heightDifference;
+      }, 0);
+    } else {
+      setMessages((prevMessages) => {
+        const nextMessages = [...prevMessages, ...sortedMessages] as TextMessage[];
+        return [
+          ...nextMessages.slice(0, SYSTEM_CHECK_MESSAGES.length),
+          ...nextMessages.slice(SYSTEM_CHECK_MESSAGES.length - 1).sort((a: any, b: any) => dayjs(a.timestamp).valueOf() - dayjs(b.timestamp).valueOf()),
+        ];
+      });
+    }
+  }, { manual: true });
 
   const { run: fetchHistoryMessagesDebounced } = useDebounceFn(
     (e: any) => {
@@ -219,7 +244,7 @@ export default function ChatView({ currentUser }: any) {
           // Listen for new messages
           chatroom.on("message", async (message: TextMessage) => {
             console.log("New message received:", message);
-            await fetchUsersInfo([message.from], { from: "New message received", isMergeStore: true });
+            await fetchUsersInfo([message.from], { from: "New message received" });
             setMessages((prev) => [...prev, message]);
           });
 
@@ -270,6 +295,7 @@ export default function ChatView({ currentUser }: any) {
         id: uuidv4(),
       }]);
 
+      await fetchUsersInfo([message.from || account?.toLowerCase()], { from: "send message" });
       scrollToBottom();
       await conversationRef.current.send(message);
       console.log("Message sent successfully");
@@ -308,8 +334,10 @@ export default function ChatView({ currentUser }: any) {
       <ChatHeader currentUser={currentUser} onlineUsers={onlineUsers} />
       <ChatCard className="mt-[45px]">
         <ChatContent
+          messagesRef={messagesRef}
           sendMessage={sendMessage}
           messages={messages}
+          previousPageMessages={previousPageMessages}
           onScroll={fetchHistoryMessagesDebounced}
           messagesEndRef={messagesEndRef}
           currentUser={currentUser}

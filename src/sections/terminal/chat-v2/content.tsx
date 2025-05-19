@@ -15,7 +15,9 @@ const ChatContent = (props: any) => {
   const {
     className,
     sendMessage,
+    messagesRef,
     messages,
+    previousPageMessages,
     onScroll,
     messagesEndRef,
     currentUser,
@@ -36,6 +38,7 @@ const ChatContent = (props: any) => {
   const chatStore: any = useChatStore();
   const { limitProgress, currentUserLimit } = useLimit({ precision: 0 });
   const mergedMessages = useMemo(() => uniqBy(messages, "id"), [messages]);
+  const mergedPreviousPageMessages = useMemo(() => uniqBy(previousPageMessages, "id"), [previousPageMessages]);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -92,12 +95,31 @@ const ChatContent = (props: any) => {
         <img src="/images/logo-pixel.svg" alt="" className="shrink-0 w-[129px] h-[55px] object-contain object-center" />
       </div>
       <div
+        ref={messagesRef}
         className="flex-1 h-0 overflow-y-auto px-[30px] py-[15px] text-[!E7E2FF]"
-        onScroll={onScroll}
+        onScroll={(e) => {
+          const element = e.target as HTMLDivElement;
+          if (element.scrollTop < 5) {
+            element.scrollTo({ top: 10, behavior: "smooth" });
+          }
+          onScroll?.(e);
+        }}
         onDoubleClick={() => {
           inputRef.current?.focus();
         }}
       >
+        {
+          mergedPreviousPageMessages?.map((message: any, index: number) => (
+            <Item
+              key={`previousPage-${index}`}
+              isTypewriter={false}
+              roleColor="text-[#8D7CFF]"
+              className="!text-[14px]"
+              message={message}
+              user={chatStore.users[message.from?.toLowerCase()]}
+            />
+          ))
+        }
         {displayedMessages?.map?.((message: any, index: number) => (
           <Item
             key={index}
@@ -105,7 +127,7 @@ const ChatContent = (props: any) => {
             roleColor="text-[#8D7CFF]"
             className="!text-[14px]"
             message={message}
-            user={message.from === FE_SYSTEM_KEY ? FE_SYSTEM : chatStore.users[message.from.toLowerCase()]}
+            user={message.from === FE_SYSTEM_KEY ? FE_SYSTEM : chatStore.users[message.from?.toLowerCase()]}
             onAnimationComplete={() => {
               scrollToBottom();
               if (mergedMessages.length - 1 > displayedMessageIndex) {
