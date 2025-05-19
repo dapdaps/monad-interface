@@ -123,42 +123,35 @@ const ChatContent = (props: any) => {
             [{currentUser.name}] <Level level={currentUser.level} />:
           </div>
 
-          {(!currentUser.level || currentUser.level?.includes("NGMI")) &&
-          !currentUser?.role ? (
-            <span className="text-[#FF4995]">
-              You don’t have chat permission, you will be able to chat wen 5 txns on testnet
-            </span>
-          ) : (
-            <>
-              {
-                !inputFocused && (
-                  <motion.div
-                    className="shrink-0 w-[1px] h-[16px] bg-[#0F1]"
-                    initial={{
-                      opacity: 0,
-                    }}
-                    animate={{
-                      opacity: [0, 1, 0],
-                    }}
-                    transition={{
-                      type: "none",
-                      repeat: Infinity,
-                      duration: 1,
-                    }}
-                  />
-                )
-              }
-              <input
-                ref={inputRef}
-                className="bg-transparent flex-1 text-[14px] text-[#0F1] placeholder:text-[#8D7CFF]"
-                autoFocus
-                disabled={Big(limitProgress || 100).lt(100)}
-                onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-                onChange={(e) => setInputMessage(e.target.value)}
-                value={inputMessage}
-              />
-            </>
-          )}
+          <>
+            {
+              !inputFocused && (
+                <motion.div
+                  className="shrink-0 w-[1px] h-[16px] bg-[#0F1]"
+                  initial={{
+                    opacity: 0,
+                  }}
+                  animate={{
+                    opacity: [0, 1, 0],
+                  }}
+                  transition={{
+                    type: "none",
+                    repeat: Infinity,
+                    duration: 1,
+                  }}
+                />
+              )
+            }
+            <input
+              ref={inputRef}
+              className="bg-transparent flex-1 text-[14px] text-[#0F1] placeholder:text-[#8D7CFF]"
+              autoFocus
+              disabled={Big(limitProgress || 100).lt(100)}
+              onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+              onChange={(e) => setInputMessage(e.target.value)}
+              value={inputMessage}
+            />
+          </>
         </div>
         {/*{
           Big(limitProgress || 100).lt(100) && (
