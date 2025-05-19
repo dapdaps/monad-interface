@@ -106,12 +106,13 @@ const Home = () => {
           <div
             // data-hover-sound 
             data-bp="1001-007"
+            onClick={() => router.push("/game")}
             className={clsx(
               'absolute left-[calc(560/14.4*var(--rem))] -top-[115px] w-[275px] h-[210px]',
               'bg-no-repeat bg-contain',
               "transition-all duration-200 ease-in-out",
-              "bg-[url(/images/monad/entry/game-lock.svg)]",
-              // "bg-[url(/images/monad/entry/game.svg)] hover:bg-[url(/images/monad/entry/game-hover.svg)]",
+              // "bg-[url(/images/monad/entry/game-lock.svg)]",
+              "bg-[url(/images/monad/entry/game.svg)] hover:bg-[url(/images/monad/entry/game-hover.svg)]",
               windowWidth >= 1920 && windowWidth < 2560 ? "-top-[88px] left-[calc(532/14.4*var(--rem))] hover:scale-[1.1]" : "",
               windowWidth >= 2560 ? "-top-[30px] left-[calc(710/14.4*var(--rem))] scale-[1.3] hover:scale-[1.4]" : "",
               windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
