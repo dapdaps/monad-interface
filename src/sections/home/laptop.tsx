@@ -84,7 +84,12 @@ const Home = () => {
               </div> */}
               <div className="absolute left-1/2 -translate-x-1/2 mr-[50px] top-0">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
-                  <img src="/images/monad/icon/bridge-lock.svg" alt="" />
+                  <div className="w-full flex items-center justify-center gap-2">
+                    <img src="/images/monad/icon/bridge-lock.svg" alt="" />
+                    <div className="text-[12px] font-Unbounded font-[500] leading-[90%] text-[#6D7EA5]">
+                      soon
+                    </div>
+                  </div>
                   <motion.img
                     // animate={{
                     //   rotateY: 180,
@@ -132,9 +137,9 @@ const Home = () => {
             )}
           >
             <div className="relative w-full h-full">
-              {/* <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
+              <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
-                  <div className="w-full flex items-center justify-center">
+                  <div className="w-full flex items-center justify-center gap-2">
                     <img src="/images/monad/icon/yapper.svg" alt="" />
                     <div className="text-[12px] font-Unbounded font-[500] leading-[90%] text-[#6D7EA5]">
                       soon
@@ -146,7 +151,7 @@ const Home = () => {
                     alt=""
                   />
                 </div>
-              </div> */}
+              </div>
               {/* <div className="absolute w-[244px] h-[223px] left-1/2 -translate-x-1/2 top-[-38px] ml-[20px]">
                 <motion.div
                   animate={{ rotate: [-10, 10] }}
