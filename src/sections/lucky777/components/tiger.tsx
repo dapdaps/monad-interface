@@ -342,7 +342,10 @@ export default memo(function Tiger(props: any) {
     }
 
     setPressed3(true);
-    setTimeout(() => setPressed3(false), 25000);
+    setTimeout(() => {
+      setPressed3(false)
+      console.log('setPressed3(false)')
+    }, 7500);
 
     setAnimateSpinning(true);
     const machineSoundAudio = playSound(1);
@@ -428,6 +431,9 @@ export default memo(function Tiger(props: any) {
     preloadImages.forEach(src => {
       const img = new Image();
       img.src = src;
+      img.onload = () => {
+        console.log(`${src} loaded`);
+      };
     });
 
     const preloadAudios = [
@@ -655,7 +661,7 @@ export default memo(function Tiger(props: any) {
           <motion.button
             ref={spinRef}
             type="button"
-            disabled={spinning}  
+            // disabled={spinning}  
             className="w-[202px] h-[85px] bg-[url('/images/lucky777/spin-btn.svg')] bg-no-repeat bg-center bg-contain disabled:opacity-50 disabled:cursor-not-allowed"
             animate={{ backgroundImage: pressed3 ? "url('/images/lucky777/spin-btn-press.svg')" : "url('/images/lucky777/spin-btn.svg')" }}
             style={{
