@@ -133,8 +133,8 @@ export default function ChatView({ currentUser }: any) {
     );
 
     await fetchUsersInfo(
-      [...sortedMessages.map((message: TextMessage) => message.from), account],
-      "HistoryMessages"
+      [...sortedMessages.map((message: TextMessage) => message.from), account?.toLowerCase()],
+      { from: "HistoryMessages" }
     );
 
     setMessages((prevMessages) => {
@@ -217,8 +217,9 @@ export default function ChatView({ currentUser }: any) {
           await fetchHistoryMessages(true);
           scrollToBottom();
           // Listen for new messages
-          chatroom.on("message", (message: TextMessage) => {
+          chatroom.on("message", async (message: TextMessage) => {
             console.log("New message received:", message);
+            await fetchUsersInfo([message.from], { from: "New message received", isMergeStore: true });
             setMessages((prev) => [...prev, message]);
           });
 
