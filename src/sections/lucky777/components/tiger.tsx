@@ -437,7 +437,7 @@ export default memo(function Tiger(props: any) {
 
         <div className='absolute font-HackerNoonV2 top-[145px] left-1/2 -translate-x-1/2 z-[2] w-[514px] h-[72px] flex flex-col items-center'>
           <div className='text-[20px]'>
-            <span className='text-[#A5FFFD]'>{numberFormatter(spinUserData?.points_balance || 0, 0, true)} /</span> <span className='text-[#A5FFFD] opacity-50'>{numberFormatter(MAX_POINT, 0, true)}</span>
+            <span className='text-[#A5FFFD]'>{numberFormatter((spinUserData?.points_balance || 0) % MAX_POINT, 0, true)} /</span> <span className='text-[#A5FFFD] opacity-50'>{numberFormatter(MAX_POINT, 0, true)}</span>
           </div>
 
           <div className='flex justify-start items-center gap-[0px] w-[438px] pl-[10px] mt-[5px]'>

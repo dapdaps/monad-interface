@@ -51,10 +51,10 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
                 return;
             }
             refreshData();
-            toast.success('Buy times successfully');
+            toast.success('Recharge Successfully!');
         } catch (e) {
             console.log('e:', e);
-            toast.error('Failed to buy times');
+            toast.error('Failed to recharge');
         }
 
 
