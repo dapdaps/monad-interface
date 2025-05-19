@@ -4,6 +4,7 @@ import { get } from "@/utils/http";
 import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
 import { formatEnglishDate, getUTCDatetime } from "@/utils/date";
+import Empty from "@/components/empty";
 
 const IconClose = () => (
     <div className="mt-[15px] mr-[15px]">
@@ -85,18 +86,32 @@ const urlMap: any = {
 
 function List({ type }: { type: string }) {
     const [data, setData] = useState<any[]>([]);
+    const [loading, setLoading] = useState(false);
     const { address } = useAccount();
 
     useEffect(() => {
         if (!address) return;
+        setLoading(true);
         get(urlMap[type], { address }).then((res) => {
             if (res.code !== 200) {
+                setLoading(false);
                 toast.error(res.message);
                 return;
             }
             setData(res.data);
+            setLoading(false);
         });
     }, [type, address]);
+
+    if (!loading && data.length === 0) {
+        return (
+            <div className="flex justify-center ">
+                <div className="mt-[80px] w-[161px]">
+                    <img src="/images/faucet/empty.svg" alt="empty" />
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="w-full mt-[42px] min-h-[340px]">

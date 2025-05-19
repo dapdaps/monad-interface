@@ -1,5 +1,5 @@
 import { motion, useAnimate, useMotionValue } from 'framer-motion';
-import { memo, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { SPIN_CATEGORIES, SpinCategory } from '@/sections/lucky777/config';
 import { numberFormatter } from '@/utils/number-formatter';
 import { useRequestByToken } from '../hooks/use-request-by-token';
@@ -48,7 +48,7 @@ const WheelInfinityAnimation: any = {
   repeat: Infinity,
 };
 
-const MAX_POINT = 20000;
+const MAX_POINT = 10000;
 const DEFAULT_TITLE = 'LUCKY 777';
 
 export default memo(function Tiger(props: any) {
@@ -330,6 +330,7 @@ export default memo(function Tiger(props: any) {
       toast.fail({ title: 'No spins left' });
       return;
     }
+    const machineSoundAudio = playSound(1);
     setTitle(DEFAULT_TITLE);
     console.log('spinUserData:', spinUserData);
 
@@ -355,6 +356,9 @@ export default memo(function Tiger(props: any) {
     });
 
     toast.success({ title: `Get ${res.draw_points} points` });
+    machineSoundAudio.pause();
+    machineSoundAudio.currentTime = 0;
+    playSound(2)
 
     if (res.points_balance >= MAX_POINT) {
       startCoinExplosion(res);
@@ -377,7 +381,7 @@ export default memo(function Tiger(props: any) {
   }, []);
 
   const pointProgress = useMemo(() => {
-    return Math.floor(spinUserData?.points_balance / 20000 * 20);
+    return Math.floor(spinUserData?.points_balance / MAX_POINT * 20);
   }, [spinUserData]);
 
   useEffect(() => {
@@ -391,7 +395,33 @@ export default memo(function Tiger(props: any) {
       const img = new Image();
       img.src = src;
     });
+
+    const preloadAudios = [
+      '/audios/lucky777/slot-machine-sound.mp3',
+      '/audios/lucky777/winning-sound-effect.mp3'
+    ];
+
+    preloadAudios.forEach(src => {
+      const audio = new Audio();
+      audio.src = src;
+      audio.load();
+    });
+
   }, []);
+
+  const playSound = useCallback((soundType: number) => {
+    const soundName = soundType === 1 ? 'slot-machine-sound' : 'winning-sound-effect'
+
+    const audio = new Audio(`/audios/lucky777/${soundName}.mp3`);
+    audio.volume = 0.5;
+    if (soundType === 1) {
+      audio.loop = true;
+    }
+    audio.play();
+
+    return audio
+  }, []);
+
 
 
   return (

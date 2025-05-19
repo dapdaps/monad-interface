@@ -23,7 +23,7 @@ const RulesModal = ({ open, onClose }: RulesModalProps) => {
             closeIcon={<IconClose />}
             innerClassName="font-Unbounded"
         >
-            <div className="relative">
+            <div className="relative p-[30px] pt-0">
                 <img src="/images/lucky777/modal-bg.png" alt="LUCKY 777" className="absolute z-1 top-0 left-0 w-full h-full" />
                 <div className="flex flex-col items-center w-[692px] pb-[30px] px-[20px] max-w-full z-10 relative text-[12px]">
                     <div className="text-center mt-[-16px]">
@@ -32,48 +32,65 @@ const RulesModal = ({ open, onClose }: RulesModalProps) => {
 
                     <div className="w-full mt-[20px] text-white">
                         <div className="text-center text-[16px] font-bold mb-[20px]">
-                        &#x1F3B0; Game Rules
+                        🎰 Lucky 777 — Game Rules
                         </div>
                         
                         <div className="space-y-[16px]">
                             <div className="flex items-center gap-2">
                                 <span className="text-[#BFFF60]">•</span>
-                                <span>1 free spin per day</span>
+                                <span className="font-bold">1 free spin per day</span>
                             </div>
                             
                             <div className="flex items-center gap-2">
                                 <span className="text-[#BFFF60]">•</span>
-                                <span>After that, each spin costs 0.1 MON (testnet)</span>
+                                <span>After that, each spin costs <span className="font-bold">0.1 MON</span></span>
                             </div>
 
                             <div className="flex items-center gap-2">
                                 <span className="text-[#BFFF60]">•</span>
-                                <span>Match 3 symbols to win points:</span>
+                                <span className="font-bold">Match symbols to win points:</span>
                             </div>
 
                             <div className="ml-[20px] space-y-[12px]">
                                 <div className="flex items-center gap-2">
-                                    <img src="/images/lucky777/logo/madas.svg" alt="NASDA" className="w-[20px] h-[20px]" />
-                                    <span>NASDA: 8000 pts</span>
+                                    <span>🎯 <span className="font-bold">3 of a kind</span> = big win</span>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <img src="/images/lucky777/logo/monad.svg" alt="Monad" className="w-[20px] h-[20px]" />
-                                    <span>Monad: 4000 pts</span>
+                                <div className="ml-[20px] space-y-[8px]">
+                                    <div className="flex items-center gap-2">
+                                        <span className="flex items-center gap-2"><img src="/images/lucky777/logo/madas.svg" alt="NASDA" className="w-[20px] h-[20px]" /> NASDA: 5000 pts</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="flex items-center gap-2"><img src="/images/lucky777/logo/monad.svg" alt="Monad" className="w-[20px] h-[20px]" /> Monad: 2500 pts</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="flex items-center gap-2"><img src="/images/lucky777/logo/molandak.svg" alt="Molandak" className="w-[20px] h-[20px]" /> Molandak / Moyaki / Chong: 1000 pts</span>
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <img src="/images/lucky777/logo/molandak.svg" alt="Molandak" className="w-[20px] h-[20px]" />
-                                    <span>Molandak / Moyaki / Chong: 2000 pts</span>
+
+                                <div className="flex items-center gap-2 mt-[8px]">
+                                    <span>🎁 <span className="font-bold">2 of a kind</span> = mini win</span>
+                                </div>
+                                <div className="ml-[20px] space-y-[8px]">
+                                    <div className="flex items-center gap-2">
+                                        <span className="flex items-center gap-2"><img src="/images/lucky777/logo/madas.svg" alt="NASDA" className="w-[20px] h-[20px]" /> NASDA: 1000 pts</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="flex items-center gap-2"><img src="/images/lucky777/logo/monad.svg" alt="Monad" className="w-[20px] h-[20px]" /> Monad: 500 pts</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="flex items-center gap-2"><img src="/images/lucky777/logo/molandak.svg" alt="Molandak" className="w-[20px] h-[20px]" /> Molandak / Moyaki / Chong: 250 pts</span>
+                                    </div>
                                 </div>
                             </div>
 
                             <div className="flex items-center gap-2">
                                 <span className="text-[#BFFF60]">•</span>
-                                <span>Reach 20,000 pts = Auto-redeem 1 MON (repeatable)</span>
+                                <span className="font-bold">Reach 10,000 pts = Auto-redeem 1 MON (repeatable)</span>
                             </div>
 
                             <div className="flex items-center gap-2 mt-[20px] text-[#A6A6DB]">
-                            &#128204;
-                                <span>Points stack up automatically. Once you hit the threshold, rewards get auto-claimed. Spin & win — good luck, degen!</span>
+                                📌
+                                <span>Points stack automatically. Rewards auto-claim once you hit the threshold.</span>
                             </div>
                         </div>
                     </div>

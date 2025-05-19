@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Modal from "@/components/modal";
 import { useAccount, useSendTransaction, useSwitchChain, useConnect, injected } from "wagmi";
 import { post } from "@/utils/http";
@@ -23,6 +23,7 @@ const amount = 0.01;
 const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
     const { address, chainId } = useAccount();
     const [times, setTimes] = useState(1);
+    const inputRef = useRef<HTMLInputElement>(null);
     const { data: hash, sendTransactionAsync, isPending, isSuccess } = useSendTransaction();
 
     const handleSelectTimes = useCallback(async (selectedTimes: number) => {
@@ -61,6 +62,9 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
 
     useEffect(() => {
         setTimes(1);
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
     }, [open]);
 
     return (
@@ -73,7 +77,7 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
                     <div className="flex justify-between items-center">
                         <span className="text-white text-[14px] font-Unbounded">TIMES</span>
                         <span className="text-[#BFFF60] font-bold text-[18px]">x
-                            <input type="number" min="1" step="1" value={times} onChange={(e) => {
+                            <input ref={inputRef} type="number" min="1" step="1" value={times} onChange={(e) => {
                               const val = Math.floor(Number(e.target.value));
                               if (val > 0) {
                                 setTimes(val);
