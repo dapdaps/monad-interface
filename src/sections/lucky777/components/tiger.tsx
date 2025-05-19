@@ -468,7 +468,7 @@ export default memo(function Tiger(props: any) {
 
   return (
     <div className="w-full flex flex-col items-center justify-center pt-[88px]">
-      <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[765px] h-[767px]">
+      <div className="absolute left-1/2 -translate-x-1/2 bottom-0 mb-[-2px] w-[765px] h-[767px]">
         <div className="absolute top-0 left-0 w-full h-full">
           <img src="/images/lucky777/slot-machine.svg" alt="" className="w-full" />
         </div>
