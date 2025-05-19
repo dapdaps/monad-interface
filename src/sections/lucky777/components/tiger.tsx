@@ -23,7 +23,7 @@ function getTimeLeftToUTC24() {
 
   return {
     hours: Math.floor(_duration.asHours()) < 10 ? `0${Math.floor(_duration.asHours())}` : Math.floor(_duration.asHours()),
-    minutes: _duration.minutes() < 10 ? `0${_duration.minutes()}` : _duration.minutes(), 
+    minutes: _duration.minutes() < 10 ? `0${_duration.minutes()}` : _duration.minutes(),
     seconds: _duration.seconds() < 10 ? `0${_duration.seconds()}` : _duration.seconds()
   };
 }
@@ -50,6 +50,7 @@ const WheelInfinityAnimation: any = {
 
 const MAX_POINT = 10000;
 const DEFAULT_TITLE = 'LUCKY 777';
+const DEFAULT_UNLUCKY_TITLE = 'Better luck next time! Better luck next time!';
 
 export default memo(function Tiger(props: any) {
   const {
@@ -347,6 +348,8 @@ export default memo(function Tiger(props: any) {
       // animations.centerWheelAnimation.pause();
       // animations.rightWheelAnimation.pause();
       startSlowScroll();
+      machineSoundAudio.pause();
+      machineSoundAudio.currentTime = 0;
       return;
     }
 
@@ -355,17 +358,22 @@ export default memo(function Tiger(props: any) {
       data: res,
     });
 
-    toast.success({ title: `Get ${res.draw_points} points` });
     machineSoundAudio.pause();
     machineSoundAudio.currentTime = 0;
-    playSound(2)
+
+    if (res.draw_points > 0) {
+      toast.success({ title: `Get ${res.draw_points} points` });
+      setTitle('WON ' + res.draw_points + ' !');
+      playSound(2)
+    } else {
+      setTitle(DEFAULT_UNLUCKY_TITLE);
+    }
 
     if (res.points_balance >= MAX_POINT) {
       startCoinExplosion(res);
       setTitle('WON 1 MON!');
-    } else {
-      setTitle('WON ' + res.draw_points + ' !');
     }
+
   }, {
     manual: true,
   });
@@ -387,7 +395,7 @@ export default memo(function Tiger(props: any) {
   useEffect(() => {
     const preloadImages = [
       '/images/lucky777/spin-btn-press.svg',
-      '/images/lucky777/rules-press.svg', 
+      '/images/lucky777/rules-press.svg',
       '/images/lucky777/history-2-press.svg'
     ];
 
@@ -422,8 +430,6 @@ export default memo(function Tiger(props: any) {
     return audio
   }, []);
 
-
-
   return (
     <div className="w-full flex flex-col items-center justify-center pt-[88px]">
       <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[765px] h-[767px]">
@@ -431,8 +437,26 @@ export default memo(function Tiger(props: any) {
           <img src="/images/lucky777/slot-machine.svg" alt="" className="w-full" />
         </div>
 
-        <div data-glitch={title} className={'ml-[10px] absolute font-HackerNoonV2 text-[60px] leading-[110%] text-[#000] top-[20px] left-1/2 -translate-x-1/2 z-[2] w-[490px] h-[72px] flex flex-col items-center ' + (title !== DEFAULT_TITLE ? 'glitch' : '')}>
-          {title}
+        <div className={'ml-[10px] overflow-hidden absolute font-HackerNoonV2 text-[60px] leading-[110%] text-[#000] top-[20px] left-1/2 -translate-x-1/2 z-[2] w-[490px] h-[70px] flex flex-col items-center '}>
+          <motion.div
+            key={title}
+            data-glitch={title}
+            className={"flex items-center justify-center whitespace-nowrap " + (title !== DEFAULT_TITLE ? 'glitch' : '')}
+            animate={title === DEFAULT_UNLUCKY_TITLE ? {
+              x: [1100, -800]
+            } : {}}
+            transition={{
+              duration: 6,
+              ease: "easeOut"
+            }}
+            onAnimationComplete={() => {
+              if (title !== DEFAULT_TITLE) {
+                setTitle(DEFAULT_TITLE);
+              }
+            }}
+          >
+            {title}
+          </motion.div>
         </div>
 
         <div className='absolute font-HackerNoonV2 top-[145px] left-1/2 -translate-x-1/2 z-[2] w-[514px] h-[72px] flex flex-col items-center'>
@@ -615,7 +639,7 @@ export default memo(function Tiger(props: any) {
         </div>
 
         <div>
-        <motion.button
+          <motion.button
             type="button"
             data-click-sound
             className="absolute bottom-[270px] right-[140px] z-[2] w-[116px] h-[32px] bg-[url('/images/lucky777/rules.svg')] bg-no-repeat bg-center bg-contain "
@@ -665,7 +689,7 @@ export default memo(function Tiger(props: any) {
 
       <BuyTimesModal open={openBuyTimes} onClose={() => setOpenBuyTimes(false)} refreshData={getSpinUserData} />
       <HistoryModal open={openHistory} onClose={() => setOpenHistory(false)} />
-      <RulesModal open={openRules} onClose={() => setOpenRules(false)} /> 
+      <RulesModal open={openRules} onClose={() => setOpenRules(false)} />
     </div>
   )
 });
