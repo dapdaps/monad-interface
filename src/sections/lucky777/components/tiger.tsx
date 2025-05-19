@@ -67,7 +67,7 @@ export default memo(function Tiger(props: any) {
   const { address } = useAccount();
   const { open } = useAppKit();
   const [freeTimes, setFreeTimes] = useState(getTimeLeftToUTC24());
-  // const [countdown] = useCountDown({ targetDate: freeTimes });
+  const [animateSpinning, setAnimateSpinning] = useState(false);
 
   useInterval(() => {
     setFreeTimes(getTimeLeftToUTC24());
@@ -327,7 +327,7 @@ export default memo(function Tiger(props: any) {
       return;
     }
 
-    if (spinning) {
+    if (spinning || animateSpinning) {
       return;
     }
 
@@ -335,6 +335,8 @@ export default memo(function Tiger(props: any) {
       toast.fail({ title: 'No spins left' });
       return;
     }
+
+    setAnimateSpinning(true);
     const machineSoundAudio = playSound(1);
     setTitle(DEFAULT_TITLE);
     console.log('spinUserData:', spinUserData);
@@ -377,6 +379,8 @@ export default memo(function Tiger(props: any) {
       startCoinExplosion(res);
       setTitle('WON 1 MON!');
     }
+
+    setAnimateSpinning(false);
 
   }, {
     manual: true,
