@@ -48,32 +48,37 @@ const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
                         <img src="/images/lucky777/buy-777-title.svg" alt="LUCKY 777" className="w-[183px] mx-auto" />
                     </div>
 
-                    <div className="flex gap-[2px] mt-[20px] cursor-pointer">
-                        <button className={"w-[100px] h-[30px] text-black font-bold rounded-[4px] " + (activeTab === "winning" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("winning")}>
-                            Winning
+                    <div className="flex mt-[20px] cursor-pointer">
+                        <button className={"w-[120px] h-[30px] text-black font-bold rounded-l-[4px] " + (activeTab === "winning" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("winning")}>
+                            Records
                         </button>
-                        <button className={"w-[100px] h-[30px] text-black font-bold rounded-[4px] " + (activeTab === "purchases" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("purchases")}>
-                            Purchases
+                        <button className={"w-[120px] h-[30px] text-black font-bold " + (activeTab === "purchases" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("purchases")}>
+                            Auto-redeem
                         </button>
-                        <button className={"w-[100px] h-[30px] text-black font-bold rounded-[4px] " + (activeTab === "payouts" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("payouts")}>
-                            Payouts
+                        <button className={"w-[120px] h-[30px] text-black font-bold rounded-r-[4px] " + (activeTab === "payouts" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("payouts")}>
+                            Recharge
                         </button>
                     </div>
 
-                    {activeTab === "winning" && (
+                    <div className="w-full" style={{
+                        display: activeTab === "winning" ? 'block' : 'none',
+                    }}>
                         <List type="winning" />
-                    )}
+                    </div>
 
-                    {activeTab === "purchases" && (
+                    <div className="w-full" style={{
+                        display: activeTab === "purchases" ? 'block' : 'none',
+                    }}>
                         <List type="purchases" />
-                    )}
+                    </div>
 
-                    {activeTab === "payouts" && (
+                    <div className="w-full" style={{
+                        display: activeTab === "payouts" ? 'block' : 'none',
+                    }}>
                         <List type="payouts" />
-                    )}
+                    </div>
                 </div>
             </div>
-
         </Modal>
     );
 };
@@ -105,7 +110,7 @@ function List({ type }: { type: string }) {
 
     if (!loading && data.length === 0) {
         return (
-            <div className="flex justify-center ">
+            <div className="flex justify-center w-full">
                 <div className="mt-[80px] w-[161px]">
                     <img src="/images/faucet/empty.svg" alt="empty" />
                 </div>
@@ -142,7 +147,7 @@ function List({ type }: { type: string }) {
             <div className="max-h-[340px] overflow-y-auto">
                 {data.map((item, idx) => (
                     <div key={item.id} className="flex px-6 py-3 text-white text-[12px] border-b border-[#414266] items-center">
-                        
+
                         {
                             type === "winning" && (
                                 <div className="flex-1">{formatEnglishDate(item.created_at)}</div>
