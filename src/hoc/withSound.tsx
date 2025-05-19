@@ -12,6 +12,7 @@ const withSound = <P extends object>(WrappedComponent: React.ComponentType<P>) =
         if (target) {
           const targetSrc = target.getAttribute("data-click-sound") 
           const soundSrc = !targetSrc || targetSrc === "true" ? "/audios/press_button.mp3" : targetSrc;
+          console.log(soundSrc, '<======soundSrc')
           play(soundSrc);
         }
       };
@@ -32,6 +33,11 @@ const withSound = <P extends object>(WrappedComponent: React.ComponentType<P>) =
         document.removeEventListener("click", handleClick);
         document.removeEventListener("mouseover", handleHover);
       };
+    }, []);
+
+    useEffect(() => {
+      const audio = new Audio('/audios/press_button.mp3');
+      audio.preload = 'auto';
     }, []);
 
     return <WrappedComponent {...props} />;

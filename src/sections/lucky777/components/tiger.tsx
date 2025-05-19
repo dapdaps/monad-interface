@@ -327,6 +327,10 @@ export default memo(function Tiger(props: any) {
       return;
     }
 
+    if (spinning) {
+      return;
+    }
+
     if (!spinUserData?.spin_balance || spinUserData?.spin_balance <= 0) {
       toast.fail({ title: 'No spins left' });
       return;
