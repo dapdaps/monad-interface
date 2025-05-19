@@ -52,10 +52,10 @@ const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
                         <button className={"w-[120px] h-[30px] text-black font-bold rounded-l-[4px] " + (activeTab === "winning" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("winning")}>
                             Records
                         </button>
-                        <button className={"w-[120px] h-[30px] text-black font-bold " + (activeTab === "purchases" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("purchases")}>
+                        <button className={"w-[120px] h-[30px] text-black font-bold " + (activeTab === "payouts" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("payouts")}>
                             Auto-redeem
                         </button>
-                        <button className={"w-[120px] h-[30px] text-black font-bold rounded-r-[4px] " + (activeTab === "payouts" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("payouts")}>
+                        <button className={"w-[120px] h-[30px] text-black font-bold rounded-r-[4px] " + (activeTab === "purchases" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("purchases")}>
                             Recharge
                         </button>
                     </div>
