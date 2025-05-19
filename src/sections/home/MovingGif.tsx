@@ -1,8 +1,43 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useJumpAnimation } from "./hooks/useJumpAnimation";
 import { useCharacterMovement } from "./hooks/useCharacterMovement";
 
+// 文案库
+const tooltipMessages = [
+  "Gmonad",
+  "Captain told me the more I do, the more I'm rewarded",
+  "It's a good day to do a Lucky 777 spin",
+  "Wah, you're early!",
+  "Shiny Badges you have there fren…",
+  "Have anyone seen Keone around???",
+  "Henlo, have you claimed MON from the faucet?",
+  "It's a good day to try out a new app",
+  "Stop touching me, I'm on an important mission!",
+  "You should be here daily",
+  "Touch grass",
+  "Have anyone seen Abdul around?",
+  "Badges are important, you should try to get them all",
+  "I have everything I need here",
+  "Do you know this station was built by a company call DapDap",
+  "I heard somewhere there is a town with a bear",
+  "It takes sacrifice to be an astronaut"
+];
+
+// 获取随机文案的自定义钩子
+const useRandomTooltip = () => {
+  const [currentMessage, setCurrentMessage] = useState(() => {
+    const randomIndex = Math.floor(Math.random() * tooltipMessages.length);
+    return tooltipMessages[randomIndex];
+  });
+
+  const getRandomMessage = useCallback(() => {
+    const randomIndex = Math.floor(Math.random() * tooltipMessages.length);
+    setCurrentMessage(tooltipMessages[randomIndex]);
+  }, []);
+
+  return { currentMessage, getRandomMessage };
+};
 
 const MovingGif: {
   Moving1st: typeof Moving1st;
@@ -73,6 +108,8 @@ function MovingForMobile1st() {
 }
 
 function Moving1st() {
+  const { currentMessage, getRandomMessage } = useRandomTooltip();
+  
   const {
     gifSrc,
     position,
@@ -89,8 +126,13 @@ function Moving1st() {
     isMovingDown: false,
     jumpGifLeft: "/images/monad/icon/chog-jump-left.gif",
     jumpGifRight: "/images/monad/icon/chog-jump-right.gif",
-    tooltipText: <>GMonad! <br />I'm Chog</>
+    tooltipText: <>{currentMessage}</>
   });
+
+  const handleClick = () => {
+    getRandomMessage();
+    handleCharacterClick();
+  };
 
   return (
     <div className="absolute left-[270px] bottom-[72px] z-[58]">
@@ -103,7 +145,7 @@ function Moving1st() {
             style={{
               transform: `translate(${position.x}px, ${position.y}px)`
             }}
-            onClick={handleCharacterClick}
+            onClick={handleClick}
             alt=""
           />
           {renderTooltip(position)}
@@ -114,6 +156,8 @@ function Moving1st() {
 }
 
 function Moving2sec() {
+  const { currentMessage, getRandomMessage } = useRandomTooltip();
+  
   const {
     gifSrc,
     position,
@@ -130,8 +174,13 @@ function Moving2sec() {
     isMovingDown: true,
     jumpGifLeft: "/images/monad/icon/molandak-twist-left.gif",
     jumpGifRight: "/images/monad/icon/molandak-twist-right.gif",
-    tooltipText: <>GMonad! <br />I'm Molandak</>
+    tooltipText: <>{currentMessage}</>
   });
+
+  const handleClick = () => {
+    getRandomMessage();
+    handleCharacterClick();
+  };
 
   return (
     <div className="absolute left-[50%] top-0 z-[28]">
@@ -144,7 +193,7 @@ function Moving2sec() {
             style={{
               transform: `translate(${position.x}px, ${position.y}px)`
             }}
-            onClick={handleCharacterClick}
+            onClick={handleClick}
             alt=""
           />
           {renderTooltip(position)}
@@ -155,6 +204,8 @@ function Moving2sec() {
 }
 
 function Moving3rd() {
+  const { currentMessage, getRandomMessage } = useRandomTooltip();
+  
   const {
     gifSrc,
     position,
@@ -171,8 +222,13 @@ function Moving3rd() {
     isMovingDown: true,
     jumpGifLeft: "/images/monad/icon/molandak-twist-left.gif",
     jumpGifRight: "/images/monad/icon/molandak-twist-right.gif",
-    tooltipText: <>GMonad! <br />I'm Molandak</>
+    tooltipText: <>{currentMessage}</>
   });
+
+  const handleClick = () => {
+    getRandomMessage();
+    handleCharacterClick();
+  };
 
   return (
     <div className="absolute bottom-[28%] right-[45%] z-[58]">
@@ -185,7 +241,7 @@ function Moving3rd() {
             style={{
               transform: `translate(${position.x}px, ${position.y}px)`
             }}
-            onClick={handleCharacterClick}
+            onClick={handleClick}
             alt=""
           />
           {renderTooltip(position)}
