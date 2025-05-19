@@ -17,6 +17,7 @@ import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { POST_LIMIT_SECONDS, useLimit } from '@/sections/terminal/hooks/use-limit';
 import Big from 'big.js';
+import "./animate.css";
 
 const realtime = new Realtime({
   appId: process.env.NEXT_PUBLIC_LEANCLOUD_APP_ID!,
@@ -330,7 +331,7 @@ export default function ChatView({ currentUser }: any) {
   }, [currentUserLimit, limitProgress, messages]);
 
   return (
-    <div className="relative w-full h-screen bg-[#010101] font-Pixelmix text-[#8D7CFF] text-[14px] font-[400] leading-[200%] overflow-y-auto cursor-pointer terminal">
+    <div className="relative w-full h-screen overflow-x-hidden bg-[#010101] font-Pixelmix text-[#8D7CFF] text-[14px] font-[400] leading-[200%] overflow-y-auto cursor-pointer terminal">
       <ChatHeader currentUser={currentUser} onlineUsers={onlineUsers} />
       <ChatCard className="mt-[45px]">
         <ChatContent

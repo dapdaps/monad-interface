@@ -7,7 +7,10 @@ const ChatCard = (props: any) => {
   return (
     <>
       <motion.div
-        className={clsx("relative z-[1] bg-[url('/images/terminal/card.svg')] bg-no-repeat bg-center bg-contain w-[1085px] h-[801px] ml-[50%] -translate-x-1/2", className)}
+        className={clsx(
+          "relative z-[1] bg-[url('/images/terminal/card.svg')] bg-no-repeat bg-center bg-contain w-[1085px] h-[801px] ml-[50%] -translate-x-1/2 overflow-hidden",
+          className
+        )}
         style={{
           x: "-50%",
         }}
@@ -29,8 +32,26 @@ const ChatCard = (props: any) => {
       >
         <div
           style={{ clipPath: "url(#bgblur_0_34846_555_clip_path)" }}
-          className={clsx("w-full h-full backdrop-blur-[5px] rounded-[20px] rounded-tl-[0]", innerClassName)}
+          className={clsx(
+            "w-full h-full backdrop-blur-[5px] rounded-[20px] rounded-tl-[0] bg-[repeating-linear-gradient(to_bottom,_transparent_0px,_rgba(255,255,255,0.05)_1px,_transparent_2px,_rgba(255,255,255,0.05)_3px)]",
+            innerClassName
+          )}
         >
+          <div className="absolute pointer-events-none z-[0] w-full left-0 h-full top-0 overflow-hidden">
+            <motion.div
+              className="absolute z-[0] pointer-events-none w-full h-[5px] left-0 top-0 opacity-10 bg-[linear-gradient(to_bottom,_transparent,_rgba(255,255,255,0.3),_transparent)]"
+              animate={{
+                y: ["-100px", "1000px"],
+              }}
+              transition={{
+                repeat: Infinity,
+                duration: 10,
+              }}
+            />
+          </div>
+          <div className="absolute pointer-events-none z-[0] w-full left-0 h-full top-0 overflow-hidden">
+            <div className="noise pointer-events-none absolute z-[1] w-full left-0 h-full top-0 overflow-hidden"></div>
+          </div>
           {children}
         </div>
       </motion.div>
