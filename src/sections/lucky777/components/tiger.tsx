@@ -537,7 +537,7 @@ export default memo(function Tiger(props: any) {
           className="absolute top-[310px] left-[130px] z-[2] w-[64px] h-[50px] bg-[url('/images/lucky777/left-arrow.svg')] bg-top bg-contain bg-no-repeat"
           key={spinning ? "spinning-left" : "static-left"}
           style={{
-            transformOrigin: "center center",
+            transformOrigin: "left center",
             transform: "rotate(0deg)"
           }}
           animate={spinning ? {
@@ -554,7 +554,7 @@ export default memo(function Tiger(props: any) {
           className="absolute top-[310px] right-[120px] z-[2] w-[64px] h-[50px] bg-[url('/images/lucky777/right-arrow.svg')] bg-top bg-contain bg-no-repeat"
           key={spinning ? "spinning-right" : "static-right"}
           style={{
-            transformOrigin: "center center",
+            transformOrigin: "right center",
             transform: "rotate(0deg)"
           }}
           animate={spinning ? {

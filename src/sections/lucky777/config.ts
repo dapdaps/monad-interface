@@ -33,7 +33,7 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     icon: "/images/lucky777/logo/moyaki.svg",
     value: SpinCategory.Bee,
     centerScale: 0.85,
-    centerY: 3,
+    centerY: 7,
   },
   [SpinCategory.Honey]: {
     code: "5",
