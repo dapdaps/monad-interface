@@ -1,6 +1,9 @@
-import { memo, useState } from "react";
-import { useFaucetContext } from "../context";
+import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover";
+import { monad } from "@/configs/tokens/monad-testnet";
 import clsx from "clsx";
+import { memo } from "react";
+import { useFaucetContext } from "../context";
+import TokenInfo from "./token-info";
 
 export default memo(function EnergyBars() {
   const {
@@ -14,19 +17,23 @@ export default memo(function EnergyBars() {
     width: 57
   }, {
     left: 322,
-    width: 56
+    width: 56,
+    token: monad?.chog,
   }, {
     left: 387,
     width: 53
   }, {
     left: 448,
-    width: 56
+    width: 56,
+    token: monad?.yaki,
   }, {
     left: 510,
     width: 57
   }, {
     left: 571,
-    width: 60
+    width: 60,
+    token: monad?.dak,
+  }, {
   },]
   const { consecutive_check_in } = checkinInfo || {}
   return (
@@ -36,7 +43,7 @@ export default memo(function EnergyBars() {
           <div className="absolute left-0 top-0 md:hidden">
             <img src="/images/faucet/tubes.svg" alt="tubes" />
           </div>
-          
+
           <div className="md:block hidden absolute -left-[136px] -bottom-[126px] w-[390px] h-[154px] rotate-[90deg] scale-[1.335]">
             <img src="/images/faucet/mobile/base.svg" alt="base" />
           </div>
@@ -62,6 +69,32 @@ export default memo(function EnergyBars() {
               <div className={clsx('md:rotate-90 absolute left-0 top-0 right-0 bottom-0 z-20', index < consecutive_check_in ? "pt-[70px] pl-[27px]" : "pt-[61px] pl-[18px]")}>
                 {index + 1}
               </div>
+              {
+                check?.token && (
+                  <div className={clsx("absolute z-20 top-[22px] left-[10.5px]", index < consecutive_check_in ? "opacity-100" : "opacity-30")}>
+                    <Popover
+                      trigger={PopoverTrigger.Hover}
+                      placement={PopoverPlacement?.RightTop}
+                      contentClassName="!z-[200]"
+                      content={<TokenInfo token={check?.token} />}
+                    >
+                      <div className="cursor-pointer w-[36px] rounded-full overflow-hidden border borer-[#A5FFFD]">
+                        <img src={check?.token?.icon} alt={check?.token?.symbol} />
+                      </div>
+                    </Popover>
+                    {
+                      index < consecutive_check_in && (
+                        <div className="absolute right-[-1px] bottom-[-2px]">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                            <circle cx="9" cy="9" r="8" fill="black" stroke="#A5FFFD" />
+                            <path d="M5 8.17391L7.88889 11L13 6" stroke="#78FEFF" stroke-width="2" />
+                          </svg>
+                        </div>
+                      )
+                    }
+                  </div>
+                )
+              }
             </div>
           ))
         }

@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="644" height="300" viewBox="0 0 644 300" fill="none">
-  <foreignObject x="0.5" y="0.5" width="642.98" height="299.445"><div xmlns="http://www.w3.org/1999/xhtml" style="backdrop-filter:blur(10px);clip-path:url(#bgblur_0_33710_15563_clip_path);height:100%;width:100%"></div></foreignObject><g filter="url(#filter0_d_33710_15563)" data-figma-bg-blur-radius="20">
-    <path d="M40.9455 21H605.381L622.98 42.1188V259.5L605.381 279.445H40.9455L21 259.5V42.1188L40.9455 21Z" fill="#0C1A19" fill-opacity="0.6" shape-rendering="crispEdges"/>
-    <path d="M40.9455 21H605.381L622.98 42.1188V259.5L605.381 279.445H40.9455L21 259.5V42.1188L40.9455 21Z" stroke="#A5FFFD" stroke-linecap="round" shape-rendering="crispEdges"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="644" height="350" viewBox="0 0 644 350" fill="none">
+  <foreignObject x="0.5" y="0.5" width="642.98" height="349.445"><div xmlns="http://www.w3.org/1999/xhtml" style="backdrop-filter:blur(10px);clip-path:url(#bgblur_0_33710_15563_clip_path);height:100%;width:100%"></div></foreignObject><g filter="url(#filter0_d_33710_15563)" data-figma-bg-blur-radius="20">
+    <path d="M40.9455 21H605.381L622.98 42.1188V309.5L605.381 329.445H40.9455L21 309.5V42.1188L40.9455 21Z" fill="#0C1A19" fill-opacity="0.6" shape-rendering="crispEdges"/>
+    <path d="M40.9455 21H605.381L622.98 42.1188V309.5L605.381 329.445H40.9455L21 309.5V42.1188L40.9455 21Z" stroke="#A5FFFD" stroke-linecap="round" shape-rendering="crispEdges"/>
   </g>
   <defs>
-    <filter id="filter0_d_33710_15563" x="0.5" y="0.5" width="642.98" height="299.445" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <filter id="filter0_d_33710_15563" x="0.5" y="0.5" width="642.98" height="349.445" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
       <feFlood flood-opacity="0" result="BackgroundImageFix"/>
       <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
       <feOffset/>
@@ -14,6 +14,6 @@
       <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_33710_15563"/>
       <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_33710_15563" result="shape"/>
     </filter>
-    <clipPath id="bgblur_0_33710_15563_clip_path" transform="translate(-0.5 -0.5)"><path d="M40.9455 21H605.381L622.98 42.1188V259.5L605.381 279.445H40.9455L21 259.5V42.1188L40.9455 21Z"/>
+    <clipPath id="bgblur_0_33710_15563_clip_path" transform="translate(-0.5 -0.5)"><path d="M40.9455 21H605.381L622.98 42.1188V309.5L605.381 329.445H40.9455L21 309.5V42.1188L40.9455 21Z"/>
   </clipPath></defs>
 </svg>

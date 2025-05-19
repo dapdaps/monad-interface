@@ -4,6 +4,12 @@ import { memo } from "react";
 import RuleBgSvg from '@public/images/faucet/rule_bg.svg'
 import ModalBgSvg from '@public/images/faucet/mobile/modal_bg.svg'
 import useIsMobile from "@/hooks/use-isMobile";
+import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover";
+import { monad } from "@/configs/tokens/monad-testnet";
+import { Token } from "@/types";
+import { formatLongText } from "@/utils/utils";
+import EarnToken from "./earn-token";
+
 export default memo(function RuleModal() {
   const store = useFaucetStore()
   const isMobile = useIsMobile()
@@ -25,7 +31,7 @@ export default memo(function RuleModal() {
       }}
     >
 
-      <div className="relative md:w-[368px] w-[602px] md:h-[378px] h-[258px] bg-contain bg-no-repeat text-[#A5FFFD] font-DogicaPixel">
+      <div className="relative md:w-[368px] w-[602px] md:h-[378px] h-[308px] bg-contain bg-no-repeat text-[#A5FFFD] font-DogicaPixel">
         <div className="absolute md:-left-[10px] -left-[20px] md:-top-[10px] -top-[20px] md:w-[390px] w-[644px] md:h-[400px] h-[300px]">
           {
             isMobile ? (
@@ -35,10 +41,11 @@ export default memo(function RuleModal() {
             )
           }
         </div>
-        <div className="absolute p-[40px_28px_0] left-0 top-0 right-0 bottom-0">
+        <div className="absolute p-[40px_26px_0] left-0 top-0 right-0 bottom-0">
           <div className="md:text-[16px] text-[18px] font-bold leading-[180%]">Faucet Daily Check-In Rules</div>
-          <div className="md:m-[28px_0_50px] m-[16px_0_48px] md:text-[12px] text-[14px] leading-[180%]">
+          <div className="md:m-[28px_0_50px] m-[16px_0_48px] md:text-[12px] text-[14px] leading-[200%]">
             <div className="flex before:min-w-[8px] before:h-[8px] before:m-[8px_4px_0_0] before:rounded-full before:bg-[#A5FFFD]">Check-in daily to earn 0.05 MON</div>
+            <div className="flex flex-wrap before:min-w-[8px] before:h-[8px] before:m-[8px_4px_0_0] before:rounded-full before:bg-[#A5FFFD]">Every 3-day to earn xx <EarnToken token={monad?.chog} />, 5-day to earn xx <EarnToken token={monad?.yaki} />, 7-day to earn xx <EarnToken token={monad?.dak} /></div>
             <div className="flex before:min-w-[8px] before:h-[8px] before:m-[8px_4px_0_0] before:rounded-full before:bg-[#A5FFFD]">Check-in 7 days in a row to get an extra 0.2 MON
               Miss a day? Streak resets and starts over</div>
           </div>
