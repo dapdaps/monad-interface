@@ -108,7 +108,7 @@ const Home = () => {
             data-bp="1001-007"
             onClick={() => router.push("/game")}
             className={clsx(
-              'absolute left-[calc(560/14.4*var(--rem))] -top-[115px] w-[275px] h-[210px]',
+              'absolute left-[calc(560/14.4*var(--rem))] -top-[115px] w-[275px] h-[210px] cursor-pointer',
               'bg-no-repeat bg-contain',
               "transition-all duration-200 ease-in-out",
               // "bg-[url(/images/monad/entry/game-lock.svg)]",
