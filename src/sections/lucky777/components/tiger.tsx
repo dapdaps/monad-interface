@@ -12,6 +12,7 @@ import { useAppKit } from '@reown/appkit/react';
 import { useCountDown, useInterval } from 'ahooks';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+import RulesModal from './rules';
 dayjs.extend(duration);
 
 function getTimeLeftToUTC24() {
@@ -59,6 +60,7 @@ export default memo(function Tiger(props: any) {
 
   const [openBuyTimes, setOpenBuyTimes] = useState(false);
   const [openHistory, setOpenHistory] = useState(false);
+  const [openRules, setOpenRules] = useState(false);
   const toast = useToast();
   const [title, setTitle] = useState(DEFAULT_TITLE);
   const { address } = useAccount();
@@ -554,9 +556,6 @@ export default memo(function Tiger(props: any) {
           }}
         />
 
-        {/* <div className="absolute top-[310px] right-[120px] z-[2] w-[64px] h-[50px] bg-[url('/images/lucky777/right-arrow.svg')]  bg-top bg-contain bg-no-repeat">
-        </div> */}
-
         <div data-click-sound className="absolute bottom-[240px] left-1/2 -translate-x-1/2 z-[2] w-[202px] h-[86px] flex flex-col items-center  max-w-full  bg-top bg-contain bg-no-repeat">
           <motion.button
             ref={spinRef}
@@ -583,7 +582,7 @@ export default memo(function Tiger(props: any) {
               backgroundImage: "url('/images/lucky777/rules-press.svg')"
             }}
             onClick={() => {
-              setOpenHistory(true);
+              setOpenRules(true);
             }}
           />
 
@@ -625,6 +624,7 @@ export default memo(function Tiger(props: any) {
 
       <BuyTimesModal open={openBuyTimes} onClose={() => setOpenBuyTimes(false)} refreshData={getSpinUserData} />
       <HistoryModal open={openHistory} onClose={() => setOpenHistory(false)} />
+      <RulesModal open={openRules} onClose={() => setOpenRules(false)} /> 
     </div>
   )
 });
