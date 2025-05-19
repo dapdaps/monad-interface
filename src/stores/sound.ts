@@ -2,14 +2,14 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
 export const useSoundStore = create(
-  persist<RpcStore>(
+  persist<any>(
     (set) => ({
-      muted: false,
+      muted: true,
       conveyorBeltRef: null,
       set: (params: any) => set(() => ({ ...params })),
     }),
     {
-      name: "_sound_",
+      name: "_sound_0519",
       storage: createJSONStorage(() => sessionStorage),
     }
   )
