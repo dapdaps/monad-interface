@@ -173,7 +173,7 @@ const Home = () => {
             data-hover-sound
             onClick={() => router.push("/faucet")}
             className={clsx(
-              "z-[35] absolute w-[514px] h-[330px]",
+              "z-[28] absolute w-[514px] h-[330px]",
               windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
               windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.1]' : '',
               windowWidth >= 1920

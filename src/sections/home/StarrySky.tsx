@@ -28,7 +28,7 @@ const generateStars = (
 };
 
 const StarFieldCanvas = (props: any) => {
-  const { className } = props;
+  const { className, starts } = props;
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const layers = useRef<Star[][]>([]);
@@ -48,9 +48,9 @@ const StarFieldCanvas = (props: any) => {
     const height = canvas.offsetHeight;
 
     layers.current = [
-      generateStars(1700, width, height, 0.2, 1),
-      generateStars(700, width, height, 0.1, 2),
-      generateStars(200, width, height, 0.05, 3),
+      generateStars(starts?.[0] ?? 1700, width, height, 0.2, 1),
+      generateStars(starts?.[1] ?? 700, width, height, 0.1, 2),
+      generateStars(starts?.[2] ?? 200, width, height, 0.05, 3),
     ];
 
     let start = performance.now();

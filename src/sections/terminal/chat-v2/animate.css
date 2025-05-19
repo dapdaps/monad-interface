@@ -1,0 +1,296 @@
+
+:root {
+  --main-bg: #000000;
+  --text-color: #ffffff;
+  --neon-blue: #00ffff;
+  --neon-pink: #ff00ff;
+  --neon-green: #39ff14;
+  --neon-yellow: #ffff00;
+  --neon-red: #ff0000;
+  --cyber-purple: #5d5cde;
+}
+
+.noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 800 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  animation: noise 0.5s steps(1) infinite;
+  opacity: 0.08;
+}
+
+@keyframes textFlicker {
+
+  0%,
+  80%,
+  100% {
+    opacity: 1;
+  }
+
+  70%,
+  90% {
+    opacity: 0.8;
+  }
+
+  71%,
+  72%,
+  91%,
+  92% {
+    opacity: 0.4;
+  }
+
+  73%,
+  93% {
+    opacity: 0.6;
+  }
+
+  74%,
+  94% {
+    opacity: 0.5;
+  }
+
+  75%,
+  95% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes textDistort {
+
+  0%,
+  100% {
+    transform: skew(0deg, 0deg);
+    letter-spacing: normal;
+  }
+
+  10% {
+    transform: skew(2deg, 0deg);
+    letter-spacing: 1px;
+  }
+
+  20% {
+    transform: skew(-2deg, 0deg);
+    letter-spacing: -1px;
+  }
+
+  30%,
+  50% {
+    transform: skew(0deg, 0deg);
+    letter-spacing: normal;
+  }
+
+  40% {
+    transform: skew(-1deg, 1deg);
+    letter-spacing: -2px;
+  }
+
+  70% {
+    transform: skew(3deg, -1deg);
+    letter-spacing: 2px;
+  }
+
+  80% {
+    transform: skew(-2deg, 2deg);
+    letter-spacing: -1px;
+  }
+
+  90% {
+    transform: skew(1deg, -1deg);
+    letter-spacing: 1px;
+  }
+}
+
+@keyframes rgb-shift {
+
+  0%,
+  100% {
+    text-shadow: -2px 0 var(--neon-blue), 2px 0 var(--neon-pink);
+    opacity: 0.8;
+  }
+
+  25% {
+    text-shadow: -2px 0 var(--neon-green), 2px 0 var(--neon-blue);
+    opacity: 0.7;
+  }
+
+  50% {
+    text-shadow: -2px 0 var(--neon-red), 2px 0 var(--neon-yellow);
+    opacity: 0.9;
+  }
+
+  75% {
+    text-shadow: -2px 0 var(--neon-yellow), 2px 0 var(--neon-green);
+    opacity: 0.6;
+  }
+}
+
+@keyframes rgb-shift-alt {
+
+  0%,
+  100% {
+    text-shadow: 2px 0 var(--neon-pink), -2px 0 var(--neon-blue);
+    opacity: 0.8;
+  }
+
+  25% {
+    text-shadow: 2px 0 var(--neon-blue), -2px 0 var(--neon-green);
+    opacity: 0.7;
+  }
+
+  50% {
+    text-shadow: 2px 0 var(--neon-yellow), -2px 0 var(--neon-red);
+    opacity: 0.9;
+  }
+
+  75% {
+    text-shadow: 2px 0 var(--neon-green), -2px 0 var(--neon-yellow);
+    opacity: 0.6;
+  }
+}
+
+@keyframes scanline {
+  0% {
+    top: -5%;
+  }
+
+  100% {
+    top: 105%;
+  }
+}
+
+@keyframes noise {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  10% {
+    transform: translate(-2%, -1%);
+  }
+
+  20% {
+    transform: translate(2%, 1%);
+  }
+
+  30% {
+    transform: translate(-1%, 2%);
+  }
+
+  40% {
+    transform: translate(3%, -2%);
+  }
+
+  50% {
+    transform: translate(-3%, 1%);
+  }
+
+  60% {
+    transform: translate(2%, 3%);
+  }
+
+  70% {
+    transform: translate(-2%, -2%);
+  }
+
+  80% {
+    transform: translate(1%, -1%);
+  }
+
+  90% {
+    transform: translate(-1%, 3%);
+  }
+}
+
+@keyframes grid-anim {
+  0% {
+    transform: rotateX(80deg) translateZ(-100px) translateY(0);
+  }
+
+  100% {
+    transform: rotateX(80deg) translateZ(-100px) translateY(100vh);
+  }
+}
+
+@keyframes border-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes glow-pulse {
+
+  0%,
+  100% {
+    text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue),
+    0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue);
+  }
+
+  50% {
+    text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue),
+    0 0 40px var(--neon-blue), 0 0 80px var(--neon-blue);
+  }
+}
+
+@keyframes color-cycle {
+
+  0%,
+  100% {
+    background-position: 0% 0%;
+  }
+
+  50% {
+    background-position: 100% 100%;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes flowing-text {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@media (max-width: 640px) {
+  .cyber-box {
+    width: 90% !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

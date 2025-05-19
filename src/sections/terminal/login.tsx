@@ -69,12 +69,12 @@ const LoginView = (props: any) => {
     <LoginContainer>
       <div className="flex flex-col items-center pt-[158px]">
         <img
-          src="/images/logo-white.svg"
+          src="/images/logo-pixel.svg"
           alt=""
-          className="w-[147px] h-[40px] object-center object-contain shrink-0"
+          className="w-[129px] h-[55px] object-center object-contain shrink-0"
         />
         <img
-          src="/images/login/icon-alert.svg"
+          src="/images/terminal/icon-alert.gif"
           alt=""
           className="mt-[25px] w-[120px] h-[120px] object-center object-contain shrink-0"
         />

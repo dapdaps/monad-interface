@@ -90,120 +90,122 @@ const ChatContent = (props: any) => {
   }, [limitProgress, inputRef.current]);
 
   return (
-    <div className={clsx("w-full h-full p-[30px] relative flex flex-col justify-between items-stretch", className)}>
+    <div className={clsx("w-full h-full p-[30px] relative", className)}>
       <div className="px-[30px] pt-[10px]">
         <img src="/images/logo-pixel.svg" alt="" className="shrink-0 w-[129px] h-[55px] object-contain object-center" />
       </div>
-      <div
-        ref={messagesRef}
-        className="flex-1 h-0 overflow-y-auto px-[30px] py-[15px] text-[!E7E2FF]"
-        onScroll={(e) => {
-          const element = e.target as HTMLDivElement;
-          if (element.scrollTop < 5) {
-            element.scrollTo({ top: 10, behavior: "smooth" });
-          }
-          onScroll?.(e);
-        }}
-        onDoubleClick={() => {
-          inputRef.current?.focus();
-        }}
-      >
-        {
-          mergedPreviousPageMessages?.map((message: any, index: number) => (
-            <Item
-              key={`previousPage-${index}`}
-              isTypewriter={false}
-              roleColor="text-[#8D7CFF]"
-              className="!text-[14px]"
-              message={message}
-              user={chatStore.users[message.from?.toLowerCase()]}
-            />
-          ))
-        }
-        {displayedMessages?.map?.((message: any, index: number) => (
-          <Item
-            key={index}
-            isTypewriter={!(message.from === FE_SYSTEM_KEY && message.type === "buffer")}
-            roleColor="text-[#8D7CFF]"
-            className="!text-[14px]"
-            message={message}
-            user={message.from === FE_SYSTEM_KEY ? FE_SYSTEM : chatStore.users[message.from?.toLowerCase()]}
-            onAnimationComplete={() => {
-              scrollToBottom();
-              if (mergedMessages.length - 1 > displayedMessageIndex) {
-                const _displayedMessageIndex = displayedMessageIndex + 1;
-                setDisplayedMessageIndex(_displayedMessageIndex);
-                setDisplayedMessages((prev: any) => [...prev, mergedMessages[_displayedMessageIndex]]);
-                return;
-              }
-              setDisplayedAllHistoryMessages(true);
-            }}
-          />
-        ))}
-        <div className="flex items-center gap-[8px] text-[#0F1]">
-          <div className="shrink-0">
-            [{currentUser.name}] <Level level={currentUser.level} />:
-          </div>
-
-          <>
-            {
-              !inputFocused && (
-                <motion.div
-                  className="shrink-0 w-[1px] h-[16px] bg-[#0F1]"
-                  initial={{
-                    opacity: 0,
-                  }}
-                  animate={{
-                    opacity: [0, 1, 0],
-                  }}
-                  transition={{
-                    type: "none",
-                    repeat: Infinity,
-                    duration: 1,
-                  }}
-                />
-              )
+      <div className="w-full h-[calc(100%_-_65px_-_51px)] pt-[25px] pb-[15px]">
+        <div
+          ref={messagesRef}
+          className="w-full h-full overflow-y-auto px-[30px] text-[!E7E2FF]"
+          onScroll={(e) => {
+            const element = e.target as HTMLDivElement;
+            if (element.scrollTop < 5) {
+              element.scrollTo({ top: 10, behavior: "smooth" });
             }
-            <input
-              ref={inputRef}
-              className="bg-transparent flex-1 text-[14px] text-[#0F1] placeholder:text-[#8D7CFF]"
-              autoFocus
-              disabled={Big(limitProgress || 100).lt(100)}
-              onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-              onChange={(e) => setInputMessage(e.target.value)}
-              value={inputMessage}
-            />
-          </>
-        </div>
-        {/*{
-          Big(limitProgress || 100).lt(100) && (
-            <div className="relative">
+            onScroll?.(e);
+          }}
+          onDoubleClick={() => {
+            inputRef.current?.focus();
+          }}
+        >
+          {
+            mergedPreviousPageMessages?.map((message: any, index: number) => (
               <Item
+                key={`previousPage-${index}`}
                 isTypewriter={false}
                 roleColor="text-[#8D7CFF]"
                 className="!text-[14px]"
-                message={{
-                  timestamp: currentUserLimit?.lastPostTime,
-                  text: `BUFFER: ${limitProgress}%`,
-                }}
-                user={FE_SYSTEM}
+                message={message}
+                user={chatStore.users[message.from?.toLowerCase()]}
               />
-              <motion.img
-                src="/images/terminal/icon-target2.svg"
-                alt=""
-                className="absolute left-[280px] top-1/2 -translate-y-1/2 shrink-0 w-[36px] h-[36px] object-cover object-center"
-                animate={{
-                  opacity: [1, 0, 1],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                }}
-              />
+            ))
+          }
+          {displayedMessages?.map?.((message: any, index: number) => (
+            <Item
+              key={index}
+              isTypewriter={!(message.from === FE_SYSTEM_KEY && message.type === "buffer")}
+              roleColor="text-[#8D7CFF]"
+              className="!text-[14px]"
+              message={message}
+              user={message.from === FE_SYSTEM_KEY ? FE_SYSTEM : chatStore.users[message.from?.toLowerCase()]}
+              onAnimationComplete={() => {
+                scrollToBottom();
+                if (mergedMessages.length - 1 > displayedMessageIndex) {
+                  const _displayedMessageIndex = displayedMessageIndex + 1;
+                  setDisplayedMessageIndex(_displayedMessageIndex);
+                  setDisplayedMessages((prev: any) => [...prev, mergedMessages[_displayedMessageIndex]]);
+                  return;
+                }
+                setDisplayedAllHistoryMessages(true);
+              }}
+            />
+          ))}
+          <div className="flex items-center gap-[8px] text-[#0F1]">
+            <div className="shrink-0">
+              [{currentUser.name}] <Level level={currentUser.level} />:
             </div>
-          )
-        }*/}
-        <div ref={messagesEndRef} />
+
+            <>
+              {
+                !inputFocused && (
+                  <motion.div
+                    className="shrink-0 w-[1px] h-[16px] bg-[#0F1]"
+                    initial={{
+                      opacity: 0,
+                    }}
+                    animate={{
+                      opacity: [0, 1, 0],
+                    }}
+                    transition={{
+                      type: "none",
+                      repeat: Infinity,
+                      duration: 1,
+                    }}
+                  />
+                )
+              }
+              <input
+                ref={inputRef}
+                className="bg-transparent flex-1 text-[14px] text-[#0F1] placeholder:text-[#8D7CFF]"
+                autoFocus
+                disabled={Big(limitProgress || 100).lt(100)}
+                onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+                onChange={(e) => setInputMessage(e.target.value)}
+                value={inputMessage}
+              />
+            </>
+          </div>
+          {/*{
+           Big(limitProgress || 100).lt(100) && (
+           <div className="relative">
+           <Item
+           isTypewriter={false}
+           roleColor="text-[#8D7CFF]"
+           className="!text-[14px]"
+           message={{
+           timestamp: currentUserLimit?.lastPostTime,
+           text: `BUFFER: ${limitProgress}%`,
+           }}
+           user={FE_SYSTEM}
+           />
+           <motion.img
+           src="/images/terminal/icon-target2.svg"
+           alt=""
+           className="absolute left-[280px] top-1/2 -translate-y-1/2 shrink-0 w-[36px] h-[36px] object-cover object-center"
+           animate={{
+           opacity: [1, 0, 1],
+           }}
+           transition={{
+           duration: 3,
+           repeat: Infinity,
+           }}
+           />
+           </div>
+           )
+           }*/}
+          <div ref={messagesEndRef} />
+        </div>
       </div>
       <div className="shrink-0 flex justify-between items-center px-[30px] pt-[10px] pb-[16px] border-t border-dashed border-[#836EF9] text-[12px] font-Pixelmix text-[#8D7CFF] leading-[200%]">
         <div className="">

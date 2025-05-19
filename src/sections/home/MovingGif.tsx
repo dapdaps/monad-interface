@@ -229,7 +229,7 @@ function Moving3rd() {
   };
 
   return (
-    <div className="absolute bottom-[28%] right-[45%] z-[58]">
+    <div className="absolute bottom-[28%] right-[45%] z-[30]">
       <div className="relative">
         <div className="relative">
           <img
