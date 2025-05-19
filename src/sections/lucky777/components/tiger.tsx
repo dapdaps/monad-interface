@@ -467,7 +467,7 @@ export default memo(function Tiger(props: any) {
               ref={leftWheel}
               className="w-full h-full relative [transform-style:preserve-3d]"
               style={{
-                rotateX: centerWheelRotation,
+                rotateX: leftWheelRotation,
               }}
             >
               {
