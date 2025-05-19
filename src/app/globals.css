@@ -48,6 +48,14 @@
   font-stretch: 75% 125%;
 }
 
+@font-face {
+  font-family: "Pixelmix";
+  src: url("./fonts/pixelmix.ttf") format("truetype");
+  font-weight: 100 900;
+  font-stretch: 75% 125%;
+}
+
+
 html,
 body {
   margin: 0;
@@ -97,6 +105,9 @@ body {
   }
   .text-stroke-1-E1FF0A {
     -webkit-text-stroke: 1px #e1ff0a;
+  }
+  .text-stroke-1-836EF9 {
+    -webkit-text-stroke: 1px #836EF9;
   }
 
   .scrollbar-hide {

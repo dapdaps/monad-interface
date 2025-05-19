@@ -1,36 +1,46 @@
 import { motion } from "framer-motion";
 import { useMemo } from 'react';
+import { useDebounceFn } from 'ahooks';
 
 export const letterVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { opacity: { duration: 0 } } },
 };
 
-const Typewriter = ({ text, ...rest }: any) => {
+const WAIT = 150;
+
+const Typewriter = ({ text, onAnimationComplete, ...rest }: any) => {
+
+  const length = text?.length || 0;
 
   const staggerChildren = useMemo(() => {
-    const length = text.length;
     let number;
 
     if (length <= 10) {
-      number = 0.2 - (length / 10) * 0.14;
+      number = 0.1 - (length / 10) * 0.09;
     } else {
-      number = 0.06 - ((length - 10) / 10) * 0.01;
+      number = 0.01 - ((length - 10) / 10) * 0.001;
     }
 
-    return Math.max(0.005, Math.min(0.2, number));
+    return Math.max(0.001, Math.min(0.1, number));
   }, []);
+
+  const { run: handleAnimationComplete, cancel } = useDebounceFn(onAnimationComplete, { wait: WAIT });
 
   return (
     <motion.p
       key={text}
-      className="text-white"
+      className=""
       variants={{
         hidden: {},
         visible: { opacity: 1, transition: { staggerChildren } },
       }}
       initial="hidden"
       animate="visible"
+      onAnimationComplete={() => {
+        cancel();
+        handleAnimationComplete();
+      }}
       {...rest}
     >
       {text.split("").map((char: any, i: number) => (
