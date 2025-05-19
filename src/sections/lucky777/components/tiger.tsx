@@ -22,9 +22,9 @@ function getTimeLeftToUTC24() {
   const _duration = dayjs.duration(diff);
 
   return {
-    hours: Math.floor(_duration.asHours()),
-    minutes: _duration.minutes(), 
-    seconds: _duration.seconds()
+    hours: Math.floor(_duration.asHours()) < 10 ? `0${Math.floor(_duration.asHours())}` : Math.floor(_duration.asHours()),
+    minutes: _duration.minutes() < 10 ? `0${_duration.minutes()}` : _duration.minutes(), 
+    seconds: _duration.seconds() < 10 ? `0${_duration.seconds()}` : _duration.seconds()
   };
 }
 
@@ -380,7 +380,18 @@ export default memo(function Tiger(props: any) {
     return Math.floor(spinUserData?.points_balance / 20000 * 20);
   }, [spinUserData]);
 
+  useEffect(() => {
+    const preloadImages = [
+      '/images/lucky777/spin-btn-press.svg',
+      '/images/lucky777/rules-press.svg', 
+      '/images/lucky777/history-2-press.svg'
+    ];
 
+    preloadImages.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
 
 
   return (
