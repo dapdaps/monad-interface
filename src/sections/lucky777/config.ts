@@ -11,8 +11,8 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     code: "1",
     icon: "/images/lucky777/logo/madas.svg",
     value: SpinCategory.Coin,
-    centerScale: 0.85,
-    centerY: 7,
+    centerScale: 1,
+    centerY: 12,
   },
   [SpinCategory.Gem]: {
     code: "2",
@@ -32,8 +32,8 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     code: "4",
     icon: "/images/lucky777/logo/moyaki.svg",
     value: SpinCategory.Bee,
-    centerScale: 0.85,
-    centerY: 7,
+    centerScale: 1,
+    centerY: 12,
   },
   [SpinCategory.Honey]: {
     code: "5",
