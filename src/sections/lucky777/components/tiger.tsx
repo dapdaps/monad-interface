@@ -69,6 +69,9 @@ export default memo(function Tiger(props: any) {
   const { open } = useAppKit();
   const [freeTimes, setFreeTimes] = useState(getTimeLeftToUTC24());
   const [animateSpinning, setAnimateSpinning] = useState(false);
+  const [pressed1, setPressed1] = useState(false);
+  const [pressed2, setPressed2] = useState(false);
+  const [pressed3, setPressed3] = useState(false);
   const soundStore = useSoundStore()
 
   const [leftWheel, leftWheelAnimate] = useAnimate();
@@ -337,6 +340,9 @@ export default memo(function Tiger(props: any) {
       toast.fail({ title: 'No spins left' });
       return;
     }
+
+    setPressed3(true);
+    setTimeout(() => setPressed3(false), 25000);
 
     setAnimateSpinning(true);
     const machineSoundAudio = playSound(1);
@@ -649,11 +655,9 @@ export default memo(function Tiger(props: any) {
           <motion.button
             ref={spinRef}
             type="button"
-            // disabled={spinning}
+            disabled={spinning}  
             className="w-[202px] h-[85px] bg-[url('/images/lucky777/spin-btn.svg')] bg-no-repeat bg-center bg-contain disabled:opacity-50 disabled:cursor-not-allowed"
-            whileTap={spinning ? {} : {
-              backgroundImage: "url('/images/lucky777/spin-btn-press.svg')"
-            }}
+            animate={{ backgroundImage: pressed3 ? "url('/images/lucky777/spin-btn-press.svg')" : "url('/images/lucky777/spin-btn.svg')" }}
             style={{
               transformOrigin: "center bottom",
               y: 15,
@@ -667,11 +671,11 @@ export default memo(function Tiger(props: any) {
             type="button"
             data-click-sound
             className="absolute bottom-[270px] right-[140px] z-[2] w-[116px] h-[32px] bg-[url('/images/lucky777/rules.svg')] bg-no-repeat bg-center bg-contain "
-            whileTap={{
-              backgroundImage: "url('/images/lucky777/rules-press.svg')"
-            }}
+            animate={{ backgroundImage: pressed2 ? "url('/images/lucky777/rules-press.svg')" : "url('/images/lucky777/rules.svg')" }}
             onClick={() => {
               setOpenRules(true);
+              setPressed2(true);
+              setTimeout(() => setPressed2(false), 500);
             }}
           />
 
@@ -679,14 +683,11 @@ export default memo(function Tiger(props: any) {
             type="button"
             data-click-sound
             className="absolute bottom-[230px] right-[105px] z-[2] w-[136px] h-[32px] bg-[url('/images/lucky777/history-2.svg')] bg-no-repeat bg-center bg-contain"
-            whileTap={{
-              backgroundImage: "url('/images/lucky777/history-2-press.svg')",
-              transition: {
-                duration: 10
-              }
-            }}
+            animate={{ backgroundImage: pressed1 ? "url('/images/lucky777/history-2-press.svg')" : "url('/images/lucky777/history-2.svg')" }}
             onClick={() => {
               setOpenHistory(true);
+              setPressed1(true);
+              setTimeout(() => setPressed1(false), 500);
             }}
           />
         </div>
