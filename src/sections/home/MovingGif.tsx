@@ -181,7 +181,7 @@ function Moving2sec() {
   };
 
   return (
-    <div className="absolute left-[50%] top-0 z-[28]">
+    <div className="absolute left-[50%] top-0 z-[25]">
       <div className="relative">
         <div className="relative">
           <img
