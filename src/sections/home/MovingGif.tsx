@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { useJumpAnimation } from "./hooks/useJumpAnimation";
 import { useCharacterMovement } from "./hooks/useCharacterMovement";
 
-// 文案库
 const tooltipMessages = [
   "Gmonad",
   "Captain told me the more I do, the more I'm rewarded",
@@ -24,7 +23,6 @@ const tooltipMessages = [
   "It takes sacrifice to be an astronaut"
 ];
 
-// 获取随机文案的自定义钩子
 const useRandomTooltip = () => {
   const [currentMessage, setCurrentMessage] = useState(() => {
     const randomIndex = Math.floor(Math.random() * tooltipMessages.length);

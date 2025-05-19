@@ -1,14 +1,14 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-type RpcState = {
+export type RpcState = {
   visible: boolean;
   alert: boolean;
   selected: any;
   ping: Partial<Record<any, number>>;
 };
 
-type RpcStore = RpcState & {
+export type RpcStore = RpcState & {
   setVisible: (visible: boolean) => void;
   setAlert: (alert: boolean) => void;
   setSelected: (rpc: any) => void;

@@ -59,7 +59,7 @@ export function useCharacterTooltip(options: {
           transform: 'translateX(-50%)',
         }}
       >
-        <div className="relative flex items-center justify-center min-w-[120px] min-h-[50px] bg-[#1A1843]/80 rounded-[6px] backdrop-blur-[10px]">
+        <div className="relative flex items-center justify-center min-w-[180px] min-h-[50px] bg-[#1A1843]/80 rounded-[6px] backdrop-blur-[10px]">
           <img src="/images/monad/icon/arrow-down.svg" className="absolute left-1/2 -translate-x-1/2 bottom-[-19px]" />
           <div className="font-Unbounded text-[12px] text-white leading-[18px] p-2">
             {tooltipText}
