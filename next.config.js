@@ -147,7 +147,21 @@ const nextConfig = {
   },
   images: {
     domains: ["s3.amazonaws.com"]
-  }
+  },
+  headers: async () => {
+    return [
+      {
+        source: '/:all*(svg|jpg|jpeg|png|gif|webp|ico|js|css|woff2|woff|ttf|eot)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ]
+  },
+
 };
 
 const withBundleStatsPlugin =
