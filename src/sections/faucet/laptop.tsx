@@ -11,6 +11,7 @@ import VerificationModal from './components/verification-modal';
 import { useSize } from 'ahooks';
 import HistoryButton from './components/history-button';
 import HistoryModal from './components/history-modal';
+import Amount from './components/amount';
 export default memo(function Laptop() {
   const store = useFaucetStore()
   const size = useSize(document.getElementsByTagName("body")[0])
@@ -28,16 +29,16 @@ export default memo(function Laptop() {
                 })
               }}
             >Rules</div>
-            <div className='m-[25px_32px_17px] p-[12px_101px] rounded-[4px] bg-[rgba(165,255,253,0.20)] text-center text-[#A5FFFD] font-Unbounded text-[12px] leading-[150%]'>
+            <div className='m-[25px_39px_13px] p-[12px_101px] rounded-[4px] bg-[rgba(165,255,253,0.20)] text-center text-[#A5FFFD] font-Unbounded text-[12px] leading-[150%]'>
               Testnet tokens are for development purposes only and have no real value.
               To check in and receive MON, you must have at least 0.01 ETH and a transaction history on Ethereum mainnet.
             </div>
 
+            <Amount />
             <EnergyBars />
             <Summary />
 
             <FaucetCheckIn className="m-[28px_auto_19px]" />
-            <HistoryButton />
 
             <div className="absolute right-[22px] -bottom-[9px] w-[202px] h-[160px] shrink-0 flex justify-center items-center">
               <img src="/images/faucet/coffee-coins.svg" alt="" className="w-[202px] h-[160px]" />

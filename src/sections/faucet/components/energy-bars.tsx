@@ -33,8 +33,7 @@ export default memo(function EnergyBars() {
     left: 571,
     width: 60,
     token: monad?.dak,
-  }, {
-  },]
+  }]
   const { consecutive_check_in } = checkinInfo || {}
   return (
     <div className='relative md:scale-75 md:-left-[25px] md:-top-[104px] md:w-[205px] w-[824px] md:h-[824px] h-[205px] text-black font-DogicaPixel text-[16px] font-bold'>
@@ -71,12 +70,16 @@ export default memo(function EnergyBars() {
               </div>
               {
                 check?.token && (
-                  <div className={clsx("absolute z-20 top-[22px] left-[10.5px]", index < consecutive_check_in ? "opacity-100" : "opacity-30")}>
+                  <div className={clsx("absolute z-20 top-[22px] left-[10.5px] hover:opacity-100", index < consecutive_check_in ? "opacity-100" : "opacity-30")}>
                     <Popover
                       trigger={PopoverTrigger.Hover}
-                      placement={PopoverPlacement?.RightTop}
+                      placement={PopoverPlacement?.Top}
                       contentClassName="!z-[200]"
-                      content={<TokenInfo token={check?.token} />}
+                      content={(
+                        <div className="text-center w-[183px] p-[10px_9px] rounded-[6px] border border-[#3E347C] bg-[rgba(26,24,67,0.80)] shadow-[0_0_10px_0_rgba(0,0,0,0.25)] backdrop-blur-[5px] text-[#A6A6DB] font-Unbounded text-[12px] leading-[150%]">
+                          Unlock $$ (Token) after your {index + 1}th check-in
+                        </div>
+                      )}
                     >
                       <div className="cursor-pointer w-[36px] rounded-full overflow-hidden border borer-[#A5FFFD]">
                         <img src={check?.token?.icon} alt={check?.token?.symbol} />
