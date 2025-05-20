@@ -111,15 +111,15 @@ export default memo(function Tiger(props: any) {
   };
 
   const animateCoin = (coin: HTMLDivElement, startX: number, startY: number) => {
-    const horizontalDistance = (Math.random() - 0.5) * 2800;
-    const maxHeight = -1 * window.innerHeight;
+    const horizontalDistance = (Math.random() - 0.5) * 400;
+    const maxHeight = -(Math.random() * 400 + 300);
    
 
     // Movement and rotation animation keyframes
     const moveKeyframes = [
       // Initial position
       {
-        transform: 'translate(0, 0) rotate(0deg)',
+        transform: 'translate(0, 50px) rotate(0deg)',
         offset: 0
       },
       // First rapid ascent phase
@@ -207,7 +207,7 @@ export default memo(function Tiger(props: any) {
     const rect = spinRef.current.getBoundingClientRect();
     const startX = rect.left + rect.width / 2 - EXPLOSION_COIN_SIZE / 2;
     // const startX = 0
-    const startY = 0
+    const startY = rect.top + rect.height / 2 - EXPLOSION_COIN_SIZE;
 
     createCoinsExplosion(startX, startY, '/images/lucky777/logo/monad.svg');
   };
@@ -390,12 +390,11 @@ export default memo(function Tiger(props: any) {
       setTitle(DEFAULT_UNLUCKY_TITLE);
     }
 
-    if (Number(res.draw_code) % 111 === 0) {
+    if (Number(res.draw_code) % 111 === 0 || (res.points_balance >= MAX_POINT && spinUserData?.points_balance < MAX_POINT)) {
       startCoinExplosion(res);
     }
 
     if (res.points_balance >= MAX_POINT && spinUserData?.points_balance < MAX_POINT) {
-      startCoinExplosion(res);
       setTitle('WON 1 MON!');
     }
 
