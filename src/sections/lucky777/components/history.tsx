@@ -5,6 +5,7 @@ import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
 import { formatEnglishDate, getUTCDatetime } from "@/utils/date";
 import Empty from "@/components/empty";
+import dayjs from "dayjs";
 
 const IconClose = () => (
     <div className="mt-[15px] mr-[15px]">
@@ -49,27 +50,24 @@ const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
                         {/* <button className={"w-[120px] h-[30px] text-black font-bold rounded-l-[4px] " + (activeTab === "winning" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("winning")}>
                             Records
                         </button> */}
-                        <button className={"w-[120px] h-[30px] text-black font-bold rounded-l-[4px] " + (activeTab === "payouts" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("payouts")}>
+                        <button className={"w-[120px] h-[30px] text-black font-bold rounded-[4px] " + (activeTab === "payouts" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("payouts")}>
                             Result
                         </button>
-                        <button className={"w-[120px] h-[30px] text-black font-bold rounded-r-[4px] " + (activeTab === "purchases" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("purchases")}>
+                        <button className={"w-[120px] ml-2 h-[30px] text-black font-bold rounded-[4px] " + (activeTab === "purchases" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("purchases")}>
                             Recharge
                         </button>
                     </div>
 
-                    <div className="flex items-center gap-2 cursor-pointer absolute top-[60px] right-[35px]">
-                        <div 
-                            className={`w-4 h-4 rounded-full border-2 border-[#8e90bd] cursor-pointer ${winningOnly ? "bg-[#BFFF60]" : "bg-[#00000080]"}`}
-                            onClick={() => setWinningOnly(!winningOnly)}
-                        />
-                        <span className="text-[#8e90bd]">Winning Only</span>
-                    </div>
-
-                    <div className="w-full" style={{
-                        display: activeTab === "winning" ? 'block' : 'none',
-                    }}>
-                        <List type="winning"  winningOnly={winningOnly}/>
-                    </div>
+                    {
+                        activeTab === "payouts" && (
+                            <div onClick={() => setWinningOnly(!winningOnly)} className="flex items-center gap-2 cursor-pointer absolute top-[60px] right-[35px]">
+                                <div 
+                                    className={`w-4 h-4 rounded-full border-2 border-[#8e90bd] cursor-pointer ${winningOnly ? "bg-[#BFFF60]" : "bg-[#00000080]"}`}
+                                />
+                                <span className="text-[#8e90bd]">Winning Only</span>
+                            </div>
+                        )
+                    }
 
                     <div className="w-full" style={{
                         display: activeTab === "purchases" ? 'block' : 'none',
@@ -89,9 +87,8 @@ const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
 };
 
 const urlMap: any = {
-    winning: "/game/draw/records",
     purchases: "/game/purchase/records",
-    payouts: "/game/reward/records",
+    payouts: "/game/draw/records",
 }
 
 function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
@@ -126,12 +123,7 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
     return (
         <div className="w-full mt-[42px] min-h-[340px]">
             <div className="flex px-6 py-3 text-[#A6A6DB] font-bold-[300] border-b border-[#414266]">
-                <div className="flex-1">Time</div>
-                {
-                    type === "winning" && (
-                        <div className="flex-1">Result</div>
-                    )
-                }
+                <div className="flex-1 gap-2">Time</div>
                 {
                     type === "purchases" && (
                         <>
@@ -152,28 +144,20 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
             </div>
             <div className="max-h-[340px] overflow-y-auto">
                 {data.map((item, idx) => (
-                    <div key={item.id} className="flex px-6 py-3 text-white text-[12px] border-b border-[#414266] items-center">
+                    <div key={item.id} className="flex px-6 py-3 gap-2 text-white text-[12px] border-b border-[#414266] items-center">
 
                         {
-                            type === "winning" && (
-                                <div className="flex-1">{formatEnglishDate(item.created_at)}</div>
-                            )
-                        }
-                        {
                             type === "purchases" && (
-                                <div className="flex-1">{formatEnglishDate(item.created_at)}</div>
+                                <div className="flex-1">{dayjs(item.created_at).format('YYYY-MM-DD HH:mm:ss')}</div>
                             )
                         }
                         {
                             type === "payouts" && (
-                                <div className="flex-1">{formatEnglishDate(item.updated_at)}</div>
+                                <div className="flex-1 whitespace-nowrap">{dayjs(item.created_at).format('YYYY-MM-DD HH:mm:ss')}</div>
                             )
                         }
-                        {
-                            type === "winning" && (
-                                <div className="flex-1 justify-end">{item.points} points</div>
-                            )
-                        }
+                      
+                        
                         {
                             type === "purchases" && (
                                 <>
@@ -195,7 +179,7 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                             type === "payouts" && (
                                 <>
                                     <div className="flex-1 flex items-center gap-2">
-                                        X {item.amount} 
+                                        X {item.spin} 
                                     </div>
                                     <div className="flex-1 flex items-center gap-2">
                                         {item.amount} MON

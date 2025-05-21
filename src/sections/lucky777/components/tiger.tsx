@@ -340,8 +340,14 @@ export default memo(function Tiger(props: any) {
       return;
     }
 
+
     if (!spinUserData?.spin_balance || spinUserData?.spin_balance <= 0) {
       toast.fail({ title: 'No spins left' });
+      return;
+    }
+
+    if (spinUserData?.points_balance < multiple) {
+      toast.fail({ title: 'No enough balance' });
       return;
     }
 
