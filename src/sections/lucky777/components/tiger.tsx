@@ -488,7 +488,7 @@ export default memo(function Tiger(props: any) {
         marginBottom: '-2px',
         width: '765px',
         height: '710px',
-        transform: `translate(-50%, 0) scale(${Math.min(window.innerHeight / 1200, 2)})`,
+        transform: `translate(-50%, 0) scale(${Math.min(window.innerHeight / 1000, 2)})`,
         transformOrigin: 'bottom center'
       }}>
         <Notice />
