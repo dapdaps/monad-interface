@@ -5,6 +5,7 @@ import { useAccount } from "wagmi";
 import { toast } from "react-toastify";
 import { formatEnglishDate, getUTCDatetime } from "@/utils/date";
 import Empty from "@/components/empty";
+import dayjs from "dayjs";
 
 const IconClose = () => (
     <div className="mt-[15px] mr-[15px]">
@@ -49,27 +50,24 @@ const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
                         {/* <button className={"w-[120px] h-[30px] text-black font-bold rounded-l-[4px] " + (activeTab === "winning" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("winning")}>
                             Records
                         </button> */}
-                        <button className={"w-[120px] h-[30px] text-black font-bold rounded-l-[4px] " + (activeTab === "payouts" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("payouts")}>
+                        <button className={"w-[120px] h-[30px] text-black font-bold rounded-[4px] " + (activeTab === "payouts" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("payouts")}>
                             Result
                         </button>
-                        <button className={"w-[120px] h-[30px] text-black font-bold rounded-r-[4px] " + (activeTab === "purchases" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("purchases")}>
+                        <button className={"w-[120px] ml-2 h-[30px] text-black font-bold rounded-[4px] " + (activeTab === "purchases" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("purchases")}>
                             Recharge
                         </button>
                     </div>
 
-                    <div className="flex items-center gap-2 cursor-pointer absolute top-[60px] right-[35px]">
-                        <div 
-                            className={`w-4 h-4 rounded-full border-2 border-[#8e90bd] cursor-pointer ${winningOnly ? "bg-[#BFFF60]" : "bg-[#00000080]"}`}
-                            onClick={() => setWinningOnly(!winningOnly)}
-                        />
-                        <span className="text-[#8e90bd]">Winning Only</span>
-                    </div>
-
-                    <div className="w-full" style={{
-                        display: activeTab === "winning" ? 'block' : 'none',
-                    }}>
-                        <List type="winning"  winningOnly={winningOnly}/>
-                    </div>
+                    {
+                        activeTab === "payouts" && (
+                            <div onClick={() => setWinningOnly(!winningOnly)} className="flex items-center gap-2 cursor-pointer absolute top-[60px] right-[35px]">
+                                <div 
+                                    className={`w-4 h-4 rounded-full border-2 border-[#8e90bd] cursor-pointer ${winningOnly ? "bg-[#BFFF60]" : "bg-[#00000080]"}`}
+                                />
+                                <span className="text-[#8e90bd]">Winning Only</span>
+                            </div>
+                        )
+                    }
 
                     <div className="w-full" style={{
                         display: activeTab === "purchases" ? 'block' : 'none',
@@ -89,9 +87,8 @@ const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
 };
 
 const urlMap: any = {
-    winning: "/game/draw/records",
     purchases: "/game/purchase/records",
-    payouts: "/game/reward/records",
+    payouts: "/game/draw/records",
 }
 
 function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
@@ -125,18 +122,13 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
 
     return (
         <div className="w-full mt-[42px] min-h-[340px]">
-            <div className="flex px-6 py-3 text-[#A6A6DB] font-bold-[300] border-b border-[#414266]">
-                <div className="flex-1">Time</div>
-                {
-                    type === "winning" && (
-                        <div className="flex-1">Result</div>
-                    )
-                }
+            <div className="flex px-6 py-3 gap-[30px] text-[#A6A6DB] font-bold-[300] border-b border-[#414266]">
+                <div className="w-[160px]">Time</div>
                 {
                     type === "purchases" && (
                         <>
                             <div className="flex-1">Recharged</div>
-                            <div className="flex-1">State</div>
+                            <div className="flex-1 text-right">State</div>
                         </>
                     )
                 }
@@ -145,40 +137,32 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                         <>
                             <div className="flex-1">Consumption</div>
                             <div className="flex-1">Result</div>
-                            <div className="flex-1">State</div>
+                            <div className="flex-1 text-right">State</div>
                         </>
                     )
                 }
             </div>
             <div className="max-h-[340px] overflow-y-auto">
                 {data.map((item, idx) => (
-                    <div key={item.id} className="flex px-6 py-3 text-white text-[12px] border-b border-[#414266] items-center">
+                    <div key={item.id} className={`flex px-6 py-3 gap-[30px] text-white text-[12px] items-center ${idx % 2 !== 0 ? '' : 'bg-[#0000001A]'}`}>
 
                         {
-                            type === "winning" && (
-                                <div className="flex-1">{formatEnglishDate(item.created_at)}</div>
-                            )
-                        }
-                        {
                             type === "purchases" && (
-                                <div className="flex-1">{formatEnglishDate(item.created_at)}</div>
+                                <div className="w-[160px]">{dayjs(item.created_at).format('YYYY-MM-DD HH:mm:ss')}</div>
                             )
                         }
                         {
                             type === "payouts" && (
-                                <div className="flex-1">{formatEnglishDate(item.updated_at)}</div>
+                                <div className="w-[160px] whitespace-nowrap">{dayjs(item.created_at).format('YYYY-MM-DD HH:mm:ss')}</div>  
                             )
                         }
-                        {
-                            type === "winning" && (
-                                <div className="flex-1 justify-end">{item.points} points</div>
-                            )
-                        }
+                      
+                        
                         {
                             type === "purchases" && (
                                 <>
                                     <div className="flex-1">{item.amount} MON</div>
-                                    <div className="flex-1 flex items-center gap-2">
+                                    <div className="flex-1 flex items-center gap-2 justify-end">
                                         <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
                                         </svg>
@@ -195,16 +179,16 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                             type === "payouts" && (
                                 <>
                                     <div className="flex-1 flex items-center gap-2">
-                                        X {item.amount} 
+                                        X {item.spin} 
                                     </div>
-                                    <div className="flex-1 flex items-center gap-2">
+                                    <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
                                         {item.amount} MON
                                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <circle cx="10" cy="10" r="10" fill="#836EF9" />
                                             <path d="M9.99996 4C8.26731 4 4 8.2672 4 9.99996C4 11.7327 8.26731 16 9.99996 16C11.7326 16 16 11.7326 16 9.99996C16 8.26727 11.7327 4 9.99996 4ZM9.06497 13.431C8.33432 13.2319 6.36993 9.79563 6.56906 9.06498C6.76819 8.33429 10.2044 6.36992 10.935 6.56905C11.6657 6.76815 13.6301 10.2043 13.431 10.935C13.2318 11.6657 9.79563 13.6301 9.06497 13.431Z" fill="white" />
                                         </svg>
                                     </div>
-                                    <div className="flex-1 flex items-center gap-2">
+                                    <div className="flex-1 flex items-center gap-2 justify-end">
                                         <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
                                         </svg>
