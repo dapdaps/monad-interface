@@ -15,13 +15,6 @@ const IconClose = () => (
     </div>
 );
 
-const mockData = [
-    { time: "2025-05-20 14:53:23", result: "200 points", state: "success" },
-    { time: "2025-05-20 14:53:23", result: "200 points", state: "success" },
-    { time: "2025-05-20 14:53:23", result: "1 MON", state: "pending" },
-];
-
-
 interface HistoryModalProps {
     open: boolean;
     onClose: () => void;
@@ -105,7 +98,7 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                 toast.error(res.message);
                 return;
             }
-            setData(res.data.filter((item: any) => Number(item.amount) > 0));
+            setData(winningOnly ? res.data.filter((item: any) => Number(item.amount) > 0) : res.data);
             setLoading(false);
         });
     }, [type, address, winningOnly]);

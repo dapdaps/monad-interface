@@ -26,7 +26,7 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     icon: "/images/lucky777/logo/molandak.svg",
     value: SpinCategory.Bear,
     centerScale: 0.85,
-    centerY: 0,
+    centerY: 5,
   },
   [SpinCategory.Bee]: {
     code: "4",
