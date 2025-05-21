@@ -39,12 +39,12 @@ const RulesModal = ({ open, onClose }: RulesModalProps) => {
                         <div className="space-y-[12px]">
                             <div className="flex items-center gap-2">
                                 <span className="w-[6px] h-[6px] rounded-1 bg-[#BFFF60]"></span>
-                                <span>1 free spin per day</span>
+                                <span><span className="font-bold">1 free</span>  spin per day</span>
                             </div>
 
                             <div className="flex items-center gap-2">
                                 <span className="w-[6px] h-[6px] rounded-1 bg-[#BFFF60]"></span>
-                                <span>After that, each spin costs 0.1 MON</span>
+                                <span>After that, each spin costs <span className="font-bold">0.1 MON</span></span>
                             </div>
 
                             <div className="flex items-center gap-2">
@@ -54,19 +54,19 @@ const RulesModal = ({ open, onClose }: RulesModalProps) => {
 
                             <div className="flex items-center gap-2">
                                 <span className="w-[6px] h-[6px] rounded-1 bg-[#BFFF60]"></span>
-                                <span>🎯 3 of a kind = Big Win</span>
+                                <span>🎯 <span className="font-bold">3 of a kind = Big Win</span></span>
                             </div>
 
                             <div className="ml-[20px] space-y-[8px]">
                                 <div className="flex items-center gap-2 relative">
                                     <img src="/images/lucky777/logo/madas.svg" alt="NASDA" className="w-[20px] mr-[5px]" />
                                     {X3Icon}
-                                    <span>NASDA: 8 MON</span>
+                                    <span>NASDA: <span className="font-bold">8 MON</span></span>
                                 </div>
                                 <div className="flex items-center gap-2 relative">
                                     <img src="/images/lucky777/logo/monad.svg" alt="Monad" className="w-[20px] mr-[5px]" />
                                     {X3Icon}
-                                    <span>Monad: 4 MON</span>
+                                    <span>Monad: <span className="font-bold">4 MON</span></span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <img src="/images/lucky777/logo/molandak.svg" alt="Molandak" className="w-[20px]" />
@@ -76,48 +76,48 @@ const RulesModal = ({ open, onClose }: RulesModalProps) => {
                                         {X3Icon}
                                     </div>
 
-                                    <span>Molandak / Moyaki / Chog: 2 MON</span>
+                                    <span>Molandak / Moyaki / Chog: <span className="font-bold">2 MON</span></span>
                                 </div>
                             </div>
 
                             <div className="flex items-center gap-2">
                                 <span className="w-[6px] h-[6px] rounded-1 bg-[#BFFF60]"></span>
-                                <span>🎁 2 of a kind = Mini Win</span>
+                                <span>🎁 <span className="font-bold">2 of a kind = Mini Win</span></span>
                             </div>
 
                             <div className="ml-[20px] space-y-[8px]">
                                 <div className="flex items-center gap-2 relative">
                                     <img src="/images/lucky777/logo/madas.svg" alt="NASDA" className="w-[24px] mr-[5px]" />
-                                    {X3Icon}
-                                    <span>NASDA: 1 MON</span>
+                                    {x2Icon}
+                                    <span>NASDA: <span className="font-bold">1 MON</span></span>
                                 </div>
                                 <div className="flex items-center gap-2 relative">
                                     <img src="/images/lucky777/logo/monad.svg" alt="Monad" className="w-[24px] mr-[5px]" />
-                                    {X3Icon}
-                                    <span>Monad: 0.5 MON</span>
+                                    {x2Icon}
+                                    <span>Monad: <span className="font-bold">0.5 MON</span></span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <img src="/images/lucky777/logo/molandak.svg" alt="Molandak" className="w-[20px]" />
                                     <img src="/images/lucky777/logo/moyaki.svg" alt="Molandak" className="w-[20px]" />
                                     <div className="relative">
                                         <img src="/images/lucky777/logo/chog.svg" alt="Molandak" className="w-[20px] mr-[5px]" />
-                                        {X3Icon}
+                                        {x2Icon}
                                     </div>
-                                    <span>Molandak / Moyaki / Chog: 0.3 MON</span>
+                                    <span>Molandak / Moyaki / Chog: <span className="font-bold">0.3 MON</span></span>
                                 </div>
                             </div>
 
                             <div className="flex items-center gap-2">
                                 <span className="w-[6px] h-[6px] rounded-1 bg-[#BFFF60]"></span>
-                                <span> 🌀 Multiplier Mode</span>
+                                <span> 🌀 <span className="font-bold">Multiplier Mode</span></span>
                             </div>
 
                             <div className="ml-[20px] space-y-[8px]">
                                 <div>Want to go bigger?</div>
-                                <div>You can select 10x or 50x mode before spinning:</div>
-                                <div>• Spin cost: 10x or 50x spins</div>
-                                <div>• Rewards: 10x or 50x base prizes</div>
-                                <div>Example: Hit 3 NASDA on 10x mode = 80 MON</div>
+                                <div>You can select <span className="font-bold">10x or 50x</span> mode before spinning:</div>
+                                <div>• Spin cost: <span className="font-bold">10x or 50x</span> spins</div>
+                                <div>• Rewards: <span className="font-bold">10x or 50x</span> base prizes</div>
+                                <div>Example: Hit 3 NASDA on 10x mode = <span className="font-bold">80 MON</span></div>
                             </div>
 
                             <div className="flex items-center gap-2 mt-[20px] text-[#A6A6DB] italic">
@@ -139,8 +139,15 @@ export default RulesModal;
 
 
 const X3Icon = <div className="absolute bottom-[-5px] left-[10px]">
-        <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="0.5" y="1.8335" width="20.3333" height="12.3333" rx="6.16667" fill="#BFFF60" stroke="black" />
-            <path d="M4.09 11L6.44 7.94L6.42 8.61L4.18 5.66H5.57L7.14 7.76H6.61L8.19 5.66H9.54L7.28 8.61L7.29 7.94L9.63 11H8.22L6.57 8.77L7.09 8.84L5.47 11H4.09ZM12.3724 11.1C11.8791 11.1 11.3958 11.03 10.9224 10.89C10.4558 10.7433 10.0624 10.5433 9.74242 10.29L10.3024 9.28C10.5558 9.48667 10.8624 9.65333 11.2224 9.78C11.5824 9.90667 11.9591 9.97 12.3524 9.97C12.8191 9.97 13.1824 9.87667 13.4424 9.69C13.7024 9.49667 13.8324 9.23667 13.8324 8.91C13.8324 8.59 13.7124 8.33667 13.4724 8.15C13.2324 7.96333 12.8458 7.87 12.3124 7.87H11.6724V6.98L13.6724 4.6L13.8424 5.09H10.0824V4H14.8524V4.87L12.8524 7.25L12.1724 6.85H12.5624C13.4224 6.85 14.0658 7.04333 14.4924 7.43C14.9258 7.81 15.1424 8.3 15.1424 8.9C15.1424 9.29333 15.0424 9.65667 14.8424 9.99C14.6424 10.3233 14.3358 10.5933 13.9224 10.8C13.5158 11 12.9991 11.1 12.3724 11.1Z" fill="black" />
-        </svg>
-    </div>
+    <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0.5" y="1.8335" width="20.3333" height="12.3333" rx="6.16667" fill="#BFFF60" stroke="black" />
+        <path d="M4.09 11L6.44 7.94L6.42 8.61L4.18 5.66H5.57L7.14 7.76H6.61L8.19 5.66H9.54L7.28 8.61L7.29 7.94L9.63 11H8.22L6.57 8.77L7.09 8.84L5.47 11H4.09ZM12.3724 11.1C11.8791 11.1 11.3958 11.03 10.9224 10.89C10.4558 10.7433 10.0624 10.5433 9.74242 10.29L10.3024 9.28C10.5558 9.48667 10.8624 9.65333 11.2224 9.78C11.5824 9.90667 11.9591 9.97 12.3524 9.97C12.8191 9.97 13.1824 9.87667 13.4424 9.69C13.7024 9.49667 13.8324 9.23667 13.8324 8.91C13.8324 8.59 13.7124 8.33667 13.4724 8.15C13.2324 7.96333 12.8458 7.87 12.3124 7.87H11.6724V6.98L13.6724 4.6L13.8424 5.09H10.0824V4H14.8524V4.87L12.8524 7.25L12.1724 6.85H12.5624C13.4224 6.85 14.0658 7.04333 14.4924 7.43C14.9258 7.81 15.1424 8.3 15.1424 8.9C15.1424 9.29333 15.0424 9.65667 14.8424 9.99C14.6424 10.3233 14.3358 10.5933 13.9224 10.8C13.5158 11 12.9991 11.1 12.3724 11.1Z" fill="black" />
+    </svg>
+</div>
+
+const x2Icon = <div className="absolute bottom-[-5px] left-[10px]">
+    <svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="0.5" y="1.83398" width="20.3333" height="12.3333" rx="6.16667" fill="#BFFF60" stroke="black" />
+        <path d="M6.09 11L8.44 7.94L8.42 8.61L6.18 5.66H7.57L9.14 7.76H8.61L10.19 5.66H11.54L9.28 8.61L9.29 7.94L11.63 11H10.22L8.57 8.77L9.09 8.84L7.47 11H6.09ZM12.1117 11V10.13L14.8917 7.49C15.1251 7.27 15.2984 7.07667 15.4117 6.91C15.5251 6.74333 15.5984 6.59 15.6317 6.45C15.6717 6.30333 15.6917 6.16667 15.6917 6.04C15.6917 5.72 15.5817 5.47333 15.3617 5.3C15.1417 5.12 14.8184 5.03 14.3917 5.03C14.0517 5.03 13.7417 5.09 13.4617 5.21C13.1884 5.33 12.9517 5.51333 12.7517 5.76L11.8417 5.06C12.1151 4.69333 12.4817 4.41 12.9417 4.21C13.4084 4.00333 13.9284 3.9 14.5017 3.9C15.0084 3.9 15.4484 3.98333 15.8217 4.15C16.2017 4.31 16.4917 4.54 16.6917 4.84C16.8984 5.14 17.0017 5.49667 17.0017 5.91C17.0017 6.13667 16.9717 6.36333 16.9117 6.59C16.8517 6.81 16.7384 7.04333 16.5717 7.29C16.4051 7.53667 16.1617 7.81333 15.8417 8.12L13.4517 10.39L13.1817 9.9H17.2717V11H12.1117Z" fill="black" />
+    </svg>
+</div>
