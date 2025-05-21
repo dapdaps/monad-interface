@@ -346,7 +346,7 @@ export default memo(function Tiger(props: any) {
       return;
     }
 
-    if (spinUserData?.points_balance < multiple) {
+    if (spinUserData?.spin_balance < multiple) {
       toast.fail({ title: 'No enough balance' });
       return;
     }
@@ -425,10 +425,6 @@ export default memo(function Tiger(props: any) {
     };
   }, []);
 
-  const pointProgress = useMemo(() => {
-    return Math.floor(((spinUserData?.points_balance || 0) % MAX_POINT) / MAX_POINT * 20);
-  }, [spinUserData]);
-
   useEffect(() => {
     const preloadImages = [
       '/images/lucky777/spin-btn-press.svg',
@@ -478,9 +474,7 @@ export default memo(function Tiger(props: any) {
   }, [soundStore]);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center pt-[88px] ">
-      
-      
+    <div className="w-full flex flex-col items-center justify-center pt-[88px]">
       <div style={{
         position: 'absolute',
         left: '50%',
@@ -687,7 +681,9 @@ export default memo(function Tiger(props: any) {
             type="button"
             data-click-sound
             className="group absolute bottom-[280px] left-[190px] z-[4] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x1.svg')] bg-no-repeat bg-center bg-contain "
-            animate={{ backgroundImage: multiple === 1 ? "url('/images/lucky777/multiple/x1-press.svg')" : "url('/images/lucky777/multiple/x1.svg')" }}
+            animate={{ backgroundImage: 
+              spinUserData?.spin_balance < 1 ? "url('/images/lucky777/multiple/x1.svg')" : multiple === 1 ? "url('/images/lucky777/multiple/x1-press.svg')" : "url('/images/lucky777/multiple/x1.svg')" 
+            }}
             onClick={() => {
               setMultiple(1);
             }}
@@ -701,8 +697,12 @@ export default memo(function Tiger(props: any) {
             type="button"
             data-click-sound
             className="absolute group bottom-[280px] left-[80px] z-[4] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x10.svg')] bg-no-repeat bg-center bg-contain "
-            animate={{ backgroundImage: multiple === 10 ? "url('/images/lucky777/multiple/x10-press.svg')" : "url('/images/lucky777/multiple/x10.svg')" }}
+            animate={{ backgroundImage: 
+              spinUserData?.spin_balance < 10 ? "url('/images/lucky777/multiple/x10-disabled.svg')" : multiple === 10 ? "url('/images/lucky777/multiple/x10-press.svg')" : "url('/images/lucky777/multiple/x10.svg')" }}
             onClick={() => {
+              if (spinUserData?.spin_balance < 10) {
+                return;
+              }
               setMultiple(10);
             }}
           >
@@ -715,8 +715,12 @@ export default memo(function Tiger(props: any) {
             type="button"
             data-click-sound
             className="absolute group bottom-[320px] left-[150px] z-[2] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x50.svg')] bg-no-repeat bg-center bg-contain "
-            animate={{ backgroundImage: multiple === 50 ? "url('/images/lucky777/multiple/x50-press.svg')" : "url('/images/lucky777/multiple/x50.svg')" }}
+            animate={{ backgroundImage: 
+              spinUserData?.spin_balance < 50 ? "url('/images/lucky777/multiple/x50-disabled.svg')" : multiple === 50 ? "url('/images/lucky777/multiple/x50-press.svg')" : "url('/images/lucky777/multiple/x50.svg')" }}
             onClick={() => {
+              if (spinUserData?.spin_balance < 50) {
+                return;
+              }
               setMultiple(50);
             }}
           >
