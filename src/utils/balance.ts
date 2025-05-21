@@ -46,7 +46,7 @@ export function percentFormated(
   return (Number(value) * (needMul ? 100 : 1)).toFixed(2) + "%";
 }
 
-const addressReg = /(\w{6})(.*)(\w{4})/;
+const addressReg = /(\w{5})(.*)(\w{5})/;
 export function addressFormated(address: string) {
   if (!address) {
     return "";

@@ -153,7 +153,7 @@ const nextConfig = {
       {
         source: '/:all*(svg|jpg|jpeg|png|gif|webp|ico|js|css|woff2|woff|ttf|eot)',
         headers: [
-          {
+          { 
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
           },

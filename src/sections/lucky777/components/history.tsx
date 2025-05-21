@@ -27,11 +27,8 @@ interface HistoryModalProps {
 }
 
 const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
-
-    const [activeTab, setActiveTab] = useState("winning");
-
-    useEffect(() => {
-    }, [open]);
+    const [activeTab, setActiveTab] = useState("payouts");
+    const [winningOnly, setWinningOnly] = useState(false);
 
     return (
         <Modal
@@ -49,33 +46,41 @@ const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
                     </div>
 
                     <div className="flex mt-[20px] cursor-pointer">
-                        <button className={"w-[120px] h-[30px] text-black font-bold rounded-l-[4px] " + (activeTab === "winning" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("winning")}>
+                        {/* <button className={"w-[120px] h-[30px] text-black font-bold rounded-l-[4px] " + (activeTab === "winning" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("winning")}>
                             Records
-                        </button>
-                        <button className={"w-[120px] h-[30px] text-black font-bold " + (activeTab === "payouts" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("payouts")}>
-                            Auto-redeem
+                        </button> */}
+                        <button className={"w-[120px] h-[30px] text-black font-bold rounded-l-[4px] " + (activeTab === "payouts" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("payouts")}>
+                            Result
                         </button>
                         <button className={"w-[120px] h-[30px] text-black font-bold rounded-r-[4px] " + (activeTab === "purchases" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("purchases")}>
                             Recharge
                         </button>
                     </div>
 
+                    <div className="flex items-center gap-2 cursor-pointer absolute top-[60px] right-[35px]">
+                        <div 
+                            className={`w-4 h-4 rounded-full border-2 border-[#8e90bd] cursor-pointer ${winningOnly ? "bg-[#BFFF60]" : "bg-[#00000080]"}`}
+                            onClick={() => setWinningOnly(!winningOnly)}
+                        />
+                        <span className="text-[#8e90bd]">Winning Only</span>
+                    </div>
+
                     <div className="w-full" style={{
                         display: activeTab === "winning" ? 'block' : 'none',
                     }}>
-                        <List type="winning" />
+                        <List type="winning"  winningOnly={winningOnly}/>
                     </div>
 
                     <div className="w-full" style={{
                         display: activeTab === "purchases" ? 'block' : 'none',
                     }}>
-                        <List type="purchases" />
+                        <List type="purchases"  winningOnly={winningOnly}/>
                     </div>
 
                     <div className="w-full" style={{
                         display: activeTab === "payouts" ? 'block' : 'none',
                     }}>
-                        <List type="payouts" />
+                        <List type="payouts"  winningOnly={winningOnly}/>
                     </div>
                 </div>
             </div>
@@ -89,7 +94,7 @@ const urlMap: any = {
     payouts: "/game/reward/records",
 }
 
-function List({ type }: { type: string }) {
+function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
     const [data, setData] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const { address } = useAccount();
@@ -103,10 +108,10 @@ function List({ type }: { type: string }) {
                 toast.error(res.message);
                 return;
             }
-            setData(res.data);
+            setData(res.data.filter((item: any) => Number(item.amount) > 0));
             setLoading(false);
         });
-    }, [type, address]);
+    }, [type, address, winningOnly]);
 
     if (!loading && data.length === 0) {
         return (
@@ -130,15 +135,16 @@ function List({ type }: { type: string }) {
                 {
                     type === "purchases" && (
                         <>
-                            <div className="flex-1">Item</div>
-                            <div className="flex-1">Paid</div>
+                            <div className="flex-1">Recharged</div>
+                            <div className="flex-1">State</div>
                         </>
                     )
                 }
                 {
                     type === "payouts" && (
                         <>
-                            <div className="flex-1">Amount</div>
+                            <div className="flex-1">Consumption</div>
+                            <div className="flex-1">Result</div>
                             <div className="flex-1">State</div>
                         </>
                     )
@@ -171,14 +177,26 @@ function List({ type }: { type: string }) {
                         {
                             type === "purchases" && (
                                 <>
-                                    <div className="flex-1">{item.spin} Spins</div>
                                     <div className="flex-1">{item.amount} MON</div>
+                                    <div className="flex-1 flex items-center gap-2">
+                                        <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
+                                        </svg>
+                                        <a href={`https://testnet.monvision.io/tx/${item.tx_hash}`} target="_blank" rel="noreferrer">
+                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M5.36364 9.18182L13 1M13 1H7M13 1V7M4.81818 1H1V13H13V9.18182" stroke="#A9ADB8" />
+                                            </svg>
+                                        </a>
+                                    </div>
                                 </>
                             )
                         }
                         {
                             type === "payouts" && (
                                 <>
+                                    <div className="flex-1 flex items-center gap-2">
+                                        X {item.amount} 
+                                    </div>
                                     <div className="flex-1 flex items-center gap-2">
                                         {item.amount} MON
                                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
