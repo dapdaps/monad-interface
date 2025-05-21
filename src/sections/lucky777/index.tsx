@@ -11,6 +11,8 @@ const LuckyBeraView: React.FC<any> = () => {
     lastSpinResult,
     handleSpinResult,
     getSpinUserData,
+    multiple,
+    setMultiple,
   } = useLuckyBera();
   const { visible, toggleVisible } = useBuyHoney();
 
@@ -27,6 +29,8 @@ const LuckyBeraView: React.FC<any> = () => {
           getSpinUserData={getSpinUserData}
           handleSpinResult={handleSpinResult}
           toggleOutHoneyVisible={toggleVisible}
+          multiple={multiple}
+          setMultiple={setMultiple}
         />
       </LoginContainer>
     </div>
@@ -34,3 +38,5 @@ const LuckyBeraView: React.FC<any> = () => {
 };
 
 export default LuckyBeraView;
+
+

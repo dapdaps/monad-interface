@@ -14,6 +14,7 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import RulesModal from './rules';
 import { useSoundStore } from '@/stores/sound';
+import Notice from './notice';
 dayjs.extend(duration);
 
 function getTimeLeftToUTC24() {
@@ -58,6 +59,8 @@ export default memo(function Tiger(props: any) {
     spinUserData,
     handleSpinResult,
     getSpinUserData,
+    multiple,
+    setMultiple,
   } = props;
 
   const [openBuyTimes, setOpenBuyTimes] = useState(false);
@@ -72,6 +75,7 @@ export default memo(function Tiger(props: any) {
   const [pressed1, setPressed1] = useState(false);
   const [pressed2, setPressed2] = useState(false);
   const [pressed3, setPressed3] = useState(false);
+  
   const soundStore = useSoundStore()
 
   const [leftWheel, leftWheelAnimate] = useAnimate();
@@ -113,7 +117,7 @@ export default memo(function Tiger(props: any) {
   const animateCoin = (coin: HTMLDivElement, startX: number, startY: number) => {
     const horizontalDistance = (Math.random() - 0.5) * 400;
     const maxHeight = -(Math.random() * 400 + 300);
-   
+
 
     // Movement and rotation animation keyframes
     const moveKeyframes = [
@@ -344,7 +348,6 @@ export default memo(function Tiger(props: any) {
     setPressed3(true);
     setTimeout(() => {
       setPressed3(false)
-      console.log('setPressed3(false)')
     }, 7500);
 
     setAnimateSpinning(true);
@@ -382,21 +385,22 @@ export default memo(function Tiger(props: any) {
       machineSoundAudio.currentTime = 0;
     }
 
-    if (res.draw_points > 0) {
-      toast.success({ title: `Get ${res.draw_points} points` });
-      setTitle('WON ' + res.draw_points + ' !');
+    if (Number(res.draw_amount) > 0) {
+      toast.success({ title: `Get ${res.draw_amount} MON` });
+      setTitle('WON ' + res.draw_amount + ' MON!');
       playSound(2)
+      startCoinExplosion(res);
     } else {
       setTitle(DEFAULT_UNLUCKY_TITLE);
     }
 
-    if (Number(res.draw_code) % 111 === 0 || (res.points_balance >= MAX_POINT && spinUserData?.points_balance < MAX_POINT)) {
-      startCoinExplosion(res);
-    }
+    // if (Number(res.draw_code) % 111 === 0 || (res.points_balance >= MAX_POINT && spinUserData?.points_balance < MAX_POINT)) {
+    //   startCoinExplosion(res);
+    // }
 
-    if (res.points_balance >= MAX_POINT && spinUserData?.points_balance < MAX_POINT) {
-      setTitle('WON 1 MON!');
-    }
+    // if (res.points_balance >= MAX_POINT && spinUserData?.points_balance < MAX_POINT) {
+    //   setTitle('WON 1 MON!');
+    // }
 
     setAnimateSpinning(false);
 
@@ -422,7 +426,10 @@ export default memo(function Tiger(props: any) {
     const preloadImages = [
       '/images/lucky777/spin-btn-press.svg',
       '/images/lucky777/rules-press.svg',
-      '/images/lucky777/history-2-press.svg'
+      '/images/lucky777/history-2-press.svg',
+      '/images/lucky777/multiple/x1-press.svg',
+      '/images/lucky777/multiple/x10-press.svg',
+      '/images/lucky777/multiple/x50-press.svg',
     ];
 
     preloadImages.forEach(src => {
@@ -465,16 +472,19 @@ export default memo(function Tiger(props: any) {
 
   return (
     <div className="w-full flex flex-col items-center justify-center pt-[88px] ">
+      
+      
       <div style={{
         position: 'absolute',
         left: '50%',
         bottom: 0,
         marginBottom: '-2px',
         width: '765px',
-        height: '767px',
+        height: '710px',
         transform: `translate(-50%, 0) scale(${Math.min(window.innerHeight / 1200, 2)})`,
         transformOrigin: 'bottom center'
       }}>
+        <Notice />
         <div className="absolute top-0 left-0 w-full h-full">
           <img src="/images/lucky777/slot-machine.svg" alt="" className="w-full" />
         </div>
@@ -501,7 +511,7 @@ export default memo(function Tiger(props: any) {
           </motion.div>
         </div>
 
-        <div className='absolute font-HackerNoonV2 top-[145px] left-1/2 -translate-x-1/2 z-[2] w-[514px] h-[72px] flex flex-col items-center'>
+        {/* <div className='absolute font-HackerNoonV2 top-[145px] left-1/2 -translate-x-1/2 z-[2] w-[514px] h-[72px] flex flex-col items-center'>
           <div className='text-[20px]'>
             <span className='text-[#A5FFFD]'>{numberFormatter((spinUserData?.points_balance || 0) % MAX_POINT, 0, true)} /</span> <span className='text-[#A5FFFD] opacity-50'>{numberFormatter(MAX_POINT, 0, true)}</span>
           </div>
@@ -517,9 +527,9 @@ export default memo(function Tiger(props: any) {
               ))}
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <div className="absolute w-[386px] h-[168px] left-1/2 top-[255px] -translate-x-1/2 overflow-hidden">
+        <div className="absolute w-[386px] h-[168px] left-1/2 top-[148px] -translate-x-1/2 overflow-hidden">
           {/*#region Left*/}
 
           <motion.div
@@ -630,7 +640,7 @@ export default memo(function Tiger(props: any) {
         </div>
 
         <motion.div
-          className="absolute top-[310px] left-[130px] z-[2] w-[64px] h-[50px] bg-[url('/images/lucky777/left-arrow.svg')] bg-top bg-contain bg-no-repeat"
+          className="absolute top-[205px] left-[130px] z-[2] w-[64px] h-[50px] bg-[url('/images/lucky777/left-arrow.svg')] bg-top bg-contain bg-no-repeat"
           key={spinning ? "spinning-left" : "static-left"}
           style={{
             transformOrigin: "left center",
@@ -647,7 +657,7 @@ export default memo(function Tiger(props: any) {
         />
 
         <motion.div
-          className="absolute top-[310px] right-[120px] z-[2] w-[64px] h-[50px] bg-[url('/images/lucky777/right-arrow.svg')] bg-top bg-contain bg-no-repeat"
+          className="absolute top-[205px] right-[120px] z-[2] w-[64px] h-[50px] bg-[url('/images/lucky777/right-arrow.svg')] bg-top bg-contain bg-no-repeat"
           key={spinning ? "spinning-right" : "static-right"}
           style={{
             transformOrigin: "right center",
@@ -663,26 +673,77 @@ export default memo(function Tiger(props: any) {
           }}
         />
 
-        <div data-click-sound className="absolute bottom-[240px] left-1/2 -translate-x-1/2 z-[2] w-[202px] h-[86px] flex flex-col items-center  max-w-full  bg-top bg-contain bg-no-repeat">
+        <div>
+          <motion.button
+            type="button"
+            data-click-sound
+            className="group absolute bottom-[280px] left-[190px] z-[4] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x1.svg')] bg-no-repeat bg-center bg-contain "
+            animate={{ backgroundImage: multiple === 1 ? "url('/images/lucky777/multiple/x1-press.svg')" : "url('/images/lucky777/multiple/x1.svg')" }}
+            onClick={() => {
+              setMultiple(1);
+            }}
+          >
+            <div className="invisible group-hover:visible absolute top-[-120%] z-[10] left-[50%] text-left -translate-x-1/2 border border-[#645E8A] w-[270px] p-[5px_10px] rounded-[6px] text-[#D7D7F6] text-[10px] backdrop-blur-[20px] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.25)]">
+              Selecting x1 will consume a spin 1 times
+              also your winning prize will x1</div>
+          </motion.button>
+
+          <motion.button
+            type="button"
+            data-click-sound
+            className="absolute group bottom-[280px] left-[80px] z-[4] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x10.svg')] bg-no-repeat bg-center bg-contain "
+            animate={{ backgroundImage: multiple === 10 ? "url('/images/lucky777/multiple/x10-press.svg')" : "url('/images/lucky777/multiple/x10.svg')" }}
+            onClick={() => {
+              setMultiple(10);
+            }}
+          >
+            <div className="invisible group-hover:visible absolute top-[-120%] z-[10] left-[50%] text-left -translate-x-1/2 border border-[#645E8A] w-[270px] p-[5px_10px] rounded-[6px] text-[#D7D7F6] text-[10px] backdrop-blur-[20px] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.25)]">
+              Selecting x10 will consume a spin 10 times
+              also your winning prize will x10</div>
+          </motion.button>
+
+          <motion.button
+            type="button"
+            data-click-sound
+            className="absolute group bottom-[320px] left-[150px] z-[2] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x50.svg')] bg-no-repeat bg-center bg-contain "
+            animate={{ backgroundImage: multiple === 50 ? "url('/images/lucky777/multiple/x50-press.svg')" : "url('/images/lucky777/multiple/x50.svg')" }}
+            onClick={() => {
+              setMultiple(50);
+            }}
+          >
+            <div className="invisible group-hover:visible absolute top-[-120%] z-[10] left-[50%] text-left -translate-x-1/2 border border-[#645E8A] w-[270px] p-[5px_10px] rounded-[6px] text-[#D7D7F6] text-[10px] backdrop-blur-[20px] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.25)]">
+              Selecting x50 will consume a spin 50 times
+              also your winning prize will x50</div>
+          </motion.button>
+        </div>
+
+        <div data-click-sound className="absolute bottom-[290px] left-1/2 -translate-x-1/2 z-[2] w-[202px] h-[86px] flex flex-col items-center  max-w-full  bg-top bg-contain bg-no-repeat">
           <motion.button
             ref={spinRef}
             type="button"
             // disabled={spinning}  
-            className="w-[202px] h-[85px] bg-[url('/images/lucky777/spin-btn.svg')] bg-no-repeat bg-center bg-contain disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-[202px] h-[85px] text-[18px] font-HackerNoonV2 leading-[90%] text-[#000] bg-[url('/images/lucky777/spin-btn.svg')] bg-no-repeat bg-center bg-contain disabled:opacity-50 disabled:cursor-not-allowed"
             animate={{ backgroundImage: pressed3 ? "url('/images/lucky777/spin-btn-press.svg')" : "url('/images/lucky777/spin-btn.svg')" }}
             style={{
               transformOrigin: "center bottom",
               y: 15,
             }}
             onClick={handleSpin}
-          />
+          >
+            <div style={{
+              transform: pressed3 ? 'translateY(-10px)' : 'translateY(-20px)'
+            }}>
+              <div>SPIN</div>
+              <div className="text-[18px]">X {multiple}</div>
+            </div>
+          </motion.button>
         </div>
 
         <div>
           <motion.button
             type="button"
             data-click-sound
-            className="absolute bottom-[270px] right-[140px] z-[2] w-[116px] h-[32px] bg-[url('/images/lucky777/rules.svg')] bg-no-repeat bg-center bg-contain "
+            className="absolute bottom-[320px] right-[140px] z-[2] w-[116px] h-[32px] bg-[url('/images/lucky777/rules.svg')] bg-no-repeat bg-center bg-contain "
             animate={{ backgroundImage: pressed2 ? "url('/images/lucky777/rules-press.svg')" : "url('/images/lucky777/rules.svg')" }}
             onClick={() => {
               setOpenRules(true);
@@ -694,7 +755,7 @@ export default memo(function Tiger(props: any) {
           <motion.button
             type="button"
             data-click-sound
-            className="absolute bottom-[230px] right-[105px] z-[2] w-[136px] h-[32px] bg-[url('/images/lucky777/history-2.svg')] bg-no-repeat bg-center bg-contain"
+            className="absolute bottom-[280px] right-[105px] z-[2] w-[136px] h-[32px] bg-[url('/images/lucky777/history-2.svg')] bg-no-repeat bg-center bg-contain"
             animate={{ backgroundImage: pressed1 ? "url('/images/lucky777/history-2-press.svg')" : "url('/images/lucky777/history-2.svg')" }}
             onClick={() => {
               setOpenHistory(true);
@@ -704,10 +765,10 @@ export default memo(function Tiger(props: any) {
           />
         </div>
 
-        <div className={"absolute bottom-[30px] right-[140px] z-[2] w-[81px] h-[116px] bg-top bg-contain bg-no-repeat " + (spinUserData?.spin_balance > 0 ? "bg-[url('/images/lucky777/switch.svg')]" : "bg-[url('/images/lucky777/switch-no.svg')]")}>
+        <div className={"absolute bottom-[80px] right-[145px] z-[2] w-[81px] h-[116px] bg-top bg-contain bg-no-repeat " + (spinUserData?.spin_balance > 0 ? "bg-[url('/images/lucky777/switch.svg')]" : "bg-[url('/images/lucky777/switch-no.svg')]")}>
         </div>
 
-        <div className="font-HackerNoonV2 w-[309px] h-[93px] absolute bottom-[30px] left-[200px] z-[2] px-[12px] py-[10px]">
+        <div className="font-HackerNoonV2 w-[309px] h-[93px] absolute bottom-[80px] left-[200px] z-[2] px-[12px] py-[10px]">
           <div className="flex items-center justify-between text-[20px]">
             <div className="text-[#A5FFFD] ">Times:</div>
             <div className="text-[#A5FFFD]">{spinUserData?.spin_balance}</div>

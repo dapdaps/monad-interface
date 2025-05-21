@@ -14,6 +14,7 @@ export function useLuckyBera() {
   const toast = useToast();
   const { setLastSpinResult, lastSpinResult } = useLuckyBeraStore();
   const { address } = useAccount();
+  const [ multiple, setMultiple ] = useState(1);
 
 
   const { run: getSpinUserData, data: spinUserData, loading: spinUserDataLoading } = useRequest<SpinUserData, any>(async () => {
@@ -38,7 +39,9 @@ export function useLuckyBera() {
   }, { wait: 5000 });
 
   const { runAsync: handleSpinResult, data: spinResultData, loading: spinResultDataLoading } = useRequestByToken<SpinResultData | boolean, any>(async () => {
-    const res = await post("/game/draw");
+    const res = await post("/game/draw", {
+      spin: multiple,
+    });
     if (res.code !== 200) {
       toast.fail({ title: `Spin failed: ${res.message || res.data}` });
       return false;
@@ -62,5 +65,7 @@ export function useLuckyBera() {
     spinResultData,
     spinResultDataLoading,
     lastSpinResult,
+    multiple,
+    setMultiple,
   };
 }
