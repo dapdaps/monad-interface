@@ -139,5 +139,141 @@ export const monad: { [key: string]: Token } = {
     name: "Anago's Dog Food",
     icon: "/assets/tokens/dogfood.png",
     color: "#78350F"
+  },
+  dump: {
+    address: "0xAbd7AFA2161Eb7254c0a9DbB5fE79216B7c28e03",
+    chainId: CHAIN_ID,
+    symbol: "DUMP",
+    decimals: 18,
+    name: "Anago's Dump",
+    icon: "/assets/tokens/dump.png"
+  },
+  axo: {
+    address: "0x39e95286dD43f8Da34Cbda8e4B656Da9F53Ca644",
+    chainId: CHAIN_ID,
+    symbol: "AXO",
+    decimals: 18,
+    name: "Axolotl",
+    icon: "/assets/tokens/axo.png"
+  },
+  bean: {
+    address: "0x743Cef7Ccc8ac56605c8404607142e5B35EFA11D",
+    chainId: CHAIN_ID,
+    symbol: "BEAN",
+    decimals: 18,
+    name: "BEANAKO",
+    icon: "/assets/tokens/bean.png"
+  },
+  bb: {
+    address: "0x4c10428Ed0410dfb2de62fc007F7c1105aE861e9",
+    chainId: CHAIN_ID,
+    symbol: "BB",
+    decimals: 18,
+    name: "Blue Balls",
+    icon: "/assets/tokens/bb.png"
+  },
+  q: {
+    address: "0x2FA2C507289BE90ca50a8802F8d436d43001b521",
+    chainId: CHAIN_ID,
+    symbol: "Q",
+    decimals: 18,
+    name: "CLOB my quant",
+    icon: "/assets/tokens/q.png"
+  },
+  chad: {
+    address: "0x2BB4219b8e85C111613f3eE192a115676F230d35",
+    chainId: CHAIN_ID,
+    symbol: "CHAD",
+    decimals: 18,
+    name: "Clob Chad",
+    icon: "/assets/tokens/chad.png"
+  },
+  melo: {
+    address: "0x8507F576EB214d172012065d58cfb38a4540b0a6",
+    chainId: CHAIN_ID,
+    symbol: "MELO",
+    decimals: 18,
+    name: "DOG CARAMELO",
+    icon: "/assets/tokens/melo.png"
+  },
+  jml: {
+    address: "0x53abD7e17C8939558BFA80a721E01633A3ef9D5c",
+    chainId: CHAIN_ID,
+    symbol: "JML",
+    decimals: 18,
+    name: "JUMAPEL",
+    icon: "/assets/tokens/jml.png"
+  },
+  jerry: {
+    address: "0xdA054a96254776346386060C480B42A10C870Cd2",
+    chainId: CHAIN_ID,
+    symbol: "JERRY",
+    decimals: 18,
+    name: "Jerry",
+    icon: "/assets/tokens/jerry.png"
+  },
+  monzilla: {
+    address: "0xc89966dc43029904D5Fd86925F0d98607344F759",
+    chainId: CHAIN_ID,
+    symbol: "MONZILLA",
+    decimals: 18,
+    name: "MONZILLA & GRANNY",
+    icon: "/assets/tokens/monzilla.png"
+  },
+  monka: {
+    address: "0xfa47B094A9666422848F459B54daB88B0E8255e9",
+    chainId: CHAIN_ID,
+    symbol: "MONKA",
+    decimals: 18,
+    name: "MONKA GIGA",
+    icon: "/assets/tokens/monka.png"
+  },
+  lbtc: {
+    address: "0x73a58b73018c1a417534232529b57b99132b13D2",
+    chainId: CHAIN_ID,
+    symbol: "LBTC",
+    decimals: 8,
+    name: "Lombard Staked Bitcoin",
+    icon: "/assets/tokens/lbtc.png"
+  },
+  kurt: {
+    address: "0xcF285841D0DC4fedB1fd80f81440c1C7e961FC4e",
+    chainId: CHAIN_ID,
+    symbol: "KURT",
+    decimals: 18,
+    name: "Kurt Clobaine",
+    icon: "/assets/tokens/kurt.png"
+  },
+  kb: {
+    address: "0x34D1ae6076Aee4072F54e1156D2e507DD564a355",
+    chainId: CHAIN_ID,
+    symbol: "KB",
+    decimals: 18,
+    name: "Kryptobaby777",
+    icon: "/assets/tokens/kb.webp"
+  },
+  kiwif: {
+    address: "0x7E7ED7ba41834B00b1Fdc0848E237AFAa1e8D380",
+    chainId: CHAIN_ID,
+    symbol: "KIWIF",
+    decimals: 18,
+    name: "Kiwi Wif Hat",
+    icon: "/assets/tokens/kiwif.png"
+  },
+  smon: {
+    address: "0xe1d2439b75fb9746E7Bc6cB777Ae10AA7f7ef9c5",
+    chainId: CHAIN_ID,
+    symbol: "sMON",
+    decimals: 18,
+    name: "Kintsu Staked Monad",
+    icon: "/assets/tokens/smon.webp"
+  },
+  fiabtc: {
+    address: "0x859fb36f3Fe7e22b37dd99b501f891377DdC9c33",
+    chainId: CHAIN_ID,
+    symbol: "FIABTC",
+    decimals: 8,
+    name: "Fiamma BTC",
+    icon: "/assets/tokens/fiabtc.webp"
   }
 };
