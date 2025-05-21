@@ -393,7 +393,8 @@ export default memo(function Tiger(props: any) {
 
     if (Number(res.draw_amount) > 0) {
       toast.success({ title: `Get ${res.draw_amount} MON` });
-      setTitle('WON ' + res.draw_amount + ' MON!');
+      setTitle(('WON ' + res.draw_amount + ' MON!').repeat(2));
+      // setTitle(DEFAULT_UNLUCKY_TITLE);
       playSound(2)
       startCoinExplosion(res);
     } else {
@@ -501,7 +502,9 @@ export default memo(function Tiger(props: any) {
             data-glitch={title}
             className={"flex items-center justify-center whitespace-nowrap " + (title !== DEFAULT_TITLE ? 'glitch' : '')}
             animate={title === DEFAULT_UNLUCKY_TITLE ? {
-              x: [1100, -800]
+              x: [1100, -850]
+            } : title !== DEFAULT_TITLE ? {
+              x: [1100, -450]
             } : {}}
             transition={{
               duration: 6,
