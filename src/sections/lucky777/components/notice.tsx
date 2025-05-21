@@ -1,11 +1,11 @@
 import { addressFormated } from "@/utils/balance";
 import { get } from "@/utils/http";
+import { useInterval } from "ahooks";
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 export default function Notice() {
     const [notice, setNotice] = useState<any>([]);
-
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
@@ -19,16 +19,30 @@ export default function Notice() {
         return () => clearInterval(interval);
     }, [notice]);
 
-    useEffect(() => {
-        const fetchNotice = async () => {
-            const res = await get("/game/announcement");
-            if (res.code !== 200 || !res.data) {
-                return;
-            }
-            setNotice(res.data);
-        };
-        fetchNotice();
+    // useEffect(() => {
+    //     const fetchNotice = async () => {
+    //         const res = await get("/game/announcement");
+    //         if (res.code !== 200 || !res.data) {
+    //             return;
+    //         }
+    //         setNotice(res.data);
+    //     };
+    //     fetchNotice();
+
+
+    // }, []);
+
+    const fetchNotice = useCallback(async () => {
+        const res = await get("/game/announcement");
+        if (res.code !== 200 || !res.data) {
+            return;
+        }
+        setNotice(res.data);
     }, []);
+
+    useInterval(() => {
+        fetchNotice(); 
+    }, 10000, { immediate: true });
 
     const item = useMemo(() => {
         if (!notice.length) {
@@ -36,8 +50,6 @@ export default function Notice() {
         }
         return notice[index];
     }, [notice, index]);
-
-
 
     if (!item) {
         return null;
