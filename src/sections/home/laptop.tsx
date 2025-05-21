@@ -10,7 +10,7 @@ import LazyImage from "@/components/layz-image";
 import { ALL_DAPP_LIST } from "../dapps/config";
 import { IDapp } from "@/types";
 import StarrySkyCanvas from "./StarrySky";
-
+import { SpecialAnimateGif } from "./SpecialAnimateGif";
 const itemWidth = 51;
 const itemGap = 6;
 
@@ -60,6 +60,7 @@ const Home = () => {
                         h-[calc(635/14.4*var(--rem))] min-h-[635px] min-w-[1440px]"
       >
         <div className="relative w-full h-full min-h-[635px] min-w-[1440px]">
+          <SpecialAnimateGif />
           {/* Bridge */}
           <div
             data-bp="1001-002"
