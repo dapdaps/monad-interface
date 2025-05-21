@@ -189,14 +189,16 @@ export default function TokenAmout({
                 {index > 0 && (
                   <div className="w-[1px] h-[10px] bg-[#75759D] bg-opacity-[0.5]"></div>
                 )}
-                <motion.div
+                <div
                   key={p.value}
-                  className="cursor-pointer h-[22px] rounded-[6px] text-[#A6A6DB] text-[10px] leading-[22px] font-[400] hover:underline hover:text-white"
-                  animate={percent == p.value ? { color: "#fff" } : {}}
+                  className={clsx(
+                    "cursor-pointer h-[22px] rounded-[6px] duration-500 text-[10px] leading-[22px] font-[400] hover:underline hover:text-white",
+                    p.value === percent ? "text-white" : "text-[#A6A6DB]"
+                  )}
                   onClick={() => handleRangeChange({ target: p })}
                 >
                   {p.label}
-                </motion.div>
+                </div>
               </>
             ))}
           </div>
