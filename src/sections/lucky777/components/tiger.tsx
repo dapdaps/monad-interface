@@ -688,7 +688,7 @@ export default memo(function Tiger(props: any) {
               setMultiple(1);
             }}
           >
-            <div className="invisible group-hover:visible absolute top-[-120%] z-[10] left-[50%] text-left -translate-x-1/2 border border-[#645E8A] w-[270px] p-[5px_10px] rounded-[6px] text-[#D7D7F6] text-[10px] backdrop-blur-[20px] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.25)]">
+            <div className="invisible group-hover:visible absolute top-[-140%] z-[10] left-[50%] text-left -translate-x-1/2 border border-[#645E8A] w-[270px] p-[5px_10px] rounded-[6px] text-[#D7D7F6] text-[10px] backdrop-blur-[20px] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.25)]">
               Selecting x1 will consume a spin 1 times
               also your winning prize will x1</div>
           </motion.button>
@@ -706,7 +706,7 @@ export default memo(function Tiger(props: any) {
               setMultiple(10);
             }}
           >
-            <div className="invisible group-hover:visible absolute top-[-120%] z-[10] left-[50%] text-left -translate-x-1/2 border border-[#645E8A] w-[270px] p-[5px_10px] rounded-[6px] text-[#D7D7F6] text-[10px] backdrop-blur-[20px] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.25)]">
+            <div className="invisible group-hover:visible absolute top-[-140%] z-[10] left-[50%] text-left -translate-x-1/2 border border-[#645E8A] w-[270px] p-[5px_10px] rounded-[6px] text-[#D7D7F6] text-[10px] backdrop-blur-[20px] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.25)]">
               Selecting x10 will consume a spin 10 times
               also your winning prize will x10</div>
           </motion.button>
@@ -724,7 +724,7 @@ export default memo(function Tiger(props: any) {
               setMultiple(50);
             }}
           >
-            <div className="invisible group-hover:visible absolute top-[-120%] z-[10] left-[50%] text-left -translate-x-1/2 border border-[#645E8A] w-[270px] p-[5px_10px] rounded-[6px] text-[#D7D7F6] text-[10px] backdrop-blur-[20px] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.25)]">
+            <div className="invisible group-hover:visible absolute top-[-140%] z-[10] left-[50%] text-left -translate-x-1/2 border border-[#645E8A] w-[270px] p-[5px_10px] rounded-[6px] text-[#D7D7F6] text-[10px] backdrop-blur-[20px] shadow-[0px_0px_10px_0px_rgba(0,0,0,0.25)]">
               Selecting x50 will consume a spin 50 times
               also your winning prize will x50</div>
           </motion.button>
