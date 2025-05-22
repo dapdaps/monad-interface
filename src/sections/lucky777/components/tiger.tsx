@@ -735,7 +735,7 @@ export default memo(function Tiger(props: any) {
             ref={spinRef}
             type="button"
             // disabled={spinning}  
-            className="w-[202px] h-[85px] text-[18px] font-HackerNoonV2 leading-[90%] text-[#000] bg-[url('/images/lucky777/spin-btn.svg')] bg-no-repeat bg-center bg-contain disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-[202px] h-[85px] text-[18px] font-HackerNoonV2 leading-[90%] text-[#000] bg-[url('/images/lucky777/spin-btn.svg')] bg-bottom bg-no-repeat bg-center bg-contain disabled:opacity-50 disabled:cursor-not-allowed"
             animate={{ backgroundImage: pressed3 ? "url('/images/lucky777/spin-btn-press.svg')" : "url('/images/lucky777/spin-btn.svg')" }}
             style={{
               transformOrigin: "center bottom",
@@ -744,7 +744,7 @@ export default memo(function Tiger(props: any) {
             onClick={handleSpin}
           >
             <div style={{
-              transform: pressed3 ? 'translateY(-10px)' : 'translateY(-20px)'
+              transform: pressed3 ? 'translateY(-3px)' : 'translateY(-20px)'
             }}>
               <div>SPIN</div>
               <div className="text-[18px]">X {multiple}</div>
