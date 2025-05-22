@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Modal from "@/components/modal";
 import { get } from "@/utils/http";
 import { useAccount } from "wagmi";
@@ -65,7 +65,7 @@ const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
                     <div className="w-full" style={{
                         display: activeTab === "purchases" ? 'block' : 'none',
                     }}>
-                        <List type="purchases"  winningOnly={winningOnly}/>
+                        <List type="purchases"  winningOnly={false}/>
                     </div>
 
                     <div className="w-full" style={{
@@ -88,6 +88,7 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
     const [data, setData] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const { address } = useAccount();
+    const dataRef = useRef<any[]>([]);
 
     useEffect(() => {
         if (!address) return;
@@ -98,10 +99,21 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                 toast.error(res.message);
                 return;
             }
-            setData(winningOnly ? res.data.filter((item: any) => Number(item.amount) > 0) : res.data);
+            dataRef.current = res.data;
+            // setData(winningOnly ? res.data.filter((item: any) => Number(item.amount) > 0) : res.data);
             setLoading(false);
         });
-    }, [type, address, winningOnly]);
+    }, [type, address]);
+
+    useEffect(() => {
+        if (dataRef.current.length > 0) {
+            console.log('dataRef.current', dataRef.current, winningOnly);
+
+            setData(winningOnly ? dataRef.current.filter((item: any) => Number(item.amount) > 0) : dataRef.current);
+        } else {
+            setData([]);
+        }
+    }, [dataRef.current, winningOnly]);
 
     if (!loading && data.length === 0) {
         return (
