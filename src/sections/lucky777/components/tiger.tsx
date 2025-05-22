@@ -682,9 +682,12 @@ export default memo(function Tiger(props: any) {
             data-click-sound
             className="group absolute bottom-[280px] left-[190px] z-[4] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x1.svg')] bg-no-repeat bg-center bg-contain "
             animate={{ backgroundImage: 
-              spinUserData?.spin_balance < 1 ? "url('/images/lucky777/multiple/x1.svg')" : multiple === 1 ? "url('/images/lucky777/multiple/x1-press.svg')" : "url('/images/lucky777/multiple/x1.svg')" 
+              spinUserData?.spin_balance < 1 ? "url('/images/lucky777/multiple/x1-disabled.svg')" : multiple === 1 ? "url('/images/lucky777/multiple/x1-press.svg')" : "url('/images/lucky777/multiple/x1.svg')" 
             }}
             onClick={() => {
+              if (spinUserData?.spin_balance < 1) {
+                return;
+              }
               setMultiple(1);
             }}
           >

@@ -29,8 +29,8 @@ export default function Notice() {
     }, []);
 
     useInterval(() => {
-        fetchNotice(); 
-    }, 10 *60 * 1000, { immediate: true });
+        fetchNotice();
+    }, 10 * 60 * 1000, { immediate: true });
 
     const item = useMemo(() => {
         if (!notice.length) {
@@ -45,8 +45,6 @@ export default function Notice() {
 
     return (
         <div className="absolute top-[-90px] left-[50%] -translate-x-1/2 w-[446px] h-[74px] bg-[#1D1E22CC] rounded-[16px] overflow-hidden border-[1px] border-[#6750FF] px-8 shadow-[0_0_24px_4px_rgba(128,0,255,0.2)]">
-            
-
             <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                     key={index}
@@ -88,20 +86,19 @@ export default function Notice() {
 
 const TypingText = ({ text, speed = 50 }: any) => {
     const [displayed, setDisplayed] = useState('');
-  
+
     useEffect(() => {
-      let current = 0;
-      const interval = setInterval(() => {
-        current++;
-        setDisplayed(text.slice(0, current));
-        if (current >= text.length) {
-          clearInterval(interval);
-        }
-      }, speed);
-  
-      return () => clearInterval(interval);
+        let current = 0;
+        const interval = setInterval(() => {
+            current++;
+            setDisplayed(text.slice(0, current));
+            if (current >= text.length) {
+                clearInterval(interval);
+            }
+        }, speed);
+
+        return () => clearInterval(interval);
     }, [text, speed]);
-  
+
     return <span className="text-[#C7C7D9] inline-block w-[150px] whitespace-nowrap  text-left">{displayed}</span>;
-  };
-  
+};
