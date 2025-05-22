@@ -54,7 +54,7 @@ export const SpecialAnimateGif = () => {
             onClick={handleClick}
         >
             <AnimatePresence mode="wait">
-                {animationState === ANIMATION_STATE.IDLE && (
+                {/*{animationState === ANIMATION_STATE.IDLE && (
                     <motion.img 
                         key="static-trash"
                         initial={{ opacity: 1 }}
@@ -64,7 +64,7 @@ export const SpecialAnimateGif = () => {
                         alt="Static trash"
                         className="absolute top-0 right-0 w-[144px] h-[185px]"
                     />
-                )}
+                )}*/}
                 
                 {animationState === ANIMATION_STATE.TRASH_OPENING && (
                     <motion.img 
