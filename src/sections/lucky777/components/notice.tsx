@@ -30,7 +30,7 @@ export default function Notice() {
 
     useInterval(() => {
         fetchNotice(); 
-    }, 10000, { immediate: true });
+    }, 10 *60 * 1000, { immediate: true });
 
     const item = useMemo(() => {
         if (!notice.length) {
@@ -65,7 +65,7 @@ export default function Notice() {
                                 <span className="text-[#B6FF6C] font-HackerNoonV2 font-bold text-2xl tracking-widest">ATTENTION!</span>
                             </div>
                             <div className="mt-1 flex justify-start items-center space-x-2 font-Pixelmix text-[14px] text-[#C7C7D9]">
-                                <span>[{dayjs(item.timestamp).format('HH:mm:ss')}]</span>
+                                <span>[{dayjs(item.timestamp * 1000).format('HH:mm:ss')}]</span>
                                 <span className="text-[#C7C7D9]">[{item.name || addressFormated(item.address)}]</span>
                                 <TypingText text={`Win ${item.amount} MON`} speed={50} />
                                 <a
