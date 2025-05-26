@@ -30,7 +30,7 @@ export default memo(function Trash() {
     await TrashCapControls.start("stage3", {
       duration: 0.3,
       ease: "linear",
-      delay: 6
+      delay: 3
     })
   };
   const FliesSequence = async () => {
