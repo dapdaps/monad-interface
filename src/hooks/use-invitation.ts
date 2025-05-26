@@ -45,6 +45,15 @@ export function useInvitation<Invitation>() {
     return res;
   }, { manual: true });
 
+  const { runAsync: getInvitationList, loading: getInvitationListLoading, data: invitationList } = useRequest(async () => {
+    if (!account) return [];
+    const mockReq = () => new Promise((resolve) => {
+      const timer = setTimeout(() => {
+        resolve([]);
+      }, 1000);
+    });
+  }, { manual: true });
+
   return {
     nft,
     nftLoading,
@@ -53,6 +62,9 @@ export function useInvitation<Invitation>() {
     handleInvitationCodeChange,
     submitInvitationCode,
     submitInvitationCodeLoading,
+    getInvitationList,
+    getInvitationListLoading,
+    invitationList,
   };
 }
 
@@ -64,4 +76,7 @@ export interface Invitation {
   handleInvitationCodeChange: (invitationCode?: string) => void;
   submitInvitationCode: () => Promise<any>;
   submitInvitationCodeLoading: boolean;
+  getInvitationList: () => Promise<any>;
+  getInvitationListLoading: boolean;
+  invitationList: any[];
 }
