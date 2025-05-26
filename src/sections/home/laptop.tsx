@@ -60,7 +60,7 @@ const Home = () => {
                         h-[calc(635/14.4*var(--rem))] min-h-[635px] min-w-[1440px]"
       >
         <div className="relative w-full h-full min-h-[635px] min-w-[1440px]">
-          <SpecialAnimateGif />
+          {/* <SpecialAnimateGif /> */}
           {/* Bridge */}
           <div
             data-bp="1001-002"
