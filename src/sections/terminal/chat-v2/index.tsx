@@ -17,6 +17,7 @@ import ChatBg from "@/sections/terminal/chat-v2/bg";
 import { FE_SYSTEM_KEY, VERSION } from "@/sections/terminal/config";
 import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
+import NFT from "@/components/nft";
 import "./animate.css";
 
 const realtime = new Realtime({
@@ -378,21 +379,28 @@ export default function ChatView({ currentUser }: any) {
   return (
     <div className="relative w-full h-screen overflow-x-hidden bg-[#010101] font-Pixelmix text-[#8D7CFF] text-[14px] font-[400] leading-[200%] overflow-y-auto cursor-pointer terminal">
       <ChatHeader currentUser={currentUser} onlineUsers={onlineUsers} />
-      <ChatCard className="mt-[45px]">
-        <ChatContent
-          messagesRef={messagesRef}
-          sendMessage={sendMessage}
-          messages={messages}
-          previousPageMessages={previousPageMessages}
-          onScroll={fetchHistoryMessagesDebounced}
-          messagesEndRef={messagesEndRef}
-          currentUser={currentUser}
-          setInputMessage={setInputMessage}
-          inputMessage={inputMessage}
-          scrollToBottom={scrollToBottom}
-        />
-      </ChatCard>
+      <div className="w-[calc(100%-308px)] flex justify-center min-w-[1085px]">
+        <ChatCard className="mt-[45px]">
+          <ChatContent
+            messagesRef={messagesRef}
+            sendMessage={sendMessage}
+            messages={messages}
+            previousPageMessages={previousPageMessages}
+            onScroll={fetchHistoryMessagesDebounced}
+            messagesEndRef={messagesEndRef}
+            currentUser={currentUser}
+            setInputMessage={setInputMessage}
+            inputMessage={inputMessage}
+            scrollToBottom={scrollToBottom}
+          />
+        </ChatCard>
+      </div>
       <ChatBg />
+      <NFT
+        isOpen={true}
+        closeModal={() => {}}
+        className="!items-start pt-[60px]"
+      />
     </div>
   );
 }
