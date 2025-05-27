@@ -10,11 +10,11 @@ export const useChatStore = create(
       set: (params: any) => set(() => ({ ...params })),
       setUsers: (info: any) => {
         return set((prev: any) => ({ users: { ...prev.users, ...info } }));
-      },
+      }
     }),
     {
       name: "_chat",
-      version: 0.1,
+      version: 0.11,
       storage: createJSONStorage(() => sessionStorage)
     }
   )

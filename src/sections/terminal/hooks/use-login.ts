@@ -1,85 +1,46 @@
-import { useState, useCallback, useEffect } from "react";
-import useToast from "@/hooks/use-toast";
-import { post } from "@/utils/http";
-import useCustomAccount from "@/hooks/use-account";
+import { useState, useEffect } from "react";
+import { useTwitterStore } from "@/stores/twitter";
+import useBindTwitter from "./use-bind-twitter";
 import { useDebounceFn } from "ahooks";
 
 export default function useLogin() {
-  const [updating, setUpdating] = useState(false);
-  const [logining, setLogining] = useState(true);
-  const { fail } = useToast();
-  const { account } = useCustomAccount();
   const [status, setStatus] = useState(0); // 1 for login page, 2 for terminal page.
-  const [showLoading, setShowLoading] = useState(true);
-
+  const [showLoading, setShowLoading] = useState(false);
   const [currentUser, setCurrentUser] = useState<any>({});
-
-  const onLogin = useCallback(async () => {
-    try {
-      setLogining(true);
-      const res = await post("/chat/login", { address: account });
-      if (!res.data.name) {
-        setStatus(1);
-        return;
-      }
-
-      setCurrentUser({
-        address: account,
-        level: res.data.level,
-        name: res.data.name,
-        role: res.data.role
-      });
+  const twitterStore: any = useTwitterStore();
+  const { loading } = useBindTwitter({
+    onSuccess(data) {
       setStatus(2);
-    } catch (err) {
-    } finally {
-      setLogining(false);
-      setShowLoading(false);
-    }
-  }, [account]);
+      twitterStore.set({ id: data.id, info: data });
+      setCurrentUser(data);
+    },
+    withAuth: false
+  });
 
-  const onUpdateName = async (name: string) => {
-    try {
-      setUpdating(true);
-      await post("/chat/user/name", { address: account, name });
-      await onLogin();
-    } catch (err) {
-      fail({
-        title: "Login failed!"
-      });
-    } finally {
-      setUpdating(false);
-    }
-  };
-
-  const { run: debounceLogin } = useDebounceFn(
+  const { run } = useDebounceFn(
     () => {
-      const timer = setTimeout(() => {
-        if (!account) {
-          setStatus(1);
-          setShowLoading(false);
-          setCurrentUser({});
-          setLogining(true);
-        }
-      }, 2000);
-
-      if (account) {
-        clearTimeout(timer);
-        onLogin();
+      if (twitterStore.id) {
+        setStatus(2);
+        setCurrentUser(twitterStore.info);
+      } else {
+        setStatus(1);
       }
     },
     { wait: 500 }
   );
 
   useEffect(() => {
-    debounceLogin();
-  }, [account]);
+    run();
+  }, [twitterStore.id]);
+
+  useEffect(() => {
+    setShowLoading(loading);
+  }, [loading]);
 
   return {
-    updating,
     status,
     currentUser,
-    onUpdateName,
     showLoading,
-    logining
+    logining: loading
   };
 }

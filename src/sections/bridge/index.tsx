@@ -28,6 +28,7 @@ import { TabItem } from '@/components/tab/TabItem';
 import useClickTracking from '@/hooks/use-click-tracking';
 
 
+
 const DappHeader: React.FC = () => {
   const { dapp: dappName } = useParams();
   const isMobile = useIsMobile();
@@ -310,6 +311,7 @@ export default function Bridge() {
           />
         </div>
         <History activeTab={activeTab} getStatus={getStatus} setActiveTab={setActiveTab} isOpen={historyShow} setIsOpen={setHistoryShow} />
+
       </div>
     </>
   );
