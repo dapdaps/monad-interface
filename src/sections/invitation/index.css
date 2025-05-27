@@ -1,0 +1,12 @@
+.invitation-bg-door {}
+@media screen and (max-width: 1870px) {
+  .invitation-bg-door {
+    bottom: 125px !important;
+  }
+  .invitation-bg-door-left {
+    left: calc(50% - 594px) !important;
+  }
+  .invitation-bg-door-right {
+    right: calc(50% - 594px) !important;
+  }
+}
