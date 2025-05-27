@@ -125,7 +125,7 @@ export default function NadsaPassCard() {
                 {
                     status === 0 && (
                         <MainBtn onClick={() => mintNFT()} >
-                            {isLoading ? <><CircleLoading /> Mint NFT</> : 'Mint NFT'}
+                            {isLoading ? <><CircleLoading /> <span className="ml-[10px]">Mint NFT</span></> : 'Mint NFT'}
                         </MainBtn>
                     )
                 }
