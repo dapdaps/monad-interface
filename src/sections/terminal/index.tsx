@@ -8,8 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 
 export default function View() {
-  const { status, onUpdateName, updating, logining, currentUser, showLoading } =
-    useLogin();
+  const { status, currentUser, showLoading, logining } = useLogin();
 
   const loadingRef = useRef<any>();
   const [loadDone, setLoadDone] = useState(false);
@@ -31,13 +30,7 @@ export default function View() {
         />
       ) : (
         <>
-          {status === 1 && (
-            <LoginView
-              onUpdateName={onUpdateName}
-              updating={updating}
-              logining={logining}
-            />
-          )}
+          {status === 1 && <LoginView logining={logining} />}
           {status === 2 && <ChatView currentUser={currentUser} />}
         </>
       )}

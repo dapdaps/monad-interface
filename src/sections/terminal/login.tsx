@@ -1,69 +1,19 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { useDebounceFn, useRequest } from "ahooks";
-import { useAccount } from "wagmi";
-import { useAppKit } from "@reown/appkit/react";
-import { trim } from "lodash";
+import { useMemo } from "react";
 import Button from "@/components/button";
 import clsx from "clsx";
 
 const LoginView = (props: any) => {
-  const { onUpdateName, updating, logining } = props;
-
-  const modal = useAppKit();
-  const { address, isConnected, isConnecting } = useAccount();
-
-  const [name, setName] = useState<any>(null);
-  const [connecting, setConnecting] = useState<boolean>(true);
+  const { logining } = props;
 
   const [buttonText, buttonDisabled] = useMemo(() => {
-    if (connecting) {
-      return ["Connecting...", true];
+    if (logining) {
+      return ["Binding...", true];
     }
 
-    if (!isConnected) {
-      return ["Connect Wallet to Login", false];
-    }
-
-    if (!trim(name || "") && !logining) {
-      return ["Please Enter a Name", true];
-    }
-    return ["Login", false];
-  }, [isConnected, connecting, name, logining]);
-
-  const onNameChange = (val?: string) => {
-    setName(val);
-  };
-
-  const { runAsync: onConnect } = useRequest(
-    async () => {
-      if (!address) {
-        modal.open();
-        return;
-      }
-      if (!name) return;
-      onUpdateName(name);
-    },
-    { manual: true }
-  );
-
-  const { run: closeConnecting, cancel: cancelCloseConnecting } = useDebounceFn(
-    () => {
-      setConnecting(false);
-    },
-    { wait: 10000 }
-  );
-
-  useEffect(() => {
-    cancelCloseConnecting();
-    if (!isConnecting) {
-      setConnecting(false);
-      return;
-    }
-    setConnecting(true);
-    closeConnecting();
-  }, [isConnecting]);
+    return ["Connect X to access", false];
+  }, [logining]);
 
   return (
     <LoginContainer>
@@ -84,24 +34,17 @@ const LoginView = (props: any) => {
           className="mt-[33px] w-[445px] h-[22px] object-center object-contain shrink-0"
         />
         <div className="mt-[50px] w-[440px] shrink-0 flex flex-col items-center">
-          {isConnected && !logining && (
-            <>
-              <div className="shrink-0">Enter Name</div>
-              <input
-                type="text"
-                className="w-full h-[52px] shrink-0 rounded-[2px] border border-[#8645FF] bg-black text-center mt-[22px]"
-                value={name || ""}
-                onChange={(e) => onNameChange(e.target.value)}
-                maxLength={50}
-              />
-            </>
-          )}
           <Button
-            className="mt-[26px] h-[52px] disabled:!cursor-not-allowed disabled:opacity-30 shrink-0 w-full rounded-[2px] text-white text-center font-SpaceMono text-[16px] font-normal leading-[90%]"
+            className="mt-[26px] h-[52px] font-Pixelmix disabled:!cursor-not-allowed disabled:opacity-30 shrink-0 w-full rounded-[2px] text-white text-center text-[16px] leading-[90%]"
             disabled={buttonDisabled}
-            onClick={onConnect}
+            onClick={() => {
+              window.open(
+                `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${window.location.href}&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`,
+                "_blank"
+              );
+            }}
             bgColor="#7B23FF"
-            loading={updating || (address && logining)}
+            loading={logining}
           >
             {buttonText}
           </Button>

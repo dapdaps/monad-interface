@@ -10,6 +10,7 @@
     "build:stats": "ANALYZE_STATS=true next build"
   },
   "dependencies": {
+    "@kuru-labs/kuru-sdk": "^0.0.49",
     "@reown/appkit": "^1.6.0",
     "@reown/appkit-adapter-wagmi": "^1.6.0",
     "@reown/appkit-siwe": "^1.6.0",

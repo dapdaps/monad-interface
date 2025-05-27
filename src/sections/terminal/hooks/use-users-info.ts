@@ -5,9 +5,9 @@ import { uniq } from "lodash";
 export default function useUsersInfo() {
   const chatStore: any = useChatStore();
 
-  const fetchUsersInfo = async (users: string[], opts?: { from?: string; }) => {
+  const fetchUsersInfo = async (users: string[], opts?: { from?: string }) => {
     const { from } = opts ?? {};
-    console.log('reload users from :%o', from);
+    console.log("reload users from :%o", from);
     const needFetchUsers = users.filter((user) => {
       if (!chatStore.users[user]) return true;
       return (
@@ -16,12 +16,17 @@ export default function useUsersInfo() {
     });
     if (needFetchUsers.length === 0) return;
     const usersInfo = await get(
-      `/chat/user/list?address=${[...uniq(needFetchUsers)].join(",")}`
+      `/twitter/user/list?twitter_user_ids=${[...uniq(needFetchUsers)].join(
+        ","
+      )}`
     );
 
-    const formattedUsers = usersInfo.data.reduce(
+    const formattedUsers = usersInfo.data?.reduce(
       (acc: Record<string, any>, user: any) => {
-        acc[user.address.toLowerCase()] = user;
+        acc[user.twitter_user_id] = {
+          name: user.twitter_user_name,
+          id: user.twitter_user_id
+        };
         return acc;
       },
       {}

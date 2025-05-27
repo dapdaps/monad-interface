@@ -122,7 +122,7 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
               inputCurrencyAmount
             })
           };
-
+          console.log(125, _trade);
           setTrade(_trade);
           return;
         }

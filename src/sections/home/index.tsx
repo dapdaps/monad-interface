@@ -4,8 +4,9 @@ import Mobile from './mobile';
 
 const Home = () => {
 
-  const isMobile = useIsMobile()
+    const isMobile = useIsMobile()
 
+    console.log("===isMobile", isMobile)
     return (
         <>
             {
