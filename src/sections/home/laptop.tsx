@@ -11,7 +11,7 @@ import { ALL_DAPP_LIST } from "../dapps/config";
 import { IDapp } from "@/types";
 import StarrySkyCanvas from "./StarrySky";
 import { SpecialAnimateGif } from "./SpecialAnimateGif";
-import Trash from "./Trash";
+
 const itemWidth = 51;
 const itemGap = 6;
 
@@ -62,7 +62,7 @@ const Home = () => {
       >
 
         <div className="relative w-full h-full min-h-[635px] min-w-[1440px]">
-          <Trash />
+          <SpecialAnimateGif />
           {/* Bridge */}
           <div
             data-bp="1001-002"
