@@ -1,5 +1,5 @@
+import { useInvitationContext } from "@/context/invitation";
 import useCustomAccount from "@/hooks/use-account";
-import { useInvitation } from "@/hooks/use-invitation";
 import { useEffect } from "react";
 
 const InvitationListView = (props: any) => {
@@ -11,7 +11,7 @@ const InvitationListView = (props: any) => {
     invitationList,
     getInvitationList,
     getInvitationListLoading,
-  } = useInvitation();
+  } = useInvitationContext();
   
   useEffect(() => {
     getInvitationList();
