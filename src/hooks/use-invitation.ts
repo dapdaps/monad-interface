@@ -1,11 +1,20 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import useCustomAccount from "./use-account";
 import { useRequest } from "ahooks";
 import { INVITATION_CODE_LENGTH } from "@/sections/invitation/config";
 import { useAnimate } from "framer-motion";
+import { useNFT } from "./use-nft";
+import { post } from "@/utils/http";
+import useToast from "./use-toast";
+import { useUserStore } from "@/stores/user";
+import useUser from "./use-user";
 
 export function useInvitation<Invitation>() {
   const { account } = useCustomAccount();
+  const { hasNFT } = useNFT();
+  const toast = useToast();
+  const userInfo = useUserStore((store: any) => store.user);
+  const { getUserInfo } = useUser();
 
   const [scopeLeftDoor, animateLeftDoor] = useAnimate();
   const [scopeRightDoor, animateRightDoor] = useAnimate();
@@ -14,11 +23,12 @@ export function useInvitation<Invitation>() {
   const doorTimer = useRef<any>();
   const containerTimer = useRef<any>();
 
-  const [nft, setNft] = useState<any>(true);
-  const [validInvitationCode, setValidInvitationCode] = useState<any>(false);
+  const [validInvitationCode, setValidInvitationCode] = useState<boolean>(false);
+  const [invalidInvitationCode, setInvalidInvitationCode] = useState<boolean>(false);
+  const [finalValid, setFinalValid] = useState<boolean>(false);
   const [invitationCode, setInvitationCode] = useState<string>("");
 
-  const handleEnter = () => {
+  const handleAccess = () => {
     animateLeftDoor(scopeLeftDoor.current, {
       x: "-100%",
     }, {
@@ -51,55 +61,42 @@ export function useInvitation<Invitation>() {
           resolve(true);
         }, 3000);
         clearTimeout(doorTimer.current);
-      }, 1200);
+      }, 1100);
     });
   };
 
-  const { loading: nftLoading } = useRequest(async () => {
-    const mockReq = () => new Promise((resolve) => {
-      const timer = setTimeout(() => {
-        const result = false;
-        resolve(result);
-        setNft(result);
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    });
-    const res = await mockReq();
-    return res;
-  }, { refreshDeps: [account] });
-
   const validUser = useMemo(() => {
     if (!account) return false;
-    return !!nft || !!validInvitationCode;
-  }, [nft, account, validInvitationCode]);
+    return !!hasNFT || !!validInvitationCode || !!userInfo?.invite_active;
+  }, [hasNFT, account, validInvitationCode, userInfo]);
 
   const handleInvitationCodeChange = (_invitationCode?: string) => {
     const _next = _invitationCode ?? "";
-    setInvitationCode(_next.slice(0, INVITATION_CODE_LENGTH));
+    setInvitationCode(_next.trim().slice(0, INVITATION_CODE_LENGTH));
+    setInvalidInvitationCode(false);
   };
 
   const handleInvitationCodeKeyboard = (_str?: string) => {
     setInvitationCode((_prev: string) => {
       const _next = (_prev ?? "") + (_str ?? "");
-      if (_next.length > INVITATION_CODE_LENGTH) return _prev;
+      if (_next.length > INVITATION_CODE_LENGTH) return _str || "";
       return _next.slice(0, INVITATION_CODE_LENGTH);
     });
+    setInvalidInvitationCode(false);
   };
 
   const { runAsync: submitInvitationCode, loading: submitInvitationCodeLoading } = useRequest(async () => {
-    const mockReq = () => new Promise((resolve) => {
-      const timer = setTimeout(() => {
-        console.log("submitInvitationCode", invitationCode);
-        resolve(true);
-        setInvitationCode("");
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    });
-    const res = await mockReq();
-    await handleEnter();
-    //TODO reload validUser
+    if (!invitationCode) return;
+    const res = await post("/invite/active", { code: invitationCode });
+    if (res.code !== 200) {
+      toast.fail({
+        title: res.message || "Invalid Invitation Code",
+      });
+      setInvalidInvitationCode(true);
+      return;
+    }
+    await handleAccess();
+    getUserInfo();
     setValidInvitationCode(true);
     return res;
   }, { manual: true });
@@ -113,9 +110,16 @@ export function useInvitation<Invitation>() {
     });
   }, { manual: true });
 
+  useEffect(() => {
+    if (validUser) {
+      handleAccess().then(() => {
+        setFinalValid(true);
+      });
+    }
+  }, [validUser]);
+
   return {
-    nft,
-    nftLoading,
+    hasNFT,
     validUser,
     invitationCode,
     handleInvitationCodeChange,
@@ -129,11 +133,13 @@ export function useInvitation<Invitation>() {
     scopeRightDoor,
     scopeCodePad,
     scopeInvitation,
+    finalValid,
+    invalidInvitationCode,
   };
 }
 
 export interface Invitation {
-  nft: any;
+  hasNFT: boolean;
   nftLoading: boolean;
   validUser: boolean;
   invitationCode?: string;
@@ -148,4 +154,6 @@ export interface Invitation {
   scopeRightDoor: any;
   scopeCodePad: any;
   scopeInvitation: any;
+  finalValid: boolean;
+  invalidInvitationCode: boolean;
 }

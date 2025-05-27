@@ -1,4 +1,5 @@
 import useCustomAccount from "@/hooks/use-account";
+import { nftAddress } from "@/hooks/use-nft";
 import Link from "next/link";
 
 const Rules = (props: any) => {
@@ -27,7 +28,7 @@ const Rules = (props: any) => {
             </>
           ) : (
             <div className="text-center">
-              If you’re a holder of the <span className="underline underline-offset-2 cursor-pointer text-[#A5FFFD]">NADSA_ADMISSION_TICKET</span>, please<br /> connect your wallet to access.<br />Or, you can input invite code.
+              If you’re a holder of the <Link href={`https://monad-testnet.socialscan.io/address/${nftAddress}`} target="_blank" className="underline underline-offset-2 cursor-pointer text-[#A5FFFD]">NADSA_ADMISSION_TICKET</Link>, please<br /> connect your wallet to access.<br />Or, you can input invite code.
             </div>
           )
         }

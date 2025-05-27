@@ -1,6 +1,4 @@
-import { useInvitation } from "@/hooks/use-invitation";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import Rules from "./components/rules";
 import Code from "./components/code";
 import { useInvitationContext } from "@/context/invitation";
@@ -13,7 +11,12 @@ const InvitationView = (props: any) => {
     scopeRightDoor,
     scopeCodePad,
     scopeInvitation,
+    finalValid,
   } = useInvitationContext();
+
+  if (finalValid) {
+    return null;
+  }
 
   return (
     <motion.div ref={scopeInvitation} className="fixed top-0 left-0 w-screen h-screen z-[100]">

@@ -6,16 +6,24 @@ import { formatLongText } from "@/utils/utils";
 import clsx from "clsx";
 import Link from "next/link";
 import { useInvitationContext } from "@/context/invitation";
+import { useAppKit, useDisconnect } from "@reown/appkit/react";
+import { useAccount } from "wagmi";
+import { trim } from "lodash";
 
 const Code = (props: any) => {
-  const { account } = useCustomAccount();
+  const { account, } = useCustomAccount();
+  const { isConnecting } = useAccount();
+  const { open } = useAppKit();
+  const { disconnect } = useDisconnect();
 
   const {
+    validUser,
     invitationCode,
     handleInvitationCodeChange,
     handleInvitationCodeKeyboard,
     submitInvitationCode,
     submitInvitationCodeLoading,
+    invalidInvitationCode,
   } = useInvitationContext();
 
   return (
@@ -23,7 +31,17 @@ const Code = (props: any) => {
       <div className="w-full h-[431px] pt-[37px] flex justify-center items-start gap-[87px] bg-[url('/images/invitation/bg-code.png')] bg-no-repeat bg-contain bg-center">
         <div className="w-[258px] shrink-0 flex flex-col justify-center items-center gap-[20px] [transform-style:preserve-3d] [transform:perspective(1000px)_rotate3d(1,_0,_0,_25deg)_scale(1.1,_1.2)_skewX(-4.2deg)_translateX(-10px)] [transform-origin:bottom] [perspective-origin:60%_35%]">
           <div className="w-full">
-            <Button className={clsx("!h-[46px] w-full flex justify-center items-center gap-[20px]", account && "!bg-[#6D7EA5]")}>
+            <Button
+              className={clsx("!h-[46px] w-full flex justify-center items-center gap-[20px]", account && "!bg-[#6D7EA5]")}
+              disabled={isConnecting}
+              onClick={() => {
+                if (!account) {
+                  open();
+                  return;
+                }
+                disconnect();
+              }}
+            >
               <span>{account ? formatLongText(account, 5, 6) : "Connect Wallet"}</span>
               {account && (
                 <button
@@ -46,31 +64,38 @@ const Code = (props: any) => {
               style={{ x: 8 }}
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 200, damping: 20, delay: 1 }}
+              transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.5 }}
             />
-            <div className="w-full h-full absolute overflow-hidden">
-              <motion.div
-                className="w-full h-full flex justify-center items-center flex-col gap-[20px] left-0 top-0 bg-[rgba(0,0,0,0.5)] rounded-[6px]"
-                style={{ x: 8 }}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.15 }}
-              >
-                <div className="w-[198px] h-[61px] flex justify-center items-center shrink-0 bg-[rgba(0,0,0,0.6)] border border-[#78FEFF] text-[#A5FFFD] text-center font-Unbounded text-[14px] font-[400] leading-[120%]">
-                  No Pass found in<br /> this wallet
+            {
+              !validUser && (
+                <div className="w-full h-full absolute overflow-hidden">
+                  <motion.div
+                    className="w-full h-full flex justify-center items-center flex-col gap-[20px] left-0 top-0 bg-[rgba(0,0,0,0.5)] rounded-[6px]"
+                    style={{ x: 8 }}
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.15, delay: 0.5 }}
+                  >
+                    <div className="w-[198px] h-[61px] flex justify-center items-center shrink-0 bg-[rgba(0,0,0,0.6)] border border-[#78FEFF] text-[#A5FFFD] text-center font-Unbounded text-[14px] font-[400] leading-[120%]">
+                      No Pass found in<br /> this wallet
+                    </div>
+                    <div className="text-[#A5FFFD] font-Unbounded text-[12px] font-[400] leading-[120%]">
+                      Try to <Link prefetch href="/terminal?from=invitation" className="underline underline-offset-2 cursor-pointer">get a ticket</Link> or<br /> input an invite code
+                    </div>
+                  </motion.div>
                 </div>
-                <div className="text-[#A5FFFD] font-Unbounded text-[12px] font-[400] leading-[120%]">
-                  Try to <Link prefetch href="/terminal?from=invitation" className="underline underline-offset-2 cursor-pointer">get a ticket</Link> or<br /> input an invite code
-                </div>
-              </motion.div>
-            </div>
+              )
+            }
           </div>
         </div>
         <div className="w-[252px] shrink-0 grid grid-cols-3 gap-[12px] [transform-style:preserve-3d] [transform:perspective(1000px)_rotate3d(1,_0,_0,_30deg)_scale(1.1,_1.3)_skewX(4deg)] [transform-origin:bottom] [perspective-origin:60%_35%]">
           <input
             readOnly
             type="text"
-            className="cursor-default col-span-2 h-[45.655px] shrink-0 border bg-black border-[#55648A] rounded-[6px] shadow-[inset_3px_3px_0px_0px_#2C3635] text-[#A5FFFD] text-center font-Unbounded text-[16px] font-[500] leading-[100%] placeholder:text-[#A5FFFD]"
+            className={clsx(
+              "cursor-default col-span-2 h-[45.655px] shrink-0 border bg-black border-[#55648A] rounded-[6px] shadow-[inset_3px_3px_0px_0px_#2C3635] text-[#A5FFFD] text-center font-Unbounded text-[16px] font-[500] leading-[100%] placeholder:text-[#A5FFFD]",
+              invalidInvitationCode && "!text-[#FF5372]"
+            )}
             placeholder="Invite Code"
             value={invitationCode}
           />
@@ -105,8 +130,11 @@ const Code = (props: any) => {
             0
           </Button>
           <Button
-            className="!px-[0] active:!drop-shadow-[0px_0px_10px_rgba(120,254,255,0.60)] active:!bg-[#A5FFFD]"
-            disabled={!account || submitInvitationCodeLoading}
+            className={clsx(
+              "!px-[0] active:!drop-shadow-[0px_0px_10px_rgba(120,254,255,0.60)] active:!bg-[#A5FFFD]",
+              invalidInvitationCode && "!drop-shadow-[0px_0px_10px_#FF5372] !bg-[#FF5372]"
+            )}
+            disabled={!account || submitInvitationCodeLoading || !trim(invitationCode) || invalidInvitationCode}
             onClick={submitInvitationCode}
           >
             Access

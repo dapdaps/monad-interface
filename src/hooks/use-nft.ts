@@ -27,7 +27,7 @@ interface UseNFTReturn {
     address: string;
 }
 
-const nftAddress = '0x2a50fa8f60f67fb30472c3fe05fb336a77a5e226';
+export const nftAddress = '0x2a50fa8f60f67fb30472c3fe05fb336a77a5e226';
 const accessToken = 'd0d4c2a8-873a-4475-a830-ee19bb224521';
 
 export const useNFT = (): UseNFTReturn => {
