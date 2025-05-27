@@ -30,7 +30,6 @@ export default function useLogin() {
   );
 
   useEffect(() => {
-    console.log(33, twitterStore.id);
     run();
   }, [twitterStore.id]);
 
