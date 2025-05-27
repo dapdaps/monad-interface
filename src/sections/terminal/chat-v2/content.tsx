@@ -1,15 +1,22 @@
-import clsx from 'clsx';
-import { POST_LIMIT_SECONDS, useLimit } from '@/sections/terminal/hooks/use-limit';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import dayjs from 'dayjs';
-import { useInterval, useRequest } from 'ahooks';
-import { FE_SYSTEM, FE_SYSTEM_KEY, START_DATE } from '@/sections/terminal/config';
-import { useChatStore } from '@/stores/chat';
-import { uniqBy } from 'lodash';
-import Big from 'big.js';
-import Item from '@/sections/terminal/components/content/item';
-import Level from '@/sections/terminal/components/content/level';
-import { motion } from 'framer-motion';
+import clsx from "clsx";
+import {
+  POST_LIMIT_SECONDS,
+  useLimit
+} from "@/sections/terminal/hooks/use-limit";
+import { useEffect, useMemo, useRef, useState } from "react";
+import dayjs from "dayjs";
+import { useInterval, useRequest } from "ahooks";
+import {
+  FE_SYSTEM,
+  FE_SYSTEM_KEY,
+  START_DATE
+} from "@/sections/terminal/config";
+import { useChatStore } from "@/stores/chat";
+import { uniqBy } from "lodash";
+import Big from "big.js";
+import Item from "@/sections/terminal/components/content/item";
+import Level from "@/sections/terminal/components/content/level";
+import { motion } from "framer-motion";
 
 const ChatContent = (props: any) => {
   const {
@@ -23,13 +30,16 @@ const ChatContent = (props: any) => {
     currentUser,
     setInputMessage,
     inputMessage,
-    scrollToBottom,
+    scrollToBottom
   } = props;
 
   const [currentTime, setCurrentTime] = useState(dayjs());
-  const { data: currentDay } = useRequest(async () => {
-    return dayjs(currentTime).diff(START_DATE, "day");
-  }, { refreshDeps: [currentTime] });
+  const { data: currentDay } = useRequest(
+    async () => {
+      return dayjs(currentTime).diff(START_DATE, "day");
+    },
+    { refreshDeps: [currentTime] }
+  );
 
   useInterval(() => {
     setCurrentTime(dayjs());
@@ -38,13 +48,17 @@ const ChatContent = (props: any) => {
   const chatStore: any = useChatStore();
   const { limitProgress, currentUserLimit } = useLimit({ precision: 0 });
   const mergedMessages = useMemo(() => uniqBy(messages, "id"), [messages]);
-  const mergedPreviousPageMessages = useMemo(() => uniqBy(previousPageMessages, "id"), [previousPageMessages]);
+  const mergedPreviousPageMessages = useMemo(
+    () => uniqBy(previousPageMessages, "id"),
+    [previousPageMessages]
+  );
 
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [displayedMessages, setDisplayedMessages] = useState<any>([]);
   const [displayedMessageIndex, setDisplayedMessageIndex] = useState<any>(0);
-  const [displayedAllHistoryMessages, setDisplayedAllHistoryMessages] = useState<any>(false);
+  const [displayedAllHistoryMessages, setDisplayedAllHistoryMessages] =
+    useState<any>(false);
   const [inputFocused, setInputFocused] = useState<any>(true);
 
   useEffect(() => {
@@ -52,7 +66,10 @@ const ChatContent = (props: any) => {
       if (mergedMessages.length - 1 > displayedMessageIndex) {
         const _displayedMessageIndex = displayedMessageIndex + 1;
         setDisplayedMessageIndex(_displayedMessageIndex);
-        setDisplayedMessages((prev: any) => [...prev, mergedMessages[_displayedMessageIndex]]);
+        setDisplayedMessages((prev: any) => [
+          ...prev,
+          mergedMessages[_displayedMessageIndex]
+        ]);
         setDisplayedAllHistoryMessages(false);
       }
     } else {
@@ -62,7 +79,12 @@ const ChatContent = (props: any) => {
         setDisplayedMessages([mergedMessages[0]]);
       }
     }
-  }, [displayedMessages, mergedMessages, displayedAllHistoryMessages, displayedMessageIndex]);
+  }, [
+    displayedMessages,
+    mergedMessages,
+    displayedAllHistoryMessages,
+    displayedMessageIndex
+  ]);
 
   useEffect(() => {
     const handleFocus = () => {
@@ -73,12 +95,12 @@ const ChatContent = (props: any) => {
     };
 
     const input: any = inputRef.current;
-    input?.addEventListener('focus', handleFocus);
-    input?.addEventListener('blur', handleBlur);
+    input?.addEventListener("focus", handleFocus);
+    input?.addEventListener("blur", handleBlur);
 
     return () => {
-      input?.removeEventListener('focus', handleFocus);
-      input?.removeEventListener('blur', handleBlur);
+      input?.removeEventListener("focus", handleFocus);
+      input?.removeEventListener("blur", handleBlur);
     };
   }, []);
 
@@ -92,7 +114,11 @@ const ChatContent = (props: any) => {
   return (
     <div className={clsx("w-full h-full p-[30px] relative", className)}>
       <div className="px-[30px] pt-[10px]">
-        <img src="/images/logo-pixel.svg" alt="" className="shrink-0 w-[129px] h-[55px] object-contain object-center" />
+        <img
+          src="/images/logo-pixel.svg"
+          alt=""
+          className="shrink-0 w-[129px] h-[55px] object-contain object-center"
+        />
       </div>
       <div className="w-full h-[calc(100%_-_65px_-_51px)] pt-[25px] pb-[15px]">
         <div
@@ -109,32 +135,39 @@ const ChatContent = (props: any) => {
             inputRef.current?.focus();
           }}
         >
-          {
-            mergedPreviousPageMessages?.map((message: any, index: number) => (
-              <Item
-                key={`previousPage-${index}`}
-                isTypewriter={false}
-                roleColor="text-[#8D7CFF]"
-                className="!text-[14px]"
-                message={message}
-                user={chatStore.users[message.from?.toLowerCase()]}
-              />
-            ))
-          }
-          {displayedMessages?.map?.((message: any, index: number) => (
+          {mergedPreviousPageMessages?.map((message: any, index: number) => (
             <Item
-              key={index}
-              isTypewriter={!(message.from === FE_SYSTEM_KEY && message.type === "buffer")}
+              key={`previousPage-${index}`}
+              isTypewriter={false}
               roleColor="text-[#8D7CFF]"
               className="!text-[14px]"
               message={message}
-              user={message.from === FE_SYSTEM_KEY ? FE_SYSTEM : chatStore.users[message.from?.toLowerCase()]}
+              user={chatStore.users[message.from?.toLowerCase()]}
+            />
+          ))}
+          {displayedMessages?.map?.((message: any, index: number) => (
+            <Item
+              key={index}
+              isTypewriter={
+                !(message.from === FE_SYSTEM_KEY && message.type === "buffer")
+              }
+              roleColor="text-[#8D7CFF]"
+              className="!text-[14px]"
+              message={message}
+              user={
+                message.from === FE_SYSTEM_KEY
+                  ? FE_SYSTEM
+                  : chatStore.users[message.from?.toLowerCase()]
+              }
               onAnimationComplete={() => {
                 scrollToBottom();
                 if (mergedMessages.length - 1 > displayedMessageIndex) {
                   const _displayedMessageIndex = displayedMessageIndex + 1;
                   setDisplayedMessageIndex(_displayedMessageIndex);
-                  setDisplayedMessages((prev: any) => [...prev, mergedMessages[_displayedMessageIndex]]);
+                  setDisplayedMessages((prev: any) => [
+                    ...prev,
+                    mergedMessages[_displayedMessageIndex]
+                  ]);
                   return;
                 }
                 setDisplayedAllHistoryMessages(true);
@@ -147,24 +180,22 @@ const ChatContent = (props: any) => {
             </div>
 
             <>
-              {
-                !inputFocused && (
-                  <motion.div
-                    className="shrink-0 w-[1px] h-[16px] bg-[#0F1]"
-                    initial={{
-                      opacity: 0,
-                    }}
-                    animate={{
-                      opacity: [0, 1, 0],
-                    }}
-                    transition={{
-                      type: "none",
-                      repeat: Infinity,
-                      duration: 1,
-                    }}
-                  />
-                )
-              }
+              {!inputFocused && (
+                <motion.div
+                  className="shrink-0 w-[1px] h-[16px] bg-[#0F1]"
+                  initial={{
+                    opacity: 0
+                  }}
+                  animate={{
+                    opacity: [0, 1, 0]
+                  }}
+                  transition={{
+                    type: "none",
+                    repeat: Infinity,
+                    duration: 1
+                  }}
+                />
+              )}
               <input
                 ref={inputRef}
                 className="bg-transparent flex-1 text-[14px] text-[#0F1] placeholder:text-[#8D7CFF]"
@@ -211,9 +242,7 @@ const ChatContent = (props: any) => {
         <div className="">
           MONADVERSE: DAY {currentDay} {dayjs(currentTime).format("HH:mm:ss")}
         </div>
-        <div className="">
-          SIGNAL DELAY: {POST_LIMIT_SECONDS}s
-        </div>
+        <div className="">SIGNAL DELAY: {POST_LIMIT_SECONDS}s</div>
       </div>
     </div>
   );

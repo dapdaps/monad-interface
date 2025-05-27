@@ -1,11 +1,17 @@
 import dayjs from "dayjs";
 import Level from "./level";
-import Typewriter from '@/sections/terminal/components/typewriter';
-import clsx from 'clsx';
-import { useEffect } from 'react';
+import Typewriter from "@/sections/terminal/components/typewriter";
+import clsx from "clsx";
+import { useEffect } from "react";
 
-export default function Item({ message, user, onAnimationComplete, className, isTypewriter = true, roleColor = "#7B23FF" }: any) {
-
+export default function Item({
+  message,
+  user,
+  onAnimationComplete,
+  className,
+  isTypewriter = true,
+  roleColor = "#7B23FF"
+}: any) {
   useEffect(() => {
     let timer: any;
     if (!isTypewriter) {
@@ -27,19 +33,18 @@ export default function Item({ message, user, onAnimationComplete, className, is
       }}
     >
       <div className="shrink-0">
-        [{dayjs(message.timestamp).format("HH:mm:ss")}] [{user?.name}]{!!user?.level ? " " : ""}
+        [{dayjs(message.timestamp).format("HH:mm:ss")}] [{user?.name}]
+        {!!user?.level ? " " : ""}
         <Level level={user?.level} />:
       </div>
-      {
-        isTypewriter ? (
-          <Typewriter
-            text={message?.text ?? ""}
-            onAnimationComplete={onAnimationComplete}
-          />
-        ) : (
-          <div>{message?.text ?? ""}</div>
-        )
-      }
+      {isTypewriter ? (
+        <Typewriter
+          text={message?.text ?? ""}
+          onAnimationComplete={onAnimationComplete}
+        />
+      ) : (
+        <div>{message?.text ?? ""}</div>
+      )}
     </div>
   );
 }

@@ -1,22 +1,28 @@
 "use client";
 
-import { MessageQueryDirection, Realtime, TextMessage } from 'leancloud-realtime';
-import LC from 'leancloud-storage';
-import { useEffect, useRef, useState } from 'react';
-import { useDebounceFn, useRequest } from 'ahooks';
-import useUsersInfo from '../hooks/use-users-info';
-import { redirect } from 'next/navigation';
-import { useTerminalStore } from '@/stores/terminal';
-import useCustomAccount from '@/hooks/use-account';
-import ChatCard from '@/sections/terminal/chat-v2/card';
-import ChatHeader from '@/sections/terminal/chat-v2/header';
-import ChatContent from '@/sections/terminal/chat-v2/content';
-import ChatBg from '@/sections/terminal/chat-v2/bg';
-import { FE_SYSTEM_KEY, VERSION } from '@/sections/terminal/config';
-import dayjs from 'dayjs';
-import { v4 as uuidv4 } from 'uuid';
-import { POST_LIMIT_SECONDS, useLimit } from '@/sections/terminal/hooks/use-limit';
-import Big from 'big.js';
+import {
+  MessageQueryDirection,
+  Realtime,
+  TextMessage
+} from "leancloud-realtime";
+import LC from "leancloud-storage";
+import { useEffect, useRef, useState } from "react";
+import { useDebounceFn, useRequest } from "ahooks";
+import useUsersInfo from "../hooks/use-users-info";
+import { redirect } from "next/navigation";
+import { useTerminalStore } from "@/stores/terminal";
+import ChatCard from "@/sections/terminal/chat-v2/card";
+import ChatHeader from "@/sections/terminal/chat-v2/header";
+import ChatContent from "@/sections/terminal/chat-v2/content";
+import ChatBg from "@/sections/terminal/chat-v2/bg";
+import { FE_SYSTEM_KEY, VERSION } from "@/sections/terminal/config";
+import dayjs from "dayjs";
+import { v4 as uuidv4 } from "uuid";
+import {
+  POST_LIMIT_SECONDS,
+  useLimit
+} from "@/sections/terminal/hooks/use-limit";
+import Big from "big.js";
 import "./animate.css";
 
 const realtime = new Realtime({
@@ -41,49 +47,54 @@ const SYSTEM_CHECK_MESSAGES = [
     id: uuidv4(),
     timestamp: dayjs(START_TIMESTAMP),
     text: `NADSA COMMUNICATION SYSTEM v${VERSION}`,
-    from: FE_SYSTEM_KEY,
+    from: FE_SYSTEM_KEY
   },
   {
     id: uuidv4(),
     timestamp: dayjs(START_TIMESTAMP).add(1, "seconds"),
     text: `INITIALIZING...`,
-    from: FE_SYSTEM_KEY,
+    from: FE_SYSTEM_KEY
   },
   {
     id: uuidv4(),
     timestamp: dayjs(START_TIMESTAMP).add(2, "seconds"),
     text: `MEMORY CHECK: OK`,
-    from: FE_SYSTEM_KEY,
+    from: FE_SYSTEM_KEY
   },
   {
     id: uuidv4(),
     timestamp: dayjs(START_TIMESTAMP).add(3, "seconds"),
     text: `COMMUNICATION ARRAY: ONLINE`,
-    from: FE_SYSTEM_KEY,
+    from: FE_SYSTEM_KEY
   },
   {
     id: uuidv4(),
     timestamp: dayjs(START_TIMESTAMP).add(4, "seconds"),
     text: `ENCRYPTION MODULES: ACTIVE`,
-    from: FE_SYSTEM_KEY,
+    from: FE_SYSTEM_KEY
   },
   {
     id: uuidv4(),
     timestamp: dayjs(START_TIMESTAMP).add(5, "seconds"),
     text: `SYSTEM READY`,
-    from: FE_SYSTEM_KEY,
+    from: FE_SYSTEM_KEY
   },
   {
     id: uuidv4(),
     timestamp: dayjs(START_TIMESTAMP).add(6, "seconds"),
     text: `ESTABLISHING CONNECTION...`,
-    from: FE_SYSTEM_KEY,
-  },
+    from: FE_SYSTEM_KEY
+  }
 ];
 
 export default function ChatView({ currentUser }: any) {
-  const [messages, setMessages] = useState<TextMessage[]>([...SYSTEM_CHECK_MESSAGES]);
-  const [previousPageMessages, setPagePreviousMessages] = useState<TextMessage[]>([]);
+  // @ts-ignore
+  const [messages, setMessages] = useState<TextMessage[]>([
+    ...SYSTEM_CHECK_MESSAGES
+  ]);
+  const [previousPageMessages, setPagePreviousMessages] = useState<
+    TextMessage[]
+  >([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isConnected, setIsConnected] = useState(false);
   const conversationRef = useRef<any>(null);
@@ -91,86 +102,115 @@ export default function ChatView({ currentUser }: any) {
   const hasMoreRef = useRef(true);
   const messagesRef = useRef<any>();
   const [onlineUsers, setOnlineUsers] = useState(0);
-
-  const { account } = useCustomAccount();
   const { fetchUsersInfo } = useUsersInfo();
-  const { limitProgress, currentUserLimit } = useLimit({ precision: 0, updateDuration: 300 });
+  const { limitProgress, currentUserLimit } = useLimit({
+    precision: 0,
+    updateDuration: 300
+  });
   const setLimit = useTerminalStore((store) => store.setLimit);
 
-  const { run: scrollToBottom } = useDebounceFn(() => {
-    if (!messagesEndRef.current) {
-      return;
-    }
-    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-  }, { wait: 300 });
-
-  const { runAsync: fetchHistoryMessages, loading: historyMessagesLoading } = useRequest(async (isFresh?: boolean) => {
-    if (!conversationRef.current) {
-      return;
-    }
-
-    const isPrevious = messages.length > 0 && !isFresh;
-
-    // https://leancloud.github.io/js-realtime-sdk/docs/ChatRoom.html#queryMessages
-    let options: any = {
-      limit: 20,
-      direction: MessageQueryDirection.NEW_TO_OLD
-    };
-
-    if (isPrevious) {
-      options.limit = 20;
-      options.direction = MessageQueryDirection.OLD_TO_NEW;
-      if (previousPageMessages.length) {
-        options.beforeMessageId = previousPageMessages[0].id;
-        options.beforeTime = previousPageMessages[0].timestamp;
-      } else {
-        options.beforeMessageId = messages.filter((m) => m.from !== FE_SYSTEM_KEY)[0].id;
-        options.beforeTime = messages.filter((m) => m.from !== FE_SYSTEM_KEY)[0].timestamp;
+  const { run: scrollToBottom } = useDebounceFn(
+    () => {
+      if (!messagesEndRef.current) {
+        return;
       }
-    }
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    },
+    { wait: 300 }
+  );
 
-    const historyMessages = await conversationRef.current.queryMessages(
-      options
+  const { runAsync: fetchHistoryMessages, loading: historyMessagesLoading } =
+    useRequest(
+      async (isFresh?: boolean) => {
+        if (!conversationRef.current) {
+          return;
+        }
+
+        const isPrevious = messages.length > 0 && !isFresh;
+
+        // https://leancloud.github.io/js-realtime-sdk/docs/ChatRoom.html#queryMessages
+        let options: any = {
+          limit: 20,
+          direction: MessageQueryDirection.NEW_TO_OLD
+        };
+
+        if (isPrevious) {
+          options.limit = 20;
+          options.direction = MessageQueryDirection.OLD_TO_NEW;
+          if (previousPageMessages.length) {
+            options.beforeMessageId = previousPageMessages[0].id;
+            options.beforeTime = previousPageMessages[0].timestamp;
+          } else {
+            options.beforeMessageId = messages.filter(
+              (m) => m.from !== FE_SYSTEM_KEY
+            )[0].id;
+            options.beforeTime = messages.filter(
+              (m) => m.from !== FE_SYSTEM_KEY
+            )[0].timestamp;
+          }
+        }
+
+        const historyMessages = await conversationRef.current.queryMessages(
+          options
+        );
+
+        hasMoreRef.current = historyMessages.length >= 20;
+
+        const sortedMessages = historyMessages
+          .map((m: any) => {
+            if (isPrevious) {
+              m.localType = "prevPage";
+            }
+            return m;
+          })
+          .sort(
+            (a: any, b: any) =>
+              dayjs(a.timestamp).valueOf() - dayjs(b.timestamp).valueOf()
+          );
+
+        await fetchUsersInfo(
+          [
+            ...sortedMessages.map((message: TextMessage) => message.from),
+            currentUser.id?.toLowerCase()
+          ],
+          { from: "HistoryMessages" }
+        );
+
+        if (isPrevious) {
+          const scrollHeightBefore = messagesRef.current?.scrollHeight;
+          const scrollTopBefore = messagesRef.current?.scrollTop;
+          setPagePreviousMessages((prevMessages) => {
+            return [...prevMessages, ...sortedMessages].sort(
+              (a: any, b: any) =>
+                dayjs(a.timestamp).valueOf() - dayjs(b.timestamp).valueOf()
+            ) as TextMessage[];
+          });
+          const _timer = setTimeout(() => {
+            clearTimeout(_timer);
+            const scrollHeightAfter = messagesRef.current.scrollHeight;
+            const heightDifference = scrollHeightAfter - scrollHeightBefore;
+            messagesRef.current.scrollTop = scrollTopBefore + heightDifference;
+          }, 0);
+        } else {
+          setMessages((prevMessages) => {
+            const nextMessages = [
+              ...prevMessages,
+              ...sortedMessages
+            ] as TextMessage[];
+            return [
+              ...nextMessages.slice(0, SYSTEM_CHECK_MESSAGES.length),
+              ...nextMessages
+                .slice(SYSTEM_CHECK_MESSAGES.length - 1)
+                .sort(
+                  (a: any, b: any) =>
+                    dayjs(a.timestamp).valueOf() - dayjs(b.timestamp).valueOf()
+                )
+            ];
+          });
+        }
+      },
+      { manual: true }
     );
-
-    hasMoreRef.current = historyMessages.length >= 20;
-
-    const sortedMessages = historyMessages.map((m: any) => {
-      if (isPrevious) {
-        m.localType = "prevPage";
-      }
-      return m;
-    }).sort(
-      (a: any, b: any) => dayjs(a.timestamp).valueOf() - dayjs(b.timestamp).valueOf()
-    );
-
-    await fetchUsersInfo(
-      [...sortedMessages.map((message: TextMessage) => message.from), account?.toLowerCase()],
-      { from: "HistoryMessages" }
-    );
-
-    if (isPrevious) {
-      const scrollHeightBefore = messagesRef.current?.scrollHeight;
-      const scrollTopBefore = messagesRef.current?.scrollTop;
-      setPagePreviousMessages((prevMessages) => {
-        return [...prevMessages, ...sortedMessages].sort((a: any, b: any) => dayjs(a.timestamp).valueOf() - dayjs(b.timestamp).valueOf()) as TextMessage[];
-      });
-      const _timer = setTimeout(() => {
-        clearTimeout(_timer);
-        const scrollHeightAfter = messagesRef.current.scrollHeight;
-        const heightDifference = scrollHeightAfter - scrollHeightBefore;
-        messagesRef.current.scrollTop = scrollTopBefore + heightDifference;
-      }, 0);
-    } else {
-      setMessages((prevMessages) => {
-        const nextMessages = [...prevMessages, ...sortedMessages] as TextMessage[];
-        return [
-          ...nextMessages.slice(0, SYSTEM_CHECK_MESSAGES.length),
-          ...nextMessages.slice(SYSTEM_CHECK_MESSAGES.length - 1).sort((a: any, b: any) => dayjs(a.timestamp).valueOf() - dayjs(b.timestamp).valueOf()),
-        ];
-      });
-    }
-  }, { manual: true });
 
   const { run: fetchHistoryMessagesDebounced } = useDebounceFn(
     (e: any) => {
@@ -185,13 +225,13 @@ export default function ChatView({ currentUser }: any) {
   );
 
   useEffect(() => {
-    if (!currentUser.address) {
+    if (!currentUser.id) {
       redirect("/chat/login");
     }
 
     let client: any;
     realtime
-      .createIMClient(String(currentUser.address))
+      .createIMClient(String(currentUser.id))
       .then(async (_client: any) => {
         client = _client;
         console.log("IM client created successfully");
@@ -221,7 +261,10 @@ export default function ChatView({ currentUser }: any) {
             const newChatRoom = await _client.createChatRoom({
               name: "One Won Chat"
             });
-            console.log("New terminal room created successfully:", newChatRoom.id);
+            console.log(
+              "New terminal room created successfully:",
+              newChatRoom.id
+            );
             return newChatRoom;
           } catch (createError) {
             console.error("Failed to create terminal room:", createError);
@@ -245,7 +288,9 @@ export default function ChatView({ currentUser }: any) {
           // Listen for new messages
           chatroom.on("message", async (message: TextMessage) => {
             console.log("New message received:", message);
-            await fetchUsersInfo([message.from], { from: "New message received" });
+            await fetchUsersInfo([message.from], {
+              from: "New message received"
+            });
             setMessages((prev) => [...prev, message]);
           });
 
@@ -271,52 +316,73 @@ export default function ChatView({ currentUser }: any) {
     };
   }, [currentUser]);
 
-  const { runAsync: sendMessage, loading: sending } = useRequest(async () => {
-    if (
-      !conversationRef.current ||
-      !inputMessage.trim() ||
-      !isConnected ||
-      !currentUser.address
-    ) {
-      return;
-    }
+  const { runAsync: sendMessage, loading: sending } = useRequest(
+    async () => {
+      if (
+        !conversationRef.current ||
+        !inputMessage.trim() ||
+        !isConnected ||
+        !currentUser.id
+      ) {
+        return;
+      }
 
-    try {
-      console.log("Preparing to send message...");
-      const message = new TextMessage(inputMessage);
-      console.log("Message object created successfully:", message);
+      try {
+        console.log("Preparing to send message...");
+        const message = new TextMessage(inputMessage);
+        console.log("Message object created successfully:", message);
 
-      const lastPostTime = dayjs();
-      setLimit(account, { lastPostTime: lastPostTime.valueOf() });
-      setMessages((prev) => [...prev, message, {
-        timestamp: lastPostTime,
-        type: "buffer",
-        text: `BUFFER: ${0}%`,
-        from: FE_SYSTEM_KEY,
-        id: uuidv4(),
-      }]);
+        const lastPostTime = dayjs();
+        setLimit(currentUser.id, {
+          lastPostTime: lastPostTime.valueOf()
+        });
+        // @ts-ignore
+        setMessages((prev) => [
+          ...prev,
+          message,
+          {
+            timestamp: lastPostTime,
+            type: "buffer",
+            text: `BUFFER: ${0}%`,
+            from: FE_SYSTEM_KEY,
+            id: uuidv4()
+          }
+        ]);
 
-      await fetchUsersInfo([message.from || account?.toLowerCase()], { from: "send message" });
-      scrollToBottom();
-      await conversationRef.current.send(message);
-      console.log("Message sent successfully");
+        await fetchUsersInfo([message.from || currentUser.id?.toLowerCase()], {
+          from: "send message"
+        });
+        scrollToBottom();
+        await conversationRef.current.send(message);
+        console.log("Message sent successfully");
 
-      setInputMessage("");
-    } catch (error) {
-      console.error("Failed to send message:", error);
-    }
-  }, { manual: true, throttleWait: 1000 });
+        setInputMessage("");
+      } catch (error) {
+        console.error("Failed to send message:", error);
+      }
+    },
+    { manual: true, throttleWait: 1000 }
+  );
 
   useEffect(() => {
     if (!currentUserLimit || !messages) return;
     const getCurrentBufferMessage = (_messages: any) => {
-      return _messages.find((m: any) => dayjs(m.timestamp).valueOf() === currentUserLimit.lastPostTime && m.from === FE_SYSTEM_KEY);
+      return _messages.find(
+        (m: any) =>
+          dayjs(m.timestamp).valueOf() === currentUserLimit.lastPostTime &&
+          m.from === FE_SYSTEM_KEY
+      );
     };
     const currentBufferMessage = getCurrentBufferMessage(messages);
     const currTime = Date.now();
     const diff = Math.max(currTime - currentUserLimit.lastPostTime, 0);
 
-    if (!currentBufferMessage || (currentUserLimit?.lastPostTime && Big(diff).gt(Big(POST_LIMIT_SECONDS || 5).times(1000)) && /100%$/.test(currentBufferMessage.text))) {
+    if (
+      !currentBufferMessage ||
+      (currentUserLimit?.lastPostTime &&
+        Big(diff).gt(Big(POST_LIMIT_SECONDS || 5).times(1000)) &&
+        /100%$/.test(currentBufferMessage.text))
+    ) {
       return;
     }
 

@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
 export const START_DATE = dayjs.utc("2025-02-19 00:00:00");
 
@@ -7,58 +7,58 @@ export const VERSION = "0.1";
 
 export const FE_SYSTEM = {
   role: "SYSTEM",
-  name: "SYSTEM",
+  name: "SYSTEM"
 };
 
 export const LEVELS = {
-  "Peasant": {
+  Peasant: {
     value: "✦",
     name: "Peasant",
-    condition: "Hold <10 MON",
+    condition: "Hold <10 MON"
   },
-  "Worker": {
+  Worker: {
     value: "✧",
     name: "Worker",
-    condition: "Hold 10-50 MON",
+    condition: "Hold 10-50 MON"
   },
   "Middle class": {
     value: "✬",
     name: "Middle class",
-    condition: "Hold 50-100 MON",
+    condition: "Hold 50-100 MON"
   },
-  "Business": {
+  Business: {
     value: "✭",
     name: "Business",
-    condition: "Hold 100-1000 MON",
+    condition: "Hold 100-1000 MON"
   },
-  "Wealthy": {
+  Wealthy: {
     value: "۞",
     name: "Wealthy",
-    condition: "Hold >1000 MON",
+    condition: "Hold >1000 MON"
   },
-  "NGMI": {
+  NGMI: {
     value: "✻",
     name: "NGMI",
-    condition: "Have <5 txns on testnet",
+    condition: "Have <5 txns on testnet"
   },
-  "Lazy": {
+  Lazy: {
     value: "✾",
     name: "Lazy",
-    condition: "Have 5-20 txns on testnet",
+    condition: "Have 5-20 txns on testnet"
   },
-  "Standard": {
+  Standard: {
     value: "✿",
     name: "Standard",
-    condition: "Have 20-100 txns on testnet",
+    condition: "Have 20-100 txns on testnet"
   },
-  "Hardwork": {
+  Hardwork: {
     value: "❀",
     name: "Hardwork",
-    condition: "Have 100-500 txns on testnet",
+    condition: "Have 100-500 txns on testnet"
   },
-  "Certified": {
+  Certified: {
     value: "❂",
     name: "Certified",
-    condition: "Have >500 txns on testnet",
-  },
+    condition: "Have >500 txns on testnet"
+  }
 };
