@@ -11,6 +11,7 @@ import { ALL_DAPP_LIST } from "../dapps/config";
 import { IDapp } from "@/types";
 import StarrySkyCanvas from "./StarrySky";
 import { SpecialAnimateGif } from "./SpecialAnimateGif";
+
 const itemWidth = 51;
 const itemGap = 6;
 
@@ -59,8 +60,9 @@ const Home = () => {
         className="z-[7] absolute left-0 bottom-0 w-full bg-[url(/images/monad/background/bg1.svg)] bg-no-repeat bg-contain 
                         h-[calc(635/14.4*var(--rem))] min-h-[635px] min-w-[1440px]"
       >
+
         <div className="relative w-full h-full min-h-[635px] min-w-[1440px]">
-          {/* <SpecialAnimateGif /> */}
+          <SpecialAnimateGif />
           {/* Bridge */}
           <div
             data-bp="1001-002"
@@ -166,8 +168,8 @@ const Home = () => {
                   className="relative w-full h-full bg-no-repeat bg-contain bg-[url(/images/monad/entry/radar.svg)]"
                 ></motion.div>
               </div>*/}
-            </div> 
-          </div> 
+            </div>
+          </div>
           {/* Faucet */}
           <div
             data-bp="1001-004"
@@ -223,7 +225,7 @@ const Home = () => {
               windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03] bottom-[calc(63/14.4*var(--rem))]' : '',
               windowWidth >= 1920 && windowWidth < 2560 ? 'hover:scale-[1.1]' : '',
               windowWidth >= 2560 ? 'scale-[1.3] hover:scale-[1.4] !right-[calc(200/14.4*var(--rem))] bottom-[calc(63/14.4*var(--rem))]' : '',
-              windowWidth < 1440 && windowWidth >=1380 ? 'scale-[0.86] hover:scale-[0.92] !right-[calc(150/14.4*var(--rem))] bottom-[calc(90/14.4*var(--rem))]' : '',
+              windowWidth < 1440 && windowWidth >= 1380 ? 'scale-[0.86] hover:scale-[0.92] !right-[calc(150/14.4*var(--rem))] bottom-[calc(90/14.4*var(--rem))]' : '',
               windowWidth < 1380 ? 'scale-[0.76] hover:scale-[0.82] !right-[calc(280/14.4*var(--rem))] bottom-[calc(90/14.4*var(--rem))]' : '',
               "bg-no-repeat bg-contain",
               "transition-all duration-200 ease-in-out cursor-pointer",
@@ -348,7 +350,7 @@ const Home = () => {
                 <img src="/images/monad/background/tokens-moyaki.gif" className="w-[100px]" alt="" />
               </div>
               <div className="absolute left-[167px] top-[95px]">
-                  <img src="/images/monad/background/cover.svg" alt="" />
+                <img src="/images/monad/background/cover.svg" alt="" />
               </div>
             </div>
           </div>
