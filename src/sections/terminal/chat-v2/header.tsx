@@ -1,26 +1,18 @@
 import clsx from "clsx";
-import { useDisconnect } from "wagmi";
+// import { useDisconnect } from "wagmi";
 // import { formatLongText } from "@/utils/utils";
-import { useRequest } from "ahooks";
+// import { useRequest } from "ahooks";
 import { numberFormatter } from "@/utils/number-formatter";
 // import LevelPanel from "@/sections/terminal/components/footer/level-panel";
 // import Popover, {
 //   PopoverPlacement,
 //   PopoverTrigger
 // } from "@/components/popover";
+import { useTwitterStore } from "@/stores/twitter";
 
 const ChatHeader = (props: any) => {
   const { className, currentUser, onlineUsers } = props;
-
-  const { disconnectAsync } = useDisconnect();
-
-  const { runAsync: onDisconnect, loading } = useRequest(
-    async () => {
-      await disconnectAsync();
-    },
-    { manual: true }
-  );
-
+  const twitterStore: any = useTwitterStore();
   return (
     <div
       className={clsx(
@@ -50,8 +42,12 @@ const ChatHeader = (props: any) => {
         <button
           type="button"
           className="w-[14px] h-[14px] shrink-0 bg-[url('/images/terminal/icon-logout.svg')] bg-no-repeat bg-contain bg-center disabled:opacity-30 disabled:!cursor-not-allowed"
-          disabled={loading}
-          onClick={onDisconnect}
+          onClick={() => {
+            twitterStore.set({
+              id: "",
+              info: {}
+            });
+          }}
         />
       </div>
     </div>

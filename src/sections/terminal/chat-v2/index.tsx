@@ -226,7 +226,7 @@ export default function ChatView({ currentUser }: any) {
 
   useEffect(() => {
     if (!currentUser.id) {
-      redirect("/chat/login");
+      return;
     }
 
     let client: any;
