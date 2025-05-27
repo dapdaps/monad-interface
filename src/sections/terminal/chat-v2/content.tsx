@@ -1,11 +1,9 @@
 import clsx from "clsx";
-import {
-  POST_LIMIT_SECONDS,
-  useLimit
-} from "@/sections/terminal/hooks/use-limit";
+import { POST_LIMIT_SECONDS } from "@/sections/terminal/hooks/use-limit";
 import { useEffect, useMemo, useRef, useState } from "react";
 import dayjs from "dayjs";
 import { useInterval, useRequest } from "ahooks";
+import { useTerminalStore } from "@/stores/terminal";
 import {
   FE_SYSTEM,
   FE_SYSTEM_KEY,
@@ -13,7 +11,6 @@ import {
 } from "@/sections/terminal/config";
 import { useChatStore } from "@/stores/chat";
 import { uniqBy } from "lodash";
-import Big from "big.js";
 import Item from "@/sections/terminal/components/content/item";
 import Level from "@/sections/terminal/components/content/level";
 import { motion } from "framer-motion";
@@ -34,6 +31,8 @@ const ChatContent = (props: any) => {
   } = props;
 
   const [currentTime, setCurrentTime] = useState(dayjs());
+  const terminalStore: any = useTerminalStore();
+  const [remainTime, setRemainTime] = useState(0);
   const { data: currentDay } = useRequest(
     async () => {
       return dayjs(currentTime).diff(START_DATE, "day");
@@ -45,8 +44,14 @@ const ChatContent = (props: any) => {
     setCurrentTime(dayjs());
   }, 1000);
 
+  useInterval(
+    () => {
+      setRemainTime(remainTime - 300);
+    },
+    remainTime < 0 ? undefined : 300
+  );
+
   const chatStore: any = useChatStore();
-  const { limitProgress, currentUserLimit } = useLimit({ precision: 0 });
   const mergedMessages = useMemo(() => uniqBy(messages, "id"), [messages]);
   const mergedPreviousPageMessages = useMemo(
     () => uniqBy(previousPageMessages, "id"),
@@ -106,10 +111,21 @@ const ChatContent = (props: any) => {
 
   useEffect(() => {
     if (!inputRef.current) return;
-    if (Big(limitProgress || 100).gte(100)) {
+    if (remainTime < 0) {
       inputRef.current.focus();
+      terminalStore.set({
+        remainSeconds: 0
+      });
+    } else {
+      inputRef.current.blur();
     }
-  }, [limitProgress, inputRef.current]);
+  }, [remainTime, inputRef.current]);
+
+  useEffect(() => {
+    if (!terminalStore.remainSeconds) return;
+    ``;
+    setRemainTime(terminalStore.remainSeconds * 1000);
+  }, [terminalStore.remainSeconds]);
 
   return (
     <div className={clsx("w-full h-full p-[30px] relative", className)}>
@@ -174,11 +190,38 @@ const ChatContent = (props: any) => {
               }}
             />
           ))}
+          {remainTime > 0 && (
+            <div className="relative">
+              <Item
+                isTypewriter={false}
+                roleColor="text-[#8D7CFF]"
+                className="!text-[14px]"
+                message={{
+                  timestamp: terminalStore?.postTime,
+                  text: `BUFFER: ${(((5000 - remainTime) / 5000) * 100).toFixed(
+                    0
+                  )}%`
+                }}
+                user={FE_SYSTEM}
+              />
+              <motion.img
+                src="/images/terminal/icon-target2.svg"
+                alt=""
+                className="absolute left-[280px] top-1/2 -translate-y-1/2 shrink-0 w-[36px] h-[36px] object-cover object-center"
+                animate={{
+                  opacity: [1, 0, 1]
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity
+                }}
+              />
+            </div>
+          )}
           <div className="flex items-center gap-[8px] text-[#0F1]">
             <div className="shrink-0">
               [{currentUser.name}] <Level level={currentUser.level} />:
             </div>
-
             <>
               {!inputFocused && (
                 <motion.div
@@ -200,41 +243,14 @@ const ChatContent = (props: any) => {
                 ref={inputRef}
                 className="bg-transparent flex-1 text-[14px] text-[#0F1] placeholder:text-[#8D7CFF]"
                 autoFocus
-                disabled={Big(limitProgress || 100).lt(100)}
+                disabled={remainTime > 0}
                 onKeyPress={(e) => e.key === "Enter" && sendMessage()}
                 onChange={(e) => setInputMessage(e.target.value)}
                 value={inputMessage}
               />
             </>
           </div>
-          {/*{
-           Big(limitProgress || 100).lt(100) && (
-           <div className="relative">
-           <Item
-           isTypewriter={false}
-           roleColor="text-[#8D7CFF]"
-           className="!text-[14px]"
-           message={{
-           timestamp: currentUserLimit?.lastPostTime,
-           text: `BUFFER: ${limitProgress}%`,
-           }}
-           user={FE_SYSTEM}
-           />
-           <motion.img
-           src="/images/terminal/icon-target2.svg"
-           alt=""
-           className="absolute left-[280px] top-1/2 -translate-y-1/2 shrink-0 w-[36px] h-[36px] object-cover object-center"
-           animate={{
-           opacity: [1, 0, 1],
-           }}
-           transition={{
-           duration: 3,
-           repeat: Infinity,
-           }}
-           />
-           </div>
-           )
-           }*/}
+
           <div ref={messagesEndRef} />
         </div>
       </div>

@@ -9,7 +9,6 @@ import LC from "leancloud-storage";
 import { useEffect, useRef, useState } from "react";
 import { useDebounceFn, useRequest } from "ahooks";
 import useUsersInfo from "../hooks/use-users-info";
-import { redirect } from "next/navigation";
 import { useTerminalStore } from "@/stores/terminal";
 import ChatCard from "@/sections/terminal/chat-v2/card";
 import ChatHeader from "@/sections/terminal/chat-v2/header";
@@ -18,11 +17,6 @@ import ChatBg from "@/sections/terminal/chat-v2/bg";
 import { FE_SYSTEM_KEY, VERSION } from "@/sections/terminal/config";
 import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
-import {
-  POST_LIMIT_SECONDS,
-  useLimit
-} from "@/sections/terminal/hooks/use-limit";
-import Big from "big.js";
 import "./animate.css";
 
 const realtime = new Realtime({
@@ -103,11 +97,7 @@ export default function ChatView({ currentUser }: any) {
   const messagesRef = useRef<any>();
   const [onlineUsers, setOnlineUsers] = useState(0);
   const { fetchUsersInfo } = useUsersInfo();
-  const { limitProgress, currentUserLimit } = useLimit({
-    precision: 0,
-    updateDuration: 300
-  });
-  const setLimit = useTerminalStore((store) => store.setLimit);
+  const terminalStore: any = useTerminalStore();
 
   const { run: scrollToBottom } = useDebounceFn(
     () => {
@@ -332,22 +322,8 @@ export default function ChatView({ currentUser }: any) {
         const message = new TextMessage(inputMessage);
         console.log("Message object created successfully:", message);
 
-        const lastPostTime = dayjs();
-        setLimit(currentUser.id, {
-          lastPostTime: lastPostTime.valueOf()
-        });
         // @ts-ignore
-        setMessages((prev) => [
-          ...prev,
-          message,
-          {
-            timestamp: lastPostTime,
-            type: "buffer",
-            text: `BUFFER: ${0}%`,
-            from: FE_SYSTEM_KEY,
-            id: uuidv4()
-          }
-        ]);
+        setMessages((prev) => [...prev, message]);
 
         await fetchUsersInfo([message.from || currentUser.id?.toLowerCase()], {
           from: "send message"
@@ -355,7 +331,10 @@ export default function ChatView({ currentUser }: any) {
         scrollToBottom();
         await conversationRef.current.send(message);
         console.log("Message sent successfully");
-
+        terminalStore.set({
+          remainSeconds: 5,
+          postTime: Date.now()
+        });
         setInputMessage("");
       } catch (error) {
         console.error("Failed to send message:", error);
@@ -364,37 +343,37 @@ export default function ChatView({ currentUser }: any) {
     { manual: true, throttleWait: 1000 }
   );
 
-  useEffect(() => {
-    if (!currentUserLimit || !messages) return;
-    const getCurrentBufferMessage = (_messages: any) => {
-      return _messages.find(
-        (m: any) =>
-          dayjs(m.timestamp).valueOf() === currentUserLimit.lastPostTime &&
-          m.from === FE_SYSTEM_KEY
-      );
-    };
-    const currentBufferMessage = getCurrentBufferMessage(messages);
-    const currTime = Date.now();
-    const diff = Math.max(currTime - currentUserLimit.lastPostTime, 0);
+  // useEffect(() => {
+  //   if (!currentUserLimit || !messages) return;
+  //   const getCurrentBufferMessage = (_messages: any) => {
+  //     return _messages.find(
+  //       (m: any) =>
+  //         dayjs(m.timestamp).valueOf() === currentUserLimit.lastPostTime &&
+  //         m.from === FE_SYSTEM_KEY
+  //     );
+  //   };
+  //   const currentBufferMessage = getCurrentBufferMessage(messages);
+  //   const currTime = Date.now();
+  //   const diff = Math.max(currTime - currentUserLimit.lastPostTime, 0);
 
-    if (
-      !currentBufferMessage ||
-      (currentUserLimit?.lastPostTime &&
-        Big(diff).gt(Big(POST_LIMIT_SECONDS || 5).times(1000)) &&
-        /100%$/.test(currentBufferMessage.text))
-    ) {
-      return;
-    }
+  //   if (
+  //     !currentBufferMessage ||
+  //     (currentUserLimit?.lastPostTime &&
+  //       Big(diff).gt(Big(POST_LIMIT_SECONDS || 5).times(1000)) &&
+  //       /100%$/.test(currentBufferMessage.text))
+  //   ) {
+  //     return;
+  //   }
 
-    setMessages((prev) => {
-      const currentBUFFERMessage = getCurrentBufferMessage(prev);
-      if (!currentBUFFERMessage) {
-        return prev;
-      }
-      currentBUFFERMessage.text = `BUFFER: ${limitProgress}%`;
-      return [...prev];
-    });
-  }, [currentUserLimit, limitProgress, messages]);
+  //   setMessages((prev) => {
+  //     const currentBUFFERMessage = getCurrentBufferMessage(prev);
+  //     if (!currentBUFFERMessage) {
+  //       return prev;
+  //     }
+  //     currentBUFFERMessage.text = `BUFFER: ${limitProgress}%`;
+  //     return [...prev];
+  //   });
+  // }, [currentUserLimit, limitProgress, messages]);
 
   return (
     <div className="relative w-full h-screen overflow-x-hidden bg-[#010101] font-Pixelmix text-[#8D7CFF] text-[14px] font-[400] leading-[200%] overflow-y-auto cursor-pointer terminal">
