@@ -12,7 +12,7 @@ const InvitationView = (props: any) => {
   } = useInvitation();
 
   return (
-    <div className="p-4">
+    <div className="p-4 fixed top-0 left-0 w-screen h-screen z-50">
       <h1>Invitation Page</h1>
       <ul>
         <li>

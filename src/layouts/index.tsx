@@ -11,9 +11,10 @@ export default function Layout({ children }: any) {
   if (["/terminal", "/terminal/login"].includes(pathname))
     return <SimpleLayout>{children}</SimpleLayout>;
 
-  return validUser ? (
-    <MainLayout>{children}</MainLayout>
-  ) : (
-    <InvitationView />
+  return (
+    <MainLayout>
+      <InvitationView />
+      {children}
+    </MainLayout>
   );
 }
