@@ -8,6 +8,10 @@ export default function NadsaPassCard() {
     console.log(nftMetadata, hasNFT, tokenIds);
 
     const status = useMemo(() => {
+        if (!address) {
+            return 0;
+        }
+
         if (hasNFT) {
             return 1;
         }
@@ -17,14 +21,14 @@ export default function NadsaPassCard() {
         }
 
         return 0;
-    }, [hasNFT, nftMetadata]);
+    }, [hasNFT, nftMetadata, address]);
 
     return (
         <div className="w-[308px] p-4 relative">
             <div className="absolute top-0 left-0 w-full h-full">
-                <img src="/images/nft/bg.png" alt="bg" className="w-full" />
+                <img src="/images/nft/bg.png" alt="bg" className="w-full h-full" />
             </div>
-            <div className="relative pt-[65px] z-10">
+            <div className="relative pt-[65px] z-10 px-[10px]">
                 <div className="absolute top-[0px] left-[38px] ">
                     <img src="/images/nft/title.svg" alt="bg" className="w-[50px] h-[50px]" />
                 </div>
@@ -69,13 +73,18 @@ export default function NadsaPassCard() {
                 </div>
                 {
                     status !== 2 && <>
-                        <div className="flex items-center justify-between mt-[10px] text-[12px] h-[40px] px-[10px] bg-[#212041] rounded-[6px] font-Pixelmix">
-                            <div className="text-[#FFFFFF]">{address?.slice(0, 5)}...{address?.slice(-5)}</div>
-                            <div className="text-[#00FF00]">
-                                <RightArrow />
+                        {
+                            address ? <div className="flex items-center justify-between mt-[10px] text-[12px] h-[40px] px-[10px] bg-[#212041] rounded-[2px] font-Pixelmix">
+                                <div className="text-[#FFFFFF]">{address?.slice(0, 5)}...{address?.slice(-5)}</div>
+                                <div className="text-[#00FF00]">
+                                    <RightArrow />
+                                </div>
+                            </div> : <div className="flex items-center justify-between mt-[10px] text-[12px] h-[40px] px-[10px] bg-[#7663F4] rounded-[2px] font-Pixelmix">
+                                <div className="text-[#FFFFFF]">Connect Wallet</div>
                             </div>
-                        </div>
-                        <div className="flex items-center justify-between mt-[10px] text-[12px] h-[40px] px-[10px] bg-[#212041] rounded-[6px] font-Pixelmix">
+                        }
+
+                        <div className="flex items-center justify-between mt-[10px] text-[12px] h-[40px] px-[10px] bg-[#212041] rounded-[2px] font-Pixelmix">
                             <div className="text-[#FFFFFF]">Followed 0xNADSA</div>
                             <div className="text-[#00FF00]">
                                 <RightArrow />
@@ -109,7 +118,6 @@ export default function NadsaPassCard() {
         </div>
     );
 }
-
 
 const RightArrow = () => {
     return (
