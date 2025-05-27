@@ -50,5 +50,5 @@ export default function useBindTwitterAccount({ withAuth }: any) {
     run();
   }, [account]);
 
-  return { loading, isSuccess };
+  return { loading, isSuccess, checkBindTwitterAccount: run };
 }
