@@ -23,7 +23,7 @@ export default function NadsaPassCard() {
             return 1;
         }
 
-        if (nftMetadata?.totalSupply && nftMetadata?.maxSupply && Number(nftMetadata?.totalSupply) === Number(nftMetadata?.maxSupply)) {
+        if (nftMetadata?.totalSupply && nftMetadata?.maxSupply && Number(nftMetadata?.maxSupply) > 0 && Number(nftMetadata?.totalSupply) === Number(nftMetadata?.maxSupply)) {
             return 2;
         }
 
