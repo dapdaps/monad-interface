@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-
 const TerserPlugin = require("terser-webpack-plugin");
 
 const createBundleStatsPlugin = require("next-plugin-bundle-stats");
@@ -57,7 +56,7 @@ const nextConfig = {
     {
       source: "/lfj/:path*",
       destination: "https://router-testnet.lfj.gg/:path*"
-    }
+    },
   ],
   webpack: (config, { dev }) => {
     config.resolve.alias.stream = "stream-browserify";
