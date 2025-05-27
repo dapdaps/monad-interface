@@ -88,7 +88,7 @@ export default function NadsaPassCard() {
                                 </div>
                             </div> : <button onClick={() => {
                                 open();
-                            }} className="flex items-center justify-between mt-[10px] text-[12px] h-[40px] px-[10px] bg-[#7663F4] rounded-[2px] font-Pixelmix">
+                            }} className="flex items-center justify-between mt-[10px] text-[12px] w-full h-[40px] px-[10px] bg-[#7663F4] rounded-[2px] font-Pixelmix">
                                 <div className="text-[#FFFFFF]">Connect Wallet</div>
                             </button>
                         }
