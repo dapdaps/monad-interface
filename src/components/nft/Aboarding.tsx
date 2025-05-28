@@ -60,7 +60,8 @@ export default function Aboarding({
     }, [index]);
 
     const handleStart = useCallback(() => {
-        
+        console.log('handleStart')
+        closeModal()
     }, [index]);
 
     const { img, title, desc, descTitle } = useMemo(() => slides[index], [index]);
@@ -146,10 +147,13 @@ export default function Aboarding({
                                                         setTimeout(() => {
                                                             setUserInfo({ isFollowedTwitter: true });
                                                         }, 3000);
-                                                    }} className="w-full bg-[#00FF00] h-[44px] text-black py-2 px-4 rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]">
+                                                    }} className="w-full bg-[#00FF00] h-[44px] text-black flex items-center justify-center rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]">
                                                         Follow @0xNADSA on X
-                                                    </button> : <div className="w-full bg-[#00FF00] h-[44px] text-black py-2 px-4 rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]">
-                                                        <div className="text-[#FFFFFF]">Followed 0xNADSA</div>
+                                                    </button> : <div className="w-full relative  h-[44px] text-[#836EF9] flex items-center justify-between font-Pixelmix text-[12px] border border-[#836EF9] rounded-[4px] px-[15px]">
+                                                        <div className="text-[#836EF9]">Followed 0xNADSA</div>
+                                                        <div className="text-[#836EF9]">
+                                                            <RightArrow />
+                                                        </div>
                                                     </div>
                                                 }
 
@@ -194,7 +198,6 @@ export default function Aboarding({
                         </button>
                         <button
                             onClick={handleStart}
-                            disabled={index === slides.length - 1}
                             className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px]  transition-all duration-150 ${index !== slides.length - 1 ? "hidden " : " cursor-pointer"}`}
                         >
                             Start
@@ -239,5 +242,13 @@ const MainBtn = ({ onClick, children, disabled }: { onClick: any, children: any,
         }} disabled={disabled} className={mainBtnCls + ' disabled:opacity-50'}>
             {children}
         </button>
+    )
+}
+
+const RightArrow = () => {
+    return (
+        <svg width="17" height="12" viewBox="0 0 17 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 4.5L6.5 10L15.5 1" stroke="#00FF11" stroke-width="2" />
+        </svg>
     )
 }
