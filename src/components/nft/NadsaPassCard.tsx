@@ -65,9 +65,8 @@ export default function NadsaPassCard({ onLoginOut }: any) {
       <div className="relative pt-[65px] z-10 px-[10px]">
         <div className="absolute top-[0px] left-[38px] ">
           <img
-            src="/images/nft/title.svg"
-            alt="bg"
-            className="w-[50px] h-[50px]"
+            src="/images/nft/data-override.gif"
+            className="w-[50px]"
           />
         </div>
 
