@@ -7,10 +7,13 @@ import { useSwitchChain } from "wagmi";
 import { monadTestnet } from "@reown/appkit/networks";
 import useBindTwitterAccount from "@/sections/terminal/hooks/use-bind-twitter-account";
 import { motion } from "framer-motion";
+import { useUserStore } from "@/stores/user";
 
 export default function NadsaPassCard() {
     const { nftMetadata, nftAddress, mintNFT, hasNFT, tokenIds, isLoading, address } = useNFT({ nftAddress: '0x378d216463a2245bf4b70a1730579e4da175dd0f' });
     const { open } = useAppKit();
+    const setUserInfo = useUserStore((store: any) => store.set);
+    const isFollowedTwitter = useUserStore((store: any) => store.isFollowedTwitter);
     const { isSuccess: isBindTwitterAccount, loading: isBindTwitterAccountLoading, checkBindTwitterAccount } = useBindTwitterAccount({ withAuth: false });
     console.log(nftMetadata, hasNFT, tokenIds, isBindTwitterAccount);
 
@@ -78,29 +81,35 @@ export default function NadsaPassCard() {
                         <div className={status === 2 ? 'text-[#8D7CFF]' : 'text-[#00FF11]'}>1 MON</div>
                     </div>
                 </div>
+
+
                 {
                     status !== 2 && <>
                         {
                             address ? <div className="flex items-center justify-between mt-[10px] text-[12px] h-[40px] px-[10px] bg-[#212041] rounded-[2px] font-Pixelmix">
                                 <div className="text-[#FFFFFF]">{address?.slice(0, 5)}...{address?.slice(-5)}</div>
-                                <div className="text-[#00FF00]">
-                                    <RightArrow />
-                                </div>
+                                {
+                                    isBindTwitterAccount && <div className="text-[#00FF00]">
+                                        <RightArrow />
+                                    </div>
+                                }
                             </div> : <button onClick={() => {
                                 open();
-                            }} className="flex items-center justify-between mt-[10px] text-[12px] w-full h-[40px] px-[10px] bg-[#7663F4] rounded-[2px] font-Pixelmix">
+                            }} className="flex items-center justify-center mt-[10px] text-[12px] w-full h-[40px] px-[10px] bg-[#7663F4] rounded-[2px] font-Pixelmix">
                                 <div className="text-[#FFFFFF]">Connect Wallet</div>
                             </button>
                         }
 
                         {
-                            !isBindTwitterAccount ? <button onClick={() => {
+                            isBindTwitterAccount && <> {!isFollowedTwitter ? <button onClick={() => {
                                 window.open('https://twitter.com/intent/follow?screen_name=0xNADSA', '_blank');
+                                setTimeout(() => {
+                                    setUserInfo({ isFollowedTwitter: true });
+                                }, 3000);
                             }} className="flex relative items-center justify-center mt-[10px] text-[12px] w-full h-[40px] px-[10px] bg-[#7663F4] rounded-[2px] font-Pixelmix">
                                 <div className="text-[#FFFFFF]">Follow 0xNADSA on X</div>
                                 <div className="absolute right-[10px] top-[10px]" onClick={(e) => {
                                     e.stopPropagation();
-                                    checkBindTwitterAccount();
                                 }}>
                                     <EllipsisLoading key={isBindTwitterAccountLoading} />
                                 </div>
@@ -110,8 +119,9 @@ export default function NadsaPassCard() {
                                     <RightArrow />
                                 </div>
                             </div>
+                            }
+                            </>
                         }
-
                     </>
                 }
 
@@ -124,7 +134,7 @@ export default function NadsaPassCard() {
                 }
                 {
                     status === 0 && (
-                        <MainBtn onClick={() => mintNFT()} >
+                        <MainBtn disabled={!isBindTwitterAccount} onClick={() => mintNFT()} >
                             {isLoading ? <><CircleLoading /> <span className="ml-[10px]">Mint NFT</span></> : 'Mint NFT'}
                         </MainBtn>
                     )
@@ -149,7 +159,7 @@ const RightArrow = () => {
     )
 }
 
-const MainBtn = ({ onClick, children }: { onClick: any, children: any }) => {
+const MainBtn = ({ onClick, children, disabled }: { onClick: any, children: any, disabled: boolean }) => {
     const { switchChain, isPending: switching } = useSwitchChain();
     const { address, chainId } = useAccount();
     const { open } = useAppKit();
@@ -171,7 +181,13 @@ const MainBtn = ({ onClick, children }: { onClick: any, children: any }) => {
     }
 
     return (
-        <button onClick={onClick} className="flex w-full items-center justify-center text-[12px] h-[40px] mt-[10px] mb-[10px] bg-[#7663F4] text-[#fff] rounded-[2px] font-Pixelmix">
+        <button onClick={() => {
+            if (disabled) {
+                return;
+            }
+
+            onClick();
+        }} disabled={disabled} className="flex w-full items-center justify-center text-[12px] h-[40px] mt-[10px] mb-[10px] bg-[#7663F4] text-[#fff] rounded-[2px] font-Pixelmix disabled:opacity-50">
             {children}
         </button>
     )
@@ -179,9 +195,9 @@ const MainBtn = ({ onClick, children }: { onClick: any, children: any }) => {
 const ArrowIcon = () => {
     return (
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 2 A6 6 0 1 1 8.52 13.95" stroke="#00FF11" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M11 3 L13 1 L15 3" stroke="#00FF11" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M13 1 L13 5" stroke="#00FF11" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M8 2 A6 6 0 1 1 8.52 13.95" stroke="#00FF11" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M11 3 L13 1 L15 3" stroke="#00FF11" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M13 1 L13 5" stroke="#00FF11" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
     )
 }
@@ -189,40 +205,39 @@ const ArrowIcon = () => {
 
 const EllipsisLoading = (props: any) => {
     const { size = 18, style, className } = props;
-  
+
     return (
-      <div
-        className={`flex justify-center items-center ${className}`}
-        style={{
-          width: size,
-          height: size,
-          ...style
-        }}
-      >
-        <motion.svg
-          width={size}
-          height={size}
-          viewBox="0 0 18 18"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          animate={{
-            rotate: [0, 360]
-          }}
-          transition={{
-            duration: 1,
-            ease: 'linear',
-            repeat: 1,
-          }}
+        <div
+            className={`flex justify-center items-center ${className}`}
+            style={{
+                width: size,
+                height: size,
+                ...style
+            }}
         >
-          <circle opacity="0.2" cx="9" cy="9" r="8" stroke="white" strokeWidth="2" />
-          <path
-            d="M1 9C1 13.4183 4.58172 17 9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1"
-            stroke="#00FF11"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        </motion.svg>
-      </div>
+            <motion.svg
+                width={size}
+                height={size}
+                viewBox="0 0 18 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                animate={{
+                    rotate: [0, 360]
+                }}
+                transition={{
+                    duration: 1,
+                    ease: 'linear',
+                    repeat: 1,
+                }}
+            >
+                <circle opacity="0.2" cx="9" cy="9" r="8" stroke="white" strokeWidth="2" />
+                <path
+                    d="M1 9C1 13.4183 4.58172 17 9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1"
+                    stroke="#00FF11"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                />
+            </motion.svg>
+        </div>
     );
-  };
-  
+};
