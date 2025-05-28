@@ -12,9 +12,10 @@ import { trim } from "lodash";
 
 export function useInvitation<Invitation>() {
   const { account } = useCustomAccount();
-  const { hasNFT } = useNFT({ nftAddress: nftAddress });
+  const { hasNFT, checking } = useNFT({ nftAddress: nftAddress });
   const toast = useToast();
   const userInfo = useUserStore((store: any) => store.user);
+  const userInfoLoading = useUserStore((store: any) => store.loading);
   const { getUserInfo } = useUser();
 
   const [scopeLeftDoor, animateLeftDoor] = useAnimate();
@@ -96,9 +97,9 @@ export function useInvitation<Invitation>() {
       setInvalidInvitationCode(true);
       return;
     }
-    await handleAccess();
     getUserInfo();
     setValidInvitationCode(true);
+    await handleAccess();
     return res;
   }, { manual: true });
 
@@ -111,6 +112,10 @@ export function useInvitation<Invitation>() {
     });
   }, { manual: true });
 
+  const loading = useMemo(() => {
+    return userInfoLoading || checking;
+  }, [userInfoLoading, checking]);
+
   useEffect(() => {
     if (validUser) {
       handleAccess().then(() => {
@@ -120,6 +125,7 @@ export function useInvitation<Invitation>() {
   }, [validUser]);
 
   return {
+    loading,
     hasNFT,
     validUser,
     invitationCode,
@@ -140,6 +146,7 @@ export function useInvitation<Invitation>() {
 }
 
 export interface Invitation {
+  loading: boolean;
   hasNFT: boolean;
   nftLoading: boolean;
   validUser: boolean;

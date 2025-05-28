@@ -12,12 +12,13 @@ import { trim } from "lodash";
 import { INVITATION_CODE_LENGTH } from "../config";
 
 const Code = (props: any) => {
-  const { account, } = useCustomAccount();
+  const { account } = useCustomAccount();
   const { isConnecting } = useAccount();
   const { open } = useAppKit();
   const { disconnect } = useDisconnect();
 
   const {
+    loading,
     validUser,
     invitationCode,
     handleInvitationCodeChange,
@@ -68,7 +69,7 @@ const Code = (props: any) => {
               transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.5 }}
             />
             {
-              !validUser && (
+              !validUser && !loading && (
                 <div className="w-full h-full absolute overflow-hidden">
                   <motion.div
                     className="w-full h-full flex justify-center items-center flex-col gap-[20px] left-0 top-0 bg-[rgba(0,0,0,0.5)] rounded-[6px]"

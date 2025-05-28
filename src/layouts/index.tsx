@@ -10,8 +10,9 @@ export default function Layout({ children }: any) {
   const { validUser } = useInvitationContext();
   const isMobile = useIsMobile();
 
-  if (["/terminal", "/terminal/login"].includes(pathname))
+  if (["/terminal", "/terminal/login"].includes(pathname)) {
     return <SimpleLayout>{children}</SimpleLayout>;
+  }
 
   return (
     <MainLayout>
@@ -20,7 +21,7 @@ export default function Layout({ children }: any) {
           <InvitationView />
         )
       }
-      {children}
+      {(!isMobile && !validUser) ? null : children}
     </MainLayout>
   );
 }

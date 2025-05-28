@@ -19,6 +19,7 @@ interface NFTMintResponse {
 interface UseNFTReturn {
     mintNFT: () => Promise<void>;
     isLoading: boolean;
+    checking: boolean;
     error: string | null;
     nftAddress: string;
     nftMetadata: {
@@ -35,6 +36,7 @@ const accessToken = 'd0d4c2a8-873a-4475-a830-ee19bb224521';
 
 export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => {
     const [isLoading, setIsLoading] = useState(false);
+    const [checking, setChecking] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [refresh, setRefresh] = useState(0);
     const { address, connector } = useAccount();
@@ -85,6 +87,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
     }, [address, connector, rpc]);
 
     const checkNFT = useCallback(async (): Promise<void> => {
+        setChecking(true);
         try {
             const provider = new ethers.providers.JsonRpcProvider(rpc);
 
@@ -129,6 +132,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
             setTokenIds([]);
         } finally {
             setIsLoading(false);
+            setChecking(false);
         }
     }, [address, connector, rpc]);
 
@@ -213,6 +217,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
         nftAddress,
         address: address || '',
         isLoading,
+        checking,
         error,
         nftMetadata,
         hasNFT,
