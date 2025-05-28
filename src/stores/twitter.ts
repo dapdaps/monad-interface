@@ -5,6 +5,7 @@ export const useTwitterStore = create(
   persist(
     (set, get: any) => ({
       id: "",
+      address: "",
       info: {},
       set: (params: any) => set(() => ({ ...params }))
     }),

@@ -25,8 +25,11 @@ export default function NadsaPassCard({ onLoginOut }: any) {
   const isFollowedTwitter = useUserStore(
     (store: any) => store.isFollowedTwitter
   );
-  const { buttonText, loading: isBindTwitterAccountLoading } =
-    useBindTwitterAccount({ withAuth: false });
+  const {
+    buttonText,
+    loading: isBindTwitterAccountLoading,
+    handleBind
+  } = useBindTwitterAccount({ withAuth: false });
 
   const status = useMemo(() => {
     if (!address) {
@@ -136,6 +139,10 @@ export default function NadsaPassCard({ onLoginOut }: any) {
                 onClick={() => {
                   if (buttonText === "Please switch X") {
                     onLoginOut?.();
+                    return;
+                  }
+                  if (address) {
+                    handleBind();
                     return;
                   }
                   open();
