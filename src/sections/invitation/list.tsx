@@ -1,3 +1,5 @@
+"use client";
+
 import { useInvitationContext } from "@/context/invitation";
 import useCustomAccount from "@/hooks/use-account";
 import { useEffect } from "react";
