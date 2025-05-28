@@ -18,6 +18,8 @@ import { FE_SYSTEM_KEY, VERSION } from "@/sections/terminal/config";
 import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 import NFT from "@/components/nft";
+import { useTwitterStore } from "@/stores/twitter";
+import { useUserStore } from "@/stores/user";
 import "./animate.css";
 
 const realtime = new Realtime({
@@ -99,6 +101,8 @@ export default function ChatView({ currentUser }: any) {
   const [onlineUsers, setOnlineUsers] = useState(0);
   const { fetchUsersInfo } = useUsersInfo();
   const terminalStore: any = useTerminalStore();
+  const twitterStore: any = useTwitterStore();
+  const setUserInfo = useUserStore((store: any) => store.set);
 
   const { run: scrollToBottom } = useDebounceFn(
     () => {
@@ -344,41 +348,21 @@ export default function ChatView({ currentUser }: any) {
     { manual: true, throttleWait: 1000 }
   );
 
-  // useEffect(() => {
-  //   if (!currentUserLimit || !messages) return;
-  //   const getCurrentBufferMessage = (_messages: any) => {
-  //     return _messages.find(
-  //       (m: any) =>
-  //         dayjs(m.timestamp).valueOf() === currentUserLimit.lastPostTime &&
-  //         m.from === FE_SYSTEM_KEY
-  //     );
-  //   };
-  //   const currentBufferMessage = getCurrentBufferMessage(messages);
-  //   const currTime = Date.now();
-  //   const diff = Math.max(currTime - currentUserLimit.lastPostTime, 0);
-
-  //   if (
-  //     !currentBufferMessage ||
-  //     (currentUserLimit?.lastPostTime &&
-  //       Big(diff).gt(Big(POST_LIMIT_SECONDS || 5).times(1000)) &&
-  //       /100%$/.test(currentBufferMessage.text))
-  //   ) {
-  //     return;
-  //   }
-
-  //   setMessages((prev) => {
-  //     const currentBUFFERMessage = getCurrentBufferMessage(prev);
-  //     if (!currentBUFFERMessage) {
-  //       return prev;
-  //     }
-  //     currentBUFFERMessage.text = `BUFFER: ${limitProgress}%`;
-  //     return [...prev];
-  //   });
-  // }, [currentUserLimit, limitProgress, messages]);
+  const onLoginOut = () => {
+    twitterStore.set({
+      id: "",
+      info: {}
+    });
+    setUserInfo({ isFollowedTwitter: false });
+  };
 
   return (
     <div className="relative w-full h-screen overflow-x-hidden bg-[#010101] font-Pixelmix text-[#8D7CFF] text-[14px] font-[400] leading-[200%] overflow-y-auto cursor-pointer terminal">
-      <ChatHeader currentUser={currentUser} onlineUsers={onlineUsers} />
+      <ChatHeader
+        currentUser={currentUser}
+        onlineUsers={onlineUsers}
+        onLoginOut={onLoginOut}
+      />
       <div className="w-[calc(100%-308px)] flex justify-center min-w-[1085px]">
         <ChatCard className="mt-[45px]">
           <ChatContent
@@ -400,6 +384,7 @@ export default function ChatView({ currentUser }: any) {
         isOpen={true}
         closeModal={() => {}}
         className="!items-start pt-[60px]"
+        onLoginOut={onLoginOut}
       />
     </div>
   );

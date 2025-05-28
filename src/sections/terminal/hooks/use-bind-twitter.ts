@@ -33,10 +33,7 @@ export default function useBindTwitter({
         }
       );
       if (result.code !== 200) throw new Error(result.msg);
-      toast.dismiss(toastId);
-      toast.success({
-        title: `Twitter bind successfully`
-      });
+
       setLoading(false);
       onSuccess({
         id: result.data.twitter_user_id,

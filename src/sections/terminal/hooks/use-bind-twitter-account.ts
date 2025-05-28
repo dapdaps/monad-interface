@@ -8,14 +8,14 @@ import { useAccount } from "wagmi";
 
 export default function useBindTwitterAccount({ withAuth }: any) {
   const [loading, setLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [buttonText, setButtonText] = useState("Connect Wallet");
   const twitterStore: any = useTwitterStore();
   const toast = useToast();
   const { getAccessToken } = useUser();
   const { address } = useAccount();
 
   const handleBind = async () => {
-    if (loading) return;
+    if (loading || !twitterStore.id) return;
     setLoading(true);
     try {
       if (!withAuth) {
@@ -25,15 +25,19 @@ export default function useBindTwitterAccount({ withAuth }: any) {
         twitter_user_id: twitterStore.id
       });
       if (result.code === 10006) {
+        const isAddress = address?.toLowerCase() !== result.data.address;
+        const msg = isAddress
+          ? `X linked to ${result.data.address}`
+          : `Wallet linked to @${result.data.twitter_user_name}`;
         toast.fail({
-          title: "X is linked"
+          title: msg
         });
+        setButtonText(isAddress ? "Please switch wallet" : "Please switch X");
         throw new Error("");
       }
       if (result.code !== 200) throw new Error(result.msg);
-      setIsSuccess(true);
+      setButtonText("");
     } catch (err) {
-      setIsSuccess(false);
     } finally {
       setLoading(false);
     }
@@ -41,7 +45,11 @@ export default function useBindTwitterAccount({ withAuth }: any) {
 
   const { run } = useDebounceFn(
     () => {
-      if (address) handleBind();
+      if (address) {
+        handleBind();
+      } else {
+        setButtonText("Connect Wallet");
+      }
     },
     { wait: 500 }
   );
@@ -50,5 +58,5 @@ export default function useBindTwitterAccount({ withAuth }: any) {
     run();
   }, [address]);
 
-  return { loading, isSuccess, checkBindTwitterAccount: run };
+  return { loading, buttonText };
 }

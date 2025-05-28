@@ -4,11 +4,13 @@ import NadsaPassCard from "./NadsaPassCard";
 export default function NFT({
   isOpen,
   closeModal,
-  className
+  className,
+  onLoginOut
 }: {
   isOpen: boolean;
   closeModal: () => void;
   className?: string;
+  onLoginOut?: () => void;
 }) {
   return (
     <Modal
@@ -22,7 +24,7 @@ export default function NFT({
       onClose={closeModal}
       className={className}
     >
-      <NadsaPassCard />
+      <NadsaPassCard onLoginOut={onLoginOut} />
     </Modal>
   );
 }

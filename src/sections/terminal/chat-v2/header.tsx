@@ -8,15 +8,14 @@ import { numberFormatter } from "@/utils/number-formatter";
 //   PopoverPlacement,
 //   PopoverTrigger
 // } from "@/components/popover";
-import { useTwitterStore } from "@/stores/twitter";
 
 const ChatHeader = (props: any) => {
-  const { className, currentUser, onlineUsers } = props;
-  const twitterStore: any = useTwitterStore();
+  const { className, currentUser, onlineUsers, onLoginOut } = props;
+
   return (
     <div
       className={clsx(
-        "sticky top-0 z-[2] w-full py-[20px] pl-[30px] pr-[34px] flex justify-between items-center font-Pixelmix text-xs text-[#8D7CFF] font-normal leading-[200%]",
+        "sticky top-0 z-[120] w-full py-[20px] pl-[30px] pr-[34px] flex justify-between items-center font-Pixelmix text-xs text-[#8D7CFF] font-normal leading-[200%]",
         className
       )}
     >
@@ -42,12 +41,7 @@ const ChatHeader = (props: any) => {
         <button
           type="button"
           className="w-[14px] h-[14px] shrink-0 bg-[url('/images/terminal/icon-logout.svg')] bg-no-repeat bg-contain bg-center disabled:opacity-30 disabled:!cursor-not-allowed"
-          onClick={() => {
-            twitterStore.set({
-              id: "",
-              info: {}
-            });
-          }}
+          onClick={onLoginOut}
         />
       </div>
     </div>
