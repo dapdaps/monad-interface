@@ -43,9 +43,6 @@ export default function useBindTwitter({
     } catch (err) {
       setLoading(false);
       toast.dismiss(toastId);
-      toast.fail({
-        title: `Twitter bind failed`
-      });
     }
   }, [code, loading]);
 

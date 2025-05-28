@@ -17,39 +17,41 @@ const LoginView = (props: any) => {
 
   return (
     <LoginContainer>
-      <div className="flex flex-col items-center pt-[158px]">
-        <img
-          src="/images/logo-pixel.svg"
-          alt=""
-          className="w-[129px] h-[55px] object-center object-contain shrink-0"
-        />
-        <img
-          src="/images/terminal/icon-alert.gif"
-          alt=""
-          className="mt-[25px] w-[120px] h-[120px] object-center object-contain shrink-0"
-        />
-        <img
-          src="/images/login/nadsa-terminnal-access.svg"
-          alt=""
-          className="mt-[33px] w-[445px] h-[22px] object-center object-contain shrink-0"
-        />
-        <div className="mt-[50px] w-[440px] shrink-0 flex flex-col items-center">
-          <Button
-            className="mt-[26px] h-[52px] font-Pixelmix disabled:!cursor-not-allowed disabled:opacity-30 shrink-0 w-full rounded-[2px] text-white text-center text-[16px] leading-[90%]"
-            disabled={buttonDisabled}
-            onClick={() => {
-              window.open(
-                `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${
-                  window.location.origin + window.location.pathname
-                }&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`,
-                "_blank"
-              );
-            }}
-            bgColor="#7B23FF"
-            loading={logining}
-          >
-            {buttonText}
-          </Button>
+      <div className="flex flex-col items-center justify-center h-full">
+        <div className="flex flex-col items-center justify-center h-[calc(80vh)] pb-[100px]">
+          <img
+            src="/images/logo-pixel.svg"
+            alt=""
+            className="w-[129px] h-[55px] object-center object-contain shrink-0"
+          />
+          <img
+            src="/images/terminal/icon-alert.gif"
+            alt=""
+            className="mt-[25px] w-[120px] h-[120px] object-center object-contain shrink-0"
+          />
+          <img
+            src="/images/login/nadsa-terminnal-access.svg"
+            alt=""
+            className="mt-[33px] w-[445px] h-[22px] object-center object-contain shrink-0"
+          />
+          <div className="mt-[50px] w-[440px] shrink-0 flex flex-col items-center">
+            <Button
+              className="mt-[26px] h-[52px] font-Pixelmix disabled:!cursor-not-allowed disabled:opacity-30 shrink-0 w-full rounded-[2px] text-white text-center text-[16px] leading-[90%]"
+              disabled={buttonDisabled}
+              onClick={() => {
+                window.open(
+                  `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${
+                    window.location.origin + window.location.pathname
+                  }&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`,
+                  "_blank"
+                );
+              }}
+              bgColor="#7B23FF"
+              loading={logining}
+            >
+              {buttonText}
+            </Button>
+          </div>
         </div>
       </div>
     </LoginContainer>
