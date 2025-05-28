@@ -19,6 +19,7 @@ import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 import NFT from "@/components/nft";
 import { useTwitterStore } from "@/stores/twitter";
+import { post } from "@/utils/http";
 import "./animate.css";
 
 const realtime = new Realtime({
@@ -228,6 +229,9 @@ export default function ChatView({ currentUser }: any) {
       .then(async (_client: any) => {
         client = _client;
         console.log("IM client created successfully");
+
+        // Report id to backend
+        post("/chat/member", { account: currentUser.id });
 
         try {
           if (!CHAT_ROOM_ID) {
