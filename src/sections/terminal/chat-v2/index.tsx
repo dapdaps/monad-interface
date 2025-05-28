@@ -19,7 +19,6 @@ import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 import NFT from "@/components/nft";
 import { useTwitterStore } from "@/stores/twitter";
-import { useUserStore } from "@/stores/user";
 import "./animate.css";
 
 const realtime = new Realtime({
@@ -102,7 +101,6 @@ export default function ChatView({ currentUser }: any) {
   const { fetchUsersInfo } = useUsersInfo();
   const terminalStore: any = useTerminalStore();
   const twitterStore: any = useTwitterStore();
-  const setUserInfo = useUserStore((store: any) => store.set);
 
   const { run: scrollToBottom } = useDebounceFn(
     () => {
@@ -353,7 +351,6 @@ export default function ChatView({ currentUser }: any) {
       id: "",
       info: {}
     });
-    setUserInfo({ isFollowedTwitter: false });
   };
 
   return (

@@ -7,7 +7,7 @@ import { useSwitchChain } from "wagmi";
 import { monadTestnet } from "@reown/appkit/networks";
 import useBindTwitterAccount from "@/sections/terminal/hooks/use-bind-twitter-account";
 import { motion } from "framer-motion";
-import { useUserStore } from "@/stores/user";
+import { useTwitterStore } from "@/stores/twitter";
 import clsx from "clsx";
 import useTokenBalance from "@/hooks/use-token-balance";
 import { toast } from "react-toastify";
@@ -24,11 +24,12 @@ export default function NadsaPassCard({ onLoginOut }: any) {
     address
   } = useNFT({ nftAddress: "0x378d216463a2245bf4b70a1730579e4da175dd0f" });
   const { open } = useAppKit();
-  const setUserInfo = useUserStore((store: any) => store.set);
-  const { tokenBalance, isLoading: isTokenBalanceLoading } = useTokenBalance('native', 18, monadTestnet.id);
-  const isFollowedTwitter = useUserStore(
-    (store: any) => store.isFollowedTwitter
+  const { tokenBalance, isLoading: isTokenBalanceLoading } = useTokenBalance(
+    "native",
+    18,
+    monadTestnet.id
   );
+  const twitterStore: any = useTwitterStore();
   const {
     buttonText,
     loading: isBindTwitterAccountLoading,
@@ -158,7 +159,7 @@ export default function NadsaPassCard({ onLoginOut }: any) {
             )}
 
             <>
-              {!isFollowedTwitter || buttonText ? (
+              {!twitterStore?.bindInfo[twitterStore.id] || buttonText ? (
                 <button
                   onClick={() => {
                     window.open(
@@ -166,7 +167,12 @@ export default function NadsaPassCard({ onLoginOut }: any) {
                       "_blank"
                     );
                     setTimeout(() => {
-                      setUserInfo({ isFollowedTwitter: true });
+                      twitterStore.set({
+                        bindInfo: {
+                          ...twitterStore.bindInfo,
+                          [twitterStore.id]: true
+                        }
+                      });
                     }, 3000);
                   }}
                   className={clsx(
@@ -203,7 +209,7 @@ export default function NadsaPassCard({ onLoginOut }: any) {
         )}
         {status === 0 && (
           <MainBtn
-            disabled={!!buttonText || !isFollowedTwitter}
+            disabled={!!buttonText || !twitterStore?.bindInfo[twitterStore.id]}
             onClick={() => mintNFT()}
             tokenBalance={tokenBalance}
           >
@@ -287,7 +293,7 @@ const MainBtn = ({
         }
 
         if (Number(tokenBalance) <= new Big(1.3).mul(10 ** 18).toNumber()) {
-          toast.error('Insufficient balance');
+          toast.error("Insufficient balance");
           return;
         }
 
