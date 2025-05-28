@@ -6,11 +6,9 @@ import { post } from "@/utils/http";
 import { useDebounceFn } from "ahooks";
 
 export default function useBindTwitter({
-  onSuccess,
-  withAuth
+  onSuccess
 }: {
   onSuccess: (data: any) => void;
-  withAuth: boolean;
 }) {
   const [loading, setLoading] = useState(false);
   const toast = useToast();
@@ -25,13 +23,12 @@ export default function useBindTwitter({
       title: `Binding`
     });
     try {
-      const result = await post(
-        !withAuth ? "/twitter/connect" : "/twitter/bind",
-        {
-          code,
-          redirect_uri: window.location.origin + window.location.pathname
-        }
-      );
+      const result = await post("/twitter/connect", {
+        code,
+        redirect_uri:
+          window.location.origin +
+          (window.location.pathname === "/" ? "" : window.location.pathname)
+      });
       if (result.code !== 200) throw new Error(result.msg);
 
       setLoading(false);
@@ -56,7 +53,7 @@ export default function useBindTwitter({
 
   useEffect(() => {
     run();
-  }, [code, twitterStore.id]);
+  }, [code]);
 
   return { loading };
 }
