@@ -37,14 +37,12 @@ export default function useBindTwitter({
       setLoading(false);
       onSuccess({
         id: result.data.twitter_user_id,
-        name: result.data.twitter_user_name
+        name: result.data.twitter_user_name,
+        avatar: result.data.twitter_avatar
       });
     } catch (err) {
       setLoading(false);
       toast.dismiss(toastId);
-      toast.fail({
-        title: `Twitter bind failed`
-      });
     }
   }, [code, loading]);
 

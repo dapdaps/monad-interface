@@ -19,7 +19,7 @@ import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 import NFT from "@/components/nft";
 import { useTwitterStore } from "@/stores/twitter";
-import { useUserStore } from "@/stores/user";
+import { post } from "@/utils/http";
 import "./animate.css";
 
 const realtime = new Realtime({
@@ -102,7 +102,6 @@ export default function ChatView({ currentUser }: any) {
   const { fetchUsersInfo } = useUsersInfo();
   const terminalStore: any = useTerminalStore();
   const twitterStore: any = useTwitterStore();
-  const setUserInfo = useUserStore((store: any) => store.set);
 
   const { run: scrollToBottom } = useDebounceFn(
     () => {
@@ -231,6 +230,9 @@ export default function ChatView({ currentUser }: any) {
         client = _client;
         console.log("IM client created successfully");
 
+        // Report id to backend
+        post("/chat/member", { account: currentUser.id });
+
         try {
           if (!CHAT_ROOM_ID) {
             throw Error("room not esit");
@@ -353,7 +355,6 @@ export default function ChatView({ currentUser }: any) {
       id: "",
       info: {}
     });
-    setUserInfo({ isFollowedTwitter: false });
   };
 
   return (

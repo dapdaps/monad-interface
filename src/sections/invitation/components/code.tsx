@@ -10,18 +10,21 @@ import { useAppKit, useDisconnect } from "@reown/appkit/react";
 import { useAccount } from "wagmi";
 import { trim } from "lodash";
 import { INVITATION_CODE_LENGTH } from "../config";
+import { useState } from "react";
 
 const Code = (props: any) => {
   const { account } = useCustomAccount();
   const { isConnecting } = useAccount();
   const { open } = useAppKit();
   const { disconnect } = useDisconnect();
+  const [isFocused, setIsFocused] = useState(false);
 
   const {
     loading,
     validUser,
     invitationCode,
     handleInvitationCodeChange,
+    handleInvitationCodeBackspace,
     handleInvitationCodeKeyboard,
     submitInvitationCode,
     submitInvitationCodeLoading,
@@ -92,14 +95,16 @@ const Code = (props: any) => {
         </div>
         <div className="w-[252px] shrink-0 grid grid-cols-3 gap-[12px] [transform-style:preserve-3d] [transform:perspective(1000px)_rotate3d(1,_0,_0,_30deg)_scale(1.1,_1.3)_skewX(4deg)] [transform-origin:bottom] [perspective-origin:60%_35%]">
           <input
-            readOnly
             type="text"
             className={clsx(
               "cursor-default col-span-2 h-[45.655px] shrink-0 border bg-black border-[#55648A] rounded-[6px] shadow-[inset_3px_3px_0px_0px_#2C3635] text-[#A5FFFD] text-center font-Unbounded text-[16px] font-[500] leading-[100%] placeholder:text-[#A5FFFD]",
               invalidInvitationCode && "!text-[#FF5372]"
             )}
-            placeholder="Invite Code"
+            placeholder={isFocused ? "" : "Invite Code"}
             value={invitationCode}
+            onChange={(e) => handleInvitationCodeChange(e.target.value)}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
           />
           <Button
             className="flex justify-center items-center !h-[40px] !px-[0px]"
@@ -112,7 +117,7 @@ const Code = (props: any) => {
               }
             }}
           >
-            <img src="/images/invitation/icon-copy.svg" alt="" className="object-center object-contain w-[16px] h-[16px]" />
+            <img src="/images/invitation/icon-copy.svg" alt="" className="object-center object-contain w-[16px] h-[16px] shrink-0" />
           </Button>
           {
             [...new Array(9)].map((_, index) => (
@@ -126,7 +131,13 @@ const Code = (props: any) => {
             ))
           }
           <Button
-            className="col-start-2"
+            className="flex justify-center items-center !p-0"
+            onClick={() => handleInvitationCodeBackspace()}
+          >
+            <img src="/images/invitation/icon-backspace.svg" alt="" className="object-center object-contain w-[20px] h-[14px] shrink-0" />
+          </Button>
+          <Button
+            className=""
             onClick={() => handleInvitationCodeKeyboard("0")}
           >
             0

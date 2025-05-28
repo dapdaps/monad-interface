@@ -7,7 +7,7 @@ import { useSwitchChain } from "wagmi";
 import { monadTestnet } from "@reown/appkit/networks";
 import useBindTwitterAccount from "@/sections/terminal/hooks/use-bind-twitter-account";
 import { motion } from "framer-motion";
-import { useUserStore } from "@/stores/user";
+import { useTwitterStore } from "@/stores/twitter";
 import clsx from "clsx";
 import useTokenBalance from "@/hooks/use-token-balance";
 import { toast } from "react-toastify";
@@ -24,11 +24,12 @@ export default function NadsaPassCard({ onLoginOut }: any) {
     address
   } = useNFT({ nftAddress: "0x378d216463a2245bf4b70a1730579e4da175dd0f" });
   const { open } = useAppKit();
-  const setUserInfo = useUserStore((store: any) => store.set);
-  const { tokenBalance, isLoading: isTokenBalanceLoading } = useTokenBalance('native', 18, monadTestnet.id);
-  const isFollowedTwitter = useUserStore(
-    (store: any) => store.isFollowedTwitter
+  const { tokenBalance, isLoading: isTokenBalanceLoading } = useTokenBalance(
+    "native",
+    18,
+    monadTestnet.id
   );
+  const twitterStore: any = useTwitterStore();
   const {
     buttonText,
     loading: isBindTwitterAccountLoading,
@@ -145,11 +146,11 @@ export default function NadsaPassCard({ onLoginOut }: any) {
                     onLoginOut?.();
                     return;
                   }
-                  if (address) {
+                  if (address && buttonText.includes("Bind X to")) {
                     handleBind();
                     return;
                   }
-                  open();
+                  if (!address) open();
                 }}
                 className="flex items-center justify-center mt-[10px] text-[12px] text-[#FFFFFF] w-full h-[40px] px-[10px] bg-[#7663F4] rounded-[2px] font-Pixelmix"
               >
@@ -158,20 +159,26 @@ export default function NadsaPassCard({ onLoginOut }: any) {
             )}
 
             <>
-              {!isFollowedTwitter || buttonText ? (
+              {!twitterStore?.bindInfo[twitterStore.id] || buttonText ? (
                 <button
                   onClick={() => {
+                    if (buttonText) return;
                     window.open(
                       "https://twitter.com/intent/follow?screen_name=0xNADSA",
                       "_blank"
                     );
                     setTimeout(() => {
-                      setUserInfo({ isFollowedTwitter: true });
+                      twitterStore.set({
+                        bindInfo: {
+                          ...twitterStore.bindInfo,
+                          [twitterStore.id]: true
+                        }
+                      });
                     }, 3000);
                   }}
                   className={clsx(
                     "flex relative items-center justify-center mt-[10px] text-[12px] w-full h-[40px] px-[10px] bg-[#7663F4] rounded-[2px] font-Pixelmix",
-                    buttonText && "opacity-30"
+                    buttonText && "opacity-30 !cursor-not-allowed"
                   )}
                 >
                   <div className="text-[#FFFFFF]">Follow 0xNADSA on X</div>
@@ -203,7 +210,7 @@ export default function NadsaPassCard({ onLoginOut }: any) {
         )}
         {status === 0 && (
           <MainBtn
-            disabled={!!buttonText || !isFollowedTwitter}
+            disabled={!!buttonText || !twitterStore?.bindInfo[twitterStore.id]}
             onClick={() => mintNFT()}
             tokenBalance={tokenBalance}
           >
@@ -260,7 +267,8 @@ const MainBtn = ({
       <button
         onClick={() => open()}
         className={clsx(
-          "flex w-full items-center justify-center text-[12px] h-[40px] mt-[10px] mb-[10px] bg-[#7663F4] text-[#fff] rounded-[2px] font-Pixelmix opacity-30"
+          "flex w-full items-center justify-center text-[12px] h-[40px] mt-[10px] mb-[10px] bg-[#7663F4] text-[#fff] rounded-[2px] font-Pixelmix opacity-30",
+          "!cursor-not-allowed"
         )}
       >
         Mint NFT
@@ -287,7 +295,6 @@ const MainBtn = ({
         }
 
 
-        console.log('tokenBalance:', tokenBalance);
         if (Number(tokenBalance) <= 1.3) {
           toast.error('Insufficient balance');
           return;
@@ -296,7 +303,7 @@ const MainBtn = ({
         onClick();
       }}
       disabled={disabled}
-      className="flex w-full items-center justify-center text-[12px] h-[40px] mt-[10px] mb-[10px] bg-[#7663F4] text-[#fff] rounded-[2px] font-Pixelmix disabled:opacity-30"
+      className="flex w-full items-center justify-center text-[12px] h-[40px] mt-[10px] mb-[10px] bg-[#7663F4] text-[#fff] rounded-[2px] font-Pixelmix disabled:opacity-30 disabled:!cursor-not-allowed"
     >
       {children}
     </button>
