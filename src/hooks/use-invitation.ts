@@ -73,7 +73,7 @@ export function useInvitation<Invitation>() {
           if (!currentVisited) {
             setVisible(true);
           }
-        }, 1000);
+        }, 2000);
       }, 1100);
     });
   };
@@ -86,6 +86,14 @@ export function useInvitation<Invitation>() {
   const handleInvitationCodeChange = (_invitationCode?: string) => {
     const _next = _invitationCode ?? "";
     setInvitationCode(trim(_next).slice(0, INVITATION_CODE_LENGTH));
+    setInvalidInvitationCode(false);
+  };
+
+  const handleInvitationCodeBackspace = () => {
+    setInvitationCode((_prev: string) => {
+      if (_prev.length === 0) return "";
+      return _prev.slice(0, _prev.length - 1);
+    });
     setInvalidInvitationCode(false);
   };
 
@@ -135,7 +143,16 @@ export function useInvitation<Invitation>() {
       return;
     }
     setFinalValid(false);
+    setVisible(false);
   }, [validUser]);
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(doorTimer.current);
+      clearTimeout(containerTimer.current);
+      clearTimeout(guideTimer.current);
+    };
+  }, []);
 
   return {
     loading,
@@ -143,6 +160,7 @@ export function useInvitation<Invitation>() {
     validUser,
     invitationCode,
     handleInvitationCodeChange,
+    handleInvitationCodeBackspace,
     handleInvitationCodeKeyboard,
     submitInvitationCode,
     submitInvitationCodeLoading,
@@ -165,6 +183,7 @@ export interface Invitation {
   validUser: boolean;
   invitationCode?: string;
   handleInvitationCodeChange: (invitationCode?: string) => void;
+  handleInvitationCodeBackspace: () => void;
   handleInvitationCodeKeyboard: (str?: string) => void;
   submitInvitationCode: () => Promise<any>;
   submitInvitationCodeLoading: boolean;

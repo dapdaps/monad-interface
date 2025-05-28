@@ -114,7 +114,7 @@ const InvitationView = (props: any) => {
   }
 
   return (
-    <motion.div ref={scopeInvitation} className="fixed top-0 left-0 w-screen h-screen z-[100]">
+    <motion.div ref={scopeInvitation} className="fixed top-0 left-0 w-screen h-screen z-[101]">
       <div className="relative z-[2] w-full h-full flex justify-center items-stretch">
         <div className="flex-1 h-full bg-black bg-[url('/images/invitation/bg-wall.png')] bg-no-repeat bg-cover bg-bottom"></div>
         <motion.div ref={gateRef} className="w-[94.45vw] min-w-[1772px] h-full shrink-0 bg-[url('/images/invitation/bg-gate-full.png')] bg-no-repeat bg-cover bg-bottom">

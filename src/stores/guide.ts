@@ -15,7 +15,9 @@ export const useGuideStore = create(
       visible: false,
       visited: {},
       setVisited: (account, visited) => {
+        console.log('setVisited', account, visited);
         set((state) => ({
+          ...state,
           visited: {
             ...state.visited,
             [account]: visited
@@ -34,7 +36,7 @@ export const useGuideStore = create(
       name: "_NADSA_GUIDE_STORE",
       version: 0.1,
       storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ } as any)
+      partialize: (state) => ({ visited: state.visited } as any)
     }
   )
 );
