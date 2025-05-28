@@ -3,7 +3,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { erc721Abi } from 'viem'
 import { toast } from 'react-toastify';
-import { useRpc } from './use-rpc';
 import { useRpcStore } from '@/stores/rpc';
 import { RPC_LIST } from "@/configs/rpc";
 
@@ -96,7 +95,8 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
                 [
                     "function ownerOf(uint256 tokenId) view returns (address)",
                     "function balanceOf(address owner) view returns (uint256)",
-                    "function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)"
+                    "function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)",
+                    "function tokensOfOwner(address owner) view returns (uint256[])",
                 ],
                 provider
             );
@@ -104,6 +104,10 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
             // Check if user owns any NFTs in this collection
             const balance = await nftContract.balanceOf(address);
             console.log('balance:', balance);
+
+            const tokenIds = await nftContract.tokensOfOwner(address);
+            console.log('tokenIds:', tokenIds);
+
             if (balance.toString() === '0') {
                 setHasNFT(false);
                 setTokenIds([]);
@@ -111,6 +115,8 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
                 setHasNFT(true);
                 setTokenIds([]);
             }
+
+            
 
             // Get all tokenIds owned by the user
             // const tokenIds: string[] = [];
