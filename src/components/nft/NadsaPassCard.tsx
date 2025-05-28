@@ -65,9 +65,8 @@ export default function NadsaPassCard({ onLoginOut }: any) {
       <div className="relative pt-[65px] z-10 px-[10px]">
         <div className="absolute top-[0px] left-[38px] ">
           <img
-            src="/images/nft/title.svg"
-            alt="bg"
-            className="w-[50px] h-[50px]"
+            src="/images/nft/data-override.gif"
+            className="w-[50px]"
           />
         </div>
 
@@ -294,8 +293,9 @@ const MainBtn = ({
           return;
         }
 
-        if (Number(tokenBalance) <= new Big(1.3).mul(10 ** 18).toNumber()) {
-          toast.error("Insufficient balance");
+
+        if (Number(tokenBalance) <= 1.3) {
+          toast.error('Insufficient balance');
           return;
         }
 

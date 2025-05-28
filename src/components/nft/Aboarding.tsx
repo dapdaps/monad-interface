@@ -8,6 +8,8 @@ import { useAccount } from "wagmi";
 import { useSwitchChain } from "wagmi";
 import useBindTwitterHome from "@/sections/terminal/hooks/use-bind-twitter-home";
 import { monadTestnet } from "@reown/appkit/networks";
+import "@/sections/terminal/chat-v2/animate.css";
+import { motion } from "framer-motion";
 import clsx from "clsx";
 
 const slides = [
@@ -109,7 +111,7 @@ export default function Aboarding({
               </div>
 
               <div className="w-full px-8 mt-[30px]">
-                <div className="text-[#00FF00] text-[18px] whitespace-pre-wrap font-HackerNoonV2 drop-shadow-[0px_0px_10px_#00FF00]">
+                <div className="text-[#00FF00] text-[18px] whitespace-pre-wrap font-HackerNoonV2 drop-shadow-[0px_0px_10px_#00FF0080]">
                   {descTitle}
                 </div>
                 <div className="text-[#00FF00] text-[14px] mt-[10px] font-Pixelmix">
@@ -121,106 +123,118 @@ export default function Aboarding({
 
           {isLast && (
             <div className="pt-[100px]">
-              <div className="flex-1 flex items-center justify-center relative mx-[50px] p-[10px]">
-                <div className="absolute top-0 left-0 w-full h-full">
-                  <img
-                    src="/images/nft/home/nft-bg.png"
-                    alt="main-1"
-                    className="w-full h-full"
-                  />
-                </div>
-                <div className="w-full h-full flex gap-[20px] relative justify-between">
-                  <div className="relative w-[280px] h-[340px]">
-                    <img
-                      src="/images/nft/home/un-mint.svg"
-                      alt="nft-card"
-                      className="w-full h-full object-contain"
-                      style={{ imageRendering: "pixelated" }}
+              <div className="flex-1 relative mx-[50px] h-[379px] rounded-[6px] overflow-hidden bg-[url('/images/nft/home/nft-bg.png')] bg-no-repeat bg-contain bg-center">
+                <div className="w-full h-full bg-[repeating-linear-gradient(to_bottom,_transparent_0px,_rgba(255,255,255,0.2)_1px,_transparent_2px,_rgba(255,255,255,0.2)_3px)]">
+                  <div className="absolute pointer-events-none z-[1] w-full left-0 h-full top-0 overflow-hidden">
+                    <motion.div
+                      className="absolute z-[10] pointer-events-none w-full h-[5px] left-0 top-0 opacity-10 bg-[linear-gradient(to_bottom,_transparent,_rgba(255,255,255,0.5),_transparent)]"
+                      animate={{
+                        y: ["-50px", "400px"]
+                      }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 10
+                      }}
                     />
                   </div>
+                  <div className="absolute pointer-events-none z-[1] w-[120%] left-[-10%] h-[120%] top-[-10%] overflow-hidden">
+                    <div className="noise opacity-30 pointer-events-none absolute z-[1] w-full left-0 h-full top-0 overflow-hidden"></div>
+                  </div>
+                  <div className="w-full h-full p-[10px] flex gap-[20px] relative justify-between items-center">
+                    <div className="relative w-[280px] h-[340px]">
+                      <img
+                        src="/images/nft/home/un-mint.svg"
+                        alt="nft-card"
+                        className="w-full h-full object-contain"
+                        style={{ imageRendering: "pixelated" }}
+                      />
+                    </div>
 
-                  <div className="flex-1 flex items-center justify-between ">
-                    <div className="">
-                      <div className="text-[#E7E2FF] text-[18px] font-HackerNoonV2 drop-shadow-[0px_0px_10px_#836EF9]">
-                        SEQUENCE NUMBER NFT
-                      </div>
+                    <div className="flex-1 flex items-center justify-between ">
+                      <div className="">
+                        <div className="text-[#E7E2FF] text-[18px] font-HackerNoonV2 drop-shadow-[0px_0px_10px_#836EF9]">
+                          SEQUENCE NUMBER NFT
+                        </div>
 
-                      <div className="font-Pixelmix text-[14px] border border-[#675BA7] bg-[#000000] py-[20px] rounded-[4px] flex gap-[10px] justify-center items-end mt-[20px]">
-                        <div className="text-center">
-                          <div className="text-[#8D7CFF] text-[12px]">Left</div>
-                          <div className="text-[#00FF00]  text-[20px] mt-[5px]">
-                            {nftMetadata?.totalSupply || 0}
+                        <div className="font-Pixelmix text-[14px] border border-[#675BA7] bg-[#000000] py-[20px] rounded-[4px] flex gap-[10px] justify-center items-end mt-[20px]">
+                          <div className="text-center">
+                            <div className="text-[#8D7CFF] text-[12px]">
+                              Left
+                            </div>
+                            <div className="text-[#00FF00]  text-[20px] mt-[5px]">
+                              {nftMetadata?.totalSupply || 0}
+                            </div>
+                          </div>
+                          <div className="text-[#8D7CFF]"> / </div>
+                          <div className="text-center">
+                            <div className="text-[#8D7CFF] text-[12px]">
+                              Total
+                            </div>
+                            <div className="text-[#8D7CFF]  text-[20px] mt-[5px]">
+                              {nftMetadata?.maxSupply || 0}
+                            </div>
                           </div>
                         </div>
-                        <div className="text-[#8D7CFF]"> / </div>
-                        <div className="text-center">
-                          <div className="text-[#8D7CFF] text-[12px]">
-                            Total
-                          </div>
-                          <div className="text-[#8D7CFF]  text-[20px] mt-[5px]">
-                            {nftMetadata?.maxSupply || 0}
-                          </div>
-                        </div>
-                      </div>
 
-                      <div className="mt-6 space-y-3">
-                        {!twitterStore?.bindInfo[twitterStore.id] ||
-                        buttonText ? (
-                          <button
-                            onClick={() => {
-                              if (buttonText === "Connect X to access") {
+                        <div className="mt-6 space-y-3">
+                          {!twitterStore?.bindInfo[twitterStore.id] ||
+                          buttonText ? (
+                            <button
+                              onClick={() => {
+                                if (buttonText === "Connect X to access") {
+                                  window.open(
+                                    `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${window.location.origin}&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`,
+                                    "_blank"
+                                  );
+                                  return;
+                                }
+                                if (buttonText) return;
                                 window.open(
-                                  `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${window.location.origin}&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`,
+                                  "https://twitter.com/intent/follow?screen_name=0xNADSA",
                                   "_blank"
                                 );
-                                return;
-                              }
-                              if (buttonText) return;
-                              window.open(
-                                "https://twitter.com/intent/follow?screen_name=0xNADSA",
-                                "_blank"
-                              );
-                              setTimeout(() => {
-                                twitterStore.set({
-                                  bindInfo: {
-                                    ...twitterStore.bindInfo,
-                                    [twitterStore.id]: true
-                                  }
-                                });
-                              }, 3000);
-                            }}
-                            className="w-full bg-[#00FF00] h-[44px] text-black flex items-center justify-center rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]"
-                          >
-                            {buttonText || "Follow @0xNADSA on X"}
-                          </button>
-                        ) : (
-                          <div className="w-full relative  h-[44px] text-[#836EF9] flex items-center justify-between font-Pixelmix text-[12px] border border-[#836EF9] rounded-[4px] px-[15px]">
-                            <div className="text-[#836EF9]">
-                              Followed 0xNADSA
-                            </div>
-                            <div className="text-[#836EF9]">
-                              <RightArrow />
-                            </div>
-                          </div>
-                        )}
-
-                        <MainBtn
-                          onClick={() => mintNFT()}
-                          disabled={
-                            isLoading ||
-                            !!buttonText ||
-                            !twitterStore?.bindInfo[twitterStore.id]
-                          }
-                        >
-                          {isLoading ? (
-                            <>
-                              <CircleLoading />{" "}
-                              <span className="ml-[10px]">Mint NFT</span>
-                            </>
+                                setTimeout(() => {
+                                  twitterStore.set({
+                                    bindInfo: {
+                                      ...twitterStore.bindInfo,
+                                      [twitterStore.id]: true
+                                    }
+                                  });
+                                }, 3000);
+                              }}
+                              className="w-full bg-[#00FF00] h-[44px] text-black flex items-center justify-center rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]"
+                            >
+                              {buttonText || "Follow @0xNADSA on X"}
+                            </button>
                           ) : (
-                            "Mint NFT"
+                            <div className="w-full relative  h-[44px] text-[#836EF9] flex items-center justify-between font-Pixelmix text-[12px] border border-[#836EF9] rounded-[4px] px-[15px]">
+                              <div className="text-[#836EF9]">
+                                Followed 0xNADSA
+                              </div>
+                              <div className="text-[#836EF9]">
+                                <RightArrow />
+                              </div>
+                            </div>
                           )}
-                        </MainBtn>
+
+                          <MainBtn
+                            onClick={() => mintNFT()}
+                            disabled={
+                              isLoading ||
+                              !!buttonText ||
+                              !twitterStore?.bindInfo[twitterStore.id]
+                            }
+                          >
+                            {isLoading ? (
+                              <>
+                                <CircleLoading />{" "}
+                                <span className="ml-[10px]">Mint NFT</span>
+                              </>
+                            ) : (
+                              "Mint NFT"
+                            )}
+                          </MainBtn>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -242,7 +256,7 @@ export default function Aboarding({
             <button
               onClick={handlePrev}
               disabled={index === 0}
-              className={`px-6 py-2 rounded bg-transparent  text-[#00FF00] text-[14px] transition-all duration-150 ${
+              className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px] transition-all duration-150 hover:underline hover:drop-shadow-[0px_0px_10px_#00FF00] ${
                 index === 0 ? "hidden " : " cursor-pointer"
               }`}
             >
@@ -251,7 +265,7 @@ export default function Aboarding({
             <button
               onClick={handleNext}
               disabled={index === slides.length - 1}
-              className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px]  transition-all duration-150 ${
+              className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px]  transition-all duration-150 hover:underline hover:drop-shadow-[0px_0px_10px_#00FF00] ${
                 index === slides.length - 1 ? "hidden " : " cursor-pointer"
               }`}
             >
@@ -259,7 +273,7 @@ export default function Aboarding({
             </button>
             <button
               onClick={handleStart}
-              className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px]  transition-all duration-150 ${
+              className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px]  transition-all duration-150 hover:underline hover:drop-shadow-[0px_0px_10px_#00FF00] ${
                 index !== slides.length - 1 ? "hidden " : " cursor-pointer"
               }`}
             >
