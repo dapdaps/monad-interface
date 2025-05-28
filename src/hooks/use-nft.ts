@@ -1,8 +1,11 @@
 import { ethers } from 'ethers';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { erc721Abi } from 'viem'
 import { toast } from 'react-toastify';
+import { useRpc } from './use-rpc';
+import { useRpcStore } from '@/stores/rpc';
+import { RPC_LIST } from "@/configs/rpc";
 
 
 interface NFTMintResponse {
@@ -27,10 +30,10 @@ interface UseNFTReturn {
     address: string;
 }
 
-export const nftAddress = '0x2a50fa8f60f67fb30472c3fe05fb336a77a5e226';
+export const nftAddress = '0x378d216463a2245bf4b70a1730579e4da175dd0f';
 const accessToken = 'd0d4c2a8-873a-4475-a830-ee19bb224521';
 
-export const useNFT = (): UseNFTReturn => {
+export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [refresh, setRefresh] = useState(0);
@@ -45,12 +48,13 @@ export const useNFT = (): UseNFTReturn => {
 
     const [hasNFT, setHasNFT] = useState<boolean>(false);
     const [tokenIds, setTokenIds] = useState<string[]>([]);
+    const rpcStore = useRpcStore();
+
+    const rpc = useMemo(() => RPC_LIST[rpcStore.selected], [rpcStore.selected]);
 
     const getNFTMetadata = useCallback(async () => {
         try {
-            const walletProvider: any = await connector?.getProvider();
-            const provider = new ethers.providers.Web3Provider(walletProvider, "any");
-            const signer = provider.getSigner(address);
+            const provider = new ethers.providers.JsonRpcProvider(rpc);
 
             const nftContract = new ethers.Contract(
                 nftAddress,
@@ -61,7 +65,7 @@ export const useNFT = (): UseNFTReturn => {
                     "function name() view returns (string)",
                     "function symbol() view returns (string)",
                 ],
-                signer
+                provider
             );
 
             const [totalSupply, maxSupply] = await Promise.all([
@@ -78,13 +82,11 @@ export const useNFT = (): UseNFTReturn => {
             setError("Failed to get NFT metadata");
             return null;
         }
-    }, [address, connector]);
+    }, [address, connector, rpc]);
 
     const checkNFT = useCallback(async (): Promise<void> => {
         try {
-            const walletProvider: any = await connector?.getProvider();
-            const provider = new ethers.providers.Web3Provider(walletProvider, "any");
-            const signer = provider.getSigner(address);
+            const provider = new ethers.providers.JsonRpcProvider(rpc);
 
             const nftContract = new ethers.Contract(
                 nftAddress,
@@ -93,7 +95,7 @@ export const useNFT = (): UseNFTReturn => {
                     "function balanceOf(address owner) view returns (uint256)",
                     "function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)"
                 ],
-                signer
+                provider
             );
 
             // Check if user owns any NFTs in this collection
@@ -128,7 +130,7 @@ export const useNFT = (): UseNFTReturn => {
         } finally {
             setIsLoading(false);
         }
-    }, [address, connector]);
+    }, [address, connector, rpc]);
 
     const mintNFT = useCallback(async (): Promise<void> => {
         if (!address) {

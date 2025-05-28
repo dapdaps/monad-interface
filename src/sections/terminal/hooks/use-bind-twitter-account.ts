@@ -4,7 +4,7 @@ import { useTwitterStore } from "@/stores/twitter";
 import useToast from "@/hooks/use-toast";
 import useUser from "@/hooks/use-user";
 import { useDebounceFn } from "ahooks";
-import useCustomAccount from "@/hooks/use-account";
+import { useAccount } from "wagmi";
 
 export default function useBindTwitterAccount({ withAuth }: any) {
   const [loading, setLoading] = useState(false);
@@ -12,9 +12,9 @@ export default function useBindTwitterAccount({ withAuth }: any) {
   const twitterStore: any = useTwitterStore();
   const toast = useToast();
   const { getAccessToken } = useUser();
-  const { account } = useCustomAccount();
+  const { address } = useAccount();
 
-  const handleBind = useCallback(async () => {
+  const handleBind = async () => {
     if (loading) return;
     setLoading(true);
     try {
@@ -37,18 +37,18 @@ export default function useBindTwitterAccount({ withAuth }: any) {
     } finally {
       setLoading(false);
     }
-  }, [loading, withAuth]);
+  };
 
   const { run } = useDebounceFn(
     () => {
-      if (account) handleBind();
+      if (address) handleBind();
     },
     { wait: 500 }
   );
 
   useEffect(() => {
     run();
-  }, [account]);
+  }, [address]);
 
-  return { loading, isSuccess };
+  return { loading, isSuccess, checkBindTwitterAccount: run };
 }
