@@ -46,7 +46,9 @@ export default function Aboarding({
     closeModal: () => void;
     className?: string;
 }) {
-    const { nftMetadata, nftAddress, mintNFT, hasNFT, tokenIds, isLoading, address } = useNFT({ nftAddress: '0xbe0a1db63a34aa64f24decaf3f34e71fcb3c323a' });
+    const { nftMetadata, nftAddress, mintNFT, hasNFT, tokenIds, isLoading, address } = useNFT({ nftAddress: '0x378d216463a2245bf4b70a1730579e4da175dd0f' });
+    // const { nftMetadata, nftAddress, mintNFT, hasNFT, tokenIds, isLoading, address } = useNFT({ nftAddress: '0xbe0a1db63a34aa64f24decaf3f34e71fcb3c323a' });
+
     const { open } = useAppKit();
     const setUserInfo = useUserStore((store: any) => store.set);
     const isFollowedTwitter = useUserStore((store: any) => store.isFollowedTwitter);
