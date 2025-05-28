@@ -146,11 +146,11 @@ export default function NadsaPassCard({ onLoginOut }: any) {
                     onLoginOut?.();
                     return;
                   }
-                  if (address) {
+                  if (address && buttonText.includes("Bind X to")) {
                     handleBind();
                     return;
                   }
-                  open();
+                  if (!address) open();
                 }}
                 className="flex items-center justify-center mt-[10px] text-[12px] text-[#FFFFFF] w-full h-[40px] px-[10px] bg-[#7663F4] rounded-[2px] font-Pixelmix"
               >
@@ -162,6 +162,7 @@ export default function NadsaPassCard({ onLoginOut }: any) {
               {!twitterStore?.bindInfo[twitterStore.id] || buttonText ? (
                 <button
                   onClick={() => {
+                    if (buttonText) return;
                     window.open(
                       "https://twitter.com/intent/follow?screen_name=0xNADSA",
                       "_blank"
@@ -177,7 +178,7 @@ export default function NadsaPassCard({ onLoginOut }: any) {
                   }}
                   className={clsx(
                     "flex relative items-center justify-center mt-[10px] text-[12px] w-full h-[40px] px-[10px] bg-[#7663F4] rounded-[2px] font-Pixelmix",
-                    buttonText && "opacity-30"
+                    buttonText && "opacity-30 !cursor-not-allowed"
                   )}
                 >
                   <div className="text-[#FFFFFF]">Follow 0xNADSA on X</div>
@@ -266,7 +267,8 @@ const MainBtn = ({
       <button
         onClick={() => open()}
         className={clsx(
-          "flex w-full items-center justify-center text-[12px] h-[40px] mt-[10px] mb-[10px] bg-[#7663F4] text-[#fff] rounded-[2px] font-Pixelmix opacity-30"
+          "flex w-full items-center justify-center text-[12px] h-[40px] mt-[10px] mb-[10px] bg-[#7663F4] text-[#fff] rounded-[2px] font-Pixelmix opacity-30",
+          "!cursor-not-allowed"
         )}
       >
         Mint NFT
@@ -300,7 +302,7 @@ const MainBtn = ({
         onClick();
       }}
       disabled={disabled}
-      className="flex w-full items-center justify-center text-[12px] h-[40px] mt-[10px] mb-[10px] bg-[#7663F4] text-[#fff] rounded-[2px] font-Pixelmix disabled:opacity-30"
+      className="flex w-full items-center justify-center text-[12px] h-[40px] mt-[10px] mb-[10px] bg-[#7663F4] text-[#fff] rounded-[2px] font-Pixelmix disabled:opacity-30 disabled:!cursor-not-allowed"
     >
       {children}
     </button>
