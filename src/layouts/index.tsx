@@ -4,6 +4,7 @@ import SimpleLayout from "./simple";
 import { usePathname } from "next/navigation";
 import InvitationView from "@/sections/invitation";
 import useIsMobile from "@/hooks/use-isMobile";
+import GuideView from "@/sections/invitation/guide";
 
 export default function Layout({ children }: any) {
   const pathname = usePathname();
@@ -22,6 +23,11 @@ export default function Layout({ children }: any) {
         )
       }
       {(!isMobile && !validUser) ? null : children}
+      {
+        !isMobile && (
+          <GuideView />
+        )
+      }
     </MainLayout>
   );
 }

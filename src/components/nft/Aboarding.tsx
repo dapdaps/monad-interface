@@ -71,6 +71,7 @@ export default function Aboarding({
         <Modal
             open={isOpen}
             isShowCloseIcon={false}
+            isMaskClose={false}
             onClose={closeModal}
             className={className}
         >
