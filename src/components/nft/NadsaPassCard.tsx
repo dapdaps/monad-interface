@@ -286,7 +286,9 @@ const MainBtn = ({
           return;
         }
 
-        if (Number(tokenBalance) <= new Big(1.3).mul(10 ** 18).toNumber()) {
+
+        console.log('tokenBalance:', tokenBalance);
+        if (Number(tokenBalance) <= 1.3) {
           toast.error('Insufficient balance');
           return;
         }
