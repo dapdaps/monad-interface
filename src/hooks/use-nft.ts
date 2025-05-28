@@ -84,7 +84,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
             setError("Failed to get NFT metadata");
             return null;
         }
-    }, [address, connector, rpc]);
+    }, [address, connector, rpc, nftAddress, refresh]);
 
     const checkNFT = useCallback(async (): Promise<void> => {
         setChecking(true);
@@ -134,7 +134,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
             setIsLoading(false);
             setChecking(false);
         }
-    }, [address, connector, rpc]);
+    }, [address, connector, rpc, nftAddress, refresh]);
 
     const mintNFT = useCallback(async (): Promise<void> => {
         if (!address) {
@@ -204,7 +204,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
         if (address) {
             getNFTMetadata();
         }
-    }, [address, getNFTMetadata]);
+    }, [address, refresh]);
 
     useEffect(() => {
         if (address) {
