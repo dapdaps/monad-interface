@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { post } from "@/utils/http";
 import { useTwitterStore } from "@/stores/twitter";
 import useToast from "@/hooks/use-toast";
 import useUser from "@/hooks/use-user";
-import { useDebounceFn } from "ahooks";
 import { useAccount } from "wagmi";
 
 export default function useBindTwitterAccount({ withAuth }: any) {
@@ -15,7 +14,7 @@ export default function useBindTwitterAccount({ withAuth }: any) {
   const { address } = useAccount();
 
   const handleBind = async () => {
-    if (loading || !twitterStore.id) return;
+    if (loading || !twitterStore.id || !address) return;
     setLoading(true);
     try {
       if (!withAuth) {
@@ -37,26 +36,28 @@ export default function useBindTwitterAccount({ withAuth }: any) {
       }
       if (result.code !== 200) throw new Error(result.msg);
       setButtonText("");
+      twitterStore.set({ address });
     } catch (err) {
     } finally {
       setLoading(false);
     }
   };
 
-  const { run } = useDebounceFn(
-    () => {
-      if (address) {
-        handleBind();
-      } else {
-        setButtonText("Connect Wallet");
-      }
-    },
-    { wait: 500 }
-  );
-
   useEffect(() => {
-    run();
+    if (!address) {
+      setButtonText("Connect Wallet");
+      return;
+    }
+    if (twitterStore.address) {
+      setButtonText(
+        twitterStore.address === address ? "" : "Please switch wallet"
+      );
+    } else {
+      setButtonText(
+        `Bind X to ${address?.slice(0, 4)}...${address?.slice(-4)}`
+      );
+    }
   }, [address]);
 
-  return { loading, buttonText };
+  return { loading, buttonText, handleBind };
 }
