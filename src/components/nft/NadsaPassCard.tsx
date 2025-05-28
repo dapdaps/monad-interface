@@ -9,7 +9,7 @@ import useBindTwitterAccount from "@/sections/terminal/hooks/use-bind-twitter-ac
 import { motion } from "framer-motion";
 
 export default function NadsaPassCard() {
-    const { nftMetadata, nftAddress, mintNFT, hasNFT, tokenIds, isLoading, address } = useNFT();
+    const { nftMetadata, nftAddress, mintNFT, hasNFT, tokenIds, isLoading, address } = useNFT({ nftAddress: '0x378d216463a2245bf4b70a1730579e4da175dd0f' });
     const { open } = useAppKit();
     const { isSuccess: isBindTwitterAccount, loading: isBindTwitterAccountLoading, checkBindTwitterAccount } = useBindTwitterAccount({ withAuth: false });
     console.log(nftMetadata, hasNFT, tokenIds, isBindTwitterAccount);

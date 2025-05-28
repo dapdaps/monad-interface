@@ -30,10 +30,10 @@ interface UseNFTReturn {
     address: string;
 }
 
-const nftAddress = '0x378d216463a2245bf4b70a1730579e4da175dd0f';
+// const nftAddress = '0x378d216463a2245bf4b70a1730579e4da175dd0f';
 const accessToken = 'd0d4c2a8-873a-4475-a830-ee19bb224521';
 
-export const useNFT = (): UseNFTReturn => {
+export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [refresh, setRefresh] = useState(0);
