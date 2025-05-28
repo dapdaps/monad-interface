@@ -113,7 +113,7 @@ export default function Aboarding({
                         isLast && <div className="pt-[100px]">
                             <div className="flex-1 relative mx-[50px] h-[379px] rounded-[6px] overflow-hidden bg-[url('/images/nft/home/nft-bg.png')] bg-no-repeat bg-contain bg-center">
                                 <div className="w-full h-full bg-[repeating-linear-gradient(to_bottom,_transparent_0px,_rgba(255,255,255,0.2)_1px,_transparent_2px,_rgba(255,255,255,0.2)_3px)]">
-                                    <div className="absolute pointer-events-none z-[0] w-full left-0 h-full top-0 overflow-hidden">
+                                    <div className="absolute pointer-events-none z-[1] w-full left-0 h-full top-0 overflow-hidden">
                                         <motion.div
                                             className="absolute z-[10] pointer-events-none w-full h-[5px] left-0 top-0 opacity-10 bg-[linear-gradient(to_bottom,_transparent,_rgba(255,255,255,0.5),_transparent)]"
                                             animate={{
@@ -125,7 +125,7 @@ export default function Aboarding({
                                             }}
                                         />
                                     </div>
-                                    <div className="absolute pointer-events-none z-[0] w-[120%] left-[-10%] h-[120%] top-[-10%] overflow-hidden">
+                                    <div className="absolute pointer-events-none z-[1] w-[120%] left-[-10%] h-[120%] top-[-10%] overflow-hidden">
                                         <div className="noise opacity-30 pointer-events-none absolute z-[1] w-full left-0 h-full top-0 overflow-hidden"></div>
                                     </div>
                                     <div className="w-full h-full p-[10px] flex gap-[20px] relative justify-between items-center">
