@@ -13,6 +13,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
+import InvitationContextProvider from "@/context/invitation";
 
 dayjs.extend(utc);
 
@@ -36,9 +37,11 @@ export default function RootLayout({
         <WagmiProvider>
           <SkeletonTheme baseColor="#7990F4" highlightColor="#8B87FF">
             <SceneContextProvider>
-              <Suspense>
-                <MainLayout>{children}</MainLayout>
-              </Suspense>
+              <InvitationContextProvider>
+                <Suspense>
+                  <MainLayout>{children}</MainLayout>
+                </Suspense>
+              </InvitationContextProvider>
             </SceneContextProvider>
           </SkeletonTheme>
         </WagmiProvider>

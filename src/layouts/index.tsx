@@ -1,12 +1,27 @@
+import { useInvitationContext } from "@/context/invitation";
 import MainLayout from "./main";
 import SimpleLayout from "./simple";
 import { usePathname } from "next/navigation";
+import InvitationView from "@/sections/invitation";
+import useIsMobile from "@/hooks/use-isMobile";
 
 export default function Layout({ children }: any) {
   const pathname = usePathname();
+  const { validUser } = useInvitationContext();
+  const isMobile = useIsMobile();
 
-  if (["/terminal", "/terminal/login"].includes(pathname))
+  if (["/terminal", "/terminal/login"].includes(pathname)) {
     return <SimpleLayout>{children}</SimpleLayout>;
+  }
 
-  return <MainLayout>{children}</MainLayout>;
+  return (
+    <MainLayout>
+      {
+        !isMobile && (
+          <InvitationView />
+        )
+      }
+      {(!isMobile && !validUser) ? null : children}
+    </MainLayout>
+  );
 }
