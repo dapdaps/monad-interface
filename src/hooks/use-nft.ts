@@ -76,7 +76,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
 
             setNFTMetadata({
                 totalSupply: totalSupply.toString() || '0',
-                maxSupply: '2',
+                maxSupply: '3',
                 // maxSupply: maxSupply.toString() || '0',
             });
         } catch (error) {
