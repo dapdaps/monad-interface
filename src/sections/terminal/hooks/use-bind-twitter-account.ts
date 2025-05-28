@@ -31,7 +31,14 @@ export default function useBindTwitterAccount({ withAuth }: any) {
         toast.fail({
           title: msg
         });
-        setButtonText(isAddress ? "Please switch wallet" : "Please switch X");
+        setButtonText(
+          isAddress
+            ? `Switch wallet ${result.data.address.slice(
+                0,
+                4
+              )}...${result.data.address?.slice(-4)}`
+            : `Switch X ${result.data.twitter_user_name}`
+        );
         throw new Error("");
       }
       if (result.code !== 200) throw new Error(result.msg);
@@ -50,7 +57,12 @@ export default function useBindTwitterAccount({ withAuth }: any) {
     }
     if (twitterStore.address) {
       setButtonText(
-        twitterStore.address === address ? "" : "Please switch wallet"
+        twitterStore.address === address
+          ? ""
+          : `Switch wallet ${twitterStore.address?.slice(
+              0,
+              4
+            )}...${twitterStore.address?.slice(-4)}`
       );
     } else {
       setButtonText(
