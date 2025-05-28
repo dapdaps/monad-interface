@@ -113,7 +113,7 @@ export default function NadsaPassCard({ onLoginOut }: any) {
             </div>
           </div>
           <div className="flex justify-between mt-[5px]">
-            <div className="text-[#8D7CFF]">Price:</div>
+            <div className="text-[#8D7CFF]">Mint cost:</div>
             <div className={status === 2 ? "text-[#8D7CFF]" : "text-[#00FF11]"}>
               1 MON
             </div>
