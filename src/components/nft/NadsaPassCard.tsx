@@ -8,6 +8,9 @@ import { monadTestnet } from "@reown/appkit/networks";
 import useBindTwitterAccount from "@/sections/terminal/hooks/use-bind-twitter-account";
 import { motion } from "framer-motion";
 import { useUserStore } from "@/stores/user";
+import useTokenBalance from "@/hooks/use-token-balance";
+import Big from "big.js";
+import { toast } from 'react-toastify';
 
 export default function NadsaPassCard() {
     const { nftMetadata, nftAddress, mintNFT, hasNFT, tokenIds, isLoading, address } = useNFT({ nftAddress: '0x378d216463a2245bf4b70a1730579e4da175dd0f' });
@@ -15,6 +18,8 @@ export default function NadsaPassCard() {
     const setUserInfo = useUserStore((store: any) => store.set);
     const isFollowedTwitter = useUserStore((store: any) => store.isFollowedTwitter);
     const { isSuccess: isBindTwitterAccount, loading: isBindTwitterAccountLoading, checkBindTwitterAccount } = useBindTwitterAccount({ withAuth: false });
+    const { tokenBalance, isLoading: isTokenBalanceLoading } = useTokenBalance('native', 18, monadTestnet.id);
+
     console.log(nftMetadata, hasNFT, tokenIds, isBindTwitterAccount);
 
     const status = useMemo(() => {
@@ -134,7 +139,7 @@ export default function NadsaPassCard() {
                 }
                 {
                     status === 0 && (
-                        <MainBtn disabled={!isBindTwitterAccount || !isFollowedTwitter} onClick={() => mintNFT()} >
+                        <MainBtn disabled={!isBindTwitterAccount || !isFollowedTwitter} onClick={() => mintNFT()} tokenBalance={tokenBalance} >
                             {isLoading ? <><CircleLoading /> <span className="ml-[10px]">Mint NFT</span></> : 'Mint NFT'}
                         </MainBtn>
                     )
@@ -159,7 +164,7 @@ const RightArrow = () => {
     )
 }
 
-const MainBtn = ({ onClick, children, disabled }: { onClick: any, children: any, disabled: boolean }) => {
+const MainBtn = ({ onClick, children, disabled, tokenBalance }: { onClick: any, children: any, disabled: boolean, tokenBalance: string }) => {
     const { switchChain, isPending: switching } = useSwitchChain();
     const { address, chainId } = useAccount();
     const { open } = useAppKit();
@@ -183,6 +188,11 @@ const MainBtn = ({ onClick, children, disabled }: { onClick: any, children: any,
     return (
         <button onClick={() => {
             if (disabled) {
+                return;
+            }
+
+            if (Number(tokenBalance) <= new Big(1.3).mul(10 ** 18).toNumber()) {
+                toast.error('Insufficient balance');
                 return;
             }
 
