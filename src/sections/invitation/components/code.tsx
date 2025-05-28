@@ -10,12 +10,14 @@ import { useAppKit, useDisconnect } from "@reown/appkit/react";
 import { useAccount } from "wagmi";
 import { trim } from "lodash";
 import { INVITATION_CODE_LENGTH } from "../config";
+import { useState } from "react";
 
 const Code = (props: any) => {
   const { account } = useCustomAccount();
   const { isConnecting } = useAccount();
   const { open } = useAppKit();
   const { disconnect } = useDisconnect();
+  const [isFocused, setIsFocused] = useState(false);
 
   const {
     loading,
@@ -98,9 +100,11 @@ const Code = (props: any) => {
               "cursor-default col-span-2 h-[45.655px] shrink-0 border bg-black border-[#55648A] rounded-[6px] shadow-[inset_3px_3px_0px_0px_#2C3635] text-[#A5FFFD] text-center font-Unbounded text-[16px] font-[500] leading-[100%] placeholder:text-[#A5FFFD]",
               invalidInvitationCode && "!text-[#FF5372]"
             )}
-            placeholder="Invite Code"
+            placeholder={isFocused ? "" : "Invite Code"}
             value={invitationCode}
             onChange={(e) => handleInvitationCodeChange(e.target.value)}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
           />
           <Button
             className="flex justify-center items-center !h-[40px] !px-[0px]"
