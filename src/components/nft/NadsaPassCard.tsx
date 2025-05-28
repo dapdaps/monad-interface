@@ -9,6 +9,9 @@ import useBindTwitterAccount from "@/sections/terminal/hooks/use-bind-twitter-ac
 import { motion } from "framer-motion";
 import { useUserStore } from "@/stores/user";
 import clsx from "clsx";
+import useTokenBalance from "@/hooks/use-token-balance";
+import { toast } from "react-toastify";
+import Big from "big.js";
 
 export default function NadsaPassCard({ onLoginOut }: any) {
   const {
@@ -22,6 +25,7 @@ export default function NadsaPassCard({ onLoginOut }: any) {
   } = useNFT({ nftAddress: "0x378d216463a2245bf4b70a1730579e4da175dd0f" });
   const { open } = useAppKit();
   const setUserInfo = useUserStore((store: any) => store.set);
+  const { tokenBalance, isLoading: isTokenBalanceLoading } = useTokenBalance('native', 18, monadTestnet.id);
   const isFollowedTwitter = useUserStore(
     (store: any) => store.isFollowedTwitter
   );
@@ -194,6 +198,7 @@ export default function NadsaPassCard({ onLoginOut }: any) {
           <MainBtn
             disabled={!!buttonText || !isFollowedTwitter}
             onClick={() => mintNFT()}
+            tokenBalance={tokenBalance}
           >
             {isLoading ? (
               <>
@@ -231,11 +236,13 @@ const RightArrow = () => {
 const MainBtn = ({
   onClick,
   children,
-  disabled
+  disabled,
+  tokenBalance
 }: {
   onClick: any;
   children: any;
   disabled: boolean;
+  tokenBalance: string;
 }) => {
   const { switchChain, isPending: switching } = useSwitchChain();
   const { address, chainId } = useAccount();
@@ -269,6 +276,11 @@ const MainBtn = ({
     <button
       onClick={() => {
         if (disabled) {
+          return;
+        }
+
+        if (Number(tokenBalance) <= new Big(1.3).mul(10 ** 18).toNumber()) {
+          toast.error('Insufficient balance');
           return;
         }
 
