@@ -31,6 +31,9 @@ const InvitationView = (props: any) => {
     ...DEFAULT_DOOR_STYLES,
     right: `calc(50% - 31.80vw)`,
   });
+  const [wallStyles, setWallStyles] = useState({
+    backgroundSize: "cover",
+  });
 
   const {
     scopeLeftDoor,
@@ -62,6 +65,9 @@ const InvitationView = (props: any) => {
             bottom: "124px",
             right: `calc(50% - 598px)`,
           });
+          setWallStyles({
+            backgroundSize: "cover",
+          });
           return;
         }
 
@@ -74,6 +80,9 @@ const InvitationView = (props: any) => {
             ...DEFAULT_DOOR_STYLES_V,
             right: `calc(50% - 57vh)`,
           });
+          setWallStyles({
+            backgroundSize: "cover",
+          });
         } else {
           setDoorLeftStyles({
             ...DEFAULT_DOOR_STYLES,
@@ -82,6 +91,10 @@ const InvitationView = (props: any) => {
           setDoorRightStyles({
             ...DEFAULT_DOOR_STYLES,
             right: `calc(50% - 31.80vw)`,
+          });
+          const widthScale = 60.8 * aspectRatio - 0.9;
+          setWallStyles({
+            backgroundSize: `${widthScale}% ${widthScale}%`,
           });
         }
       }
@@ -116,14 +129,14 @@ const InvitationView = (props: any) => {
   return (
     <motion.div ref={scopeInvitation} className="fixed top-0 left-0 w-screen h-screen z-[101]">
       <div className="relative z-[2] w-full h-full flex justify-center items-stretch">
-        <div className="flex-1 h-full bg-black bg-[url('/images/invitation/bg-wall.png')] bg-no-repeat bg-cover bg-bottom"></div>
+        <div className="flex-1 h-full bg-black bg-[url('/images/invitation/bg-wall.png')] bg-no-repeat bg-cover bg-bottom" style={wallStyles}></div>
         <motion.div ref={gateRef} className="w-[94.45vw] min-w-[1772px] h-full shrink-0 bg-[url('/images/invitation/bg-gate-full.png')] bg-no-repeat bg-cover bg-bottom">
           <motion.div ref={scopeCodePad} className="flex flex-col justify-end items-center gap-[14px] w-full h-full">
             <Rules />
             <Code />
           </motion.div>
         </motion.div>
-        <div className="flex-1 h-full bg-black bg-[url('/images/invitation/bg-wall.png')] bg-no-repeat bg-cover bg-bottom"></div>
+        <div className="flex-1 h-full bg-black bg-[url('/images/invitation/bg-wall.png')] bg-no-repeat bg-cover bg-bottom" style={wallStyles}></div>
       </div>
       <motion.img
         ref={scopeLeftDoor}
