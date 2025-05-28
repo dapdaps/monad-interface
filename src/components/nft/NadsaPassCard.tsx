@@ -134,7 +134,7 @@ export default function NadsaPassCard() {
                 }
                 {
                     status === 0 && (
-                        <MainBtn disabled={!isBindTwitterAccount} onClick={() => mintNFT()} >
+                        <MainBtn disabled={isBindTwitterAccount} onClick={() => mintNFT()} >
                             {isLoading ? <><CircleLoading /> <span className="ml-[10px]">Mint NFT</span></> : 'Mint NFT'}
                         </MainBtn>
                     )
