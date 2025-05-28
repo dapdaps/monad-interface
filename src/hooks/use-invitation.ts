@@ -3,7 +3,7 @@ import useCustomAccount from "./use-account";
 import { useRequest } from "ahooks";
 import { INVITATION_CODE_LENGTH } from "@/sections/invitation/config";
 import { useAnimate } from "framer-motion";
-import { useNFT } from "./use-nft";
+import { nftAddress, useNFT } from "./use-nft";
 import { post } from "@/utils/http";
 import useToast from "./use-toast";
 import { useUserStore } from "@/stores/user";
@@ -12,7 +12,7 @@ import { trim } from "lodash";
 
 export function useInvitation<Invitation>() {
   const { account } = useCustomAccount();
-  const { hasNFT } = useNFT();
+  const { hasNFT } = useNFT({ nftAddress: nftAddress });
   const toast = useToast();
   const userInfo = useUserStore((store: any) => store.user);
   const { getUserInfo } = useUser();
