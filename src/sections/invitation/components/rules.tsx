@@ -19,7 +19,7 @@ const Rules = (props: any) => {
                   Pickup clues in the <Link className="text-[#78FEFF] underline underline-offset-2" prefetch href="/terminal?from=invitation">Terminal</Link>
                 </li>
                 <li className="">
-                  Pickup clues from NADSA official <Link className="text-[#78FEFF] underline underline-offset-2" prefetch href="https://x.com/0xNADSA" target="_blank">X</Link>
+                  Pickup clues from NADSA official <Link className="text-[#78FEFF] underline underline-offset-2" href="https://x.com/0xNADSA" target="_blank">X</Link>
                 </li>
                 <li className="">
                   Get a code from all Monad ecosystem projects
@@ -27,8 +27,8 @@ const Rules = (props: any) => {
               </ul>
             </>
           ) : (
-            <div className="text-center">
-              If you’re a holder of the <Link href={`https://monad-testnet.socialscan.io/address/${nftAddress}`} target="_blank" className="underline underline-offset-2 cursor-pointer text-[#A5FFFD]">NADSA_ADMISSION_TICKET</Link>, please<br /> connect your wallet to access.<br />Or, you can input invite code.
+            <div className="text-center pt-[20px] pb-[24px]">
+              Access NADSA One by verifying your <Link className="text-[#78FEFF] underline underline-offset-2" href={`https://monad-testnet.socialscan.io/address/${nftAddress}`} target="_blank">Admission Ticket</Link> or<br /> entering your Access Code.
             </div>
           )
         }

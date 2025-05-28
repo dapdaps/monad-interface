@@ -31,6 +31,8 @@ const Code = (props: any) => {
     invalidInvitationCode,
   } = useInvitationContext();
 
+  const EnterDisabled = !account || submitInvitationCodeLoading || !trim(invitationCode) || trim(invitationCode).length < INVITATION_CODE_LENGTH || invalidInvitationCode;
+
   return (
     <div className="w-[765px] h-[390px] overflow-hidden shrink-0">
       <div className="w-full h-[431px] pt-[37px] flex justify-center items-start gap-[87px] bg-[url('/images/invitation/bg-code.png')] bg-no-repeat bg-contain bg-center">
@@ -144,13 +146,15 @@ const Code = (props: any) => {
           </Button>
           <Button
             className={clsx(
-              "!px-[0] active:!drop-shadow-[0px_0px_10px_rgba(120,254,255,0.60)] active:!bg-[#A5FFFD]",
-              invalidInvitationCode && "!drop-shadow-[0px_0px_10px_#FF5372] !bg-[#FF5372]"
+              "!px-[0] active:!drop-shadow-[0px_0px_10px_rgba(120,254,255,0.60)]",
+              invalidInvitationCode
+                ? "!bg-[#FF5372] !drop-shadow-[0px_0px_10px_#FF5372]"
+                : (EnterDisabled ? "!bg-[#6D7EA5]" : "!bg-[#A5FFFD]"),
             )}
-            disabled={!account || submitInvitationCodeLoading || !trim(invitationCode) || trim(invitationCode).length < INVITATION_CODE_LENGTH || invalidInvitationCode}
+            disabled={EnterDisabled}
             onClick={submitInvitationCode}
           >
-            Access
+            Enter
           </Button>
         </div>
       </div>
