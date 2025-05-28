@@ -8,6 +8,7 @@ import { post } from "@/utils/http";
 import useToast from "./use-toast";
 import { useUserStore } from "@/stores/user";
 import useUser from "./use-user";
+import { trim } from "lodash";
 
 export function useInvitation<Invitation>() {
   const { account } = useCustomAccount();
@@ -72,7 +73,7 @@ export function useInvitation<Invitation>() {
 
   const handleInvitationCodeChange = (_invitationCode?: string) => {
     const _next = _invitationCode ?? "";
-    setInvitationCode(_next.trim().slice(0, INVITATION_CODE_LENGTH));
+    setInvitationCode(trim(_next).slice(0, INVITATION_CODE_LENGTH));
     setInvalidInvitationCode(false);
   };
 

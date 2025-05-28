@@ -9,6 +9,7 @@ import { useInvitationContext } from "@/context/invitation";
 import { useAppKit, useDisconnect } from "@reown/appkit/react";
 import { useAccount } from "wagmi";
 import { trim } from "lodash";
+import { INVITATION_CODE_LENGTH } from "../config";
 
 const Code = (props: any) => {
   const { account, } = useCustomAccount();
@@ -134,7 +135,7 @@ const Code = (props: any) => {
               "!px-[0] active:!drop-shadow-[0px_0px_10px_rgba(120,254,255,0.60)] active:!bg-[#A5FFFD]",
               invalidInvitationCode && "!drop-shadow-[0px_0px_10px_#FF5372] !bg-[#FF5372]"
             )}
-            disabled={!account || submitInvitationCodeLoading || !trim(invitationCode) || invalidInvitationCode}
+            disabled={!account || submitInvitationCodeLoading || !trim(invitationCode) || trim(invitationCode).length < INVITATION_CODE_LENGTH || invalidInvitationCode}
             onClick={submitInvitationCode}
           >
             Access
