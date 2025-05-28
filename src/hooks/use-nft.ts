@@ -76,7 +76,8 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
 
             setNFTMetadata({
                 totalSupply: totalSupply.toString() || '0',
-                maxSupply: maxSupply.toString() || '0',
+                maxSupply: '2',
+                // maxSupply: maxSupply.toString() || '0',
             });
         } catch (error) {
             console.error("Failed to get NFT metadata:", error);
@@ -101,36 +102,20 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
                 provider
             );
 
-            // Check if user owns any NFTs in this collection
             const balance = await nftContract.balanceOf(address);
             console.log('balance:', balance);
 
             const tokenIds = await nftContract.tokensOfOwner(address);
-            console.log('tokenIds:', tokenIds);
+            const _tokenIds = tokenIds.map((tokenId: any) => Number(tokenId.toString())).sort((a: number, b: number) => a - b);
 
             if (balance.toString() === '0') {
                 setHasNFT(false);
-                setTokenIds([]);
+                setTokenIds(_tokenIds || []);
             } else {
                 setHasNFT(true);
                 setTokenIds([]);
             }
-
-            
-
-            // Get all tokenIds owned by the user
-            // const tokenIds: string[] = [];
-            // for (let i = 0; i < balance.toNumber(); i++) {
-            //     const tokenId = await nftContract.tokenOfOwnerByIndex(address, i);
-            //     console.log('tokenId:', tokenId);
-            //     tokenIds.push(tokenId.toString());
-            // }
-
-            // If specific tokenId provided, check ownership of that token
-            // if (tokenIds.length > 0) {
-            //     setHasNFT(true);
-            //     setTokenIds(tokenIds);
-            // }
+         
 
         } catch (error) {
             console.error("Error checking NFT ownership:", error);

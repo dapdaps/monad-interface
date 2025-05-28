@@ -44,7 +44,7 @@ export default function Aboarding({
     closeModal: () => void;
     className?: string;
 }) {
-    const { nftMetadata, nftAddress, mintNFT, hasNFT, tokenIds, isLoading, address } = useNFT({ nftAddress: '0x378d216463a2245bf4b70a1730579e4da175dd0f' });
+    const { nftMetadata, nftAddress, mintNFT, hasNFT, tokenIds, isLoading, address } = useNFT({ nftAddress: '0xbe0a1db63a34aa64f24decaf3f34e71fcb3c323a' });
     const { open } = useAppKit();
     const setUserInfo = useUserStore((store: any) => store.set);
     const isFollowedTwitter = useUserStore((store: any) => store.isFollowedTwitter);
@@ -95,7 +95,7 @@ export default function Aboarding({
                             </div>
 
                             <div className="w-full px-8 mt-[30px]">
-                                <div className="text-[#00FF00] text-[18px] whitespace-pre-wrap font-HackerNoonV2 drop-shadow-[0px_0px_10px_#00FF00]">
+                                <div className="text-[#00FF00] text-[18px] whitespace-pre-wrap font-HackerNoonV2 drop-shadow-[0px_0px_10px_#00FF0080]">
                                     {descTitle}
 
                                 </div>
@@ -185,20 +185,20 @@ export default function Aboarding({
                         <button
                             onClick={handlePrev}
                             disabled={index === 0}
-                            className={`px-6 py-2 rounded bg-transparent  text-[#00FF00] text-[14px] transition-all duration-150 ${index === 0 ? "hidden " : " cursor-pointer"}`}
+                            className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px] transition-all duration-150 hover:underline hover:drop-shadow-[0px_0px_10px_#00FF00] ${index === 0 ? "hidden " : " cursor-pointer"}`}
                         >
                             Previous
                         </button>
                         <button
                             onClick={handleNext}
                             disabled={index === slides.length - 1}
-                            className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px]  transition-all duration-150 ${index === slides.length - 1 ? "hidden " : " cursor-pointer"}`}
+                            className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px]  transition-all duration-150 hover:underline hover:drop-shadow-[0px_0px_10px_#00FF00] ${index === slides.length - 1 ? "hidden " : " cursor-pointer"}`}
                         >
                             Next
                         </button>
                         <button
                             onClick={handleStart}
-                            className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px]  transition-all duration-150 ${index !== slides.length - 1 ? "hidden " : " cursor-pointer"}`}
+                            className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px]  transition-all duration-150 hover:underline hover:drop-shadow-[0px_0px_10px_#00FF00] ${index !== slides.length - 1 ? "hidden " : " cursor-pointer"}`}
                         >
                             Start
                         </button>
