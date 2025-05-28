@@ -12,6 +12,7 @@ export const useUserStore = create(
       },
       accessTokenLoading: false,
       loading: false,
+      isFollowedTwitter: false,
       set: (params: any) => set(() => ({ ...params }))
     }),
     {
