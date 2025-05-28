@@ -68,7 +68,8 @@ export default function useBindTwitterHome() {
           id: result.data.twitter_user_id,
           name: result.data.twitter_user_name,
           avatar: result.data.twitter_avatar
-        }
+        },
+        code
       });
     } catch (err) {
       setLoading(false);
@@ -78,9 +79,6 @@ export default function useBindTwitterHome() {
 
   const { run } = useDebounceFn(
     () => {
-      if (!twitterStore.id) {
-        return;
-      }
       if (twitterStore.address) {
         setButtonText(
           twitterStore.address === address
@@ -93,6 +91,9 @@ export default function useBindTwitterHome() {
         return;
       }
       if (!code) return;
+      if (twitterStore.code === code) {
+        return;
+      }
       handleBind();
     },
     { wait: 500 }

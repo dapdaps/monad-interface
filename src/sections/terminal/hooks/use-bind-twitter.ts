@@ -32,11 +32,13 @@ export default function useBindTwitter({
       if (result.code !== 200) throw new Error(result.msg);
 
       setLoading(false);
-      onSuccess({
+      const data = {
         id: result.data.twitter_user_id,
         name: result.data.twitter_user_name,
         avatar: result.data.twitter_avatar
-      });
+      };
+      onSuccess(data);
+      twitterStore.set({ id: data.id, info: data, code: code });
     } catch (err) {
       setLoading(false);
       toast.dismiss(toastId);
@@ -45,7 +47,7 @@ export default function useBindTwitter({
 
   const { run } = useDebounceFn(
     () => {
-      if (!code || twitterStore.id) return;
+      if (!code || twitterStore.code === code) return;
       handleBind();
     },
     { wait: 500 }

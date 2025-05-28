@@ -6,6 +6,7 @@ export const useTwitterStore = create(
     (set, get: any) => ({
       id: "",
       address: "",
+      code: "",
       info: {},
       bindInfo: {},
       set: (params: any) => set(() => ({ ...params }))

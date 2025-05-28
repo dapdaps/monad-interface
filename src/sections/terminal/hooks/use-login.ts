@@ -11,10 +11,8 @@ export default function useLogin() {
   const { loading } = useBindTwitter({
     onSuccess(data) {
       setStatus(2);
-      twitterStore.set({ id: data.id, info: data });
       setCurrentUser(data);
-    },
-    withAuth: false
+    }
   });
 
   const { run } = useDebounceFn(
