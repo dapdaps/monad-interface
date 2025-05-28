@@ -9,6 +9,7 @@ import useToast from "./use-toast";
 import { useUserStore } from "@/stores/user";
 import useUser from "./use-user";
 import { trim } from "lodash";
+import { useGuideStore } from "@/stores/guide";
 
 export function useInvitation<Invitation>() {
   const { account } = useCustomAccount();
@@ -17,6 +18,7 @@ export function useInvitation<Invitation>() {
   const userInfo = useUserStore((store: any) => store.user);
   const userInfoLoading = useUserStore((store: any) => store.loading);
   const { getUserInfo } = useUser();
+  const { getVisited, setVisible } = useGuideStore();
 
   const [scopeLeftDoor, animateLeftDoor] = useAnimate();
   const [scopeRightDoor, animateRightDoor] = useAnimate();
@@ -24,6 +26,7 @@ export function useInvitation<Invitation>() {
   const [scopeInvitation, animateInvitation] = useAnimate();
   const doorTimer = useRef<any>();
   const containerTimer = useRef<any>();
+  const guideTimer = useRef<any>();
 
   const [validInvitationCode, setValidInvitationCode] = useState<boolean>(false);
   const [invalidInvitationCode, setInvalidInvitationCode] = useState<boolean>(false);
@@ -64,6 +67,13 @@ export function useInvitation<Invitation>() {
           resolve(true);
         }, 3000);
         clearTimeout(doorTimer.current);
+        guideTimer.current = setTimeout(() => {
+          clearTimeout(guideTimer.current);
+          const currentVisited = getVisited(account);
+          if (!currentVisited) {
+            setVisible(true);
+          }
+        }, 1000);
       }, 1100);
     });
   };
