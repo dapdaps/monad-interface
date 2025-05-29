@@ -1,17 +1,23 @@
 import Aboarding from "@/components/nft/Aboarding";
 import useCustomAccount from "@/hooks/use-account";
 import { useGuideStore } from "@/stores/guide";
+import { useMemo } from "react";
 
 const GuideView = () => {
   const { account } = useCustomAccount();
-  const { setVisited, visible, setVisible } = useGuideStore();
+  const { setVisitedIndex, visible, setVisible, max, getVisitedIndex } =
+    useGuideStore();
+
+  const defaultIndex = useMemo(() => getVisitedIndex(account), [account]);
 
   return (
     <Aboarding
       isOpen={visible}
+      setVisitedIndex={setVisitedIndex}
+      defaultIndex={defaultIndex}
       closeModal={() => {
         setVisible(false);
-        setVisited(account, true);
+        setVisitedIndex(account, max + 1);
       }}
     />
   );
