@@ -131,9 +131,12 @@ const Home = () => {
           {/* yapper */}
           <div
             data-bp="1001-005"
+            data-hover-sound
+            onClick={() => router.push("/codes")}
             className={clsx(
               "z-[4] w-[378px] h-[290px] absolute -top-[calc(40/14.4*var(--rem))] right-[calc(260/14.4*var(--rem))]",
-              "bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper-lock.svg)]",
+              "bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper.svg)]",
+              "transition-all duration-200 ease-in-out cursor-pointer",
               windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
               windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
               windowWidth >= 1920 && windowWidth < 2560 ? "top-0 right-[calc(190/14.4*var(--rem))] hover:scale-[1.1]" : "",
@@ -144,19 +147,24 @@ const Home = () => {
               <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <div className="w-full flex items-center justify-center gap-2">
-                    <img src="/images/monad/icon/yapper.svg" alt="" />
-                    <div className="text-[12px] font-Unbounded font-[500] leading-[90%] text-[#6D7EA5]">
-                      soon
-                    </div>
+                    <img src="/images/monad/icon/codes.svg" alt="" />
                   </div>
-                  <img
-                    src="/images/monad/icon/disabled-point.svg"
+                  <motion.img
+                    animate={{
+                      rotateY: 180,
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                    src="/images/monad/icon/point.svg"
                     className="w-[38px] h-[38px]"
                     alt=""
                   />
                 </div>
               </div>
-              {/* <div className="absolute w-[244px] h-[223px] left-1/2 -translate-x-1/2 top-[-38px] ml-[20px]">
+              <div className="absolute w-[244px] h-[223px] left-1/2 -translate-x-1/2 top-[-38px] ml-[20px]">
                 <motion.div
                   animate={{ rotate: [-10, 10] }}
                   transition={{
@@ -168,7 +176,7 @@ const Home = () => {
                   }}
                   className="relative w-full h-full bg-no-repeat bg-contain bg-[url(/images/monad/entry/radar.svg)]"
                 ></motion.div>
-              </div>*/}
+              </div>
             </div>
           </div>
           {/* Faucet */}
