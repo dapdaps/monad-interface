@@ -110,10 +110,10 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
 
             if (balance.toString() === '0') {
                 setHasNFT(false);
-                setTokenIds(_tokenIds || []);
+                setTokenIds([]);
             } else {
                 setHasNFT(true);
-                setTokenIds([]);
+                setTokenIds(_tokenIds || []);
             }
          
 

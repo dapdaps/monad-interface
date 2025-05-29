@@ -143,6 +143,21 @@ const post = async (url: string, data?: object, headers?: object) => {
   return result;
 };
 
+const postFile = async (url: string, data?: any, headers?: object) => {
+  const tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
+  const res = await fetch(getUrl(url), {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${tokens.state?.accessToken?.access_token || ""}`,
+      ...(headers || {})
+    },
+    body: data
+  });
+  const result = (await res.json()) as any;
+  handleUpgrade(result);
+  return result;
+};
+
 const deleteRequest = async (url: string, data: object) => {
   const tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
   const res = await fetch(getUrl(url), {
@@ -181,6 +196,7 @@ export {
   get,
   getWithToken,
   post,
+  postFile,
   getWithoutActive,
   deleteRequest,
   AUTH_TOKENS,
