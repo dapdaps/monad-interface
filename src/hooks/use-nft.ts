@@ -179,6 +179,10 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
             console.log(tx);
 
             setRefresh(refresh + 1);
+            setTimeout(() => {
+                checkNFT();
+                getNFTMetadata();
+            }, 2000);
 
             toast.success('Mint NFT success');
            
