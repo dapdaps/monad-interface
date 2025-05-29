@@ -110,10 +110,15 @@ export default function Aboarding({
         const tweetUrl = `https://test.nadsa.space/api/twitter?img=${encodeURIComponent(
           url
         )}`;
-        const tweetText = `> mint --sequence NFT
-> sequence number minted
-> onboarding complete to One // nadsa.space
->> welcome to @0xNADSA
+        const tweetText = `> mint --sequence NFT %0A
+
+> sequence number minted %0A
+
+> onboarding complete to One // nadsa.space %0A
+
+>> welcome to @0xNADSA %0A%0A
+
+
 "In the beginning, there were only a few. The Monadverse is vast, but I was here first.”`;
 
         shareToX(tweetText, tweetUrl);

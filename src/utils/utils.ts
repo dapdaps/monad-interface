@@ -105,6 +105,7 @@ export async function uploadFile(file: File | Blob, url: string = '/upload') {
 }
 
 export function shareToX(text: string, link: string) {
+  console.log('shareToX', text, link)
   window.open(
       `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(link)}`
   );
