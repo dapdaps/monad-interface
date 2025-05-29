@@ -22,17 +22,14 @@ function CodesContextProvider({ children }: { children: ReactNode; }) {
     try {
       setClaimLoading(true)
       const result = await post("/invite/claim")
-      if (result.code === 0) {
-        toast.success({
-          title: "Claim Successful!"
-        })
-      } else {
-        toast.fail({
-          title: "Claim Failed!"
-        })
-      }
+      toast.success({
+        title: "Claim Successful!"
+      })
     } catch (error) {
       console.log(error)
+      toast.fail({
+        title: "Claim Failed!"
+      })
     }
     setClaimLoading(false)
   }
