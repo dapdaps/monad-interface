@@ -7,7 +7,7 @@ import { post } from "@/utils/http";
 import Loading from "@/components/loading";
 
 export default memo(function Records() {
-  const pageSize = 1
+  const pageSize = 10
   const { inviteRecordsLoading, inviteRecords, claimLoading, handleClaim } = useCodesContext()
   const [page, setPage] = useState(1)
   const unClaimRecords = useMemo(() => inviteRecords?.filter(record => record?.status === 2), [inviteRecords])
@@ -103,6 +103,7 @@ export default memo(function Records() {
           loading={inviteRecordsLoading}
           columns={COLUMNS}
           list={pageRecords}
+          bodyClassName="h-[259px] overflow-auto scrollbar-hide"
           renderEmpty={() => (
             <div className="p-[64px] text-center text-[#A6A6DB] font-Unbounded text-[12px] font-light">You didn’t invite anyone</div>
           )}
