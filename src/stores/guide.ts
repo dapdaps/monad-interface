@@ -3,8 +3,10 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 export type GuideStore = {
   visible: boolean;
-  visited: Record<string, boolean>;
-  setVisited: (account: string, visited: boolean) => void;
+  visited: Record<string, number>;
+  max: number;
+  setVisitedIndex: (account: string, index: number) => void;
+  getVisitedIndex: (account: string) => number;
   getVisited: (account?: string) => boolean;
   setVisible: (visible: boolean) => void;
 };
@@ -14,23 +16,24 @@ export const useGuideStore = create(
     (set, get) => ({
       visible: false,
       visited: {},
-      setVisited: (account, visited) => {
-        console.log('setVisited', account, visited);
+      max: 3,
+      setVisitedIndex: (account, index) => {
         set((state) => ({
           ...state,
           visited: {
             ...state.visited,
-            [account]: visited
+            [account]: index
           }
         }));
       },
+      getVisitedIndex: (account) => get().visited[account] || 0,
       getVisited: (account) => {
         if (!account) return false;
-        return get().visited[account] || false;
+        return (get().visited[account] || 0) >= 4;
       },
       setVisible: (visible) => {
         set({ visible });
-      },
+      }
     }),
     {
       name: "_NADSA_GUIDE_STORE",

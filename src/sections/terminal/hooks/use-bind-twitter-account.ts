@@ -57,7 +57,7 @@ export default function useBindTwitterAccount({ withAuth }: any) {
     }
     if (twitterStore.address) {
       setButtonText(
-        twitterStore.address === address
+        twitterStore.address.toLowerCase() === address.toLowerCase()
           ? ""
           : `Switch wallet ${twitterStore.address?.slice(
               0,
