@@ -76,8 +76,6 @@ export default function Aboarding({
     const { img, title, desc, descTitle } = useMemo(() => slides[index], [index]);
     const isLast = useMemo(() => index === slides.length - 1, [index]);
 
-
-
     const handleTwitterShare = useCallback(async () => {
         try {
             const node = nftCardRef.current;
@@ -87,7 +85,7 @@ export default function Aboarding({
                 const url = await uploadFile(blob, '/upload');
                 const tweetUrl = `/api/twitter?img=${encodeURIComponent(url)}`;
                 const tweetText = `> mint \n @0xNADSA`;
-                
+
                 shareToX(tweetText, tweetUrl);
             }
         } catch (error) {
@@ -208,49 +206,49 @@ export default function Aboarding({
 
                                                 {
                                                     !hasNFT && <div className="mt-6 space-y-3">
-         {!twitterStore?.bindInfo[twitterStore.id] ||
-                          buttonText ? (
-                            <button
-                              onClick={() => {
-                                if (buttonText === "Connect X to access") {
-                                  window.open(
-                                    `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${window.location.origin}&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`,
-                                    "_blank"
-                                  );
-                                  return;
-                                }
-                                if (buttonText) return;
-                                window.open(
-                                  "https://twitter.com/intent/follow?screen_name=0xNADSA",
-                                  "_blank"
-                                );
-                                setTimeout(() => {
-                                  twitterStore.set({
-                                    bindInfo: {
-                                      ...twitterStore.bindInfo,
-                                      [twitterStore.id]: true
-                                    }
-                                  });
-                                }, 3000);
-                              }}
-                              className="w-full bg-[#00FF00] h-[44px] text-black flex items-center justify-center rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]"
-                            >
-                              {buttonText || "Follow @0xNADSA on X"}
-                            </button>
-                          ) : (
-                            <div className="w-full relative  h-[44px] text-[#836EF9] flex items-center justify-between font-Pixelmix text-[12px] border border-[#836EF9] rounded-[4px] px-[15px]">
-                              <div className="text-[#836EF9]">
-                                Followed 0xNADSA
-                              </div>
-                              <div className="text-[#836EF9]">
-                                <RightArrow />
-                              </div>
-                            </div>
-                          )}
-                                                        
+                                                        {!twitterStore?.bindInfo[twitterStore.id] ||
+                                                            buttonText ? (
+                                                            <button
+                                                                onClick={() => {
+                                                                    if (buttonText === "Connect X to access") {
+                                                                        window.open(
+                                                                            `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${window.location.origin}&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`,
+                                                                            "_blank"
+                                                                        );
+                                                                        return;
+                                                                    }
+                                                                    if (buttonText) return;
+                                                                    window.open(
+                                                                        "https://twitter.com/intent/follow?screen_name=0xNADSA",
+                                                                        "_blank"
+                                                                    );
+                                                                    setTimeout(() => {
+                                                                        twitterStore.set({
+                                                                            bindInfo: {
+                                                                                ...twitterStore.bindInfo,
+                                                                                [twitterStore.id]: true
+                                                                            }
+                                                                        });
+                                                                    }, 3000);
+                                                                }}
+                                                                className="w-full bg-[#00FF00] h-[44px] text-black flex items-center justify-center rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]"
+                                                            >
+                                                                {buttonText || "Follow @0xNADSA on X"}
+                                                            </button>
+                                                        ) : (
+                                                            <div className="w-full relative  h-[44px] text-[#836EF9] flex items-center justify-between font-Pixelmix text-[12px] border border-[#836EF9] rounded-[4px] px-[15px]">
+                                                                <div className="text-[#836EF9]">
+                                                                    Followed 0xNADSA
+                                                                </div>
+                                                                <div className="text-[#836EF9]">
+                                                                    <RightArrow />
+                                                                </div>
+                                                            </div>
+                                                        )}
+
 
                                                         <MainBtn onClick={() => mintNFT()} disabled={isLoading || !!buttonText ||
-                              !twitterStore?.bindInfo[twitterStore.id]}>
+                                                            !twitterStore?.bindInfo[twitterStore.id]}>
                                                             {isLoading ? <><CircleLoading /> <span className="ml-[10px]">Mint NFT</span></> : 'Mint NFT'}
                                                         </MainBtn>
                                                     </div>
