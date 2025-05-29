@@ -43,7 +43,7 @@ export const useGuideStore = create(
     }),
     {
       name: "_NADSA_GUIDE_STORE",
-      version: 0.1,
+      version: 0.11,
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ visited: state.visited } as any)
     }
