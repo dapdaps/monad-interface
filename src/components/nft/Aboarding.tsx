@@ -51,13 +51,13 @@ export default function Aboarding({
   isOpen,
   closeModal,
   setVisitedIndex,
-  defaultIndex,
+  getVisitedIndex,
   className
 }: {
   isOpen: boolean;
   closeModal: () => void;
   setVisitedIndex: (account: string, index: number) => void;
-  defaultIndex: number;
+  getVisitedIndex: (account: string) => number;
   className?: string;
 }) {
   // const { nftMetadata, nftAddress, mintNFT, hasNFT, tokenIds, isLoading, address } = useNFT({ nftAddress: '0x378d216463a2245bf4b70a1730579e4da175dd0f' });
@@ -68,22 +68,27 @@ export default function Aboarding({
   const twitterStore: any = useTwitterStore();
   const nftCardRef = useRef<HTMLDivElement>(null);
   const { loading: binding, buttonText } = useBindTwitterHome();
-  const [index, setIndex] = useState(defaultIndex);
+  const index = address ? getVisitedIndex(address) : 0;
 
-  const handlePrev = useCallback(() => {
-    setIndex((prev) => (prev > 0 ? prev - 1 : prev));
-  }, [index]);
+  const handlePrev = () => {
+    if (!address) return;
+    const _i = getVisitedIndex(address);
+    const i = _i > 0 ? _i - 1 : _i;
+    setVisitedIndex(address, i);
+  };
 
-  const handleNext = useCallback(() => {
-    setIndex((prev) => (prev < slides.length - 1 ? prev + 1 : prev));
-  }, [index]);
+  const handleNext = () => {
+    if (!address) return;
+    const _i = getVisitedIndex(address);
+    const i = _i < slides.length - 1 ? _i + 1 : _i;
+    setVisitedIndex(address, i);
+  };
 
-  const handleStart = useCallback(() => {
+  const handleStart = () => {
     closeModal();
-  }, [index]);
+  };
 
   const { img, title, desc, descTitle } = useMemo(() => slides[index], [index]);
-  const isLast = useMemo(() => index === slides.length - 1, [index]);
 
   const handleTwitterShare = useCallback(async () => {
     try {
@@ -102,16 +107,6 @@ export default function Aboarding({
     }
   }, [nftCardRef.current]);
 
-  useEffect(() => {
-    setIndex(defaultIndex);
-  }, [defaultIndex]);
-
-  useEffect(() => {
-    return () => {
-      if (address) setVisitedIndex(address, index);
-    };
-  }, []);
-
   return (
     <Modal
       open={isOpen}
@@ -129,7 +124,7 @@ export default function Aboarding({
           />
         </div>
         <div className="w-full h-full relative">
-          {!isLast && (
+          {index !== slides.length - 1 && (
             <div>
               <div className="w-full text-center pt-[70px] text-[24px] text-[#E7E2FF] uppercase font-HackerNoonV2 drop-shadow-[0px_0px_10px_#836EF9]">
                 {title}
@@ -138,7 +133,7 @@ export default function Aboarding({
               <div className="flex-1 flex items-center justify-center w-full mt-[30px]">
                 <img
                   src={img}
-                  alt={`main-${index + 1}`}
+                  alt={title}
                   className="object-contain max-h-[340px] max-w-[90%] mx-auto"
                   style={{ imageRendering: "pixelated" }}
                 />
@@ -155,7 +150,7 @@ export default function Aboarding({
             </div>
           )}
 
-          {isLast && (
+          {index === slides.length - 1 && (
             <div className="pt-[100px]">
               <div className="mx-[50px]">
                 <div

@@ -14,7 +14,7 @@ const GuideView = () => {
     <Aboarding
       isOpen={visible}
       setVisitedIndex={setVisitedIndex}
-      defaultIndex={defaultIndex}
+      getVisitedIndex={getVisitedIndex}
       closeModal={() => {
         setVisible(false);
         setVisitedIndex(account, max + 1);
