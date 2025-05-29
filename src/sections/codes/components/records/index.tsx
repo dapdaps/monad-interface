@@ -10,7 +10,7 @@ export default memo(function Records() {
   const pageSize = 1
   const { inviteRecordsLoading, inviteRecords, claimLoading, handleClaim } = useCodesContext()
   const [page, setPage] = useState(1)
-  const unClaimRecords = useMemo(() => inviteRecords?.filter(record => record?.status === 3), [inviteRecords])
+  const unClaimRecords = useMemo(() => inviteRecords?.filter(record => record?.status === 2), [inviteRecords])
   const unClaimAmount = useMemo(() => Big(unClaimRecords?.length ?? 0).times(0.25).toFixed(2), [unClaimRecords])
   const maxPage = useMemo(() => Math.ceil(inviteRecords?.length / pageSize), [inviteRecords])
   const pageRecords = useMemo(() => inviteRecords?.slice((page - 1) * pageSize, page * pageSize), [inviteRecords, page])
@@ -89,9 +89,9 @@ export default memo(function Records() {
             <>
               {
                 claimLoading ? (
-                  <div className="p-[8px_12px] rounded-[6px] bg-[#8B87FF]"><Loading size={14} /></div>
+                  <div className="flex items-center justify-center p-[8px_12px] w-[135px] rounded-[6px] bg-[#8B87FF] cursor-not-allowed"><Loading size={14} /></div>
                 ) : (
-                  <div className="p-[8px_12px] rounded-[6px] bg-[#8B87FF] text-black font-Unbounded text-[12px] font-medium leading-[120%]" onClick={handleClaim}>Claim {unClaimAmount} MON</div>
+                  <div className="cursor-pointer p-[8px_12px] rounded-[6px] bg-[#8B87FF] text-black font-Unbounded text-[12px] font-medium leading-[120%]" onClick={handleClaim}>Claim {unClaimAmount} MON</div>
                 )
               }
             </>
