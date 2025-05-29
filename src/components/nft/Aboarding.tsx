@@ -60,6 +60,8 @@ export default function Aboarding({
     const { loading: binding, buttonText } = useBindTwitterHome();
     const [index, setIndex] = useState(0);
     const [isSharing, setIsSharing] = useState(false);
+    const closeNFTModal = useUserStore((store: any) => store.closeNFTModal);
+    const setUserInfo = useUserStore((store: any) => store.set);
 
     const handlePrev = useCallback(() => {
         setIndex((prev) => (prev > 0 ? prev - 1 : prev));
@@ -71,6 +73,7 @@ export default function Aboarding({
 
     const handleStart = useCallback(() => {
         closeModal()
+        setUserInfo({ closeNFTModal: true });
     }, [index]);
 
     const { img, title, desc, descTitle } = useMemo(() => slides[index], [index]);
@@ -100,11 +103,18 @@ export default function Aboarding({
         }
     }, [nftCardRef.current]);
 
+    if (closeNFTModal) {
+        return null;
+    }
+
     return (
         <Modal
             open={isOpen}
             isMaskClose={false}
-            onClose={closeModal}
+            onClose={() => {
+                setUserInfo({ closeNFTModal: true });
+                closeModal();
+            }}
             className={className}
             closeIconClassName="top-[60px] right-[30px]"
             closeIcon={<svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -299,7 +309,7 @@ export default function Aboarding({
                                                     </div>
 
                                                     <div className="w-[80px] h-[80px] rounded-full overflow-hidden bg-[#1A1A1A] border-[1px] border-[#E7E2FF] flex items-center justify-center mt-[30px]">
-                                                        <img src="/images/nft/home/share-nadsa.png" alt="logo" className="w-[80px] h-[80px]" />
+                                                        <img src={twitterStore.info.avatar || "/images/nft/home/share-nadsa.png"} alt="logo" className="w-[80px] h-[80px]" />
                                                     </div>
                                                     <div className="text-[#E7E2FF] text-[18px] font-HackerNoonV2 drop-shadow-[0px_0px_10px_#E7E2FF] mt-[20px]">@{twitterStore.info.name}</div>
                                                     <div className="text-[#E7E2FF] text-[18px] font-HackerNoonV2 drop-shadow-[0px_0px_10px_#E7E2FF]">
@@ -328,8 +338,6 @@ export default function Aboarding({
                             </div>
                         </div>
                     }
-
-
 
                     <div className="absolute bottom-6 right-8 flex gap-4 font-Pixelmix">
                         <button

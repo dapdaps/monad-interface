@@ -12,6 +12,7 @@ export const useUserStore = create(
       },
       accessTokenLoading: false,
       loading: false,
+      closeNFTModal: false,
       set: (params: any) => set(() => ({ ...params }))
     }),
     {
