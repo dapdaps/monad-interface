@@ -1,4 +1,5 @@
 import Big from "big.js";
+import { post, postFile } from "./http";
 
 export function isValid(a: any) {
   if (!a) return false;
@@ -70,6 +71,45 @@ export const isVideoFile = (url: string) => {
     return videoExtensions.some(ext => url.toLowerCase().includes(ext));
   }
 };
+
+export function base64ToBlob(base64Data: string) {
+  const dataArr: any = base64Data.split(",");
+  const imageType = dataArr[0].match(/:(.*?);/)[1];
+  const textData = window.atob(dataArr[1]);
+  const arrayBuffer = new ArrayBuffer(textData.length);
+  const uint8Array = new Uint8Array(arrayBuffer);
+  for (let i = 0; i < textData.length; i++) {
+    uint8Array[i] = textData.charCodeAt(i);
+  }
+  return [new Blob([arrayBuffer], { type: imageType }), imageType.slice(6)];
+}
+
+export async function uploadFile(file: File | Blob, url: string = '/upload') {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const response = await postFile(url, formData);
+    
+    console.log('response', response)
+    if (response.code === 200) {
+      return response.data.url;
+    } else {
+      throw new Error(response.message);
+    }
+    
+  } catch (error) {
+    console.error('文件上传错误:', error);
+    throw error;
+  }
+}
+
+export function shareToX(text: string, link: string) {
+  window.open(
+      `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(link)}`
+  );
+}
+
 
 
 export function capitalize(str: string) {
