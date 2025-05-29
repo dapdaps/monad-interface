@@ -2,23 +2,26 @@ import Aboarding from "@/components/nft/Aboarding";
 import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover";
 import useCustomAccount from "@/hooks/use-account";
 import { useGuideStore } from "@/stores/guide";
-import { useMemo } from "react";
 import clsx from "clsx";
 
 const GuideView = () => {
   const { account } = useCustomAccount();
-  const { setVisitedIndex, visible, setVisible, max, getVisitedIndex } =
-    useGuideStore();
-
-  const defaultIndex = useMemo(() => getVisitedIndex(account), [account]);
+  const {
+    setVisitedIndex,
+    visible,
+    setIsMint,
+    setVisible,
+    max,
+    isMint
+  } = useGuideStore();
 
   return (
     <Aboarding
       isOpen={visible}
-      setVisitedIndex={setVisitedIndex}
-      defaultIndex={defaultIndex}
+      isMint={isMint}
       closeModal={() => {
         setVisible(false);
+        setIsMint(false);
         setVisitedIndex(account, max + 1);
       }}
     />
@@ -30,10 +33,9 @@ export default GuideView;
 export const GuideEntry = (props: any) => {
   const { className } = props;
 
-  const { account } = useCustomAccount();
   const {
-    setVisitedIndex,
     setVisible,
+    setIsMint,
   } = useGuideStore();
 
   return (
@@ -53,8 +55,8 @@ export const GuideEntry = (props: any) => {
         alt=""
         className="w-full h-full object-center object-contain cursor-pointer"
         onClick={() => {
+          setIsMint(true);
           setVisible(true);
-          setVisitedIndex(account, 3);
         }}
       />
     </Popover>

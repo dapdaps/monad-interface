@@ -45,10 +45,12 @@ const slides = [
 
 export default function Aboarding({
     isOpen,
+    isMint,
     closeModal,
     className
 }: {
     isOpen: boolean;
+    isMint: boolean;
     closeModal: () => void;
     className?: string;
 }) {
@@ -77,7 +79,7 @@ export default function Aboarding({
     }, [index]);
 
     const { img, title, desc, descTitle } = useMemo(() => slides[index], [index]);
-    const isLast = useMemo(() => index === slides.length - 1, [index]);
+    const isLast = useMemo(() => isMint || index === slides.length - 1, [index, isMint]);
 
     const handleTwitterShare = useCallback(async () => {
         try {
@@ -103,7 +105,7 @@ export default function Aboarding({
         }
     }, [nftCardRef.current]);
 
-    if (closeNFTModal) {
+    if (closeNFTModal && !isMint) {
         return null;
     }
 
@@ -339,28 +341,32 @@ export default function Aboarding({
                         </div>
                     }
 
-                    <div className="absolute bottom-6 right-8 flex gap-4 font-Pixelmix">
-                        <button
-                            onClick={handlePrev}
-                            disabled={index === 0}
-                            className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px] transition-all duration-150 hover:underline hover:drop-shadow-[0px_0px_10px_#00FF00] ${index === 0 ? "hidden " : " cursor-pointer"}`}
-                        >
-                            Previous
-                        </button>
-                        <button
-                            onClick={handleNext}
-                            disabled={index === slides.length - 1}
-                            className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px]  transition-all duration-150 hover:underline hover:drop-shadow-[0px_0px_10px_#00FF00] ${index === slides.length - 1 ? "hidden " : " cursor-pointer"}`}
-                        >
-                            Next
-                        </button>
-                        <button
-                            onClick={handleStart}
-                            className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px]  transition-all duration-150 hover:underline hover:drop-shadow-[0px_0px_10px_#00FF00] ${index !== slides.length - 1 ? "hidden " : " cursor-pointer"}`}
-                        >
-                            Start
-                        </button>
-                    </div>
+                    {
+                        !isMint && (
+                        <div className="absolute bottom-6 right-8 flex gap-4 font-Pixelmix">
+                            <button
+                                onClick={handlePrev}
+                                disabled={index === 0}
+                                className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px] transition-all duration-150 hover:underline hover:drop-shadow-[0px_0px_10px_#00FF00] ${index === 0 ? "hidden " : " cursor-pointer"}`}
+                            >
+                                Previous
+                            </button>
+                            <button
+                                onClick={handleNext}
+                                disabled={index === slides.length - 1}
+                                className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px]  transition-all duration-150 hover:underline hover:drop-shadow-[0px_0px_10px_#00FF00] ${index === slides.length - 1 ? "hidden " : " cursor-pointer"}`}
+                            >
+                                Next
+                            </button>
+                            <button
+                                onClick={handleStart}
+                                className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px]  transition-all duration-150 hover:underline hover:drop-shadow-[0px_0px_10px_#00FF00] ${index !== slides.length - 1 ? "hidden " : " cursor-pointer"}`}
+                            >
+                                Start
+                            </button>
+                        </div>
+                        )
+                    }
                 </div>
             </div>
         </Modal>
