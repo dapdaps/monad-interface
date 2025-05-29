@@ -76,8 +76,8 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
 
             setNFTMetadata({
                 totalSupply: totalSupply.toString() || '0',
-                maxSupply: '3',
-                // maxSupply: maxSupply.toString() || '0',
+                // maxSupply: '3',
+                maxSupply: maxSupply.toString() || '0',
             });
         } catch (error) {
             console.error("Failed to get NFT metadata:", error);
