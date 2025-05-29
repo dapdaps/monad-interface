@@ -30,6 +30,12 @@ export default GuideView;
 export const GuideEntry = (props: any) => {
   const { className } = props;
 
+  const { account } = useCustomAccount();
+  const {
+    setVisitedIndex,
+    setVisible,
+  } = useGuideStore();
+
   return (
     <Popover
       trigger={PopoverTrigger.Hover}
@@ -46,6 +52,10 @@ export const GuideEntry = (props: any) => {
         src="/images/invitation/guide-entry.png"
         alt=""
         className="w-full h-full object-center object-contain cursor-pointer"
+        onClick={() => {
+          setVisible(true);
+          setVisitedIndex(account, 3);
+        }}
       />
     </Popover>
   );
