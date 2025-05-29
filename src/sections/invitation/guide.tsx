@@ -3,12 +3,10 @@ import Popover, {
   PopoverPlacement,
   PopoverTrigger
 } from "@/components/popover";
-import useCustomAccount from "@/hooks/use-account";
 import { useGuideStore } from "@/stores/guide";
 import clsx from "clsx";
 
 const GuideView = () => {
-  const { account } = useCustomAccount();
   const {
     setVisitedIndex,
     getVisitedIndex,
@@ -28,7 +26,6 @@ const GuideView = () => {
       closeModal={() => {
         setVisible(false);
         setIsMint(false);
-        setVisitedIndex(account, max + 1);
       }}
     />
   );

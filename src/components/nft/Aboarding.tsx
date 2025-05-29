@@ -92,7 +92,10 @@ export default function Aboarding({
     setUserInfo({ closeNFTModal: true });
   };
 
-  const { img, title, desc, descTitle } = useMemo(() => slides[index], [index]);
+  const { img, title, desc, descTitle } = useMemo(
+    () => slides[index] || {},
+    [index]
+  );
   const isLast = useMemo(
     () => isMint || index === slides.length - 1,
     [index, isMint]
