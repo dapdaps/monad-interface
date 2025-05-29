@@ -11,6 +11,7 @@ import { ALL_DAPP_LIST } from "../dapps/config";
 import { IDapp } from "@/types";
 import StarrySkyCanvas from "./StarrySky";
 import { SpecialAnimateGif } from "./SpecialAnimateGif";
+import { GuideEntry } from "../invitation/guide";
 
 const itemWidth = 51;
 const itemGap = 6;
@@ -372,6 +373,7 @@ const Home = () => {
         }}
         className="z-[50] absolute w-[615px] h-[382px] right-0 bottom-0 bg-[url(/images/monad/background/bg2-right.svg)] bg-no-repeat bg-contain"
       ></div>
+      <GuideEntry className="absolute z-[7] left-[calc(50%_+_9vw)] bottom-[8vh]" />
     </div>
   );
 };

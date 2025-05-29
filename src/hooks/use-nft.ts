@@ -74,6 +74,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
                 nftContract.maxSupply(),
             ]);
 
+
             setNFTMetadata({
                 totalSupply: totalSupply.toString() || '0',
                 // maxSupply: '3',
@@ -84,7 +85,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
             setError("Failed to get NFT metadata");
             return null;
         }
-    }, [address, connector, rpc, nftAddress, refresh]);
+    }, [connector, rpc, nftAddress, refresh]);
 
     const checkNFT = useCallback(async (): Promise<void> => {
         setChecking(true);
@@ -179,6 +180,10 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
             console.log(tx);
 
             setRefresh(refresh + 1);
+            setTimeout(() => {
+                checkNFT();
+                getNFTMetadata();
+            }, 2000);
 
             toast.success('Mint NFT success');
            
@@ -192,10 +197,8 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
     }, [address, connector, hasNFT, isLoading, refresh]);
 
     useEffect(() => {
-        if (address) {
-            getNFTMetadata();
-        }
-    }, [address, refresh]);
+        getNFTMetadata()
+    }, [refresh]);
 
     useEffect(() => {
         if (address) {
