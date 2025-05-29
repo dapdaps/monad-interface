@@ -15,6 +15,8 @@ import { base64ToBlob, shareToX, uploadFile } from "@/utils/utils";
 import TypingText from "../typing-text";
 import clsx from "clsx";
 import { sleep } from "@/sections/bridge/lib/util";
+import { toast } from "react-toastify";
+import useTokenBalance from "@/hooks/use-token-balance";
 
 const slides = [
     {
@@ -62,6 +64,11 @@ export default function Aboarding({
     const [isSharing, setIsSharing] = useState(false);
     const closeNFTModal = useUserStore((store: any) => store.closeNFTModal);
     const setUserInfo = useUserStore((store: any) => store.set);
+    const { tokenBalance, isLoading: isTokenBalanceLoading } = useTokenBalance(
+        "native",
+        18,
+        monadTestnet.id
+    );
 
     const handlePrev = useCallback(() => {
         setIndex((prev) => (prev > 0 ? prev - 1 : prev));
@@ -89,11 +96,15 @@ export default function Aboarding({
                 const [blob, type] = base64ToBlob(dataUrl);
                 const url = await uploadFile(blob, '/upload');
                 const tweetUrl = `https://test.nadsa.space/api/twitter?img=${encodeURIComponent(url)}`;
-                const tweetText = `> mint --sequence NFT
-> sequence number minted
-> onboarding complete to One // nadsa.space
->> welcome to @0xNADSA
-"In the beginning, there were only a few. The Monadverse is vast, but I was here first.”`;
+                const tweetText = `> mint --sequence NFT  %0A
+
+> sequence number minted  %0A
+
+> onboarding complete to One // nadsa.space  %0A
+
+>> welcome to @0xNADSA  %0A%0A
+
+"In the beginning, there were only a few. The Monadverse is vast, but I was here first.%0A”`;
 
                 shareToX(tweetText, tweetUrl);
                 setIsSharing(false);
@@ -272,7 +283,7 @@ export default function Aboarding({
 
 
                                                             <MainBtn onClick={() => mintNFT()} disabled={isLoading || !!buttonText ||
-                                                                !twitterStore?.bindInfo[twitterStore.id]}>
+                                                                !twitterStore?.bindInfo[twitterStore.id]} tokenBalance={tokenBalance}>
                                                                 {isLoading ? <><CircleLoading /> <span className="ml-[10px]">Mint NFT</span></> : 'Mint NFT'}
                                                             </MainBtn>
                                                         </div>
@@ -369,7 +380,7 @@ export default function Aboarding({
 
 
 const mainBtnCls = 'w-full flex items-center justify-center bg-[#00FF00] h-[44px] text-black py-2 px-4 rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]'
-const MainBtn = ({ onClick, children, disabled }: { onClick: any, children: any, disabled: boolean }) => {
+const MainBtn = ({ onClick, children, disabled, tokenBalance }: { onClick: any, children: any, disabled: boolean, tokenBalance: string }) => {
     const { switchChain, isPending: switching } = useSwitchChain();
     const { address, chainId } = useAccount();
     const { open } = useAppKit();
@@ -388,6 +399,11 @@ const MainBtn = ({ onClick, children, disabled }: { onClick: any, children: any,
                 Switch to Monad
             </button>
         )
+    }
+
+    if (Number(tokenBalance) <= 1.3) {
+        toast.error('Insufficient balance');
+        return;
     }
 
     return (
