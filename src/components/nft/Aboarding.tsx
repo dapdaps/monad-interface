@@ -8,7 +8,6 @@ import { useAccount } from "wagmi";
 import { useSwitchChain } from "wagmi";
 import useBindTwitterHome from "@/sections/terminal/hooks/use-bind-twitter-home";
 import { monadTestnet } from "@reown/appkit/networks";
-import useBindTwitterAccount from "@/sections/terminal/hooks/use-bind-twitter-account";
 import { useTwitterStore } from "@/stores/twitter";
 import { motion } from "framer-motion";
 import domtoimage from 'dom-to-image';
