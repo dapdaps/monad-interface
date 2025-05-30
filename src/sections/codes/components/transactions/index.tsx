@@ -52,7 +52,7 @@ export default memo(function Transactions() {
         ))
       }
 
-      <div className="leading-[42px] font-Unbounded text-[14px] text-[#8e8d9e]">*From 100 txns, for each 20 txns: +2 invite codes</div>
+      <div className="pl-[17px] leading-[42px] font-Unbounded text-[12px] text-[#A6A6DB]">*Every 20 txns since 100, Unlock +2 invite codes</div>
     </div>
 
   )
