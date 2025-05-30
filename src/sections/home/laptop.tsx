@@ -133,8 +133,9 @@ const Home = () => {
             data-hover-sound
             onClick={() => router.push("/codes")}
             className={clsx(
+              "group",
               "z-[4] w-[378px] h-[290px] absolute -top-[calc(40/14.4*var(--rem))] right-[calc(260/14.4*var(--rem))]",
-              "bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper.svg)]",
+              "bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper.svg)] hover:bg-[url(/images/monad/entry/yapper-hover.svg)]",
               "transition-all duration-200 ease-in-out cursor-pointer",
               windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
               windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
@@ -163,7 +164,7 @@ const Home = () => {
                   />
                 </div>
               </div>
-              <div className="absolute w-[244px] h-[223px] left-1/2 -translate-x-1/2 top-[-38px] ml-[20px]">
+              <div className="group-hover:hidden absolute w-[244px] h-[223px] left-1/2 -translate-x-1/2 top-[-24px] ml-[20px]">
                 <motion.div
                   animate={{ rotate: [-10, 10] }}
                   transition={{
