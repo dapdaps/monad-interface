@@ -43,7 +43,7 @@ export default memo(function Codes() {
                 </svg>
               </div>
             </div>
-            <div className="overflow-auto h-[248px] p-[17px_24px] grid grid-cols-2 gap-[16px_24px] text-[#03E212] text-[18px] font-HackerNoonV2 leading-[120%]">
+            <div className="overflow-auto h-[248px] p-[17px_24px] grid grid-cols-2 grid-rows-[auto_1fr] gap-[16px_24px] text-[#03E212] text-[18px] font-HackerNoonV2 leading-[120%]">
               {
                 inviteCodes?.map(code => (
                   <div className="flex items-center gap-[12px] border p-[8px_0_8px_8px] h-[37px] border-[#03E212] bg-[rgba(0,0,0,0.72)]">

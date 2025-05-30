@@ -15,8 +15,10 @@ function CodesContextProvider({ children }: { children: ReactNode; }) {
     loading: inviteCodesLoading,
     inviteCodes
   } = useInviteCodes()
-  const { loading: inviteRecordsLoading, inviteRecords } = useInviteRecords()
+  const [updater, setUpdater] = useState(0)
+  const { loading: inviteRecordsLoading, inviteRecords } = useInviteRecords(updater)
   const [claimLoading, setClaimLoading] = useState()
+  const [showRuleModal, setShowRuleModal] = useState(false)
 
   async function handleClaim() {
     try {
@@ -25,6 +27,7 @@ function CodesContextProvider({ children }: { children: ReactNode; }) {
       toast.success({
         title: "Claim Successful!"
       })
+      setUpdater(Date.now())
     } catch (error) {
       console.log(error)
       toast.fail({
@@ -36,12 +39,15 @@ function CodesContextProvider({ children }: { children: ReactNode; }) {
   return (
     <CodesContext.Provider
       value={{
+        showRuleModal,
         inviteCodes,
         inviteRecords,
         claimLoading,
         inviteCodesLoading,
         inviteRecordsLoading,
-        handleClaim
+        handleClaim,
+        setShowRuleModal
+
       }}
     >
       {children}
