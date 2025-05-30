@@ -132,9 +132,9 @@ export default function Aboarding({
     }
   }, [nftCardRef.current]);
 
-  // if (closeNFTModal && !isMint) {
-  //   return null;
-  // }
+  if (closeNFTModal && !isMint) {
+    return null;
+  }
 
   return (
     <Modal
