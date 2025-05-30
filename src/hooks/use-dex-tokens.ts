@@ -17,6 +17,10 @@ export default function useDexTokens(dapp: any) {
           .filter((token: any) => token.chainId === 10143)
           .map((token: any) => ({
             ...token,
+            address:
+              token.address === "0x0000000000000000000000000000000000000000"
+                ? "native"
+                : token.address,
             icon:
               token.address === "0x0000000000000000000000000000000000000000"
                 ? "/images/monad.svg"
