@@ -63,7 +63,8 @@ export default function Aboarding({
   const { nftMetadata, nftAddress, mintNFT, hasNFT, tokenIds, isLoading } =
     useNFT({
       // nftAddress: "0xbe0a1db63a34aa64f24decaf3f34e71fcb3c323a"
-      nftAddress: "0x8645f70452fd8bbefa9606aebd2ce03ea0c4e330"
+      // nftAddress: "0x8645f70452fd8bbefa9606aebd2ce03ea0c4e330"
+      nftAddress: '0x0d83faa6fdb847c445b350078b030de3bb08cc49'
     });
   const { address } = useAccount();
   const twitterStore: any = useTwitterStore();
@@ -269,7 +270,7 @@ export default function Aboarding({
                               SEQUENCE NUMBER NFT
                             </div>
 
-                            <div className="font-Pixelmix text-[12px] py-[20px] rounded-[4px] flex gap-[10px] justify-center items-end mt-[20px]">
+                            <div className="font-Pixelmix text-[12px] py-[10px] rounded-[4px] flex gap-[10px] justify-center items-end mt-[10px]">
                               <div className="text-center">
                                 <div className="text-[#8D7CFF] text-[12px]">
                                 Total Minted
