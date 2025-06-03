@@ -15,6 +15,8 @@ import { base64ToBlob, shareToX, uploadFile } from "@/utils/utils";
 import TypingText from "../typing-text";
 import clsx from "clsx";
 import { sleep } from "@/sections/bridge/lib/util";
+import useTokenBalance from "@/hooks/use-token-balance";
+import { toast } from "react-toastify";
 
 const slides = [
   {
@@ -74,6 +76,11 @@ export default function Aboarding({
   const closeNFTModal = useUserStore((store: any) => store.closeNFTModal);
   const setUserInfo = useUserStore((store: any) => store.set);
   const index = address ? getVisitedIndex(address) : 0;
+  const { tokenBalance, isLoading: isTokenBalanceLoading } = useTokenBalance(
+    "native",
+    18,
+    monadTestnet.id
+  );
 
   const handlePrev = () => {
     if (!address) return;
@@ -336,6 +343,7 @@ export default function Aboarding({
 
                                 <MainBtn
                                   onClick={() => mintNFT()}
+                                  tokenBalance={tokenBalance}
                                   disabled={
                                     isLoading ||
                                     !!buttonText ||
@@ -503,11 +511,13 @@ const mainBtnCls =
 const MainBtn = ({
   onClick,
   children,
-  disabled
+  disabled,
+  tokenBalance
 }: {
   onClick: any;
   children: any;
   disabled: boolean;
+  tokenBalance: string;
 }) => {
   const { switchChain, isPending: switching } = useSwitchChain();
   const { address, chainId } = useAccount();
@@ -536,6 +546,11 @@ const MainBtn = ({
     <button
       onClick={() => {
         if (disabled) {
+          return;
+        }
+
+        if (Number(tokenBalance) <= 0.3) {
+          toast.error('Insufficient balance');
           return;
         }
 
