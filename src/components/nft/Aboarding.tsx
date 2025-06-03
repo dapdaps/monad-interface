@@ -263,7 +263,7 @@ export default function Aboarding({
                                 style={{ imageRendering: "pixelated" }}
                               />
                               <div className="absolute font-HackerNoonV2 top-[84px] left-0 w-full h-[24px] text-[#000] text-[18px] flex items-center justify-center">
-                                NO.{String(tokenIds[0]).padStart(3, "0")}
+                                NO.{tokenIds[0]}
                               </div>
                             </div>
                           )}
@@ -277,29 +277,20 @@ export default function Aboarding({
                               SEQUENCE NUMBER NFT
                             </div>
 
-                            <div className="font-Pixelmix text-[12px] py-[10px] rounded-[4px] flex gap-[10px] justify-center items-end mt-[10px]">
-                              <div className="text-center">
-                                <div className="text-[#8D7CFF] text-[12px]">
-                                Total Minted
-                                </div>
-                                <div className="text-[#00FF00] text-[20px] mt-[5px]">
-                                  {nftMetadata?.totalSupply }
+
+                            {!hasNFT && (<>
+                              <div className="font-Pixelmix text-[12px] py-[10px] rounded-[4px] flex gap-[10px] justify-center items-end mt-[10px]">
+                                <div className="text-center">
+                                  <div className="text-[#8D7CFF] text-[12px]">
+                                    Total Minted
+                                  </div>
+                                  <div className="text-[#00FF00] text-[20px] mt-[5px]">
+                                    {nftMetadata?.totalSupply}
+                                  </div>
                                 </div>
                               </div>
-                              {/* <div className="text-[#8D7CFF]"> / </div> */}
-                              {/* <div className="text-center">
-                                <div className="text-[#8D7CFF] text-[12px]">
-                                  Total
-                                </div>
-                                <div className="text-[#8D7CFF]  text-[20px] mt-[5px]">
-                                  {nftMetadata?.maxSupply || 0}
-                                </div>
-                              </div> */}
-                            </div>
 
-                            <div className="text-[#836EF9] text-center text-[12px] font-Pixelmix mt-[20px]">Get Yours</div>
-
-                            {!hasNFT && (
+                              <div className="text-[#836EF9] text-center text-[12px] font-Pixelmix mt-[20px]">Get Yours</div>
                               <div className="mt-6 space-y-3">
                                 {!twitterStore?.bindInfo[twitterStore.id] ||
                                   buttonText ? (
@@ -360,9 +351,25 @@ export default function Aboarding({
                                   )}
                                 </MainBtn>
                               </div>
-                            )}
+                            </>)}
 
-                            {hasNFT && (
+                            {hasNFT && (<>
+                              <div className="flex items-center justify-center flex-col">
+                                <div className="w-[68px] h-[68px] rounded-full overflow-hidden bg-[#1A1A1A80] border-[1px] border-[#E7E2FF80] flex items-center justify-center mt-[20px] drop-shadow-[0px_0px_10px_#E7E2FF80]">
+                                  <img
+                                    src={
+                                      twitterStore.info.avatar ||
+                                      "/images/nft/home/share-nadsa.png"
+                                    }
+                                    alt="logo"
+                                    className="w-[68px] h-[68px]"
+                                  />
+                                </div>
+                                <div className="text-[#000] relative z-10 w-[124px] h-[24px] text-[18px] font-HackerNoonV2 text-center mt-[-10px] bg-[url('/images/nft/home/no-bg.png')] bg-cover bg-center">
+                                  NO.{tokenIds[0]}
+                                </div>
+                              </div>
+
                               <div className="mt-6">
                                 <div className="text-[#00FF00] text-[14px] font-Pixelmix flex justify-center">
                                   <svg
@@ -392,7 +399,7 @@ export default function Aboarding({
                                   Share on X
                                 </button>
                               </div>
-                            )}
+                            </>)}
                           </div>
                         )}
                       </div>
@@ -416,8 +423,8 @@ export default function Aboarding({
                               className="h-[292px] absolute top-0 left-0 w-[315px] max-w-none"
                             />
                             <div className="absolute font-HackerNoonV2 top-[90px] left-[-22px] w-full h-[24px] text-[#000] text-[18px] flex items-center justify-center" style={{ transform: "rotate(-16deg)" }}>
-                                NO.{String(tokenIds[0]).padStart(3, "0")}
-                              </div>
+                              NO.{tokenIds[0]}
+                            </div>
                           </div>
                         </div>
 
@@ -434,7 +441,7 @@ export default function Aboarding({
                             Sequence Number NFT
                           </div>
 
-                          <div className="w-[80px] h-[80px] rounded-full overflow-hidden bg-[#1A1A1A80] border-[1px] border-[#E7E2FF80] flex items-center justify-center mt-[10px] drop-shadow-[0px_0px_10px_#E7E2FF80]">
+                          <div className="w-[68px] h-[68px] rounded-full overflow-hidden bg-[#1A1A1A80] border-[1px] border-[#E7E2FF80] flex items-center justify-center mt-[20px] drop-shadow-[0px_0px_10px_#E7E2FF80]">
                             <img
                               src={
                                 twitterStore.info.avatar ||
@@ -448,7 +455,7 @@ export default function Aboarding({
                             @{twitterStore.info.name}
                           </div>
                           <div className="text-[#E7E2FF] text-[16px] font-Pixelmix drop-shadow-[0px_0px_10px_#E7E2FF80]">
-                            NO.{String(tokenIds[0]).padStart(3, "0")}
+                            NO.{tokenIds[0]}
                           </div>
                           <div className="text-[#03E212] mt-[10px] text-[10px] border border-[#03E212] rounded-[4px] px-[15px] py-[5px] font-Pixelmix">
                             nadsa.space
