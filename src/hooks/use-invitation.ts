@@ -65,7 +65,7 @@ export function useInvitation<Invitation>() {
         containerTimer.current = setTimeout(() => {
           clearTimeout(containerTimer.current);
           resolve(true);
-        }, 3000);
+        }, 2000);
         clearTimeout(doorTimer.current);
         guideTimer.current = setTimeout(() => {
           clearTimeout(guideTimer.current);
@@ -119,6 +119,7 @@ export function useInvitation<Invitation>() {
     getUserInfo();
     setValidInvitationCode(true);
     await handleAccess();
+    setFinalValid(true);
     return res;
   }, { manual: true });
 

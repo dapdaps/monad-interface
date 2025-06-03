@@ -66,7 +66,7 @@ export default memo(function Records() {
     dataIndex: "invited",
     width: "15%",
     render: (text: string, record: any) => {
-      if (record?.status === 1) return <></>
+      // if (record?.status === 1) return <></>
       if (record?.status === 3 || record?.status === 4) return (
         <div className="flex items-center gap-[8px]">
           <span className="text-[#6D7EA5] font-Unbounded text-[14px] leading-[120%]">Claimed</span>
@@ -77,6 +77,7 @@ export default memo(function Records() {
           </a>
         </div>
       )
+      return <>-</>
     }
   },]
 

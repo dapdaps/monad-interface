@@ -32,9 +32,8 @@ export default memo(function Transactions() {
     },]
   }, [inviteCodes])
 
-
   return (
-    <div className="w-[410px] flex flex-col justify-between text-white font-Unbounded text-[14px] ">
+    <div className="w-[410px] flex flex-col gap-[11px] text-white font-Unbounded text-[14px]">
       {
         transactions?.map(transaction => (
           <div className="w-full h-[42px] px-[16px] rounded-[6px] border border-[#26274B] bg-[#31305A] flex items-center justify-between">
@@ -52,6 +51,8 @@ export default memo(function Transactions() {
           </div>
         ))
       }
+
+      <div className="pl-[17px] leading-[42px] font-Unbounded text-[12px] text-[#A6A6DB]">*Every 20 txns since 100, Unlock +2 invite codes</div>
     </div>
 
   )
