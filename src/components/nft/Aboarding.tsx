@@ -62,7 +62,8 @@ export default function Aboarding({
   // const { nftMetadata, nftAddress, mintNFT, hasNFT, tokenIds, isLoading, address } = useNFT({ nftAddress: '0x378d216463a2245bf4b70a1730579e4da175dd0f' });
   const { nftMetadata, nftAddress, mintNFT, hasNFT, tokenIds, isLoading } =
     useNFT({
-      nftAddress: "0xbe0a1db63a34aa64f24decaf3f34e71fcb3c323a"
+      // nftAddress: "0xbe0a1db63a34aa64f24decaf3f34e71fcb3c323a"
+      nftAddress: "0x8645f70452fd8bbefa9606aebd2ce03ea0c4e330"
     });
   const { address } = useAccount();
   const twitterStore: any = useTwitterStore();
@@ -264,30 +265,31 @@ export default function Aboarding({
                       <div className="flex-1 flex justify-center ">
                         {!isSharing && (
                           <div className="pt-[40px]">
-                            <div className="text-[#E7E2FF] text-[18px] font-HackerNoonV2 drop-shadow-[0px_0px_10px_#836EF9]">
+                            <div className="text-[#E7E2FF] text-center text-[18px] font-HackerNoonV2 drop-shadow-[0px_0px_10px_#836EF9]">
                               SEQUENCE NUMBER NFT
                             </div>
 
-                            <div className="font-Pixelmix text-[14px] border border-[#675BA7] bg-[#000000] py-[20px] rounded-[4px] flex gap-[10px] justify-center items-end mt-[20px]">
+                            <div className="font-Pixelmix text-[12px] py-[20px] rounded-[4px] flex gap-[10px] justify-center items-end mt-[20px]">
                               <div className="text-center">
                                 <div className="text-[#8D7CFF] text-[12px]">
-                                  Left
+                                Total Minted
                                 </div>
-                                <div className="text-[#00FF00]  text-[20px] mt-[5px]">
-                                  {Number(nftMetadata?.maxSupply || 0) -
-                                    Number(nftMetadata?.totalSupply || 0)}
+                                <div className="text-[#00FF00] text-[20px] mt-[5px]">
+                                  {nftMetadata?.totalSupply }
                                 </div>
                               </div>
-                              <div className="text-[#8D7CFF]"> / </div>
-                              <div className="text-center">
+                              {/* <div className="text-[#8D7CFF]"> / </div> */}
+                              {/* <div className="text-center">
                                 <div className="text-[#8D7CFF] text-[12px]">
                                   Total
                                 </div>
                                 <div className="text-[#8D7CFF]  text-[20px] mt-[5px]">
                                   {nftMetadata?.maxSupply || 0}
                                 </div>
-                              </div>
+                              </div> */}
                             </div>
+
+                            <div className="text-[#836EF9] text-center text-[12px] font-Pixelmix mt-[20px]">Get Yours</div>
 
                             {!hasNFT && (
                               <div className="mt-6 space-y-3">
