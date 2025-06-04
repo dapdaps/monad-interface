@@ -1,4 +1,49 @@
+import clsx from "clsx";
 import { memo } from "react";
+
+const MISSION_CODES = new Map([
+  [
+    1,
+    {
+      codes: 1,
+      completed: true,
+      mission: "",
+    },
+  ],
+  [
+    2,
+    {
+      codes: 2,
+      completed: true,
+      mission: "",
+    },
+  ],
+  [
+    3,
+    {
+      codes: 2,
+      completed: true,
+      mission: "",
+    },
+  ],
+  [
+    4,
+    {
+      codes: 3,
+      completed: false,
+      mission: "",
+    },
+  ],
+  [
+    5,
+    {
+      codes: 3,
+      completed: false,
+      isMore: true,
+      mission: "",
+    },
+  ],
+]);
 
 export default memo(function Mission() {
 
@@ -22,24 +67,52 @@ export default memo(function Mission() {
         <span className="text-white">9 h 59m 23s</span>
       </div>
 
-      <div className="flex">
-
-        <div className="mb-[82px] relative w-[622px] h-[10px] rounded-[6px] border border-[#26274B] bg-[#31305A]">
-          <div className="flex flex-col gap-[8px] absolute -top-[10px]">
-            <div className="flex items-center justify-center w-[29px] h-[29px] rounded-full bg-[#31305A]">
-              <div className="flex items-center justify-center bg-[#A5FFFD] w-[21px] h-[21px] rounded-full">
-                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="10" viewBox="0 0 13 10" fill="none">
-                  <path d="M1 4.54348L4.97222 8.5L12 1.5" stroke="black" stroke-width="2" stroke-linecap="round" />
-                </svg>
-              </div>
-            </div>
-            <div className="text-[#A6A6DB] font-Unbounded text-[12px]">+2 Codes</div>
-          </div>
-        </div>
-        <div className="w-[126px]">
-          <img src="/images/codes/dotted.png" />
-        </div>
+      <div className="w-full h-[10px] grid grid-cols-5 gap-0 mb-[82px]">
+        {
+          Array.from(MISSION_CODES.values()).map((item, index) => (
+            <ProgressItem
+              key={index}
+              data={item}
+              progress={index < MISSION_CODES.size - 1 ? Array.from(MISSION_CODES.values())[index + 1].completed ? 100 : (item.completed ? 50 : 0) : 0}
+            />
+          ))
+        }
       </div>
+
     </div>
   )
 })
+
+const ProgressItem = (props: any) => {
+  const { data, progress = 0 } = props;
+
+  const { codes, completed, isMore, mission } = data;
+
+  console.log("data: ", data);
+
+  return (
+    <div className={clsx("h-full relative", !isMore && "border border-[#26274B]")}>
+      <div className="absolute z-[1] left-[-15px] top-1/2 -translate-y-1/2 w-[30px] h-[30px] rounded-full bg-[#31305A] border border-[#26274B] shrink-0"></div>
+      {
+        completed && (
+          <div className="absolute z-[3] left-[-10px] top-1/2 -translate-y-1/2 w-[20px] h-[20px] shrink-0 rounded-full bg-[#A5FFFD] bg-[url('/images/codes/icon-check.svg')] bg-no-repeat bg-center bg-[length:11px_7px]"></div>
+        )
+      }
+      {
+        isMore ? (
+          <div className="w-full h-full left-0 top-0 absolute z-[2] bg-[url('/images/codes/bg-dashed.svg')] bg-repeat-x bg-[position:left_center]"></div>
+        ) : (
+          <div className="w-full h-full left-0 top-0 bg-[#31305A] absolute z-[2]"></div>
+        )
+      }
+      {
+        (!isMore && completed) && (
+          <div style={{ width: `calc(${progress}% - 10px)` }} className="w-0 h-[4px] left-[5px] rounded-[2px] top-1/2 -translate-y-1/2 bg-[#A5FFFD] absolute z-[3]"></div>
+        )
+      }
+      <div className={clsx("absolute z-[4] left-[-30px] bottom-[-34px] text-[#A6A6DB] font-Unbounded text-[12px] font-normal leading-normal", completed && "text-white")}>
+        +{codes} Codes
+      </div>
+    </div>
+  );
+};
