@@ -49,7 +49,15 @@ export default function Game2048() {
     //                      Custom Hook Values                      //
     // =============================================================//
 
-    const { user } = usePrivy();
+    const { user,  createWallet } = usePrivy();
+
+    console.log("user", user);
+
+    useEffect(() => {
+        if (user && !user.wallet) {
+            createWallet();
+        }
+    }, [user]);
 
     const {
         resetNonceAndBalance,

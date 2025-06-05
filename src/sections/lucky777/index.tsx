@@ -16,10 +16,6 @@ const LuckyBeraView: React.FC<any> = () => {
   } = useLuckyBera();
   const { visible, toggleVisible } = useBuyHoney();
 
-  console.log('spinUserData:', spinUserData); 
-  console.log('lastSpinResult:', lastSpinResult);
-  console.log('handleSpinResult:', handleSpinResult);
-
   return (
     <div className="w-full h-full  bg-no-repeat bg-cover bg-top">
       <LoginContainer>

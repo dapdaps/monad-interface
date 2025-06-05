@@ -1,13 +1,7 @@
-
-
-// UI
-import App from "./App";
 import { PrivyProvider } from "@privy-io/react-auth";
-
-// Utils
 import { monadTestnet } from "viem/chains";
 
-export default function Game2048() {
+export default function GamePrivyProvider({ children }: { children: React.ReactNode }) {
   
 
     return (
@@ -27,7 +21,7 @@ export default function Game2048() {
                 
             }}
         >
-            <App />
+            { children }
         </PrivyProvider>
     );
 }
