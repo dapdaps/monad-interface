@@ -445,7 +445,7 @@ export default function Aboarding({
                             <img
                               src={
                                 twitterStore.info.avatar ||
-                                "/images/nft/home/share-nadsa.png"
+                                "/images/nft/home/twitter-default-pfp.png"
                               }
                               alt="logo"
                               className="w-[68px] h-[68px]"
