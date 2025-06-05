@@ -79,15 +79,8 @@ export default function useBindTwitterHome() {
 
   const { run } = useDebounceFn(
     () => {
-      if (twitterStore.address) {
-        setButtonText(
-          twitterStore.address.toLowerCase() === address?.toLowerCase()
-            ? ""
-            : `Switch wallet ${twitterStore.address?.slice(
-                0,
-                4
-              )}...${twitterStore.address?.slice(-4)}`
-        );
+      if (twitterStore.address.toLowerCase() === address?.toLowerCase()) {
+        setButtonText("");
         return;
       }
       if (!code) return;
