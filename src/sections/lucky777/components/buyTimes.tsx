@@ -51,6 +51,7 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
                 return;
             }
             refreshData();
+            onClose && onClose();
             toast.success('Recharge Successfully!');
         } catch (e) {
             console.log('e:', e);
