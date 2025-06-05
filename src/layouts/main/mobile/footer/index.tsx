@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="flex items-center gap-[10px]">
           <Link
             className="ease-in-out duration-300 w-[24px] h-[24px] cursor-pointer"
-            href="https://x.com/DapDapMeUp"
+            href="https://x.com/0xNADSA"
             target="_blank"
             data-bp="1001-010"
           >
