@@ -19,6 +19,7 @@ import {
     toBytes,
     toHex,
 } from "viem";
+import Controller from "./components/Controller";
 
 // Types
 enum Direction {
@@ -49,9 +50,8 @@ export default function Game2048() {
     //                      Custom Hook Values                      //
     // =============================================================//
 
-    const { user,  createWallet } = usePrivy();
+    const { user, createWallet } = usePrivy();
 
-    console.log("user", user);
 
     useEffect(() => {
         if (user && !user.wallet) {
@@ -740,12 +740,8 @@ export default function Game2048() {
 
     return (
         <Container>
-            <div className="flex flex-col flex-1">
-                <div className="flex items-center justify-between w-full max-w-md mx-auto mb-2 p-4">
-                    <Scorecard score={boardState.score} />
-                    <LoginButton resetGame={initializeGame} />
-                </div>
 
+            <div className="flex flex-col flex-1 relative">
                 <div className="flex-1 overflow-auto px-2">
                     <Board
                         containerRef={gameContainerRef}
@@ -759,10 +755,18 @@ export default function Game2048() {
                     />
                 </div>
 
-               
+                <div className="flex items-center justify-between w-full mt-[30px]">
+                    <div className="flex flex-col items-start justify-between w-[175px]">
+                        <Scorecard score={boardState.score} />
+                        <LoginButton resetGame={initializeGame} />
+                    </div>
+                    <Controller />
+                </div>
+
             </div>
 
-          
+
+
         </Container>
     );
 }

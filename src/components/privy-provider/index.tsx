@@ -2,7 +2,6 @@ import { PrivyProvider } from "@privy-io/react-auth";
 import { monadTestnet } from "viem/chains";
 
 export default function GamePrivyProvider({ children }: { children: React.ReactNode }) {
-  
 
     return (
         <PrivyProvider

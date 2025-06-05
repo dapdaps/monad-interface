@@ -5,7 +5,6 @@ export default function Game2048Page() {
 
   return (
     <div>
-      <h1>2048</h1>
       <Game2048 />
     </div>
   );

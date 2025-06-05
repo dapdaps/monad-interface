@@ -2,8 +2,10 @@
 import React from 'react';
 import { LoginContainer } from '@/sections/terminal/login';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 
 const Entry: React.FC<any> = () => {
+  const router = useRouter();
   return (
     <div className="w-full h-full  bg-no-repeat bg-cover bg-top">
       <LoginContainer>
@@ -43,7 +45,9 @@ const Entry: React.FC<any> = () => {
             />
             <img src="/images/game/2048-coin.png" className='w-[513px] absolute top-[-30px] left-[-50px] max-w-[513px]' />
             <div className="text-[22px] font-HackerNoonV2 text-[#E7E2FF] relative drop-shadow-[0px_0px_10px_#E7E2FF80]">2048 on MONAD</div>
-            <img src="/images/game/2048-start.svg" className='w-[136px] relative my-[20px] cursor-pointer' />
+            <img onClick={() => {
+              router.push("/2048");
+            }} src="/images/game/2048-start.svg" className='w-[136px] relative my-[20px] cursor-pointer' />
           </div>
         </div>
       </LoginContainer>
