@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@kuru-labs/kuru-sdk": "^0.0.49",
-    "@privy-io/react-auth": "2.8.2",
+    "@privy-io/react-auth": "^2.13.8",
     "@reown/appkit": "^1.6.0",
     "@reown/appkit-adapter-wagmi": "^1.6.0",
     "@reown/appkit-siwe": "^1.6.0",
