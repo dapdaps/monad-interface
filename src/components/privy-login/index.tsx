@@ -1,51 +1,10 @@
-import { useLogin, usePrivy } from "@privy-io/react-auth";
+import { usePrivyAuth } from "@/hooks/use-privy-auth";
 import React, { useEffect, useState } from "react";
 
 export default function PrivyLogin() {
-    const { user, createWallet } = usePrivy();
-    const { login } = useLogin();
-    const [loginLoading, setLoginLoading] = useState(false);
+    const { address, handleLogin } = usePrivyAuth({ isBind: true });
 
-    useEffect(() => {
-        if (user && !user.wallet) {
-            createWallet();
-        }
-    }, [user]);
-
-    const handleLogin = async () => {
-        setLoginLoading(true);
-
-        try {
-            login();
-            setLoginLoading(false);
-        } catch (err) {
-            console.log("Problem logging in: ", err);
-            setLoginLoading(false);
-        }
-    };
-
-    const [address, setAddress] = useState("");
-
-    useEffect(() => {
-        if (!user) {
-            setAddress("");
-            return;
-        }
-
-        const [privyUser] = user.linkedAccounts.filter(
-            (account) =>
-                account.type === "wallet" &&
-                account.walletClientType === "privy"
-        );
-        if (!privyUser || !(privyUser as any).address) {
-            setAddress("");
-            return;
-        }
-
-        setAddress((privyUser as any).address);
-    }, [user]);
-
-    if (user && user.wallet) {
+    if (address) {
         return null;
     }
 

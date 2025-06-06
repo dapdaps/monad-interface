@@ -26,13 +26,15 @@ const Entry: React.FC<any> = () => {
             />
             <img src="/images/game/lucky-coin.svg" className='w-[533px] absolute top-[-20px] left-[-100px] max-w-[533px]' />
             <div className="text-[22px] font-HackerNoonV2 text-[#E7E2FF] relative drop-shadow-[0px_0px_10px_#E7E2FF80]">LUCKY 777</div>
-            <img src="/images/game/lucky-start.svg" className='w-[136px] relative my-[20px] cursor-pointer' />
+            <img onClick={() => {
+              router.push("/lucky777");
+            }} src="/images/game/lucky-start.svg" className='w-[136px] relative my-[20px] cursor-pointer' />
 
           </div>
           <div className='w-[400px] h-[600px] relative flex flex-col items-center justify-end'>
             <img src="/images/game/2048-bg.svg" className='w-full h-full object-cover absolute top-0 left-0' />
             <motion.img
-              src="/images/game/2048.svg"
+              src="/images/game/2048.png"
               className='w-[330px] absolute top-[40px] left-[60px]'
               animate={{
                 y: [0, -20, 0]
