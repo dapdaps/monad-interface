@@ -41,8 +41,8 @@ export function useUser() {
 
   const getAccessToken = async () => {
     setUserInfo({ accessTokenLoading: true });
-    const currentAddress = isNearPage && near_current_wallet 
-      ? near_current_wallet.address 
+    const currentAddress = isNearPage && near_current_wallet
+      ? near_current_wallet.address
       : address;
 
     if (!currentAddress) {
@@ -87,13 +87,37 @@ export function useUser() {
 
     const res = await post('/login', {
       address: currentAddress,
-      wallet:  _walletName.toLowerCase(),
+      wallet: _walletName.toLowerCase(),
     });
     setUserInfo({
       accessToken: res.data,
       accessTokenLoading: false,
     });
     await getUserInfo();
+  };
+
+  const bindGameAddress = async (address: string, account: string) => {
+    const res = await post('/game/login', {
+      address,
+      account,
+    });
+    if (res.code === 200) {
+      await getUserInfo();
+    } else {
+      if (res.code === 10007) {
+        toast.fail({
+          title: 'The Privy address is already bound. Please change the email and log in again.',
+          message: res.data?.message,
+        });
+      } else {
+        toast.fail({
+          title: 'Bind game address failed, please try again later!',
+          message: res.data?.message,
+        });
+      }
+    }
+
+    return res.code
   };
 
   return {
@@ -103,6 +127,7 @@ export function useUser() {
     accessTokenLoading,
     getUserInfo,
     getAccessToken,
+    bindGameAddress,
   };
 }
 

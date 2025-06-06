@@ -4,8 +4,22 @@ import Tiger from './components/tiger'
 import { useLuckyBera } from '@/sections/lucky777/hooks';
 import { useBuyHoney } from '@/sections/lucky777/hooks/buy-honey';
 import { LoginContainer } from '@/sections/terminal/login';
+import GamePrivyProvider from '@/components/privy-provider';
 
 const LuckyBeraView: React.FC<any> = () => {
+
+  return (
+    <div className="w-full h-full  bg-no-repeat bg-cover bg-top">
+      <LoginContainer>
+        <GamePrivyProvider>
+          <TigerView />
+        </GamePrivyProvider>
+      </LoginContainer>
+    </div>
+  );
+};
+
+const TigerView: React.FC<any> = () => {
   const {
     spinUserData,
     lastSpinResult,
@@ -16,24 +30,16 @@ const LuckyBeraView: React.FC<any> = () => {
   } = useLuckyBera();
   const { visible, toggleVisible } = useBuyHoney();
 
-  console.log('spinUserData:', spinUserData); 
-  console.log('lastSpinResult:', lastSpinResult);
-  console.log('handleSpinResult:', handleSpinResult);
-
   return (
-    <div className="w-full h-full  bg-no-repeat bg-cover bg-top">
-      <LoginContainer>
-        <Tiger
-          spinUserData={spinUserData}
-          lastSpinResult={lastSpinResult}
-          getSpinUserData={getSpinUserData}
-          handleSpinResult={handleSpinResult}
-          toggleOutHoneyVisible={toggleVisible}
-          multiple={multiple}
-          setMultiple={setMultiple}
-        />
-      </LoginContainer>
-    </div>
+    <Tiger
+      spinUserData={spinUserData}
+      lastSpinResult={lastSpinResult}
+      getSpinUserData={getSpinUserData}
+      handleSpinResult={handleSpinResult}
+      toggleOutHoneyVisible={toggleVisible}
+      multiple={multiple}
+      setMultiple={setMultiple}
+    />
   );
 };
 

@@ -1,4 +1,4 @@
-import { redirect, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import useToast from "@/hooks/use-toast";
 import { useTwitterStore } from "@/stores/twitter";
@@ -6,10 +6,12 @@ import { post } from "@/utils/http";
 import { useDebounceFn } from "ahooks";
 import * as http from "@/utils/http";
 import { useAccount } from "wagmi";
+import { useUserStore } from "@/stores/user";
 
 const checkAk = async () => {
   const result = window.sessionStorage.getItem(http.AUTH_TOKENS);
   const parsedResult = result ? JSON.parse(result) : {};
+
   if (parsedResult.access_token) {
     return true;
   }
@@ -31,6 +33,7 @@ export default function useBindTwitterHome() {
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
   const twitterStore: any = useTwitterStore();
+  const userStore: any = useUserStore();
 
   const handleBind = useCallback(async () => {
     if (loading) return;
@@ -79,17 +82,6 @@ export default function useBindTwitterHome() {
 
   const { run } = useDebounceFn(
     () => {
-      if (twitterStore.address) {
-        setButtonText(
-          twitterStore.address.toLowerCase() === address?.toLowerCase()
-            ? ""
-            : `Switch wallet ${twitterStore.address?.slice(
-                0,
-                4
-              )}...${twitterStore.address?.slice(-4)}`
-        );
-        return;
-      }
       if (!code) return;
       if (twitterStore.code === code) {
         return;
@@ -102,6 +94,23 @@ export default function useBindTwitterHome() {
   useEffect(() => {
     run();
   }, [code, twitterStore.id]);
+
+  useEffect(() => {
+    if (userStore.user.twitter) {
+      setButtonText("");
+      twitterStore.set({
+        address: userStore.user.address,
+        id: userStore.user.twitter.twitter_user_id,
+        info: {
+          id: userStore.user.twitter.twitter_user_id,
+          name: userStore.user.twitter.twitter_user_name,
+          avatar: userStore.user.twitter.twitter_avatar
+        }
+      });
+    } else {
+      setButtonText("Connect X to access");
+    }
+  }, [userStore.user]);
 
   return { loading, buttonText };
 }

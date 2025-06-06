@@ -60,7 +60,7 @@ export default memo(function Footer() {
       </svg>
       <Link
         className="ease-in-out duration-300 w-[12px] h-[12px] cursor-pointer"
-        href="https://x.com/DapDapMeUp"
+        href="https://x.com/0xNADSA"
         target="_blank"
         data-bp="1001-010"
       >

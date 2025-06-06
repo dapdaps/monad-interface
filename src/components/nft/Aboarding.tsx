@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import Modal from "@/components/modal";
 import { useNFT } from "@/hooks/use-nft";
 import { useAppKit } from "@reown/appkit/react";
-import { useUserStore } from "@/stores/user";
 import CircleLoading from "../circle-loading";
 import { useAccount } from "wagmi";
 import { useSwitchChain } from "wagmi";
@@ -17,6 +16,7 @@ import clsx from "clsx";
 import { sleep } from "@/sections/bridge/lib/util";
 import useTokenBalance from "@/hooks/use-token-balance";
 import { toast } from "react-toastify";
+import { useNftStore } from "@/stores/nft";
 
 const slides = [
   {
@@ -73,8 +73,8 @@ export default function Aboarding({
   const nftCardRef = useRef<HTMLDivElement>(null);
   const { loading: binding, buttonText } = useBindTwitterHome();
   const [isSharing, setIsSharing] = useState(false);
-  const closeNFTModal = useUserStore((store: any) => store.closeNFTModal);
-  const setUserInfo = useUserStore((store: any) => store.set);
+  const closeNFTModal = useNftStore((store: any) => store.closeNFTModal);
+  const setNftStore = useNftStore((store: any) => store.set);
   const index = address ? getVisitedIndex(address) : 0;
   const { tokenBalance, isLoading: isTokenBalanceLoading } = useTokenBalance(
     "native",
@@ -98,13 +98,14 @@ export default function Aboarding({
 
   const handleStart = () => {
     closeModal();
-    setUserInfo({ closeNFTModal: true });
+    setNftStore({ closeNFTModal: true });
   };
 
   const { img, title, desc, descTitle } = useMemo(
     () => slides[index] || {},
     [index]
   );
+  
   const isLast = useMemo(
     () => isMint || index === slides.length - 1,
     [index, isMint]
@@ -150,7 +151,7 @@ export default function Aboarding({
       open={isOpen}
       isMaskClose={false}
       onClose={() => {
-        setUserInfo({ closeNFTModal: true });
+        setNftStore({ closeNFTModal: true });
         closeModal();
       }}
       className={className}
@@ -359,7 +360,7 @@ export default function Aboarding({
                                   <img
                                     src={
                                       twitterStore.info.avatar ||
-                                      "/images/nft/home/share-nadsa.png"
+                                      "/images/nft/home/twitter-default-pfp.png"
                                     }
                                     alt="logo"
                                     className="w-[68px] h-[68px]"
@@ -445,7 +446,7 @@ export default function Aboarding({
                             <img
                               src={
                                 twitterStore.info.avatar ||
-                                "/images/nft/home/share-nadsa.png"
+                                "/images/nft/home/twitter-default-pfp.png"
                               }
                               alt="logo"
                               className="w-[68px] h-[68px]"

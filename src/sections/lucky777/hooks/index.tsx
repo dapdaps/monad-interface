@@ -5,15 +5,15 @@ import { SpinResultData, SpinUserData } from '@/sections/lucky777/config';
 import useToast from '@/hooks/use-toast';
 import { useLuckyBeraStore } from '@/sections/lucky777/store';
 import { useRequestByToken } from './use-request-by-token';
+import { usePrivyAuth } from '@/hooks/use-privy-auth';
 import { useAccount } from 'wagmi';
 
 
 
 export function useLuckyBera() {
-
   const toast = useToast();
-  const { setLastSpinResult, lastSpinResult } = useLuckyBeraStore();
   const { address } = useAccount();
+  const { setLastSpinResult, lastSpinResult } = useLuckyBeraStore();
   const [ multiple, setMultiple ] = useState(1);
 
 
@@ -56,6 +56,8 @@ export function useLuckyBera() {
     if (!address) return;
     getSpinUserData();
   }, [address]);
+
+  console.log('address', address);
 
   return {
     spinUserData,

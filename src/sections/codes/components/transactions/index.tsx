@@ -4,33 +4,32 @@ import { useCodesContext } from "../../context";
 export default memo(function Transactions() {
 
   const {
-    inviteCodes,
+    tradeInviteCodes,
   } = useCodesContext()
 
   const transactions = useMemo(() => {
-    console.log('====inviteCodes.length', inviteCodes?.length ?? 0)
     return [{
       label: "3 Transactions",
       value: "1 Code",
-      completed: inviteCodes?.length >= 1
+      completed: tradeInviteCodes?.length >= 1
     }, {
       label: "10 Transactions",
       value: "2 Codes",
-      completed: inviteCodes?.length >= 3
+      completed: tradeInviteCodes?.length >= 3
     }, {
       label: "20 Transactions",
       value: "3 Codes",
-      completed: inviteCodes?.length >= 6
+      completed: tradeInviteCodes?.length >= 6
     }, {
       label: "50 Transactions",
       value: "4 Codes",
-      completed: inviteCodes?.length >= 10
+      completed: tradeInviteCodes?.length >= 10
     }, {
       label: "100 Transactions",
       value: "5 Codes",
-      completed: inviteCodes?.length >= 15
+      completed: tradeInviteCodes?.length >= 15
     },]
-  }, [inviteCodes])
+  }, [tradeInviteCodes])
 
   return (
     <div className="w-[410px] flex flex-col gap-[11px] text-white font-Unbounded text-[14px]">

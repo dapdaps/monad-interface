@@ -54,7 +54,7 @@ const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
                     {
                         activeTab === "payouts" && (
                             <div onClick={() => setWinningOnly(!winningOnly)} className="flex items-center gap-2 cursor-pointer absolute top-[60px] right-[35px]">
-                                <div 
+                                <div
                                     className={`w-4 h-4 rounded-full border-2 border-[#8e90bd] cursor-pointer ${winningOnly ? "bg-[#BFFF60]" : "bg-[#00000080]"}`}
                                 />
                                 <span className="text-[#8e90bd]">Winning Only</span>
@@ -65,13 +65,13 @@ const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
                     <div className="w-full" style={{
                         display: activeTab === "purchases" ? 'block' : 'none',
                     }}>
-                        <List type="purchases"  winningOnly={false}/>
+                        <List type="purchases" winningOnly={false} />
                     </div>
 
                     <div className="w-full" style={{
                         display: activeTab === "payouts" ? 'block' : 'none',
                     }}>
-                        <List type="payouts"  winningOnly={winningOnly}/>
+                        <List type="payouts" winningOnly={winningOnly} />
                     </div>
                 </div>
             </div>
@@ -158,11 +158,11 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                         }
                         {
                             type === "payouts" && (
-                                <div className="w-[160px] whitespace-nowrap">{dayjs(item.created_at).format('YYYY-MM-DD HH:mm:ss')}</div>  
+                                <div className="w-[160px] whitespace-nowrap">{dayjs(item.created_at).format('YYYY-MM-DD HH:mm:ss')}</div>
                             )
                         }
-                      
-                        
+
+
                         {
                             type === "purchases" && (
                                 <>
@@ -184,7 +184,7 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                             type === "payouts" && (
                                 <>
                                     <div className="flex-1 flex items-center gap-2">
-                                        X {item.spin} 
+                                        X {item.spin}
                                     </div>
                                     <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
                                         {item.amount} MON
@@ -194,14 +194,27 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                                         </svg>
                                     </div>
                                     <div className="flex-1 flex items-center gap-2 justify-end">
-                                        <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
-                                        </svg>
-                                        <a href={`https://testnet.monvision.io/tx/${item.tx_hash}`} target="_blank" rel="noreferrer">
-                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M5.36364 9.18182L13 1M13 1H7M13 1V7M4.81818 1H1V13H13V9.18182" stroke="#A9ADB8" />
-                                            </svg>
-                                        </a>
+                                        {
+                                            Number(item.amount) > 0 && item.tx_hash && <>
+                                                
+                                                <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
+                                                </svg>
+                                                <a href={`https://testnet.monvision.io/tx/${item.tx_hash}`} target="_blank" rel="noreferrer">
+                                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M5.36364 9.18182L13 1M13 1H7M13 1V7M4.81818 1H1V13H13V9.18182" stroke="#A9ADB8" />
+                                                    </svg>
+                                                </a>
+                                            </>
+                                        }
+
+                                        {
+                                            Number(item.amount) > 0 && !item.tx_hash && <>Pending</>
+                                        }
+
+                                        {
+                                            Number(item.amount) === 0 && <>-</>
+                                        }
                                     </div>
                                 </>
                             )

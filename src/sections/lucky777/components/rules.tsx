@@ -61,12 +61,12 @@ const RulesModal = ({ open, onClose }: RulesModalProps) => {
                                 <div className="flex items-center gap-2 relative">
                                     <img src="/images/lucky777/logo/madas.svg" alt="NASDA" className="w-[20px] mr-[5px]" />
                                     {X3Icon}
-                                    <span>NASDA: <span className="font-bold">8 MON</span></span>
+                                    <span>NASDA: <span className="font-bold">5 MON</span></span>
                                 </div>
                                 <div className="flex items-center gap-2 relative">
                                     <img src="/images/lucky777/logo/monad.svg" alt="Monad" className="w-[20px] mr-[5px]" />
                                     {X3Icon}
-                                    <span>Monad: <span className="font-bold">4 MON</span></span>
+                                    <span>Monad: <span className="font-bold">2 MON</span></span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <img src="/images/lucky777/logo/molandak.svg" alt="Molandak" className="w-[20px]" />
@@ -76,7 +76,7 @@ const RulesModal = ({ open, onClose }: RulesModalProps) => {
                                         {X3Icon}
                                     </div>
 
-                                    <span>Molandak / Moyaki / Chog: <span className="font-bold">2 MON</span></span>
+                                    <span>Molandak / Moyaki / Chog: <span className="font-bold">1 MON</span></span>
                                 </div>
                             </div>
 
@@ -89,12 +89,12 @@ const RulesModal = ({ open, onClose }: RulesModalProps) => {
                                 <div className="flex items-center gap-2 relative">
                                     <img src="/images/lucky777/logo/madas.svg" alt="NASDA" className="w-[24px] mr-[5px]" />
                                     {x2Icon}
-                                    <span>NASDA: <span className="font-bold">1 MON</span></span>
+                                    <span>NASDA: <span className="font-bold">0.5 MON</span></span>
                                 </div>
                                 <div className="flex items-center gap-2 relative">
                                     <img src="/images/lucky777/logo/monad.svg" alt="Monad" className="w-[24px] mr-[5px]" />
                                     {x2Icon}
-                                    <span>Monad: <span className="font-bold">0.5 MON</span></span>
+                                    <span>Monad: <span className="font-bold">0.2 MON</span></span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <img src="/images/lucky777/logo/molandak.svg" alt="Molandak" className="w-[20px]" />
@@ -103,7 +103,7 @@ const RulesModal = ({ open, onClose }: RulesModalProps) => {
                                         <img src="/images/lucky777/logo/chog.svg" alt="Molandak" className="w-[20px] mr-[5px]" />
                                         {x2Icon}
                                     </div>
-                                    <span>Molandak / Moyaki / Chog: <span className="font-bold">0.3 MON</span></span>
+                                    <span>Molandak / Moyaki / Chog: <span className="font-bold">0.1 MON</span></span>
                                 </div>
                             </div>
 

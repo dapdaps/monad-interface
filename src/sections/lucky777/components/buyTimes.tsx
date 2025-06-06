@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Modal from "@/components/modal";
-import { useAccount, useSendTransaction, useSwitchChain, useConnect, injected } from "wagmi";
 import { post } from "@/utils/http";
 import { getSignature } from "@/utils/signature";
+import { useSendTransaction, usePrivy } from "@privy-io/react-auth";
 
 import {
     monadTestnet,
@@ -21,20 +21,39 @@ const destAddress: any = '0x74D00ee5dF8AC41EB1e5879ed3A371D55ada6102';
 const amount = 0.1;
 
 const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
-    const { address, chainId } = useAccount();
+    const { user, createWallet } = usePrivy();
     const [times, setTimes] = useState(1);
+    const [isPending, setIsPending] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
-    const { data: hash, sendTransactionAsync, isPending, isSuccess } = useSendTransaction();
+    const { sendTransaction } = useSendTransaction({
+        onSuccess: (params) => {
+            console.log('sendTransactionPrivy', params);
+            setIsPending(false);
+        },
+        onError: (error) => {
+            console.error('sendTransactionPrivy', error);
+            setIsPending(false);
+        }
+    });
+    const [address, setAddress] = useState("");
 
     const handleSelectTimes = useCallback(async (selectedTimes: number) => {
-        if (!address) {
+        if (!address || isPending) {
             return;
         }
 
         try {
-            const hash = await sendTransactionAsync({
+            const { hash } = await sendTransaction({
                 to: destAddress,
                 value: BigInt(amount * selectedTimes * 1e18),
+            }, {
+                uiOptions: {
+                    showWalletUIs: true,
+                    isCancellable: true,
+                    successHeader: 'Buy times success',
+                    successDescription: 'You\'re all set.',
+                    buttonText: 'Buy Times',
+                }
             });
             console.log('hash:', hash);
             const res = await post("/game/purchase", {
@@ -51,6 +70,7 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
                 return;
             }
             refreshData();
+            onClose && onClose();
             toast.success('Recharge Successfully!');
         } catch (e) {
             console.log('e:', e);
@@ -58,7 +78,7 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
         }
 
 
-    }, [address, refreshData, sendTransactionAsync]);
+    }, [address, refreshData, sendTransaction]);
 
     useEffect(() => {
         setTimes(1);
@@ -66,6 +86,25 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
             inputRef.current.focus();
         }
     }, [open]);
+
+    useEffect(() => {
+        if (!user) {
+            setAddress("");
+            return;
+        }
+
+        const [privyUser] = user.linkedAccounts.filter(
+            (account) =>
+                account.type === "wallet" &&
+                account.walletClientType === "privy"
+        );
+        if (!privyUser || !(privyUser as any).address) {
+            setAddress("");
+            return;
+        }
+
+        setAddress((privyUser as any).address);
+    }, [user]);
 
     return (
         <Modal open={open} onClose={onClose} className="" closeIcon={<IconClose />} innerClassName="w-[592px] max-w-full p-8 bg-[url('/images/lucky777/modal-bg.svg')] bg-cover bg-top bg-no-repeat font-HackerNoonV2">
@@ -137,26 +176,6 @@ const IconClose = () => {
 }
 
 const MainBtn = ({ onClick }: { onClick: any }) => {
-    const { switchChain, isPending: switching } = useSwitchChain();
-    const { address, chainId } = useAccount();
-    const { open } = useAppKit();
-
-    if (!address) {
-        return (
-            <button onClick={() => open()} className="w-full bg-[#BFFF60] text-[#23223A] text-[14px] py-4 rounded-[6px] mb-8 mt-[30px] border-[#000]">
-                Connect
-            </button>
-        )
-    }
-
-    if (chainId !== monadTestnet.id) {
-        return (
-            <button onClick={() => switchChain({ chainId: monadTestnet.id })} className="w-full bg-[#BFFF60] text-[#23223A] text-[14px] py-4 rounded-[6px] mb-8 mt-[30px] border-[#000]">
-                Switch to Monad
-            </button>
-        )
-    }
-
     return (
         <button onClick={onClick} className="w-full bg-[#BFFF60] text-[#23223A] text-[14px] py-4 rounded-[6px] mb-8 mt-[30px] border-[#000]">
             BUY
@@ -165,27 +184,10 @@ const MainBtn = ({ onClick }: { onClick: any }) => {
 }
 
 const MoreBtn = ({ onClick, children }: { onClick: any, children: any }) => {
-    const { switchChain, isPending: switching } = useSwitchChain();
-    const { address, chainId } = useAccount();
-    const { open } = useAppKit();
-
-    if (!address) {
-        return (
-            <button onClick={() => open()} className="bg-[#BFFF60] text-[#23223A] font-bold py-1 px-4 rounded">Connect</button>
-        )
-    }
-
-    if (chainId !== monadTestnet.id) {
-        return (
-            <button onClick={() => switchChain({ chainId: monadTestnet.id })} className="bg-[#BFFF60] text-[#23223A] font-bold py-1 px-4 rounded">Switch</button>
-        )
-    }
 
     return (
         <button onClick={onClick} className="bg-[#BFFF60] text-[#23223A] font-bold py-1 px-4 rounded">{children}</button>
     )
 }
-
-
 
 export default BuyTimesModal;

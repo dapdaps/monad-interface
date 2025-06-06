@@ -284,6 +284,9 @@ input[type="number"]::-webkit-inner-spin-button {
   }
 }
 
+.Toastify {
+  z-index: 999999999;
+}
 
 .glitch {
   position: relative;
