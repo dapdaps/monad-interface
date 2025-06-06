@@ -149,14 +149,9 @@ export default function Board({
                     <div className="absolute inset-0 flex items-center justify-center rounded-lg z-20">
                         <div className="p-6 bg-white rounded-lg text-center">
                             <h2 className="text-2xl font-bold mb-4">
-                                Oops! Game Error :(
+                                Oops! Game Error
                             </h2>
-                            <p className="mb-2 text-red-500">
-                                <span className="text-red-600 font-bold">
-                                    Error
-                                </span>
-                                : {gameErrorText}
-                            </p>
+                            
                             <p className="mb-4">Your score: {score}</p>
                             <FunPurpleButton
                                 text="Re-sync game"
