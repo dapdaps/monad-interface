@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import { useAccount } from "wagmi"
 import * as http from "@/utils/http";
-import { useUserStore } from "@/stores/user";
 import { useInterval } from "ahooks";
 import { useCallback, useState } from "react";
 
