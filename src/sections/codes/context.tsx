@@ -13,11 +13,12 @@ function CodesContextProvider({ children }: { children: ReactNode; }) {
   const toast = useToast()
   const {
     loading: inviteCodesLoading,
-    inviteCodes
+    inviteCodes,
+    tradeInviteCodes
   } = useInviteCodes()
   const [updater, setUpdater] = useState(0)
   const { loading: inviteRecordsLoading, inviteRecords } = useInviteRecords(updater)
-  const [claimLoading, setClaimLoading] = useState()
+  const [claimLoading, setClaimLoading] = useState<boolean>()
   const [showRuleModal, setShowRuleModal] = useState(false)
 
   async function handleClaim() {
@@ -46,8 +47,8 @@ function CodesContextProvider({ children }: { children: ReactNode; }) {
         inviteCodesLoading,
         inviteRecordsLoading,
         handleClaim,
-        setShowRuleModal
-
+        setShowRuleModal,
+        tradeInviteCodes
       }}
     >
       {children}

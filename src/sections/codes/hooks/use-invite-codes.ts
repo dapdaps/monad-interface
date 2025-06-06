@@ -1,9 +1,16 @@
+import useCustomAccount from "@/hooks/use-account";
 import { get } from "@/utils/http";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-export default function useInviteCodes(updater?) {
+export default function useInviteCodes(updater?: any) {
+  const { accountWithAk } = useCustomAccount();
+
   const [loading, setLoading] = useState(false)
-  const [inviteCodes, setInviteCodes] = useState<>(null)
+  const [inviteCodes, setInviteCodes] = useState<any>(null)
+
+  const tradeInviteCodes = useMemo(() => {
+    return inviteCodes?.filter((item: any) => item.source === "trade")
+  }, [inviteCodes])
 
   async function handleGetInviteCodes() {
     try {
@@ -11,17 +18,18 @@ export default function useInviteCodes(updater?) {
       const result = await get("/invite/codes")
       setLoading(false)
       setInviteCodes(result?.data)
-    } catch (error) {
+    } catch (error: any) {
       setLoading(false)
       throw new Error(error)
     }
   }
   useEffect(() => {
     handleGetInviteCodes()
-  }, [updater])
+  }, [updater, accountWithAk])
 
   return {
     loading,
     inviteCodes,
+    tradeInviteCodes
   }
 }
