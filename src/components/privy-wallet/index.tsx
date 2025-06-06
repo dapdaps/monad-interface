@@ -6,13 +6,14 @@ import useTokenAccountBalance from "@/hooks/use-token-account-balance";
 import { monadTestnet } from "@reown/appkit/networks";
 import useAccount from "@/hooks/use-account";
 import useTokenBalance from "@/hooks/use-token-balance";
+import { useDebounceFn, useInterval } from "ahooks";
 
 const PrivyWallet = () => {
     const { user, createWallet } = usePrivy();
     const [address, setAddress] = useState("");
     const [open, setOpen] = useState(false);
     const [showDeposit, setShowDeposit] = useState(1);
-    const { tokenBalance } = useTokenAccountBalance(
+    const { tokenBalance, update } = useTokenAccountBalance(
         "native",
         18,
         address,
@@ -26,6 +27,10 @@ const PrivyWallet = () => {
     );
 
     const { account } = useAccount();
+
+    useInterval(() => {
+        update();
+    }, 30000);
 
 
     useEffect(() => {
@@ -83,7 +88,7 @@ const PrivyWallet = () => {
                                 <path d="M11.959 3.65234C9.5602 3.65234 3.65234 9.58932 3.65234 12.0001C3.65234 14.4109 9.5602 20.348 11.959 20.348C14.3578 20.348 20.2657 14.4108 20.2657 12.0001C20.2657 9.58943 14.3578 3.65234 11.959 3.65234ZM10.6645 16.7737C9.65297 16.4967 6.93338 11.7158 7.20907 10.6993C7.48475 9.68266 12.2419 6.94963 13.2534 7.22668C14.265 7.50369 16.9847 12.2845 16.709 13.3011C16.4333 14.3176 11.6761 17.0507 10.6645 16.7737Z" fill="white" />
                             </svg>
                         </span>
-                        <span className="text-white text-[16px] font-bold">0.3</span>
+                        <span className="text-white text-[16px] font-bold">{ Number(tokenBalance || 0).toFixed(4) }</span>
                     </div>
                     <div className="cursor-pointer float-right" onClick={() => {
                         setOpen(true)
