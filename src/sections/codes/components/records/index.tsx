@@ -12,7 +12,7 @@ export default memo(function Records() {
   const [page, setPage] = useState(1)
   const unClaimRecords = useMemo(() => inviteRecords?.filter(record => record?.status === 2), [inviteRecords])
   const unClaimAmount = useMemo(() => Big(unClaimRecords?.length ?? 0).times(0.25).toFixed(2), [unClaimRecords])
-  const maxPage = useMemo(() => Math.ceil(inviteRecords?.length / pageSize), [inviteRecords])
+  const maxPage = useMemo(() => Math.ceil((inviteRecords?.length ?? 0) / pageSize), [inviteRecords])
   const pageRecords = useMemo(() => inviteRecords?.slice((page - 1) * pageSize, page * pageSize), [inviteRecords, page])
   const COLUMNS = [{
     title: "Invited",
