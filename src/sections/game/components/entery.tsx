@@ -13,7 +13,7 @@ const Entry: React.FC<any> = () => {
           <div className='w-[400px] h-[600px] relative flex flex-col items-center justify-end'>
             <img src="/images/game/lucky-bg.svg" className='w-full h-full absolute top-0 left-0 ' />
             <motion.img
-              src="/images/game/lucky777.svg"
+              src="/images/game/lucky7777.svg"
               className='w-[466px] absolute top-[30px] left-[-50px] max-w-[466px]'
               animate={{
                 y: [0, -20, 0]
