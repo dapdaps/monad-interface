@@ -1,8 +1,10 @@
 'use client';
-import LuckyBeraView from '@/sections/lucky777';
-
+import Game from '@/sections/game';
 export default function GamePage() {
+
   return (
-    <LuckyBeraView />
+    <div>
+      <Game />
+    </div>
   );
 }
