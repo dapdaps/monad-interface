@@ -48,23 +48,23 @@ export default function Board({
             case 4:
                 return "bg-[#D26EF9] text-white";
             case 8:
-                return "bg-[#D26EF9] text-white";
+                return "bg-[#FFBF49] text-white";
             case 16:
-                return "bg-[#D26EF9] text-white";
+                return "bg-[#FF8949] text-white";
             case 32:
-                return "bg-[#D26EF9] text-white";
+                return "bg-[#FF8282] text-white";
             case 64:
-                return "bg-[#D26EF9] text-white";
+                return "bg-[#F3659E] text-white";
             case 128:
-                return "bg-[#D26EF9] text-white";
+                return "bg-[#9827E3] text-white";
             case 256:
-                return "bg-[#D26EF9] text-white";
+                return "bg-[#641DD5] text-white";
             case 512:
-                return "bg-[#D26EF9] text-white";
+                return "bg-[#3460FF] text-white";
             case 1024:
-                return "bg-[#D26EF9] text-white";
+                return "bg-[#00ACB8] text-white";
             case 2048:
-                return "bg-[#D26EF9] text-white";
+                return "bg-[#7EE203] text-white";
             default:
                 return "bg-[#D26EF9] text-white";
         }

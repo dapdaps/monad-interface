@@ -22,12 +22,13 @@ import {
 import Controller from "./components/Controller";
 
 // Types
-enum Direction {
+export enum Direction {
     UP,
     DOWN,
     LEFT,
     RIGHT,
 }
+
 type Tile = {
     id: string;
     value: number;
@@ -53,11 +54,7 @@ export default function Game2048() {
     const { user, createWallet } = usePrivy();
 
 
-    useEffect(() => {
-        if (user && !user.wallet) {
-            createWallet();
-        }
-    }, [user]);
+  
 
     const {
         resetNonceAndBalance,
@@ -349,6 +346,11 @@ export default function Game2048() {
             resetBoardOnError(premoveBoard, currentMove, error as Error);
         }
     };
+
+    const handleMove = async (direction: Direction) => {
+        if (!user || gameOver || isAnimating) return;
+        await move(direction);
+    }
 
     // =============================================================//
     //                      Initialize new game                     //
@@ -760,7 +762,7 @@ export default function Game2048() {
                         <Scorecard score={boardState.score} />
                         <LoginButton resetGame={initializeGame} />
                     </div>
-                    <Controller />
+                    <Controller handleMove={handleMove} />
                 </div>
 
             </div>

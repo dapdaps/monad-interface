@@ -1,5 +1,7 @@
 import { PrivyProvider } from "@privy-io/react-auth";
 import { monadTestnet } from "viem/chains";
+import PrivyLogin from "../privy-login";
+import PrivyWallet from "../privy-wallet";
 
 export default function GamePrivyProvider({ children }: { children: React.ReactNode }) {
 
@@ -21,6 +23,8 @@ export default function GamePrivyProvider({ children }: { children: React.ReactN
             }}
         >
             { children }
+            <PrivyLogin />
+            <PrivyWallet />
         </PrivyProvider>
     );
 }
