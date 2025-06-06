@@ -105,6 +105,7 @@ export default function Aboarding({
     () => slides[index] || {},
     [index]
   );
+  
   const isLast = useMemo(
     () => isMint || index === slides.length - 1,
     [index, isMint]

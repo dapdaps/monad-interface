@@ -6,12 +6,13 @@ import useToast from '@/hooks/use-toast';
 import { useLuckyBeraStore } from '@/sections/lucky777/store';
 import { useRequestByToken } from './use-request-by-token';
 import { usePrivyAuth } from '@/hooks/use-privy-auth';
+import { useAccount } from 'wagmi';
 
 
 
 export function useLuckyBera() {
-  const { address } = usePrivyAuth({ isBind: false });
   const toast = useToast();
+  const { address } = useAccount();
   const { setLastSpinResult, lastSpinResult } = useLuckyBeraStore();
   const [ multiple, setMultiple ] = useState(1);
 
