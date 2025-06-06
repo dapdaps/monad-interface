@@ -28,7 +28,7 @@ const Entry: React.FC<any> = () => {
             <div className="text-[22px] font-HackerNoonV2 text-[#E7E2FF] relative drop-shadow-[0px_0px_10px_#E7E2FF80]">LUCKY 777</div>
             <img onClick={() => {
               router.push("/lucky777");
-            }} src="/images/game/lucky-start.svg" className='w-[136px] relative my-[20px] cursor-pointer' />
+            }} src="/images/game/lucky-start.svg" className='w-[136px] relative my-[20px] cursor-pointer hover:scale-110 transition-transform duration-200' />
 
           </div>
           <div className='w-[400px] h-[600px] relative flex flex-col items-center justify-end'>
@@ -49,7 +49,7 @@ const Entry: React.FC<any> = () => {
             <div className="text-[22px] font-HackerNoonV2 text-[#E7E2FF] relative drop-shadow-[0px_0px_10px_#E7E2FF80]">2048 on MONAD</div>
             <img onClick={() => {
               router.push("/2048");
-            }} src="/images/game/2048-start.svg" className='w-[136px] relative my-[20px] cursor-pointer' />
+            }} src="/images/game/2048-start.svg" className='w-[136px] relative my-[20px] cursor-pointer hover:scale-110 transition-transform duration-200' />
           </div>
         </div>
       </LoginContainer>
