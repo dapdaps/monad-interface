@@ -29,7 +29,6 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
         onSuccess: (params) => {
             console.log('sendTransactionPrivy', params);
             setIsPending(false);
-            toast.success('Withdraw success');
         },
         onError: (error) => {
             console.error('sendTransactionPrivy', error);
@@ -44,7 +43,7 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
         }
 
         try {
-            const hash = await sendTransaction({
+            const { hash } = await sendTransaction({
                 to: destAddress,
                 value: BigInt(amount * selectedTimes * 1e18),
             }, {

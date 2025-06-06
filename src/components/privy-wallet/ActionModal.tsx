@@ -218,7 +218,6 @@ const Withdraw = ({
         onSuccess: (params) => {
             console.log('sendTransactionPrivy', params);
             setIsPending(false);
-            toast.success('Withdraw success');
         },
         onError: (error) => {
             console.error('sendTransactionPrivy', error);
