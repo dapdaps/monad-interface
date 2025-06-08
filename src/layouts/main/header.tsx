@@ -27,6 +27,12 @@ const MainLayoutHeader = (props: Props) => {
       router.push("/dapps");
       return;
     }
+
+    if (pathname.includes("2048") || pathname.includes("777")) {
+      router.back();
+      return;
+    }
+
     router.replace("/");
   };
   return (
