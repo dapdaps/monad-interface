@@ -1,11 +1,11 @@
 import { useLogin, usePrivy } from "@privy-io/react-auth";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useUser from "./use-user";
 import { toast } from "react-toastify";
 
 export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
     const { userInfo, getUserInfo, bindGameAddress } = useUser();
-    const { user, createWallet, logout } = usePrivy();
+    const { user, createWallet, logout, ready, authenticated } = usePrivy();
     const { login } = useLogin();
     const [loginLoading, setLoginLoading] = useState(false);
     const [address, setAddress] = useState("");
@@ -70,8 +70,17 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
         })();
     }, [address, userInfo, isBind]);
 
+    const isLogin = useMemo(() => {
+        if (!ready) {
+            return true;
+        }
+
+        return ready && authenticated;
+    }, [ready, authenticated]);
+
     return {
         address,
+        isLogin,
         loginLoading,
         handleLogin,
     };
