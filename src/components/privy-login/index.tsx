@@ -2,9 +2,9 @@ import { usePrivyAuth } from "@/hooks/use-privy-auth";
 import React, { useEffect, useState } from "react";
 
 export default function PrivyLogin() {
-    const { address, handleLogin } = usePrivyAuth({ isBind: true });
+    const { address, handleLogin, isLogin } = usePrivyAuth({ isBind: true });
 
-    if (address) {
+    if (isLogin) {
         return null;
     }
 

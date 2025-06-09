@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import Copyed from "../copyed";
 import { useSendTransaction as usePrivySendTransaction } from "@privy-io/react-auth";
 import { balanceFormated } from "@/utils/balance";
+import { monadTestnet } from "viem/chains";
 
 interface ActionModalProps {
     open: boolean;
@@ -16,6 +17,7 @@ interface ActionModalProps {
     rechargeAddress: string;
     depositInitialAmount: number;
     showDeposit: number;
+    isJustDesposit: boolean;
 }
 
 const ActionModal = ({
@@ -27,6 +29,7 @@ const ActionModal = ({
     depositInitialAmount,
     rechargeAddress,
     showDeposit,
+    isJustDesposit,
 }: ActionModalProps) => {
     const [activeTab, setActiveTab] = useState<"deposit" | "withdraw">("deposit");
 
@@ -39,24 +42,30 @@ const ActionModal = ({
     return (
         <Modal open={open} closeIcon={<svg className="ml-[-20px] mt-[10px]" width="10" height="9" viewBox="0 0 10 9" fill="none">
             <path d="M5 3.375L8 0H10L6 4.5L10 9H8L5 5.625L2 9H0L4 4.5L0 0H2L5 3.375Z" fill="#A6A6DB" />
-        </svg>} onClose={onClose} innerClassName="font-Unbounded">
+        </svg>} onClose={onClose} innerClassName="font-Montserrat">
             <div className="relative w-[495px]">
                 <img src="/images/lucky777/modal-bg.png" className="absolute z-1 top-0 left-0 w-full h-full" />
                 <div className="relative p-6 w-[495px] max-w-full py-[50px] px-[50px]">
-                    <div className="flex gap-2 justify-center">
-                        <button
-                            className={`w-[143px] h-[37px] rounded-[6px] ${activeTab === "deposit" ? "bg-[#BFFF60] text-black" : "bg-[#8e90bd] text-white"}`}
-                            onClick={() => setActiveTab("deposit")}
-                        >
-                            Deposit
-                        </button>
-                        <button
-                            className={`w-[143px] h-[37px] rounded-[6px]  ${activeTab === "withdraw" ? "bg-[#BFFF60] text-black" : "bg-[#8e90bd] text-white"}`}
-                            onClick={() => setActiveTab("withdraw")}
-                        >
-                            Withdraw
-                        </button>
-                    </div>
+                    {
+                        !isJustDesposit && <div className="flex gap-2 justify-center">
+                            <button
+                                className={`w-[143px] h-[37px] rounded-[6px] ${activeTab === "deposit" ? "bg-[#BFFF60] text-black" : "bg-[#8e90bd] text-white"}`}
+                                onClick={() => setActiveTab("deposit")}
+                            >
+                                Deposit
+                            </button>
+                            <button
+                                className={`w-[143px] h-[37px] rounded-[6px]  ${activeTab === "withdraw" ? "bg-[#BFFF60] text-black" : "bg-[#8e90bd] text-white"}`}
+                                onClick={() => setActiveTab("withdraw")}
+                            >
+                                Withdraw
+                            </button>
+                        </div>
+                    }
+
+                    {
+                        isJustDesposit && <div className="font-Montserrat text-center text-white text-[18px]">You need <span className="text-[#836EF9]">~0.1 MON</span> more to play moves.</div>
+                    }
 
                     <div className="flex items-center gap-2 justify-center mt-[30px]">
                         <GameIcon />
@@ -163,40 +172,36 @@ const Deposit = ({
                 </button>
             </div>
 
-            <button
-                disabled={isPending || !rechargeAddress || amount <= 0}
-                className="w-full flex items-center justify-center h-[40px] mt-[40px] font-Montserrat text-black font-bold py-2 rounded-[10px] text-[16px] transition bg-[radial-gradient(50%_50%_at_50%_50%,#E1FFB5_0%,#B1FF3D_100%)] shadow-[0px_0px_6px_0px_#BFFF60] disabled:opacity-50"
-                onClick={async () => {
-                    if (!rechargeAddress) {
-                        return;
-                    }
+            <Button disabled={isPending || !rechargeAddress || amount <= 0} onClick={async () => {
+                if (!rechargeAddress) {
+                    return;
+                }
 
-                    if (isPending) {
-                        return;
-                    }
+                if (isPending) {
+                    return;
+                }
 
-                    if (amount <= 0) {
-                        return;
-                    }
+                if (amount <= 0) {
+                    return;
+                }
 
-                    try {
-                        const hash = await sendTransactionAsync({
-                            to: playerAddress as `0x${string}`,
-                            value: BigInt(amount * 1e18),
-                        })
-                        console.log('hash', hash);
+                try {
+                    const hash = await sendTransactionAsync({
+                        to: playerAddress as `0x${string}`,
+                        value: BigInt(amount * 1e18),
+                    })
+                    console.log('hash', hash);
 
-                        toast.success('Recharge success');
-                    } catch (error) {
-                        console.error(error);
-                        toast.error('Recharge failed');
-                    }
+                    toast.success('Recharge success');
+                } catch (error) {
+                    console.error(error);
+                    toast.error('Recharge failed');
+                }
 
-                }}
-            >
+            }}>
                 {isPending && <CircleLoading className="w-[20px] h-[20px] mr-5" />}
                 Recharge
-            </button>
+            </Button>
         </div>
     )
 }
@@ -303,6 +308,45 @@ const Withdraw = ({
                 Withdraw
             </button>
         </div>
+    )
+}
+
+const Button = ({
+    children,
+    disabled,
+    onClick,
+}: {
+    children: React.ReactNode;
+    disabled: boolean;
+    onClick: () => void;
+}) => {
+    const { address, chainId } = useAccount();
+    const { switchChain } = useSwitchChain();
+
+    if (chainId !== monadTestnet.id) {
+        return (
+            <button
+                onClick={() => {
+                    switchChain({
+                        chainId: monadTestnet.id,
+                    })
+                }}
+                className="w-full flex items-center justify-center mt-[40px] h-[40px] font-Montserrat text-black font-bold py-2 rounded-[10px] text-[16px] transition bg-[radial-gradient(50%_50%_at_50%_50%,#E1FFB5_0%,#B1FF3D_100%)] shadow-[0px_0px_6px_0px_#BFFF60] disabled:opacity-50 "
+            >
+                Switch to Monad
+            </button>
+        )
+    }
+
+
+    return (
+        <button
+            disabled={disabled}
+            className="w-full flex items-center justify-center mt-[40px] h-[40px] font-Montserrat text-black font-bold py-2 rounded-[10px] text-[16px] transition bg-[radial-gradient(50%_50%_at_50%_50%,#E1FFB5_0%,#B1FF3D_100%)] shadow-[0px_0px_6px_0px_#BFFF60] disabled:opacity-50 "
+            onClick={onClick}
+        >
+            {children}
+        </button>
     )
 }
 

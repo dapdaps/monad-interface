@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import ActionModal from "./ActionModal";
 import Copyed from "../copyed";
@@ -7,12 +7,16 @@ import { monadTestnet } from "@reown/appkit/networks";
 import useAccount from "@/hooks/use-account";
 import useTokenBalance from "@/hooks/use-token-balance";
 import { useDebounceFn, useInterval } from "ahooks";
+import { toast } from "react-toastify";
+import { PrivyContext } from "../privy-provider";
 
 const PrivyWallet = () => {
     const { user, createWallet } = usePrivy();
     const [address, setAddress] = useState("");
     const [open, setOpen] = useState(false);
     const [showDeposit, setShowDeposit] = useState(1);
+    const [isSwitching, setIsSwitching] = useState(false);
+    const [isJustDesposit, setIsJustDesposit] = useState(false);
     const { tokenBalance, update } = useTokenAccountBalance(
         "native",
         18,
@@ -31,7 +35,6 @@ const PrivyWallet = () => {
     useInterval(() => {
         update();
     }, 30000);
-
 
     useEffect(() => {
         if (!user) {
@@ -52,6 +55,16 @@ const PrivyWallet = () => {
 
         setAddress((privyUser as any).address);
     }, [user]);
+
+    const { openDeposit, setOpenDeposit } = useContext(PrivyContext);
+
+    useEffect(() => {
+        if (openDeposit) {
+            setOpen(true)
+            setShowDeposit(showDeposit + 1)
+            setIsJustDesposit(true)
+        }
+    }, [openDeposit]);
 
     if (!address) {
         return null;
@@ -93,6 +106,7 @@ const PrivyWallet = () => {
                     <div className="cursor-pointer float-right" onClick={() => {
                         setOpen(true)
                         setShowDeposit(showDeposit + 1)
+                        setIsJustDesposit(false)
                     }}>
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect width="20" height="20" rx="4" fill="#836EF9" />
@@ -100,20 +114,27 @@ const PrivyWallet = () => {
                         </svg>
                     </div>
                 </div>
-                <button onClick={() => setOpen(true)} className="w-full font-Montserrat h-[40px] text-black font-bold py-2 rounded-[10px] text-[16px] transition bg-[radial-gradient(50%_50%_at_50%_50%,#E1FFB5_0%,#B1FF3D_100%)] shadow-[0px_0px_6px_0px_#BFFF60]">
+                <button onClick={() => { 
+                    setOpen(true)
+                    setIsJustDesposit(false)
+                 }} className="w-full font-Montserrat h-[40px] text-black font-bold py-2 rounded-[10px] text-[16px] transition bg-[radial-gradient(50%_50%_at_50%_50%,#E1FFB5_0%,#B1FF3D_100%)] shadow-[0px_0px_6px_0px_#BFFF60]">
                     Cashier
                 </button>
             </div>
         </div>
         <ActionModal
             open={open}
-            onClose={() => setOpen(false)}
+            onClose={() => {
+                setOpen(false)
+                setOpenDeposit(false)
+            }}
             balance={Number(tokenBalance || 0)}
             nativeBalance={Number(nativeTokenBalance || 0)}
             playerAddress={address}
             rechargeAddress={account || ''}
             depositInitialAmount={0.3}
             showDeposit={showDeposit}
+            isJustDesposit={isJustDesposit}
         />
         </>
     );
