@@ -55,6 +55,7 @@ export default function RootLayout({
           rtl={false}
           pauseOnFocusLoss
           closeButton={false}
+          limit={5}
         />
         <ProgressBar
           height="4px"
