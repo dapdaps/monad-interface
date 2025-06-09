@@ -470,12 +470,11 @@ export default function Game2048() {
             score: boardState.score,
         };
 
-
         const [latestBoard, nextMoveNumber] = await getLatestGameBoard(
             gameId || activeGameId
         );
 
-        console.log('== latestBoard ==', latestBoard);
+        console.log('== newTile 1 ==', latestBoard);
 
         let nonzero = false;
         for (let i = 0; i < 4; i++) {
@@ -492,6 +491,8 @@ export default function Game2048() {
                         isNew: true,
                     };
 
+
+                    console.log('== newTile ==', newTile);
                     newBoardState.tiles.push(newTile);
                     newBoardState.score += newTile.value;
                 }

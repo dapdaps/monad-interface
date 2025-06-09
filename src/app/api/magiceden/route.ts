@@ -18,10 +18,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(data, { status: response.status });
   } catch (error) {
-    console.error('代理请求失败:', error);
     return NextResponse.json(
-      { error: '请求转发失败' },
-      { status: 500 }
+      { status: 500, error: error }
     );
   }
 }

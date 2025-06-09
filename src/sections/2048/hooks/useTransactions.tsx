@@ -4,7 +4,6 @@ import { GAME_CONTRACT_ADDRESS } from "../utils/constants";
 import { post } from "../utils/fetch";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { useEffect, useMemo, useRef } from "react";
-import { toast } from "react-toastify";
 
 import {
     createWalletClient,
@@ -18,7 +17,8 @@ import {
 import { waitForTransactionReceipt } from "viem/actions";
 import { monadTestnet } from "viem/chains";
 import { useRpcStore } from "@/stores/rpc";
-
+import useToast from "@/hooks/use-toast";
+    
 export function useTransactions() {
     // User and Wallet objects.
     const { user } = usePrivy();
@@ -30,6 +30,7 @@ export function useTransactions() {
     const userAddress = useRef("");
     const rpcStore = useRpcStore();
     const rpc = useMemo(() => RPC_LIST[rpcStore.selected].url, [rpcStore.selected]);
+    const { info, success, fail } = useToast();
     // Resets nonce and balance
     async function resetNonceAndBalance() {
         if (!user) {
@@ -154,7 +155,12 @@ export function useTransactions() {
 
             // Fire toast info with benchmark and transaction hash.
             console.log(`Transaction sent in ${time} ms: ${response.result}`);
-            toast.info(`Sent transaction.`, 
+            info({
+                title: 'Sent transaction.',
+                text: `${successText} Time: ${time} ms`,
+                tx: transactionHash,
+                chainId: monadTestnet.id,
+            })
             //     {
             //     description: `${successText} Time: ${time} ms`,
             //     action: (
@@ -174,7 +180,6 @@ export function useTransactions() {
             //         </Button>
             //     ),
             // }
-        );
 
             // Confirm transaction
             const receipt = await waitForTransactionReceipt(publicClient, {
@@ -195,7 +200,12 @@ export function useTransactions() {
                     response.result
                 }`
             );
-            toast.success(`Confirmed transaction.`, 
+            success({
+                title: 'Confirmed transaction.',
+                text: `${successText} Time: ${Date.now() - startTime} ms`,
+                tx: transactionHash,
+                chainId: monadTestnet.id,
+            })
             //     {
             //     description: `${successText} Time: ${
             //         Date.now() - startTime
@@ -217,15 +227,15 @@ export function useTransactions() {
             //         </Button>
             //     ),
             // }
-        );
         } catch (error) {
             e = error as Error;
 
-            toast.error(`Failed to send transaction.`, 
+            fail({
+                title: 'Failed to send transaction.',
+            })
             //     {
             //     description: `Error: ${e.message}`,
             // }
-        );
         }
 
         if (e) {
