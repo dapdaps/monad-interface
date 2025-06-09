@@ -21,6 +21,9 @@ import {
 } from "viem";
 import Controller from "./components/Controller";
 import { PrivyContext } from "@/components/privy-provider";
+import { publicClient } from "./utils/client";
+import { GAME_CONTRACT_ADDRESS } from "./utils/constants";
+import { use2048Store } from "@/stores/use2048";
 
 // Types
 export enum Direction {
@@ -70,11 +73,14 @@ export default function Game2048() {
     const [gameErrorText, setGameErrorText] = useState<string>("");
     const [isAnimating, setIsAnimating] = useState<boolean>(false);
     const [faucetModalOpen, setFaucetModalOpen] = useState<boolean>(false);
+    const [isInited, setIsInited] = useState<boolean>(false);
 
     const [activeGameId, setActiveGameId] = useState<Hex>("0x");
     const [encodedMoves, setEncodedMoves] = useState<EncodedMove[]>([]);
     const [playedMovesCount, setPlayedMovesCount] = useState<number>(0);
     const { setOpenDeposit } = useContext(PrivyContext);
+    const gameId = use2048Store((store: any) => store.gameId);
+    const set2048Store = use2048Store((store: any) => store.set);
 
     const [boardState, setBoardState] = useState<BoardState>({
         tiles: [],
@@ -126,7 +132,10 @@ export default function Game2048() {
         if (!container) return;
 
         const handleKeyDown = async (event: KeyboardEvent) => {
+            console.log('== gameOver ==', gameOver, isAnimating, user);
             if (!user || gameOver || isAnimating) return;
+
+            console.log('== handleKeyDown ==', event.key);
 
             switch (event.key) {
                 case "ArrowUp":
@@ -185,7 +194,7 @@ export default function Game2048() {
             container.removeEventListener("touchstart", handleTouchStart);
             container.removeEventListener("touchend", handleTouchEnd);
         };
-    }, [boardState, gameOver, isAnimating]);
+    }, [boardState, gameOver, isAnimating, user]);
 
     // Move tiles in the specified direction
     const move = async (direction: Direction) => {
@@ -389,7 +398,9 @@ export default function Game2048() {
         addRandomTile(newBoardState);
 
         setPlayedMovesCount(1);
-        setActiveGameId(randomIDForAddress(address));
+        const gameId = randomIDForAddress(address);
+        set2048Store({ gameId });
+        setActiveGameId(gameId);
         setEncodedMoves([tilesToEncodedMove(newBoardState.tiles, 0)]);
 
         setBoardState(newBoardState);
@@ -453,15 +464,17 @@ export default function Game2048() {
     // =============================================================//
 
     // Resumes a game where it was left off
-    const resyncGame = async () => {
+    const resyncGame = async (gameId: Hex | null) => {
         const newBoardState: BoardState = {
             tiles: [],
             score: boardState.score,
         };
 
+
         const [latestBoard, nextMoveNumber] = await getLatestGameBoard(
-            activeGameId
+            gameId || activeGameId
         );
+
 
         let nonzero = false;
         for (let i = 0; i < 4; i++) {
@@ -738,6 +751,15 @@ export default function Game2048() {
         mediaQuery.addEventListener("change", handleResize);
         return () => mediaQuery.removeEventListener("change", handleResize);
     }, []);
+
+    // useEffect(() => {
+    //     if (gameId && !isInited) {
+    //         setActiveGameId(gameId);
+    //         setIsInited(true);
+    //         resyncGame(gameId);
+    //     }
+    // }, [gameId, isInited])
+
 
     return (
         <Container>

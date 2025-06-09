@@ -259,6 +259,9 @@ export function useTransactions() {
             bigint
         ]
     > {
+
+        console.log('== resyncGame3 ==', gameId);
+
         const [latestBoard, nextMoveNumber] = await publicClient.readContract({
             address: GAME_CONTRACT_ADDRESS,
             abi: [
