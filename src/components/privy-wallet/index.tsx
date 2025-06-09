@@ -3,7 +3,7 @@ import { usePrivy } from "@privy-io/react-auth";
 import ActionModal from "./ActionModal";
 import Copyed from "../copyed";
 import useTokenAccountBalance from "@/hooks/use-token-account-balance";
-import { monadTestnet } from "@reown/appkit/networks";
+import { monadTestnet } from "viem/chains";
 import useAccount from "@/hooks/use-account";
 import useTokenBalance from "@/hooks/use-token-balance";
 import { useDebounceFn, useInterval } from "ahooks";

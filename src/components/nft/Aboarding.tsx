@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import Modal from "@/components/modal";
 import { useNFT } from "@/hooks/use-nft";
-import { useAppKit } from "@reown/appkit/react";
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import CircleLoading from "../circle-loading";
 import { useAccount } from "wagmi";
 import { useSwitchChain } from "wagmi";
 import useBindTwitterHome from "@/sections/terminal/hooks/use-bind-twitter-home";
-import { monadTestnet } from "@reown/appkit/networks";
+import { monadTestnet } from "viem/chains";
 import { useTwitterStore } from "@/stores/twitter";
 import { motion } from "framer-motion";
 import domtoimage from "dom-to-image";
@@ -529,11 +529,11 @@ const MainBtn = ({
 }) => {
   const { switchChain, isPending: switching } = useSwitchChain();
   const { address, chainId } = useAccount();
-  const { open } = useAppKit();
+  const { openConnectModal } = useConnectModal();
 
   if (!address) {
     return (
-      <button onClick={() => open()} className={mainBtnCls}>
+      <button onClick={() => openConnectModal?.()} className={mainBtnCls}>
         Connect
       </button>
     );

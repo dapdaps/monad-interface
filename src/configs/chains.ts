@@ -21,7 +21,7 @@ import {
   aurora,
   monadTestnet,
   sepolia,
-} from "@reown/appkit/networks";
+} from "viem/chains";
 
 
 export const turbo = {

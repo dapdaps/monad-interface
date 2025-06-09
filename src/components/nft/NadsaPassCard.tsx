@@ -1,10 +1,10 @@
 import { useNFT } from "@/hooks/use-nft";
 import CircleLoading from "../circle-loading";
 import { useMemo, useState } from "react";
-import { useAppKit } from "@reown/appkit/react";
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useAccount } from "wagmi";
 import { useSwitchChain } from "wagmi";
-import { monadTestnet } from "@reown/appkit/networks";
+import { monadTestnet } from "viem/chains";
 import useBindTwitterAccount from "@/sections/terminal/hooks/use-bind-twitter-account";
 import { motion } from "framer-motion";
 import { useTwitterStore } from "@/stores/twitter";
@@ -23,7 +23,7 @@ export default function NadsaPassCard({ onLoginOut }: any) {
     isLoading,
     address
   } = useNFT({ nftAddress: "0x378d216463a2245bf4b70a1730579e4da175dd0f" });
-  const { open } = useAppKit();
+  const { openConnectModal } = useConnectModal();
   const { tokenBalance, isLoading: isTokenBalanceLoading } = useTokenBalance(
     "native",
     18,
@@ -149,7 +149,7 @@ export default function NadsaPassCard({ onLoginOut }: any) {
                     handleBind();
                     return;
                   }
-                  if (!address) open();
+                  if (!address) openConnectModal?.();
                 }}
                 className="flex items-center justify-center mt-[10px] text-[12px] text-[#FFFFFF] w-full h-[40px] px-[10px] bg-[#7663F4] rounded-[2px] font-Pixelmix"
               >
@@ -259,12 +259,12 @@ const MainBtn = ({
 }) => {
   const { switchChain, isPending: switching } = useSwitchChain();
   const { address, chainId } = useAccount();
-  const { open } = useAppKit();
+  const { openConnectModal } = useConnectModal();
 
   if (!address) {
     return (
       <button
-        onClick={() => open()}
+        onClick={() => openConnectModal?.()}
         className={clsx(
           "flex w-full items-center justify-center text-[12px] h-[40px] mt-[10px] mb-[10px] bg-[#7663F4] text-[#fff] rounded-[2px] font-Pixelmix opacity-30",
           "!cursor-not-allowed"

@@ -11,7 +11,7 @@ import Big from 'big.js';
 import { HTTP_CODE } from '@/configs';
 import useAudioPlay from '@/hooks/use-audio';
 import { useBalance } from 'wagmi';
-import { mainnet } from '@reown/appkit/networks';
+import { mainnet } from 'viem/chains';
 import useCheckinInfo from './hooks/use-checkin-info';
 import useCheckin from './hooks/use-checkin';
 

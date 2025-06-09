@@ -8,7 +8,7 @@ import useToast from '@/hooks/use-toast';
 import Big from 'big.js';
 import HistoryModal from './history';
 import { useAccount } from 'wagmi';
-import { useAppKit } from '@reown/appkit/react';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useCountDown, useInterval } from 'ahooks';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
@@ -69,7 +69,7 @@ export default memo(function Tiger(props: any) {
   const toast = useToast();
   const [title, setTitle] = useState(DEFAULT_TITLE);
   const { address } = useAccount();
-  const { open } = useAppKit();
+  const { openConnectModal } = useConnectModal();
   const [freeTimes, setFreeTimes] = useState(getTimeLeftToUTC24());
   const [animateSpinning, setAnimateSpinning] = useState(false);
   const [pressed1, setPressed1] = useState(false);
@@ -332,7 +332,7 @@ export default memo(function Tiger(props: any) {
 
   const { run: handleSpin, loading: spinning } = useRequestByToken<any, any>(async () => {
     if (!address) {
-      open();
+      openConnectModal?.();
       return;
     }
 

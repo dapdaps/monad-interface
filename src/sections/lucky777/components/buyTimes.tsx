@@ -4,10 +4,6 @@ import { post } from "@/utils/http";
 import { getSignature } from "@/utils/signature";
 import { useSendTransaction, usePrivy } from "@privy-io/react-auth";
 
-import {
-    monadTestnet,
-} from "@reown/appkit/networks";
-import { useAppKit } from "@reown/appkit/react";
 import { toast } from "react-toastify";
 import { numberFormatter } from "@/utils/number-formatter";
 import { useBalance } from "wagmi";
