@@ -161,10 +161,10 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
                     <svg width="380" height="2" viewBox="0 0 380 2" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 1H380" stroke="white" stroke-opacity="0.2" stroke-dasharray="2 2" />
                     </svg>
-                    <div className="text-white">{numberFormatter(0.1 * times, 1, true)}</div>
+                    <div className="text-white">{numberFormatter(0.1 * Number(times), 1, true)}</div>
                 </div>
 
-                <MainBtn onClick={() => handleSelectTimes(times)} />
+                <MainBtn onClick={() => handleSelectTimes(Number(times))} />
 
                 <div className="flex w-full justify-between gap-4">
                     <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">

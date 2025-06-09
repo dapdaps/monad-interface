@@ -475,6 +475,7 @@ export default function Game2048() {
             gameId || activeGameId
         );
 
+        console.log('== latestBoard ==', latestBoard);
 
         let nonzero = false;
         for (let i = 0; i < 4; i++) {
@@ -492,6 +493,7 @@ export default function Game2048() {
                     };
 
                     newBoardState.tiles.push(newTile);
+                    newBoardState.score += newTile.value;
                 }
             }
         }
@@ -752,13 +754,13 @@ export default function Game2048() {
         return () => mediaQuery.removeEventListener("change", handleResize);
     }, []);
 
-    // useEffect(() => {
-    //     if (gameId && !isInited) {
-    //         setActiveGameId(gameId);
-    //         setIsInited(true);
-    //         resyncGame(gameId);
-    //     }
-    // }, [gameId, isInited])
+    useEffect(() => {
+        if (gameId && !isInited) {
+            setActiveGameId(gameId);
+            setIsInited(true);
+            resyncGame(gameId);
+        }
+    }, [gameId, isInited])
 
 
     return (

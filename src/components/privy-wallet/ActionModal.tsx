@@ -89,12 +89,14 @@ const ActionModal = ({
                         playerAddress={playerAddress}
                         balance={balance}
                         nativeBalance={nativeBalance}
+                        onClose={onClose}
                     />}
 
                     {activeTab === "withdraw" && <Withdraw
                         rechargeAddress={rechargeAddress}
                         playerAddress={playerAddress}
                         balance={balance}
+                        onClose={onClose}
                         nativeTokenBalance={nativeBalance} />}
 
                 </div>
@@ -119,12 +121,14 @@ const Deposit = ({
     balance,
     nativeBalance,
     depositInitialAmount,
+    onClose,
 }: {
     rechargeAddress: string;
     playerAddress: string;
     balance: number;
     nativeBalance: number;
     depositInitialAmount: number;
+    onClose: () => void;
 }) => {
     const [amount, setAmount] = useState(depositInitialAmount);
     const { data: hash, sendTransactionAsync, isPending, isSuccess } = useSendTransaction();
@@ -191,6 +195,7 @@ const Deposit = ({
                         value: BigInt(amount * 1e18),
                     })
                     console.log('hash', hash);
+                    onClose();
 
                     toast.success('Recharge success');
                 } catch (error) {
@@ -211,11 +216,13 @@ const Withdraw = ({
     rechargeAddress,
     balance,
     nativeTokenBalance,
+    onClose,
 }: {
     playerAddress: string;
     rechargeAddress: string;
     balance: number;
     nativeTokenBalance: number;
+    onClose: () => void;
 }) => {
     const [amount, setAmount] = useState(0);
     const [isPending, setIsPending] = useState(false);
@@ -300,6 +307,8 @@ const Withdraw = ({
                     })
 
                     console.log('hash', hash);
+
+                    onClose();
 
                     toast.success('Withdraw success');
                 }}
