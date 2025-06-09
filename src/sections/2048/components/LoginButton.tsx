@@ -74,7 +74,7 @@ export default function LoginButton({ resetGame }: LoginButtonProps) {
             address: privyUserAddress as Hex,
         });
         if (parseFloat(formatEther(balance)) >= 0.5) {
-            toast.info("Player has enough MON to play.");
+            // toast.info("Player has enough MON to play.");
             return;
         }
 
@@ -155,12 +155,13 @@ export default function LoginButton({ resetGame }: LoginButtonProps) {
                     </div> */}
                 </div>
             ) : (
-                <FunPurpleButton
-                    text="Login"
-                    loadingText="Creating player..."
-                    isLoading={loginLoading}
-                    onClick={handleLogin}
-                />
+                // <FunPurpleButton
+                //     text="Login"
+                //     loadingText="Creating player..."
+                //     isLoading={loginLoading}
+                //     onClick={handleLogin}
+                // />
+                null
             )}
         </>
     );

@@ -10,6 +10,8 @@ import {
 import { useAppKit } from "@reown/appkit/react";
 import { toast } from "react-toastify";
 import { numberFormatter } from "@/utils/number-formatter";
+import { useBalance } from "wagmi";
+import useTokenAccountBalance from "@/hooks/use-token-account-balance";
 
 interface BuyTimesModalProps {
     open: boolean;
@@ -22,7 +24,7 @@ const amount = 0.1;
 
 const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
     const { user, createWallet } = usePrivy();
-    const [times, setTimes] = useState(1);
+    const [times, setTimes] = useState<number | string>(1);
     const [isPending, setIsPending] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const { sendTransaction } = useSendTransaction({
@@ -37,8 +39,21 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
     });
     const [address, setAddress] = useState("");
 
+    const { tokenBalance, update } = useTokenAccountBalance(
+        "native",
+        18,
+        address,
+        monadTestnet.id
+    );
+
+
     const handleSelectTimes = useCallback(async (selectedTimes: number) => {
         if (!address || isPending) {
+            return;
+        }
+
+        if (amount * selectedTimes >= Number(tokenBalance)) {
+            toast.error('Insufficient balance');
             return;
         }
 
@@ -78,7 +93,7 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
         }
 
 
-    }, [address, refreshData, sendTransaction]);
+    }, [address, refreshData, sendTransaction, tokenBalance]);
 
     useEffect(() => {
         setTimes(1);
@@ -116,12 +131,21 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
                     <div className="flex justify-between items-center">
                         <span className="text-white text-[14px] font-Unbounded">TIMES</span>
                         <span className="text-[#BFFF60] font-bold text-[18px]">x
-                            <input ref={inputRef} type="number" min="1" step="1" value={times} onChange={(e) => {
-                              const val = Math.floor(Number(e.target.value));
-                              if (val > 0) {
-                                setTimes(val);
-                              }
-                            }} className="w-[80px] text-center text-[18px] font-bold text-[#BFFF60] bg-transparent border-none outline-none" />
+                            <input ref={inputRef} value={times} onChange={(e) => {
+                                if (e.target.value === '') {
+                                    setTimes('');
+                                    return;
+                                }
+
+                                const val = Math.floor(Number(e.target.value));
+                                if (val >= 0) {
+                                    if (val > 99999) {
+                                        setTimes(99999);
+                                        return
+                                    }
+                                    setTimes(val);
+                                } 
+                            }} className="w-[100px] text-center text-[18px] font-bold text-[#BFFF60] bg-transparent border-none outline-none" />
                         </span>
                     </div>
                 </div>
@@ -137,7 +161,7 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
                     <svg width="380" height="2" viewBox="0 0 380 2" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M0 1H380" stroke="white" stroke-opacity="0.2" stroke-dasharray="2 2" />
                     </svg>
-                    <div className="text-white">{ numberFormatter(0.1 * times, 1, true) }</div>
+                    <div className="text-white">{numberFormatter(0.1 * times, 1, true)}</div>
                 </div>
 
                 <MainBtn onClick={() => handleSelectTimes(times)} />
@@ -184,7 +208,6 @@ const MainBtn = ({ onClick }: { onClick: any }) => {
 }
 
 const MoreBtn = ({ onClick, children }: { onClick: any, children: any }) => {
-
     return (
         <button onClick={onClick} className="bg-[#BFFF60] text-[#23223A] font-bold py-1 px-4 rounded">{children}</button>
     )

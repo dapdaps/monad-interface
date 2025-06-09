@@ -16,7 +16,7 @@ type BoardProps = {
     gameOver: boolean;
     gameError: boolean;
     gameErrorText: string;
-    resyncGame: () => void;
+    resyncGame: any;
     initializeGame: () => void;
 };
 
@@ -145,7 +145,7 @@ export default function Board({
                 )}
 
                 {/* Game error overlay */}
-                {gameError && (
+                {/* {gameError && (
                     <div className="absolute inset-0 flex items-center justify-center rounded-lg z-20">
                         <div className="p-6 bg-white rounded-lg text-center">
                             <h2 className="text-2xl font-bold mb-4">
@@ -159,7 +159,7 @@ export default function Board({
                             />
                         </div>
                     </div>
-                )}
+                )} */}
             </div>
 
             <style>{`
