@@ -1,6 +1,6 @@
 import useCustomAccount from "@/hooks/use-account";
 import { get } from "@/utils/http";
-import { useInterval, useRequest } from "ahooks";
+import { useDebounceFn, useInterval, useRequest } from "ahooks";
 import dayjs from "dayjs";
 import { cloneDeep } from "lodash";
 import { useMemo, useState } from "react";
@@ -63,6 +63,8 @@ export function useMission() {
     return res.data ?? {};
   }, { refreshDeps: [accountWithAk] });
 
+  const { run: debounceGetMissionData } = useDebounceFn(getMissionData, { wait: 1000 });
+
   const currentRountCodes = useMemo(() => {
     const { consecutive_round = 0 } = missionData ?? {};
     const curr = MISSION_CODES.get(consecutive_round + 1);
@@ -82,8 +84,12 @@ export function useMission() {
     const now = dayjs();
     const start = dayjs(quest_start_time * 1000);
     const diff = now.diff(start, "second");
-    const lastTime = quest_round_time - diff;
-    if (lastTime <= 0) return setLastTime(zeroLastTime);
+    const currentRoundDiff = diff % quest_round_time;
+    const lastTime = quest_round_time - currentRoundDiff;
+    if (lastTime <= 1) {
+      debounceGetMissionData();
+      return setLastTime(zeroLastTime);
+    }
     const lastH = Math.floor(lastTime / 3600);
     const lastM = Math.floor((lastTime % 3600) / 60);
     const lastS = lastTime % 60;

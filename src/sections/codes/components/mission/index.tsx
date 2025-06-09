@@ -3,12 +3,15 @@ import { memo } from "react";
 import { useMission } from "../../hooks/use-mission";
 import Skeleton from "react-loading-skeleton";
 import Loading from "@/components/loading";
+import { motion } from "framer-motion";
 
 export default memo(function Mission() {
-  const { missionData, missionLoading, lastTime, consecutiveList, currentRountCodes } = useMission();
+  const { missionData, missionLoading, getMissionData, lastTime, consecutiveList, currentRountCodes } = useMission();
 
   const { current_round_quest = {}, current_round_complete } = missionData ?? {};
   const { title, action_type, token, token_amount, times } = current_round_quest;
+
+  const notZeroLastTime = /^\d+/.test(lastTime);
 
   return (
     <div className="flex flex-col items-center">
@@ -33,10 +36,33 @@ export default memo(function Mission() {
       </div>
 
       <div className="m-[15px_0_35px] flex items-center gap-[7px] text-[12px] font-Unbounded font-light">
-        <span className="text-[#A6A6DB]">Next Mission {/^\d+/.test(lastTime) ? "in" : ""}</span>
+        <span className="text-[#A6A6DB]">Next Mission {notZeroLastTime ? "in" : ""}</span>
         <span className="text-white">{missionLoading ? (
           <Skeleton width={85} height={18} borderRadius={4} />
         ) : lastTime}</span>
+        {
+          !notZeroLastTime && (
+            <button
+              type="button"
+              className="w-[16px] h-[16px] flex items-center justify-center"
+              onClick={() => getMissionData()}
+              disabled={missionLoading}
+            >
+              <motion.img
+                src="/images/icon-refresh.svg"
+                alt="refresh"
+                className="w-[12px] h-[12px] object-center object-contain"
+                animate={missionLoading ? {
+                  rotate: [0, 360],
+                  transition: {
+                    duration: 1,
+                    repeat: Infinity,
+                  }
+                } : void 0}
+              />
+            </button>
+          )
+        }
       </div>
 
       <div className="w-full h-[10px] grid grid-cols-5 gap-0 mb-[82px]">
@@ -61,8 +87,6 @@ const ProgressItem = (props: any) => {
   const { data, progress = 0 } = props;
 
   const { codes, completed, isMore, mission } = data;
-
-  console.log("progress data: ", data);
 
   return (
     <div className={clsx("h-full relative", !isMore && "border border-[#26274B]")}>
