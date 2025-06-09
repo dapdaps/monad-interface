@@ -7,6 +7,7 @@ import { monadTestnet } from "@reown/appkit/networks";
 import useAccount from "@/hooks/use-account";
 import useTokenBalance from "@/hooks/use-token-balance";
 import { useDebounceFn, useInterval } from "ahooks";
+import { toast } from "react-toastify";
 
 const PrivyWallet = () => {
     const { user, createWallet } = usePrivy();

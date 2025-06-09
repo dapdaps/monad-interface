@@ -75,8 +75,8 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
             return true;
         }
 
-        return ready && authenticated;
-    }, [ready, authenticated]);
+        return authenticated && address;
+    }, [ready, authenticated, address]);
 
     return {
         address,
