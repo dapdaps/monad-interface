@@ -1,4 +1,4 @@
-import { monadTestnet } from "@reown/appkit/networks";
+import { monadTestnet } from "viem/chains";
 
 export const DEFAULT_CHAIN_ID =
   Number(process.env.NEXT_PUBLIC_CHAIN_ID) || monadTestnet.id;

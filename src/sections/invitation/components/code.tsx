@@ -6,8 +6,8 @@ import { formatLongText } from "@/utils/utils";
 import clsx from "clsx";
 import Link from "next/link";
 import { useInvitationContext } from "@/context/invitation";
-import { useAppKit, useDisconnect } from "@reown/appkit/react";
-import { useAccount } from "wagmi";
+import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { useAccount, useDisconnect } from "wagmi";
 import { trim } from "lodash";
 import { INVITATION_CODE_LENGTH } from "../config";
 import { useState } from "react";
@@ -15,7 +15,7 @@ import { useState } from "react";
 const Code = (props: any) => {
   const { account } = useCustomAccount();
   const { isConnecting } = useAccount();
-  const { open } = useAppKit();
+  const { openConnectModal } = useConnectModal();
   const { disconnect } = useDisconnect();
   const [isFocused, setIsFocused] = useState(false);
 
@@ -43,7 +43,7 @@ const Code = (props: any) => {
               disabled={isConnecting}
               onClick={() => {
                 if (!account) {
-                  open();
+                  openConnectModal?.();
                   return;
                 }
                 disconnect();
