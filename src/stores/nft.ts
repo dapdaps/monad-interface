@@ -10,7 +10,7 @@ export const useNftStore = create(
     {
       name: "_nft",
       version: 0.1,
-      storage: createJSONStorage(() => sessionStorage)
+      storage: createJSONStorage(() => localStorage)
     }
   )
 );
