@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import Copyed from "../copyed";
 import { useSendTransaction as usePrivySendTransaction } from "@privy-io/react-auth";
 import { balanceFormated } from "@/utils/balance";
+import { monadTestnet } from "viem/chains";
 
 interface ActionModalProps {
     open: boolean;
@@ -163,40 +164,36 @@ const Deposit = ({
                 </button>
             </div>
 
-            <button
-                disabled={isPending || !rechargeAddress || amount <= 0}
-                className="w-full flex items-center justify-center h-[40px] mt-[40px] font-Montserrat text-black font-bold py-2 rounded-[10px] text-[16px] transition bg-[radial-gradient(50%_50%_at_50%_50%,#E1FFB5_0%,#B1FF3D_100%)] shadow-[0px_0px_6px_0px_#BFFF60] disabled:opacity-50"
-                onClick={async () => {
-                    if (!rechargeAddress) {
-                        return;
-                    }
+            <Button disabled={isPending || !rechargeAddress || amount <= 0} onClick={async () => {
+                if (!rechargeAddress) {
+                    return;
+                }
 
-                    if (isPending) {
-                        return;
-                    }
+                if (isPending) {
+                    return;
+                }
 
-                    if (amount <= 0) {
-                        return;
-                    }
+                if (amount <= 0) {
+                    return;
+                }
 
-                    try {
-                        const hash = await sendTransactionAsync({
-                            to: playerAddress as `0x${string}`,
-                            value: BigInt(amount * 1e18),
-                        })
-                        console.log('hash', hash);
+                try {
+                    const hash = await sendTransactionAsync({
+                        to: playerAddress as `0x${string}`,
+                        value: BigInt(amount * 1e18),
+                    })
+                    console.log('hash', hash);
 
-                        toast.success('Recharge success');
-                    } catch (error) {
-                        console.error(error);
-                        toast.error('Recharge failed');
-                    }
-
-                }}
-            >
+                    toast.success('Recharge success');
+                } catch (error) {
+                    console.error(error);
+                    toast.error('Recharge failed');
+                }
+                
+            }}>
                 {isPending && <CircleLoading className="w-[20px] h-[20px] mr-5" />}
                 Recharge
-            </button>
+            </Button>
         </div>
     )
 }
@@ -303,6 +300,45 @@ const Withdraw = ({
                 Withdraw
             </button>
         </div>
+    )
+}
+
+const Button = ({
+    children,
+    disabled,
+    onClick,
+}: {
+    children: React.ReactNode;
+    disabled: boolean;
+    onClick: () => void;
+}) => {
+    const { address, chainId } = useAccount();
+    const { switchChain } = useSwitchChain();
+
+    if (chainId !== monadTestnet.id) {  
+        return (
+            <button
+                onClick={() => {
+                    switchChain({
+                        chainId: monadTestnet.id,
+                    })
+                }}
+                className="w-full flex items-center justify-center mt-[40px] h-[40px] font-Montserrat text-black font-bold py-2 rounded-[10px] text-[16px] transition bg-[radial-gradient(50%_50%_at_50%_50%,#E1FFB5_0%,#B1FF3D_100%)] shadow-[0px_0px_6px_0px_#BFFF60] disabled:opacity-50 "
+            >
+                Switch to Monad
+            </button>
+        )
+    }
+
+
+    return (
+        <button
+            disabled={disabled}
+            className="w-full flex items-center justify-center mt-[40px] h-[40px] font-Montserrat text-black font-bold py-2 rounded-[10px] text-[16px] transition bg-[radial-gradient(50%_50%_at_50%_50%,#E1FFB5_0%,#B1FF3D_100%)] shadow-[0px_0px_6px_0px_#BFFF60] disabled:opacity-50 "
+            onClick={onClick}
+        >
+            {children}
+        </button>
     )
 }
 

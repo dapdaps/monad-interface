@@ -32,7 +32,6 @@ const PrivyWallet = () => {
         update();
     }, 30000);
 
-
     useEffect(() => {
         if (!user) {
             setAddress("");
