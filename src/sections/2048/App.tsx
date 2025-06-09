@@ -1,5 +1,5 @@
 // Hooks
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import { useTransactions } from "./hooks/useTransactions";
 
@@ -20,6 +20,7 @@ import {
     toHex,
 } from "viem";
 import Controller from "./components/Controller";
+import { PrivyContext } from "@/components/privy-provider";
 
 // Types
 export enum Direction {
@@ -53,9 +54,6 @@ export default function Game2048() {
 
     const { user, createWallet } = usePrivy();
 
-
-  
-
     const {
         resetNonceAndBalance,
         getLatestGameBoard,
@@ -76,6 +74,7 @@ export default function Game2048() {
     const [activeGameId, setActiveGameId] = useState<Hex>("0x");
     const [encodedMoves, setEncodedMoves] = useState<EncodedMove[]>([]);
     const [playedMovesCount, setPlayedMovesCount] = useState<number>(0);
+    const { setOpenDeposit } = useContext(PrivyContext);
 
     const [boardState, setBoardState] = useState<BoardState>({
         tiles: [],
@@ -115,7 +114,7 @@ export default function Game2048() {
         }
 
         if (error.message.includes("insufficient balance")) {
-            setFaucetModalOpen(true);
+            setOpenDeposit(true)
         }
     }
 
@@ -742,6 +741,12 @@ export default function Game2048() {
 
     return (
         <Container>
+
+            {/* <button onClick={() => {
+                setOpenDeposit(true)
+            }}>
+                open
+            </button> */}
 
             <div className="flex flex-col flex-1 relative">
                 <div className="flex-1 overflow-auto px-2">
