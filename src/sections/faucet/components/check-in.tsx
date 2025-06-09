@@ -2,7 +2,7 @@ import BackgroundSound from '@/components/background-sound';
 import Loading from '@/components/loading';
 import useCustomAccount from '@/hooks/use-account';
 import { useFaucetContext } from '@/sections/faucet/context';
-import { useAppKit } from '@reown/appkit/react';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import clsx from 'clsx';
 import {
   differenceInMilliseconds,
@@ -13,7 +13,7 @@ import { useEffect, useRef, useState } from 'react';
 const FaucetCheckIn = (props: any) => {
   const { className } = props;
 
-  const { open } = useAppKit();
+  const { openConnectModal } = useConnectModal();
   const { account, accountWithAk } = useCustomAccount();
   const {
     ethereumMainnetBalance,
@@ -73,7 +73,7 @@ const FaucetCheckIn = (props: any) => {
         className={clsx("flex justify-center items-center gap-[10px] md:w-[200px] w-[227px] h-[50px] rounded-[6px] disabled:opacity-50 text-white text-[14px] font-[500] font-Unbounded", today_check_in ? "bg-[rgba(131,110,249,0.3)]" : "bg-[#836EF9]", className)}
         onClick={() => {
           if (!account) {
-            open();
+            openConnectModal?.();
             return;
           }
           checkinRef?.current?.play();

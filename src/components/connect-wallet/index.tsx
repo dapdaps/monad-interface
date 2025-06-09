@@ -11,7 +11,7 @@ import useIsMobile from "@/hooks/use-isMobile";
 import useToast from "@/hooks/use-toast";
 import useUser from "@/hooks/use-user";
 import { useWalletName } from "@/hooks/use-wallet-name";
-import { useAppKit } from "@reown/appkit/react";
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useDebounceFn } from "ahooks";
 import Big from "big.js";
 import { utils } from "ethers";
@@ -21,7 +21,7 @@ import { memo, useEffect, useMemo, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useAccount, useBalance, useDisconnect, useConfig } from "wagmi";
 import MobileChain from "./chain/mobile";
-import { monadTestnet } from "@reown/appkit/networks";
+import { monadTestnet } from "viem/chains";
 import useAudioPlay from "@/hooks/use-audio";
 import { DEFAULT_CHAIN_ID } from "@/configs";
 
@@ -39,7 +39,7 @@ const dropdownAnimations = {
 };
 
 const ConnectWallet = ({ className }: { className?: string }) => {
-  const modal = useAppKit();
+  const modal = useConnectModal();
   const [_, setUpdater] = useState({});
 
   const pathname = usePathname();
@@ -73,7 +73,7 @@ const ConnectWallet = ({ className }: { className?: string }) => {
       return;
     }
 
-    !address && modal.open();
+    !address && modal.openConnectModal?.();
   };
 
   const addressShown = useMemo(() => {

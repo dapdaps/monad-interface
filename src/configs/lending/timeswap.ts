@@ -1,5 +1,5 @@
 import { monad } from "../tokens/monad-testnet";
-import { monadTestnet } from '@reown/appkit/networks';
+import { monadTestnet } from 'viem/chains';
 
 const basic = {
   name: 'Timeswap',

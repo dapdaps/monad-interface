@@ -1,5 +1,5 @@
 import type { Token } from "@/types";
-import { monadTestnet } from "@reown/appkit/networks";
+import { monadTestnet } from "viem/chains";
 
 const CHAIN_ID = monadTestnet.id;
 

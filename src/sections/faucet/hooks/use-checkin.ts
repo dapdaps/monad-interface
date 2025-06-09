@@ -1,7 +1,7 @@
 import useCustomAccount from "@/hooks/use-account";
 import useToast from "@/hooks/use-toast";
 import { get, post } from "@/utils/http";
-import { mainnet } from '@reown/appkit/networks';
+import { mainnet } from 'viem/chains';
 import Big from "big.js";
 import { useState } from "react";
 import { useBalance, useTransactionCount } from 'wagmi';
