@@ -79,7 +79,7 @@ export function useMission() {
       // seconds
       quest_start_time
     } = missionData ?? {};
-    const zeroLastTime = "starts soon!";
+    const zeroLastTime = "-- : -- : --";
     if (!quest_round_time || !quest_start_time) return setLastTime(zeroLastTime);
     const now = dayjs();
     const start = dayjs(quest_start_time * 1000);
@@ -93,18 +93,19 @@ export function useMission() {
     const lastH = Math.floor(lastTime / 3600);
     const lastM = Math.floor((lastTime % 3600) / 60);
     const lastS = lastTime % 60;
-    setLastTime(`${lastH < 10 ? `0${lastH}` : lastH}h ${lastM < 10 ? `0${lastM}` : lastM}m ${lastS < 10 ? `0${lastS}` : lastS}s`);
+    setLastTime(`${lastH < 10 ? `0${lastH}` : lastH} : ${lastM < 10 ? `0${lastM}` : lastM} : ${lastS < 10 ? `0${lastS}` : lastS}`);
   }, 1000, { immediate: true });
 
   const consecutiveList = useMemo(() => {
-    const { consecutive_round = 0 } = missionData ?? {};
-    const missionCodes = cloneDeep(Array.from(MISSION_CODES.values()));
-    return missionCodes.map((item, index) => {
-      if (index <= consecutive_round - 1) {
-        return { ...item, completed: true };
-      }
-      return item;
-    });
+    return 1;
+    // const { consecutive_round = 0 } = missionData ?? {};
+    // const missionCodes = cloneDeep(Array.from(MISSION_CODES.values()));
+    // return missionCodes.map((item, index) => {
+    //   if (index <= consecutive_round - 1) {
+    //     return { ...item, completed: true };
+    //   }
+    //   return item;
+    // });
   }, [missionData]);
 
   return { missionData, missionLoading, getMissionData, lastTime, consecutiveList, currentRountCodes };

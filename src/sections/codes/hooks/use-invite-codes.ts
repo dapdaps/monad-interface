@@ -8,8 +8,11 @@ export default function useInviteCodes(updater?: any) {
   const [loading, setLoading] = useState(false)
   const [inviteCodes, setInviteCodes] = useState<any>(null)
 
-  const tradeInviteCodes = useMemo(() => {
-    return inviteCodes?.filter((item: any) => item.source === "trade")
+  const [tradeInviteCodes, unUsedInviteCodes] = useMemo(() => {
+    return [
+      inviteCodes?.filter((item: any) => item.source === "trade"),
+      inviteCodes?.filter((item: any) => !item.used)
+    ];
   }, [inviteCodes])
 
   async function handleGetInviteCodes() {
@@ -30,6 +33,7 @@ export default function useInviteCodes(updater?: any) {
   return {
     loading,
     inviteCodes,
-    tradeInviteCodes
+    tradeInviteCodes,
+    unUsedInviteCodes
   }
 }
