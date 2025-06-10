@@ -318,9 +318,9 @@ export function useTransactions() {
         boards: readonly [bigint, bigint, bigint, bigint],
         moves: readonly [number, number, number]
     ): Promise<void> {
-        const balance = userBalance.current;
+        let balance = userBalance.current;
         if (parseFloat(formatEther(balance)) < 0.01) {
-            const balance = await publicClient.getBalance({
+            balance = await publicClient.getBalance({
                 address: userAddress.current as Hex,
             });
             if (parseFloat(formatEther(balance)) < 0.01) {
