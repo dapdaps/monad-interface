@@ -5,6 +5,7 @@ import { erc721Abi } from 'viem'
 import { toast } from 'react-toastify';
 import { useRpcStore } from '@/stores/rpc';
 import { RPC_LIST } from "@/configs/rpc";
+import { post } from '@/utils/http';
 
 
 interface NFTMintResponse {
@@ -48,6 +49,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
     });
 
     const [hasNFT, setHasNFT] = useState<boolean>(false);
+    const [checkedHasNFT, setCheckedHasNFT] = useState<boolean>(false);
     const [tokenIds, setTokenIds] = useState<string[]>([]);
     const rpcStore = useRpcStore();
 
@@ -125,6 +127,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
         } finally {
             setIsLoading(false);
             setChecking(false);
+            setCheckedHasNFT(true);
         }
     }, [address, connector, rpc, nftAddress, refresh]);
 
@@ -201,7 +204,6 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
             return
         }
 
-
         const response = await fetch('/api/magiceden_check', {
             method: 'POST',
             headers: {
@@ -216,10 +218,17 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
                 }
             }),
         });
-
         const data = await response.json();
 
-        console.log(data);
+        console.log('checkAllowlist: ', data);
+
+        if (data.stageIds.length > 0) {
+            // const res = await post('/nft/whitelist', {
+            //     nft_address: nftAddress
+            // })
+            // console.log(res);
+
+        } 
 
     }, [address, nftAddress]);
 
@@ -230,9 +239,15 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
     useEffect(() => {
         if (address) {
             checkNFT();
-            // checkAllowlist()
         }
     }, [address, refresh]);
+
+
+    useEffect(() => {
+        if (checkedHasNFT && !hasNFT) {
+            checkAllowlist()
+        }
+    }, [checkedHasNFT, hasNFT]);
 
     return {
         mintNFT,
