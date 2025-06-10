@@ -62,6 +62,7 @@ export default function Game2048() {
         getLatestGameBoard,
         playNewMoveTransaction,
         initializeGameTransaction,
+        playNewMoveTransactionThrottled,
     } = useTransactions();
 
     // =============================================================//
@@ -335,6 +336,16 @@ export default function Game2048() {
                         console.error("Error in move transaction:", error);
                         resetBoardOnError(premoveBoard, currentMove, error);
                     });
+
+                    // playNewMoveTransactionThrottled(
+                    //     activeGameId as Hex,
+                    //     encoded.board,
+                    //     encoded.move,
+                    //     moveCount
+                    // ).catch((error) => {
+                    //     console.error("Error in move transaction:", error);
+                    //     resetBoardOnError(premoveBoard, currentMove, error);
+                    // });
                 }
 
                 setBoardState(updatedBoardState);

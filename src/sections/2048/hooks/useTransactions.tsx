@@ -4,6 +4,7 @@ import { GAME_CONTRACT_ADDRESS } from "../utils/constants";
 import { post } from "../utils/fetch";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { useEffect, useMemo, useRef } from "react";
+import { useThrottleFn } from 'ahooks';
 
 import {
     createWalletClient,
@@ -307,6 +308,10 @@ export function useTransactions() {
         return [latestBoard, nextMoveNumber];
     }
 
+  
+
+
+
     // Initializes a game. Calls `prepareGame` and `startGame`.
     async function initializeGameTransaction(
         gameId: Hex,
@@ -315,7 +320,13 @@ export function useTransactions() {
     ): Promise<void> {
         const balance = userBalance.current;
         if (parseFloat(formatEther(balance)) < 0.01) {
-            throw Error("Signer has insufficient balance.");
+            const balance = await publicClient.getBalance({
+                address: userAddress.current as Hex,
+            });
+            if (parseFloat(formatEther(balance)) < 0.01) {
+                throw Error("Signer has insufficient balance.");
+            }
+            userBalance.current = balance;
         }
 
         // Sign and send transaction: start game
@@ -415,10 +426,25 @@ export function useTransactions() {
         });
     }
 
+    const { run: playNewMoveTransactionThrottled } = useThrottleFn(
+        async (
+            gameId: Hex,
+            board: bigint,
+            move: number,
+            moveCount: number
+        ) => {
+            console.log('playNewMoveTransactionThrottled: ', 111)
+            await playNewMoveTransaction(gameId, board, move, moveCount);
+        },
+        { wait: 10000 }
+    );
+    
+
     return {
         resetNonceAndBalance,
         initializeGameTransaction,
         playNewMoveTransaction,
+        playNewMoveTransactionThrottled,
         getLatestGameBoard,
     };
 }
