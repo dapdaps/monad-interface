@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { numberFormatter } from "@/utils/number-formatter";
 import { useBalance } from "wagmi";
 import useTokenAccountBalance from "@/hooks/use-token-account-balance";
+import { monadTestnet } from "viem/chains";
 
 interface BuyTimesModalProps {
     open: boolean;
@@ -34,7 +35,6 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
         }
     });
     const [address, setAddress] = useState("");
-
     const { tokenBalance, update } = useTokenAccountBalance(
         "native",
         18,

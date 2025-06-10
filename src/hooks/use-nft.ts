@@ -116,7 +116,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
                 setHasNFT(true);
                 setTokenIds(_tokenIds || []);
             }
-         
+
 
         } catch (error) {
             console.error("Error checking NFT ownership:", error);
@@ -186,7 +186,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
             }, 2000);
 
             toast.success('Mint NFT success');
-           
+
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred while minting NFT';
             setError(errorMessage);
@@ -196,6 +196,33 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
         }
     }, [address, connector, hasNFT, isLoading, refresh]);
 
+    const checkAllowlist = useCallback(async (): Promise<void> => {
+        if (!address) {
+            return
+        }
+
+
+        const response = await fetch('/api/magiceden_check', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({
+                "collectionId": nftAddress,
+                "wallet": {
+                    "chain": "monad-testnet",
+                    "address": address
+                }
+            }),
+        });
+
+        const data = await response.json();
+
+        console.log(data);
+
+    }, [address, nftAddress]);
+
     useEffect(() => {
         getNFTMetadata()
     }, [refresh]);
@@ -203,6 +230,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
     useEffect(() => {
         if (address) {
             checkNFT();
+            // checkAllowlist()
         }
     }, [address, refresh]);
 
