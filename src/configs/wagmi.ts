@@ -25,7 +25,7 @@ export const config = getDefaultConfig({
   appName: metadata.name,
   appDescription: metadata.description,
   appUrl: metadata.url,
-  appIcon: metadata.url,
+  appIcon: metadata.icons[0],
   storage: createStorage({
     storage: cookieStorage
   }),
