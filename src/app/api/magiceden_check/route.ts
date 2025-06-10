@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       },
       "referrer": "https://magiceden.io/",
       "referrerPolicy": "strict-origin-when-cross-origin",
-      "body": "{\"collectionId\":\"0xefeec64e6e0b4577886fb75db625bb7b7d48b922\",\"wallet\":{\"chain\":\"monad-testnet\",\"address\":\"0xB9a86345630F4619054c1D3806b234f28b713541\"}}",
+      "body": JSON.stringify(body),
       "method": "POST",
       "mode": "cors",
       "credentials": "omit"
