@@ -62,12 +62,12 @@ export default function Aboarding({
   className?: string;
 }) {
   // const { nftMetadata, nftAddress, mintNFT, hasNFT, tokenIds, isLoading, address } = useNFT({ nftAddress: '0x378d216463a2245bf4b70a1730579e4da175dd0f' });
-  const { nftMetadata, nftAddress, mintNFT, hasNFT, tokenIds, isLoading } =
+  const { nftMetadata, nftAddress, mintNFT, hasNFT, tokenIds, isLoading, checkAllowlistLoading } =
     useNFT({
       // nftAddress: "0xbe0a1db63a34aa64f24decaf3f34e71fcb3c323a"
       // nftAddress: "0x8645f70452fd8bbefa9606aebd2ce03ea0c4e330"
       // nftAddress: '0x0d83faa6fdb847c445b350078b030de3bb08cc49'
-      nftAddress: '0xefeec64e6e0b4577886fb75db625bb7b7d48b922'
+      nftAddress: '0xb46115299f13c731a99bcf9a57f0e9968071343e'
     });
   const { address } = useAccount();
   const twitterStore: any = useTwitterStore();
@@ -279,7 +279,6 @@ export default function Aboarding({
                               SEQUENCE NUMBER NFT
                             </div>
 
-
                             {!hasNFT && (<>
                               <div className="font-Pixelmix text-[12px] py-[10px] rounded-[4px] flex gap-[10px] justify-center items-end mt-[10px]">
                                 <div className="text-center">
@@ -339,11 +338,12 @@ export default function Aboarding({
                                   tokenBalance={tokenBalance}
                                   disabled={
                                     isLoading ||
+                                    checkAllowlistLoading ||
                                     !!buttonText ||
                                     !twitterStore?.bindInfo[twitterStore.id]
                                   }
                                 >
-                                  {isLoading ? (
+                                  {isLoading || checkAllowlistLoading ? (
                                     <>
                                       <CircleLoading />{" "}
                                       <span className="ml-[10px]">Mint NFT</span>

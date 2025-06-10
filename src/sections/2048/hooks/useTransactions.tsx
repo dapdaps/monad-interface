@@ -30,7 +30,7 @@ export function useTransactions() {
     const userAddress = useRef("");
     const rpcStore = useRpcStore();
     const rpc = useMemo(() => RPC_LIST[rpcStore.selected].url, [rpcStore.selected]);
-    const { info, success, fail } = useToast();
+    const { info, success, fail } = useToast({ isGame: true });
     // Resets nonce and balance
     async function resetNonceAndBalance() {
         if (!user) {
@@ -160,7 +160,7 @@ export function useTransactions() {
                 text: `${successText} Time: ${time} ms`,
                 tx: transactionHash,
                 chainId: monadTestnet.id,
-            })
+            }, 'bottom-right')
             //     {
             //     description: `${successText} Time: ${time} ms`,
             //     action: (
@@ -205,7 +205,7 @@ export function useTransactions() {
                 text: `${successText} Time: ${Date.now() - startTime} ms`,
                 tx: transactionHash,
                 chainId: monadTestnet.id,
-            })
+            }, 'bottom-right')
             //     {
             //     description: `${successText} Time: ${
             //         Date.now() - startTime
@@ -232,7 +232,7 @@ export function useTransactions() {
 
             fail({
                 title: 'Failed to send transaction.',
-            })
+            }, 'bottom-right')
             //     {
             //     description: `Error: ${e.message}`,
             // }

@@ -65,6 +65,10 @@ export default function Board({
                 return "bg-[#00ACB8] text-white";
             case 2048:
                 return "bg-[#7EE203] text-white";
+            case 4096:
+                return "bg-[#0020F3] text-white";
+            case 8192:
+                return "bg-[#CD9152] text-white";
             default:
                 return "bg-[#D26EF9] text-white";
         }

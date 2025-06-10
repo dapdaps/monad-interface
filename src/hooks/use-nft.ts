@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { useRpcStore } from '@/stores/rpc';
 import { RPC_LIST } from "@/configs/rpc";
 import { post } from '@/utils/http';
+import { useInterval } from 'ahooks';
 
 
 interface NFTMintResponse {
@@ -29,6 +30,7 @@ interface UseNFTReturn {
     hasNFT: boolean;
     tokenIds: string[];
     address: string;
+    checkAllowlistLoading: boolean;
 }
 
 export const nftAddress = '0x378d216463a2245bf4b70a1730579e4da175dd0f';
@@ -51,8 +53,8 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
     const [hasNFT, setHasNFT] = useState<boolean>(false);
     const [checkedHasNFT, setCheckedHasNFT] = useState<boolean>(false);
     const [tokenIds, setTokenIds] = useState<string[]>([]);
+    const [checkAllowlistLoading, setCheckAllowlistLoading] = useState<boolean>(false);
     const rpcStore = useRpcStore();
-
     const rpc = useMemo(() => RPC_LIST[rpcStore.selected], [rpcStore.selected]);
 
     const getNFTMetadata = useCallback(async () => {
@@ -152,6 +154,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
             const provider = new ethers.providers.Web3Provider(walletProvider, "any");
             const signer = provider.getSigner(address);
 
+            // const response = await fetch('/haha-delete/api/magiceden', {
             const response = await fetch('/api/magiceden', {
                 method: 'POST',
                 headers: {
@@ -166,7 +169,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
                         "chain": "monad-testnet"
                     },
                     "nftAmount": 1,
-                    "kind": "public",
+                    "kind": "allowlist",
                     "protocol": "ERC721"
                 }),
             });
@@ -191,6 +194,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
             toast.success('Mint NFT success');
 
         } catch (err) {
+            console.log('mintNFT error: ', err);
             const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred while minting NFT';
             setError(errorMessage);
             toast.error('Mint NFT error');
@@ -199,11 +203,12 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
         }
     }, [address, connector, hasNFT, isLoading, refresh]);
 
-    const checkAllowlist = useCallback(async (): Promise<void> => {
+    const checkAllowlist = useCallback(async (): Promise<boolean> => {
         if (!address) {
-            return
+            return false
         }
 
+        // const response = await fetch('/haha-delete/api/magiceden_check', {
         const response = await fetch('/api/magiceden_check', {
             method: 'POST',
             headers: {
@@ -220,17 +225,20 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
         });
         const data = await response.json();
 
-        console.log('checkAllowlist: ', data);
+        const isAdd = data.stageIds.length > 0
+        if (isAdd) {
+            setCheckAllowlistLoading(false)
+        }
 
-        if (data.stageIds.length > 0) {
-            // const res = await post('/nft/whitelist', {
-            //     nft_address: nftAddress
-            // })
-            // console.log(res);
-
-        } 
+        return isAdd
 
     }, [address, nftAddress]);
+
+    useInterval(() => {
+        if (checkAllowlistLoading) {
+            checkAllowlist();
+        }
+    }, checkAllowlistLoading ? 30000 : undefined);
 
     useEffect(() => {
         getNFTMetadata()
@@ -244,10 +252,20 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
 
 
     useEffect(() => {
-        if (checkedHasNFT && !hasNFT) {
-            checkAllowlist()
-        }
-    }, [checkedHasNFT, hasNFT]);
+        (async () => {
+            if (checkedHasNFT && !hasNFT) {
+                const res = await checkAllowlist();
+                if (res === false) {
+                    const res = await post('/nft/whitelist', {
+                        nft_address: nftAddress
+                    })
+                    setCheckAllowlistLoading(true);
+                }
+            }
+        })()
+    }, [checkedHasNFT, hasNFT, address]);
+
+
 
     return {
         mintNFT,
@@ -258,6 +276,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
         error,
         nftMetadata,
         hasNFT,
-        tokenIds
+        tokenIds,
+        checkAllowlistLoading,
     };
 };

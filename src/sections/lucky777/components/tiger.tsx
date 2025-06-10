@@ -791,7 +791,7 @@ export default memo(function Tiger(props: any) {
           </div>
 
           <div className="flex items-center justify-between mt-[10px]">
-            <div className="text-[#A5FFFD] text-[12px]">1 FREE IN {freeTimes.hours}:{freeTimes.minutes}:{freeTimes.seconds}</div>
+            <div className="text-[#A5FFFD] text-[10px] text-left w-[220px]">1 free play available today – expires in {freeTimes.hours}:{freeTimes.minutes}:{freeTimes.seconds}</div>
             <motion.button
               data-click-sound
               type="button"

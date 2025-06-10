@@ -80,6 +80,7 @@ export default function Game2048() {
     const [playedMovesCount, setPlayedMovesCount] = useState<number>(0);
     const { setOpenDeposit } = useContext(PrivyContext);
     const gameId = use2048Store((store: any) => store.gameId);
+    const score = use2048Store((store: any) => store.score);
     const set2048Store = use2048Store((store: any) => store.set);
 
     const [boardState, setBoardState] = useState<BoardState>({
@@ -339,10 +340,12 @@ export default function Game2048() {
                 setBoardState(updatedBoardState);
                 setEncodedMoves(newEncodedMoves);
                 setPlayedMovesCount(moveCount + 1);
+                set2048Store({ score: updatedBoardState.score, gameId: activeGameId });
 
                 // Check if the game is over
                 if (checkGameOver(updatedBoardState)) {
                     setGameOver(true);
+                    set2048Store({ score: 0, gameId: '' });
                 }
 
                 // Resume moves
@@ -399,7 +402,7 @@ export default function Game2048() {
 
         setPlayedMovesCount(1);
         const gameId = randomIDForAddress(address);
-        set2048Store({ gameId });
+        set2048Store({ gameId, score: 0 });
         setActiveGameId(gameId);
         setEncodedMoves([tilesToEncodedMove(newBoardState.tiles, 0)]);
 
@@ -464,10 +467,10 @@ export default function Game2048() {
     // =============================================================//
 
     // Resumes a game where it was left off
-    const resyncGame = async (gameId: Hex | null) => {
+    const resyncGame = async (gameId: Hex | null, score: number | null) => {
         const newBoardState: BoardState = {
             tiles: [],
-            score: boardState.score,
+            score: score || 0,
         };
 
         const [latestBoard, nextMoveNumber] = await getLatestGameBoard(
@@ -491,10 +494,7 @@ export default function Game2048() {
                         isNew: true,
                     };
 
-
-                    console.log('== newTile ==', newTile);
                     newBoardState.tiles.push(newTile);
-                    newBoardState.score += newTile.value;
                 }
             }
         }
@@ -759,7 +759,7 @@ export default function Game2048() {
         if (gameId && !isInited) {
             setActiveGameId(gameId);
             setIsInited(true);
-            resyncGame(gameId);
+            resyncGame(gameId, score);
         }
     }, [gameId, isInited])
 

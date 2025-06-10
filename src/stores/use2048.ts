@@ -5,6 +5,7 @@ export const use2048Store = create(
   persist(
     (set, get: any) => ({
       gameId: '',
+      score: 0,
       set: (params: any) => set(() => ({ ...params }))
     }),
     {

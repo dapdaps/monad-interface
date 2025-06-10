@@ -21,8 +21,12 @@ export default function NadsaPassCard({ onLoginOut }: any) {
     hasNFT,
     tokenIds,
     isLoading,
-    address
-  } = useNFT({ nftAddress: "0x378d216463a2245bf4b70a1730579e4da175dd0f" });
+    address,
+    checkAllowlistLoading
+  } = useNFT({ 
+    // nftAddress: "0x378d216463a2245bf4b70a1730579e4da175dd0f" 
+    nftAddress: "0x2d298c1f3a52af45ab3d34637aa293cf8a988c71"
+  });
   const { openConnectModal } = useConnectModal();
   const { tokenBalance, isLoading: isTokenBalanceLoading } = useTokenBalance(
     "native",
@@ -209,11 +213,11 @@ export default function NadsaPassCard({ onLoginOut }: any) {
         )}
         {status === 0 && (
           <MainBtn
-            disabled={!!buttonText || !twitterStore?.bindInfo[twitterStore.id]}
+            disabled={!!buttonText || !twitterStore?.bindInfo[twitterStore.id] || checkAllowlistLoading}
             onClick={() => mintNFT()}
             tokenBalance={tokenBalance}
           >
-            {isLoading ? (
+            {isLoading || checkAllowlistLoading ? (
               <>
                 <CircleLoading /> <span className="ml-[10px]">Mint NFT</span>
               </>

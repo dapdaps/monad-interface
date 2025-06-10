@@ -57,6 +57,10 @@ const nextConfig = {
       source: "/lfj/:path*",
       destination: "https://router-testnet.lfj.gg/:path*"
     },
+    {
+      source: "/haha-delete/:path*",
+      destination: "https://test.nadsa.space/:path*"
+    },
   ],
   webpack: (config, { dev }) => {
     config.resolve.alias.stream = "stream-browserify";

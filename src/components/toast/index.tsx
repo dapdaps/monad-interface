@@ -60,7 +60,7 @@ export default function Toast({
   text,
   tx,
   chainId,
-  closeToast
+  closeToast,
 }: any) {
   const txLink = useMemo(() => {
     if (!tx || !chainId) return '';
