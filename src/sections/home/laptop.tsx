@@ -13,12 +13,17 @@ import StarrySkyCanvas from "./StarrySky";
 import { SpecialAnimateGif } from "./SpecialAnimateGif";
 import { GuideEntry } from "../invitation/guide";
 import { useDebounceFn } from "ahooks";
+import useInviteCodes from "../codes/hooks/use-invite-codes";
+import { MissionScreen } from "../codes/components/mission";
+import { useMission } from "../codes/hooks/use-mission";
 
 const itemWidth = 51;
 const itemGap = 6;
 
 const Home = () => {
   const router = useRouter();
+  const { unUsedInviteCodes } = useInviteCodes();
+  const { lastTime } = useMission();
 
   const boatFloorRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -31,8 +36,6 @@ const Home = () => {
   const [boatFensStyles, setBoatFensStyles] = useState<any>({
     bottom: 0,
   });
-
-  console.log("boatFensStyles: %o", boatFensStyles);
 
   const { run: onBoatFloorStyles, cancel: cancelBoatFloorStyles } = useDebounceFn(() => {
     const fixedHeight = 186;
@@ -184,7 +187,14 @@ const Home = () => {
               <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <div className="w-full flex items-center justify-center gap-2">
-                    <img src="/images/monad/icon/codes.svg" alt="" />
+                    <img src="/images/monad/icon/codes.svg" alt="" className="shrink-0" />
+                    {
+                      unUsedInviteCodes?.length > 0 && (
+                        <div className="shrink-0 px-[8px] h-[18px] text-[12px] font-[900] leading-[90%] flex items-center justify-center font-Unbounded rounded-[21px] border border-black bg-[#BFFF60] shadow-[0px_2px_0px_0px_rgba(0,_0,_0,_0.50)]">
+                          {unUsedInviteCodes?.length}
+                        </div>
+                      )
+                    }
                   </div>
                   <motion.img
                     animate={{
@@ -212,8 +222,13 @@ const Home = () => {
                     transformOrigin: "center bottom",
                   }}
                   className="relative w-full h-full bg-no-repeat bg-contain bg-[url(/images/monad/entry/radar.svg)]"
-                ></motion.div>
+                >
+                </motion.div>
               </div>
+              <MissionScreen className="flex flex-col absolute bottom-0 z-[1] !border-[#313B58] [transform-style:preserve-3d] [transform:perspective(1000px)_rotateX(0deg)_rotateY(-50deg)_rotateZ(0deg)_scaleX(1)_scaleY(1.05)_skewX(-1deg)_skewY(12deg)_translateX(-60px)] [transform-origin:bottom] [perspective-origin:60%_35%]">
+                <div className="text-[#A6A6DB] text-center font-Unbounded text-[16px] font-light leading-normal [text-shadow:0px_0px_10px_rgba(3,226,18,0.50)]">Next Mission in</div>
+                <div className="text-[22px]">{lastTime}</div>
+              </MissionScreen>
             </div>
           </div>
           {/* Faucet */}

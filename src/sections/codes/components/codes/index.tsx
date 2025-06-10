@@ -3,14 +3,16 @@ import { useCodesContext } from "@/sections/codes/context";
 import clsx from "clsx";
 import useToast from "@/hooks/use-toast";
 
-export default memo(function Codes() {
+export default memo(function Codes(props: any) {
+  const { className } = props;
+
   const toast = useToast()
   const {
     inviteCodes,
     inviteCodesLoading
   } = useCodesContext()
 
-  const availableCodes = useMemo(() => inviteCodes?.filter(code => !code.used), [inviteCodes])
+  const availableCodes = useMemo(() => inviteCodes?.filter((code: any) => !code.used), [inviteCodes])
 
   function handleCopy(code: any) {
     navigator.clipboard.writeText(code as string);
@@ -19,7 +21,7 @@ export default memo(function Codes() {
     });
   }
   function handleCopyAll() {
-    const str = availableCodes?.map(code => code.code).join(" ")
+    const str = availableCodes?.map((code: any) => code.code).join(" ")
     navigator.clipboard.writeText(str);
     toast.success({
       title: `Copied all`
@@ -27,7 +29,7 @@ export default memo(function Codes() {
   }
 
   return (
-    <div className="w-[422px] h-[307px] bg-[url('/images/codes/codes_bg.svg')] bg-center bg-no-repeat bg-contain rounded-[6px]">
+    <div className={clsx("w-[422px] h-[307px] bg-[url('/images/codes/codes_bg.svg')] bg-center bg-no-repeat bg-contain rounded-[6px]", className)}>
       {
         inviteCodesLoading ? (
           <></>
@@ -45,7 +47,7 @@ export default memo(function Codes() {
             </div>
             <div className="overflow-auto h-[248px] p-[17px_24px] grid grid-cols-2 grid-rows-[auto_1fr] gap-[16px_24px] text-[#03E212] text-[18px] font-HackerNoonV2 leading-[120%]">
               {
-                inviteCodes?.map(code => (
+                inviteCodes?.map((code: any) => (
                   <div className="flex items-center gap-[12px] border p-[8px_0_8px_8px] h-[37px] border-[#03E212] bg-[rgba(0,0,0,0.72)]">
                     <span className={clsx(code?.used ? "text-[#005D06] line-through" : "[text-shadow:0_0_10px_rgba(3,226,18,0.5)]")}>{code.code}</span>
                     {

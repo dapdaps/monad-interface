@@ -4,24 +4,33 @@ import { useMission } from "../../hooks/use-mission";
 import Skeleton from "react-loading-skeleton";
 import Loading from "@/components/loading";
 import { motion } from "framer-motion";
+import { numberFormatter } from "@/utils/number-formatter";
 
-export default memo(function Mission() {
-  const { missionData, missionLoading, getMissionData, lastTime, consecutiveList, currentRountCodes } = useMission();
+export default memo(function Mission(props: any) {
+  const { className } = props;
 
-  const { current_round_quest = {}, current_round_complete } = missionData ?? {};
+  const { missionData, missionLoading, getMissionData, lastTime, currentRountCodes } = useMission();
+
+  const { current_round_quest = {}, current_round_complete, quest_round_time } = missionData ?? {};
   const { title, action_type, token, token_amount, times } = current_round_quest;
 
   const notZeroLastTime = /^\d+/.test(lastTime);
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="text-white font-Unbounded text-[18px]">Global Mission</div>
-      <div className="m-[13px_0_19px] text-[#A6A6DB] font-Unbounded text-[12px] font-light">Complete more, unlock more invites. The progress bar will be reset if you missed 3 in a row</div>
-      <div className="w-[449px] h-[42px] p-[0_10px_0_16px] rounded-[6px] border border-[#26274B] bg-[#31305A] flex items-center justify-between text-white font-Unbounded text-[14px]">
-        <span>{missionLoading ? (
-          <Skeleton width={150} height={21} borderRadius={4} />
-        ) : title}</span>
-        <div className="flex items-center gap-[12px]">
+    <div className={clsx("flex flex-col items-center", className)}>
+      <div className="text-white font-Unbounded text-[18px]">Global Crew Mission</div>
+      <div className="m-[18px_0_28px] text-[#A6A6DB] font-Unbounded text-[12px] font-light text-center">
+        Invite codes unlock every {missionLoading ? "24" : numberFormatter(quest_round_time / 3600, 0, true)}h upon mission completion.<br />Earn MON by inviting new crew members.
+      </div>
+      <div className="w-full p-[13px_15px_12px_15px] rounded-[6px] border border-[#26274B] bg-[#31305A] flex items-center justify-between text-white font-Unbounded text-[14px]">
+        <div className="flex-1">
+          {
+            missionLoading ? (
+              <Skeleton width={200} height={18} borderRadius={4} />
+            ) : title
+          }
+        </div>
+        <div className="flex items-center gap-[12px] shrink-0">
           {
             current_round_complete && (
               <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -30,42 +39,46 @@ export default memo(function Mission() {
             )
           }
           <div className="flex items-center gap-[2px]">+{missionLoading ? (
-            <Loading size={14} />
+            <Loading size={12} />
           ) : currentRountCodes} Codes</div>
         </div>
       </div>
 
-      <div className="m-[15px_0_35px] flex items-center gap-[7px] text-[12px] font-Unbounded font-light">
-        <span className="text-[#A6A6DB]">Next Mission {notZeroLastTime ? "in" : ""}</span>
-        <span className="text-white">{missionLoading ? (
-          <Skeleton width={85} height={18} borderRadius={4} />
-        ) : lastTime}</span>
-        {
-          !notZeroLastTime && (
-            <button
-              type="button"
-              className="w-[16px] h-[16px] flex items-center justify-center"
-              onClick={() => getMissionData()}
-              disabled={missionLoading}
-            >
-              <motion.img
-                src="/images/icon-refresh.svg"
-                alt="refresh"
-                className="w-[12px] h-[12px] object-center object-contain"
-                animate={missionLoading ? {
-                  rotate: [0, 360],
-                  transition: {
-                    duration: 1,
-                    repeat: Infinity,
-                  }
-                } : void 0}
-              />
-            </button>
-          )
-        }
+      <div className="m-[24px_0_0px] flex flex-col items-center gap-[9px] text-[12px] font-Unbounded font-light">
+        <div className="text-[#A6A6DB] flex items-center gap-[4px]">
+          <div>Next Mission {notZeroLastTime ? "in" : ""}</div>
+          <div>
+            {
+              !notZeroLastTime && (
+                <button
+                  type="button"
+                  className="w-[16px] h-[16px] flex items-center justify-center"
+                  onClick={() => getMissionData()}
+                  disabled={missionLoading}
+                >
+                  <motion.img
+                    src="/images/icon-refresh.svg"
+                    alt="refresh"
+                    className="w-[12px] h-[12px] object-center object-contain"
+                    animate={missionLoading ? {
+                      rotate: [0, 360],
+                      transition: {
+                        duration: 1,
+                        repeat: Infinity,
+                      }
+                    } : void 0}
+                  />
+                </button>
+              )
+            }
+          </div>
+        </div>
+        <MissionScreen>
+          {lastTime}
+        </MissionScreen>
       </div>
 
-      <div className="w-full h-[10px] grid grid-cols-5 gap-0 mb-[82px]">
+      {/* <div className="w-full h-[10px] grid grid-cols-5 gap-0 mb-[82px]">
         {
           consecutiveList.map((item, index) => {
             return (
@@ -77,7 +90,7 @@ export default memo(function Mission() {
             );
           })
         }
-      </div>
+      </div> */}
 
     </div>
   )
@@ -113,4 +126,14 @@ const ProgressItem = (props: any) => {
       </div>
     </div>
   );
+};
+
+export const MissionScreen = (props: any) => {
+  const { className, children } = props;
+
+  return (
+    <div className={clsx("w-[257px] h-[72px] flex items-center justify-center bg-black border border-[#55648A] rounded-[6px] shadow-[3px_3px_0px_0px_#2C3635_inset] text-[#03E212] text-center font-HackerNoonV2 [text-shadow:0_0_10px_rgba(3,226,18,0.5)] text-[18px] font-[400] leading-[120%] [background-image:linear-gradient(rgba(120,254,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(120,254,255,0.1)_1px,transparent_1px)] [background-size:35px_35px]", className)}>
+      {children}
+    </div>
+  )
 };

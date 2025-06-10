@@ -39,10 +39,11 @@ export default memo(function RuleModal() {
           <div>To access and distribute Invite Codes to the NADSA Space, you must first complete on-chain missions.</div>
           <div className="flex items-center gap-[8px]">
             <img className="w-[20px]" src="/images/codes/icons/2.png" />
-            <span className="font-bold">Unlock Conditions</span>
+            <span className="font-bold">How to Get Invite Codes</span>
           </div>
-          <div>Earn invite codes by executing trades within NADSA:</div>
-          <div className="flex items-center">
+          <div>NADSA releases one mission every 24 hours. Complete the mission to unlock one invite code.</div>
+
+          {/* <div className="flex items-center">
             <div className="m-[0_6px] w-[4px] h-[4px] rounded-full bg-white" />
             <div className="font-bold">3 transactions <span className="font-normal">→ Unlock</span> <span className="text-[#0F1]">+1</span> invite code</div>
           </div>
@@ -75,7 +76,8 @@ export default memo(function RuleModal() {
           <div className="flex items-center gap-[8px]">
             <img className="w-[20px]" src="/images/codes/icons/3.png" />
             <span>Invite codes unlock cumulatively — reach higher milestones to receive more codes.</span>
-          </div>
+          </div> */}
+
           <div className="flex items-center gap-[8px]">
             <img className="w-[20px]" src="/images/codes/icons/4.png" />
             <span className="font-bold">How Invite Codes Work</span>
