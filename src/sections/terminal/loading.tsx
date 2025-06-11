@@ -1,10 +1,10 @@
 "use client";
 
 import clsx from "clsx";
-import StarFieldCanvas from "@/sections/home/StarrySky";
 import { motion, useAnimate } from 'framer-motion';
 import React, { useEffect, useImperativeHandle } from 'react';
 import { useDebounceFn } from 'ahooks';
+import Starfield from "../home/Starfield";
 
 const SCALE = 10;
 // loading timeout is 13 s (include animation duration)
@@ -53,7 +53,7 @@ const ChatLoading = (props: any, ref: any) => {
         className
       )}
     >
-      <StarFieldCanvas className="!static !z-[0]" />
+      <Starfield className="!static !z-[0]" />
       <motion.img
         ref={boatRef}
         src="/images/chat/loading-bg.png"

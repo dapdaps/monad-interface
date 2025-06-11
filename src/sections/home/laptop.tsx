@@ -9,7 +9,6 @@ import withSound from "@/hoc/withSound";
 import LazyImage from "@/components/layz-image";
 import { ALL_DAPP_LIST } from "../dapps/config";
 import { IDapp } from "@/types";
-import StarrySkyCanvas from "./StarrySky";
 import { SpecialAnimateGif } from "./SpecialAnimateGif";
 import { GuideEntry } from "../invitation/guide";
 import { useDebounceFn } from "ahooks";
@@ -17,6 +16,7 @@ import useInviteCodes from "../codes/hooks/use-invite-codes";
 import { MissionScreen } from "../codes/components/mission";
 import { useMission } from "../codes/hooks/use-mission";
 import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover";
+import Starfield from "./Starfield";
 
 const itemWidth = 51;
 const itemGap = 6;
@@ -92,7 +92,7 @@ const Home = () => {
 
   return (
     <div className={`w-full ${window.innerHeight < 900 ? 'min-h-[900px] overflow-y-auto' : 'h-[100dvh]'} relative overflow-hidden`}>
-      <StarrySkyCanvas className="bg-[#000]" />
+      <Starfield className="bg-[#000]" />
       <div className="absolute top-0 left-0 right-0 h-[calc(623/14.4*var(--rem))] bg-[url(/images/monad/background/bg3.png)] bg-no-repeat bg-contain">
         <div className="absolute top-[20vh] right-[5vw] w-[221px] h-[171px] p-[8px_10px_0] shrink-0 bg-[url('/images/codes/bg-countdown-screen.png')] bg-no-repeat bg-contain bg-top">
           <Popover
