@@ -181,7 +181,7 @@ export default function NadsaPassCard({ onLoginOut }: any) {
                 >
                   <div className="text-[#FFFFFF]">Follow 0xNADSA on X</div>
                   <div
-                    className="absolute right-[10px] top-[10px]"
+                    className="absolute right-[-5px] top-[-5px]"
                     onClick={(e) => {
                       e.stopPropagation();
                     }}
@@ -215,7 +215,7 @@ export default function NadsaPassCard({ onLoginOut }: any) {
         )}
         {status === 0 && (
           <MainBtn
-            disabled={!!buttonText || !twitterStore?.bindInfo[twitterStore.id] || checkAllowlistLoading}
+            disabled={!!buttonText || isCheckFollowLoading || !isFollow || checkAllowlistLoading}
             onClick={() => mintNFT()}
             tokenBalance={tokenBalance}
           >
