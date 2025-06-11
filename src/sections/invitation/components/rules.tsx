@@ -1,5 +1,4 @@
 import useCustomAccount from "@/hooks/use-account";
-import { nftAddress } from "@/hooks/use-nft";
 import Link from "next/link";
 
 const Rules = (props: any) => {
@@ -28,7 +27,7 @@ const Rules = (props: any) => {
             </>
           ) : (
             <div className="text-center pt-[20px] pb-[24px]">
-              Access NADSA One by verifying your <Link className="text-[#78FEFF] underline underline-offset-2" href={`https://monad-testnet.socialscan.io/address/${nftAddress}`} target="_blank">Admission Ticket</Link> or<br /> entering your Access Code.
+              Access NADSA One by verifying your <Link className="text-[#78FEFF] underline underline-offset-2" href={`https://monad-testnet.socialscan.io/address/0x2d298c1f3a52af45ab3d34637aa293cf8a988c71`} target="_blank">Admission Ticket</Link> or<br /> entering your Access Code.
             </div>
           )
         }

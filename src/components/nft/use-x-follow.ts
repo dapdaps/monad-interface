@@ -3,6 +3,7 @@ import { useTwitterStore } from '@/stores/twitter';
 import { useNftStore } from '@/stores/nft';
 import useToast from '@/hooks/use-toast';
 import { get, post } from '@/utils/http';
+import useAccount from '@/hooks/use-account';
 
 export default function useXFollow() {
     const [isCheckFollowLoading, setIsCheckFollowLoading] = useState(false);
@@ -11,6 +12,7 @@ export default function useXFollow() {
     const isFollowNADSA = useNftStore((store: any) => store.isFollowNADSA);
     const setNftStore = useNftStore((store: any) => store.set);
     const { success, fail } = useToast();
+    const { account } = useAccount();
 
     const checkFollowRelationship = async () => {
         if (!twitterStore.info) return;
@@ -46,12 +48,12 @@ export default function useXFollow() {
     };
 
     useEffect(() => {
-        if (twitterStore.id && !isFollowNADSA) {
+        if (twitterStore.id && !isFollowNADSA && account) {
             setTimeout(() => {
                 checkFollowRelationship();
             }, 1000);
         }
-    }, [twitterStore.id, isFollowNADSA]);
+    }, [twitterStore.id, isFollowNADSA, account]);
 
     return {
         isCheckFollowLoading,
