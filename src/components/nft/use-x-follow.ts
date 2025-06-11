@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { useTwitterStore } from '@/stores/twitter';
 import { useNftStore } from '@/stores/nft';
 import useToast from '@/hooks/use-toast';
-import { get, post } from '@/utils/http';
+import { get, post, AUTH_TOKENS } from '@/utils/http';
 import useAccount from '@/hooks/use-account';
+import { sleep } from '@/sections/bridge/lib/util';
 
 export default function useXFollow() {
     const [isCheckFollowLoading, setIsCheckFollowLoading] = useState(false);
@@ -41,9 +42,14 @@ export default function useXFollow() {
 
     useEffect(() => {
         if (twitterStore.id && !isFollowNADSA && account) {
-            setTimeout(() => {
+            (async () => {
+                let tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
+                while (!tokens.state?.accessToken?.access_token) {
+                    await sleep(1000);
+                    tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
+                }
                 checkFollowRelationship();
-            }, 1000);
+            })();
         }
     }, [twitterStore.id, isFollowNADSA, account]);
 
