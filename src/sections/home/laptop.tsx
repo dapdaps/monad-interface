@@ -16,6 +16,7 @@ import { useDebounceFn } from "ahooks";
 import useInviteCodes from "../codes/hooks/use-invite-codes";
 import { MissionScreen } from "../codes/components/mission";
 import { useMission } from "../codes/hooks/use-mission";
+import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover";
 
 const itemWidth = 51;
 const itemGap = 6;
@@ -93,6 +94,36 @@ const Home = () => {
     <div className={`w-full ${window.innerHeight < 900 ? 'min-h-[900px] overflow-y-auto' : 'h-[100dvh]'} relative overflow-hidden`}>
       <StarrySkyCanvas className="bg-[#000]" />
       <div className="absolute top-0 left-0 right-0 h-[calc(623/14.4*var(--rem))] bg-[url(/images/monad/background/bg3.png)] bg-no-repeat bg-contain">
+        <div className="absolute top-[20vh] right-[5vw] w-[221px] h-[171px] p-[8px_10px_0] shrink-0 bg-[url('/images/codes/bg-countdown-screen.png')] bg-no-repeat bg-contain bg-top">
+          <Popover
+            content={(
+              <div className="relative w-[272px] h-[120px] p-[16px_0_0_16px] bg-[rgba(26,24,67,0.80)] border border-[#3E347C] rounded-[6px] filter-[drop-shadow(0px_0px_10px_rgba(0,_0,_0,_0.25))] backdrop-blur-[10px] text-white font-Unbounded text-[12px] font-[300] leading-[150%]">
+                <img src="/images/codes/icon-card-triaggle.svg" alt="" className="absolute top-[-14px] left-1/2 -translate-x-1/2 w-[18px] h-[14px] object-center object-contain" />
+                <div className="text-white font-Unbounded text-[12px] font-[500] leading-[150%]">
+                  Global Crew Mission Countdown
+                </div>
+                <div className="">
+                  Complete your daily mission to unlock an access code. Recruit a new crew member to earn MON rewards.
+                </div>
+              </div>
+            )}
+            trigger={PopoverTrigger.Hover}
+            placement={PopoverPlacement.Bottom}
+            closeDelayDuration={0}
+            offset={20}
+          >
+            <MissionScreen className="cursor-pointer flex flex-col !justify-start w-full h-[77px] !border-black !shadow-[0px_2px_0px_0px_rgba(255,_255,_255,_0.25)_inset] !rounded-[2px] ![background-image:unset] !p-[4px_5px]">
+              <div className="flex items-center px-[5px] whitespace-nowrap gap-[1px] w-full h-[24px] rounded-[2px] border border-[#FFBF49] bg-[rgba(255,191,73,0.20)] shadow-[0px_2px_0px_0px_rgba(255,255,255,0.25)_inset] text-[#FFBF49] text-center font-Unbounded text-[10px] font-[300] leading-normal justify-center">
+                <img src="/images/codes/icon-warn.svg" alt="" className="w-[18px] h-[18px] object-center object-contain shrink-0" />
+                <div className="flex-1">New Mission to be executed</div>
+              </div>
+              <div className="mt-[8px] text-[#A6A6DB] text-center font-Unbounded text-[10px] font-[300] leading-normal">
+                Next Mission in
+              </div>
+              <div className="text-[18px]">{lastTime}</div>
+            </MissionScreen>
+          </Popover>
+        </div>
       </div>
       <div
         ref={boatFloorRef}
@@ -225,10 +256,6 @@ const Home = () => {
                 >
                 </motion.div>
               </div>
-              <MissionScreen className="flex flex-col absolute bottom-0 z-[1] !border-[#313B58] [transform-style:preserve-3d] [transform:perspective(1000px)_rotateX(0deg)_rotateY(-50deg)_rotateZ(0deg)_scaleX(1)_scaleY(1.05)_skewX(-1deg)_skewY(12deg)_translateX(-60px)] [transform-origin:bottom] [perspective-origin:60%_35%]">
-                <div className="text-[#A6A6DB] text-center font-Unbounded text-[16px] font-light leading-normal [text-shadow:0px_0px_10px_rgba(3,226,18,0.50)]">Next Mission in</div>
-                <div className="text-[22px]">{lastTime}</div>
-              </MissionScreen>
             </div>
           </div>
           {/* Faucet */}
