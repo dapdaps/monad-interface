@@ -50,6 +50,9 @@ const handleUpgrade = (result: any) => {
 const get = async (url: string, query?: Record<string, any>, opts?: { isSkipFormatUrl?: boolean; }) => {
   const isSkipFormatUrl = opts?.isSkipFormatUrl;
   const tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
+
+  console.log('url tokens:', url, tokens);
+
   const options = {
     method: "GET",
     headers: {

@@ -9,6 +9,7 @@ export const useTwitterStore = create(
       code: "",
       info: {},
       bindInfo: {},
+      isFollowNADSA: false,
       set: (params: any) => set(() => ({ ...params }))
     }),
     {

@@ -17,6 +17,7 @@ import { sleep } from "@/sections/bridge/lib/util";
 import useTokenBalance from "@/hooks/use-token-balance";
 import { toast } from "react-toastify";
 import { useNftStore } from "@/stores/nft";
+import useXFollow from "./use-x-follow";
 
 const slides = [
   {
@@ -82,6 +83,7 @@ export default function Aboarding({
     18,
     monadTestnet.id
   );
+  const { checkFollowRelationship, isFollow, isCheckFollowLoading } = useXFollow();
 
   const handlePrev = () => {
     if (!address) return;
@@ -106,7 +108,7 @@ export default function Aboarding({
     () => slides[index] || {},
     [index]
   );
-  
+
   const isLast = useMemo(
     () => isMint || index === slides.length - 1,
     [index, isMint]
@@ -293,8 +295,7 @@ export default function Aboarding({
 
                               <div className="text-[#836EF9] text-center text-[12px] font-Pixelmix mt-[20px]">Get Yours</div>
                               <div className="mt-6 space-y-3">
-                                {!twitterStore?.bindInfo[twitterStore.id] ||
-                                  buttonText ? (
+                                {!isFollow || buttonText ? (
                                   <button
                                     onClick={() => {
                                       if (buttonText === "Connect X to access") {
@@ -309,18 +310,18 @@ export default function Aboarding({
                                         "https://twitter.com/intent/follow?screen_name=0xNADSA",
                                         "_blank"
                                       );
-                                      setTimeout(() => {
-                                        twitterStore.set({
-                                          bindInfo: {
-                                            ...twitterStore.bindInfo,
-                                            [twitterStore.id]: true
-                                          }
-                                        });
-                                      }, 3000);
                                     }}
-                                    className="w-full bg-[#00FF00] h-[44px] text-black flex items-center justify-center rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]"
+                                    className="w-full bg-[#00FF00] h-[44px] text-black flex px-[15px] items-center justify-between rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]"
                                   >
-                                    {buttonText || "Follow @0xNADSA on X"}
+                                    <span>{buttonText || "Follow @0xNADSA on X"}</span>
+                                    <div className="scale-[0.6]" onClick={(e) => {
+                                      e.stopPropagation();
+                                      checkFollowRelationship()
+                                    }}>
+                                      <div
+                                        className={`loader-arrow ${isCheckFollowLoading ? 'animate' : 'animate-none'}`}
+                                      ></div>
+                                    </div>
                                   </button>
                                 ) : (
                                   <div className="w-full relative  h-[44px] text-[#836EF9] flex items-center justify-between font-Pixelmix text-[12px] border border-[#836EF9] rounded-[4px] px-[15px]">
@@ -340,7 +341,8 @@ export default function Aboarding({
                                     isLoading ||
                                     checkAllowlistLoading ||
                                     !!buttonText ||
-                                    !twitterStore?.bindInfo[twitterStore.id]
+                                    isCheckFollowLoading || 
+                                    !isFollow
                                   }
                                 >
                                   {isLoading || checkAllowlistLoading ? (

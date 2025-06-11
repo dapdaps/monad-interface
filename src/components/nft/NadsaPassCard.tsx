@@ -12,6 +12,7 @@ import clsx from "clsx";
 import useTokenBalance from "@/hooks/use-token-balance";
 import { toast } from "react-toastify";
 import Big from "big.js";
+import useXFollow from "./use-x-follow";
 
 export default function NadsaPassCard({ onLoginOut }: any) {
   const {
@@ -23,7 +24,7 @@ export default function NadsaPassCard({ onLoginOut }: any) {
     isLoading,
     address,
     checkAllowlistLoading
-  } = useNFT({ 
+  } = useNFT({
     // nftAddress: "0x378d216463a2245bf4b70a1730579e4da175dd0f" 
     nftAddress: "0x2d298c1f3a52af45ab3d34637aa293cf8a988c71"
   });
@@ -40,8 +41,10 @@ export default function NadsaPassCard({ onLoginOut }: any) {
     handleBind
   } = useBindTwitterAccount({ withAuth: false });
 
+  const { checkFollowRelationship, isFollow, isCheckFollowLoading } = useXFollow();
+
   const status = useMemo(() => {
-    if (!address) {
+    if (!address || isCheckFollowLoading || !isFollow) {
       return 0;
     }
 
@@ -59,7 +62,7 @@ export default function NadsaPassCard({ onLoginOut }: any) {
     }
 
     return 0;
-  }, [hasNFT, nftMetadata, address]);
+  }, [hasNFT, nftMetadata, address, isFollow, isCheckFollowLoading]);
 
   return (
     <div className="w-[308px] p-4 relative">
@@ -162,7 +165,7 @@ export default function NadsaPassCard({ onLoginOut }: any) {
             )}
 
             <>
-              {!twitterStore?.bindInfo[twitterStore.id] || buttonText ? (
+              {!isFollow || buttonText ? (
                 <button
                   onClick={() => {
                     if (buttonText) return;
@@ -170,14 +173,6 @@ export default function NadsaPassCard({ onLoginOut }: any) {
                       "https://twitter.com/intent/follow?screen_name=0xNADSA",
                       "_blank"
                     );
-                    setTimeout(() => {
-                      twitterStore.set({
-                        bindInfo: {
-                          ...twitterStore.bindInfo,
-                          [twitterStore.id]: true
-                        }
-                      });
-                    }, 3000);
                   }}
                   className={clsx(
                     "flex relative items-center justify-center mt-[10px] text-[12px] w-full h-[40px] px-[10px] bg-[#7663F4] rounded-[2px] font-Pixelmix",
@@ -191,7 +186,14 @@ export default function NadsaPassCard({ onLoginOut }: any) {
                       e.stopPropagation();
                     }}
                   >
-                    {isBindTwitterAccountLoading && <EllipsisLoading />}
+                    <div className="scale-[0.6]" onClick={(e) => {
+                      e.stopPropagation();
+                      checkFollowRelationship()
+                    }}>
+                      <div
+                        className={`loader-arrow ${isCheckFollowLoading ? 'animate' : 'animate-none'}`}
+                      ></div>
+                    </div>
                   </div>
                 </button>
               ) : (

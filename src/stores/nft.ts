@@ -5,6 +5,7 @@ export const useNftStore = create(
   persist(
     (set, get: any) => ({
       closeNFTModal: false,
+      isFollowNADSA: false,
       set: (params: any) => set(() => ({ ...params }))
     }),
     {
