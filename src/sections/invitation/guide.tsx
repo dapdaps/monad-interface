@@ -49,7 +49,7 @@ export const GuideEntry = (props: any) => {
         </div>
       }
       triggerContainerClassName={clsx(
-        "w-[80px] h-[104px] shrink-0 rounded-[4px] border-2 border-[rgba(0,0,0,0)] hover:border-[#78FEFF] hover:shadow-[-10px_10px_0px_0px_rgba(0,_0,_0,_0.50)] hover:[transform:perspective(1000px)_rotateX(30deg)_rotateY(-30deg)_scale(1,_1.1)_skewX(40deg)_translateY(-4px)] transition-border duration-300 overflow-hidden shadow-[-6px_6px_0px_0px_rgba(0,_0,_0,_0.50)] [transform-style:preserve-3d] [transform:perspective(1000px)_rotateX(30deg)_rotateY(-30deg)_scale(1,_1.1)_skewX(40deg)] [transform-origin:bottom] [perspective-origin:60%_35%]",
+        "w-[60px] h-[78px] shrink-0 rounded-[4px] border-2 border-[rgba(0,0,0,0)] hover:border-[#78FEFF] hover:shadow-[-10px_10px_0px_0px_rgba(0,_0,_0,_0.50)] hover:[transform:perspective(1000px)_rotateX(30deg)_rotateY(-30deg)_scale(1,_1.1)_skewX(40deg)_translateY(-4px)] transition-border duration-300 overflow-hidden shadow-[-6px_6px_0px_0px_rgba(0,_0,_0,_0.50)] [transform-style:preserve-3d] [transform:perspective(1000px)_rotateX(30deg)_rotateY(-30deg)_scale(1,_1.1)_skewX(40deg)] [transform-origin:bottom] [perspective-origin:60%_35%]",
         className
       )}
       closeDelayDuration={0}
