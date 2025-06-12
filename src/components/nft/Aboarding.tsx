@@ -313,7 +313,7 @@ export default function Aboarding({
                                     }}
                                     className="w-full bg-[#00FF00] h-[44px] text-black flex px-[15px] items-center justify-between rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]"
                                   >
-                                    <span>{buttonText || "Follow @0xNADSA on X"}</span>
+                                    <div className="flex-1 text-center">{buttonText || "Follow @0xNADSA on X"}</div>
                                     {
                                       !buttonText && <div className="scale-[0.6]" onClick={(e) => {
                                         e.stopPropagation();
