@@ -180,21 +180,23 @@ export default function NadsaPassCard({ onLoginOut }: any) {
                   )}
                 >
                   <div className="text-[#FFFFFF]">Follow 0xNADSA on X</div>
-                  <div
-                    className="absolute right-[-5px] top-[-5px]"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <div className="scale-[0.6]" onClick={(e) => {
-                      e.stopPropagation();
-                      checkFollowRelationship()
-                    }}>
-                      <div
-                        className={`loader-arrow ${isCheckFollowLoading ? 'animate' : 'animate-none'}`}
-                      ></div>
+                  {
+                    !buttonText && <div
+                      className="absolute right-[-5px] top-[-5px]"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      <div className="scale-[0.6]" onClick={(e) => {
+                        e.stopPropagation();
+                        checkFollowRelationship()
+                      }}>
+                        <div
+                          className={`loader-arrow ${isCheckFollowLoading ? 'animate' : 'animate-none'}`}
+                        ></div>
+                      </div>
                     </div>
-                  </div>
+                  }
                 </button>
               ) : (
                 <div className="flex items-center justify-between mt-[10px] text-[12px] h-[40px] px-[10px] bg-[#212041] rounded-[2px] font-Pixelmix">

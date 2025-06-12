@@ -40,18 +40,18 @@ export default function useXFollow() {
         }
     };
 
-    useEffect(() => {
-        if (twitterStore.id && !isFollowNADSA && account) {
-            (async () => {
-                let tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
-                while (!tokens.state?.accessToken?.access_token) {
-                    await sleep(1000);
-                    tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
-                }
-                checkFollowRelationship();
-            })();
-        }
-    }, [twitterStore.id, isFollowNADSA, account]);
+    // useEffect(() => {
+    //     if (twitterStore.id && !isFollowNADSA && account) {
+    //         (async () => {
+    //             let tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
+    //             while (!tokens.state?.accessToken?.access_token) {
+    //                 await sleep(1000);
+    //                 tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
+    //             }
+    //             checkFollowRelationship();
+    //         })();
+    //     }
+    // }, [twitterStore.id, isFollowNADSA, account]);
 
     return {
         isCheckFollowLoading,

@@ -381,9 +381,15 @@ export function useTransactions() {
         // Sign and send transaction: play move
         console.log(`Playing move ${moveCount}!`);
 
-        const balance = userBalance.current;
+        let balance = userBalance.current;
         if (parseFloat(formatEther(balance)) < 0.01) {
-            throw Error("Signer has insufficient balance.");
+            balance = await publicClient.getBalance({
+                address: userAddress.current as Hex,
+            });
+            if (parseFloat(formatEther(balance)) < 0.01) {
+                throw Error("Signer has insufficient balance.");
+            }
+            userBalance.current = balance;
         }
 
         const nonce = userNonce.current;
