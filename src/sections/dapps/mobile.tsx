@@ -4,7 +4,6 @@ import { memo } from "react";
 import DappsEntry from './components/dapps-entry';
 import RectangularButton from './components/rectangular-button';
 import usePage from "./hooks/use-page";
-import { useSize } from 'ahooks';
 export default memo(function Mobile() {
   const {
     dappsArray,
@@ -17,9 +16,9 @@ export default memo(function Mobile() {
 
     handleClickButton
   } = usePage()
-  const size = useSize(document.getElementsByTagName("body")[0]);
+
   return (
-    <div ref={entryContainerRef} className='relative flex flex-col gap-[20px] overflow-x-hidden scrollbar-hide overflow-y-auto' style={{ height: size?.height - 213 }}>
+    <div ref={entryContainerRef} className='relative flex flex-col gap-[20px] overflow-x-hidden scrollbar-hide overflow-y-auto h-[calc(100vh_-_213px)]'>
       <div className="h-[21px] flex justify-center">
         <DappsFontSvg />
       </div>
