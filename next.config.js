@@ -109,7 +109,9 @@ const nextConfig = {
     };
 
     config.optimization.emitOnErrors = true;
-    if (process.env.NEXT_PUBLIC_API === "https://test-api-monad.dapdap.net") {
+    if (
+      process.env.NEXT_PUBLIC_API === "https://testnet-api-monad.dapdap.net"
+    ) {
       config.optimization.minimizer = [
         new TerserPlugin({
           terserOptions: {
