@@ -32,7 +32,8 @@ export const objectToQueryString = (obj: Record<string, any>): string => {
 
 const AUTH_TOKENS = `_user`;
 
-const BASE_URL = process.env.NEXT_PUBLIC_API || "https://test-api-monad.dapdap.net";
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API || "https://testnet-api-monad.dapdap.net";
 
 const getUrl = (url: string) => {
   return url.startsWith("http") ? url : `${BASE_URL}/api${url}`;
@@ -47,7 +48,11 @@ const handleUpgrade = (result: any) => {
   }
 };
 
-const get = async (url: string, query?: Record<string, any>, opts?: { isSkipFormatUrl?: boolean; }) => {
+const get = async (
+  url: string,
+  query?: Record<string, any>,
+  opts?: { isSkipFormatUrl?: boolean }
+) => {
   const isSkipFormatUrl = opts?.isSkipFormatUrl;
   const tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
 
@@ -67,13 +72,20 @@ const get = async (url: string, query?: Record<string, any>, opts?: { isSkipForm
 
   query = removeEmptyKeys(query);
   const queryStr = objectToQueryString(query);
-  const res = await fetch(`${isSkipFormatUrl ? url : getUrl(url)}?${queryStr}`, options);
+  const res = await fetch(
+    `${isSkipFormatUrl ? url : getUrl(url)}?${queryStr}`,
+    options
+  );
   const result = (await res.json()) as any;
   handleUpgrade(result);
   return result;
 };
 
-const getWithToken = async (url: string, query?: Record<string, any>, token?: string) => {
+const getWithToken = async (
+  url: string,
+  query?: Record<string, any>,
+  token?: string
+) => {
   const options = {
     method: "GET",
     headers: {
