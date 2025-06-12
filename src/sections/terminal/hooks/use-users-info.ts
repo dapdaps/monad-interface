@@ -25,7 +25,8 @@ export default function useUsersInfo() {
       (acc: Record<string, any>, user: any) => {
         acc[user.twitter_user_id] = {
           name: user.twitter_user_name,
-          id: user.twitter_user_id
+          id: user.twitter_user_id,
+          role: user.role
         };
         return acc;
       },

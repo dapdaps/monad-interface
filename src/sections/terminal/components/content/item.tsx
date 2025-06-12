@@ -33,7 +33,8 @@ export default function Item({
       }}
     >
       <div className="shrink-0">
-        [{dayjs(message.timestamp).format("HH:mm:ss")}] [{user?.name}]
+        [{dayjs(message.timestamp).format("HH:mm:ss")}] [
+        {user?.role ? user.role.toUpperCase() : user?.name}]
         {!!user?.level ? " " : ""}
         <Level level={user?.level} />:
       </div>
