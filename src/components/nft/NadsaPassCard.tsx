@@ -26,7 +26,7 @@ export default function NadsaPassCard({ onLoginOut }: any) {
     checkAllowlistLoading
   } = useNFT({
     // nftAddress: "0x378d216463a2245bf4b70a1730579e4da175dd0f" 
-    nftAddress: "0x2d298c1f3a52af45ab3d34637aa293cf8a988c71"
+    nftAddress: process.env.NEXT_PUBLIC_CHART_NFT || "0x2d298c1f3a52af45ab3d34637aa293cf8a988c71"
   });
   const { openConnectModal } = useConnectModal();
   const { tokenBalance, isLoading: isTokenBalanceLoading } = useTokenBalance(

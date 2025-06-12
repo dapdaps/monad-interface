@@ -68,7 +68,7 @@ export default function Aboarding({
       // nftAddress: "0xbe0a1db63a34aa64f24decaf3f34e71fcb3c323a"
       // nftAddress: "0x8645f70452fd8bbefa9606aebd2ce03ea0c4e330"
       // nftAddress: '0x0d83faa6fdb847c445b350078b030de3bb08cc49'
-      nftAddress: '0xb46115299f13c731a99bcf9a57f0e9968071343e'
+      nftAddress: process.env.NEXT_PUBLIC_INDEX_NFT || '0xb46115299f13c731a99bcf9a57f0e9968071343e'
     });
   const { address } = useAccount();
   const twitterStore: any = useTwitterStore();
