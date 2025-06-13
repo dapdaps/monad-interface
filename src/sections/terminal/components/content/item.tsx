@@ -25,10 +25,18 @@ export default function Item({
     };
   }, [isTypewriter]);
 
-  const text = useMemo(
-    () => (message?.text || message?.content) ?? "",
-    [message]
-  );
+  const text = useMemo(() => {
+    if (typeof message?.text === "string") {
+      return message?.text;
+    }
+    if (typeof message?.content === "string") {
+      return message?.content;
+    }
+    if (typeof message?._lctext === "string") {
+      return message?._lctext;
+    }
+    return "";
+  }, [message]);
 
   return (
     <div

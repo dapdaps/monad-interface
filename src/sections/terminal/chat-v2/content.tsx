@@ -165,7 +165,9 @@ const ChatContent = (props: any) => {
             <Item
               key={index}
               isTypewriter={
-                !(message.from === FE_SYSTEM_KEY && message.type === "buffer")
+                !(
+                  message.from === FE_SYSTEM_KEY && message.type === "buffer"
+                ) && !message.isSlient
               }
               roleColor="text-[#8D7CFF]"
               className="!text-[14px]"
