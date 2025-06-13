@@ -7,7 +7,7 @@ import {
 } from "leancloud-realtime";
 import LC from "leancloud-storage";
 import { useEffect, useRef, useState } from "react";
-import { useDebounceFn, useRequest } from "ahooks";
+import { useDebounceFn, useRequest, useInterval } from "ahooks";
 import useUsersInfo from "../hooks/use-users-info";
 import { useTerminalStore } from "@/stores/terminal";
 import ChatCard from "@/sections/terminal/chat-v2/card";
@@ -86,9 +86,7 @@ const SYSTEM_CHECK_MESSAGES = [
 
 export default function ChatView({ currentUser }: any) {
   // @ts-ignore
-  const [messages, setMessages] = useState<TextMessage[]>([
-    ...SYSTEM_CHECK_MESSAGES
-  ]);
+  const [messages, setMessages] = useState<any[]>([...SYSTEM_CHECK_MESSAGES]);
   const [previousPageMessages, setPagePreviousMessages] = useState<
     TextMessage[]
   >([]);
@@ -102,6 +100,17 @@ export default function ChatView({ currentUser }: any) {
   const { fetchUsersInfo } = useUsersInfo();
   const terminalStore: any = useTerminalStore();
   const twitterStore: any = useTwitterStore();
+  const [isPageVisible, setIsPageVisible] = useState(true);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      setIsPageVisible(!document.hidden);
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
 
   const { run: scrollToBottom } = useDebounceFn(
     () => {
@@ -288,6 +297,8 @@ export default function ChatView({ currentUser }: any) {
             await fetchUsersInfo([message.from], {
               from: "New message received"
             });
+            // @ts-ignore
+            message.isSlient = document.hidden;
             setMessages((prev) => [...prev, message]);
           });
 
@@ -356,6 +367,17 @@ export default function ChatView({ currentUser }: any) {
       info: {}
     });
   };
+
+  useInterval(
+    () => {
+      if (conversationRef.current && isConnected && isPageVisible) {
+        conversationRef.current.count().then((res: any) => {
+          setOnlineUsers(res);
+        });
+      }
+    },
+    isConnected && isPageVisible ? 30000 : undefined
+  );
 
   return (
     <div className="relative w-full h-screen overflow-x-hidden bg-[#010101] font-Pixelmix text-[#8D7CFF] text-[14px] font-[400] leading-[200%] overflow-y-auto cursor-pointer terminal">

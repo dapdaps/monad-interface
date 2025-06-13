@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import Level from "./level";
 import Typewriter from "@/sections/terminal/components/typewriter";
 import clsx from "clsx";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 export default function Item({
   message,
@@ -25,6 +25,19 @@ export default function Item({
     };
   }, [isTypewriter]);
 
+  const text = useMemo(() => {
+    if (typeof message?.text === "string") {
+      return message?.text;
+    }
+    if (typeof message?.content === "string") {
+      return message?.content;
+    }
+    if (typeof message?._lctext === "string") {
+      return message?._lctext;
+    }
+    return "";
+  }, [message]);
+
   return (
     <div
       className={clsx("flex gap-[8px] text-[16px] leading-[200%]", className)}
@@ -39,12 +52,13 @@ export default function Item({
         <Level level={user?.level} />:
       </div>
       {isTypewriter ? (
-        <Typewriter
-          text={(message?.text || message?.content) ?? ""}
-          onAnimationComplete={onAnimationComplete}
-        />
+        <Typewriter text={text} onAnimationComplete={onAnimationComplete} />
       ) : (
-        <div>{(message?.text || message?.content) ?? ""}</div>
+        <div>
+          {text.split("\n").map((item: string, index: number) => (
+            <div key={index}>{item}</div>
+          ))}
+        </div>
       )}
     </div>
   );
