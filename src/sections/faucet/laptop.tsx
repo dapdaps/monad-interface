@@ -13,7 +13,6 @@ import HistoryButton from './components/history-button';
 import HistoryModal from './components/history-modal';
 export default memo(function Laptop() {
   const store = useFaucetStore()
-  const size = useSize(document.getElementsByTagName("body")[0])
 
   return (
     <div className="w-full h-screen bg-[#0E0F29]">

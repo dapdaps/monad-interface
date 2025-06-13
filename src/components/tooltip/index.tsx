@@ -91,7 +91,7 @@ const Tooltip = forwardRef<Refs, Props>((props, ref) => {
     cancelClose: cancelCloseTooltip
   }));
 
-  if (!tooltip) return children;
+  if (!tooltip || typeof document === "undefined") return children;
 
   return (
     <div className="flex justify-center" style={containerStyle}>

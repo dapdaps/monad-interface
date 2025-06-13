@@ -23,7 +23,7 @@ const SwitchNetwork = (props: Props) => {
     }
   };
 
-  if (targetChain.id === chainId) return null;
+  if (targetChain.id === chainId || typeof document === "undefined") return null;
 
   return ReactDOM.createPortal((
     <AnimatePresence mode="wait">

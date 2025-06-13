@@ -30,7 +30,6 @@ export default memo(function DappsEntry({
   const soundStore = useSoundStore();
   const [targetDapp, setTargetDapp] = useState<any>(null);
   const [clickedDapp, setClickedDapp] = useState(null)
-  const size = useSize(document.getElementsByTagName("body")[0]);
   const controls = useAnimation();
   const [clicked, setClicked] = useState(false);
   const [offsetX, setOffsetX] = useState(0);
