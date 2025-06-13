@@ -394,7 +394,7 @@ export default function ChatView({ currentUser }: any) {
         onlineUsers={onlineUsers}
         onLoginOut={onLoginOut}
       />
-      <div className="w-[calc(100%-308px)] flex justify-center min-w-[1085px] md:flex-1 md:h-0 md:overflow-hidden">
+      <div className="w-[calc(100%-308px)] flex justify-center min-w-[1085px] md:flex-1 md:h-0 md:overflow-hidden md:w-full md:min-w-[unset]">
         <ChatCard className="mt-[45px] md:mt-0 md:pb-[12px]">
           <ChatContent
             messagesRef={messagesRef}
