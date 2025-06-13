@@ -11,7 +11,7 @@ export default function Layout({ children }: any) {
   const { validUser } = useInvitationContext();
   const isMobile = useIsMobile();
 
-  return <SimpleLayout>{children}</SimpleLayout>;
+  // return <SimpleLayout>{children}</SimpleLayout>;
 
   if (["/terminal", "/terminal/login"].includes(pathname)) {
     return <SimpleLayout>{children}</SimpleLayout>;

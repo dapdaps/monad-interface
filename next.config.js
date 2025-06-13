@@ -165,7 +165,14 @@ const nextConfig = {
         ]
       }
     ];
-  }
+  },
+  redirects: async () => [
+    {
+      source: "/",
+      destination: "/terminal",
+      permanent: true
+    }
+  ]
 };
 
 const withBundleStatsPlugin =
