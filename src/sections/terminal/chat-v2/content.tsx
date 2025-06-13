@@ -178,7 +178,7 @@ const ChatContent = (props: any) => {
                   : chatStore.users[message.from?.toLowerCase()]
               }
               onAnimationComplete={() => {
-                scrollToBottom();
+                if (!message.isSlient) scrollToBottom();
                 if (mergedMessages.length - 1 > displayedMessageIndex) {
                   const _displayedMessageIndex = displayedMessageIndex + 1;
                   setDisplayedMessageIndex(_displayedMessageIndex);

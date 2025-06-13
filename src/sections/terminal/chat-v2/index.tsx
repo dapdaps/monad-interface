@@ -101,6 +101,7 @@ export default function ChatView({ currentUser }: any) {
   const terminalStore: any = useTerminalStore();
   const twitterStore: any = useTwitterStore();
   const [isPageVisible, setIsPageVisible] = useState(true);
+  const loadingMessageRef = useRef(false);
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -153,6 +154,8 @@ export default function ChatView({ currentUser }: any) {
           }
         }
 
+        loadingMessageRef.current = true;
+
         const historyMessages = await conversationRef.current.queryMessages(
           options
         );
@@ -183,10 +186,7 @@ export default function ChatView({ currentUser }: any) {
           const scrollHeightBefore = messagesRef.current?.scrollHeight;
           const scrollTopBefore = messagesRef.current?.scrollTop;
           setPagePreviousMessages((prevMessages) => {
-            return [...prevMessages, ...sortedMessages].sort(
-              (a: any, b: any) =>
-                dayjs(a.timestamp).valueOf() - dayjs(b.timestamp).valueOf()
-            ) as TextMessage[];
+            return [...prevMessages, ...sortedMessages] as TextMessage[];
           });
           const _timer = setTimeout(() => {
             clearTimeout(_timer);
@@ -200,6 +200,7 @@ export default function ChatView({ currentUser }: any) {
               ...prevMessages,
               ...sortedMessages
             ] as TextMessage[];
+
             return [
               ...nextMessages.slice(0, SYSTEM_CHECK_MESSAGES.length),
               ...nextMessages
@@ -211,6 +212,7 @@ export default function ChatView({ currentUser }: any) {
             ];
           });
         }
+        loadingMessageRef.current = false;
       },
       { manual: true }
     );
@@ -298,7 +300,9 @@ export default function ChatView({ currentUser }: any) {
               from: "New message received"
             });
             // @ts-ignore
-            message.isSlient = document.hidden;
+            message.isSlient =
+              document.hidden || !isElementInViewport(messagesEndRef.current);
+
             setMessages((prev) => [...prev, message]);
           });
 
@@ -412,3 +416,15 @@ export default function ChatView({ currentUser }: any) {
     </div>
   );
 }
+
+const isElementInViewport = (el: HTMLElement | null) => {
+  if (!el) return false;
+  const rect = el.getBoundingClientRect();
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <=
+      (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  );
+};
