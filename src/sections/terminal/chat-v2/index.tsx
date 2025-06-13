@@ -21,6 +21,8 @@ import NFT from "@/components/nft";
 import { useTwitterStore } from "@/stores/twitter";
 import { post } from "@/utils/http";
 import "./animate.css";
+import useIsMobile from "@/hooks/use-isMobile";
+import ChatFooter from "./footer";
 
 const realtime = new Realtime({
   appId: process.env.NEXT_PUBLIC_LEANCLOUD_APP_ID!,
@@ -85,6 +87,8 @@ const SYSTEM_CHECK_MESSAGES = [
 ];
 
 export default function ChatView({ currentUser }: any) {
+  const isMobile = useIsMobile();
+
   // @ts-ignore
   const [messages, setMessages] = useState<any[]>([...SYSTEM_CHECK_MESSAGES]);
   const [previousPageMessages, setPagePreviousMessages] = useState<
@@ -384,14 +388,14 @@ export default function ChatView({ currentUser }: any) {
   );
 
   return (
-    <div className="relative w-full h-screen overflow-x-hidden bg-[#010101] font-Pixelmix text-[#8D7CFF] text-[14px] font-[400] leading-[200%] overflow-y-auto cursor-pointer terminal">
+    <div className="relative md:flex md:flex-col md:items-stretch w-full h-screen overflow-x-hidden bg-[#010101] font-Pixelmix text-[#8D7CFF] text-[14px] font-[400] leading-[200%] overflow-y-auto cursor-pointer terminal">
       <ChatHeader
         currentUser={currentUser}
         onlineUsers={onlineUsers}
         onLoginOut={onLoginOut}
       />
-      <div className="w-[calc(100%-308px)] flex justify-center min-w-[1085px]">
-        <ChatCard className="mt-[45px]">
+      <div className="w-[calc(100%-308px)] flex justify-center min-w-[1085px] md:flex-1 md:h-0 md:overflow-hidden">
+        <ChatCard className="mt-[45px] md:mt-0 md:pb-[12px]">
           <ChatContent
             messagesRef={messagesRef}
             sendMessage={sendMessage}
@@ -406,6 +410,11 @@ export default function ChatView({ currentUser }: any) {
           />
         </ChatCard>
       </div>
+      {
+        isMobile && (
+          <ChatFooter className="fixed bottom-0 left-0 w-full" />
+        )
+      }
       <ChatBg />
       <NFT
         isOpen={true}
