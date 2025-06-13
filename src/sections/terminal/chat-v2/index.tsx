@@ -297,10 +297,9 @@ export default function ChatView({ currentUser }: any) {
             await fetchUsersInfo([message.from], {
               from: "New message received"
             });
-            setMessages((prev) => [
-              ...prev,
-              { ...message, isSlient: document.hidden }
-            ]);
+            // @ts-ignore
+            message.isSlient = document.hidden;
+            setMessages((prev) => [...prev, message]);
           });
 
           chatroom.count().then((res: any) => {
