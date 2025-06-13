@@ -53,7 +53,7 @@ const ChatContent = (props: any) => {
   const [displayedMessageIndex, setDisplayedMessageIndex] = useState<any>(0);
   const [displayedAllHistoryMessages, setDisplayedAllHistoryMessages] =
     useState<any>(false);
-  const [inputFocused, setInputFocused] = useState<any>(true);
+  
 
   useEffect(() => {
     if (displayedAllHistoryMessages) {
@@ -79,24 +79,6 @@ const ChatContent = (props: any) => {
     displayedAllHistoryMessages,
     displayedMessageIndex
   ]);
-
-  useEffect(() => {
-    const handleFocus = () => {
-      setInputFocused(true);
-    };
-    const handleBlur = () => {
-      setInputFocused(false);
-    };
-
-    const input: any = inputRef.current;
-    input?.addEventListener("focus", handleFocus);
-    input?.addEventListener("blur", handleBlur);
-
-    return () => {
-      input?.removeEventListener("focus", handleFocus);
-      input?.removeEventListener("blur", handleBlur);
-    };
-  }, []);
 
   useEffect(() => {
     if (!inputRef.current) return;
@@ -211,7 +193,6 @@ const ChatContent = (props: any) => {
             !isMobile && (
               <CurrentUserInput
                 currentUser={currentUser}
-                inputFocused={inputFocused}
                 inputRef={inputRef}
                 remainTime={remainTime}
                 sendMessage={sendMessage}
@@ -228,7 +209,6 @@ const ChatContent = (props: any) => {
         isMobile && (
           <CurrentUserInput
             currentUser={currentUser}
-            inputFocused={inputFocused}
             inputRef={inputRef}
             remainTime={remainTime}
             sendMessage={sendMessage}
@@ -250,7 +230,27 @@ const ChatContent = (props: any) => {
 export default ChatContent;
 
 const CurrentUserInput = (props: any) => {
-  const { className, currentUser, inputFocused, inputRef, remainTime, sendMessage, setInputMessage, inputMessage } = props;
+  const { className, currentUser, inputRef, remainTime, sendMessage, setInputMessage, inputMessage } = props;
+
+  const [inputFocused, setInputFocused] = useState<any>(true);
+
+  useEffect(() => {
+    const handleFocus = () => {
+      setInputFocused(true);
+    };
+    const handleBlur = () => {
+      setInputFocused(false);
+    };
+
+    const input: any = inputRef.current;
+    input?.addEventListener("focus", handleFocus);
+    input?.addEventListener("blur", handleBlur);
+
+    return () => {
+      input?.removeEventListener("focus", handleFocus);
+      input?.removeEventListener("blur", handleBlur);
+    };
+  }, []);
 
   return (
     <div className={clsx("flex items-center gap-[8px] text-[#0F1] md:border-t md:border-[#836EF9] md:border-dashed md:px-[15px]", className)}>
