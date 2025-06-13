@@ -40,11 +40,11 @@ export default function Item({
       </div>
       {isTypewriter ? (
         <Typewriter
-          text={message?.text ?? ""}
+          text={(message?.text || message?.content) ?? ""}
           onAnimationComplete={onAnimationComplete}
         />
       ) : (
-        <div>{message?.text ?? ""}</div>
+        <div>{(message?.text || message?.content) ?? ""}</div>
       )}
     </div>
   );
