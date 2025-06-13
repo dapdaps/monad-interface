@@ -386,7 +386,7 @@ export default function ChatView({ currentUser }: any) {
         onlineUsers={onlineUsers}
         onLoginOut={onLoginOut}
       />
-      <div className="w-full flex justify-center">
+      <div className="w-[calc(100%-308px)] flex justify-center min-w-[1085px]">
         <ChatCard className="mt-[45px]">
           <ChatContent
             messagesRef={messagesRef}
@@ -403,12 +403,12 @@ export default function ChatView({ currentUser }: any) {
         </ChatCard>
       </div>
       <ChatBg />
-      {/* <NFT
+      <NFT
         isOpen={true}
         closeModal={() => {}}
         className="!items-start pt-[60px]"
         onLoginOut={onLoginOut}
-      /> */}
+      />
     </div>
   );
 }
