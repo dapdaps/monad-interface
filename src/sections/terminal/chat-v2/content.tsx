@@ -1,8 +1,6 @@
 import clsx from "clsx";
-import { POST_LIMIT_SECONDS } from "@/sections/terminal/hooks/use-limit";
 import { useEffect, useMemo, useRef, useState } from "react";
-import dayjs from "dayjs";
-import { useInterval, useRequest } from "ahooks";
+import { useInterval } from "ahooks";
 import { useTerminalStore } from "@/stores/terminal";
 import {
   FE_SYSTEM,
@@ -14,6 +12,8 @@ import { uniqBy } from "lodash";
 import Item from "@/sections/terminal/components/content/item";
 import Level from "@/sections/terminal/components/content/level";
 import { motion } from "framer-motion";
+import ChatFooter from "./footer";
+import useIsMobile from "@/hooks/use-isMobile";
 
 const ChatContent = (props: any) => {
   const {
@@ -29,20 +29,9 @@ const ChatContent = (props: any) => {
     inputMessage,
     scrollToBottom
   } = props;
-
-  const [currentTime, setCurrentTime] = useState(dayjs());
   const terminalStore: any = useTerminalStore();
   const [remainTime, setRemainTime] = useState(0);
-  const { data: currentDay } = useRequest(
-    async () => {
-      return dayjs(currentTime).diff(START_DATE, "day");
-    },
-    { refreshDeps: [currentTime] }
-  );
-
-  useInterval(() => {
-    setCurrentTime(dayjs());
-  }, 1000);
+  const isMobile = useIsMobile();
 
   useInterval(
     () => {
@@ -128,18 +117,18 @@ const ChatContent = (props: any) => {
   }, [terminalStore.remainSeconds]);
 
   return (
-    <div className={clsx("w-full h-full p-[30px] relative", className)}>
-      <div className="px-[30px] pt-[10px]">
+    <div className={clsx("w-full h-full p-[30px] md:p-0 relative md:flex md:flex-col md:items-stretch", className)}>
+      <div className="px-[30px] md:pl-[15px] pt-[10px] md:pt-0 md:translate-y-[-24px]">
         <img
           src="/images/logo-pixel.svg"
           alt=""
-          className="shrink-0 w-[129px] h-[55px] object-contain object-center"
+          className="shrink-0 w-[129px] h-[55px] md:w-[88px] md:h-[37px] object-contain object-center"
         />
       </div>
-      <div className="w-full h-[calc(100%_-_65px_-_51px)] pt-[25px] pb-[15px]">
+      <div className="w-full h-[calc(100%_-_65px_-_51px)] md:h-0 md:flex-1 pt-[25px] md:pt-0 pb-[15px] md:pb-0 md:translate-y-[-10px]">
         <div
           ref={messagesRef}
-          className="w-full h-full overflow-y-auto px-[30px] text-[!E7E2FF]"
+          className="w-full h-full overflow-y-auto px-[30px] md:px-0 text-[!E7E2FF]"
           onScroll={(e) => {
             const element = e.target as HTMLDivElement;
             if (element.scrollTop < 5) {
@@ -156,7 +145,7 @@ const ChatContent = (props: any) => {
               key={`previousPage-${index}`}
               isTypewriter={false}
               roleColor="text-[#8D7CFF]"
-              className="!text-[14px]"
+              className="!text-[14px] md:px-[15px]"
               message={message}
               user={chatStore.users[message.from?.toLowerCase()]}
             />
@@ -168,7 +157,7 @@ const ChatContent = (props: any) => {
                 !(message.from === FE_SYSTEM_KEY && message.type === "buffer")
               }
               roleColor="text-[#8D7CFF]"
-              className="!text-[14px]"
+              className="!text-[14px] md:px-[15px]"
               message={message}
               user={
                 message.from === FE_SYSTEM_KEY
@@ -191,7 +180,7 @@ const ChatContent = (props: any) => {
             />
           ))}
           {remainTime > 0 && (
-            <div className="relative">
+            <div className="relative md:px-[15px]">
               <Item
                 isTypewriter={false}
                 roleColor="text-[#8D7CFF]"
@@ -218,50 +207,83 @@ const ChatContent = (props: any) => {
               />
             </div>
           )}
-          <div className="flex items-center gap-[8px] text-[#0F1]">
-            <div className="shrink-0">
-              [{currentUser.name}] <Level level={currentUser.level} />:
-            </div>
-            <>
-              {!inputFocused && (
-                <motion.div
-                  className="shrink-0 w-[1px] h-[16px] bg-[#0F1]"
-                  initial={{
-                    opacity: 0
-                  }}
-                  animate={{
-                    opacity: [0, 1, 0]
-                  }}
-                  transition={{
-                    type: "none",
-                    repeat: Infinity,
-                    duration: 1
-                  }}
-                />
-              )}
-              <input
-                ref={inputRef}
-                className="bg-transparent flex-1 text-[14px] text-[#0F1] placeholder:text-[#8D7CFF]"
-                autoFocus
-                disabled={remainTime > 0}
-                onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-                onChange={(e) => setInputMessage(e.target.value)}
-                value={inputMessage}
+          {
+            !isMobile && (
+              <CurrentUserInput
+                currentUser={currentUser}
+                inputFocused={inputFocused}
+                inputRef={inputRef}
+                remainTime={remainTime}
+                sendMessage={sendMessage}
+                setInputMessage={setInputMessage}
+                inputMessage={inputMessage}
               />
-            </>
-          </div>
+            )
+          }
 
           <div ref={messagesEndRef} />
         </div>
       </div>
-      <div className="shrink-0 flex justify-between items-center px-[30px] pt-[10px] pb-[16px] border-t border-dashed border-[#836EF9] text-[12px] font-Pixelmix text-[#8D7CFF] leading-[200%]">
-        <div className="">
-          MONADVERSE: DAY {currentDay} {dayjs(currentTime).format("HH:mm:ss")}
-        </div>
-        <div className="">SIGNAL DELAY: {POST_LIMIT_SECONDS}s</div>
-      </div>
+      {
+        isMobile && (
+          <CurrentUserInput
+            currentUser={currentUser}
+            inputFocused={inputFocused}
+            inputRef={inputRef}
+            remainTime={remainTime}
+            sendMessage={sendMessage}
+            setInputMessage={setInputMessage}
+            inputMessage={inputMessage}
+            className="h-[56px] shrink-0 !items-start"
+          />
+        )
+      }
+      {
+        !isMobile && (
+          <ChatFooter />
+        )
+      }
     </div>
   );
 };
 
 export default ChatContent;
+
+const CurrentUserInput = (props: any) => {
+  const { className, currentUser, inputFocused, inputRef, remainTime, sendMessage, setInputMessage, inputMessage } = props;
+
+  return (
+    <div className={clsx("flex items-center gap-[8px] text-[#0F1] md:border-t md:border-[#836EF9] md:border-dashed md:px-[15px]", className)}>
+      <div className="shrink-0">
+        [{currentUser.name}] <Level level={currentUser.level} />:
+      </div>
+      <>
+        {!inputFocused && (
+          <motion.div
+            className="shrink-0 w-[1px] h-[16px] md:h-[15px] bg-[#0F1] md:translate-y-[6px]"
+            initial={{
+              opacity: 0
+            }}
+            animate={{
+              opacity: [0, 1, 0]
+            }}
+            transition={{
+              type: "none",
+              repeat: Infinity,
+              duration: 1
+            }}
+          />
+        )}
+        <textarea
+          ref={inputRef}
+          className="bg-transparent flex-1 w-0 text-[14px] text-[#0F1] placeholder:text-[#8D7CFF] resize-none h-[28px] border-0 outline-none md:h-full scrollbar-hide md:leading-[120%] md:pt-[5px]"
+          autoFocus
+          disabled={remainTime > 0}
+          onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+          onChange={(e) => setInputMessage(e.target.value)}
+          value={inputMessage}
+        />
+      </>
+    </div>
+  );
+};
