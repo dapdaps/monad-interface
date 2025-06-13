@@ -63,6 +63,7 @@ export default memo(function Tiger(props: any) {
     setMultiple,
   } = props;
 
+  const [size, setSize] = useState({ width: 0, height: 0 });
   const [openBuyTimes, setOpenBuyTimes] = useState(false);
   const [openHistory, setOpenHistory] = useState(false);
   const [openRules, setOpenRules] = useState(false);
@@ -416,6 +417,10 @@ export default memo(function Tiger(props: any) {
   });
 
   useEffect(() => {
+    setSize({ width: window.innerWidth, height: window.innerHeight });
+  }, []);
+
+  useEffect(() => {
     startSlowScroll();
 
     return () => {
@@ -482,7 +487,7 @@ export default memo(function Tiger(props: any) {
         marginBottom: '-2px',
         width: '765px',
         height: '710px',
-        transform: `translate(-50%, 0) scale(${Math.min(window.innerHeight / 1000, 2)})`,
+        transform: `translate(-50%, 0) scale(${Math.min(size.height / 1000, 2)})`,
         transformOrigin: 'bottom center'
       }}>
         <Notice />

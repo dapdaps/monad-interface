@@ -41,6 +41,8 @@ const Popover = (props: Props) => {
     setRealVisible(false);
   }, { wait: closeDelayDuration });
 
+  if (typeof document === "undefined") return children;
+
   return (
     <>
       <div
