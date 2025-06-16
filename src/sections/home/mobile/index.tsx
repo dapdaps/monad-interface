@@ -7,6 +7,7 @@ import { useRef } from "react";
 import MovingGif from "../MovingGif";
 import CodesMission from "../components/codes-mission";
 import { GuideEntry } from "@/sections/invitation/guide";
+import useInviteCodes from "@/sections/codes/hooks/use-invite-codes";
 
 const itemWidth = 51;
 const itemGap = 6;
@@ -19,6 +20,7 @@ const Mobile = () => {
   const mobileContainerRef = useRef(null);
   const [guideEntryContainerRef, guideEntryAnimate] = useAnimate();
   const { scrollYProgress } = useScroll({ container: mobileContainerRef });
+  const { unUsedInviteCodes } = useInviteCodes();
 
   useMotionValueEvent(scrollYProgress, "change", (latestValue) => {
     if (latestValue < 0.9) {
@@ -73,9 +75,31 @@ const Mobile = () => {
             />
           </div>
           {/* game */}
-          <div className="absolute right-[11%] top-[-9%] w-[141px] h-[145px]">
+          <div
+            className="absolute right-[11%] top-[-9%] w-[141px] h-[145px]"
+            data-bp="1001-007"
+            onClick={() => router.push("/game")}
+          >
+            <div className="absolute left-1/2 translate-x-[calc(-50%_+_30px)] top-[-50px] cursor-pointer scale-[0.7]">
+                <div className="w-full flex flex-col gap-[2px] items-center justify-center">
+                  <img src="/images/monad/icon/arcade.svg" alt="" />
+                  <motion.img
+                    animate={{
+                      rotateY: 180,
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                    src="/images/monad/icon/point.svg"
+                    className="w-[38px] h-[38px]"
+                    alt=""
+                  />
+                </div>
+              </div>
             <img
-              src="/images/mobile/entry/game-locked.svg"
+              src="/images/mobile/entry/game.svg"
               className="w-full h-full"
               alt=""
             />
@@ -248,31 +272,37 @@ const Mobile = () => {
               </div>
             </div>
           </div>
-          {/* yapper */}
+          {/* Codes */}
           <div
             data-bp="1001-005"
+            data-hover-sound
+            onClick={() => router.push("/codes")}
             className={clsx(
               "z-[4] w-[378px] h-[290px] absolute bottom-[18%] left-[-36%] scale-[0.68]",
-              "bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper-lock.svg)]",
+              "bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper.svg)]",
             )}
           >
             <div className="relative w-full h-full">
-              {/* <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
+              <div className="absolute left-1/2 -translate-x-1/2 top-[-30px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
-                  <div className="w-full flex items-center justify-center">
-                    <img src="/images/monad/icon/yapper.svg" alt="" />
-                    <div className="text-[12px] font-Unbounded font-[500] leading-[90%] text-[#6D7EA5]">
-                      soon
-                    </div>
+                  <div className="w-full flex items-center justify-center gap-2">
+                    <img src="/images/monad/icon/codes.svg" alt="" className="shrink-0" />
+                    {
+                      unUsedInviteCodes?.length > 0 && (
+                        <div className="shrink-0 px-[8px] h-[18px] text-[12px] font-[900] leading-[90%] flex items-center justify-center font-Unbounded rounded-[21px] border border-black bg-[#BFFF60] shadow-[0px_2px_0px_0px_rgba(0,_0,_0,_0.50)]">
+                          {unUsedInviteCodes?.length}
+                        </div>
+                      )
+                    }
                   </div>
                   <img
-                    src="/images/monad/icon/disabled-point.svg"
+                    src="/images/monad/icon/point.svg"
                     className="w-[38px] h-[38px]"
                     alt=""
                   />
                 </div>
-              </div> */}
-              {/* <div className="absolute w-[244px] h-[223px] left-1/2 -translate-x-1/2 top-[-38px] ml-[20px]">
+              </div>
+              <div className="absolute w-[200px] h-[183px] left-1/2 -translate-x-1/2 top-[10px] ml-[20px]">
                 <motion.div
                   animate={{ rotate: [-10, 10] }}
                   transition={{
@@ -284,7 +314,7 @@ const Mobile = () => {
                   }}
                   className="relative w-full h-full bg-no-repeat bg-contain bg-[url(/images/monad/entry/radar.svg)]"
                 ></motion.div>
-              </div>*/}
+              </div>
             </div>
           </div>
         </div>

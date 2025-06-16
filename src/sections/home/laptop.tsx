@@ -186,7 +186,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          {/* yapper */}
+          {/* Codes */}
           <div
             data-bp="1001-005"
             data-hover-sound
