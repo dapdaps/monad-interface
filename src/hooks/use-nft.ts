@@ -158,7 +158,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`
+                    // 'Authorization': `Bearer ${accessToken}`
                 },
                 body: JSON.stringify({
                     "chain": "monad-testnet",
@@ -212,7 +212,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`
+                // 'Authorization': `Bearer ${accessToken}`
             },
             body: JSON.stringify({
                 "collectionId": nftAddress,
