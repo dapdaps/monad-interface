@@ -1,10 +1,12 @@
 import LazyImage from "@/components/layz-image";
 import { ALL_DAPP_LIST } from "@/sections/dapps/config";
 import clsx from "clsx";
-import { motion } from "framer-motion";
+import { motion, useAnimate, useMotionValueEvent, useScroll } from "framer-motion";
 import { useRouter } from "next-nprogress-bar";
 import { useRef } from "react";
 import MovingGif from "../MovingGif";
+import CodesMission from "../components/codes-mission";
+import { GuideEntry } from "@/sections/invitation/guide";
 
 const itemWidth = 51;
 const itemGap = 6;
@@ -12,7 +14,36 @@ const itemGap = 6;
 
 const Mobile = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const guideEntryRef = useRef<any>();
   const router = useRouter();
+  const mobileContainerRef = useRef(null);
+  const [guideEntryContainerRef, guideEntryAnimate] = useAnimate();
+  const { scrollYProgress } = useScroll({ container: mobileContainerRef });
+
+  useMotionValueEvent(scrollYProgress, "change", (latestValue) => {
+    if (latestValue < 0.9) {
+      guideEntryAnimate(guideEntryContainerRef.current, {
+        y: -100,
+        opacity: 0,
+      }, {
+        duration: 0.01,
+      });
+      guideEntryRef.current?.closePopover();
+    } else {
+      guideEntryAnimate(guideEntryContainerRef.current, {
+        y: 0,
+        opacity: 1,
+      }, {
+        type: "spring",
+        stiffness: 100,
+        damping: 25,
+        mass: 1.2,
+        onComplete: () => {
+          guideEntryRef.current?.openPopover();
+        },
+      });
+    }
+  });
 
   const duplicateFunc = (items: any, times: number = 2) => {
     return Array(times).fill(items).flat();
@@ -23,13 +54,14 @@ const Mobile = () => {
   const totalWidth = ALL_DAPP_LIST.length * (itemWidth + itemGap) - itemGap;
 
   return (
-    <div className="w-full h-[100dvh] bg-[#13142F] relative overflow-x-hidden overflow-y-scroll scrollbar-hide">
+    <div ref={mobileContainerRef} className="w-full h-[100dvh] bg-[#13142F] relative overflow-x-hidden overflow-y-scroll scrollbar-hide">
       <div className="w-full h-[278px] bg-[url(/images/mobile/home-bg1.svg)] bg-no-repeat bg-cover" />
       <div className="absolute top-[22%] w-full h-[830px] bg-[url(/images/mobile/home-bg2.svg)] bg-cover bg-no-repeat">
         <div className="w-full h-full relative">
           <div className="absolute bottom-0 w-full h-[218px]  bg-cover bg-[url(/images/mobile/home-bg3.svg)] bg-no-repeat">
             <div className="w-full h-full relative">
-                <MovingGif.MovingForMobile1st />
+              <MovingGif.MovingForMobile1st className="!z-[13]" />
+
             </div>
           </div>
           {/* bridge */}
@@ -135,7 +167,7 @@ const Mobile = () => {
                 <img src="/images/monad/background/tokens-moyaki.gif" className="w-[100px] scale-[0.6]" alt="" />
               </div>
               <div className="absolute left-[33px] top-[6px]">
-                  <img src="/images/monad/background/cover.svg" className="scale-[0.5]" alt="" />
+                <img src="/images/monad/background/cover.svg" className="scale-[0.5]" alt="" />
               </div>
             </div>
           </div>
@@ -253,10 +285,19 @@ const Mobile = () => {
                   className="relative w-full h-full bg-no-repeat bg-contain bg-[url(/images/monad/entry/radar.svg)]"
                 ></motion.div>
               </div>*/}
-            </div> 
-          </div> 
+            </div>
+          </div>
         </div>
+        <motion.div
+          ref={guideEntryContainerRef}
+          id="guide-entry-container"
+          className="absolute z-[1] w-[40px] h-[52px] bottom-[60px] right-[10px]"
+          initial={{ y: -100, opacity: 0 }}
+        >
+          <GuideEntry ref={guideEntryRef} className="!w-full !h-full" />
+        </motion.div>
       </div>
+      <CodesMission className="!fixed z-[10] !top-[unset] !right-[unset] bottom-[46px] left-1/2 -translate-x-1/2" />
     </div>
   );
 };

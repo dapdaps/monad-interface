@@ -13,10 +13,8 @@ import { SpecialAnimateGif } from "./SpecialAnimateGif";
 import { GuideEntry } from "../invitation/guide";
 import { useDebounceFn } from "ahooks";
 import useInviteCodes from "../codes/hooks/use-invite-codes";
-import { MissionScreen } from "../codes/components/mission";
-import { useMission } from "../codes/hooks/use-mission";
-import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover";
 import Starfield from "./Starfield";
+import CodesMission from "./components/codes-mission";
 
 const itemWidth = 51;
 const itemGap = 6;
@@ -24,7 +22,6 @@ const itemGap = 6;
 const Home = () => {
   const router = useRouter();
   const { unUsedInviteCodes } = useInviteCodes();
-  const { lastTime } = useMission();
 
   const boatFloorRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -94,32 +91,7 @@ const Home = () => {
     <div className={`w-full ${window.innerHeight < 900 ? 'min-h-[900px] overflow-y-auto' : 'h-[100dvh]'} relative overflow-hidden`}>
       <Starfield className="bg-[#000]" />
       <div className="absolute top-0 left-0 right-0 h-[calc(623/14.4*var(--rem))] bg-[url(/images/monad/background/bg3.png)] bg-no-repeat bg-contain">
-        <div className="absolute top-[20vh] right-[5vw] w-[221px] h-[171px] p-[9px_12px_0] shrink-0 bg-[url('/images/codes/bg-countdown-screen.png')] bg-no-repeat bg-contain bg-top">
-          <Popover
-            content={(
-              <div className="relative w-[272px] h-[120px] p-[16px_0_0_16px] bg-[rgba(26,24,67,0.80)] border border-[#3E347C] rounded-[6px] filter-[drop-shadow(0px_0px_10px_rgba(0,_0,_0,_0.25))] backdrop-blur-[10px] text-white font-Unbounded text-[12px] font-[300] leading-[150%]">
-                <img src="/images/codes/icon-card-triaggle.svg" alt="" className="absolute top-[-14px] left-1/2 -translate-x-1/2 w-[18px] h-[14px] object-center object-contain" />
-                <div className="text-white font-Unbounded text-[12px] font-[500] leading-[150%]">
-                  Global Crew Mission Countdown
-                </div>
-                <div className="">
-                  Earn a new invite code every 24 hours by using the platform. Onboard your friends to earn MON rewards.
-                </div>
-              </div>
-            )}
-            trigger={PopoverTrigger.Hover}
-            placement={PopoverPlacement.Bottom}
-            closeDelayDuration={0}
-            offset={20}
-          >
-            <MissionScreen className="cursor-pointer flex flex-col gap-[3px] w-full h-[75px] !border-black !shadow-[0px_2px_0px_0px_rgba(255,_255,_255,_0.25)_inset] !rounded-[2px] ![background-image:unset] !p-[4px_5px]">
-              <div className="text-[#A6A6DB] text-center font-Unbounded text-[10px] font-[300] leading-normal">
-                Next code drop in
-              </div>
-              <div className="text-[18px]">{lastTime}</div>
-            </MissionScreen>
-          </Popover>
-        </div>
+        <CodesMission />
       </div>
       <div
         ref={boatFloorRef}
