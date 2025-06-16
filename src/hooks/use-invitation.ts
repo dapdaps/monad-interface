@@ -3,7 +3,7 @@ import useCustomAccount from "./use-account";
 import { useRequest } from "ahooks";
 import { INVITATION_CODE_LENGTH } from "@/sections/invitation/config";
 import { useAnimate } from "framer-motion";
-import { nftAddress, useNFT } from "./use-nft";
+import { useNFT } from "./use-nft";
 import { post } from "@/utils/http";
 import useToast from "./use-toast";
 import { useUserStore } from "@/stores/user";
@@ -13,7 +13,7 @@ import { useGuideStore } from "@/stores/guide";
 
 export function useInvitation<Invitation>() {
   const { account } = useCustomAccount();
-  const { hasNFT, checking } = useNFT({ nftAddress: nftAddress });
+  const { hasNFT, checking } = useNFT({ nftAddress: process.env.NEXT_PUBLIC_INDEX_NFT || '0xb46115299f13c731a99bcf9a57f0e9968071343e' });
   const toast = useToast();
   const userInfo = useUserStore((store: any) => store.user);
   const userInfoLoading = useUserStore((store: any) => store.loading);
@@ -158,6 +158,7 @@ export function useInvitation<Invitation>() {
   return {
     loading,
     hasNFT,
+    nftLoading: checking,
     validUser,
     invitationCode,
     handleInvitationCodeChange,

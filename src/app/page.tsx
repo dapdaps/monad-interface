@@ -1,8 +1,8 @@
-'use client'
-import Home from '@/sections/home';
+"use client";
+import Home from "@/sections/home";
+import { redirect } from "next/navigation";
 
 export default function Index() {
-  return (
-    <Home />
-  );
+  return redirect("/terminal");
+  return <Home />;
 }

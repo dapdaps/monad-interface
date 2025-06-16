@@ -3,7 +3,8 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 const createBundleStatsPlugin = require("next-plugin-bundle-stats");
 
-const BASE_URL = process.env.NEXT_PUBLIC_API || "https://api.dapdap.net";
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API || "https://testnet-api-monad.dapdap.net";
 const GAME_BASE_URL =
   process.env.NEXT_PUBLIC_GAME_API_DOMAIN ||
   "https://dev-api-game.beratown.app";
@@ -60,7 +61,7 @@ const nextConfig = {
     {
       source: "/haha-delete/:path*",
       destination: "https://test.nadsa.space/:path*"
-    },
+    }
   ],
   webpack: (config, { dev }) => {
     config.resolve.alias.stream = "stream-browserify";
@@ -108,7 +109,9 @@ const nextConfig = {
     };
 
     config.optimization.emitOnErrors = true;
-    if (process.env.NEXT_PUBLIC_API === "https://dev-api.beratown.app") {
+    if (
+      process.env.NEXT_PUBLIC_API === "https://testnet-api-monad.dapdap.net"
+    ) {
       config.optimization.minimizer = [
         new TerserPlugin({
           terserOptions: {
@@ -154,17 +157,17 @@ const nextConfig = {
   headers: async () => {
     return [
       {
-        source: '/:all*(svg|jpg|jpeg|png|gif|webp|ico|js|css|woff2|woff|ttf|eot)',
+        source:
+          "/:all*(svg|jpg|jpeg|png|gif|webp|ico|js|css|woff2|woff|ttf|eot)",
         headers: [
-          { 
-            key: 'Cache-Control',
-            value: 'public, max-age=86400',
-          },
-        ],
-      },
-    ]
-  },
-
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400"
+          }
+        ]
+      }
+    ];
+  }
 };
 
 const withBundleStatsPlugin =

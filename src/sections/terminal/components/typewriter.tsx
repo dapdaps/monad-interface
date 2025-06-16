@@ -1,16 +1,15 @@
 import { motion } from "framer-motion";
-import { useMemo } from 'react';
-import { useDebounceFn } from 'ahooks';
+import { useMemo } from "react";
+import { useDebounceFn } from "ahooks";
 
 export const letterVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { opacity: { duration: 0 } } },
+  visible: { opacity: 1, transition: { opacity: { duration: 0 } } }
 };
 
 const WAIT = 150;
 
 const Typewriter = ({ text, onAnimationComplete, ...rest }: any) => {
-
   const length = text?.length || 0;
 
   const staggerChildren = useMemo(() => {
@@ -25,15 +24,18 @@ const Typewriter = ({ text, onAnimationComplete, ...rest }: any) => {
     return Math.max(0.001, Math.min(0.1, number));
   }, []);
 
-  const { run: handleAnimationComplete, cancel } = useDebounceFn(onAnimationComplete, { wait: WAIT });
+  const { run: handleAnimationComplete, cancel } = useDebounceFn(
+    onAnimationComplete,
+    { wait: WAIT }
+  );
 
   return (
     <motion.p
       key={text}
-      className=""
+      className="break-all"
       variants={{
         hidden: {},
-        visible: { opacity: 1, transition: { staggerChildren } },
+        visible: { opacity: 1, transition: { staggerChildren } }
       }}
       initial="hidden"
       animate="visible"
@@ -43,10 +45,14 @@ const Typewriter = ({ text, onAnimationComplete, ...rest }: any) => {
       }}
       {...rest}
     >
-      {text.split("").map((char: any, i: number) => (
-        <motion.span key={`${char}-${i}`} variants={letterVariants}>
-          {char}
-        </motion.span>
+      {text.split("\n").map((item: string, index: number) => (
+        <div key={index}>
+          {item.split("").map((char: any, i: number) => (
+            <motion.span key={`${char}-${i}`} variants={letterVariants}>
+              {char}
+            </motion.span>
+          ))}
+        </div>
       ))}
     </motion.p>
   );

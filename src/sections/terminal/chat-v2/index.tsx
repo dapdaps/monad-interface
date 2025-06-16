@@ -7,7 +7,7 @@ import {
 } from "leancloud-realtime";
 import LC from "leancloud-storage";
 import { useEffect, useRef, useState } from "react";
-import { useDebounceFn, useRequest } from "ahooks";
+import { useDebounceFn, useRequest, useInterval } from "ahooks";
 import useUsersInfo from "../hooks/use-users-info";
 import { useTerminalStore } from "@/stores/terminal";
 import ChatCard from "@/sections/terminal/chat-v2/card";
@@ -21,6 +21,8 @@ import NFT from "@/components/nft";
 import { useTwitterStore } from "@/stores/twitter";
 import { post } from "@/utils/http";
 import "./animate.css";
+import useIsMobile from "@/hooks/use-isMobile";
+import ChatFooter from "./footer";
 
 const realtime = new Realtime({
   appId: process.env.NEXT_PUBLIC_LEANCLOUD_APP_ID!,
@@ -85,10 +87,10 @@ const SYSTEM_CHECK_MESSAGES = [
 ];
 
 export default function ChatView({ currentUser }: any) {
+  const isMobile = useIsMobile();
+
   // @ts-ignore
-  const [messages, setMessages] = useState<TextMessage[]>([
-    ...SYSTEM_CHECK_MESSAGES
-  ]);
+  const [messages, setMessages] = useState<any[]>([...SYSTEM_CHECK_MESSAGES]);
   const [previousPageMessages, setPagePreviousMessages] = useState<
     TextMessage[]
   >([]);
@@ -102,6 +104,17 @@ export default function ChatView({ currentUser }: any) {
   const { fetchUsersInfo } = useUsersInfo();
   const terminalStore: any = useTerminalStore();
   const twitterStore: any = useTwitterStore();
+  const [isPageVisible, setIsPageVisible] = useState(true);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      setIsPageVisible(!document.hidden);
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
 
   const { run: scrollToBottom } = useDebounceFn(
     () => {
@@ -288,6 +301,8 @@ export default function ChatView({ currentUser }: any) {
             await fetchUsersInfo([message.from], {
               from: "New message received"
             });
+            // @ts-ignore
+            message.isSlient = document.hidden;
             setMessages((prev) => [...prev, message]);
           });
 
@@ -357,15 +372,26 @@ export default function ChatView({ currentUser }: any) {
     });
   };
 
+  useInterval(
+    () => {
+      if (conversationRef.current && isConnected && isPageVisible) {
+        conversationRef.current.count().then((res: any) => {
+          setOnlineUsers(res);
+        });
+      }
+    },
+    isConnected && isPageVisible ? 30000 : undefined
+  );
+
   return (
-    <div className="relative w-full h-screen overflow-x-hidden bg-[#010101] font-Pixelmix text-[#8D7CFF] text-[14px] font-[400] leading-[200%] overflow-y-auto cursor-pointer terminal">
+    <div className="relative md:flex md:flex-col md:items-stretch w-full h-screen overflow-x-hidden bg-[#010101] font-Pixelmix text-[#8D7CFF] text-[14px] font-[400] leading-[200%] overflow-y-auto cursor-pointer terminal">
       <ChatHeader
         currentUser={currentUser}
         onlineUsers={onlineUsers}
         onLoginOut={onLoginOut}
       />
-      <div className="w-[calc(100%-308px)] flex justify-center min-w-[1085px]">
-        <ChatCard className="mt-[45px]">
+      <div className="w-full flex justify-center md:flex-1 md:h-0 md:overflow-hidden md:w-full md:min-w-[unset]">
+        <ChatCard className="mt-[45px] md:mt-0 md:pb-[12px]">
           <ChatContent
             messagesRef={messagesRef}
             sendMessage={sendMessage}
@@ -380,13 +406,18 @@ export default function ChatView({ currentUser }: any) {
           />
         </ChatCard>
       </div>
+      {
+        isMobile && (
+          <ChatFooter className="fixed bottom-0 left-0 w-full" />
+        )
+      }
       <ChatBg />
-      <NFT
+      {/* <NFT
         isOpen={true}
         closeModal={() => {}}
         className="!items-start pt-[60px]"
         onLoginOut={onLoginOut}
-      />
+      /> */}
     </div>
   );
 }
