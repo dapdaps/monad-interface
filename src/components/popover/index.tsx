@@ -1,6 +1,6 @@
 import { createPortal } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { Dispatch, forwardRef, SetStateAction, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { useDebounceFn } from 'ahooks';
 import useIsMobile from '@/hooks/use-isMobile';
 
@@ -12,7 +12,7 @@ import useIsMobile from '@/hooks/use-isMobile';
 //            |                                  |
 // LeftBottom ------------------------------------ RightBottom
 //            BottomLeft     Bottom    BottomRight
-const Popover = (props: Props) => {
+const Popover = forwardRef((props: Props, ref: any) => {
   const {
     children,
     content,
@@ -40,6 +40,17 @@ const Popover = (props: Props) => {
     setVisible(false);
     setRealVisible(false);
   }, { wait: closeDelayDuration });
+
+  const refs: any = {
+    onClose: () => {
+      setVisible(false);
+      setRealVisible(false);
+    },
+    onOpen: () => {
+      setVisible(true);
+    },
+  };
+  useImperativeHandle(ref, () => refs);
 
   return (
     <>
@@ -172,7 +183,7 @@ const Popover = (props: Props) => {
       }
     </>
   );
-};
+});
 
 export default Popover;
 
