@@ -23,6 +23,7 @@ import { post } from "@/utils/http";
 import "./animate.css";
 import useIsMobile from "@/hooks/use-isMobile";
 import ChatFooter from "./footer";
+import DataOverrideMobile from "../components/data-override";
 
 const realtime = new Realtime({
   appId: process.env.NEXT_PUBLIC_LEANCLOUD_APP_ID!,
@@ -408,6 +409,14 @@ export default function ChatView({ currentUser }: any) {
             inputMessage={inputMessage}
             scrollToBottom={scrollToBottom}
           />
+          {
+            isMobile && (
+              <DataOverrideMobile
+                className="absolute top-[-32px] right-[8px]"
+                onLoginOut={onLoginOut}
+              />
+            )
+          }
         </ChatCard>
       </div>
       {
@@ -416,12 +425,16 @@ export default function ChatView({ currentUser }: any) {
         )
       }
       <ChatBg />
-      <NFT
-        isOpen={true}
-        closeModal={() => {}}
-        className="!items-start pt-[60px]"
-        onLoginOut={onLoginOut}
-      />
+      {
+        !isMobile && (
+          <NFT
+            isOpen={true}
+            closeModal={() => {}}
+            className="!items-start pt-[60px]"
+            onLoginOut={onLoginOut}
+          />
+        )
+      }
     </div>
   );
 }
