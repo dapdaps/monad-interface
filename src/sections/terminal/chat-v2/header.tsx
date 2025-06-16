@@ -3,6 +3,7 @@ import clsx from "clsx";
 // import { formatLongText } from "@/utils/utils";
 // import { useRequest } from "ahooks";
 import { numberFormatter } from "@/utils/number-formatter";
+import useIsMobile from "@/hooks/use-isMobile";
 // import LevelPanel from "@/sections/terminal/components/footer/level-panel";
 // import Popover, {
 //   PopoverPlacement,
@@ -12,13 +13,20 @@ import { numberFormatter } from "@/utils/number-formatter";
 const ChatHeader = (props: any) => {
   const { className, currentUser, onlineUsers, onLoginOut } = props;
 
+  const isMobile = useIsMobile();
+
   return (
     <div
       className={clsx(
-        "sticky top-0 z-[120] w-full py-[20px] pl-[30px] pr-[34px] flex justify-between items-center font-Pixelmix text-xs text-[#8D7CFF] font-normal leading-[200%]",
+        "sticky md:relative md:shrink-0 md:bg-[url('/images/terminal/bg-mobile-header.svg')] md:bg-no-repeat md:bg-cover md:bg-[position:center_-15px] top-0 z-[120] w-full py-[20px] md:pt-[38px] md:pb-0 pl-[30px] md:pl-[8px] pr-[34px] md:pr-[3px] flex justify-between items-center font-Pixelmix text-xs text-[#8D7CFF] font-normal leading-[200%]",
         className
       )}
     >
+      {
+        isMobile && (
+          <div className="absolute left-0 top-0 w-full h-[26px] bg-[linear-gradient(180deg,_#000_0%,_rgba(0,_0,_0,_0.00)_100%)] pointer-events-none" />
+        )
+      }
       <div className="flex items-center gap-[15px]">
         <div className="text-[#0F1]">
           {numberFormatter(onlineUsers, 0, true)} Active
@@ -36,7 +44,7 @@ const ChatHeader = (props: any) => {
       </div>
       <div className="flex items-center justify-end gap-[8px]">
         <div className="">
-          Account: <span className="text-[#0F1]">@{currentUser.name}</span>
+          {!isMobile && "Account: "}<span className="text-[#0F1]">@{currentUser.name}</span>
         </div>
         <button
           type="button"

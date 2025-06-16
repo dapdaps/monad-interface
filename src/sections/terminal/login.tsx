@@ -27,16 +27,16 @@ const LoginView = (props: any) => {
           <img
             src="/images/terminal/icon-alert.gif"
             alt=""
-            className="mt-[25px] w-[120px] h-[120px] object-center object-contain shrink-0"
+            className="mt-[25px] w-[120px] h-[120px] md:w-[72px] md:h-[72px] object-center object-contain shrink-0"
           />
           <img
             src="/images/login/nadsa-terminnal-access.svg"
             alt=""
-            className="mt-[33px] w-[445px] h-[22px] object-center object-contain shrink-0"
+            className="mt-[33px] w-[445px] h-[22px] md:w-[90%] object-center object-contain shrink-0"
           />
-          <div className="mt-[50px] w-[440px] shrink-0 flex flex-col items-center">
+          <div className="mt-[50px] w-[440px] md:w-[77%] shrink-0 flex flex-col items-center">
             <Button
-              className="mt-[26px] h-[52px] font-Pixelmix disabled:!cursor-not-allowed disabled:opacity-30 shrink-0 w-full rounded-[2px] text-white text-center text-[16px] leading-[90%]"
+              className="mt-[26px] h-[52px] font-Pixelmix disabled:!cursor-not-allowed disabled:opacity-30 shrink-0 w-full rounded-[2px] text-white text-center text-[16px] md:text-[14px] leading-[90%]"
               disabled={buttonDisabled}
               onClick={() => {
                 window.open(
@@ -46,7 +46,7 @@ const LoginView = (props: any) => {
                   "_blank"
                 );
               }}
-              bgColor="#7B23FF"
+              bgColor="#7663F4"
               loading={logining}
             >
               {buttonText}
@@ -71,7 +71,7 @@ export const LoginContainer = (props: any) => {
       )}
     >
       <video
-        className="w-full h-[272px] absolute top-0 left-0 z-[1] object-fill rotate-180 pointer-events-none"
+        className="w-full h-[272px] md:h-[136px] absolute top-0 left-0 z-[1] object-fill rotate-180 pointer-events-none"
         autoPlay
         loop
         muted
@@ -80,7 +80,7 @@ export const LoginContainer = (props: any) => {
         <source src="/images/login/bg-grid.webm" type="video/webm" />
       </video>
       <video
-        className="w-full h-[460px] absolute bottom-0 left-0 z-[1] object-fill pointer-events-none"
+        className="w-full h-[460px] md:h-[200px] absolute bottom-0 left-0 z-[1] object-fill pointer-events-none"
         autoPlay
         loop
         muted
