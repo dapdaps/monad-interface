@@ -27,6 +27,7 @@ const Modal: React.FC<ModalProps> = (props) => {
 
   if (!props.open || typeof document === "undefined") return null;
 
+
   return ReactDOM.createPortal(
     (
       <ModalContent {...restProps}>

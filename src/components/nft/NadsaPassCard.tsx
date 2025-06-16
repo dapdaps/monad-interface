@@ -13,6 +13,7 @@ import useTokenBalance from "@/hooks/use-token-balance";
 import { toast } from "react-toastify";
 import Big from "big.js";
 import useXFollow from "./use-x-follow";
+import { shareToX } from "@/utils/utils";
 
 export default function NadsaPassCard({ onLoginOut }: any) {
   const {
@@ -210,10 +211,24 @@ export default function NadsaPassCard({ onLoginOut }: any) {
           </>
         )}
 
-        {status === 1 && (
+        {status === 1 && (<div>
           <div className="flex items-center justify-center gap-[10px] text-[12px] h-[40px] mt-[10px] mb-[10px] text-[#00FF11] font-Pixelmix">
             <RightArrow /> Mint Successfully
           </div>
+          <MainBtn
+            disabled={false}
+            onClick={() => {
+              shareToX(`NADSA_ADMISSION_TICKET logged. %0A
+
+Something’s brewing at @0xNADSA — I’m already in. %0A
+
+See you on the inside. %0A`)
+            }}
+            tokenBalance={tokenBalance}
+          >
+            Share on X
+          </MainBtn>
+        </div>
         )}
         {status === 0 && (
           <MainBtn

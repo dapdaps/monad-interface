@@ -19,7 +19,7 @@ export default function Layout({ children }: any) {
     <MainLayout>
       {!isMobile && <InvitationView />}
       {!isMobile && !validUser ? null : children}
-      {!isMobile && <GuideView />}
+      {<GuideView />}
     </MainLayout>
   );
 }

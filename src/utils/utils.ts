@@ -88,31 +88,31 @@ export async function uploadFile(file: File | Blob, url: string = '/upload') {
   try {
     const formData = new FormData();
     formData.append('file', file);
-    
+
     const response = await postFile(url, formData);
-    
-    console.log('response', response)
+
     if (response.code === 200) {
       return response.data.url;
     } else {
       throw new Error(response.message);
     }
-    
+
   } catch (error) {
-    console.error('文件上传错误:', error);
+    console.error('uplaod fail:', error);
     throw error;
   }
 }
 
-export function shareToX(text: string, link: string) {
-  console.log('shareToX', text, link)
-  window.open(
-      `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(link)}`
-  );
+export function shareToX(text: string, link?: string) {
+  let xPath = `https://twitter.com/intent/tweet?text=${text}`
+  if (link) {
+    xPath += `&url=${encodeURIComponent(link)}`
+  }
+  window.open(xPath);
 }
 
 
-
+  
 export function capitalize(str: string) {
   if (!str) return str;
   return str.charAt(0).toUpperCase() + str.substring(1);

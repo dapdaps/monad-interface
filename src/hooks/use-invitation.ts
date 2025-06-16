@@ -34,7 +34,10 @@ export function useInvitation<Invitation>() {
   const [invitationCode, setInvitationCode] = useState<string>("");
 
   const handleAccess = () => {
-    if (!scopeLeftDoor.current || !scopeRightDoor.current || !scopeCodePad.current || !scopeInvitation.current) return Promise.resolve(true);
+    if (!scopeLeftDoor.current || !scopeRightDoor.current || !scopeCodePad.current || !scopeInvitation.current) {
+      return Promise.resolve(true);
+    }
+
     animateLeftDoor(scopeLeftDoor.current, {
       x: "-100%",
     }, {
@@ -139,6 +142,10 @@ export function useInvitation<Invitation>() {
   useEffect(() => {
     if (validUser) {
       handleAccess().then(() => {
+        const currentVisited = getVisited(account);
+        if (!currentVisited) {
+          setVisible(true);
+        }
         setFinalValid(true);
       });
       return;
