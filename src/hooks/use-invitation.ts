@@ -10,6 +10,7 @@ import { useUserStore } from "@/stores/user";
 import useUser from "./use-user";
 import { trim } from "lodash";
 import { useGuideStore } from "@/stores/guide";
+import useIsMobile from "./use-isMobile";
 
 export function useInvitation<Invitation>() {
   const { account } = useCustomAccount();
@@ -19,6 +20,7 @@ export function useInvitation<Invitation>() {
   const userInfoLoading = useUserStore((store: any) => store.loading);
   const { getUserInfo } = useUser();
   const { getVisited, setVisible } = useGuideStore();
+  const isMobile = useIsMobile();
 
   const [scopeLeftDoor, animateLeftDoor] = useAnimate();
   const [scopeRightDoor, animateRightDoor] = useAnimate();
@@ -34,10 +36,7 @@ export function useInvitation<Invitation>() {
   const [invitationCode, setInvitationCode] = useState<string>("");
 
   const handleAccess = () => {
-    if (!scopeLeftDoor.current || !scopeRightDoor.current || !scopeCodePad.current || !scopeInvitation.current) {
-      return Promise.resolve(true);
-    }
-
+    if (!scopeLeftDoor.current || !scopeRightDoor.current || !scopeCodePad.current || !scopeInvitation.current || isMobile) return Promise.resolve(true);
     animateLeftDoor(scopeLeftDoor.current, {
       x: "-100%",
     }, {

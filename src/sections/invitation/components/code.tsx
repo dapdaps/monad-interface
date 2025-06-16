@@ -1,64 +1,25 @@
 import { motion } from "framer-motion";
-import Button from "./button";
 import Point from "./point";
 import useCustomAccount from "@/hooks/use-account";
-import { formatLongText } from "@/utils/utils";
-import clsx from "clsx";
 import Link from "next/link";
 import { useInvitationContext } from "@/context/invitation";
-import { useConnectModal } from '@rainbow-me/rainbowkit';
-import { useAccount, useDisconnect } from "wagmi";
-import { trim } from "lodash";
-import { INVITATION_CODE_LENGTH } from "../config";
-import { useState } from "react";
+import Keyboards from "./keyboards";
+import ConnectButton from "./connect-button";
 
 const Code = (props: any) => {
   const { account } = useCustomAccount();
-  const { isConnecting } = useAccount();
-  const { openConnectModal } = useConnectModal();
-  const { disconnect } = useDisconnect();
-  const [isFocused, setIsFocused] = useState(false);
 
   const {
     loading,
     validUser,
-    invitationCode,
-    handleInvitationCodeChange,
-    handleInvitationCodeBackspace,
-    handleInvitationCodeKeyboard,
-    submitInvitationCode,
-    submitInvitationCodeLoading,
-    invalidInvitationCode,
   } = useInvitationContext();
-
-  const EnterDisabled = !account || submitInvitationCodeLoading || !trim(invitationCode) || trim(invitationCode).length < INVITATION_CODE_LENGTH || invalidInvitationCode;
 
   return (
     <div className="w-[765px] h-[390px] overflow-hidden shrink-0">
       <div className="w-full h-[431px] pt-[37px] flex justify-center items-start gap-[87px] bg-[url('/images/invitation/bg-code.png')] bg-no-repeat bg-contain bg-center">
         <div className="w-[258px] shrink-0 flex flex-col justify-center items-center gap-[20px] [transform-style:preserve-3d] [transform:perspective(1000px)_rotate3d(1,_0,_0,_25deg)_scale(1.1,_1.2)_skewX(-4.2deg)_translateX(-10px)] [transform-origin:bottom] [perspective-origin:60%_35%]">
           <div className="w-full">
-            <Button
-              className={clsx("!h-[46px] w-full flex justify-center items-center gap-[20px]", account && "!bg-[#6D7EA5]")}
-              disabled={isConnecting}
-              onClick={() => {
-                if (!account) {
-                  openConnectModal?.();
-                  return;
-                }
-                disconnect();
-              }}
-            >
-              <span>{account ? formatLongText(account, 5, 6) : "Connect Wallet"}</span>
-              {account && (
-                <button
-                  type="button"
-                  className="w-[16px] h-[16px] shrink-0"
-                >
-                  <img src="/images/invitation/icon-logout.svg" alt="logout" className="w-full h-full object-contain object-center" />
-                </button>
-              )}
-            </Button>
+            <ConnectButton />
           </div>
           <div className="relative w-full h-[186px] flex justify-center items-center bg-black [background-image:linear-gradient(to_right,_rgba(120,254,255,0.1)_1px,_transparent_1px),_linear-gradient(to_bottom,_rgba(120,254,255,0.1)_1px,_transparent_1px)] bg-[length:25px_25px] bg-[position:-1px_-1px] rounded-[6px]">
             <Point delay={0} className="absolute top-[24px] left-[24px]" />
@@ -95,68 +56,7 @@ const Code = (props: any) => {
             }
           </div>
         </div>
-        <div className="w-[252px] shrink-0 grid grid-cols-3 gap-[12px] [transform-style:preserve-3d] [transform:perspective(1000px)_rotate3d(1,_0,_0,_30deg)_scale(1.1,_1.3)_skewX(4deg)] [transform-origin:bottom] [perspective-origin:60%_35%]">
-          <input
-            type="text"
-            className={clsx(
-              "cursor-default col-span-2 h-[45.655px] shrink-0 border bg-black border-[#55648A] rounded-[6px] shadow-[inset_3px_3px_0px_0px_#2C3635] text-[#A5FFFD] text-center font-Unbounded text-[16px] font-[500] leading-[100%] placeholder:text-[#A5FFFD]",
-              invalidInvitationCode && "!text-[#FF5372]"
-            )}
-            placeholder={isFocused ? "" : "Invite Code"}
-            value={invitationCode}
-            onChange={(e) => handleInvitationCodeChange(e.target.value)}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-          />
-          <Button
-            className="flex justify-center items-center !h-[40px] !px-[0px]"
-            onClick={async () => {
-              try {
-                const text = await navigator.clipboard.readText();
-                handleInvitationCodeChange(text);
-              } catch (err) {
-                console.error('read clipboard failed:', err);
-              }
-            }}
-          >
-            <img src="/images/invitation/icon-copy.svg" alt="" className="object-center object-contain w-[16px] h-[16px] shrink-0" />
-          </Button>
-          {
-            [...new Array(9)].map((_, index) => (
-              <Button
-                key={index}
-                className=""
-                onClick={() => handleInvitationCodeKeyboard((index + 1).toString())}
-              >
-                {index + 1}
-              </Button>
-            ))
-          }
-          <Button
-            className="flex justify-center items-center !p-0"
-            onClick={() => handleInvitationCodeBackspace()}
-          >
-            <img src="/images/invitation/icon-backspace.svg" alt="" className="object-center object-contain w-[20px] h-[14px] shrink-0" />
-          </Button>
-          <Button
-            className=""
-            onClick={() => handleInvitationCodeKeyboard("0")}
-          >
-            0
-          </Button>
-          <Button
-            className={clsx(
-              "!px-[0] active:!drop-shadow-[0px_0px_10px_rgba(120,254,255,0.60)]",
-              invalidInvitationCode
-                ? "!bg-[#FF5372] !drop-shadow-[0px_0px_10px_#FF5372]"
-                : (EnterDisabled ? "!bg-[#6D7EA5]" : "!bg-[#A5FFFD]"),
-            )}
-            disabled={EnterDisabled}
-            onClick={submitInvitationCode}
-          >
-            Enter
-          </Button>
-        </div>
+        <Keyboards />
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import IconClose from "@public/images/modal/close.svg";
 import useIsMobile from "@/hooks/use-isMobile";
 import { AnimatePresence, motion } from "framer-motion";
+import clsx from "clsx";
 
 interface ModalProps {
   open?: boolean;
@@ -15,6 +16,7 @@ interface ModalProps {
   isForceNormal?: boolean;
   innerStyle?: React.CSSProperties;
   innerClassName?: string;
+  contentClassName?: string;
   isMaskClose?: boolean;
   isShowCloseIcon?: boolean;
 }
@@ -52,6 +54,7 @@ export const ModalContent = (props: ModalProps) => {
     isForceNormal,
     innerStyle,
     innerClassName,
+    contentClassName,
     isMaskClose = true,
     isShowCloseIcon = true
   } = props;
@@ -107,7 +110,7 @@ export const ModalContent = (props: ModalProps) => {
               exit={{
                 y: [0, 100]
               }}
-              className="w-screen absolute bottom-0 left-0 rounded-t-[20px]"
+              className={clsx("w-screen absolute bottom-0 left-0 rounded-t-[20px]", contentClassName)}
               onClick={(e) => {
                 e.stopPropagation();
               }}
