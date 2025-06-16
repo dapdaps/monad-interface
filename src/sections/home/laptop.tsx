@@ -94,7 +94,7 @@ const Home = () => {
     <div className={`w-full ${window.innerHeight < 900 ? 'min-h-[900px] overflow-y-auto' : 'h-[100dvh]'} relative overflow-hidden`}>
       <Starfield className="bg-[#000]" />
       <div className="absolute top-0 left-0 right-0 h-[calc(623/14.4*var(--rem))] bg-[url(/images/monad/background/bg3.png)] bg-no-repeat bg-contain">
-        <div className="absolute top-[20vh] right-[5vw] w-[221px] h-[171px] p-[8px_10px_0] shrink-0 bg-[url('/images/codes/bg-countdown-screen.png')] bg-no-repeat bg-contain bg-top">
+        <div className="absolute top-[20vh] right-[5vw] w-[221px] h-[171px] p-[9px_12px_0] shrink-0 bg-[url('/images/codes/bg-countdown-screen.png')] bg-no-repeat bg-contain bg-top">
           <Popover
             content={(
               <div className="relative w-[272px] h-[120px] p-[16px_0_0_16px] bg-[rgba(26,24,67,0.80)] border border-[#3E347C] rounded-[6px] filter-[drop-shadow(0px_0px_10px_rgba(0,_0,_0,_0.25))] backdrop-blur-[10px] text-white font-Unbounded text-[12px] font-[300] leading-[150%]">
@@ -103,7 +103,7 @@ const Home = () => {
                   Global Crew Mission Countdown
                 </div>
                 <div className="">
-                  Complete your daily mission to unlock an access code. Recruit a new crew member to earn MON rewards.
+                  Earn a new invite code every 24 hours by using the platform. Onboard your friends to earn MON rewards.
                 </div>
               </div>
             )}
@@ -112,13 +112,9 @@ const Home = () => {
             closeDelayDuration={0}
             offset={20}
           >
-            <MissionScreen className="cursor-pointer flex flex-col !justify-start w-full h-[77px] !border-black !shadow-[0px_2px_0px_0px_rgba(255,_255,_255,_0.25)_inset] !rounded-[2px] ![background-image:unset] !p-[4px_5px]">
-              <div className="flex items-center px-[5px] whitespace-nowrap gap-[1px] w-full h-[24px] rounded-[2px] border border-[#FFBF49] bg-[rgba(255,191,73,0.20)] shadow-[0px_2px_0px_0px_rgba(255,255,255,0.25)_inset] text-[#FFBF49] text-center font-Unbounded text-[10px] font-[300] leading-normal justify-center">
-                <img src="/images/codes/icon-warn.svg" alt="" className="w-[18px] h-[18px] object-center object-contain shrink-0" />
-                <div className="flex-1">New Mission to be executed</div>
-              </div>
-              <div className="mt-[8px] text-[#A6A6DB] text-center font-Unbounded text-[10px] font-[300] leading-normal">
-                Next Mission in
+            <MissionScreen className="cursor-pointer flex flex-col gap-[3px] w-full h-[75px] !border-black !shadow-[0px_2px_0px_0px_rgba(255,_255,_255,_0.25)_inset] !rounded-[2px] ![background-image:unset] !p-[4px_5px]">
+              <div className="text-[#A6A6DB] text-center font-Unbounded text-[10px] font-[300] leading-normal">
+                Next code drop in
               </div>
               <div className="text-[18px]">{lastTime}</div>
             </MissionScreen>
@@ -197,6 +193,26 @@ const Home = () => {
               windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
               windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
             )}>
+            <div className="absolute left-1/2 -translate-x-[calc(50%+90px)] top-0">
+              <div className="w-full flex gap-[4px] items-center justify-center">
+                <div className="w-full flex items-center justify-center gap-2">
+                  <img src="/images/monad/icon/arcade.svg" alt="" className="shrink-0" />
+                </div>
+                <motion.img
+                  animate={{
+                    transform: "rotateX(360deg)",
+                  }}
+                  transition={{
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                  src="/images/monad/icon/point-to-right.svg"
+                  className="w-[38px] h-[38px]"
+                  alt=""
+                />
+              </div>
+            </div>
           </div>
           {/* yapper */}
           <div
@@ -229,10 +245,10 @@ const Home = () => {
                   </div>
                   <motion.img
                     animate={{
-                      rotateY: 180,
+                      transform: "rotateY(360deg)",
                     }}
                     transition={{
-                      duration: 3,
+                      duration: 6,
                       repeat: Infinity,
                       ease: "linear",
                     }}
@@ -244,9 +260,11 @@ const Home = () => {
               </div>
               <div className="group-hover:hidden absolute w-[244px] h-[223px] left-1/2 -translate-x-1/2 top-[-24px] ml-[20px]">
                 <motion.div
-                  animate={{ rotate: [-10, 10] }}
+                  animate={{
+                    transform: ["rotate(-10deg)", "rotate(10deg)"]
+                  }}
                   transition={{
-                    duration: 2,
+                    duration: 4,
                     repeat: Infinity,
                     repeatType: "reverse",
                     ease: "easeInOut",
@@ -282,10 +300,10 @@ const Home = () => {
                   <img src="/images/monad/icon/faucet.svg" alt="" />
                   <motion.img
                     animate={{
-                      rotateY: 180,
+                      transform: "rotateY(360deg)",
                     }}
                     transition={{
-                      duration: 3,
+                      duration: 6,
                       repeat: Infinity,
                       ease: "linear",
                     }}
@@ -326,10 +344,10 @@ const Home = () => {
                   <img src="/images/monad/icon/dApps.svg" alt="" />
                   <motion.img
                     animate={{
-                      rotateY: 180,
+                      transform: "rotateY(360deg)",
                     }}
                     transition={{
-                      duration: 3,
+                      duration: 6,
                       repeat: Infinity,
                       ease: "linear",
                     }}
@@ -350,7 +368,7 @@ const Home = () => {
                     className="w-full flex gap-[6px] items-center"
                     style={{ width: `${totalWidth * 2}px` }}
                     animate={{
-                      x: [0, -totalWidth],
+                      transform: ["translateX(0)", `translateX(${-totalWidth}px)`]
                     }}
                     transition={{
                       duration: 20,
@@ -409,10 +427,10 @@ const Home = () => {
                   <img src="/images/monad/icon/tokens.svg" alt="" />
                   <motion.img
                     animate={{
-                      rotateY: 180,
+                      transform: "rotateY(360deg)",
                     }}
                     transition={{
-                      duration: 3,
+                      duration: 6,
                       repeat: Infinity,
                       ease: "linear",
                     }}
@@ -424,9 +442,11 @@ const Home = () => {
               </div>
               <div className="absolute left-1/2 -translate-x-1/2 top-[-10px]">
                 <motion.img
-                  animate={{ y: [0, 10, 0] }}
+                  animate={{
+                    transform: ["translateY(0)", "translateY(10px)", "translateY(0)"]
+                  }}
                   transition={{
-                    duration: 2,
+                    duration: 4,
                     repeat: Infinity,
                     ease: "linear",
                   }}

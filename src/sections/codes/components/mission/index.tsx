@@ -20,7 +20,7 @@ export default memo(function Mission(props: any) {
     <div className={clsx("flex flex-col items-center", className)}>
       <div className="text-white font-Unbounded text-[18px]">Global Crew Mission</div>
       <div className="m-[18px_0_28px] text-[#A6A6DB] font-Unbounded text-[12px] font-light text-center">
-        Invite codes unlock every {missionLoading ? "24" : numberFormatter(quest_round_time / 3600, 0, true)}h upon mission completion.<br />Earn MON by inviting new crew members.
+        Unlock Access codes by using the platform.<br />Earn MON by inviting new crew members.
       </div>
       <div className="w-full p-[13px_15px_12px_15px] rounded-[6px] border border-[#26274B] bg-[#31305A] flex items-center justify-between text-white font-Unbounded text-[14px]">
         <div className="flex-1">
@@ -46,7 +46,7 @@ export default memo(function Mission(props: any) {
 
       <div className="m-[24px_0_0px] flex flex-col items-center gap-[9px] text-[12px] font-Unbounded font-light">
         <div className="text-[#A6A6DB] flex items-center gap-[4px]">
-          <div>Next Mission {notZeroLastTime ? "in" : ""}</div>
+          <div>Next code drop in</div>
           <div>
             {
               !notZeroLastTime && (
