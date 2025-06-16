@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 import Big from "big.js";
 import useXFollow from "./use-x-follow";
 
-export default function NadsaPassCard({ onLoginOut }: any) {
+export default function NadsaPassCard({ onLoginOut, className }: any) {
   const {
     nftMetadata,
     nftAddress,
@@ -65,7 +65,7 @@ export default function NadsaPassCard({ onLoginOut }: any) {
   }, [hasNFT, nftMetadata, address, isFollow, isCheckFollowLoading]);
 
   return (
-    <div className="w-[308px] p-4 relative">
+    <div className={clsx("w-[308px] p-4 relative", className)}>
       <div className="absolute top-0 left-0 w-full h-full">
         <img src="/images/nft/bg.png" alt="bg" className="w-full h-full" />
       </div>

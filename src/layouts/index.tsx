@@ -19,8 +19,8 @@ export default function Layout({ children }: any) {
 
   return (
     <MainLayout>
-      {!isMobile && <InvitationView />}
-      {!isMobile && !validUser ? null : children}
+      {<InvitationView />}
+      {!validUser ? null : children}
       {!isMobile && <GuideView />}
     </MainLayout>
   );

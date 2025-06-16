@@ -14,6 +14,7 @@ import Level from "@/sections/terminal/components/content/level";
 import { motion } from "framer-motion";
 import ChatFooter from "./footer";
 import useIsMobile from "@/hooks/use-isMobile";
+import { LandingNadsa } from "@/components/nft";
 
 const ChatContent = (props: any) => {
   const {
@@ -53,7 +54,7 @@ const ChatContent = (props: any) => {
   const [displayedMessageIndex, setDisplayedMessageIndex] = useState<any>(0);
   const [displayedAllHistoryMessages, setDisplayedAllHistoryMessages] =
     useState<any>(false);
-  
+
 
   useEffect(() => {
     if (displayedAllHistoryMessages) {
@@ -107,7 +108,19 @@ const ChatContent = (props: any) => {
           className="shrink-0 w-[129px] h-[55px] md:w-[88px] md:h-[37px] object-contain object-center"
         />
       </div>
-      <div className="w-full h-[calc(100%_-_65px_-_51px)] md:h-0 md:flex-1 pt-[25px] md:pt-0 pb-[15px] md:pb-0 md:translate-y-[-10px]">
+      {
+        isMobile && (
+          <LandingNadsa
+            className="!h-[60px] !w-full shrink-0 !bg-cover translate-y-[-18px]"
+          />
+        )
+      }
+      <div
+        className={clsx(
+          "w-full md:h-0 md:flex-1 pt-[25px] md:pt-0 pb-[15px] md:pb-0 md:translate-y-[-10px]",
+          isMobile ? "h-[calc(100%_-_65px_-_51px_-_60px)]" : "h-[calc(100%_-_65px_-_51px)]"
+        )}
+      >
         <div
           ref={messagesRef}
           className="w-full h-full overflow-y-auto px-[30px] md:px-0 text-[!E7E2FF]"
