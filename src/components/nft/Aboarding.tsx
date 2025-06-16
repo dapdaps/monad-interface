@@ -319,9 +319,9 @@ export default function Aboarding({
                                     }}
                                     className={clsx("w-full bg-[#00FF00] relative text-black flex px-[15px] items-center justify-between rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]", isMobile ? 'h-[27px]' : 'h-[44px]')}
                                   >
-                                    <div className="flex-1 text-center whitespace-nowrap">{buttonText || "Follow @0xNADSA on X"}</div>
+                                    <div className="flex-1 text-center whitespace-nowrap">{buttonText || "Follow @0xNADSA"}</div>
                                     {
-                                      !buttonText && <div className="scale-[0.6] absolute right-[0px] top-[50%] translate-y-[-50%]" onClick={(e) => {
+                                      !buttonText && <div className="scale-[0.4] relative right-[-25px]" onClick={(e) => {
                                         e.stopPropagation();
                                         checkFollowRelationship()
                                       }}>
