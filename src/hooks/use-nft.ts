@@ -7,6 +7,7 @@ import { useRpcStore } from '@/stores/rpc';
 import { RPC_LIST } from "@/configs/rpc";
 import { post } from '@/utils/http';
 import { useInterval } from 'ahooks';
+import useAddAction from './use-add-action';
 
 
 interface NFTMintResponse {
@@ -33,7 +34,7 @@ interface UseNFTReturn {
     checkAllowlistLoading: boolean;
 }
 
-const accessToken = 'd0d4c2a8-873a-4475-a830-ee19bb224521';
+
 
 export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => {
     const [isLoading, setIsLoading] = useState(false);
@@ -41,12 +42,15 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
     const [error, setError] = useState<string | null>(null);
     const [refresh, setRefresh] = useState(0);
     const { address, connector } = useAccount();
+    const { addAction } = useAddAction('nft');
     const [nftMetadata, setNFTMetadata] = useState<{
         totalSupply: string;
         maxSupply: string;
+        name: string;
     }>({
         totalSupply: '0',
         maxSupply: '0',
+        name: '',
     });
 
     const [hasNFT, setHasNFT] = useState<boolean>(false);
@@ -72,9 +76,10 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
                 provider
             );
 
-            const [totalSupply, maxSupply] = await Promise.all([
+            const [totalSupply, maxSupply, name] = await Promise.all([
                 nftContract.totalSupply(),
                 nftContract.maxSupply(),
+                nftContract.name(),
             ]);
 
 
@@ -82,6 +87,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
                 totalSupply: totalSupply.toString() || '0',
                 // maxSupply: '3',
                 maxSupply: maxSupply.toString() || '0',
+                name: name || '',
             });
         } catch (error) {
             console.error("Failed to get NFT metadata:", error);
@@ -190,6 +196,18 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
                 getNFTMetadata();
             }, 2000);
 
+            addAction?.({
+                type: "NFT",
+                template: "magiceden",
+                action: "mint",
+                sub_type: "mint",
+                name: nftMetadata.name,
+                price: 1,
+                status: 1,
+                transactionHash: tx.hash,
+                add: true
+            });
+
             toast.success('Mint NFT success');
 
         } catch (err) {
@@ -200,7 +218,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
         } finally {
             setIsLoading(false);
         }
-    }, [address, connector, hasNFT, isLoading, refresh]);
+    }, [address, connector, hasNFT, isLoading, refresh, nftMetadata, addAction]);
 
     const checkAllowlist = useCallback(async (): Promise<boolean> => {
         if (!address) {

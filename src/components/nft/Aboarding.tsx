@@ -24,7 +24,7 @@ const slides = [
   {
     img: "/images/nft/home/main-1.svg",
     title: "WELCOME ABOARDING NADSA",
-    desc: `In the vast, uncharted Monad Galaxy, chaos reigned. DApps launched at light speed. Yield hubs blinked into existence. Degens floated untethered, with no map to guide them. Monad's hyperspeed finality was revolutionary – but explorers lacked direction.`,
+    desc: `In the vast, uncharted Monad Galaxy, chaos reigned. \nDApps launched at light speed. Yield hubs blinked into existence. Degens floated untethered, with no map to guide them. Monad's hyperspeed finality was revolutionary – but explorers lacked direction.`,
     descTitle: "FROM THE FAR FAR AWAY..."
   },
   {
@@ -208,7 +208,7 @@ export default function Aboarding({
                 <div className={clsx("text-[#00FF00] whitespace-pre-wrap font-HackerNoonV2 drop-shadow-[0px_0px_10px_#00FF0080]", isMobile ? 'text-[16px]' : 'text-[18px]')}>
                   {descTitle}
                 </div>
-                <div className={clsx("text-[#00FF00] mt-[10px] font-Pixelmix", isMobile ? 'text-[14px]' : 'text-[14px]')}>
+                <div className={clsx("text-[#00FF00] mt-[10px] whitespace-pre-wrap font-Pixelmix", isMobile ? 'text-[14px]' : 'text-[14px]')}>
                   <TypingText text={desc} />
                 </div>
               </div>
