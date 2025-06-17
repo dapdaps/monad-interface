@@ -52,9 +52,13 @@ const TimeSwap = (props: any) => {
           </div>
         </div>
       </div>
-      <LendingWarning className="mt-[15px]">
-        Lending will <strong>not accrue any interest</strong> due to the low pool APR. Consider lending to other pools.
-      </LendingWarning>
+      {
+        market?.disabledLend && (
+          <LendingWarning className="mt-[15px]">
+            Lending will <strong>not accrue any interest</strong> due to the low pool APR. Consider lending to other pools.
+          </LendingWarning>
+        )
+      }
     </>
   );
 };
