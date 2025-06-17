@@ -13,10 +13,11 @@ import { useGuideStore } from "@/stores/guide";
 import useIsMobile from "./use-isMobile";
 
 export function useInvitation<Invitation>() {
-  const { account } = useCustomAccount();
+  const { account, accountWithAk } = useCustomAccount();
   const { hasNFT, checking } = useNFT({ nftAddress: process.env.NEXT_PUBLIC_INDEX_NFT || '0xb46115299f13c731a99bcf9a57f0e9968071343e' });
   const toast = useToast();
   const userInfo = useUserStore((store: any) => store.user);
+  const setUserInfo = useUserStore((store: any) => store.set);
   const userInfoLoading = useUserStore((store: any) => store.loading);
   const { getUserInfo } = useUser();
   const { getVisited, setVisible } = useGuideStore();
@@ -137,6 +138,17 @@ export function useInvitation<Invitation>() {
   const loading = useMemo(() => {
     return userInfoLoading || checking;
   }, [userInfoLoading, checking]);
+
+  const { data: inviteTimestamp } = useRequest(async () => {
+    if (!validUser || !accountWithAk) return;
+    const res = await post("/invite/timestamp");
+    if (res.code !== 200) {
+      console.log('reportInviteTimestamp error: %o', res);
+      return;
+    }
+    setUserInfo({ inviteTimestamp: res.data });
+    return res.data;
+  }, { refreshDeps: [validUser, accountWithAk] });
 
   useEffect(() => {
     if (validUser) {

@@ -1,14 +1,42 @@
 import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover";
 import { MissionScreen } from "@/sections/codes/components/mission";
-import { useMission } from "@/sections/codes/hooks/use-mission";
 import clsx from "clsx";
 import useIsMobile from "@/hooks/use-isMobile";
+import { useState } from "react";
+import { useUserStore } from "@/stores/user";
+import { useInterval } from "ahooks";
+import dayjs from "dayjs";
 
 const CodesMission = (props: any) => {
   const { className } = props;
 
-  const { lastTime } = useMission();
   const isMobile = useIsMobile();
+  const [lastTime, setLastTime] = useState<string>("00h 00m 00s");
+
+  const userInviteTimestamp = useUserStore((store: any) => store.inviteTimestamp);
+
+  useInterval(() => {
+    const {
+      // seconds
+      quest_round_time,
+      // seconds
+      quest_start_time
+    } = userInviteTimestamp ?? {};
+    const zeroLastTime = "-- : -- : --";
+    if (!quest_round_time || !quest_start_time) return setLastTime(zeroLastTime);
+    const now = dayjs();
+    const start = dayjs(quest_start_time * 1000);
+    const diff = now.diff(start, "second");
+    const currentRoundDiff = diff % quest_round_time;
+    const lastTime = quest_round_time - currentRoundDiff;
+    if (lastTime <= 1) {
+      return setLastTime(zeroLastTime);
+    }
+    const lastH = Math.floor(lastTime / 3600);
+    const lastM = Math.floor((lastTime % 3600) / 60);
+    const lastS = lastTime % 60;
+    setLastTime(`${lastH < 10 ? `0${lastH}` : lastH} : ${lastM < 10 ? `0${lastM}` : lastM} : ${lastS < 10 ? `0${lastS}` : lastS}`);
+  }, 1000, { immediate: true });
 
   return (
     <div

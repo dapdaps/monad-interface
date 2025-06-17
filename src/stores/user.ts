@@ -13,6 +13,10 @@ export const useUserStore = create(
       accessTokenLoading: false,
       loading: false,
       closeNFTModal: false,
+      inviteTimestamp: {
+        quest_round_time: 0,
+        quest_start_time: 0,
+      },
       set: (params: any) => set(() => ({ ...params }))
     }),
     {
