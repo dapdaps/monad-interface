@@ -103,16 +103,18 @@ const ChatContent = (props: any) => {
     <div className={clsx("w-full h-full p-[30px] md:p-0 relative md:flex md:flex-col md:items-stretch", className)}>
       <div className="px-[30px] md:pl-[15px] pt-[10px] md:pt-0 md:translate-y-[-24px]">
         <img
-          src="/images/logo-pixel.svg"
+          src="/images/logo-pixel-purple.svg"
           alt=""
           className="shrink-0 w-[129px] h-[55px] md:w-[88px] md:h-[37px] object-contain object-center"
         />
       </div>
       {
         isMobile && (
-          <LandingNadsa
-            className="!h-[60px] !w-full shrink-0 !bg-cover translate-y-[-18px]"
-          />
+          <div className="w-full px-[10px]">
+            <LandingNadsa
+              className="!h-[60px] !w-full shrink-0 !bg-cover translate-y-[-18px] border border-[#6750FF] rounded-[12px]"
+            />
+          </div>
         )
       }
       <div
