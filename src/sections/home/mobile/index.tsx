@@ -3,15 +3,19 @@ import { ALL_DAPP_LIST } from "@/sections/dapps/config";
 import clsx from "clsx";
 import { motion, useAnimate, useMotionValueEvent, useScroll } from "framer-motion";
 import { useRouter } from "next-nprogress-bar";
-import { useRef } from "react";
+import { lazy, useRef, useState } from "react";
 import MovingGif from "../MovingGif";
 import CodesMission from "../components/codes-mission";
 import { GuideEntry } from "@/sections/invitation/guide";
 import useInviteCodes from "@/sections/codes/hooks/use-invite-codes";
+import dynamic from 'next/dynamic';
 
 const itemWidth = 51;
 const itemGap = 6;
-
+const GameEntry = dynamic(() => import('@/components/game-entry'), {
+  ssr: false, 
+  loading: () => null
+});
 
 const Mobile = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -21,6 +25,7 @@ const Mobile = () => {
   const [guideEntryContainerRef, guideEntryAnimate] = useAnimate();
   const { scrollYProgress } = useScroll({ container: mobileContainerRef });
   const { unUsedInviteCodes } = useInviteCodes();
+  const [isGameOpen, setIsGameOpen] = useState(false);
 
   useMotionValueEvent(scrollYProgress, "change", (latestValue) => {
     if (latestValue < 0.9) {
@@ -78,7 +83,10 @@ const Mobile = () => {
           <div
             className="absolute right-[11%] top-[-9%] w-[141px] h-[145px]"
             data-bp="1001-007"
-            onClick={() => router.push("/game")}
+            onClick={() => {
+              console.log('game')
+              setIsGameOpen(true)
+            }}
           >
             <div className="absolute left-1/2 translate-x-[calc(-50%_+_30px)] top-[-50px] cursor-pointer scale-[0.7]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
@@ -328,6 +336,7 @@ const Mobile = () => {
         </motion.div>
       </div>
       <CodesMission className="!fixed z-[10] !top-[unset] !right-[unset] bottom-[46px] left-1/2 -translate-x-1/2" />
+      { isGameOpen && <GameEntry onClose={() => setIsGameOpen(false)} /> }
     </div>
   );
 };
