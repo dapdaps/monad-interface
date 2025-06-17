@@ -32,9 +32,9 @@ export const config = getDefaultConfig({
   ssr: true,
   projectId: projectId,
   chains: networks,
-  // transports: {
-  //   [monadTestnet.id]: http("https://testnet-rpc.monad.xyz"),
-  // },
+  transports: {
+    [DEFAULT_CHAIN_ID]: http("https://testnet-rpc.monad.xyz"),
+  },
 });
 
 // export const wagmiAdapter = new WagmiAdapter({
