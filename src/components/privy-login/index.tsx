@@ -13,7 +13,7 @@ export default function PrivyLogin() {
             <div className="absolute inset-0 bg-black/60 backdrop-blur-md z-0" />
             <div className="relative z-10 flex flex-col items-center justify-center px-6 py-12">
                 <h1 className="text-[42px] font-HackerNoonV2 text-[#E7E2FF] mb-6 text-center drop-shadow-lg tracking-widest">
-                    WELCOME TO GAMING HUB
+                    WELCOME TO ARCADE
                 </h1>
                 <p className="text-[18px] font-Montserrat text-white text-center mt-[40px] w-[888px] leading-[150%]">
                     You'll need to generate a new game account - your personal vault for rewards, scores, and progress. Let's gear up and dive in.
