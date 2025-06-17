@@ -10,7 +10,7 @@ const CodesMobile = () => {
   const { missionData, missionLoading, getMissionData, lastTime, currentRountCodes } = useMission();
 
   return (
-    <div className="w-full pt-[60px] flex flex-col items-center overflow-y-auto h-screen">
+    <div className="w-full pt-[60px] flex flex-col items-center overflow-y-auto h-screen bg-[url('/images/faucet/bg.png')] bg-no-repeat bg-[position:-800px_-100px] bg-[length:1313px]">
       <img src="/images/codes/mobile/title.png" alt="Codes" className="w-[90px] h-[20px] object-center object-contain" />
       <CodesDescription titleClassName="mt-[20px]" className="!mt-[10px] !mb-[unset]" />
       <RuleModal />
