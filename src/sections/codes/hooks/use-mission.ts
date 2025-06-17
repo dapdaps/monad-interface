@@ -1,4 +1,6 @@
 import useCustomAccount from "@/hooks/use-account";
+import { useNFT } from "@/hooks/use-nft";
+import { useUserStore } from "@/stores/user";
 import { get } from "@/utils/http";
 import { useDebounceFn, useInterval, useRequest } from "ahooks";
 import dayjs from "dayjs";
@@ -51,17 +53,24 @@ const MISSION_CODES = new Map([
 
 export function useMission() {
   const { accountWithAk } = useCustomAccount();
+  const { hasNFT } = useNFT({ nftAddress: process.env.NEXT_PUBLIC_INDEX_NFT || '0xb46115299f13c731a99bcf9a57f0e9968071343e' });
+  const userInfo = useUserStore((store: any) => store.user);
 
   const [lastTime, setLastTime] = useState<string>("00h 00m 00s");
 
+  const validUser = useMemo(() => {
+    if (!accountWithAk) return false;
+    return !!hasNFT || !!userInfo?.invite_active;
+  }, [hasNFT, accountWithAk, userInfo]);
+
   const { data: missionData, loading: missionLoading, runAsync: getMissionData } = useRequest(async () => {
-    if (!accountWithAk) return {};
+    if (!accountWithAk || !validUser) return {};
     const res = await get("/invite/quest/user");
     if (res.code !== 200) {
       return {};
     }
     return res.data ?? {};
-  }, { refreshDeps: [accountWithAk] });
+  }, { refreshDeps: [accountWithAk, validUser] });
 
   const { run: debounceGetMissionData } = useDebounceFn(getMissionData, { wait: 1000 });
 
