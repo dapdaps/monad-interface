@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import IconClose from "@public/images/modal/close.svg";
 import useIsMobile from "@/hooks/use-isMobile";
 import { AnimatePresence, motion } from "framer-motion";
+import clsx from "clsx";
 
 interface ModalProps {
   open?: boolean;
@@ -15,24 +16,18 @@ interface ModalProps {
   isForceNormal?: boolean;
   innerStyle?: React.CSSProperties;
   innerClassName?: string;
+  contentClassName?: string;
   isMaskClose?: boolean;
   isShowCloseIcon?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = (props) => {
-  const {
-    children,
-    ...restProps
-  } = props;
+  const { children, ...restProps } = props;
 
-  if (!props.open) return null;
+  if (!props.open || typeof document === "undefined") return null;
 
   return ReactDOM.createPortal(
-    (
-      <ModalContent {...restProps}>
-        {children}
-      </ModalContent>
-    ) as any,
+    (<ModalContent {...restProps}>{children}</ModalContent>) as any,
     document.body
   ) as unknown as React.ReactPortal;
 };
@@ -51,6 +46,7 @@ export const ModalContent = (props: ModalProps) => {
     isForceNormal,
     innerStyle,
     innerClassName,
+    contentClassName,
     isMaskClose = true,
     isShowCloseIcon = true
   } = props;
@@ -90,9 +86,7 @@ export const ModalContent = (props: ModalProps) => {
               onClick={onClose}
               className={`absolute top-5 right-5 cursor-pointer z-[100] ${closeIconClassName}`}
             >
-              {
-                closeIcon ? closeIcon : <IconClose />
-              }
+              {closeIcon ? closeIcon : <IconClose />}
             </button>
           ) : null}
           {isMobile && !isForceNormal ? (
@@ -106,7 +100,10 @@ export const ModalContent = (props: ModalProps) => {
               exit={{
                 y: [0, 100]
               }}
-              className="w-screen absolute bottom-0 left-0 rounded-t-[20px]"
+              className={clsx(
+                "w-screen absolute bottom-0 left-0 rounded-t-[20px]",
+                contentClassName
+              )}
               onClick={(e) => {
                 e.stopPropagation();
               }}
