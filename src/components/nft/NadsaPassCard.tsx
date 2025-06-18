@@ -188,7 +188,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
                       className="absolute right-[10px] top-[50%] translate-y-[-50%]"
                       onClick={(e) => {
                         e.stopPropagation();
-                       
+
                       }}
                     >
                       <div className="" onClick={(e) => {
@@ -217,18 +217,21 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
           </>
         )}
 
-        {status === 1 && (<div>
+        {status !== 1 && (<div>
           <div className="flex items-center justify-center gap-[10px] text-[12px] h-[40px] mt-[10px] mb-[10px] text-[#00FF11] font-Pixelmix">
             <RightArrow /> Mint Successfully
           </div>
           <MainBtn
             disabled={false}
             onClick={() => {
+              const tweetUrl = `https://test.nadsa.space/api/twitter?img=${encodeURIComponent(
+                'https://test.nadsa.space/images/nft/token.png'
+              )}`;
               shareToX(`NADSA_ADMISSION_TICKET logged. %0A
 
 Something’s brewing at @0xNADSA — I’m already in. %0A
 
-See you on the inside. %0A`)
+See you on the inside. %0A`, tweetUrl)
             }}
             tokenBalance={tokenBalance}
           >
