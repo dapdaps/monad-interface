@@ -1,35 +1,46 @@
 import Modal from "@/components/modal";
 import NadsaPassCard from "./NadsaPassCard";
 import Link from "next/link";
+import clsx from "clsx";
 
 export default function NFT({
   isOpen,
   closeModal,
   className,
-  onLoginOut
+  onLoginOut,
+  style,
+  isForceNormal
 }: {
   isOpen: boolean;
   closeModal: () => void;
   className?: string;
   onLoginOut?: () => void;
+  style?: React.CSSProperties;
+  isForceNormal?: boolean;
 }) {
   return (
     <Modal
       style={{
         background: "transparent",
         left: "auto",
-        right: "10px"
+        right: "10px",
+        ...style
       }}
       open={isOpen}
       isShowCloseIcon={false}
       onClose={closeModal}
       className={className}
-      innerClassName="flex flex-col items-center gap-[30px]"
+      innerClassName={clsx(
+        "flex flex-col items-center gap-[30px]",
+        isForceNormal &&
+          "top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 absolute"
+      )}
+      isForceNormal={isForceNormal}
     >
       <NadsaPassCard onLoginOut={onLoginOut} />
-      <Link href="/" prefetch={true} className="flex justify-center items-end w-[290px] h-[132px] bg-[url('/images/terminal/bg-landing-homepage.png')] bg-no-repeat bg-center bg-contain text-white text-[16px] font-Pixelmix font-normal leading-[200%] drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+      {/* <Link href="/" prefetch={true} className="flex justify-center items-end w-[290px] h-[132px] bg-[url('/images/terminal/bg-landing-homepage.png')] bg-no-repeat bg-center bg-contain text-white text-[16px] font-Pixelmix font-normal leading-[200%] drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
         <div className="pb-[14px]">LANDING NADSA &gt;</div>
-      </Link>
+      </Link> */}
     </Modal>
   );
 }

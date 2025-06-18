@@ -20,7 +20,7 @@ const LoginView = (props: any) => {
       <div className="flex flex-col items-center justify-center h-full">
         <div className="flex flex-col items-center justify-center h-[calc(80vh)] pb-[100px]">
           <img
-            src="/images/logo-pixel.svg"
+            src="/images/logo-white.svg"
             alt=""
             className="w-[129px] h-[55px] object-center object-contain shrink-0"
           />
