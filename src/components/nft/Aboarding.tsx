@@ -75,6 +75,7 @@ export default function Aboarding({
   const { address } = useAccount();
   const twitterStore: any = useTwitterStore();
   const nftCardRef = useRef<HTMLDivElement>(null);
+  const nftImgRef = useRef<HTMLDivElement>(null);
   const { loading: binding, buttonText } = useBindTwitterHome();
   const [isSharing, setIsSharing] = useState(false);
   const closeNFTModal = useNftStore((store: any) => store.closeNFTModal);
@@ -147,6 +148,21 @@ export default function Aboarding({
       }
     } catch (error) {
       console.error("Twitter failed:", error);
+    }
+  }, [nftCardRef.current]);
+
+  const handleCopyImage = useCallback(async () => {
+    const node = nftImgRef.current;
+    if (node) {
+      try {
+        const dataUrl = await domtoimage.toPng(node);
+        const [blob, type] = base64ToBlob(dataUrl);
+        navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
+        toast.success("Image copied to clipboard");
+      } catch (error) {
+        console.error("Copy image failed:", error);
+        toast.error("Copy image failed");
+      }
     }
   }, [nftCardRef.current]);
 
@@ -236,8 +252,8 @@ export default function Aboarding({
                   }
 
                   {
-                    !isSharing && <div className="w-full h-full flex relative justify-between gap-[10px] px-[10px]">
-                      <div className="py-[10px]">
+                    !isSharing && <div className="w-full h-full flex relative justify-between gap-[10px] px-[10px]" >
+                      <div className="py-[10px]" ref={nftImgRef}>
                         <motion.div
                           key={hasNFT ? "minted" : "unminted"}
                           initial={{ rotateY: 0 }}
@@ -415,12 +431,21 @@ export default function Aboarding({
                                 <div className={clsx("text-[#00FF00]  font-Pixelmix text-center", isMobile ? 'text-[12px]' : 'text-[14px]')}>
                                   Minted NFT Successfully
                                 </div>
-                                <button
-                                  onClick={handleTwitterShare}
-                                  className={clsx("w-[200px] mt-[10px] mx-auto bg-[#00FF00] text-black flex items-center justify-center rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]", isMobile ? 'h-[27px]' : 'h-[44px]')}
-                                >
-                                  Share on X
-                                </button>
+                                <div className="flex gap-[10px]">
+                                  <button
+                                    onClick={handleTwitterShare}
+                                    className={clsx("flex-1 mt-[10px] mx-auto bg-[#00FF00] text-black flex items-center justify-center rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]", isMobile ? 'h-[27px]' : 'h-[44px]')}
+                                  >
+                                    Share on X
+                                  </button>
+                                  <button
+                                    onClick={handleCopyImage}
+                                    className={clsx("flex-1 mt-[10px] mx-auto bg-[#00FF00] text-black flex items-center justify-center rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]", isMobile ? 'h-[27px]' : 'h-[44px]')}
+                                  >
+                                    Copy image
+                                  </button>
+                                </div>
+                                
                               </div>
                             </>)}
                           </div>
