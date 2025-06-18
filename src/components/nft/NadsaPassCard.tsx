@@ -17,6 +17,7 @@ import { shareToX } from "@/utils/utils";
 import TimeLocked from "../time-locked";
 
 const XWrqapper: any = IS_REAL_FOLLOW ? TimeLocked : ({ children }: any) => children
+const IS_TEST = process.env.NEXT_PUBLIC_API?.includes('test')
 export default function NadsaPassCard({ onLoginOut, className }: any) {
   const {
     nftMetadata,
@@ -227,7 +228,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
           <MainBtn
             disabled={false}
             onClick={() => {
-              const tweetUrl = `https://test.nadsa.space/api/twitter?img=${encodeURIComponent(
+              const tweetUrl = `https://${IS_TEST ? 'test.' : ''}nadsa.space/api/twitter?img=${encodeURIComponent(
                 'https://gateway.pinata.cloud/ipfs/bafkreib7px3v7yrhapt5x6ivnz2mk74k32gnr47qjghyhbvic73r57w4fe'
               )}`;
               shareToX(`NADSA_ADMISSION_TICKET logged. %0A
