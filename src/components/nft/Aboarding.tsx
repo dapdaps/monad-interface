@@ -50,7 +50,7 @@ const slides = [
 ];
 
 const XWrqapper = IS_REAL_FOLLOW ? TimeLocked : ({ children }: any) => children
-
+const IS_TEST = !process.env.NEXT_PUBLIC_API?.includes('testnet')
 export default function Aboarding({
   isOpen,
   isMint,
@@ -131,7 +131,7 @@ export default function Aboarding({
         const dataUrl = await domtoimage.toPng(node);
         const [blob, type] = base64ToBlob(dataUrl);
         const url = await uploadFile(blob, "/upload");
-        const tweetUrl = `https://test.nadsa.space/api/twitter?img=${encodeURIComponent(
+        const tweetUrl = `https://${IS_TEST ? 'test.' : ''}nadsa.space/api/twitter?img=${encodeURIComponent(
           url
         )}`;
         const tweetText = `> mint --sequence NFT %0A
