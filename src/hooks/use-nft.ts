@@ -5,9 +5,10 @@ import { erc721Abi } from 'viem'
 import { toast } from 'react-toastify';
 import { useRpcStore } from '@/stores/rpc';
 import { RPC_LIST } from "@/configs/rpc";
-import { post } from '@/utils/http';
+import { AUTH_TOKENS, post } from '@/utils/http';
 import { useInterval } from 'ahooks';
 import useAddAction from './use-add-action';
+import { sleep } from '@/sections/bridge/lib/util';
 
 
 interface NFTMintResponse {
@@ -267,22 +268,27 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
         }
     }, [address, refresh]);
 
-
     useEffect(() => {
         (async () => {
             if (checkedHasNFT && !hasNFT) {
+                let tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
+                let times = 0
+                while (!tokens.state?.accessToken?.access_token || times < 20) {
+                    await sleep(1000);
+                    times++
+                    tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
+                }
+
                 const res = await checkAllowlist();
                 if (res === false) {
+                    setCheckAllowlistLoading(true);
                     const res = await post('/nft/whitelist', {
                         nft_address: nftAddress
                     })
-                    setCheckAllowlistLoading(true);
                 }
             }
         })()
     }, [checkedHasNFT, hasNFT, address]);
-
-
 
     return {
         mintNFT,

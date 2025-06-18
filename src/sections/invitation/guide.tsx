@@ -17,6 +17,10 @@ const GuideView = () => {
     isMint
   } = useGuideStore();
 
+  if (!visible) {
+    return null
+  }
+
   return (
     <Aboarding
       isOpen={visible}

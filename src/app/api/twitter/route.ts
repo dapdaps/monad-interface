@@ -23,6 +23,7 @@ export async function GET(request: Request | NextRequest) {
             <title>NADAS</title>
         </head>
         <body>
+        
         </body>
         </html>`,
     {
