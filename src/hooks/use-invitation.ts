@@ -14,7 +14,7 @@ import useIsMobile from "./use-isMobile";
 
 export function useInvitation<Invitation>() {
   const { account, accountWithAk } = useCustomAccount();
-  const { hasNFT, checking } = useNFT({ nftAddress: process.env.NEXT_PUBLIC_INDEX_NFT || '0xb46115299f13c731a99bcf9a57f0e9968071343e' });
+  const { hasNFT, checking } = useNFT({ nftAddress: process.env.NEXT_PUBLIC_CHART_NFT || "0x2d298c1f3a52af45ab3d34637aa293cf8a988c71" });
   const toast = useToast();
   const userInfo = useUserStore((store: any) => store.user);
   const setUserInfo = useUserStore((store: any) => store.set);

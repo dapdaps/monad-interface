@@ -428,7 +428,7 @@ export default function Aboarding({
                                 <div className={clsx("text-[#00FF00] font-Pixelmix  text-center", isMobile ? 'text-[12px]' : 'text-[14px] mt-[10px]')}>
                                   @{twitterStore.info.name}
                                 </div>
-                                <div className={clsx("text-[#00FF00]  font-Pixelmix text-center", isMobile ? 'text-[12px]' : 'text-[14px]')}>
+                                <div className={clsx("text-[#00FF00] whitespace-nowrap font-Pixelmix text-center", isMobile ? 'text-[12px]' : 'text-[14px]')}>
                                   Minted NFT Successfully
                                 </div>
                                 <div className="flex gap-[10px]">
