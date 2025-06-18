@@ -25,6 +25,7 @@ import useIsMobile from "@/hooks/use-isMobile";
 import ChatFooter from "./footer";
 import DataOverrideMobile from "../components/data-override";
 import clsx from "clsx";
+import DataOverrideMobile from "../components/data-override";
 
 const realtime = new Realtime({
   appId: process.env.NEXT_PUBLIC_LEANCLOUD_APP_ID!,
@@ -90,7 +91,7 @@ const SYSTEM_CHECK_MESSAGES = [
 
 export default function ChatView({ currentUser }: any) {
   const isMobile = useIsMobile();
-  const [openNftModal, setOpenNftModal] = useState(false);
+
   // @ts-ignore
   const [messages, setMessages] = useState<any[]>([...SYSTEM_CHECK_MESSAGES]);
   const [previousPageMessages, setPagePreviousMessages] = useState<
@@ -430,34 +431,17 @@ export default function ChatView({ currentUser }: any) {
         {!isMobile && (
           <div className="absolute z-[1] left-[30px] top-[100px] bg-[url('/images/terminal/card-star.png')] bg-cover bg-center bg-no-repeat w-[100px] h-[100px]" />
         )}
-        {/* {isMobile && (
-          <div
-            className="button absolute top-[16px] right-[10px] z-[5] flex items-center gap-[10px]"
-            onClick={() => {
-              setOpenNftModal(true);
-            }}
-          >
-            <img src="/images/nft/data-override.gif" className="w-[26px]" />
-            <div className="text-[#00FF11] text-[14px] font-HackerNoonV2 text-center  drop-shadow-[0px_0px_10px_#BFFF6099]">
-              DATA OVERRIDE
-            </div>
-          </div>
-        )} */}
       </div>
       {isMobile && <ChatFooter className="fixed bottom-0 left-0 w-full" />}
       <ChatBg />
-      <NFT
-        isOpen={isMobile ? openNftModal : true}
-        closeModal={() => {
-          if (isMobile) {
-            setOpenNftModal(false);
-          }
-        }}
-        className={clsx("!items-start left-[0px]", !isMobile && "!pt-[60px]")}
-        onLoginOut={onLoginOut}
-        style={isMobile ? { left: 0, background: "#1D1E22CC" } : {}}
-        isForceNormal={isMobile}
-      />
+      {!isMobile && (
+        <NFT
+          isOpen={true}
+          closeModal={() => {}}
+          className={clsx("!items-start left-[0px] !pt-[60px]")}
+          onLoginOut={onLoginOut}
+        />
+      )}
     </div>
   );
 }
