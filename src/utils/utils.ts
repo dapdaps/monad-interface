@@ -99,16 +99,17 @@ export async function uploadFile(file: File | Blob, url: string = '/upload') {
     }
     
   } catch (error) {
-    console.error('文件上传错误:', error);
+    console.error('uplaod fail:', error);
     throw error;
   }
 }
 
-export function shareToX(text: string, link: string) {
-  console.log('shareToX', text, link)
-  window.open(
-      `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(link)}`
-  );
+export function shareToX(text: string, link?: string) {
+  let xPath = `https://twitter.com/intent/tweet?text=${text}`
+  if (link) {
+    xPath += `&url=${encodeURIComponent(link)}`
+  }
+  window.open(xPath);
 }
 
 
