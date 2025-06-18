@@ -433,19 +433,19 @@ export default function Aboarding({
                                 </div>
                                 <div className="flex gap-[10px]">
                                   <button
-                                    onClick={handleTwitterShare}
-                                    className={clsx("flex-1 mt-[10px] mx-auto bg-[#00FF00] text-black flex items-center justify-center rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]", isMobile ? 'h-[27px]' : 'h-[44px]')}
-                                  >
-                                    Share on X
-                                  </button>
-                                  <button
                                     onClick={handleCopyImage}
                                     className={clsx("flex-1 mt-[10px] mx-auto bg-[#00FF00] text-black flex items-center justify-center rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]", isMobile ? 'h-[27px]' : 'h-[44px]')}
                                   >
                                     Copy image
                                   </button>
+                                  <button
+                                    onClick={handleTwitterShare}
+                                    className={clsx("flex-1 mt-[10px] mx-auto bg-[#00FF00] text-black flex items-center justify-center rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]", isMobile ? 'h-[27px]' : 'h-[44px]')}
+                                  >
+                                    Share on X
+                                  </button>
                                 </div>
-                                
+
                               </div>
                             </>)}
                           </div>
