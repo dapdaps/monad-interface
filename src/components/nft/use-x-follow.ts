@@ -6,8 +6,8 @@ import { get, post, AUTH_TOKENS } from '@/utils/http';
 import useAccount from '@/hooks/use-account';
 import { sleep } from '@/sections/bridge/lib/util';
 
+export const IS_REAL_FOLLOW = true
 export default function useXFollow() {
-    const [isCheckFollowLoading, setIsCheckFollowLoading] = useState(false);
     const [isFollow, setIsFollow] = useState(false);
     const twitterStore: any = useTwitterStore();
     const isFollowNADSA = useNftStore((store: any) => store.isFollowNADSA);
@@ -20,7 +20,7 @@ export default function useXFollow() {
         if (!twitterStore.info) return;
 
         try {
-            setIsCheckFollowLoading(true);
+            setIsLoadingFollow(true);
             const res = await get('/twitter/user/check_follow_relationship', {
                 target_user_name: encodeURIComponent('0xNADSA')
             });
@@ -37,7 +37,7 @@ export default function useXFollow() {
             console.error('Check follow relationship error:', error);
             fail('Check follow relationship failed');
         } finally {
-            setIsCheckFollowLoading(false);
+            setIsLoadingFollow(false);
         }
     };
 
@@ -55,23 +55,27 @@ export default function useXFollow() {
     // }, [twitterStore.id, isFollowNADSA, account]);
 
     const checkFollowX = useCallback(() => {
+        if (IS_REAL_FOLLOW) {
+            checkFollowRelationship()
+            return;
+        }
         setIsLoadingFollow(true);
         setTimeout(() => {
             setIsLoadingFollow(false);
         }, 3000);
     }, []);
 
-    const serFollowX = useCallback(() => {
-        setNftStore({ isFollowNADSA: true });
+    const setFollowX = useCallback(() => {
+        if (!IS_REAL_FOLLOW) {
+            setNftStore({ isFollowNADSA: true });
+        }
     }, []);
 
     return {
-        isCheckFollowLoading,
         checkFollowRelationship,
         isFollow: isFollowNADSA || isFollow,
         isLoadingFollow,
         checkFollowX,
-        serFollowX,
-
+        setFollowX,
     };
 }
