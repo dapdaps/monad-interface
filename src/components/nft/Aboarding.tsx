@@ -17,13 +17,15 @@ import { sleep } from "@/sections/bridge/lib/util";
 import useTokenBalance from "@/hooks/use-token-balance";
 import { toast } from "react-toastify";
 import { useNftStore } from "@/stores/nft";
-import useXFollow from "./use-x-follow";
+import useXFollow, { IS_REAL_FOLLOW } from "./use-x-follow";
+import useIsMobile from "@/hooks/use-isMobile";
+import TimeLocked from "../time-locked";
 
 const slides = [
   {
     img: "/images/nft/home/main-1.svg",
     title: "WELCOME ABOARDING NADSA",
-    desc: `In the vast, uncharted Monad Galaxy, chaos reigned. DApps launched at light speed. Yield hubs blinked into existence. Degens floated untethered, with no map to guide them. Monad's hyperspeed finality was revolutionary – but explorers lacked direction.`,
+    desc: `In the vast, uncharted Monad Galaxy, chaos reigned. \nDApps launched at light speed. Yield hubs blinked into existence. Degens floated untethered, with no map to guide them. Monad's hyperspeed finality was revolutionary – but explorers lacked direction.`,
     descTitle: "FROM THE FAR FAR AWAY..."
   },
   {
@@ -46,6 +48,8 @@ const slides = [
     descTitle: "Mint yourself a Sequence Number NFT \\_"
   }
 ];
+
+const XWrqapper = IS_REAL_FOLLOW ? TimeLocked : ({ children }: any) => children
 
 export default function Aboarding({
   isOpen,
@@ -73,17 +77,21 @@ export default function Aboarding({
   const { address } = useAccount();
   const twitterStore: any = useTwitterStore();
   const nftCardRef = useRef<HTMLDivElement>(null);
+  const nftImgRef = useRef<HTMLDivElement>(null);
   const { loading: binding, buttonText } = useBindTwitterHome();
   const [isSharing, setIsSharing] = useState(false);
   const closeNFTModal = useNftStore((store: any) => store.closeNFTModal);
   const setNftStore = useNftStore((store: any) => store.set);
+
   const index = address ? getVisitedIndex(address) : 0;
   const { tokenBalance, isLoading: isTokenBalanceLoading } = useTokenBalance(
     "native",
     18,
     monadTestnet.id
   );
-  const { checkFollowRelationship, isFollow, isCheckFollowLoading } = useXFollow();
+
+  const { isFollow, isLoadingFollow, checkFollowX, setFollowX } = useXFollow();
+  const isMobile = useIsMobile();
 
   const handlePrev = () => {
     if (!address) return;
@@ -145,6 +153,21 @@ export default function Aboarding({
     }
   }, [nftCardRef.current]);
 
+  const handleCopyImage = useCallback(async () => {
+    const node = nftImgRef.current;
+    if (node) {
+      try {
+        const dataUrl = await domtoimage.toPng(node);
+        const [blob, type] = base64ToBlob(dataUrl);
+        navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
+        toast.success("Image copied to clipboard");
+      } catch (error) {
+        console.error("Copy image failed:", error);
+        toast.error("Copy image failed");
+      }
+    }
+  }, [nftCardRef.current]);
+
   if (closeNFTModal && !isMint) {
     return null;
   }
@@ -153,14 +176,28 @@ export default function Aboarding({
     <Modal
       open={isOpen}
       isMaskClose={false}
+      isForceNormal={false}
+      isShowCloseIcon={false}
       onClose={() => {
         setNftStore({ closeNFTModal: true });
         closeModal();
       }}
       className={className}
-      closeIconClassName="top-[60px] right-[30px]"
-      closeIcon={
+    >
+      <div className={clsx("relative top-[10px] ", isMobile ? 'w-full' : 'w-[714px] h-[721px]')}>
+        <div className={clsx("absolute  top-0 w-full h-full", isMobile ? 'left-[-10%]' : 'left-0')}>
+          <img
+            src="/images/nft/home/bg.png"
+            alt="main-1"
+            className={clsx("h-full", isMobile ? 'w-[120%] max-w-[120%]' : 'w-full')}
+          />
+        </div>
         <svg
+          onClick={() => {
+            setNftStore({ closeNFTModal: true });
+            closeModal();
+          }}
+          className={clsx("absolute z-30 cursor-pointer", isMobile ? 'top-[10px] right-[10px]' : 'top-[70px] right-[30px]')}
           width="14"
           height="12"
           viewBox="0 0 14 12"
@@ -172,20 +209,17 @@ export default function Aboarding({
             fill="#A6A6DB"
           />
         </svg>
-      }
-    >
-      <div className="relative w-[714px] h-[721px]">
-        <div className="absolute left-0 top-0 w-full h-full">
-          <img
-            src="/images/nft/home/bg.png"
-            alt="main-1"
-            className="w-full h-full"
-          />
-        </div>
         <div className="w-full h-full relative">
+          {
+            isMobile && (
+              <div className="text-[#E7E2FF] pt-[70px] text-[16px] text-center mt-[10px] font-HackerNoonV2 drop-shadow-[0px_0px_10px_#E7E2FF80]">
+                Welcome_onboarding_NADSA
+              </div>
+            )
+          }
           {!isLast && (
             <div>
-              <div className="w-full text-center pt-[70px] text-[24px] text-[#E7E2FF] uppercase font-HackerNoonV2 drop-shadow-[0px_0px_10px_#836EF9]">
+              <div className={clsx("w-full text-center  text-[#E7E2FF] uppercase font-HackerNoonV2 drop-shadow-[0px_0px_10px_#836EF9]", isMobile ? 'text-[16px] pt-[20px]' : 'text-[24px] pt-[70px]')}>
                 {title}
               </div>
 
@@ -193,16 +227,16 @@ export default function Aboarding({
                 <img
                   src={img}
                   alt={`main-${index + 1}`}
-                  className="object-contain max-h-[340px] max-w-[90%] mx-auto"
+                  className={clsx("object-contain  mx-auto", isMobile ? 'max-w-[96%]' : 'max-w-[90%]')}
                   style={{ imageRendering: "pixelated" }}
                 />
               </div>
 
               <div className="w-full px-8 mt-[30px]">
-                <div className="text-[#00FF00] text-[18px] whitespace-pre-wrap font-HackerNoonV2 drop-shadow-[0px_0px_10px_#00FF0080]">
+                <div className={clsx("text-[#00FF00] whitespace-pre-wrap font-HackerNoonV2 drop-shadow-[0px_0px_10px_#00FF0080]", isMobile ? 'text-[16px]' : 'text-[18px]')}>
                   {descTitle}
                 </div>
-                <div className="text-[#00FF00] text-[16px] mt-[10px] font-Pixelmix">
+                <div className={clsx("text-[#00FF00] mt-[10px] whitespace-pre-wrap font-Pixelmix", isMobile ? 'text-[14px] min-h-[240px]' : 'text-[14px]')}>
                   <TypingText text={desc} />
                 </div>
               </div>
@@ -210,8 +244,8 @@ export default function Aboarding({
           )}
 
           {isLast && (
-            <div className="pt-[100px]">
-              <div className="mx-[50px]">
+            <div className={clsx("", isMobile ? 'pt-[20px]' : 'pt-[100px]')}>
+              <div className={clsx(isMobile ? 'mx-[5px]' : 'mx-[50px]')}>
                 <div
                   className="flex-1 flex items-center justify-center relative"
                   ref={nftCardRef}
@@ -227,14 +261,14 @@ export default function Aboarding({
                   }
 
                   {
-                    !isSharing && <div className="w-full h-full flex relative justify-between">
-                      <div className="py-[10px]">
+                    !isSharing && <div className="w-full h-full flex relative justify-between gap-[10px] px-[10px]" >
+                      <div className="py-[10px]" ref={nftImgRef}>
                         <motion.div
                           key={hasNFT ? "minted" : "unminted"}
                           initial={{ rotateY: 0 }}
                           animate={{ rotateY: hasNFT ? 180 : 0 }}
                           transition={{ duration: 1.6 }}
-                          className="relative w-[280px] h-[340px]"
+                          className={clsx("relative", isMobile ? 'w-[160px] h-[210px]' : 'w-[280px] h-[340px]')}
                           style={{ transformStyle: "preserve-3d" }}
                         >
                           <div
@@ -266,7 +300,7 @@ export default function Aboarding({
                                 className="w-full h-full object-contain"
                                 style={{ imageRendering: "pixelated" }}
                               />
-                              <div className="absolute font-HackerNoonV2 top-[84px] left-0 w-full h-[24px] text-[#000] text-[18px] flex items-center justify-center">
+                              <div className={clsx("absolute font-HackerNoonV2  left-0 w-full text-[#000] flex items-center justify-center", isMobile ? 'h-[20px] text-[14px] top-[49px]' : 'h-[24px] text-[18px] top-[84px]')}>
                                 NO.{tokenIds[0]}
                               </div>
                             </div>
@@ -276,13 +310,13 @@ export default function Aboarding({
 
                       <div className="flex-1 flex justify-center ">
                         {!isSharing && (
-                          <div className="pt-[40px]">
-                            <div className="text-[#E7E2FF] text-center text-[18px] font-HackerNoonV2 drop-shadow-[0px_0px_10px_#836EF9]">
+                          <div className={clsx(isMobile ? 'pt-[10px]' : 'pt-[40px]')}>
+                            <div className={clsx("text-[#E7E2FF] text-center font-HackerNoonV2 drop-shadow-[0px_0px_10px_#836EF9]", isMobile ? 'text-[16px]' : 'text-[18px]')}>
                               SEQUENCE NUMBER NFT
                             </div>
 
                             {!hasNFT && (<>
-                              <div className="font-Pixelmix text-[12px] py-[10px] rounded-[4px] flex gap-[10px] justify-center items-end mt-[10px]">
+                              <div className={clsx("font-Pixelmix  rounded-[4px] flex gap-[10px] justify-center items-end  text-[12px]", isMobile ? '' : 'mt-[10px] py-[10px]')}>
                                 <div className="text-center">
                                   <div className="text-[#8D7CFF] text-[12px]">
                                     Total Minted
@@ -293,8 +327,8 @@ export default function Aboarding({
                                 </div>
                               </div>
 
-                              <div className="text-[#836EF9] text-center text-[12px] font-Pixelmix mt-[20px]">Get Yours</div>
-                              <div className="mt-6 space-y-3">
+                              <div className={clsx("text-[#836EF9] text-center font-Pixelmix", isMobile ? 'text-[12px] mt-[10px]' : 'text-[12px] mt-[20px]')}>Get Yours</div>
+                              <div className={clsx("mt-6 space-y-3", isMobile ? 'mt-[10px]' : 'mt-6')}>
                                 {!isFollow || buttonText ? (
                                   <button
                                     onClick={() => {
@@ -310,23 +344,31 @@ export default function Aboarding({
                                         "https://twitter.com/intent/follow?screen_name=0xNADSA",
                                         "_blank"
                                       );
+                                      setFollowX()
+
                                     }}
-                                    className="w-full bg-[#00FF00] h-[44px] text-black flex px-[15px] items-center justify-between rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]"
+                                    className={clsx("w-full bg-[#00FF00] relative text-black flex px-[15px] items-center justify-between rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]", isMobile ? 'h-[27px]' : 'h-[44px]')}
                                   >
-                                    <div className="flex-1 text-center">{buttonText || "Follow @0xNADSA on X"}</div>
+                                    <div className="flex-1 text-center whitespace-nowrap">{buttonText || "Follow @0xNADSA"}</div>
+                                    <XWrqapper>
                                     {
-                                      !buttonText && <div className="scale-[0.6]" onClick={(e) => {
+                                        !buttonText && <div className="" onClick={(e) => {
                                         e.stopPropagation();
-                                        checkFollowRelationship()
+                                          checkFollowX()
                                       }}>
                                         <div
-                                          className={`loader-arrow ${isCheckFollowLoading ? 'animate' : 'animate-none'}`}
-                                        ></div>
+                                            className={`${isLoadingFollow ? 'animate' : 'animate-none'}`}
+                                          >
+                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                              <path d="M0.200195 7.79231C0.200195 4.35144 3.12325 1.58462 6.7002 1.58462C7.69535 1.58462 8.63844 1.79947 9.48249 2.18189L9.01418 0.490781L10.9102 0L12.4169 5.43795L6.95411 6.85242L6.44628 5.02009L9.32319 4.27466C8.58308 3.77546 7.67892 3.48061 6.7002 3.48061C4.18094 3.48061 2.16205 5.42385 2.16205 7.79231C2.16228 10.1606 4.18108 12.1029 6.7002 12.1029C9.21931 12.1029 11.2381 10.1606 11.2383 7.79231H13.2002C13.2 11.233 10.277 14 6.7002 14C3.12339 14 0.200421 11.233 0.200195 7.79231Z" fill="black" />
+                                            </svg>
+                                          </div>
                                       </div>
                                     }
+                                    </XWrqapper>
                                   </button>
                                 ) : (
-                                  <div className="w-full relative  h-[44px] text-[#836EF9] flex items-center justify-between font-Pixelmix text-[12px] border border-[#836EF9] rounded-[4px] px-[15px]">
+                                  <div className={clsx("w-full relative  text-[#836EF9] flex items-center justify-between font-Pixelmix text-[12px] border border-[#836EF9] rounded-[4px] px-[15px]", isMobile ? 'h-[27px]' : 'h-[44px]')}>
                                     <div className="text-[#836EF9]">
                                       Followed 0xNADSA
                                     </div>
@@ -343,7 +385,6 @@ export default function Aboarding({
                                     isLoading ||
                                     checkAllowlistLoading ||
                                     !!buttonText ||
-                                    isCheckFollowLoading ||
                                     !isFollow
                                   }
                                 >
@@ -361,23 +402,24 @@ export default function Aboarding({
 
                             {hasNFT && (<>
                               <div className="flex items-center justify-center flex-col">
-                                <div className="w-[68px] h-[68px] rounded-full overflow-hidden bg-[#1A1A1A80] border-[1px] border-[#E7E2FF80] flex items-center justify-center mt-[20px] drop-shadow-[0px_0px_10px_#E7E2FF80]">
+                                <div className={clsx("rounded-full overflow-hidden bg-[#1A1A1A80] border-[1px] border-[#E7E2FF80] flex items-center justify-center drop-shadow-[0px_0px_10px_#E7E2FF80]", isMobile ? 'w-[57px] h-[57px] mt-[10px]' : 'w-[68px] h-[68px] mt-[20px]')}>
                                   <img
                                     src={
                                       twitterStore.info.avatar ||
                                       "/images/nft/home/twitter-default-pfp.png"
                                     }
                                     alt="logo"
-                                    className="w-[68px] h-[68px]"
+                                    className={clsx(isMobile ? 'w-[57px] h-[57px]' : 'w-[68px] h-[68px]')}
                                   />
                                 </div>
-                                <div className="text-[#000] relative z-10 w-[124px] h-[24px] text-[18px] font-HackerNoonV2 text-center mt-[-10px] bg-[url('/images/nft/home/no-bg.png')] bg-cover bg-center">
+                                <div className={clsx("text-[#000] relative z-10 w-[124px]  font-HackerNoonV2 text-center mt-[-10px] bg-[url('/images/nft/home/no-bg.png')] bg-cover bg-center", isMobile ? 'h-[20px] text-[14px]' : 'h-[24px] text-[18px]')}>
                                   NO.{tokenIds[0]}
                                 </div>
                               </div>
 
-                              <div className="mt-6">
-                                <div className="text-[#00FF00] text-[14px] font-Pixelmix flex justify-center">
+                              <div className={clsx("mt-6", isMobile ? 'mt-[10px]' : 'mt-6')}>
+                                {
+                                  !isMobile && <div className="text-[#00FF00] text-[14px] font-Pixelmix flex justify-center">
                                   <svg
                                     width="25"
                                     height="19"
@@ -392,18 +434,29 @@ export default function Aboarding({
                                     />
                                   </svg>
                                 </div>
-                                <div className="text-[#00FF00] text-[14px] font-Pixelmix  text-center mt-[10px]">
+                                }
+
+                                <div className={clsx("text-[#00FF00] font-Pixelmix  text-center", isMobile ? 'text-[12px]' : 'text-[14px] mt-[10px]')}>
                                   @{twitterStore.info.name}
                                 </div>
-                                <div className="text-[#00FF00] text-[14px] font-Pixelmix text-center ">
+                                <div className={clsx("text-[#00FF00] whitespace-nowrap font-Pixelmix text-center", isMobile ? 'text-[12px]' : 'text-[14px]')}>
                                   Minted NFT Successfully
                                 </div>
+                                <div className="flex gap-[10px]">
+                                  <button
+                                    onClick={handleCopyImage}
+                                    className={clsx("flex-1 mt-[10px] mx-auto bg-[#00FF00] text-black flex items-center justify-center rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]", isMobile ? 'h-[27px]' : 'h-[44px]')}
+                                  >
+                                    Copy image
+                                  </button>
                                 <button
                                   onClick={handleTwitterShare}
-                                  className="w-[200px] mt-[10px] mx-auto bg-[#00FF00] h-[44px] text-black flex items-center justify-center rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]"
+                                    className={clsx("flex-1 mt-[10px] mx-auto bg-[#00FF00] text-black flex items-center justify-center rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]", isMobile ? 'h-[27px]' : 'h-[44px]')}
                                 >
                                   Share on X
                                 </button>
+                              </div>
+
                               </div>
                             </>)}
                           </div>
@@ -422,7 +475,7 @@ export default function Aboarding({
                         />
                       </div>
                       <div className="relative flex-1 flex items-center justify-between">
-                        <div className="">
+                        <div className={isMobile ? 'relative left-[-20px]' : ''}>
                           <div className="w-[270px] h-[292px] overflow-hidden relative">
                             <img
                               src="/images/nft/home/share-nft.png"
@@ -447,14 +500,14 @@ export default function Aboarding({
                             Sequence Number NFT
                           </div>
 
-                          <div className="w-[68px] h-[68px] rounded-full overflow-hidden bg-[#1A1A1A80] border-[1px] border-[#E7E2FF80] flex items-center justify-center mt-[20px] drop-shadow-[0px_0px_10px_#E7E2FF80]">
+                          <div className={clsx("rounded-full overflow-hidden bg-[#1A1A1A80] border-[1px] border-[#E7E2FF80] flex items-center justify-center drop-shadow-[0px_0px_10px_#E7E2FF80]", isMobile ? 'w-[57px] h-[57px] mt-[10px]' : 'w-[68px] h-[68px] mt-[20px]')}>
                             <img
                               src={
                                 twitterStore.info.avatar ||
                                 "/images/nft/home/twitter-default-pfp.png"
                               }
                               alt="logo"
-                              className="w-[68px] h-[68px]"
+                              className={clsx(isMobile ? 'w-[57px] h-[57px]' : 'w-[68px] h-[68px]')}
                             />
                           </div>
                           <div className="text-[#E7E2FF] text-[16px] font-Pixelmix drop-shadow-[0px_0px_10px_#E7E2FF80] mt-[10px]">
@@ -478,7 +531,7 @@ export default function Aboarding({
                   <div className="text-[#00FF00] text-[18px] whitespace-pre-wrap font-HackerNoonV2 drop-shadow-[0px_0px_10px_#00FF00]">
                     {descTitle}
                   </div>
-                  <div className="text-[#00FF00] text-[14px] mt-[10px] font-Pixelmix">
+                  <div className={clsx("text-[#00FF00] text-[14px] mt-[10px] font-Pixelmix", isMobile ? 'min-h-[240px]' : '')}>
                     <TypingText text={desc} />
                   </div>
                 </div>
@@ -487,11 +540,11 @@ export default function Aboarding({
           )}
 
           {!isMint && (
-            <div className="absolute bottom-6 right-8 flex gap-4 font-Pixelmix">
+            <div className={clsx("absolute bottom-6 right-0 flex gap-4 font-Pixelmix", isMobile ? 'left-0 justify-between' : 'right-8')}>
               <button
                 onClick={handlePrev}
                 disabled={index === 0}
-                className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px] transition-all duration-150 hover:underline hover:drop-shadow-[0px_0px_10px_#00FF00] ${index === 0 ? "hidden " : " cursor-pointer"
+                className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px] transition-all duration-150 hover:underline hover:drop-shadow-[0px_0px_10px_#00FF00] ${index === 0 ? "opacity-0 " : " cursor-pointer"
                   }`}
               >
                 Previous
@@ -535,6 +588,10 @@ const MainBtn = ({
   const { switchChain, isPending: switching } = useSwitchChain();
   const { address, chainId } = useAccount();
   const { openConnectModal } = useConnectModal();
+  const isMobile = useIsMobile();
+  const mainBtnCls =
+    clsx("w-full flex items-center justify-center bg-[#00FF00] text-black py-2 px-4 rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]", isMobile ? 'h-[27px]' : 'h-[44px]');
+
 
   if (!address) {
     return (

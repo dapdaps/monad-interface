@@ -20,7 +20,7 @@ export async function GET(request: Request | NextRequest) {
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta property="og:image:width" content="375">
             <meta property="og:image:height" content="625">
-            <title>BeraTown</title>
+            <title>NADAS</title>
         </head>
         <body>
         

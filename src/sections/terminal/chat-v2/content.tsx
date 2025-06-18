@@ -53,7 +53,6 @@ const ChatContent = (props: any) => {
   const [displayedMessageIndex, setDisplayedMessageIndex] = useState<any>(0);
   const [displayedAllHistoryMessages, setDisplayedAllHistoryMessages] =
     useState<any>(false);
-  
 
   useEffect(() => {
     if (displayedAllHistoryMessages) {
@@ -99,10 +98,15 @@ const ChatContent = (props: any) => {
   }, [terminalStore.remainSeconds]);
 
   return (
-    <div className={clsx("w-full h-full p-[30px] md:p-0 relative md:flex md:flex-col md:items-stretch", className)}>
+    <div
+      className={clsx(
+        "w-full h-full p-[30px] md:p-0 relative md:flex md:flex-col md:items-stretch",
+        className
+      )}
+    >
       <div className="px-[30px] md:pl-[15px] pt-[10px] md:pt-0 md:translate-y-[-24px]">
         <img
-          src="/images/logo-pixel.svg"
+          src="/images/logo-white.svg"
           alt=""
           className="shrink-0 w-[129px] h-[55px] md:w-[88px] md:h-[37px] object-contain object-center"
         />
@@ -191,40 +195,32 @@ const ChatContent = (props: any) => {
               />
             </div>
           )}
-          {
-            !isMobile && (
-              <CurrentUserInput
-                currentUser={currentUser}
-                inputRef={inputRef}
-                remainTime={remainTime}
-                sendMessage={sendMessage}
-                setInputMessage={setInputMessage}
-                inputMessage={inputMessage}
-              />
-            )
-          }
+          {!isMobile && (
+            <CurrentUserInput
+              currentUser={currentUser}
+              inputRef={inputRef}
+              remainTime={remainTime}
+              sendMessage={sendMessage}
+              setInputMessage={setInputMessage}
+              inputMessage={inputMessage}
+            />
+          )}
 
           <div ref={messagesEndRef} />
         </div>
       </div>
-      {
-        isMobile && (
-          <CurrentUserInput
-            currentUser={currentUser}
-            inputRef={inputRef}
-            remainTime={remainTime}
-            sendMessage={sendMessage}
-            setInputMessage={setInputMessage}
-            inputMessage={inputMessage}
-            className="h-[56px] shrink-0 !items-start"
-          />
-        )
-      }
-      {
-        !isMobile && (
-          <ChatFooter />
-        )
-      }
+      {isMobile && (
+        <CurrentUserInput
+          currentUser={currentUser}
+          inputRef={inputRef}
+          remainTime={remainTime}
+          sendMessage={sendMessage}
+          setInputMessage={setInputMessage}
+          inputMessage={inputMessage}
+          className="h-[56px] shrink-0 !items-start"
+        />
+      )}
+      {!isMobile && <ChatFooter />}
     </div>
   );
 };
@@ -232,7 +228,15 @@ const ChatContent = (props: any) => {
 export default ChatContent;
 
 const CurrentUserInput = (props: any) => {
-  const { className, currentUser, inputRef, remainTime, sendMessage, setInputMessage, inputMessage } = props;
+  const {
+    className,
+    currentUser,
+    inputRef,
+    remainTime,
+    sendMessage,
+    setInputMessage,
+    inputMessage
+  } = props;
 
   const [inputFocused, setInputFocused] = useState<any>(true);
 
@@ -255,7 +259,12 @@ const CurrentUserInput = (props: any) => {
   }, []);
 
   return (
-    <div className={clsx("flex items-center gap-[8px] text-[#0F1] md:border-t md:border-[#836EF9] md:border-dashed md:px-[15px]", className)}>
+    <div
+      className={clsx(
+        "flex items-center gap-[8px] text-[#0F1] md:border-t md:border-[#836EF9] md:border-dashed md:px-[15px]",
+        className
+      )}
+    >
       <div className="shrink-0">
         [{currentUser.name}] <Level level={currentUser.level} />:
       </div>
