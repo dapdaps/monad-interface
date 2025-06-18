@@ -283,7 +283,7 @@ const Mobile = () => {
             )}
           >
             <div className="relative w-full h-full">
-              <div className="absolute left-1/2 -translate-x-1/2 top-[-30px]">
+              <div className="absolute left-1/2 translate-x-[calc(-50%_+_15px)] top-[-30px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <div className="w-full flex items-center justify-center gap-2">
                     <img src="/images/monad/icon/codes.svg" alt="" className="shrink-0" />

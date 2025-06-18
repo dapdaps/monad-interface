@@ -49,7 +49,7 @@ export default function Item({
           color: user?.role ? roleColor : "white"
         }}
       >
-        <span>
+        <span className="whitespace-nowrap">
           [{dayjs(message.timestamp).format("HH:mm:ss")}] [
           {user?.role ? user.role.toUpperCase() : user?.name}]
           {!!user?.level ? " " : ""}

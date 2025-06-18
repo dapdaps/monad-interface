@@ -136,7 +136,7 @@ const Records = (props: any) => {
     <div
       className={clsx(
         "flex flex-col",
-        isMobile ? "w-full bg-[url('/images/codes/mobile/bg-tab.png')] bg-no-repeat bg-top bg-contain" : "p-[33px_3px_12px_16px] gap-[12px]",
+        isMobile ? "w-full bg-[url('/images/codes/mobile/bg-tab.png')] bg-no-repeat bg-top bg-[length:100%_46px]" : "p-[33px_3px_12px_16px] gap-[12px]",
         className
       )}
     >
