@@ -19,7 +19,7 @@ export default function GameEntry({ onClose }: { onClose: () => void }) {
                     <img src="/images/game/mobile-front.png" className="w-full" />
                     <div onClick={() => {
                         onClose()
-                    }} className="text-[14px] text-center underline cursor-pointer font-Unbounded text-[#E7E2FF] font-[300] mx-[20px] my-[20px]">I see</div>
+                    }} className="text-[14px] text-center underline cursor-pointer font-Unbounded text-white font-[300] mx-[20px] my-[20px]">I see</div>
                 </div>
             </div>
         </Modal>
