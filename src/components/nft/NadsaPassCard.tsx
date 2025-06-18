@@ -217,7 +217,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
           </>
         )}
 
-        {status !== 1 && (<div>
+        {status === 1 && (<div>
           <div className="flex items-center justify-center gap-[10px] text-[12px] h-[40px] mt-[10px] mb-[10px] text-[#00FF11] font-Pixelmix">
             <RightArrow /> Mint Successfully
           </div>
@@ -225,7 +225,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
             disabled={false}
             onClick={() => {
               const tweetUrl = `https://test.nadsa.space/api/twitter?img=${encodeURIComponent(
-                'https://test.nadsa.space/images/nft/token.png'
+                'https://gateway.pinata.cloud/ipfs/bafkreib7px3v7yrhapt5x6ivnz2mk74k32gnr47qjghyhbvic73r57w4fe'
               )}`;
               shareToX(`NADSA_ADMISSION_TICKET logged. %0A
 
