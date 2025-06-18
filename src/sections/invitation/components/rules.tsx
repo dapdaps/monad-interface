@@ -42,7 +42,7 @@ export const AdmissionTicket = (props: any) => {
 
   return (
     <div className={clsx("text-center pt-[20px] pb-[24px]", className)}>
-      Access NADSA One by verifying your <Link className="text-[#78FEFF] underline underline-offset-2" href={`https://monad-testnet.socialscan.io/address/${process.env.NEXT_PUBLIC_INDEX_NFT || '0xb46115299f13c731a99bcf9a57f0e9968071343e'}`} target="_blank">Admission Ticket</Link> or{isBr && <br />} entering your Access Code.
+      Access NADSA One by verifying your <Link className="text-[#78FEFF] underline underline-offset-2" href={`https://monad-testnet.socialscan.io/address/${process.env.NEXT_PUBLIC_CHART_NFT || "0x2d298c1f3a52af45ab3d34637aa293cf8a988c71"}`} target="_blank">Admission Ticket</Link> or{isBr && <br />} entering your Access Code.
     </div>
   );
 };

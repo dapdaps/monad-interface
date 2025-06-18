@@ -53,7 +53,7 @@ const MISSION_CODES = new Map([
 
 export function useMission() {
   const { accountWithAk } = useCustomAccount();
-  const { hasNFT } = useNFT({ nftAddress: process.env.NEXT_PUBLIC_INDEX_NFT || '0xb46115299f13c731a99bcf9a57f0e9968071343e' });
+  const { hasNFT } = useNFT({ nftAddress: process.env.NEXT_PUBLIC_CHART_NFT || "0x2d298c1f3a52af45ab3d34637aa293cf8a988c71" });
   const userInfo = useUserStore((store: any) => store.user);
 
   const [lastTime, setLastTime] = useState<string>("00h 00m 00s");
