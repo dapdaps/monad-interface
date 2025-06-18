@@ -17,7 +17,7 @@ import { shareToX } from "@/utils/utils";
 import TimeLocked from "../time-locked";
 
 const XWrqapper: any = IS_REAL_FOLLOW ? TimeLocked : ({ children }: any) => children
-const IS_TEST = process.env.NEXT_PUBLIC_API?.includes('test')
+const IS_TEST = !process.env.NEXT_PUBLIC_API?.includes('testnet')
 export default function NadsaPassCard({ onLoginOut, className }: any) {
   const {
     nftMetadata,
@@ -237,7 +237,7 @@ Something’s brewing at @0xNADSA — I’m already in. %0A
 
 See you on the inside. %0A`, tweetUrl)
             }}
-            tokenBalance={tokenBalance}
+            tokenBalance={'10'}
           >
             Share on X
           </MainBtn>
@@ -249,7 +249,7 @@ See you on the inside. %0A`, tweetUrl)
             onClick={() => mintNFT()}
             tokenBalance={tokenBalance}
           >
-            {isLoading || checkAllowlistLoading ? (
+            {isLoading ? (
               <>
                 <CircleLoading /> <span className="ml-[10px]">Mint NFT</span>
               </>

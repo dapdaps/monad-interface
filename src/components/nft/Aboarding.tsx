@@ -50,7 +50,7 @@ const slides = [
 ];
 
 const XWrqapper = IS_REAL_FOLLOW ? TimeLocked : ({ children }: any) => children
-const IS_TEST = process.env.NEXT_PUBLIC_API?.includes('test')
+const IS_TEST = !process.env.NEXT_PUBLIC_API?.includes('testnet')
 export default function Aboarding({
   isOpen,
   isMint,
