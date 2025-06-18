@@ -32,7 +32,7 @@ const Typewriter = ({ text, onAnimationComplete, contentClassName, ...rest }: an
   return (
     <motion.p
       key={text}
-      className="break-all"
+      className="break-words"
       variants={{
         hidden: {},
         visible: { opacity: 1, transition: { staggerChildren } }
