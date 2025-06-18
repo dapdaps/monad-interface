@@ -210,9 +210,16 @@ export default function Aboarding({
           />
         </svg>
         <div className="w-full h-full relative">
+          {
+            isMobile && (
+              <div className="text-[#E7E2FF] pt-[70px] text-[16px] text-center mt-[10px] font-HackerNoonV2 drop-shadow-[0px_0px_10px_#E7E2FF80]">
+                Welcome_onboarding_NADSA
+              </div>
+            )
+          }
           {!isLast && (
             <div>
-              <div className={clsx("w-full text-center pt-[70px] text-[#E7E2FF] uppercase font-HackerNoonV2 drop-shadow-[0px_0px_10px_#836EF9]", isMobile ? 'text-[16px]' : 'text-[24px]')}>
+              <div className={clsx("w-full text-center  text-[#E7E2FF] uppercase font-HackerNoonV2 drop-shadow-[0px_0px_10px_#836EF9]", isMobile ? 'text-[16px] pt-[20px]' : 'text-[24px] pt-[70px]')}>
                 {title}
               </div>
 
@@ -229,7 +236,7 @@ export default function Aboarding({
                 <div className={clsx("text-[#00FF00] whitespace-pre-wrap font-HackerNoonV2 drop-shadow-[0px_0px_10px_#00FF0080]", isMobile ? 'text-[16px]' : 'text-[18px]')}>
                   {descTitle}
                 </div>
-                <div className={clsx("text-[#00FF00] mt-[10px] whitespace-pre-wrap font-Pixelmix", isMobile ? 'text-[14px] h-[180px]' : 'text-[14px]')}>
+                <div className={clsx("text-[#00FF00] mt-[10px] whitespace-pre-wrap font-Pixelmix", isMobile ? 'text-[14px] min-h-[240px]' : 'text-[14px]')}>
                   <TypingText text={desc} />
                 </div>
               </div>
@@ -237,7 +244,7 @@ export default function Aboarding({
           )}
 
           {isLast && (
-            <div className="pt-[100px]">
+            <div className={clsx("", isMobile ? 'pt-[20px]' : 'pt-[100px]')}>
               <div className={clsx(isMobile ? 'mx-[5px]' : 'mx-[50px]')}>
                 <div
                   className="flex-1 flex items-center justify-center relative"
@@ -524,7 +531,7 @@ export default function Aboarding({
                   <div className="text-[#00FF00] text-[18px] whitespace-pre-wrap font-HackerNoonV2 drop-shadow-[0px_0px_10px_#00FF00]">
                     {descTitle}
                   </div>
-                  <div className={clsx("text-[#00FF00] text-[14px] mt-[10px] font-Pixelmix", isMobile ? 'h-[180px]' : '')}>
+                  <div className={clsx("text-[#00FF00] text-[14px] mt-[10px] font-Pixelmix", isMobile ? 'min-h-[240px]' : '')}>
                     <TypingText text={desc} />
                   </div>
                 </div>
