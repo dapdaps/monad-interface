@@ -16,14 +16,13 @@ export async function GET(request: Request | NextRequest) {
             <meta name="twitter:title" content="nadsa">
             <meta name="twitter:description" content="nadsa">
             <meta name="twitter:image" content="${img}">
-            <meta http-equiv="refresh" content="0; url=https://test.nadsa.space/">
+            <meta http-equiv="refresh" content="0; url=https://nadsa.space/">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta property="og:image:width" content="375">
             <meta property="og:image:height" content="625">
             <title>NADAS</title>
         </head>
         <body>
-        
         </body>
         </html>`,
     {
