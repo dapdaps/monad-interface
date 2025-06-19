@@ -48,7 +48,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
 
   const { isFollow, isLoadingFollow, checkFollowX, setFollowX } = useXFollow();
 
-  const { handleReport } = useClickTracking()
+  const { handleReport, handleReportWithoutDebounce } = useClickTracking()
 
   const status = useMemo(() => {
     if (!address || isLoadingFollow || !isFollow) {
@@ -155,7 +155,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
             ) : (
               <button
                 onClick={() => {
-                  handleReport("1006-003")
+                  handleReportWithoutDebounce("1006-003")
                   if (buttonText === "Please switch X") {
                     onLoginOut?.();
                     return;
@@ -176,7 +176,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
               {!isFollow || buttonText ? (
                 <button
                   onClick={() => {
-                    handleReport("1006-004")
+                    handleReportWithoutDebounce("1006-004")
                     if (buttonText) return;
                     window.open(
                       "https://twitter.com/intent/follow?screen_name=0xNADSA",
@@ -231,9 +231,9 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
             <RightArrow /> Mint Successfully
           </div>
           <MainBtn
-            dataBp="1006-005"
             disabled={false}
             onClick={() => {
+              handleReportWithoutDebounce("1006-005")
               const tweetUrl = `https://${IS_TEST ? 'test.' : ''}nadsa.space/api/twitter?img=${encodeURIComponent(
                 'https://gateway.pinata.cloud/ipfs/bafkreib7px3v7yrhapt5x6ivnz2mk74k32gnr47qjghyhbvic73r57w4fe'
               )}`;
