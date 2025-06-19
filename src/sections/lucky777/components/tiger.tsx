@@ -740,6 +740,7 @@ export default memo(function Tiger(props: any) {
 
         <div data-click-sound className="absolute bottom-[290px] left-1/2 -translate-x-1/2 z-[2] w-[202px] h-[86px] flex flex-col items-center  max-w-full  bg-top bg-contain bg-no-repeat">
           <motion.button
+            data-bp="1009-008"
             ref={spinRef}
             type="button"
             // disabled={spinning}  
@@ -762,6 +763,7 @@ export default memo(function Tiger(props: any) {
 
         <div>
           <motion.button
+            data-bp="1009-005"
             type="button"
             data-click-sound
             className="absolute bottom-[320px] right-[140px] z-[2] w-[116px] h-[32px] bg-[url('/images/lucky777/rules.svg')] bg-no-repeat bg-center bg-contain "
@@ -774,6 +776,7 @@ export default memo(function Tiger(props: any) {
           />
 
           <motion.button
+            data-bp="1009-006"
             type="button"
             data-click-sound
             className="absolute bottom-[280px] right-[105px] z-[2] w-[136px] h-[32px] bg-[url('/images/lucky777/history-2.svg')] bg-no-repeat bg-center bg-contain"
@@ -798,6 +801,7 @@ export default memo(function Tiger(props: any) {
           <div className="flex items-center justify-between mt-[10px]">
             <div className="text-[#A5FFFD] text-[10px] text-left w-[220px]">1 free play available today – expires in {freeTimes.hours}:{freeTimes.minutes}:{freeTimes.seconds}</div>
             <motion.button
+              data-bp="1009-007"
               data-click-sound
               type="button"
               className=" w-[80px] h-[27px] bg-[#BFFF60] rounded-[6px] text-[14px] text-black border cursor-pointer"

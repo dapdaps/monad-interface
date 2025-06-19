@@ -104,7 +104,7 @@ const Home = () => {
           <SpecialAnimateGif />
           {/* Bridge */}
           <div
-            data-bp="1001-002"
+            data-bp="1001-014"
             data-hover-sound
             // onClick={() => router.push("/bridge")}
             className={
@@ -188,7 +188,7 @@ const Home = () => {
           </div>
           {/* Codes */}
           <div
-            data-bp="1001-005"
+            data-bp="1001-015"
             data-hover-sound
             onClick={() => router.push("/codes")}
             className={clsx(

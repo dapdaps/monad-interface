@@ -135,7 +135,7 @@ export default function LoginButton({ resetGame }: LoginButtonProps) {
                         loadingText="Funding player..."
                         isLoading={faucetLoading}
                     /> */}
-                    <img src="/images/2048/new-game.svg" className="w-[135px]  cursor-pointer" onClick={resetGame} />
+                    <img data-bp="1009-012" src="/images/2048/new-game.svg" className="w-[135px]  cursor-pointer" onClick={resetGame} />
                     {/* <button
                         className="underline"
                         onClick={logout}

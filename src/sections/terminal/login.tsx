@@ -38,6 +38,7 @@ const LoginView = (props: any) => {
             <Button
               className="mt-[26px] h-[52px] font-Pixelmix disabled:!cursor-not-allowed disabled:opacity-30 shrink-0 w-full rounded-[2px] text-white text-center text-[16px] md:text-[14px] leading-[90%]"
               disabled={buttonDisabled}
+              data-bp="1006-001"
               onClick={() => {
                 window.open(
                   `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${

@@ -166,17 +166,17 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
                     <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">
                         <div className="text-[#BFFF60] font-bold mb-2">x10</div>
                         <img src="/images/lucky777/coin-10.svg" alt="10 coins" className="mb-2 mt-[20px]" />
-                        <MoreBtn onClick={() => handleSelectTimes(10)}>1 MON</MoreBtn>
+                        <MoreBtn dataBp="1009-009" onClick={() => handleSelectTimes(10)}>1 MON</MoreBtn>
                     </div>
                     <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">
                         <div className="text-[#BFFF60] font-bold mb-2">x50</div>
                         <img src="/images/lucky777/coin-50.svg" alt="50 coins" className="mb-2 mt-[11px]" />
-                        <MoreBtn onClick={() => handleSelectTimes(50)}>5 MON</MoreBtn>
+                        <MoreBtn dataBp="1009-010" onClick={() => handleSelectTimes(50)}>5 MON</MoreBtn>
                     </div>
                     <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">
                         <div className="text-[#BFFF60] font-bold mb-2">x100</div>
                         <img src="/images/lucky777/coin-100.svg" alt="100 coins" className="mb-2" />
-                        <MoreBtn onClick={() => handleSelectTimes(100)}>10 MON</MoreBtn>
+                        <MoreBtn dataBp="1009-011" onClick={() => handleSelectTimes(100)}>10 MON</MoreBtn>
                     </div>
                 </div>
             </div>
@@ -203,9 +203,9 @@ const MainBtn = ({ onClick }: { onClick: any }) => {
     )
 }
 
-const MoreBtn = ({ onClick, children }: { onClick: any, children: any }) => {
+const MoreBtn = ({ onClick, children, dataBp }: { onClick: any, children: any, dataBp: string }) => {
     return (
-        <button onClick={onClick} className="bg-[#BFFF60] text-[#23223A] font-bold py-1 px-4 rounded">{children}</button>
+        <button data-bp={dataBp}  onClick={onClick} className="bg-[#BFFF60] text-[#23223A] font-bold py-1 px-4 rounded">{children}</button>
     )
 }
 

@@ -4,7 +4,7 @@ import { useCodesContext } from "@/sections/codes/context";
 export default memo(function RulesButotn() {
   const { setShowRuleModal } = useCodesContext()
   return (
-    <div className="mb-[29px] flex justify-end">
+    <div data-bp="1008-001" className="mb-[29px] flex justify-end">
       <span className="cursor-pointer text-[#A5FFFD] font-DogicaPixel text-[12px] leading-[150%]"
         onClick={() => {
           setShowRuleModal(true)

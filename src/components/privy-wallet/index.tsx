@@ -114,7 +114,7 @@ const PrivyWallet = () => {
                         </svg>
                     </div>
                 </div>
-                <button onClick={() => { 
+                <button data-bp="1009-004" onClick={() => { 
                     setOpen(true)
                     setIsJustDesposit(false)
                  }} className="w-full font-Montserrat h-[40px] text-black font-bold py-2 rounded-[10px] text-[16px] transition bg-[radial-gradient(50%_50%_at_50%_50%,#E1FFB5_0%,#B1FF3D_100%)] shadow-[0px_0px_6px_0px_#BFFF60]">

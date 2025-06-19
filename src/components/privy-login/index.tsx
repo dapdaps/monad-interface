@@ -18,7 +18,7 @@ export default function PrivyLogin() {
                 <p className="text-[18px] font-Montserrat text-white text-center mt-[40px] w-[888px] leading-[150%]">
                     You'll need to generate a new game account - your personal vault for rewards, scores, and progress. Let's gear up and dive in.
                 </p>
-                <img src="/images/game/create-btn.svg" onClick={handleLogin} className="w-[260px] h-[50px] m-auto mt-[60px] cursor-pointer hover:scale-110 transition-transform duration-200" />
+                <img data-bp="1009-001" src="/images/game/create-btn.svg" onClick={handleLogin} className="w-[260px] h-[50px] m-auto mt-[60px] cursor-pointer hover:scale-110 transition-transform duration-200" />
             </div>
         </div>
     );

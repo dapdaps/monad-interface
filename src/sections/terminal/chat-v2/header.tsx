@@ -47,6 +47,7 @@ const ChatHeader = (props: any) => {
           {!isMobile && "Account: "}<span className="text-[#0F1]">@{currentUser.name}</span>
         </div>
         <button
+          data-bp="1006-002"
           type="button"
           className="w-[14px] h-[14px] shrink-0 bg-[url('/images/terminal/icon-logout.svg')] bg-no-repeat bg-contain bg-center disabled:opacity-30 disabled:!cursor-not-allowed"
           onClick={onLoginOut}

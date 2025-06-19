@@ -208,6 +208,7 @@ const ClaimButton = (props: any) => {
           </div>
         ) : (
           <button
+            data-bp="1008-002"
             type="button"
             disabled={claimLoading}
             className="cursor-pointer p-[8px_12px] rounded-[6px] bg-[#8B87FF] text-black font-Unbounded text-[12px] font-medium leading-[120%]"

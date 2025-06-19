@@ -171,6 +171,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
             <>
               {!isFollow || buttonText ? (
                 <button
+                  data-bp="1006-004"
                   onClick={() => {
                     if (buttonText) return;
                     window.open(
@@ -226,6 +227,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
             <RightArrow /> Mint Successfully
           </div>
           <MainBtn
+            data-bp="1006-005"
             disabled={false}
             onClick={() => {
               const tweetUrl = `https://${IS_TEST ? 'test.' : ''}nadsa.space/api/twitter?img=${encodeURIComponent(
