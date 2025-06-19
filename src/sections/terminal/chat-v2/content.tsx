@@ -14,6 +14,7 @@ import Level from "@/sections/terminal/components/content/level";
 import { motion } from "framer-motion";
 import ChatFooter from "./footer";
 import useIsMobile from "@/hooks/use-isMobile";
+import DisableMask from "./disable-mask";
 import { LandingNadsa } from "@/components/nft";
 
 const ChatContent = (props: any) => {
@@ -112,6 +113,9 @@ const ChatContent = (props: any) => {
           className="shrink-0 w-[129px] h-[55px] md:w-[88px] md:h-[37px] object-contain object-center"
         />
       </div>
+      <div className="w-full h-[calc(100%_-_65px_-_100px)] absolute top-[80px] left-0 z-[10]">
+        <DisableMask />
+      </div>
       {isMobile && (
         <div className="w-full px-[10px]">
           <LandingNadsa className="!h-[60px] !w-full shrink-0 !bg-cover translate-y-[-18px] border border-[#6750FF] rounded-[12px]" />
@@ -119,7 +123,7 @@ const ChatContent = (props: any) => {
       )}
       <div
         className={clsx(
-          "w-full md:h-0 md:flex-1 pt-[25px] md:pt-0 pb-[15px] md:pb-0 md:translate-y-[-10px]",
+          "w-full blur-[10px] md:h-0 md:flex-1 pt-[25px] md:pt-0 pb-[15px] md:pb-0 md:translate-y-[-10px] ",
           isMobile
             ? "h-[calc(100%_-_65px_-_51px_-_60px)]"
             : "h-[calc(100%_-_65px_-_51px)]"
@@ -208,7 +212,7 @@ const ChatContent = (props: any) => {
               />
             </div>
           )}
-          {!isMobile && (
+          {/* {!isMobile && (
             <CurrentUserInput
               currentUser={currentUser}
               inputRef={inputRef}
@@ -217,12 +221,12 @@ const ChatContent = (props: any) => {
               setInputMessage={setInputMessage}
               inputMessage={inputMessage}
             />
-          )}
+          )} */}
 
           <div ref={messagesEndRef} />
         </div>
       </div>
-      {isMobile && (
+      {/* {isMobile && (
         <CurrentUserInput
           currentUser={currentUser}
           inputRef={inputRef}
@@ -232,7 +236,7 @@ const ChatContent = (props: any) => {
           inputMessage={inputMessage}
           className="h-[56px] shrink-0 !items-start"
         />
-      )}
+      )} */}
       {!isMobile && <ChatFooter />}
     </div>
   );
