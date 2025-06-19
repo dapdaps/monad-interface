@@ -172,6 +172,8 @@ export default function Aboarding({
     return null;
   }
 
+  console.log('isMint:', isMint)
+
   return (
     <Modal
       open={isOpen}
@@ -211,15 +213,15 @@ export default function Aboarding({
         </svg>
         <div className="w-full h-full relative">
           {
-            isMobile && (
+            isMobile && isLast && (
               <div className="text-[#E7E2FF] pt-[70px] text-[16px] text-center mt-[10px] font-HackerNoonV2 drop-shadow-[0px_0px_10px_#E7E2FF80]">
-                Welcome_onboarding_NADSA
+                Welcome onboarding NADSA
               </div>
             )
           }
           {!isLast && (
             <div>
-              <div className={clsx("w-full text-center  text-[#E7E2FF] uppercase font-HackerNoonV2 drop-shadow-[0px_0px_10px_#836EF9]", isMobile ? 'text-[16px] pt-[20px]' : 'text-[24px] pt-[70px]')}>
+              <div className={clsx("w-full text-center  text-[#E7E2FF] uppercase font-HackerNoonV2 drop-shadow-[0px_0px_10px_#836EF9]", isMobile ? 'text-[16px] pt-[60px]' : 'text-[24px] pt-[70px]')}>
                 {title}
               </div>
 
@@ -539,7 +541,7 @@ export default function Aboarding({
             </div>
           )}
 
-          {!isMint && (
+          { (
             <div className={clsx("absolute bottom-6 right-0 flex gap-4 font-Pixelmix", isMobile ? 'left-0 justify-between' : 'right-8')}>
               <button
                 onClick={handlePrev}
