@@ -66,10 +66,10 @@ const ProgressItem = (props: any) => {
 };
 
 export const MissionScreen = (props: any) => {
-  const { className, children } = props;
+  const { className, children, onClick } = props;
 
   return (
-    <div className={clsx("w-[257px] h-[72px] flex items-center justify-center bg-black border border-[#55648A] rounded-[6px] shadow-[3px_3px_0px_0px_#2C3635_inset] text-[#03E212] text-center font-HackerNoonV2 [text-shadow:0_0_10px_rgba(3,226,18,0.5)] text-[18px] font-[400] leading-[120%] [background-image:linear-gradient(rgba(120,254,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(120,254,255,0.1)_1px,transparent_1px)] [background-size:35px_35px]", className)}>
+    <div onClick={onClick} className={clsx("w-[257px] h-[72px] flex items-center justify-center bg-black border border-[#55648A] rounded-[6px] shadow-[3px_3px_0px_0px_#2C3635_inset] text-[#03E212] text-center font-HackerNoonV2 [text-shadow:0_0_10px_rgba(3,226,18,0.5)] text-[18px] font-[400] leading-[120%] [background-image:linear-gradient(rgba(120,254,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(120,254,255,0.1)_1px,transparent_1px)] [background-size:35px_35px]", className)}>
       {children}
     </div>
   )

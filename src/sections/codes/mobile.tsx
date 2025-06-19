@@ -5,13 +5,17 @@ import CurrentMission from "./components/mission/current";
 import CodesNextDrop from "./components/mission/next-drop";
 import Codes from "./components/codes";
 import Records from "./components/records";
+import RulesButton from "./components/rules-button";
 
 const CodesMobile = () => {
   const { missionData, missionLoading, getMissionData, lastTime, currentRountCodes } = useMission();
 
   return (
     <div className="w-full pt-[60px] flex flex-col items-center overflow-y-auto h-screen bg-[url('/images/faucet/bg.png')] bg-no-repeat bg-[position:-800px_-100px] bg-[length:1313px]">
-      <img src="/images/codes/mobile/title.png" alt="Codes" className="w-[90px] h-[20px] object-center object-contain" />
+      <div className="w-full h-[20px] relative px-[15px] flex justify-center items-center">
+        <img src="/images/codes/mobile/title.png" alt="Codes" className="w-[90px] h-[20px] object-center object-contain" />
+        <RulesButton className="absolute right-[15px] !mb-[unset]" />
+      </div>
       <CodesDescription titleClassName="mt-[20px]" className="!mt-[10px] !mb-[unset]" />
       <RuleModal />
       <div className="w-full px-[15px]">
