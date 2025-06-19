@@ -17,6 +17,7 @@ import { shareToX } from "@/utils/utils";
 import TimeLocked from "../time-locked";
 
 const XWrqapper: any = IS_REAL_FOLLOW ? TimeLocked : ({ children }: any) => children
+const IS_TEST = !process.env.NEXT_PUBLIC_API?.includes('testnet')
 export default function NadsaPassCard({ onLoginOut, className }: any) {
   const {
     nftMetadata,
@@ -68,7 +69,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
   }, [hasNFT, nftMetadata, address, isFollow, isLoadingFollow]);
 
   return (
-    <div className={clsx("w-[308px] p-4 relative", className)}>
+    <div onClick={(e) => e.stopPropagation()} className={clsx("w-[308px] p-4 relative", className)}>
       <div className="absolute top-0 left-0 w-full h-full">
         <img src="/images/nft/bg.png" alt="bg" className="w-full h-full" />
       </div>
@@ -195,15 +196,15 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
                       <XWrqapper className="text-white">
                         <div className="" onClick={(e) => {
                           checkFollowX()
-                        }}>
-                          <div
+                      }}>
+                        <div
                             className={`loader-arrow ${isLoadingFollow ? 'animate' : 'animate-none'}`}
                           >
                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <path d="M0.200195 7.79231C0.200195 4.35144 3.12325 1.58462 6.7002 1.58462C7.69535 1.58462 8.63844 1.79947 9.48249 2.18189L9.01418 0.490781L10.9102 0L12.4169 5.43795L6.95411 6.85242L6.44628 5.02009L9.32319 4.27466C8.58308 3.77546 7.67892 3.48061 6.7002 3.48061C4.18094 3.48061 2.16205 5.42385 2.16205 7.79231C2.16228 10.1606 4.18108 12.1029 6.7002 12.1029C9.21931 12.1029 11.2381 10.1606 11.2383 7.79231H13.2002C13.2 11.233 10.277 14 6.7002 14C3.12339 14 0.200421 11.233 0.200195 7.79231Z" fill="#fff" />
                             </svg>
                           </div>
-                        </div>
+                      </div>
                       </XWrqapper>
                     </div>
                   }
@@ -227,7 +228,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
           <MainBtn
             disabled={false}
             onClick={() => {
-              const tweetUrl = `https://test.nadsa.space/api/twitter?img=${encodeURIComponent(
+              const tweetUrl = `https://${IS_TEST ? 'test.' : ''}nadsa.space/api/twitter?img=${encodeURIComponent(
                 'https://gateway.pinata.cloud/ipfs/bafkreib7px3v7yrhapt5x6ivnz2mk74k32gnr47qjghyhbvic73r57w4fe'
               )}`;
               shareToX(`NADSA_ADMISSION_TICKET logged. %0A
@@ -236,7 +237,7 @@ Something’s brewing at @0xNADSA — I’m already in. %0A
 
 See you on the inside. %0A`, tweetUrl)
             }}
-            tokenBalance={tokenBalance}
+            tokenBalance={'10'}
           >
             Share on X
           </MainBtn>
@@ -248,7 +249,7 @@ See you on the inside. %0A`, tweetUrl)
             onClick={() => mintNFT()}
             tokenBalance={tokenBalance}
           >
-            {isLoading || checkAllowlistLoading ? (
+            {isLoading ? (
               <>
                 <CircleLoading /> <span className="ml-[10px]">Mint NFT</span>
               </>
