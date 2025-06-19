@@ -684,6 +684,7 @@ export default memo(function Tiger(props: any) {
         <div>
           <motion.button
             type="button"
+            data-bp="1009-009"
             data-click-sound
             className="group absolute bottom-[280px] left-[190px] z-[4] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x1.svg')] bg-no-repeat bg-center bg-contain "
             animate={{ backgroundImage: 
@@ -704,6 +705,7 @@ export default memo(function Tiger(props: any) {
           <motion.button
             type="button"
             data-click-sound
+            data-bp="1009-010"
             className="absolute group bottom-[280px] left-[80px] z-[4] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x10.svg')] bg-no-repeat bg-center bg-contain "
             animate={{ backgroundImage: 
               spinUserData?.spin_balance < 10 ? "url('/images/lucky777/multiple/x10-disabled.svg')" : multiple === 10 ? "url('/images/lucky777/multiple/x10-press.svg')" : "url('/images/lucky777/multiple/x10.svg')" }}
@@ -721,6 +723,7 @@ export default memo(function Tiger(props: any) {
 
           <motion.button
             type="button"
+            data-bp="1009-011"
             data-click-sound
             className="absolute group bottom-[320px] left-[150px] z-[2] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x50.svg')] bg-no-repeat bg-center bg-contain "
             animate={{ backgroundImage: 
