@@ -13,8 +13,8 @@ import { useEffect, useState, useRef } from "react";
 import { useDebounceFn } from "ahooks";
 import useUsersInfo from "./hooks/use-users-info";
 import { redirect } from "next/navigation";
-import { useTerminalStore } from '@/stores/terminal';
-import useCustomAccount from '@/hooks/use-account';
+import { useTerminalStore } from "@/stores/terminal";
+import useCustomAccount from "@/hooks/use-account";
 
 const realtime = new Realtime({
   appId: process.env.NEXT_PUBLIC_LEANCLOUD_APP_ID!,
@@ -42,14 +42,17 @@ export default function ChatView({ currentUser }: any) {
 
   const { account } = useCustomAccount();
   const { fetchUsersInfo } = useUsersInfo();
-  const setLimit = useTerminalStore((store) => store.setLimit);
+  const setLimit = useTerminalStore((store: any) => store.setLimit);
 
-  const { run: scrollToBottom } = useDebounceFn(() => {
-    if (!messagesEndRef.current) {
-      return;
-    }
-    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-  }, { wait: 300 });
+  const { run: scrollToBottom } = useDebounceFn(
+    () => {
+      if (!messagesEndRef.current) {
+        return;
+      }
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    },
+    { wait: 300 }
+  );
 
   const fetchHistoryMessages = async (isFresh?: boolean) => {
     if (!conversationRef.current) {
@@ -133,7 +136,10 @@ export default function ChatView({ currentUser }: any) {
             const newChatRoom = await _client.createChatRoom({
               name: "One Won Chat"
             });
-            console.log("New terminal room created successfully:", newChatRoom.id);
+            console.log(
+              "New terminal room created successfully:",
+              newChatRoom.id
+            );
             return newChatRoom;
           } catch (createError) {
             console.error("Failed to create terminal room:", createError);
