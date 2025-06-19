@@ -6,13 +6,14 @@ import { useState } from "react";
 import { useUserStore } from "@/stores/user";
 import { useInterval } from "ahooks";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 
 const CodesMission = (props: any) => {
   const { className } = props;
 
   const isMobile = useIsMobile();
   const [lastTime, setLastTime] = useState<string>("00h 00m 00s");
-
+  const router = useRouter();
   const userInviteTimestamp = useUserStore((store: any) => store.inviteTimestamp);
 
   useInterval(() => {
@@ -75,6 +76,9 @@ const CodesMission = (props: any) => {
             "cursor-pointer flex flex-col gap-[3px] w-full !border-black !shadow-[0px_2px_0px_0px_rgba(255,_255,_255,_0.25)_inset] !rounded-[2px] ![background-image:unset] !p-[4px_5px]",
             isMobile ? "!h-[53px]" : "!h-[75px]"
           )}
+          onClick={() => {
+            router.push("/codes");
+          }}
         >
           <div className="text-[#A6A6DB] text-center font-Unbounded text-[10px] font-[300] leading-normal">
             Next code drop in
