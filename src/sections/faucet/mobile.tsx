@@ -23,6 +23,7 @@ export default memo(function Mobile() {
         <div className='relative m-[60px_0_20px] flex justify-center'>
           <FaucetFontSvg />
           <div
+            data-bp="1002-003"
             className='absolute right-[10px] top-[3px] cursor-pointer text-[#A5FFFD] font-DogicaPixel text-[12px] leading-[150%]'
             onClick={() => {
               store.set({
@@ -74,7 +75,7 @@ export default memo(function Mobile() {
                 </div>
 
               </div>
-              <div className='absolute z-10 right-0 -bottom-[26px] text-[#A5FFFD] text-[12px] font-DogicaPixel underline' onClick={() => {
+              <div data-bp="1002-002" className='absolute z-10 right-0 -bottom-[26px] text-[#A5FFFD] text-[12px] font-DogicaPixel underline' onClick={() => {
                 setShowHistory(true)
               }}>History</div>
 

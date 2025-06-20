@@ -21,6 +21,7 @@ export default memo(function Laptop() {
         <div className="w-full h-full flex justify-center items-start pt-[110px] bg-[linear-gradient(180deg,_#000_0%,_rgba(0,_0,_0,_0.00)_100%)] bg-no-repeat bg-top bg-[length:100%_37.79%]">
           <FaucetCard bodyClassName="relative !p-0 border border-transparent">
             <div
+              data-bp="1002-003"
               className='absolute right-[34px] -top-[13px] cursor-pointer text-[#A5FFFD] font-DogicaPixel text-[12px] leading-[150%]'
               onClick={() => {
                 store.set({

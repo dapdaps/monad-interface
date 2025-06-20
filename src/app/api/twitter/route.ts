@@ -12,11 +12,12 @@ export async function GET(request: Request | NextRequest) {
             <meta charset="UTF-8">
             <meta name="twitter:site" content="@xxx" />
             <meta name="twitter:creator" content="@xxx" />
-            <meta name="twitter:card" content="summary_large_image"> <!-- Use 'summary_large_image' for large image cards -->
+            <meta name="twitter:card" content="summary_large_image"> <!-- Use
+             'summary_large_image' for large image cards -->
             <meta name="twitter:title" content="nadsa">
             <meta name="twitter:description" content="nadsa">
             <meta name="twitter:image" content="${img}">
-            <meta http-equiv="refresh" content="0; url=https://nadsa.space/">
+            <meta http-equiv="refresh" content="0; url=/">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta property="og:image:width" content="375">
             <meta property="og:image:height" content="625">

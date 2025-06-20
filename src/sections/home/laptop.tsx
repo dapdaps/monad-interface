@@ -136,7 +136,7 @@ const Home = () => {
           <SpecialAnimateGif />
           {/* Bridge */}
           <div
-            data-bp="1001-002"
+            data-bp="1001-014"
             data-hover-sound
             // onClick={() => router.push("/bridge")}
             className={
@@ -185,7 +185,7 @@ const Home = () => {
           <div
             // data-hover-sound 
             data-bp="1001-007"
-            onClick={() => router.push("/game")}
+            onClick={() => router.push("/arcade")}
             className={clsx(
               'absolute left-[calc(560/14.4*var(--rem))] -top-[115px] w-[275px] h-[210px] cursor-pointer',
               'bg-no-repeat bg-contain',
@@ -200,7 +200,7 @@ const Home = () => {
           </div>
           {/* yapper */}
           <div
-            data-bp="1001-005"
+            data-bp="1001-015"
             data-hover-sound
             onClick={() => router.push("/codes")}
             className={clsx(

@@ -2,6 +2,8 @@ import Modal from "@/components/modal";
 import NadsaPassCard from "./NadsaPassCard";
 import Link from "next/link";
 import clsx from "clsx";
+import useClickTracking from "@/hooks/use-click-tracking";
+import { useRouter } from "next/navigation";
 
 export default function NFT({
   isOpen,
@@ -50,28 +52,33 @@ export default function NFT({
       isForceNormal={isForceNormal}
     >
       <NadsaPassCard onLoginOut={onLoginOut} />
-      {/* <Link
-        href="/"
-        prefetch={true}
-        className="flex justify-center items-end w-[290px] h-[132px] bg-[url('/images/terminal/bg-landing-homepage.png')] bg-no-repeat bg-center bg-contain text-white text-[16px] font-Pixelmix font-normal leading-[200%] drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)]"
-      >
-        <div className="pb-[14px]">LANDING NADSA &gt;</div>
-      </Link> */}
+      {/* {
+        isHomepageLink && (
+          <LandingNadsa />
+        )
+      } */}
     </Modal>
   );
 }
 
 export const LandingNadsa = ({ className }: { className?: string }) => {
+  const { handleReportWithoutDebounce } = useClickTracking()
+  const { push } = useRouter()
   return (
-    <Link
-      href="/"
-      prefetch={true}
+    <div
+      data-bp="1006-006"
+      onClick={() => {
+        handleReportWithoutDebounce("1006-006")
+        setTimeout(() => {
+          push('/')
+        }, 100)
+      }}
       className={clsx(
         "flex justify-center items-end w-[290px] h-[132px] bg-[url('/images/terminal/bg-landing-homepage.png')] bg-no-repeat bg-center bg-contain text-white text-[16px] font-Pixelmix font-normal leading-[200%] drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)]",
         className
       )}
     >
       <div className="pb-[14px]">LANDING NADSA &gt;</div>
-    </Link>
+    </div>
   );
 };

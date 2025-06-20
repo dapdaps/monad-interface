@@ -6,6 +6,7 @@ export default memo(function HistoryButton() {
   return (
     <div className='mb-[24px] flex justify-center'>
       <div
+        data-bp="1002-002"
         className='cursor-pointer text-[#A5FFFD] text-[12px] font-DogicaPixel leading-[150%]'
         onClick={() => {
           setShowHistory(true)
