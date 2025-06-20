@@ -15,6 +15,7 @@ import Big from "big.js";
 import useXFollow, { IS_REAL_FOLLOW } from "./use-x-follow";
 import { shareToX } from "@/utils/utils";
 import TimeLocked from "../time-locked";
+import useClickTracking from "@/hooks/use-click-tracking";
 
 const XWrqapper: any = IS_REAL_FOLLOW ? TimeLocked : ({ children }: any) => children
 const IS_TEST = !process.env.NEXT_PUBLIC_API?.includes('testnet')
@@ -46,6 +47,8 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
   } = useBindTwitterAccount({ withAuth: false });
 
   const { isFollow, isLoadingFollow, checkFollowX, setFollowX } = useXFollow();
+
+  const { handleReport, handleReportWithoutDebounce } = useClickTracking()
 
   const status = useMemo(() => {
     if (!address || isLoadingFollow || !isFollow) {
@@ -152,6 +155,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
             ) : (
               <button
                 onClick={() => {
+                  handleReportWithoutDebounce("1006-003")
                   if (buttonText === "Please switch X") {
                     onLoginOut?.();
                     return;
@@ -172,6 +176,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
               {!isFollow || buttonText ? (
                 <button
                   onClick={() => {
+                    handleReportWithoutDebounce("1006-004")
                     if (buttonText) return;
                     window.open(
                       "https://twitter.com/intent/follow?screen_name=0xNADSA",
@@ -228,6 +233,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
           <MainBtn
             disabled={false}
             onClick={() => {
+              handleReportWithoutDebounce("1006-005")
               const tweetUrl = `https://${IS_TEST ? 'test.' : ''}nadsa.space/api/twitter?img=${encodeURIComponent(
                 'https://gateway.pinata.cloud/ipfs/bafkreib7px3v7yrhapt5x6ivnz2mk74k32gnr47qjghyhbvic73r57w4fe'
               )}`;
@@ -286,12 +292,14 @@ const MainBtn = ({
   onClick,
   children,
   disabled,
-  tokenBalance
+  tokenBalance,
+  dataBp
 }: {
   onClick: any;
   children: any;
   disabled: boolean;
   tokenBalance: string;
+  dataBp?: string;
 }) => {
   const { switchChain, isPending: switching } = useSwitchChain();
   const { address, chainId } = useAccount();
@@ -324,6 +332,7 @@ const MainBtn = ({
 
   return (
     <button
+      data-bp={dataBp}
       onClick={() => {
         if (disabled) {
           return;

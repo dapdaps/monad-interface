@@ -12,8 +12,11 @@ import { trim } from "lodash";
 import { useGuideStore } from "@/stores/guide";
 
 export function useInvitation<Invitation>() {
-  const { account } = useCustomAccount();
-  const { hasNFT, checking } = useNFT({ nftAddress: process.env.NEXT_PUBLIC_INDEX_NFT || '0xb46115299f13c731a99bcf9a57f0e9968071343e' });
+  const { account, accountWithAk } = useCustomAccount();
+  const { hasNFT, checking } = useNFT({ 
+    nftAddress: process.env.NEXT_PUBLIC_CHART_NFT || "0x2d298c1f3a52af45ab3d34637aa293cf8a988c71",
+    autoChecking: false
+  });
   const toast = useToast();
   const userInfo = useUserStore((store: any) => store.user);
   const userInfoLoading = useUserStore((store: any) => store.loading);

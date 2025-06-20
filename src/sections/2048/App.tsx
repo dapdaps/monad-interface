@@ -24,6 +24,7 @@ import { PrivyContext } from "@/components/privy-provider";
 import { publicClient } from "./utils/client";
 import { GAME_CONTRACT_ADDRESS } from "./utils/constants";
 import { use2048Store } from "@/stores/use2048";
+import { toast } from "react-toastify";
 
 // Types
 export enum Direction {

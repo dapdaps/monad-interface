@@ -4,6 +4,7 @@ import clsx from "clsx";
 // import { useRequest } from "ahooks";
 import { numberFormatter } from "@/utils/number-formatter";
 import useIsMobile from "@/hooks/use-isMobile";
+import useClickTracking from "@/hooks/use-click-tracking";
 // import LevelPanel from "@/sections/terminal/components/footer/level-panel";
 // import Popover, {
 //   PopoverPlacement,
@@ -12,7 +13,7 @@ import useIsMobile from "@/hooks/use-isMobile";
 
 const ChatHeader = (props: any) => {
   const { className, currentUser, onlineUsers, onLoginOut } = props;
-
+  const { handleReportWithoutDebounce } = useClickTracking()
   const isMobile = useIsMobile();
 
   return (
@@ -49,7 +50,12 @@ const ChatHeader = (props: any) => {
         <button
           type="button"
           className="w-[14px] h-[14px] shrink-0 bg-[url('/images/terminal/icon-logout.svg')] bg-no-repeat bg-contain bg-center disabled:opacity-30 disabled:!cursor-not-allowed"
-          onClick={onLoginOut}
+          onClick={() => {
+            handleReportWithoutDebounce("1006-002")
+            setTimeout(() => {
+              onLoginOut?.()
+            }, 100)
+          }}
         />
       </div>
     </div>

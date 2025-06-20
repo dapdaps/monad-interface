@@ -33,7 +33,7 @@ const Mobile = () => {
             </div>
           </div>
           {/* bridge */}
-          <div className="absolute left-[-15%] top-[-10%] w-[254px] h-[228px]">
+          <div data-bp="1001-014" className="absolute left-[-15%] top-[-10%] w-[254px] h-[228px]">
             <img
               src="/images/mobile/entry/bridge-locked.svg"
               className="w-full h-full"

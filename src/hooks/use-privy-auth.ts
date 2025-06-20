@@ -10,7 +10,6 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
     const [loginLoading, setLoginLoading] = useState(false);
     const [address, setAddress] = useState("");
 
-
     useEffect(() => {
         if (user && !user.wallet) {
             createWallet();

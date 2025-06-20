@@ -95,6 +95,7 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
         setTimes(1);
         if (inputRef.current) {
             inputRef.current.focus();
+            update();
         }
     }, [open]);
 
@@ -203,9 +204,9 @@ const MainBtn = ({ onClick }: { onClick: any }) => {
     )
 }
 
-const MoreBtn = ({ onClick, children }: { onClick: any, children: any }) => {
+const MoreBtn = ({ onClick, children, dataBp }: { onClick: any, children: any, dataBp?: string }) => {
     return (
-        <button onClick={onClick} className="bg-[#BFFF60] text-[#23223A] font-bold py-1 px-4 rounded">{children}</button>
+        <button data-bp={dataBp} onClick={onClick} className="bg-[#BFFF60] text-[#23223A] font-bold py-1 px-4 rounded">{children}</button>
     )
 }
 

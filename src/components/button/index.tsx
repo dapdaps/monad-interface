@@ -13,6 +13,7 @@ const Button = (props: Props) => {
     style,
     htmlType = "button",
     children,
+    dataBp,
     bgColor = "#FFDC50"
   } = props;
 
@@ -37,6 +38,7 @@ const Button = (props: Props) => {
           : {}
       }
       onClick={onClick}
+      data-bp={dataBp}
     >
       {isOnlyLoading ? (
         loading ? (
@@ -69,4 +71,5 @@ interface Props {
   className?: string;
   isOnlyLoading?: boolean;
   onClick?(): void;
+  dataBp?: string;
 }
