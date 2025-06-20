@@ -799,10 +799,6 @@ export default function Game2048() {
                     />
                 </div>
 
-                <div className="text-white" onClick={() => {
-                    toast.dismiss()
-                }}>1111</div>
-
                 <div className="flex items-center justify-between w-full mt-[30px]">
                     <div className="flex flex-col items-start justify-between w-[175px]">
                         <Scorecard score={boardState.score} />
