@@ -23,7 +23,6 @@ import { post } from "@/utils/http";
 import "./animate.css";
 import useIsMobile from "@/hooks/use-isMobile";
 import ChatFooter from "./footer";
-import clsx from "clsx";
 import DataOverrideMobile from "../components/data-override";
 import clsx from "clsx";
 
