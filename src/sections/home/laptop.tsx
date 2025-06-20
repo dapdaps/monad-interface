@@ -91,7 +91,7 @@ const Home = () => {
     <div className={`w-full ${window.innerHeight < 900 ? 'min-h-[900px] overflow-y-auto' : 'h-[100dvh]'} relative overflow-hidden`}>
       <Starfield className="bg-[#000]" />
       <div className="absolute top-0 left-0 right-0 h-[calc(623/14.4*var(--rem))] bg-[url(/images/monad/background/bg3.png)] bg-no-repeat bg-contain">
-        <CodesMission />
+        <CodesMission className="z-[8]" />
       </div>
       <div
         ref={boatFloorRef}
