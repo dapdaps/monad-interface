@@ -66,7 +66,6 @@ export const LandingNadsa = ({ className }: { className?: string }) => {
   const { push } = useRouter()
   return (
     <div
-      data-bp="1006-006"
       onClick={() => {
         handleReportWithoutDebounce("1006-006")
         setTimeout(() => {
