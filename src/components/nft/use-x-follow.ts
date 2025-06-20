@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTwitterStore } from '@/stores/twitter';
 import { useNftStore } from '@/stores/nft';
 import useToast from '@/hooks/use-toast';
@@ -6,20 +6,21 @@ import { get, post, AUTH_TOKENS } from '@/utils/http';
 import useAccount from '@/hooks/use-account';
 import { sleep } from '@/sections/bridge/lib/util';
 
+export const IS_REAL_FOLLOW = true
 export default function useXFollow() {
-    const [isCheckFollowLoading, setIsCheckFollowLoading] = useState(false);
     const [isFollow, setIsFollow] = useState(false);
     const twitterStore: any = useTwitterStore();
     const isFollowNADSA = useNftStore((store: any) => store.isFollowNADSA);
     const setNftStore = useNftStore((store: any) => store.set);
     const { success, fail } = useToast();
     const { account } = useAccount();
+    const [isLoadingFollow, setIsLoadingFollow] = useState(false);
 
     const checkFollowRelationship = async () => {
         if (!twitterStore.info) return;
 
         try {
-            setIsCheckFollowLoading(true);
+            setIsLoadingFollow(true);
             const res = await get('/twitter/user/check_follow_relationship', {
                 target_user_name: encodeURIComponent('0xNADSA')
             });
@@ -36,7 +37,7 @@ export default function useXFollow() {
             console.error('Check follow relationship error:', error);
             fail('Check follow relationship failed');
         } finally {
-            setIsCheckFollowLoading(false);
+            setIsLoadingFollow(false);
         }
     };
 
@@ -53,9 +54,28 @@ export default function useXFollow() {
     //     }
     // }, [twitterStore.id, isFollowNADSA, account]);
 
+    const checkFollowX = useCallback(() => {
+        if (IS_REAL_FOLLOW) {
+            checkFollowRelationship()
+            return;
+        }
+        setIsLoadingFollow(true);
+        setTimeout(() => {
+            setIsLoadingFollow(false);
+        }, 3000);
+    }, []);
+
+    const setFollowX = useCallback(() => {
+        if (!IS_REAL_FOLLOW) {
+            setNftStore({ isFollowNADSA: true });
+        }
+    }, []);
+
     return {
-        isCheckFollowLoading,
         checkFollowRelationship,
-        isFollow: isFollowNADSA || isFollow
+        isFollow: isFollowNADSA || isFollow,
+        isLoadingFollow,
+        checkFollowX,
+        setFollowX,
     };
 }

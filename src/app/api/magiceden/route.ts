@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+
+const accessToken = 'd0d4c2a8-873a-4475-a830-ee19bb224521';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -8,7 +10,7 @@ export async function POST(request: NextRequest) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': request.headers.get('Authorization') || '',
+        'Authorization': `Bearer ${accessToken}`
       },
       body: JSON.stringify(body),
     };

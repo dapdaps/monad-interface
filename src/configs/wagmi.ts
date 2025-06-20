@@ -4,6 +4,7 @@ import { cookieStorage, createStorage, fallback, http } from "wagmi";
 import chains from "./chains";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { DEFAULT_CHAIN_ID } from '@/configs/index';
+import { monadTestnet } from "viem/chains";
 
 export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 
@@ -31,7 +32,7 @@ export const config = getDefaultConfig({
   }),
   ssr: true,
   projectId: projectId,
-  chains: networks,
+  chains: [monadTestnet],
   transports: {
     [DEFAULT_CHAIN_ID]: fallback([http("https://testnet-rpc.monad.xyz")]),
   },

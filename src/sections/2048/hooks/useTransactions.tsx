@@ -19,6 +19,7 @@ import { waitForTransactionReceipt } from "viem/actions";
 import { monadTestnet } from "viem/chains";
 import { useRpcStore } from "@/stores/rpc";
 import useToast from "@/hooks/use-toast";
+import reportGameRecord from "../utils/report";
     
 export function useTransactions() {
     // User and Wallet objects.
@@ -162,6 +163,8 @@ export function useTransactions() {
                 tx: transactionHash,
                 chainId: monadTestnet.id,
             }, 'bottom-right')
+
+            reportGameRecord(transactionHash);
             //     {
             //     description: `${successText} Time: ${time} ms`,
             //     action: (
