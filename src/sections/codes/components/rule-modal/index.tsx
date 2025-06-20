@@ -22,9 +22,9 @@ export default memo(function RuleModal() {
         setShowRuleModal(false)
       }}
     >
-      <div className="relative flex flex-col items-stretch w-[832px] md:w-full h-[740px] md:h-[75dvh] font-Montserrat text-[16px] text-white leading-[200%] md:leading-[180%]">
+      <div className="relative flex flex-col items-stretch w-[832px] md:w-full h-[600px] md:h-[75dvh] font-Montserrat text-[16px] text-white leading-[200%] md:leading-[180%]">
         <div className="shrink-0 w-full h-[23px] bg-[url('/images/codes/rule-bg-bot.svg')] bg-no-repeat bg-top bg-[length:100%_23px] md:bg-contain rotate-180 translate-y-[1px]"></div>
-        <div className="flex-1 h-0 w-full bg-[url('/images/codes/rule-bg-mid.svg')] bg-repeat-y bg-center bg-[length:100%_1px] md:bg-cover">
+        <div className="flex-1 h-0 w-full bg-[url('/images/codes/rule-bg-mid.svg')] bg-repeat-y bg-center bg-[length:100%_1px] md:bg-[length:auto]">
           <div className="absolute left-1/2 -top-[17px] -translate-x-1/2">
             <RuleModalTitleSvg />
           </div>

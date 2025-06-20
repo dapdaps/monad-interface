@@ -116,6 +116,9 @@ const ChatContent = (props: any) => {
       <div className="w-full h-[calc(100%_-_65px_-_100px)] absolute top-[80px] left-0 z-[10]">
         <DisableMask />
       </div>
+      <div className="w-full h-[calc(100%_-_65px_-_100px)] absolute top-[80px] left-0 z-[10]">
+        <DisableMask />
+      </div>
       {isMobile && (
         <div className="w-full px-[10px]">
           <LandingNadsa className="!h-[60px] !w-full shrink-0 !bg-cover translate-y-[-18px] border border-[#6750FF] rounded-[12px]" />
