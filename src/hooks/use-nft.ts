@@ -37,7 +37,7 @@ interface UseNFTReturn {
 
 
 
-export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => {
+export const useNFT = ({ nftAddress, autoChecking = true }: { nftAddress: string, autoChecking?: boolean }): UseNFTReturn => {
     const [isLoading, setIsLoading] = useState(false);
     const [checking, setChecking] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -270,7 +270,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
 
     useEffect(() => {
         (async () => {
-            if (checkedHasNFT && !hasNFT) {
+            if (checkedHasNFT && !hasNFT && autoChecking) {
                 let tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
                 let times = 0
                 while (!tokens.state?.accessToken?.access_token || times < 20) {
@@ -288,7 +288,7 @@ export const useNFT = ({ nftAddress }: { nftAddress: string }): UseNFTReturn => 
                 }
             }
         })()
-    }, [checkedHasNFT, hasNFT, address]);
+    }, [checkedHasNFT, hasNFT, address, autoChecking]);
 
     return {
         mintNFT,

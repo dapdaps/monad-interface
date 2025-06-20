@@ -153,7 +153,7 @@ const Home = () => {
           <div
             // data-hover-sound 
             data-bp="1001-007"
-            onClick={() => router.push("/game")}
+            onClick={() => router.push("/arcade")}
             className={clsx(
               'absolute left-[calc(560/14.4*var(--rem))] -top-[115px] w-[275px] h-[210px] cursor-pointer',
               'bg-no-repeat bg-contain',
