@@ -20,7 +20,9 @@ import { monadTestnet } from "viem/chains";
 import { useRpcStore } from "@/stores/rpc";
 import useToast from "@/hooks/use-toast";
 import reportGameRecord from "../utils/report";
-    
+import { toast } from "react-toastify";
+
+
 export function useTransactions() {
     // User and Wallet objects.
     const { user } = usePrivy();
@@ -32,7 +34,7 @@ export function useTransactions() {
     const userAddress = useRef("");
     const rpcStore = useRpcStore();
     const rpc = useMemo(() => RPC_LIST[rpcStore.selected].url, [rpcStore.selected]);
-    const { info, success, fail } = useToast({ isGame: true });
+    const { info, success, fail, dismiss } = useToast({ isGame: true });
     // Resets nonce and balance
     async function resetNonceAndBalance() {
         if (!user) {
@@ -165,7 +167,7 @@ export function useTransactions() {
                     chainId: monadTestnet.id,
                 }, 'bottom-right')
             }
-            
+
 
             reportGameRecord(transactionHash);
             //     {
@@ -203,8 +205,7 @@ export function useTransactions() {
             }
 
             console.log(
-                `Transaction confirmed in ${Date.now() - startTime} ms: ${
-                    response.result
+                `Transaction confirmed in ${Date.now() - startTime} ms: ${response.result
                 }`
             );
             if (window.location.pathname.includes('2048')) {
@@ -215,7 +216,7 @@ export function useTransactions() {
                     chainId: monadTestnet.id,
                 }, 'bottom-right')
             }
-            
+
             //     {
             //     description: `${successText} Time: ${
             //         Date.now() - startTime
@@ -244,7 +245,7 @@ export function useTransactions() {
                     title: 'Failed to send transaction.',
                 }, 'bottom-right')
             }
-            
+
             //     {
             //     description: `Error: ${e.message}`,
             // }
@@ -319,7 +320,7 @@ export function useTransactions() {
         return [latestBoard, nextMoveNumber];
     }
 
-  
+
 
 
 
@@ -455,7 +456,13 @@ export function useTransactions() {
         },
         { wait: 10000 }
     );
-    
+
+    useEffect(() => {
+        return () => {
+            toast.dismiss()
+            toast.clearWaitingQueue()
+        }
+    }, [])
 
     return {
         resetNonceAndBalance,

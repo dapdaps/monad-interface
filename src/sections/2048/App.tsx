@@ -24,6 +24,7 @@ import { PrivyContext } from "@/components/privy-provider";
 import { publicClient } from "./utils/client";
 import { GAME_CONTRACT_ADDRESS } from "./utils/constants";
 import { use2048Store } from "@/stores/use2048";
+import { toast } from "react-toastify";
 
 // Types
 export enum Direction {
@@ -797,6 +798,10 @@ export default function Game2048() {
                         initializeGame={initializeGame}
                     />
                 </div>
+
+                <div className="text-white" onClick={() => {
+                    toast.dismiss()
+                }}>1111</div>
 
                 <div className="flex items-center justify-between w-full mt-[30px]">
                     <div className="flex flex-col items-start justify-between w-[175px]">
