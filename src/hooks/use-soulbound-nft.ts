@@ -185,7 +185,7 @@ export const useSoulboundNFT = ({ nftAddress, autoChecking = true }: { nftAddres
                 action: "mint",
                 sub_type: "mint",
                 name: nftMetadata.name,
-                price: 1,
+                price: 0,
                 status: 1,
                 transactionHash: tx.hash,
                 add: true
