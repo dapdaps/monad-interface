@@ -172,7 +172,7 @@ export default function Aboarding({
     return null;
   }
 
-  console.log('isMint:', isMint)
+  console.log('hasNFT:', hasNFT)
 
   return (
     <Modal

@@ -5,7 +5,7 @@ import { erc721Abi } from 'viem'
 import { toast } from 'react-toastify';
 import { useRpcStore } from '@/stores/rpc';
 import { RPC_LIST } from "@/configs/rpc";
-import { AUTH_TOKENS, post } from '@/utils/http';
+import { AUTH_TOKENS, get, post } from '@/utils/http';
 import { useInterval } from 'ahooks';
 import useAddAction from './use-add-action';
 import { sleep } from '@/sections/bridge/lib/util';
@@ -68,7 +68,6 @@ export const useSoulboundNFT = ({ nftAddress, autoChecking = true }: { nftAddres
             const nftContract = new ethers.Contract(
                 nftAddress,
                 [
-                    "function maxSupply() view returns (uint256)",
                     "function totalSupply() view returns (uint256)",
                     "function tokenURI(uint256 tokenId) view returns (string)",
                     "function name() view returns (string)",
@@ -77,9 +76,8 @@ export const useSoulboundNFT = ({ nftAddress, autoChecking = true }: { nftAddres
                 provider
             );
 
-            const [totalSupply, maxSupply, name] = await Promise.all([
+            const [totalSupply, name] = await Promise.all([
                 nftContract.totalSupply(),
-                nftContract.maxSupply(),
                 nftContract.name(),
             ]);
 
@@ -87,7 +85,7 @@ export const useSoulboundNFT = ({ nftAddress, autoChecking = true }: { nftAddres
             setNFTMetadata({
                 totalSupply: totalSupply.toString() || '0',
                 // maxSupply: '3',
-                maxSupply: maxSupply.toString() || '0',
+                maxSupply: '0',
                 name: name || '',
             });
         } catch (error) {
@@ -108,25 +106,22 @@ export const useSoulboundNFT = ({ nftAddress, autoChecking = true }: { nftAddres
                     "function ownerOf(uint256 tokenId) view returns (address)",
                     "function balanceOf(address owner) view returns (uint256)",
                     "function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)",
-                    "function tokensOfOwner(address owner) view returns (uint256[])",
                 ],
                 provider
             );
 
             const balance = await nftContract.balanceOf(address);
-            console.log('balance:', balance);
 
-            const tokenIds = await nftContract.tokensOfOwner(address);
-            const _tokenIds = tokenIds.map((tokenId: any) => Number(tokenId.toString())).sort((a: number, b: number) => a - b);
+            let tokenId = ''
+            tokenId = await nftContract.tokenOfOwnerByIndex(address, 0);
 
             if (balance.toString() === '0') {
                 setHasNFT(false);
                 setTokenIds([]);
             } else {
                 setHasNFT(true);
-                setTokenIds(_tokenIds || []);
+                setTokenIds([tokenId.toString()]);
             }
-
 
         } catch (error) {
             console.error("Error checking NFT ownership:", error);
@@ -168,7 +163,13 @@ export const useSoulboundNFT = ({ nftAddress, autoChecking = true }: { nftAddres
                 signer
             );
 
-            const tx = await nftContract.safeMint('' as any);
+            const res = await get('/nft/mintSign')
+
+            if (res.code !== 200 || !res.data?.signature) {
+                throw new Error('Failed to get signature');
+            }
+
+            const tx = await nftContract.safeMint(res.data?.signature as any);
             await tx.wait();
 
             console.log(tx);
