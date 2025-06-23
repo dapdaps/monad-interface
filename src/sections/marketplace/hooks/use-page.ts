@@ -8,15 +8,20 @@ export default function usePage() {
   const isMobile = useIsMobile()
   const { loading, market, onRefresh } = useTokenMarket();
   const NATIVE_TOKENS: any[] = [
-    monad.dak,
-    monad.yaki,
-    monad.chog,
     monad.wmon,
     monad.usdc,
     monad.usdt
   ];
-  const BRIDGED_TOKENS: any[] = [monad.weth, monad.wbtc, monad.wsol];
-  const MEME_TOKENS: any[] = [monad.dof, monad.b3m, monad.dogfood];
+  const BRIDGED_TOKENS: any[] = [
+    monad.weth,
+    monad.wbtc,
+    monad.wsol
+  ];
+  const MEME_TOKENS: any[] = [
+    monad.chog,
+    monad.yaki,
+    monad.dak,
+  ];
   const [activeType, setActiveType] = useState("price");
   const tokensArray = useMemo(() => {
     const first: any = [];
