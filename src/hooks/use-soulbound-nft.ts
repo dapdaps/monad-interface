@@ -81,7 +81,6 @@ export const useSoulboundNFT = ({ nftAddress, autoChecking = true }: { nftAddres
                 nftContract.name(),
             ]);
 
-
             setNFTMetadata({
                 totalSupply: totalSupply.toString() || '0',
                 // maxSupply: '3',
