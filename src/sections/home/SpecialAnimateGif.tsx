@@ -84,7 +84,7 @@ export const SpecialAnimateGif = () => {
                 </AnimatePresence>
             </div>
 
-            <div className="absolute top-0 right-0 w-[100px] h-[120px] overflow-visible">
+            {/* <div className="absolute top-0 right-0 w-[100px] h-[120px] overflow-visible">
                 <img 
                     src="/images/monad/special-animate/trash.svg" 
                     alt="Trash bin" 
@@ -153,7 +153,7 @@ export const SpecialAnimateGif = () => {
                         />
                     )}
                 </AnimatePresence>
-            </div>
+            </div> */}
         </div>
     );
 };
