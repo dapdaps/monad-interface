@@ -15,7 +15,8 @@ export const ALL_DAPP_LIST: IDapp[] = [
     icon: "/images/dapps/icons/Pancake.svg",
     type: "Dex",
     link: "/dex/pancake",
-    desc: "Trade and earn crypto on the all-in-one decentralized exchange. Enjoy low fees, high liquidity, and a user-friendly interface."
+    desc: "Trade and earn crypto on the all-in-one decentralized exchange. Enjoy low fees, high liquidity, and a user-friendly interface.",
+    disabled: true
   },
   {
     name: "Uniswap",
@@ -37,7 +38,8 @@ export const ALL_DAPP_LIST: IDapp[] = [
     icon: "/images/dapps/icons/LFJ.svg",
     type: "Dex",
     link: "/dex/lfj",
-    desc: "The onchain trading platform built for winners. One-stop DEX, Aggregator & Screener for Monad. Discover & buy every token at the best prices."
+    desc: "The onchain trading platform built for winners. One-stop DEX, Aggregator & Screener for Monad. Discover & buy every token at the best prices.",
+    disabled: true
   },
   // feedback-6
   // {
@@ -59,7 +61,8 @@ export const ALL_DAPP_LIST: IDapp[] = [
     icon: "/images/dapps/icons/timeswap.svg",
     type: "Lending",
     link: "/lending/timeswap",
-    desc: "Timeswap is the first oracleless lending/borrowing protocol — enabling the creation of money markets for ANY ERC20 tokens."
+    desc: "Timeswap is the first oracleless lending/borrowing protocol — enabling the creation of money markets for ANY ERC20 tokens.",
+    disabled: true
   },
   {
     name: "LEVR",
