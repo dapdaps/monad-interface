@@ -15,6 +15,7 @@ import { useDebounceFn } from "ahooks";
 import useInviteCodes from "../codes/hooks/use-invite-codes";
 import Starfield from "./Starfield";
 import CodesMission from "./components/codes-mission";
+import Link from "next/link";
 
 const itemWidth = 51;
 const itemGap = 6;
@@ -153,7 +154,9 @@ const Home = () => {
           <div
             // data-hover-sound 
             data-bp="1001-007"
-            onClick={() => router.push("/arcade")}
+            onClick={() => {
+              router.push("/arcade")
+            }}
             className={clsx(
               'absolute left-[calc(560/14.4*var(--rem))] -top-[115px] w-[275px] h-[210px] cursor-pointer',
               'bg-no-repeat bg-contain',
@@ -185,6 +188,8 @@ const Home = () => {
                 />
               </div>
             </div>
+
+            <Link href="/arcade" prefetch={true} className="bottom-0 block"></Link>
           </div>
           {/* Codes */}
           <div
@@ -455,6 +460,8 @@ const Home = () => {
         className="z-[50] absolute w-[615px] h-[382px] right-0 bottom-0 bg-[url(/images/monad/background/bg2-right.svg)] bg-no-repeat bg-contain"
       ></div>
       <GuideEntry className="absolute z-[7] left-[calc(50%_+_9vw)] bottom-[8vh]" />
+
+
     </div>
   );
 };
