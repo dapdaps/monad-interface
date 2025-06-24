@@ -3,6 +3,7 @@ import React from 'react';
 import { LoginContainer } from '@/sections/terminal/login';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const Entry: React.FC<any> = () => {
   const router = useRouter();
@@ -31,7 +32,7 @@ const Entry: React.FC<any> = () => {
               <img data-bp="1009-002" onClick={() => {
                 router.push("/lucky777");
               }} src="/images/game/lucky-start.svg" className='w-[136px] relative my-[20px] cursor-pointer hover:scale-110 transition-transform duration-200' />
-
+              <Link href="/lucky777" prefetch={true}></Link>
             </div>
             <div className='w-[400px] h-[600px] relative flex flex-col items-center justify-end'>
               <img src="/images/game/2048-bg.svg" className='w-full h-full object-cover absolute top-0 left-0' />
