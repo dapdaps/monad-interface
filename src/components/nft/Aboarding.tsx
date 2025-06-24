@@ -118,8 +118,8 @@ export default function Aboarding({
   );
 
   const isLast = useMemo(
-    () => isMint || index === slides.length - 1,
-    [index, isMint]
+    () => index === slides.length - 1,
+    [index]
   );
 
   const handleTwitterShare = useCallback(async () => {
@@ -171,8 +171,6 @@ export default function Aboarding({
   if (closeNFTModal && !isMint) {
     return null;
   }
-
-  console.log('hasNFT:', hasNFT)
 
   return (
     <Modal
@@ -545,7 +543,7 @@ export default function Aboarding({
               <button
                 onClick={handlePrev}
                 disabled={index === 0}
-                className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px] transition-all duration-150 hover:underline hover:drop-shadow-[0px_0px_10px_#00FF00] ${(index === 0 || index === slides.length - 1) ? "opacity-0 " : " cursor-pointer"
+                className={`px-6 py-2 rounded bg-transparent text-[#00FF00] text-[14px] transition-all duration-150 hover:underline hover:drop-shadow-[0px_0px_10px_#00FF00] ${(index === 0) ? "opacity-0 " : " cursor-pointer"
                   }`}
               >
                 Previous
