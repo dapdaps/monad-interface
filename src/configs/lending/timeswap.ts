@@ -20,20 +20,20 @@ const networks = {
     yoursOrderKey: "maturity",
     markets: [
       // WMONAD/shMON
-      {
-        id: "67d12a9d-7d28-4a68-8f1f-227c7c708674",
-        tokens: [
-          {
-            ...monad.wmon,
-            icon: "/images/tokens/WMONAD.svg",
-          },
-          monad.shmon,
-        ],
-        transitionPrice01: 1.02040816,
-        transitionPrice10: 0.98,
-        duration: 60,
-        disabledLend: true,
-      },
+      // {
+      //   id: "67d12a9d-7d28-4a68-8f1f-227c7c708674",
+      //   tokens: [
+      //     {
+      //       ...monad.wmon,
+      //       icon: "/images/tokens/WMONAD.svg",
+      //     },
+      //     monad.shmon,
+      //   ],
+      //   transitionPrice01: 1.02040816,
+      //   transitionPrice10: 0.98,
+      //   duration: 60,
+      //   disabledLend: true,
+      // },
       // USDT/WMONAD
       {
         id: "7fd07692-cd2d-4ffc-b19c-5b379d9332ba",
@@ -61,16 +61,16 @@ const networks = {
       //   duration: 60,
       // },
       // shMON/WSOL
-      // {
-      //   id: "16bb51fc-0b5d-4b44-b76b-918f5014b6c5",
-      //   tokens: [
-      //     monad.shmon,
-      //     monad.wsol,
-      //   ],
-      //   transitionPrice01: 0.06666667,
-      //   transitionPrice10: 15,
-      //   duration: 90,
-      // },
+      {
+        id: "16bb51fc-0b5d-4b44-b76b-918f5014b6c5",
+        tokens: [
+          monad.shmon,
+          monad.wsol,
+        ],
+        transitionPrice01: 0.06666667,
+        transitionPrice10: 15,
+        duration: 90,
+      },
     ],
   }
 };
