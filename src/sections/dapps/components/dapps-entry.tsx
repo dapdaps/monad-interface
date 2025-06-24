@@ -171,10 +171,11 @@ export default memo(function DappsEntry({
                 )}
               >
                 <div
-                  className="cursor-pointer w-[180px] h-[155px] bg-[url('/images/dapps/dapp_bg.png')] bg-contain bg-no-repeat relative"
+                  className={clsx("w-[180px] h-[155px] bg-[url('/images/dapps/dapp_bg.png')] bg-contain bg-no-repeat relative", dapp.disabled ? "opacity-50 cursor-not-allowed grayscale" : "cursor-pointer")}
                   data-name={dapp.name}
                   key={dapp.name}
                   onClick={() => {
+                    if (dapp.disabled) return;
                     setClicked(true);
                     setTimeout(() => {
                       setClicked(false);
