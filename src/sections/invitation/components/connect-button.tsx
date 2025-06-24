@@ -16,7 +16,7 @@ const ConnectButton = (props: any) => {
   return (
     <Button
       className={clsx("!h-[46px] w-full flex justify-center items-center gap-[20px]", account && "!bg-[#6D7EA5]", className)}
-      disabled={isConnecting}
+      disabled={false}
       onClick={() => {
         if (!account) {
           openConnectModal?.();
