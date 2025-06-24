@@ -57,7 +57,9 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
         }
 
         if (amount * selectedTimes >= Number(tokenBalance)) {
-            fail('Insufficient balance');
+            fail({
+                title: 'Insufficient balance'
+            }, 'bottom-right');
             return;
         }
 
