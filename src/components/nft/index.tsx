@@ -74,11 +74,11 @@ export const LandingNadsa = ({ className }: { className?: string }) => {
         }, 100)
       }}
       className={clsx(
-        "flex justify-center items-end w-[290px] h-[132px] bg-[url('/images/terminal/bg-landing-homepage.png')] bg-no-repeat bg-center bg-contain text-white text-[16px] font-Pixelmix font-normal leading-[200%] drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)]",
+        "flex justify-center cursor-pointer items-end w-[290px] h-[132px] bg-[url('/images/terminal/bg-landing-homepage.png')] bg-no-repeat bg-center bg-contain text-white text-[16px] font-Pixelmix font-normal leading-[200%] drop-shadow-[0px_4px_4px_rgba(0,0,0,0.25)]",
         className
       )}
     >
-      <div className="pb-[14px]">LANDING NADSA &gt;</div>
+      <div className="pb-[14px] cursor-pointer">LANDING NADSA &gt;</div>
     </div>
   );
 };
