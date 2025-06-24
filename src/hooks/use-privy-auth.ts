@@ -34,19 +34,31 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
             return;
         }
 
-        const [privyUser] = user.linkedAccounts.filter(
-            (account) =>
-                account.type === "wallet" &&
-                account.walletClientType === "privy"
-        );
+        let privyUser
+        if (userInfo?.game_address) {
+            [privyUser] = user.linkedAccounts.filter(
+                (account) =>
+                    account.type === "wallet" &&
+                    account.walletClientType === "privy" && 
+                    userInfo.game_address.toLowerCase() === account.address.toLowerCase()
+            );
+        } else {
+            [privyUser] = user.linkedAccounts.filter(
+                (account) =>
+                    account.type === "wallet" &&
+                    account.walletClientType === "privy"
+            );
+        }
 
+        
         if (!privyUser || !(privyUser as any).address) {
             setAddress("");
             return;
         }
 
         setAddress((privyUser as any).address);
-    }, [user]);
+
+    }, [user, userInfo]);
 
     useEffect(() => {
         (async () => {
