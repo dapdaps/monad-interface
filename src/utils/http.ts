@@ -32,7 +32,7 @@ export const objectToQueryString = (obj: Record<string, any>): string => {
 
 const AUTH_TOKENS = `_user`;
 
-const BASE_URL = "https://test-api-monad.dapdap.net";
+const BASE_URL = process.env.NEXT_PUBLIC_API || "https://testnet-api-monad.dapdap.net";
 
 const getUrl = (url: string) => {
   return url.startsWith("http") ? url : `${BASE_URL}/api${url}`;
