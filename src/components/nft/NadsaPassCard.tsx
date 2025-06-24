@@ -179,7 +179,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
                     handleReportWithoutDebounce("1006-004")
                     if (buttonText) return;
                     window.open(
-                      "https://twitter.com/intent/follow?screen_name=0xNADSA",
+                      "https://x.com/intent/follow?screen_name=0xNADSA",
                       "_blank"
                     );
                     setFollowX()

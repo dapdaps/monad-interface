@@ -43,7 +43,7 @@ const LoginView = (props: any) => {
               onClick={() => {
                 handleReport("1006-001")
                 window.open(
-                  `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${
+                  `https://x.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${
                     window.location.origin + window.location.pathname
                   }&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`,
                   "_blank"
