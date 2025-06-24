@@ -104,7 +104,7 @@ export async function uploadFile(file: File | Blob, url: string = '/upload') {
 }
 
 export function shareToX(text: string, link?: string) {
-  let xPath = `https://twitter.com/intent/tweet?text=${text}`
+  let xPath = `https://x.com/intent/tweet?text=${text}`
   if (link) {
     xPath += `&url=${encodeURIComponent(link)}`
   }
