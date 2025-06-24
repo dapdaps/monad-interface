@@ -139,7 +139,7 @@ export default function Swap({
             : `Swap via ${dapp.name}`
         }
         loading={loading}
-        onQuoter={onQuoter}
+        onQuoter={runQuoter}
       />
       <div className="md:max-h-[calc(100dvh-210px)] md:overflow-y-auto">
         <TokenAmount
