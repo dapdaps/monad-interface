@@ -91,7 +91,7 @@ const QuestMissionLinks = {
   },
   "arcade": {
     reg: /arcade/i,
-    link: "/game",
+    link: "/arcade",
   },
   "Kuru": {
     reg: /Kuru/i,
