@@ -57,8 +57,6 @@ export function useLuckyBera() {
     getSpinUserData();
   }, [address]);
 
-  console.log('address', address);
-
   return {
     spinUserData,
     spinUserDataLoading,

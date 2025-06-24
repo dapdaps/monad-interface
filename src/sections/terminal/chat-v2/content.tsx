@@ -15,6 +15,7 @@ import { motion } from "framer-motion";
 import ChatFooter from "./footer";
 import useIsMobile from "@/hooks/use-isMobile";
 import DisableMask from "./disable-mask";
+import { LandingNadsa } from "@/components/nft";
 
 const ChatContent = (props: any) => {
   const {
@@ -115,7 +116,22 @@ const ChatContent = (props: any) => {
       <div className="w-full h-[calc(100%_-_65px_-_100px)] absolute top-[80px] left-0 z-[10]">
         <DisableMask />
       </div>
-      <div className="w-full h-[calc(100%_-_65px_-_51px)] blur-[10px] md:h-0 md:flex-1 pt-[25px] md:pt-0 pb-[15px] md:pb-0 md:translate-y-[-10px] ">
+      <div className="w-full h-[calc(100%_-_65px_-_100px)] absolute top-[80px] left-0 z-[10]">
+        <DisableMask />
+      </div>
+      {isMobile && (
+        <div className="w-full px-[10px]">
+          <LandingNadsa className="!h-[60px] !w-full shrink-0 !bg-cover translate-y-[-18px] border border-[#6750FF] rounded-[12px]" />
+        </div>
+      )}
+      <div
+        className={clsx(
+          "w-full blur-[10px] md:h-0 md:flex-1 pt-[25px] md:pt-0 pb-[15px] md:pb-0 md:translate-y-[-10px] ",
+          isMobile
+            ? "h-[calc(100%_-_65px_-_51px_-_60px)]"
+            : "h-[calc(100%_-_65px_-_51px)]"
+        )}
+      >
         <div
           ref={messagesRef}
           className="w-full h-full overflow-y-auto px-[30px] md:px-0 text-[!E7E2FF]"
@@ -157,7 +173,7 @@ const ChatContent = (props: any) => {
                   : chatStore.users[message.from?.toLowerCase()]
               }
               onAnimationComplete={() => {
-                scrollToBottom();
+                if (!message.isSlient) scrollToBottom();
                 if (mergedMessages.length - 1 > displayedMessageIndex) {
                   const _displayedMessageIndex = displayedMessageIndex + 1;
                   setDisplayedMessageIndex(_displayedMessageIndex);

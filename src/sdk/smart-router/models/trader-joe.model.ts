@@ -131,8 +131,14 @@ export class TraderJoe {
     }
 
     [...frontSwaps, ...endSwaps].forEach((swap) => {
+      let _flag = 0;
+      if (swap.pair.type === "v1") {
+        _flag = swap.pair.tokenX === swap.tokenIn.address ? 257 : 256;
+      } else {
+        _flag = swap.pair.tokenX === swap.tokenIn.address ? 1027 : 1026;
+      }
       percents.push(swap.isLastToken ? 10000 : swap.amountBp);
-      flags.push(swap.pair.tokenX === swap.tokenIn.address ? 257 : 256);
+      flags.push(_flag);
       pairsAddress.push(swap.pair.address);
 
       tokenInIds.push(

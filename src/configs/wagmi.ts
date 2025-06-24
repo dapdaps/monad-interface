@@ -34,7 +34,7 @@ export const config = getDefaultConfig({
   projectId: projectId,
   chains: [monadTestnet],
   transports: {
-    [DEFAULT_CHAIN_ID]: fallback([http("https://testnet-rpc.monad.xyz")]),
+    [DEFAULT_CHAIN_ID]: http("https://testnet-rpc.monad.xyz"),
   },
 });
 

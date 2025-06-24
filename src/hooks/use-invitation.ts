@@ -10,6 +10,7 @@ import { useUserStore } from "@/stores/user";
 import useUser from "./use-user";
 import { trim } from "lodash";
 import { useGuideStore } from "@/stores/guide";
+import useIsMobile from "./use-isMobile";
 
 export function useInvitation<Invitation>() {
   const { account, accountWithAk } = useCustomAccount();
@@ -19,9 +20,11 @@ export function useInvitation<Invitation>() {
   });
   const toast = useToast();
   const userInfo = useUserStore((store: any) => store.user);
+  const setUserInfo = useUserStore((store: any) => store.set);
   const userInfoLoading = useUserStore((store: any) => store.loading);
   const { getUserInfo } = useUser();
   const { getVisited, setVisible } = useGuideStore();
+  const isMobile = useIsMobile();
 
   const [scopeLeftDoor, animateLeftDoor] = useAnimate();
   const [scopeRightDoor, animateRightDoor] = useAnimate();
@@ -37,7 +40,7 @@ export function useInvitation<Invitation>() {
   const [invitationCode, setInvitationCode] = useState<string>("");
 
   const handleAccess = () => {
-    if (!scopeLeftDoor.current || !scopeRightDoor.current || !scopeCodePad.current || !scopeInvitation.current) return Promise.resolve(true);
+    if (!scopeLeftDoor.current || !scopeRightDoor.current || !scopeCodePad.current || !scopeInvitation.current || isMobile) return Promise.resolve(true);
     animateLeftDoor(scopeLeftDoor.current, {
       x: "-100%",
     }, {
@@ -139,9 +142,24 @@ export function useInvitation<Invitation>() {
     return userInfoLoading || checking;
   }, [userInfoLoading, checking]);
 
+  const { data: inviteTimestamp } = useRequest(async () => {
+    if (!validUser || !accountWithAk) return;
+    const res = await post("/invite/timestamp");
+    if (res.code !== 200) {
+      console.log('reportInviteTimestamp error: %o', res);
+      return;
+    }
+    setUserInfo({ inviteTimestamp: res.data });
+    return res.data;
+  }, { refreshDeps: [validUser, accountWithAk] });
+
   useEffect(() => {
     if (validUser) {
       handleAccess().then(() => {
+        const currentVisited = getVisited(account);
+        if (!currentVisited) {
+          setVisible(true);
+        }
         setFinalValid(true);
       });
       return;

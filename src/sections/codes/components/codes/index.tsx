@@ -4,7 +4,7 @@ import clsx from "clsx";
 import useToast from "@/hooks/use-toast";
 
 export default memo(function Codes(props: any) {
-  const { className } = props;
+  const { className, listClassName } = props;
 
   const toast = useToast()
   const {
@@ -29,13 +29,13 @@ export default memo(function Codes(props: any) {
   }
 
   return (
-    <div className={clsx("w-[422px] h-[307px] bg-[url('/images/codes/codes_bg.svg')] bg-center bg-no-repeat bg-contain rounded-[6px]", className)}>
+    <div className={clsx("w-[422px] h-[307px] bg-black border border-[#55648A] shadow-[3px_3px_0px_0px_#2C3635_inset] bg-[url('/images/codes/codes_bg.svg')] bg-center bg-no-repeat bg-cover rounded-[6px]", className)}>
       {
         inviteCodesLoading ? (
           <></>
         ) : inviteCodes?.length > 0 ? (
           <>
-            <div className="m-[6px] h-[43px] px-[24px] bg-[#000] flex items-center justify-between text-[#03E212] text-[12px] font-HackerNoonV2">
+            <div className="mx-[1px] mt-[1px] rounded-t-[6px] border-b border-[#03E212] h-[43px] px-[24px] bg-[#000] flex items-center justify-between text-[#03E212] text-[12px] font-HackerNoonV2">
               <div className="flex items-center gap-[6px]"><span className="text-[18px] [text-shadow:0_0_10px_rgba(3,226,18,0.5)]">{availableCodes?.length}</span>Available Codes</div>
               <div className="flex items-center gap-[6px] cursor-pointer" onClick={handleCopyAll}>
                 <span className="[text-shadow:0_0_10px_rgba(3,226,18,0.5)]">Copy all</span>
@@ -45,7 +45,7 @@ export default memo(function Codes(props: any) {
                 </svg>
               </div>
             </div>
-            <div className="overflow-auto h-[248px] p-[17px_24px] grid grid-cols-2 grid-rows-[auto_1fr] gap-[16px_24px] text-[#03E212] text-[18px] font-HackerNoonV2 leading-[120%]">
+            <div className={clsx("overflow-auto h-[248px] p-[17px_24px] grid grid-cols-2 gap-[16px_24px] text-[#03E212] text-[18px] font-HackerNoonV2 leading-[120%]", listClassName)}>
               {
                 inviteCodes?.map((code: any) => (
                   <div className="flex items-center gap-[12px] border p-[8px_0_8px_8px] h-[37px] border-[#03E212] bg-[rgba(0,0,0,0.72)]">

@@ -7,7 +7,7 @@ import { useProgressRouter } from "@/hooks/use-progress-router";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
 
-const FIXED_HEADER_PATHNAME = [/^\/faucet$/, /^\/$/];
+const FIXED_HEADER_PATHNAME = [/^\/faucet$/, /^\/$/, /^\/codes$/];
 
 export async function getServerSideProps({ res }: any) {
   const is404 = res.statusCode === 404;

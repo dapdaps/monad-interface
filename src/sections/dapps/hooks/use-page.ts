@@ -4,8 +4,9 @@ import { useScroll, useSize } from "ahooks";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ALL_DAPP_LIST } from "../config";
 export default function usePage() {
+  const [size, setSize] = useState({ width: 0, height: 0 });
   const isMobile = useIsMobile()
-  const size = useSize(document.getElementsByTagName("body")[0]);
+  // const size = useSize(document.getElementsByTagName("body")[0]);
   const soundStore: any = useSoundStore();
   const [activeType, setActiveType] = useState("all");
 
@@ -16,6 +17,10 @@ export default function usePage() {
   const scrollSize = useSize(entryScrollRef?.current)
   const containerSize = useSize(entryContainerRef?.current)
   const scroll = useScroll(entryContainerRef)
+
+  useEffect(() => {
+    setSize({ width: window.innerWidth, height: window.innerHeight });
+  }, []);
 
   const maxLength = useMemo(() => isMobile ? 2 : Math.floor(((size?.width - 64) * 0.8 + 80) / 240), [size])
   const dappsArray = useMemo(() => {

@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useJumpAnimation } from "./hooks/useJumpAnimation";
 import { useCharacterMovement } from "./hooks/useCharacterMovement";
+import clsx from "clsx";
 
 const tooltipMessages = [
   "Gmonad",
@@ -49,7 +50,9 @@ const MovingGif: {
   MovingForMobile1st: typeof MovingForMobile1st
 }
 
-function MovingForMobile1st() {
+function MovingForMobile1st(props: any) {
+  const { className } = props;
+
   const [gifSrc, setGifSrc] = useState("/images/monad/icon/role-3.gif");
   const directionRef = useRef<"left" | "right">("right");
 
@@ -63,7 +66,7 @@ function MovingForMobile1st() {
     <motion.img
       id="mobile-jumping-character"
       src={gifSrc}
-      className="w-[96px] h-[107px] cursor-pointer"
+      className={clsx("w-[96px] h-[107px] cursor-pointer", className)}
       initial={{ x: 0, y: 0, rotate: 1, scaleX: -1 }} 
       animate={{
         x: [0, 173],

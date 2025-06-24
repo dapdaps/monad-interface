@@ -816,7 +816,7 @@ export default memo(function Tiger(props: any) {
         </div>
       </div>
 
-      <BuyTimesModal open={openBuyTimes} onClose={() => setOpenBuyTimes(false)} refreshData={getSpinUserData} />
+      <BuyTimesModal open={openBuyTimes} spinUserData={spinUserData} onClose={() => setOpenBuyTimes(false)} refreshData={getSpinUserData} />
       <HistoryModal open={openHistory} onClose={() => setOpenHistory(false)} />
       <RulesModal open={openRules} onClose={() => setOpenRules(false)} />
     </div>

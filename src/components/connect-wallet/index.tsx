@@ -19,7 +19,7 @@ import { motion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { useAccount, useBalance, useDisconnect, useConfig } from "wagmi";
+import { useAccount, useBalance, useDisconnect, useConfig, useBlockNumber } from "wagmi";
 import MobileChain from "./chain/mobile";
 import { monadTestnet } from "viem/chains";
 import useAudioPlay from "@/hooks/use-audio";
@@ -50,6 +50,8 @@ const ConnectWallet = ({ className }: { className?: string }) => {
     address,
     chainId: DEFAULT_CHAIN_ID
   });
+  const { refetch } = balance;
+  const { data: blockNumber } = useBlockNumber({ watch: true });
   const { userInfo } = useUser();
   const walletInfo = useWalletName();
   const config = useConfig();
@@ -149,6 +151,10 @@ const ConnectWallet = ({ className }: { className?: string }) => {
     setConnecting(true);
     closeConnecting();
   }, [isConnecting]);
+
+  useEffect(() => {
+    refetch();
+  }, [blockNumber, refetch]);
 
   return (
     <>
@@ -319,31 +325,6 @@ const User = (props: any) => {
     </div>
   );
 
-  const BalanceDisplay = ({ className = "" }) => (
-    <div className={`flex items-center gap-1 ${className}`}>
-      <img 
-        src='/images/monad.svg'
-        className="w-5 h-5" 
-        alt="" 
-      />
-      <div className="text-[12px] text-white font-[400] font-Unbounded">
-        {balanceShown || "-"}
-      </div>
-    </div>
-  );
-
-  const AvatarDisplay = ({ hasAvatar = false }) => (
-    hasAvatar ? (
-      <img
-        src={userInfo?.avatar}
-        alt=""
-        className="w-[28px] h-[28px] rounded-full"
-      />
-    ) : (
-      <div className="w-[28px] h-[28px] rounded-[50%] border-[2px] border-black bg-[conic-gradient(from_180deg_at_50%_50%,#00D1FF_0deg,#FF008A_360deg)]" />
-    )
-  );
-
   return (
     <motion.div
       className="relative flex justify-center items-center cursor-pointer transition-all duration-300"
@@ -362,14 +343,14 @@ const User = (props: any) => {
       >
       {isMobile ? (
             <div className="flex items-center gap-1" onClick={handleConnect}>
-              <AvatarDisplay hasAvatar={address && !!userInfo?.avatar} />
+              <AvatarDisplay hasAvatar={address && !!userInfo?.avatar} userInfo={userInfo} />
               <div className="w-[1px] h-[23px] bg-[#A6A6DB] bg-opacity-30 mx-[14px]"></div>
-              <BalanceDisplay />
+              <BalanceDisplay balanceShown={balanceShown} />
             </div>
           ) : (
             <div className="flex items-center gap-1">
-              <BalanceDisplay />
-              <AvatarDisplay hasAvatar={address && !!userInfo?.avatar} />
+              <BalanceDisplay balanceShown={balanceShown} />
+              <AvatarDisplay hasAvatar={address && !!userInfo?.avatar} userInfo={userInfo} />
             </div>
           )}
       </Popover>
@@ -414,3 +395,28 @@ const DisconnectButton = ({ setMobileUserInfoVisible, handlePlay }: any) => {
     </div>
   );
 };
+
+const BalanceDisplay = ({ className = "", balanceShown }: any) => (
+  <div className={`flex items-center gap-1 ${className}`}>
+    <img 
+      src='/images/monad.svg'
+      className="w-5 h-5" 
+      alt="" 
+    />
+    <div className="text-[12px] text-white font-[400] font-Unbounded">
+      {balanceShown || "-"}
+    </div>
+  </div>
+);
+
+const AvatarDisplay = ({ hasAvatar = false, userInfo }: any) => (
+  hasAvatar ? (
+    <img
+      src={userInfo?.avatar}
+      alt=""
+      className="w-[28px] h-[28px] rounded-full"
+    />
+  ) : (
+    <div className="w-[28px] h-[28px] rounded-[50%] border-[2px] border-black bg-[conic-gradient(from_180deg_at_50%_50%,#00D1FF_0deg,#FF008A_360deg)]" />
+  )
+);

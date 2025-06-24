@@ -22,7 +22,7 @@ import useToast from "@/hooks/use-toast";
 import reportGameRecord from "../utils/report";
 import { toast } from "react-toastify";
 
-    
+
 export function useTransactions() {
     // User and Wallet objects.
     const { user } = usePrivy();
@@ -160,12 +160,12 @@ export function useTransactions() {
             // Fire toast info with benchmark and transaction hash.
             console.log(`Transaction sent in ${time} ms: ${response.result}`);
             if (window.location.pathname.includes('2048')) {
-            info({
-                title: 'Sent transaction.',
-                text: `${successText} Time: ${time} ms`,
-                tx: transactionHash,
-                chainId: monadTestnet.id,
-            }, 'bottom-right')
+                info({
+                    title: 'Sent transaction.',
+                    text: `${successText} Time: ${time} ms`,
+                    tx: transactionHash,
+                    chainId: monadTestnet.id,
+                }, 'bottom-right')
             }
 
 
@@ -209,12 +209,12 @@ export function useTransactions() {
                 }`
             );
             if (window.location.pathname.includes('2048')) {
-            success({
-                title: 'Confirmed transaction.',
-                text: `${successText} Time: ${Date.now() - startTime} ms`,
-                tx: transactionHash,
-                chainId: monadTestnet.id,
-            }, 'bottom-right')
+                success({
+                    title: 'Confirmed transaction.',
+                    text: `${successText} Time: ${Date.now() - startTime} ms`,
+                    tx: transactionHash,
+                    chainId: monadTestnet.id,
+                }, 'bottom-right')
             }
 
             //     {
@@ -241,9 +241,9 @@ export function useTransactions() {
         } catch (error) {
             e = error as Error;
             if (window.location.pathname.includes('2048')) {
-            fail({
-                title: 'Failed to send transaction.',
-            }, 'bottom-right')
+                fail({
+                    title: 'Failed to send transaction.',
+                }, 'bottom-right')
             }
 
             //     {
@@ -320,7 +320,7 @@ export function useTransactions() {
         return [latestBoard, nextMoveNumber];
     }
 
-  
+
 
 
 
@@ -456,7 +456,7 @@ export function useTransactions() {
         },
         { wait: 10000 }
     );
-    
+
     useEffect(() => {
         return () => {
             toast.dismiss()

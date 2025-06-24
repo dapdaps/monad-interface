@@ -1,10 +1,7 @@
-// import FaucetView from '@/sections/faucet';
+import FaucetView from "@/sections/faucet";
 
 const Faucet = () => {
-  return <div />;
-  // return (
-  //   <FaucetView />
-  // );
+  return <FaucetView />;
 };
 
 export default Faucet;

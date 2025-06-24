@@ -4,26 +4,34 @@ import { post } from "@/utils/http";
 import { getSignature } from "@/utils/signature";
 import { useSendTransaction, usePrivy } from "@privy-io/react-auth";
 
-import { toast } from "react-toastify";
 import { numberFormatter } from "@/utils/number-formatter";
 import { useBalance } from "wagmi";
 import useTokenAccountBalance from "@/hooks/use-token-account-balance";
 import { monadTestnet } from "viem/chains";
+import { useInterval } from "ahooks";
+import useToast from "@/hooks/use-toast";
 
 interface BuyTimesModalProps {
     open: boolean;
     onClose: () => void;
     refreshData: () => void;
+    spinUserData: any
 }
 
 const destAddress: any = '0x74D00ee5dF8AC41EB1e5879ed3A371D55ada6102';
 const amount = 0.1;
 
-const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
+const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesModalProps) => {
     const { user, createWallet } = usePrivy();
     const [times, setTimes] = useState<number | string>(1);
     const [isPending, setIsPending] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
+    const spinBalance = useRef(spinUserData?.spin_balance || 0);
+    const startSpinBalance = useRef(false);
+    const { success, fail } = useToast({
+        isGame: true
+    })
+
     const { sendTransaction } = useSendTransaction({
         onSuccess: (params) => {
             console.log('sendTransactionPrivy', params);
@@ -49,11 +57,12 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
         }
 
         if (amount * selectedTimes >= Number(tokenBalance)) {
-            toast.error('Insufficient balance');
+            fail('Insufficient balance');
             return;
         }
 
         try {
+            spinBalance.current = spinUserData.spin_balance;
             const { hash } = await sendTransaction({
                 to: destAddress,
                 value: BigInt(amount * selectedTimes * 1e18),
@@ -67,29 +76,48 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
                 }
             });
             console.log('hash:', hash);
-            const res = await post("/game/purchase", {
-                tx_id: hash,
-                amount: (selectedTimes * amount).toString(),
-                account_id: address,
-                ss: getSignature(
-                    `tx_hash=${hash}&time=${Math.ceil(Date.now() / 1000)}&amount=${selectedTimes * amount}`
-                )
-            });
-            console.log('res:', res);
-            if (res.code !== 200) {
-                toast.error(res.message);
-                return;
-            }
+            startSpinBalance.current = true;
+            // const res = await post("/game/purchase", {
+            //     tx_id: hash,
+            //     amount: (selectedTimes * amount).toString(),
+            //     account_id: address,
+            //     ss: getSignature(
+            //         `tx_hash=${hash}&time=${Math.ceil(Date.now() / 1000)}&amount=${selectedTimes * amount}`
+            //     )
+            // });
+            // console.log('res:', res);
+            // if (res.code !== 200) {
+            //     toast.error(res.message);
+            //     return;
+            // }
             refreshData();
             onClose && onClose();
-            toast.success('Recharge Successfully!');
+            success({
+                title: 'Recharge Successfully!',
+                tx: hash,
+                chainId: monadTestnet.id,
+            }, 'bottom-right');
         } catch (e) {
             console.log('e:', e);
-            toast.error('Failed to recharge');
+            fail({
+                title: 'Failed to recharge'
+            }, 'bottom-right');
+            startSpinBalance.current = false;
         }
 
 
-    }, [address, refreshData, sendTransaction, tokenBalance]);
+    }, [address, refreshData, sendTransaction, tokenBalance, spinUserData]);
+
+    useInterval(async () => {
+        if (spinBalance.current === spinUserData.spin_balance && startSpinBalance.current) {
+            refreshData();
+        } else {
+            startSpinBalance.current = false;
+            spinBalance.current = spinUserData.spin_balance;
+        }
+    }, 5000, {
+        immediate: true
+    });
 
     useEffect(() => {
         setTimes(1);
@@ -141,7 +169,7 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
                                         return
                                     }
                                     setTimes(val);
-                                } 
+                                }
                             }} className="w-[100px] text-center text-[18px] font-bold text-[#BFFF60] bg-transparent border-none outline-none" />
                         </span>
                     </div>
