@@ -1,7 +1,6 @@
 import Modal from "@/components/modal";
 import useIsMobile from "@/hooks/use-isMobile";
 import { useCodesContext } from "@/sections/codes/context";
-import RuleModalBgSvg from '@public/images/codes/rule_modal_bg.svg';
 import RuleModalTitleSvg from '@public/images/codes/rule_modal_title.svg';
 import { memo } from "react";
 export default memo(function RuleModal() {
@@ -18,32 +17,31 @@ export default memo(function RuleModal() {
         </svg>
       )}
       className="flex items-center justify-center"
-      closeIconClassName="absolute md:right-[17px] right-[25px] top-[12px] cursor-pointer"
+      closeIconClassName="absolute md:right-[17px] right-[25px] top-[12px] cursor-pointer md:translate-y-2"
       onClose={() => {
         setShowRuleModal(false)
       }}
     >
-      <div className="relative w-[832px] h-[740px] font-Montserrat text-[16px] text-white leading-[200%]">
-        <div className="absolute -left-[11px] -top-[11px] w-[854px] h-[762px]">
-          <RuleModalBgSvg />
-        </div>
-        <div className="absolute left-1/2 -top-[17px] -translate-x-1/2">
-          <RuleModalTitleSvg />
-        </div>
-        <div className="relative p-[52px_36px_21px] flex flex-col z-10">
-          <div className="flex items-center gap-[8px]">
-            <img className="w-[20px]" src="/images/codes/icons/1.png" />
-            <span className="font-bold">Invite Code Protocol</span>
+      <div className="relative flex flex-col items-stretch w-[832px] md:w-full h-[600px] md:h-[75dvh] font-Montserrat text-[16px] text-white leading-[200%] md:leading-[180%]">
+        <div className="shrink-0 w-full h-[23px] bg-[url('/images/codes/rule-bg-bot.svg')] bg-no-repeat bg-top bg-[length:100%_23px] md:bg-contain rotate-180 translate-y-[1px]"></div>
+        <div className="flex-1 h-0 w-full bg-[url('/images/codes/rule-bg-mid.svg')] bg-repeat-y bg-center bg-[length:100%_1px] md:bg-[length:auto]">
+          <div className="absolute left-1/2 -top-[17px] -translate-x-1/2">
+            <RuleModalTitleSvg />
           </div>
-          <div>Welcome aboard, Commander.</div>
-          <div>To access and distribute Invite Codes to the NADSA Space, you must first complete on-chain missions.</div>
-          <div className="flex items-center gap-[8px]">
-            <img className="w-[20px]" src="/images/codes/icons/2.png" />
-            <span className="font-bold">How to Get Invite Codes</span>
-          </div>
-          <div>NADSA releases one mission every 24 hours. Complete the mission to unlock one invite code.</div>
+          <div className="relative p-[52px_36px_21px] md:p-[20px_15px] flex flex-col z-10 h-full overflow-y-auto">
+            <div className="flex items-center gap-[8px]">
+              <img className="w-[20px]" src="/images/codes/icons/1.png" />
+              <span className="font-bold">Invite Code Protocol</span>
+            </div>
+            <div>Welcome aboard, Commander.</div>
+            <div>To access and distribute Invite Codes to the NADSA Space, you must first complete on-chain missions.</div>
+            <div className="flex items-center gap-[8px]">
+              <img className="w-[20px]" src="/images/codes/icons/2.png" />
+              <span className="font-bold">How to Get Invite Codes</span>
+            </div>
+            <div>NADSA releases one mission every 24 hours. Complete the mission to unlock one invite code.</div>
 
-          {/* <div className="flex items-center">
+            {/* <div className="flex items-center">
             <div className="m-[0_6px] w-[4px] h-[4px] rounded-full bg-white" />
             <div className="font-bold">3 transactions <span className="font-normal">→ Unlock</span> <span className="text-[#0F1]">+1</span> invite code</div>
           </div>
@@ -78,46 +76,48 @@ export default memo(function RuleModal() {
             <span>Invite codes unlock cumulatively — reach higher milestones to receive more codes.</span>
           </div> */}
 
-          <div className="flex items-center gap-[8px]">
-            <img className="w-[20px]" src="/images/codes/icons/4.png" />
-            <span className="font-bold">How Invite Codes Work</span>
-          </div>
+            <div className="flex items-center gap-[8px]">
+              <img className="w-[20px]" src="/images/codes/icons/4.png" />
+              <span className="font-bold">How Invite Codes Work</span>
+            </div>
 
-          <div className="flex items-center">
-            <div className="m-[0_6px] w-[4px] h-[4px] rounded-full bg-white" />
-            <div>Each invite code is <span className="font-bold">single-use only</span></div>
-          </div>
+            <div className="flex items-center">
+              <div className="m-[0_6px] w-[4px] h-[4px] rounded-full bg-white" />
+              <div>Each invite code is <span className="font-bold">single-use only</span></div>
+            </div>
 
-          <div className="flex items-center">
-            <div className="m-[0_6px] w-[4px] h-[4px] rounded-full bg-white" />
-            <div>When a new explorer joins NADSA Space using your code, their status is set to <span className="font-bold">Pending</span></div>
-          </div>
+            <div className="flex items-center">
+              <div className="m-[0_6px] w-[4px] h-[4px] rounded-full bg-white" />
+              <div>When a new explorer joins NADSA Space using your code, their status is set to <span className="font-bold">Pending</span></div>
+            </div>
 
-          <div className="flex items-center">
-            <div className="m-[0_6px] w-[4px] h-[4px] rounded-full bg-white" />
-            <div>Once they complete <span className="font-bold">1 transaction</span>, their status becomes <span className="font-bold">Active</span></div>
-          </div>
+            <div className="flex items-center">
+              <div className="m-[0_6px] w-[4px] h-[4px] rounded-full bg-white" />
+              <div>Once they complete <span className="font-bold">1 transaction</span>, their status becomes <span className="font-bold">Active</span></div>
+            </div>
 
-          <div className="flex items-center gap-[8px]">
-            <img className="w-[20px]" src="/images/codes/icons/5.png" />
-            <span className="font-bold">Rewards for Captains</span>
-          </div>
+            <div className="flex items-center gap-[8px]">
+              <img className="w-[20px]" src="/images/codes/icons/5.png" />
+              <span className="font-bold">Rewards for Captains</span>
+            </div>
 
-          <div className="flex items-center">
-            <div className="m-[0_6px] w-[4px] h-[4px] rounded-full bg-white" />
-            <div>For every explorer you successfully activate, you'll receive <span className="font-bold text-[#836EF9]">0.25 MON</span></div>
-          </div>
-          <div className="flex items-center">
-            <div className="m-[0_6px] w-[4px] h-[4px] rounded-full bg-white" />
-            <div>Rewards must be manually claimed on this page</div>
-          </div>
+            <div className="flex items-center">
+              <div className="m-[0_6px] w-[4px] h-[4px] rounded-full bg-white" />
+              <div>For every explorer you successfully activate, you'll receive <span className="font-bold text-[#836EF9]">0.25 MON</span></div>
+            </div>
+            <div className="flex items-center">
+              <div className="m-[0_6px] w-[4px] h-[4px] rounded-full bg-white" />
+              <div>Rewards must be manually claimed on this page</div>
+            </div>
 
-          <div className="flex items-center gap-[8px]">
-            <img className="w-[20px]" src="/images/codes/icons/6.png" />
-            <span>Claim your rewards and expand your influence across the stars.</span>
+            <div className="flex items-center gap-[8px]">
+              <img className="w-[20px]" src="/images/codes/icons/6.png" />
+              <span>Claim your rewards and expand your influence across the stars.</span>
+            </div>
           </div>
         </div>
+        <div className="shrink-0 w-full h-[23px] bg-[url('/images/codes/rule-bg-bot.svg')] bg-no-repeat bg-top bg-[length:100%_23px] md:bg-contain -translate-y-[1px]"></div>
       </div>
     </Modal>
-    )
+  )
 })                                              

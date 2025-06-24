@@ -52,7 +52,7 @@ export const ChatCardMobile = (props: any) => {
       className={clsx("w-full h-full relative z-[1] overflow-hidden flex flex-col items-stretch", className)}
       {...JunmpIn}
     >
-      <div className="relative w-full h-[55px] shrink-0 bg-[url('/images/terminal/card-mobile-top.svg')] bg-no-repeat bg-bottom bg-contain">
+      <div className="relative w-full h-[55px] shrink-0 bg-[url('/images/terminal/card-mobile-top.svg')] bg-no-repeat bg-bottom bg-[length:100%]">
       </div>
       <div className="relative w-full h-0 flex-1 bg-[url('/images/terminal/card-mobile-mid.svg')] bg-repeat-y bg-center bg-contain">
         <ScreenAnimate className={clsx("!rounded-[0]", innerClassName)} noiseClassName="!w-[calc(100%_+_40px)] !left-[-20px] !h-[calc(100%_+_40px)] !top-[-20px]">

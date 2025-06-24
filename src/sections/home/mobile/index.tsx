@@ -1,18 +1,56 @@
 import LazyImage from "@/components/layz-image";
 import { ALL_DAPP_LIST } from "@/sections/dapps/config";
 import clsx from "clsx";
-import { motion } from "framer-motion";
+import { motion, useAnimate, useMotionValueEvent, useScroll } from "framer-motion";
 import { useRouter } from "next-nprogress-bar";
-import { useRef } from "react";
+import { lazy, useRef, useState } from "react";
 import MovingGif from "../MovingGif";
+import CodesMission from "../components/codes-mission";
+import { GuideEntry } from "@/sections/invitation/guide";
+import useInviteCodes from "@/sections/codes/hooks/use-invite-codes";
+import dynamic from 'next/dynamic';
 
 const itemWidth = 51;
 const itemGap = 6;
-
+const GameEntry = dynamic(() => import('@/components/game-entry'), {
+  ssr: false, 
+  loading: () => null
+});
 
 const Mobile = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const guideEntryRef = useRef<any>();
   const router = useRouter();
+  const mobileContainerRef = useRef(null);
+  const [guideEntryContainerRef, guideEntryAnimate] = useAnimate();
+  const { scrollYProgress } = useScroll({ container: mobileContainerRef });
+  const { unUsedInviteCodes } = useInviteCodes();
+  const [isGameOpen, setIsGameOpen] = useState(false);
+
+  useMotionValueEvent(scrollYProgress, "change", (latestValue) => {
+    if (latestValue < 0.9) {
+      guideEntryAnimate(guideEntryContainerRef.current, {
+        y: -100,
+        opacity: 0,
+      }, {
+        duration: 0.01,
+      });
+      guideEntryRef.current?.closePopover();
+    } else {
+      guideEntryAnimate(guideEntryContainerRef.current, {
+        y: 0,
+        opacity: 1,
+      }, {
+        type: "spring",
+        stiffness: 100,
+        damping: 25,
+        mass: 1.2,
+        onComplete: () => {
+          guideEntryRef.current?.openPopover();
+        },
+      });
+    }
+  });
 
   const duplicateFunc = (items: any, times: number = 2) => {
     return Array(times).fill(items).flat();
@@ -23,13 +61,14 @@ const Mobile = () => {
   const totalWidth = ALL_DAPP_LIST.length * (itemWidth + itemGap) - itemGap;
 
   return (
-    <div className="w-full h-[100dvh] bg-[#13142F] relative overflow-x-hidden overflow-y-scroll scrollbar-hide">
+    <div ref={mobileContainerRef} className="w-full h-[100dvh] bg-[#13142F] relative overflow-x-hidden overflow-y-scroll scrollbar-hide">
       <div className="w-full h-[278px] bg-[url(/images/mobile/home-bg1.svg)] bg-no-repeat bg-cover" />
       <div className="absolute top-[22%] w-full h-[830px] bg-[url(/images/mobile/home-bg2.svg)] bg-cover bg-no-repeat">
         <div className="w-full h-full relative">
           <div className="absolute bottom-0 w-full h-[218px]  bg-cover bg-[url(/images/mobile/home-bg3.svg)] bg-no-repeat">
             <div className="w-full h-full relative">
-                <MovingGif.MovingForMobile1st />
+              <MovingGif.MovingForMobile1st className="!z-[13]" />
+
             </div>
           </div>
           {/* bridge */}
@@ -41,9 +80,34 @@ const Mobile = () => {
             />
           </div>
           {/* game */}
-          <div className="absolute right-[11%] top-[-9%] w-[141px] h-[145px]">
+          <div
+            className="absolute right-[11%] top-[-9%] w-[141px] h-[145px]"
+            data-bp="1001-007"
+            onClick={() => {
+              console.log('game')
+              setIsGameOpen(true)
+            }}
+          >
+            <div className="absolute left-1/2 translate-x-[calc(-50%_+_30px)] top-[-50px] cursor-pointer scale-[0.7]">
+                <div className="w-full flex flex-col gap-[2px] items-center justify-center">
+                  <img src="/images/monad/icon/arcade.svg" alt="" />
+                  <motion.img
+                    animate={{
+                      rotateY: 180,
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                    src="/images/monad/icon/point.svg"
+                    className="w-[38px] h-[38px]"
+                    alt=""
+                  />
+                </div>
+              </div>
             <img
-              src="/images/mobile/entry/game-locked.svg"
+              src="/images/mobile/entry/game.svg"
               className="w-full h-full"
               alt=""
             />
@@ -135,7 +199,7 @@ const Mobile = () => {
                 <img src="/images/monad/background/tokens-moyaki.gif" className="w-[100px] scale-[0.6]" alt="" />
               </div>
               <div className="absolute left-[33px] top-[6px]">
-                  <img src="/images/monad/background/cover.svg" className="scale-[0.5]" alt="" />
+                <img src="/images/monad/background/cover.svg" className="scale-[0.5]" alt="" />
               </div>
             </div>
           </div>
@@ -216,31 +280,37 @@ const Mobile = () => {
               </div>
             </div>
           </div>
-          {/* yapper */}
+          {/* Codes */}
           <div
-            data-bp="1001-005"
+            data-bp="1001-015"
+            data-hover-sound
+            onClick={() => router.push("/codes")}
             className={clsx(
               "z-[4] w-[378px] h-[290px] absolute bottom-[18%] left-[-36%] scale-[0.68]",
-              "bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper-lock.svg)]",
+              "bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper.svg)]",
             )}
           >
             <div className="relative w-full h-full">
-              {/* <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
+              <div className="absolute left-1/2 translate-x-[calc(-50%_+_15px)] top-[-30px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
-                  <div className="w-full flex items-center justify-center">
-                    <img src="/images/monad/icon/yapper.svg" alt="" />
-                    <div className="text-[12px] font-Unbounded font-[500] leading-[90%] text-[#6D7EA5]">
-                      soon
-                    </div>
+                  <div className="w-full flex items-center justify-center gap-2">
+                    <img src="/images/monad/icon/codes.svg" alt="" className="shrink-0" />
+                    {
+                      unUsedInviteCodes?.length > 0 && (
+                        <div className="shrink-0 px-[8px] h-[18px] text-[12px] font-[900] leading-[90%] flex items-center justify-center font-Unbounded rounded-[21px] border border-black bg-[#BFFF60] shadow-[0px_2px_0px_0px_rgba(0,_0,_0,_0.50)]">
+                          {unUsedInviteCodes?.length}
+                        </div>
+                      )
+                    }
                   </div>
                   <img
-                    src="/images/monad/icon/disabled-point.svg"
+                    src="/images/monad/icon/point.svg"
                     className="w-[38px] h-[38px]"
                     alt=""
                   />
                 </div>
-              </div> */}
-              {/* <div className="absolute w-[244px] h-[223px] left-1/2 -translate-x-1/2 top-[-38px] ml-[20px]">
+              </div>
+              <div className="absolute w-[200px] h-[183px] left-1/2 -translate-x-1/2 top-[10px] ml-[20px]">
                 <motion.div
                   animate={{ rotate: [-10, 10] }}
                   transition={{
@@ -252,11 +322,21 @@ const Mobile = () => {
                   }}
                   className="relative w-full h-full bg-no-repeat bg-contain bg-[url(/images/monad/entry/radar.svg)]"
                 ></motion.div>
-              </div>*/}
-            </div> 
-          </div> 
+              </div>
+            </div>
+          </div>
         </div>
+        <motion.div
+          ref={guideEntryContainerRef}
+          id="guide-entry-container"
+          className="absolute z-[1] w-[40px] h-[52px] bottom-[60px] right-[10px]"
+          initial={{ y: -100, opacity: 0 }}
+        >
+          <GuideEntry ref={guideEntryRef} className="!w-full !h-full" />
+        </motion.div>
       </div>
+      <CodesMission className="!fixed z-[10] !top-[unset] !right-[unset] bottom-[46px] left-1/2 -translate-x-1/2" />
+      { isGameOpen && <GameEntry onClose={() => setIsGameOpen(false)} /> }
     </div>
   );
 };

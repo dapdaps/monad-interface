@@ -1,4 +1,5 @@
 import useCustomAccount from "@/hooks/use-account";
+import clsx from "clsx";
 import Link from "next/link";
 
 const Rules = (props: any) => {
@@ -26,9 +27,7 @@ const Rules = (props: any) => {
               </ul>
             </>
           ) : (
-            <div className="text-center pt-[20px] pb-[24px]">
-              Access NADSA One by verifying your <Link className="text-[#78FEFF] underline underline-offset-2" href={`https://monad-testnet.socialscan.io/address/0x2d298c1f3a52af45ab3d34637aa293cf8a988c71`} target="_blank">Admission Ticket</Link> or<br /> entering your Access Code.
-            </div>
+            <AdmissionTicket />
           )
         }
       </div>
@@ -37,3 +36,13 @@ const Rules = (props: any) => {
 };
 
 export default Rules;
+
+export const AdmissionTicket = (props: any) => {
+  const { className, isBr = true } = props;
+
+  return (
+    <div className={clsx("text-center pt-[20px] pb-[24px]", className)}>
+      Access NADSA One by verifying your <Link className="text-[#78FEFF] underline underline-offset-2" href={`https://monad-testnet.socialscan.io/address/${process.env.NEXT_PUBLIC_CHART_NFT || "0x2d298c1f3a52af45ab3d34637aa293cf8a988c71"}`} target="_blank">Admission Ticket</Link> or{isBr && <br />} entering your Access Code.
+    </div>
+  );
+};

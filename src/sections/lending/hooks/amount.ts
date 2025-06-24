@@ -7,6 +7,8 @@ import useToast from '@/hooks/use-toast';
 import { LendingActionType } from '@/sections/lending/config';
 import { calculateTimeSwapCollateral } from '@/sections/lending/utils';
 import { numberRemoveEndZero } from '@/utils/number-formatter';
+import useAddAction from '@/hooks/use-add-action';
+import { upperFirst } from 'lodash';
 
 export function useAmount(props: any) {
   const { market, config, onClose, action } = props;
@@ -16,6 +18,7 @@ export function useAmount(props: any) {
 
   const { account, provider } = useCustomAccount();
   const toast = useToast();
+  const { addAction } = useAddAction(props.from || "dapp");
 
   const {
     tokenBalance: token0Balance,
@@ -67,9 +70,9 @@ export function useAmount(props: any) {
   const errorTips = useMemo(() => {
     if ([LendingActionType.Lend, LendingActionType.Borrow].includes(action.value)) {
       if (action.value === LendingActionType.Lend) {
-        // if (config.name === "Timeswap" && market?.disabledLend) {
-        //   return "APR is zero";
-        // }
+        if (config.name === "Timeswap" && market?.disabledLend) {
+          return "APR is zero";
+        }
       }
       if (action.value === LendingActionType.Borrow) {
         if (config.name === "Timeswap") {
@@ -183,6 +186,16 @@ export function useAmount(props: any) {
       else {
         toast.fail({ title: action?.label + " failed!" });
       }
+      // add action
+      addAction({
+        type: "Lending",
+        action: upperFirst(action.value),
+        token: market?.tokens?.[0],
+        amount: actionAmount,
+        template: config.name,
+        status,
+        transactionHash,
+      });
     } catch (err: any) {
       toast.dismiss(toastId);
       toast.fail({

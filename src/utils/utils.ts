@@ -88,16 +88,15 @@ export async function uploadFile(file: File | Blob, url: string = '/upload') {
   try {
     const formData = new FormData();
     formData.append('file', file);
-    
+
     const response = await postFile(url, formData);
-    
-    console.log('response', response)
+
     if (response.code === 200) {
       return response.data.url;
     } else {
       throw new Error(response.message);
     }
-    
+
   } catch (error) {
     console.error('uplaod fail:', error);
     throw error;
@@ -113,7 +112,7 @@ export function shareToX(text: string, link?: string) {
 }
 
 
-
+  
 export function capitalize(str: string) {
   if (!str) return str;
   return str.charAt(0).toUpperCase() + str.substring(1);

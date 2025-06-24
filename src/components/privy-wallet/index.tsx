@@ -66,9 +66,9 @@ const PrivyWallet = () => {
         }
     }, [openDeposit]);
 
-    if (!address) {
-        return null;
-    }
+    // if (!address) {
+    //     return null;
+    // }
 
     return (
         <>
@@ -84,10 +84,10 @@ const PrivyWallet = () => {
                     </span>
                     <div className="flex-1 ">
                         <div className="text-[#A6A6DB] text-[14px] text-left">Game Account</div>
-                        <div className="text-white font-bold text-[14px] flex items-center mt-[5px] cursor-pointer">
-                            <span>{address.slice(0, 5)}...{address.slice(-5)}</span>
+                        <div className="text-white text-[14px] flex items-center mt-[5px] cursor-pointer">
+                            <span>{address && address.slice(0, 5)}...{address && address.slice(-5)}</span>
                             <div className="ml-2 text-[#a084ff] " >
-                                <Copyed value={address} />
+                                <Copyed value={address || ''} />
                             </div>
                         </div>
                     </div>
@@ -101,7 +101,7 @@ const PrivyWallet = () => {
                                 <path d="M11.959 3.65234C9.5602 3.65234 3.65234 9.58932 3.65234 12.0001C3.65234 14.4109 9.5602 20.348 11.959 20.348C14.3578 20.348 20.2657 14.4108 20.2657 12.0001C20.2657 9.58943 14.3578 3.65234 11.959 3.65234ZM10.6645 16.7737C9.65297 16.4967 6.93338 11.7158 7.20907 10.6993C7.48475 9.68266 12.2419 6.94963 13.2534 7.22668C14.265 7.50369 16.9847 12.2845 16.709 13.3011C16.4333 14.3176 11.6761 17.0507 10.6645 16.7737Z" fill="white" />
                             </svg>
                         </span>
-                        <span className="text-white text-[16px] font-bold">{ Number(tokenBalance || 0).toFixed(4) }</span>
+                        <span className="text-white text-[16px]">{ Number(tokenBalance || 0).toFixed(4) }</span>
                     </div>
                     <div className="cursor-pointer float-right" onClick={() => {
                         setOpen(true)
@@ -117,7 +117,7 @@ const PrivyWallet = () => {
                 <button data-bp="1009-004" onClick={() => { 
                     setOpen(true)
                     setIsJustDesposit(false)
-                 }} className="w-full font-Montserrat h-[40px] text-black font-bold py-2 rounded-[10px] text-[16px] transition bg-[radial-gradient(50%_50%_at_50%_50%,#E1FFB5_0%,#B1FF3D_100%)] shadow-[0px_0px_6px_0px_#BFFF60]">
+                 }} className="w-full font-Montserrat h-[40px] text-black py-2 rounded-[10px] text-[16px] transition bg-[radial-gradient(50%_50%_at_50%_50%,#E1FFB5_0%,#B1FF3D_100%)] shadow-[0px_0px_6px_0px_#BFFF60]">
                     Cashier
                 </button>
             </div>

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import Modal from "@/components/modal";
 import { useAccount, useSendTransaction, useSwitchChain, useConnect, injected } from "wagmi";
 import CircleLoading from "../circle-loading";
-import { toast } from "react-toastify";
 import Copyed from "../copyed";
 import { useSendTransaction as usePrivySendTransaction } from "@privy-io/react-auth";
 import { balanceFormated } from "@/utils/balance";
 import { monadTestnet } from "viem/chains";
+import useToast from "@/hooks/use-toast";
 
 interface ActionModalProps {
     open: boolean;
@@ -38,6 +38,10 @@ const ActionModal = ({
             setActiveTab("deposit");
         }
     }, [showDeposit]);
+    
+    if (!playerAddress) {
+        return null
+    }
 
     return (
         <Modal open={open} closeIcon={<svg className="ml-[-20px] mt-[10px]" width="10" height="9" viewBox="0 0 10 9" fill="none">
@@ -132,6 +136,9 @@ const Deposit = ({
 }) => {
     const [amount, setAmount] = useState(depositInitialAmount);
     const { data: hash, sendTransactionAsync, isPending, isSuccess } = useSendTransaction();
+    const { success, fail } = useToast({
+        isGame: true
+    })
 
     return (
         <div>
@@ -197,10 +204,16 @@ const Deposit = ({
                     console.log('hash', hash);
                     onClose();
 
-                    toast.success('Recharge success');
+                    success({ 
+                        title: 'Recharge success',
+                        tx: hash,
+                        chainId: monadTestnet.id,
+                    }, 'bottom-right');
                 } catch (error) {
                     console.error(error);
-                    toast.error('Recharge failed');
+                    fail({
+                        title: 'Recharge failed',
+                    }, 'bottom-right');
                 }
 
             }}>
@@ -237,6 +250,10 @@ const Withdraw = ({
         }
     });
     const [withdrawAddress, setWithdrawAddress] = useState(rechargeAddress);
+
+    const { success, fail } = useToast({
+        isGame: true
+    })
 
     return (
         <div className="font-Montserrat">
@@ -291,26 +308,39 @@ const Withdraw = ({
                         return;
                     }
 
-                    setIsPending(true);
 
-                    const hash = await sendTransactionPrivy({
-                        to: rechargeAddress as `0x${string}`,
-                        value: BigInt(amount * 1e18),
-                    }, {
-                        uiOptions: {
-                            showWalletUIs: true,
-                            isCancellable: true,
-                            successHeader: 'Withdraw success',
-                            successDescription: 'You\'re all set.',
-                            buttonText: 'Withdraw',
-                        }
-                    })
+                    try {
+                        setIsPending(true);
 
-                    console.log('hash', hash);
-
-                    onClose();
-
-                    toast.success('Withdraw success');
+                        const { hash } = await sendTransactionPrivy({
+                            to: rechargeAddress as `0x${string}`,
+                            value: BigInt(amount * 1e18),
+                        }, {
+                            uiOptions: {
+                                showWalletUIs: true,
+                                isCancellable: true,
+                                successHeader: 'Withdraw success',
+                                successDescription: 'You\'re all set.',
+                                buttonText: 'Withdraw',
+                            }
+                        })
+    
+                        console.log('hash', hash);
+    
+                        onClose();
+    
+                        success({ 
+                            title: 'Withdraw success',
+                            tx: hash,
+                            chainId: monadTestnet.id,
+                         }, 'bottom-right');
+                    } catch(e) {
+                        setIsPending(false);
+                        fail({
+                            title: 'Withdraw fail',
+                        }, 'bottom-right')
+                    }
+                    
                 }}
             >
                 {isPending && <CircleLoading className="w-[20px] h-[20px] mr-5" />}
@@ -346,7 +376,6 @@ const Button = ({
             </button>
         )
     }
-
 
     return (
         <button

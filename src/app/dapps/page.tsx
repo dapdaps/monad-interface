@@ -1,9 +1,7 @@
 "use client";
-// import DAppsView from '@/sections/dapps';
+
+import DAppsView from "@/sections/dapps";
 
 export default function DappsPage() {
-  return <div />;
-  // return (
-  //   <DAppsView />
-  // );
+  return <DAppsView />;
 }

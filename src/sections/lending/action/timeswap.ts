@@ -18,7 +18,7 @@ export const timeswap = async (actionParams: any) => {
     currentToken.decimals
   );
   const parsedActionAmount = ethers.utils.parseUnits(
-    actionAmount,
+    Big(actionAmount || 0).times(1.05).toFixed(actionToken.decimals),
     actionToken.decimals
   );
 
