@@ -16,8 +16,7 @@ export default function GamePrivyProvider({ children }: { children: React.ReactN
             setOpenDeposit,
         }}>
             <PrivyProvider
-                appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || 'cmbgmatho012fl90mlki6e324'}
-                // appId={'cmc8spafy000bjv0mzs9dxzjo'}
+                appId={process.env.NEXT_PUBLIC_PRIVY_API_KEY || 'cmbgmatho012fl90mlki6e324'}
                 config={{
                     appearance: {
                         theme: "light",
