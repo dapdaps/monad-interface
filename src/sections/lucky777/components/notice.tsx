@@ -106,5 +106,5 @@ const TypingText = ({ text, speed = 50 }: any) => {
         return () => clearInterval(interval);
     }, [text, speed]);
 
-    return <span className="text-[#C7C7D9] inline-block w-[150px] whitespace-nowrap  text-left">{displayed}</span>;
+    return <span className="text-[#C7C7D9] inline-block w-[110px] whitespace-nowrap  text-left">{displayed}</span>;
 };

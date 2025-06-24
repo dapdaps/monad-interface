@@ -18,7 +18,7 @@ interface BuyTimesModalProps {
     spinUserData: any
 }
 
-const destAddress: any = '0x74D00ee5dF8AC41EB1e5879ed3A371D55ada6102';
+const destAddress: any = process.env.NEXT_PUBLIC_DEPOSIT_ADDRESS || '0x74D00ee5dF8AC41EB1e5879ed3A371D55ada6102';
 const amount = 0.1;
 
 const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesModalProps) => {
