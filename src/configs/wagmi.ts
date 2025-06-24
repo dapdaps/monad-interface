@@ -16,7 +16,7 @@ export const metadata = {
   name: "MonadX",
   description: "MonadX",
   // origin must match your domain & subdomain
-  url: "https://berachain.dapdap.net",
+  url: "https://www.nadsa.space",
   icons: ["/favicon.ico"]
 };
 
