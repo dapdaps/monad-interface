@@ -24,6 +24,7 @@ import "./animate.css";
 import useIsMobile from "@/hooks/use-isMobile";
 import ChatFooter from "./footer";
 import DataOverrideMobile from "../components/data-override";
+import clsx from "clsx";
 
 const realtime = new Realtime({
   appId: process.env.NEXT_PUBLIC_LEANCLOUD_APP_ID!,
