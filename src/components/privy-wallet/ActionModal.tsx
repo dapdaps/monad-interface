@@ -211,7 +211,9 @@ const Deposit = ({
                     }, 'bottom-right');
                 } catch (error) {
                     console.error(error);
-                    fail('Recharge failed');
+                    fail({
+                        title: 'Recharge failed',
+                    }, 'bottom-right');
                 }
 
             }}>
