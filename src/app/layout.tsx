@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="md:overflow-hidden">
       <head>
-        <title>Monad</title>
+        <title>NADSA</title>
         <meta
           name="description"
           content="Effortlessly explore & dive into all dApps in the Monad ecosystem from one streamlined hub."
