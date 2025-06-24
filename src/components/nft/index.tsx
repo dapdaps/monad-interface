@@ -52,11 +52,11 @@ export default function NFT({
       isForceNormal={isForceNormal}
     >
       <NadsaPassCard onLoginOut={onLoginOut} />
-      {
+      {/* {
         isHomepageLink && (
           <LandingNadsa />
         )
-      }
+      } */}
     </Modal>
   );
 }
