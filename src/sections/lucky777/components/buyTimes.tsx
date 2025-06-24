@@ -9,6 +9,7 @@ import { numberFormatter } from "@/utils/number-formatter";
 import { useBalance } from "wagmi";
 import useTokenAccountBalance from "@/hooks/use-token-account-balance";
 import { monadTestnet } from "viem/chains";
+import { useInterval } from "ahooks";
 
 interface BuyTimesModalProps {
     open: boolean;
@@ -90,6 +91,12 @@ const BuyTimesModal = ({ open, onClose, refreshData }: BuyTimesModalProps) => {
 
 
     }, [address, refreshData, sendTransaction, tokenBalance]);
+
+    useInterval(async () => {
+        refreshData();
+    }, 5000, { 
+        immediate: true
+    });
 
     useEffect(() => {
         setTimes(1);
