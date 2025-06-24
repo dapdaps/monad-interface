@@ -72,7 +72,7 @@ const PrivyWallet = () => {
 
     return (
         <>
-        <div className="fixed right-[-10px] top-1/2 -translate-y-1/2 z-50 w-[230px] h-[260px]">
+        <div className="fixed right-[-10px] top-1/2 -translate-y-1/2 z-10 w-[230px] h-[260px]">
             <img src="/images/game/wallet-bg.svg" className="w-[280px] absolute left-[-20px] top-0 max-w-[280px]" />
             <div className="relative pr-[30px] pt-[80px] pl-[35px] h-full font-Montserrat">
                 <div className="flex items-center w-full">
