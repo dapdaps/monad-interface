@@ -19,7 +19,6 @@ export default function Notice() {
         return () => clearInterval(interval);
     }, [notice]);
 
-
     const fetchNotice = useCallback(async () => {
         const res = await get("/game/announcement");
         if (res.code !== 200 || !res.data) {
@@ -31,6 +30,7 @@ export default function Notice() {
     useInterval(() => {
         fetchNotice();
     }, 10 * 60 * 1000, { immediate: true });
+
 
     const item = useMemo(() => {
         if (!notice.length) {
@@ -55,16 +55,17 @@ export default function Notice() {
                     className="absolute w-full left-0 top-0 h-[74px] text-center flex items-center justify-center"
                 >
                     <div className="flex items-center space-x-4 py-2">
-                        <div className="mr-4 flex-shrink-0">
+                        <div className="mr-2 ml-1 flex-shrink-0">
                             <img src="/images/lucky777/reward.svg" alt="" className="w-[42px] h-[42px]" />
                         </div>
                         <div >
                             <div className="flex items-center space-x-3">
-                                <span className="text-[#B6FF6C] font-HackerNoonV2 font-bold text-2xl tracking-widest">ATTENTION!</span>
+                                <span className="text-[#B6FF6C] font-HackerNoonV2 pt-1 font-bold text-2xl tracking-widest">ATTENTION!</span>
                             </div>
-                            <div className="mt-1 flex justify-start items-center space-x-2 font-Pixelmix text-[14px] text-[#C7C7D9]">
+                            {
+                                item && <div className="mt-1 flex justify-start items-center space-x-2 font-Pixelmix text-[14px] text-[#C7C7D9]">
                                 <span>[{dayjs(item.timestamp * 1000).format('HH:mm:ss')}]</span>
-                                <span className="text-[#C7C7D9]">[{item.name || addressFormated(item.address)}]</span>
+                                <span className="text-[#C7C7D9]">[{item.name ? addressFormated(item.name) : addressFormated(item.address)}]</span>
                                 <TypingText text={`Win ${item.amount} MON`} speed={50} />
                                 <a
                                     href={`https://testnet.monvision.io/tx/${item.tx_hash}`}
@@ -75,6 +76,11 @@ export default function Notice() {
                                     TX
                                 </a>
                             </div>
+                            }
+
+                            {
+                                !item && <div className="h-[40px] w-[360px]"></div>
+                            }
                         </div>
                     </div>
                 </motion.div>

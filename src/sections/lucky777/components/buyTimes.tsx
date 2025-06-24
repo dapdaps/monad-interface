@@ -4,12 +4,12 @@ import { post } from "@/utils/http";
 import { getSignature } from "@/utils/signature";
 import { useSendTransaction, usePrivy } from "@privy-io/react-auth";
 
-import { toast } from "react-toastify";
 import { numberFormatter } from "@/utils/number-formatter";
 import { useBalance } from "wagmi";
 import useTokenAccountBalance from "@/hooks/use-token-account-balance";
 import { monadTestnet } from "viem/chains";
 import { useInterval } from "ahooks";
+import useToast from "@/hooks/use-toast";
 
 interface BuyTimesModalProps {
     open: boolean;
@@ -28,8 +28,10 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
     const inputRef = useRef<HTMLInputElement>(null);
     const spinBalance = useRef(spinUserData?.spin_balance || 0);
     const startSpinBalance = useRef(false);
+    const { success, fail } = useToast({
+        isGame: true
+    })
 
-    
     const { sendTransaction } = useSendTransaction({
         onSuccess: (params) => {
             console.log('sendTransactionPrivy', params);
@@ -55,7 +57,7 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
         }
 
         if (amount * selectedTimes >= Number(tokenBalance)) {
-            toast.error('Insufficient balance');
+            fail('Insufficient balance');
             return;
         }
 
@@ -90,10 +92,16 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
             // }
             refreshData();
             onClose && onClose();
-            toast.success('Recharge Successfully!');
+            success({
+                title: 'Recharge Successfully!',
+                tx: hash,
+                chainId: monadTestnet.id,
+            }, 'bottom-right');
         } catch (e) {
             console.log('e:', e);
-            toast.error('Failed to recharge');
+            fail({
+                title: 'Failed to recharge'
+            }, 'bottom-right');
             startSpinBalance.current = false;
         }
 
@@ -107,7 +115,7 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
             startSpinBalance.current = false;
             spinBalance.current = spinUserData.spin_balance;
         }
-    }, 5000, { 
+    }, 5000, {
         immediate: true
     });
 
@@ -161,7 +169,7 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
                                         return
                                     }
                                     setTimes(val);
-                                } 
+                                }
                             }} className="w-[100px] text-center text-[18px] font-bold text-[#BFFF60] bg-transparent border-none outline-none" />
                         </span>
                     </div>
