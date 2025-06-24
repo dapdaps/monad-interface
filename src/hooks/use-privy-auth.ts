@@ -11,15 +11,19 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
     const [address, setAddress] = useState("");
 
     useEffect(() => {
-        if (user && !user.wallet) {
-            const [privyUser] = user.linkedAccounts.filter(
-                (account) =>
-                    account.type === "wallet" &&
-                    account.walletClientType === "privy"
-            );
-            if (!privyUser || !(privyUser as any).address) {
-                createWallet();
+        try {
+            if (user && !user.wallet) {
+                const [privyUser] = user.linkedAccounts?.filter(
+                    (account) =>
+                        account.type === "wallet" &&
+                        account.walletClientType === "privy"
+                );
+                if (!privyUser || !(privyUser as any).address) {
+                    createWallet();
+                }
             }
+        } catch (e) {
+           console.log(e) 
         }
     }, [user]);
 
