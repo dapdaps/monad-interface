@@ -229,13 +229,13 @@ export default function Swap({
           }}
           updater={`button-${updater}`}
         />
-        {from === "marketplace" && (
+        {/* {from === "marketplace" && (
           <div className="text-center  mt-[12px]">
             <a href="/bridge" className="underline text-[14px] text-[#A6A6DB]">
               Bridge Assets to Monad
             </a>
           </div>
-        )}
+        )} */}
       </div>
       <TokenSelector
         display={displayCurrencySelect}
