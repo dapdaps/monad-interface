@@ -279,7 +279,18 @@ const User = (props: any) => {
               <div className="text-white text-[12px] font-[400] leading-[1] font-Unbounded">
                 {addressShown}
               </div>
-              <div className="flex items-center gap-1">
+              {
+                !!userInfo?.twitter?.twitter_user_name && <div className="flex items-center text-white text-[10px] gap-2">
+                  <div>{`${address.slice(0, 5)}...${address.slice(-4)}`}</div>
+                  <img
+                    className="cursor-pointer"
+                    src="/images/header/copy.svg"
+                    onClick={handleCopy}
+                    alt=""
+                  />
+                </div>
+              }
+              {/*<div className="flex items-center gap-1">
                 <img
                   src={walletInfo.icon}
                   className="w-4 object-contain"
@@ -293,15 +304,10 @@ const User = (props: any) => {
                 <div className="bg-white bg-opacity-20 p-[1px] rounded-[4px] text-[8px] text-[#A6A6DB] font-Unbounded">
                   {currentChainInfo?.testnet ? "Testnet" : "Mainnet"}
                 </div>
-              </div>
+              </div>*/}
             </div>
           </div>
-          <img
-            className="cursor-pointer"
-            src="/images/header/copy.svg"
-            onClick={handleCopy}
-            alt=""
-          />
+
         </div>
         <div className="flex px-[6px] h-[40px] items-center justify-between w-full bg-white bg-opacity-20 rounded-[6px]">
           <div className="flex items-center gap-1">
