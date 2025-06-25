@@ -275,7 +275,7 @@ const User = (props: any) => {
           <div className="flex gap-2">
             <AvatarDisplay hasAvatar={address && !!userInfo?.twitter?.twitter_avatar} userInfo={userInfo} />
             {/* <div className="w-[30px] h-[30px] rounded-[50%] border-2 border-black bg-[conic-gradient(from_180deg_at_50%_50%,#00D1FF_0deg,#FF008A_360deg)]" /> */}
-            <div className="flex flex-col gap-[6px]">
+            <div className="flex flex-col gap-[6px] justify-center">
               <div className="text-white text-[12px] font-[400] leading-[1] font-Unbounded">
                 {addressShown}
               </div>
@@ -290,6 +290,7 @@ const User = (props: any) => {
                   />
                 </div>
               }
+
               {/*<div className="flex items-center gap-1">
                  <img
                   src={walletInfo.icon}
