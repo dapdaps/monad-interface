@@ -327,9 +327,9 @@ const Withdraw = ({
                             uiOptions: {
                                 showWalletUIs: true,
                                 isCancellable: true,
-                                successHeader: 'Buy times success',
-                                successDescription: 'You\'re all set.',
-                                buttonText: 'Buy Times',
+                                successHeader: 'Withdraw success',
+                                successDescription: 'Withdraw.',
+                                buttonText: 'Withdraw',
                             },
                             address
                         });

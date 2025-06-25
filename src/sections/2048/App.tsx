@@ -26,6 +26,7 @@ import { GAME_CONTRACT_ADDRESS } from "./utils/constants";
 import { use2048Store } from "@/stores/use2048";
 import { toast } from "react-toastify";
 
+
 // Types
 export enum Direction {
     UP,
@@ -63,7 +64,6 @@ export default function Game2048() {
         getLatestGameBoard,
         playNewMoveTransaction,
         initializeGameTransaction,
-        playNewMoveTransactionThrottled,
     } = useTransactions();
 
     // =============================================================//
@@ -337,16 +337,6 @@ export default function Game2048() {
                         console.error("Error in move transaction:", error);
                         resetBoardOnError(premoveBoard, currentMove, error);
                     });
-
-                    // playNewMoveTransactionThrottled(
-                    //     activeGameId as Hex,
-                    //     encoded.board,
-                    //     encoded.move,
-                    //     moveCount
-                    // ).catch((error) => {
-                    //     console.error("Error in move transaction:", error);
-                    //     resetBoardOnError(premoveBoard, currentMove, error);
-                    // });
                 }
 
                 setBoardState(updatedBoardState);
@@ -777,40 +767,39 @@ export default function Game2048() {
 
 
     return (
-        <Container>
+        <>
+            <Container>
 
-            {/* <button onClick={() => {
+                {/* <button onClick={() => {
                 setOpenDeposit(true)
             }}>
                 open
             </button> */}
 
-            <div className="flex flex-col flex-1 relative">
-                <div className="flex-1 overflow-auto px-2">
-                    <Board
-                        containerRef={gameContainerRef}
-                        tiles={boardState.tiles}
-                        score={boardState.score}
-                        gameOver={gameOver}
-                        gameError={gameError}
-                        gameErrorText={gameErrorText}
-                        resyncGame={resyncGame}
-                        initializeGame={initializeGame}
-                    />
-                </div>
-
-                <div className="flex items-center justify-between w-full mt-[30px]">
-                    <div className="flex flex-col items-start justify-between w-[175px]">
-                        <Scorecard score={boardState.score} />
-                        <LoginButton resetGame={initializeGame} />
+                <div className="flex flex-col flex-1 relative">
+                    <div className="flex-1 overflow-auto px-2">
+                        <Board
+                            containerRef={gameContainerRef}
+                            tiles={boardState.tiles}
+                            score={boardState.score}
+                            gameOver={gameOver}
+                            gameError={gameError}
+                            gameErrorText={gameErrorText}
+                            resyncGame={resyncGame}
+                            initializeGame={initializeGame}
+                        />
                     </div>
-                    <Controller handleMove={handleMove} />
+
+                    <div className="flex items-center justify-between w-full mt-[30px]">
+                        <div className="flex flex-col items-start justify-between w-[175px]">
+                            <Scorecard score={boardState.score} />
+                            <LoginButton resetGame={initializeGame} />
+                        </div>
+                        <Controller handleMove={handleMove} />
+                    </div>
+
                 </div>
-
-            </div>
-
-
-
-        </Container>
+            </Container>
+        </>
     );
 }

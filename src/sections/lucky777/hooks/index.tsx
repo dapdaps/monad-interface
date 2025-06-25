@@ -11,7 +11,7 @@ import { useAccount } from 'wagmi';
 
 
 export function useLuckyBera() {
-  const toast = useToast();
+  const { fail } = useToast({ isGame: true });
   const { address } = useAccount();
   const { setLastSpinResult, lastSpinResult } = useLuckyBeraStore();
   const [ multiple, setMultiple ] = useState(1);
@@ -43,7 +43,7 @@ export function useLuckyBera() {
       spin: multiple,
     });
     if (res.code !== 200) {
-      toast.fail({ title: `Spin failed: ${res.message || res.data}` });
+      fail({ title: `Spin failed: ${res.message || res.data}` }, 'bottom-right');
       return false;
     }
     reloadSpinData(res.data);
