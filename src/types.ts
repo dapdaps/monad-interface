@@ -37,6 +37,7 @@ export interface IDapp {
   tvl?: string;
   volume24h?: string;
   liquidity?: string;
+  disabled?: boolean;
 }
 
 export interface IToken {

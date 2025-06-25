@@ -9,10 +9,10 @@ import useTokenBalance from "@/hooks/use-token-balance";
 import { useDebounceFn, useInterval } from "ahooks";
 import { toast } from "react-toastify";
 import { PrivyContext } from "../privy-provider";
+import { usePrivyAuth } from "@/hooks/use-privy-auth";
 
 const PrivyWallet = () => {
-    const { user, createWallet } = usePrivy();
-    const [address, setAddress] = useState("");
+    const { address } = usePrivyAuth({ isBind: false });
     const [open, setOpen] = useState(false);
     const [showDeposit, setShowDeposit] = useState(1);
     const [isSwitching, setIsSwitching] = useState(false);
@@ -36,26 +36,6 @@ const PrivyWallet = () => {
         update();
     }, 30000);
 
-    useEffect(() => {
-        if (!user) {
-            setAddress("");
-            return;
-        }
-
-        const [privyUser] = user.linkedAccounts.filter(
-            (account) =>
-                account.type === "wallet" &&
-                account.walletClientType === "privy"
-        );
-
-        if (!privyUser || !(privyUser as any).address) {
-            setAddress("");
-            return;
-        }
-
-        setAddress((privyUser as any).address);
-    }, [user]);
-
     const { openDeposit, setOpenDeposit } = useContext(PrivyContext);
 
     useEffect(() => {
@@ -72,7 +52,7 @@ const PrivyWallet = () => {
 
     return (
         <>
-        <div className="fixed right-[-10px] top-1/2 -translate-y-1/2 z-50 w-[230px] h-[260px]">
+        <div className="fixed right-[-10px] top-1/2 -translate-y-1/2 z-10 w-[230px] h-[260px]">
             <img src="/images/game/wallet-bg.svg" className="w-[280px] absolute left-[-20px] top-0 max-w-[280px]" />
             <div className="relative pr-[30px] pt-[80px] pl-[35px] h-full font-Montserrat">
                 <div className="flex items-center w-full">

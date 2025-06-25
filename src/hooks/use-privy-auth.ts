@@ -1,18 +1,33 @@
-import { useLogin, usePrivy } from "@privy-io/react-auth";
-import { useEffect, useMemo, useState } from "react";
+import { useLogin, usePrivy, useConnectWallet, useWallets, useUser as usePrivyUser, useActiveWallet } from "@privy-io/react-auth";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import useUser from "./use-user";
 import { toast } from "react-toastify";
+// import {UserPill} from '@privy-io/react-auth/ui';
 
 export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
     const { userInfo, getUserInfo, bindGameAddress } = useUser();
-    const { user, createWallet, logout, ready, authenticated } = usePrivy();
+    const { user, createWallet, logout, ready, authenticated, connectWallet } = usePrivy();
     const { login } = useLogin();
+    const { wallets } = useWallets();
     const [loginLoading, setLoginLoading] = useState(false);
     const [address, setAddress] = useState("");
+    const { wallet, setActiveWallet } = useActiveWallet();
+
 
     useEffect(() => {
+        try {
         if (user && !user.wallet) {
+                const [privyUser] = user.linkedAccounts?.filter(
+                    (account) =>
+                        account.type === "wallet" &&
+                        account.walletClientType === "privy"
+                );
+                if (!privyUser || !(privyUser as any).address) {
             createWallet();
+        }
+            }
+        } catch (e) {
+            console.log(e)
         }
     }, [user]);
 
@@ -20,7 +35,8 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
         setLoginLoading(true);
 
         try {
-            login();
+            await logout();
+            await login();
             setLoginLoading(false);
         } catch (err) {
             console.log("Problem logging in: ", err);
@@ -28,17 +44,48 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
         }
     };
 
+    const sendTransaction = useCallback(async ({ to, value }: { to: string, value: BigInt }) => {
+        const wallet = wallets.find((wallet) => wallet.address === address);
+        if (!wallet) {
+            return;
+        }
+
+        const provider = await wallet.getEthereumProvider();
+
+        const transactionRequest = {
+            to,
+            value
+        };
+
+        const transactionHash = await provider.request({
+            method: 'eth_sendTransaction',
+            params: [transactionRequest]
+        });
+
+        return transactionHash;
+    }, [address])
+
     useEffect(() => {
         if (!user) {
             setAddress("");
             return;
         }
 
-        const [privyUser] = user.linkedAccounts.filter(
+        let privyUser
+        if (userInfo?.game_address) {
+            [privyUser] = user.linkedAccounts.filter(
+                (account) =>
+                    account.type === "wallet" &&
+                    account.walletClientType === "privy" &&
+                    userInfo.game_address.toLowerCase() === account.address.toLowerCase()
+            );
+        } else {
+            [privyUser] = user.linkedAccounts.filter(
             (account) =>
                 account.type === "wallet" &&
                 account.walletClientType === "privy"
         );
+        }
 
         if (!privyUser || !(privyUser as any).address) {
             setAddress("");
@@ -46,7 +93,8 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
         }
 
         setAddress((privyUser as any).address);
-    }, [user]);
+
+    }, [user, userInfo]);
 
     useEffect(() => {
         (async () => {
@@ -65,7 +113,6 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
                         logout();
                     }
                 }
-
             }
         })();
     }, [address, userInfo, isBind]);
@@ -83,5 +130,6 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
         isLogin,
         loginLoading,
         handleLogin,
+        sendTransaction,
     };
 }

@@ -10,5 +10,6 @@ export const getSignature = (plaintext: string) => {
   let encrypted = cipher.update(plaintext, 'utf-8', 'base64');
   encrypted += cipher.final('base64');
 
+
   return iv.toString('base64') + encrypted;
 };

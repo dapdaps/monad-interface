@@ -334,14 +334,14 @@ export default function Aboarding({
                                     onClick={() => {
                                       if (buttonText === "Connect X to access") {
                                         window.open(
-                                          `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${window.location.origin}&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`,
+                                          `https://x.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${window.location.origin}&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`,
                                           "_blank"
                                         );
                                         return;
                                       }
                                       if (buttonText) return;
                                       window.open(
-                                        "https://twitter.com/intent/follow?screen_name=0xNADSA",
+                                        "https://x.com/intent/follow?screen_name=0xNADSA",
                                         "_blank"
                                       );
                                       setFollowX()

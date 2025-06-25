@@ -57,7 +57,7 @@ export default memo(function CaptchaModal() {
             </div>
             <div className="flex flex-col items-end gap-[8px]">
               <div className="w-[120px] bg-white">
-                <img src={`https://test-api-monad.dapdap.net/api/captcha/image/${captchaId}.png`} alt="captcha" />
+                <img src={`${process.env.NEXT_PUBLIC_API || "https://testnet-api-monad.dapdap.net"}/api/captcha/image/${captchaId}.png`} alt="captcha" />
               </div>
               <span className="cursor-pointer text-[10px]" onClick={handleGetCaptcha}>Can't you see clearly?</span>
             </div>
