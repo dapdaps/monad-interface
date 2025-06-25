@@ -25,6 +25,7 @@ import { publicClient } from "./utils/client";
 import { GAME_CONTRACT_ADDRESS } from "./utils/constants";
 import { use2048Store } from "@/stores/use2048";
 import { toast } from "react-toastify";
+import Leaderboard from "./components/Leaderboard";
 
 // Types
 export enum Direction {
@@ -63,7 +64,6 @@ export default function Game2048() {
         getLatestGameBoard,
         playNewMoveTransaction,
         initializeGameTransaction,
-        playNewMoveTransactionThrottled,
     } = useTransactions();
 
     // =============================================================//
@@ -337,16 +337,6 @@ export default function Game2048() {
                         console.error("Error in move transaction:", error);
                         resetBoardOnError(premoveBoard, currentMove, error);
                     });
-
-                    // playNewMoveTransactionThrottled(
-                    //     activeGameId as Hex,
-                    //     encoded.board,
-                    //     encoded.move,
-                    //     moveCount
-                    // ).catch((error) => {
-                    //     console.error("Error in move transaction:", error);
-                    //     resetBoardOnError(premoveBoard, currentMove, error);
-                    // });
                 }
 
                 setBoardState(updatedBoardState);
@@ -777,6 +767,7 @@ export default function Game2048() {
 
 
     return (
+        <>
         <Container>
 
             {/* <button onClick={() => {
@@ -812,5 +803,7 @@ export default function Game2048() {
 
 
         </Container>
+            <Leaderboard />
+        </>
     );
 }

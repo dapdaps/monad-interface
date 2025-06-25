@@ -80,8 +80,14 @@ const ConnectWallet = ({ className }: { className?: string }) => {
 
   const addressShown = useMemo(() => {
     if (!address) return "";
+
+    if (userInfo?.twitter?.twitter_user_name) {
+      const name = userInfo?.twitter?.twitter_user_name
+      return `${name.slice(0, 4)}...${name.slice(-4)}`
+    }
+
     return `${address.slice(0, 5)}...${address.slice(-4)}`;
-  }, [address, isMobile]);
+  }, [userInfo, address, isMobile]);
 
   const handleCopy = () => {
     handlePlay()
@@ -267,7 +273,8 @@ const User = (props: any) => {
       <div className="px-2.5 mt-[28px]">
         <div className="flex justify-between mb-5">
           <div className="flex gap-2">
-            <div className="w-[30px] h-[30px] rounded-[50%] border-2 border-black bg-[conic-gradient(from_180deg_at_50%_50%,#00D1FF_0deg,#FF008A_360deg)]" />
+            <AvatarDisplay hasAvatar={address && !!userInfo?.twitter?.twitter_avatar} userInfo={userInfo} />
+            {/* <div className="w-[30px] h-[30px] rounded-[50%] border-2 border-black bg-[conic-gradient(from_180deg_at_50%_50%,#00D1FF_0deg,#FF008A_360deg)]" /> */}
             <div className="flex flex-col gap-[6px]">
               <div className="text-white text-[12px] font-[400] leading-[1] font-Unbounded">
                 {addressShown}
@@ -325,6 +332,8 @@ const User = (props: any) => {
     </div>
   );
 
+  console.log('userInfo:', userInfo)
+
   return (
     <motion.div
       className="relative flex justify-center items-center cursor-pointer transition-all duration-300"
@@ -343,14 +352,14 @@ const User = (props: any) => {
       >
       {isMobile ? (
             <div className="flex items-center gap-1" onClick={handleConnect}>
-              <AvatarDisplay hasAvatar={address && !!userInfo?.avatar} userInfo={userInfo} />
+              <AvatarDisplay hasAvatar={address && !!userInfo?.twitter?.twitter_avatar} userInfo={userInfo} />
               <div className="w-[1px] h-[23px] bg-[#A6A6DB] bg-opacity-30 mx-[14px]"></div>
               <BalanceDisplay balanceShown={balanceShown} />
             </div>
           ) : (
             <div className="flex items-center gap-1">
               <BalanceDisplay balanceShown={balanceShown} />
-              <AvatarDisplay hasAvatar={address && !!userInfo?.avatar} userInfo={userInfo} />
+              <AvatarDisplay hasAvatar={address && !!userInfo?.twitter?.twitter_avatar} userInfo={userInfo} />
             </div>
           )}
       </Popover>
@@ -412,7 +421,7 @@ const BalanceDisplay = ({ className = "", balanceShown }: any) => (
 const AvatarDisplay = ({ hasAvatar = false, userInfo }: any) => (
   hasAvatar ? (
     <img
-      src={userInfo?.avatar}
+      src={userInfo?.twitter?.twitter_avatar}
       alt=""
       className="w-[28px] h-[28px] rounded-full"
     />

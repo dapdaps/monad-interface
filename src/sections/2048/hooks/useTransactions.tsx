@@ -21,18 +21,21 @@ import { useRpcStore } from "@/stores/rpc";
 import useToast from "@/hooks/use-toast";
 import reportGameRecord from "../utils/report";
 import { toast } from "react-toastify";
+import { usePrivyAuth } from "@/hooks/use-privy-auth";
+import { use2048Store } from "@/stores/use2048";
 
 
 export function useTransactions() {
     // User and Wallet objects.
     const { user } = usePrivy();
     const { ready, wallets } = useWallets();
-
+    const score = use2048Store((store: any) => store.score);
     // Fetch user nonce on new login.
     const userNonce = useRef(0);
     const userBalance = useRef(BigInt(0));
     const userAddress = useRef("");
     const rpcStore = useRpcStore();
+    const { address: privyUserAddress } = usePrivyAuth({ isBind: false });
     const rpc = useMemo(() => RPC_LIST[rpcStore.selected].url, [rpcStore.selected]);
     const { info, success, fail, dismiss } = useToast({ isGame: true });
     // Resets nonce and balance
@@ -40,15 +43,15 @@ export function useTransactions() {
         if (!user) {
             return;
         }
-        const [privyUser] = user.linkedAccounts.filter(
-            (account) =>
-                account.type === "wallet" &&
-                account.walletClientType === "privy"
-        );
-        if (!privyUser || !(privyUser as any).address) {
-            return;
-        }
-        const privyUserAddress = (privyUser as any).address;
+        // const [privyUser] = user.linkedAccounts.filter(
+        //     (account) =>
+        //         account.type === "wallet" &&
+        //         account.walletClientType === "privy"
+        // );
+        // if (!privyUser || !(privyUser as any).address) {
+        //     return;
+        // }
+        // const privyUserAddress = (privyUser as any).address;
 
         const nonce = await publicClient.getTransactionCount({
             address: privyUserAddress as Hex,
@@ -76,8 +79,9 @@ export function useTransactions() {
             if (!ready || !wallets) return;
 
             const userWallet = wallets.find(
-                (w) => w.walletClientType == "privy"
+                (w) => w.walletClientType == "privy" && w.address.toLocaleLowerCase() === privyUserAddress.toLocaleLowerCase()
             );
+
             if (!userWallet) return;
 
             const ethereumProvider = await userWallet.getEthereumProvider();
@@ -168,8 +172,7 @@ export function useTransactions() {
                 }, 'bottom-right')
             }
 
-
-            reportGameRecord(transactionHash);
+            reportGameRecord(transactionHash, score);
             //     {
             //     description: `${successText} Time: ${time} ms`,
             //     action: (
@@ -393,6 +396,8 @@ export function useTransactions() {
         // Sign and send transaction: play move
         console.log(`Playing move ${moveCount}!`);
 
+        console.log('playNewMoveTransaction', gameId, board, move, moveCount)
+
         let balance = userBalance.current;
         if (parseFloat(formatEther(balance)) < 0.01) {
             balance = await publicClient.getBalance({
@@ -407,6 +412,8 @@ export function useTransactions() {
         const nonce = userNonce.current;
         userNonce.current = nonce + 1;
         userBalance.current = balance - parseEther("0.005");
+
+        console.log('gameId, move, board', gameId, move, board)
 
         await sendRawTransactionAndConfirm({
             nonce,

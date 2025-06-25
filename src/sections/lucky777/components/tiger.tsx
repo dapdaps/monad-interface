@@ -67,7 +67,7 @@ export default memo(function Tiger(props: any) {
   const [openBuyTimes, setOpenBuyTimes] = useState(false);
   const [openHistory, setOpenHistory] = useState(false);
   const [openRules, setOpenRules] = useState(false);
-  const toast = useToast();
+  const { fail, success } = useToast({ isGame: true });
   const [title, setTitle] = useState(DEFAULT_TITLE);
   const { address } = useAccount();
   const { openConnectModal } = useConnectModal();
@@ -343,12 +343,12 @@ export default memo(function Tiger(props: any) {
 
 
     if (!spinUserData?.spin_balance || spinUserData?.spin_balance <= 0) {
-      toast.fail({ title: 'No spins left' });
+      fail({ title: 'No spins left' }, 'bottom-right');
       return;
     }
 
     if (spinUserData?.spin_balance < multiple) {
-      toast.fail({ title: 'No enough balance' });
+      fail({ title: 'No enough balance' }, 'bottom-right');
       return;
     }
 
@@ -393,7 +393,7 @@ export default memo(function Tiger(props: any) {
     }
 
     if (Number(res.draw_amount) > 0) {
-      toast.success({ title: `Get ${res.draw_amount} MON` });
+      success({ title: `Get ${res.draw_amount} MON` }, 'bottom-right');
       setTitle(('WON ' + res.draw_amount + ' MON!').repeat(2));
       // setTitle(DEFAULT_UNLUCKY_TITLE);
       playSound(2)
