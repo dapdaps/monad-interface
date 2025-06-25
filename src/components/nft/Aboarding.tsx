@@ -128,7 +128,15 @@ export default function Aboarding({
       if (node) {
         setIsSharing(true);
         await sleep(1000);
-        const dataUrl = await domtoimage.toPng(node);
+        const dataUrl = await domtoimage.toPng(node, {
+            quality: 2.0,
+            width: node.offsetWidth * 2,
+            height: node.offsetHeight * 2,
+            style: {
+                transform: 'scale(2) translate(-25%, -25%)',
+                transformOrigin: 'top left'
+            }
+        });
         const [blob, type] = base64ToBlob(dataUrl);
         const url = await uploadFile(blob, "/upload");
         const tweetUrl = `https://${IS_TEST ? 'test.' : ''}nadsa.space/api/twitter?img=${encodeURIComponent(
