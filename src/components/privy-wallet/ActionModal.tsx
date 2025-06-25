@@ -240,8 +240,18 @@ const Withdraw = ({
 }) => {
     const [amount, setAmount] = useState(0);
     const [isPending, setIsPending] = useState(false);
-    const { sendTransaction } = usePrivyAuth({ isBind: false });
-  
+    const { address } = usePrivyAuth({ isBind: false });
+
+
+    const { sendTransaction } = usePrivySendTransaction({
+        onSuccess: (params) => {
+            setIsPending(false);
+        },
+        onError: (error) => {
+            setIsPending(false);
+        }
+    });
+
     const [withdrawAddress, setWithdrawAddress] = useState(rechargeAddress);
 
     const { success, fail } = useToast({
@@ -305,10 +315,24 @@ const Withdraw = ({
                     try {
                         setIsPending(true);
 
-                        const hash = await sendTransaction({
+                        // const { hash } = await sendTransaction({
+                        //     to: rechargeAddress as `0x${string}`,
+                        //     value: BigInt(amount * 1e18),
+                        // })
+
+                        const { hash } = await sendTransaction({
                             to: rechargeAddress as `0x${string}`,
                             value: BigInt(amount * 1e18),
-                        })
+                        }, {
+                            uiOptions: {
+                                showWalletUIs: true,
+                                isCancellable: true,
+                                successHeader: 'Buy times success',
+                                successDescription: 'You\'re all set.',
+                                buttonText: 'Buy Times',
+                            },
+                            address
+                        });
     
                         console.log('hash', hash);
     

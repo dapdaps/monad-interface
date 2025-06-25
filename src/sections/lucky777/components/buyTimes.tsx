@@ -29,28 +29,26 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
     const inputRef = useRef<HTMLInputElement>(null);
     const spinBalance = useRef(spinUserData?.spin_balance || 0);
     const startSpinBalance = useRef(false);
-    const { sendTransaction, address } = usePrivyAuth({ isBind: false });
+    const { address } = usePrivyAuth({ isBind: false });
     const { success, fail } = useToast({
         isGame: true
     })
 
-    // const { sendTransaction } = useSendTransaction({
-    //     onSuccess: (params) => {
-    //         console.log('sendTransactionPrivy', params);
-    //         setIsPending(false);
-    //     },
-    //     onError: (error) => {
-    //         console.error('sendTransactionPrivy', error);
-    //         setIsPending(false);
-    //     }
-    // });
+    const { sendTransaction } = useSendTransaction({
+        onSuccess: (params) => {
+            setIsPending(false);
+        },
+        onError: (error) => {
+            setIsPending(false);
+        }
+    });
+
     const { tokenBalance, update } = useTokenAccountBalance(
         "native",
         18,
         address,
         monadTestnet.id
     );
-
 
     const handleSelectTimes = useCallback(async (selectedTimes: number) => {
         if (!address || isPending) {
@@ -64,27 +62,28 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
             return;
         }
 
+        console.log('address:', address);
 
         try {
             setIsPending(true);
             spinBalance.current = spinUserData.spin_balance;
-            // const { hash } = await sendTransaction({
-            //     from: address,
-            //     to: destAddress,
-            //     value: BigInt(amount * selectedTimes * 1e18),
-            // }, {
-            //     uiOptions: {
-            //         showWalletUIs: true,
-            //         isCancellable: true,
-            //         successHeader: 'Buy times success',
-            //         successDescription: 'You\'re all set.',
-            //         buttonText: 'Buy Times',
-            //     }
-            // });
-            const hash = await sendTransaction({
+            const { hash } = await sendTransaction({
                 to: destAddress,
-                value: BigInt(amount * selectedTimes * 1e18)
+                value: BigInt(amount * selectedTimes * 1e18),
+            }, {
+                uiOptions: {
+                    showWalletUIs: true,
+                    isCancellable: true,
+                    successHeader: 'Buy times success',
+                    successDescription: 'You\'re all set.',
+                    buttonText: 'Buy Times',
+                },
+                address
             });
+            // const hash = await sendTransaction({
+            //     to: destAddress,
+            //     value: BigInt(amount * selectedTimes * 1e18)
+            // });
             console.log('hash:', hash);
             startSpinBalance.current = true;
             // const res = await post("/game/purchase", {

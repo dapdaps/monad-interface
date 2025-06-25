@@ -76,7 +76,7 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
             [privyUser] = user.linkedAccounts.filter(
                 (account) =>
                     account.type === "wallet" &&
-                    account.walletClientType === "privy" && 
+                    account.walletClientType === "privy" &&
                     userInfo.game_address.toLowerCase() === account.address.toLowerCase()
             );
         } else {
@@ -113,7 +113,6 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
                         logout();
                     }
                 }
-
             }
         })();
     }, [address, userInfo, isBind]);
