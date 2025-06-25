@@ -35,6 +35,7 @@ export default function SubmitBtn({
   text = "Swap",
   onApprove,
   onCheckApproved,
+  isApproveMax,
   isSkip
 }: any) {
   const { approve, approved, approving, checking, checkApproved } = useApprove({
@@ -45,6 +46,7 @@ export default function SubmitBtn({
     onApprove,
     onCheckApproved,
     isSkip,
+    isMax: isApproveMax
   });
   const { isPending: switching, switchChain } = useSwitchChain();
   const { openConnectModal } = useConnectModal();
