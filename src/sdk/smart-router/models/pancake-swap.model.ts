@@ -5,6 +5,76 @@ import { V2 } from "../libs/v2.lib";
 import chains from "../config/chains";
 import routerV3Abi from "../config/abi/router-v3-2";
 import routerV2Abi from "../config/abi/router-v2-1";
+import weth from "../config/weth";
+import { uniq } from "lodash";
+
+class UniversalV2 extends V2 {
+  private pools: CandidatePool[];
+
+  constructor(params: any) {
+    super(params);
+    this.pools = params.pools || [];
+  }
+
+  protected async getPools() {
+    const v2pools = this.pools.filter((pool: any) => pool.type === 0);
+    return v2pools.map((pool) => {
+      const isReserved = pool.reserve0.currency.address.toLowerCase() > pool.reserve1.currency.address.toLowerCase();
+      const tokenA = {
+        ...pool.reserve0.currency,
+        address: pool.reserve0.currency.address.toLocaleLowerCase(),
+      };
+      const tokenB = {
+        ...pool.reserve1.currency,
+        address: pool.reserve1.currency.address.toLocaleLowerCase(),
+      };
+      return {
+        ...pool,
+        isReserved,
+        reserve0: BigNumber(pool.reserve0.value),
+        reserve1: BigNumber(pool.reserve1.value),
+        tokenA,
+        tokenB,
+      };
+    });
+  }
+}
+
+class UniversalV3 extends V3 {
+  private pools: CandidatePool[];
+
+  constructor(params: any) {
+    super(params);
+    this.pools = params.pools || [];
+  }
+
+  protected async getPools() {
+    const v3pools = this.pools.filter((pool: any) => pool.type === 1);
+    return v3pools.map((pool) => {
+      const isReserved = pool.reserve0.currency.address.toLowerCase() > pool.reserve1.currency.address.toLowerCase();
+      const tokenA = {
+        ...pool.reserve0.currency,
+        address: pool.reserve0.currency.address.toLocaleLowerCase(),
+      };
+      const tokenB = {
+        ...pool.reserve1.currency,
+        address: pool.reserve1.currency.address.toLocaleLowerCase(),
+      };
+      return {
+        ...pool,
+        isReserved,
+        tokenA,
+        tokenB,
+        price: this.getPriceByTick({
+          tokenA,
+          tokenB,
+          isReserved: isReserved,
+          tick: pool.tick
+        })
+      };
+    });
+  }
+}
 
 export class PancakeSwap {
   private v3: V3;
@@ -268,4 +338,195 @@ export class PancakeSwap {
 
     return { ...returnData, txn };
   }
+}
+
+export class PancakeSwapUniversal extends PancakeSwap {
+  private chainId: number;
+  private wrappedNativeAddress: string;
+
+  constructor(chainId: number) {
+    super(chainId);
+    this.chainId = chainId;
+    this.wrappedNativeAddress = weth[chainId];
+  }
+
+  public async quoter(params: any) {
+    let {
+      inputCurrency,
+      outputCurrency,
+      inputAmount,
+      slippage,
+      account
+    } = params;
+
+    const _inputAmount = BigNumber(inputAmount)
+      .multipliedBy(10 ** (inputCurrency.decimals || 18))
+      .toFixed(0);
+    inputCurrency.address = inputCurrency.address.toLowerCase();
+    outputCurrency.address = outputCurrency.address.toLowerCase();
+
+    const candidatesURL = new URL("https://pancakeswap.finance/api/pools/candidates");
+    candidatesURL.searchParams.set("addressA", this.normalizeAddress(inputCurrency.address));
+    candidatesURL.searchParams.set("addressB", this.normalizeAddress(outputCurrency.address));
+    candidatesURL.searchParams.set("chainId", this.chainId + "");
+    candidatesURL.searchParams.set("protocol", "stable,v2,v3");
+    candidatesURL.searchParams.set("type", "light");
+
+    let candidates: CandidatePool[] = [];
+    try {
+      const candidatesRes = await fetch(candidatesURL.toString());
+      const candidatesResJson = await candidatesRes.json();
+      candidates = candidatesResJson.data;
+    } catch (err: any) {
+      console.log('get candidates failed: %o', err);
+    }
+
+    if (!candidates.length) {
+      return {
+        outputCurrencyAmount: "",
+        noPair: true
+      };
+    }
+
+    const {
+      bestTrade,
+      routerAddress,
+      type
+    } = await this.findBestRoute(
+      inputCurrency,
+      outputCurrency,
+      candidates,
+      _inputAmount,
+      slippage,
+      account
+    );
+
+    if (!bestTrade) {
+      return {
+        outputCurrencyAmount: "",
+        noPair: true
+      };
+    }
+
+    const handleRes = await this[type === "v3" ? "handleV3" : "handleV2"]({
+      bestTrade,
+      outputCurrency,
+      inputCurrency,
+      _amount: _inputAmount,
+      slippage,
+      account,
+      routerAddress
+    });
+
+    return {
+      ...handleRes,
+      routerAddress,
+      version: type,
+      type: "UniversalRouter",
+    };
+  }
+
+  private normalizeAddress(addr?: string, isWrapped?: boolean): string {
+    if (!addr) return "";
+    if (isWrapped) {
+      if (addr.toLowerCase() === "0x0000000000000000000000000000000000000000" || addr.toLowerCase() === "native") {
+        return this.wrappedNativeAddress;
+      }
+      return addr.toLowerCase();
+    }
+    if (addr.toLowerCase() === "native") {
+      return "0x0000000000000000000000000000000000000000";
+    }
+    return addr.toLowerCase();
+  }
+
+  private async findBestRoute(inputCurrency: any, outputCurrency: any, pools: CandidatePool[], inputAmount: string, slippage: number, account: string) {
+    const universalV2 = new UniversalV2({
+      midTokens: [],
+      factoryAddress: "",
+      computablePairAddress: false,
+      hasStable: false,
+      includeStable: false,
+      amountOutType: 2,
+      feeIn: true,
+      pools
+    });
+    const universalV3 = new UniversalV3({
+      fees: uniq(pools.map((pool: any) => pool.fee)).sort((a: number, b: number) => a - b),
+      chainId: this.chainId,
+      factoryAddress: "",
+      quoterAddress: "0x74b06eFA24F39C60AA7F61BD516a3eaf39613D57",
+      midTokens: [],
+      type: true,
+      pools
+    });
+
+    const [v2Route, v3Route] = await Promise.all([
+      universalV2.bestTrade({
+        inputCurrency,
+        outputCurrency,
+        inputAmount,
+        // FIXME
+        isDirectPath: true
+      }),
+      universalV3.bestTrade({
+        inputCurrency,
+        outputCurrency,
+        inputAmount,
+        // FIXME
+        isDirectPath: true
+      })
+    ]);
+
+    let bestTrade = v3Route;
+    const routerAddress = "0x94D220C58A23AE0c2eE29344b00A30D1c2d9F1bc";
+    let type = "v3";
+
+    if (BigNumber(bestTrade?.amountOut).lt(v2Route?.amountOut)) {
+      bestTrade = v2Route;
+      type = "v2";
+    }
+
+    return {
+      bestTrade,
+      routerAddress,
+      type,
+    };
+  }
+}
+
+interface CandidateCurrency {
+  address: string;
+  decimals: number;
+  symbol: string;
+}
+
+interface CandidateReserve {
+  currency: CandidateCurrency;
+  value: string;
+}
+
+interface CandidateToken {
+  address: string;
+  decimals: number;
+  symbol: string;
+}
+
+type CandidateTypeV2 = 0;
+type CandidateTypeV3 = 1;
+type CandidateType = CandidateTypeV2 | CandidateTypeV3;
+
+interface CandidatePool {
+  type: CandidateType;
+  address: string;
+  reserve0: CandidateReserve;
+  reserve1: CandidateReserve;
+  token0?: CandidateToken;
+  token1?: CandidateToken;
+  fee?: number;
+  liquidity?: string;
+  sqrtRatioX96?: string;
+  tick?: number;
+  token0ProtocolFee?: string;
+  token1ProtocolFee?: string;
 }

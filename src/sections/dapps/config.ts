@@ -16,7 +16,7 @@ export const ALL_DAPP_LIST: IDapp[] = [
     type: "Dex",
     link: "/dex/pancake",
     desc: "Trade and earn crypto on the all-in-one decentralized exchange. Enjoy low fees, high liquidity, and a user-friendly interface.",
-    disabled: true
+    disabled: false
   },
   {
     name: "Uniswap",

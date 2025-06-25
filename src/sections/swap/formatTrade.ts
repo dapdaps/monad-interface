@@ -90,6 +90,7 @@ const formatTrade = ({
     noPair: market.noPair,
     outputCurrencyAmount: market.outputCurrencyAmount,
     routerStr,
+    routes: market.routes?.[0].routes || [],
     isGasEnough,
     priceImpact,
     priceImpactType,
@@ -98,7 +99,9 @@ const formatTrade = ({
           .mul(gas)
           .div(10 ** nativeToken.decimals)
           .toString()
-      : '-'
+      : '-',
+    version: market.version,
+    type: market.type
   };
 };
 

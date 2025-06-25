@@ -218,7 +218,8 @@ export default function Swap({
             chainId: DEFAULT_CHAIN_ID
           }}
           amount={inputCurrencyAmount}
-          spender={trade?.routerAddress}
+          isApproveMax={trade?.type === "UniversalRouter"}
+          spender={trade?.type === "UniversalRouter" ? "0xC51DA9473283695884AD536FFD180e618Bf6186e" : trade?.routerAddress}
           errorTips={errorTips}
           token={inputCurrency}
           loading={loading}
@@ -229,13 +230,13 @@ export default function Swap({
           }}
           updater={`button-${updater}`}
         />
-        {from === "marketplace" && (
+        {/* {from === "marketplace" && (
           <div className="text-center  mt-[12px]">
             <a href="/bridge" className="underline text-[14px] text-[#A6A6DB]">
               Bridge Assets to Monad
             </a>
           </div>
-        )}
+        )} */}
       </div>
       <TokenSelector
         display={displayCurrencySelect}
