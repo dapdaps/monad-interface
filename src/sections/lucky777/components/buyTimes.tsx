@@ -10,6 +10,8 @@ import useTokenAccountBalance from "@/hooks/use-token-account-balance";
 import { monadTestnet } from "viem/chains";
 import { useInterval } from "ahooks";
 import useToast from "@/hooks/use-toast";
+import { usePrivyAuth } from "@/hooks/use-privy-auth";
+import CircleLoading from "@/components/circle-loading";
 
 interface BuyTimesModalProps {
     open: boolean;
@@ -22,34 +24,31 @@ const destAddress: any = process.env.NEXT_PUBLIC_DEPOSIT_ADDRESS || '0x74D00ee5d
 const amount = 0.1;
 
 const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesModalProps) => {
-    const { user, createWallet } = usePrivy();
     const [times, setTimes] = useState<number | string>(1);
     const [isPending, setIsPending] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
     const spinBalance = useRef(spinUserData?.spin_balance || 0);
     const startSpinBalance = useRef(false);
+    const { address } = usePrivyAuth({ isBind: false });
     const { success, fail } = useToast({
         isGame: true
     })
 
     const { sendTransaction } = useSendTransaction({
         onSuccess: (params) => {
-            console.log('sendTransactionPrivy', params);
             setIsPending(false);
         },
         onError: (error) => {
-            console.error('sendTransactionPrivy', error);
             setIsPending(false);
         }
     });
-    const [address, setAddress] = useState("");
+
     const { tokenBalance, update } = useTokenAccountBalance(
         "native",
         18,
         address,
         monadTestnet.id
     );
-
 
     const handleSelectTimes = useCallback(async (selectedTimes: number) => {
         if (!address || isPending) {
@@ -63,7 +62,10 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
             return;
         }
 
+        console.log('address:', address);
+
         try {
+            setIsPending(true);
             spinBalance.current = spinUserData.spin_balance;
             const { hash } = await sendTransaction({
                 to: destAddress,
@@ -75,8 +77,13 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
                     successHeader: 'Buy times success',
                     successDescription: 'You\'re all set.',
                     buttonText: 'Buy Times',
-                }
+                },
+                address
             });
+            // const hash = await sendTransaction({
+            //     to: destAddress,
+            //     value: BigInt(amount * selectedTimes * 1e18)
+            // });
             console.log('hash:', hash);
             startSpinBalance.current = true;
             // const res = await post("/game/purchase", {
@@ -94,6 +101,7 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
             // }
             refreshData();
             onClose && onClose();
+            setIsPending(false);
             success({
                 title: 'Recharge Successfully!',
                 tx: hash,
@@ -105,6 +113,7 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
                 title: 'Failed to recharge'
             }, 'bottom-right');
             startSpinBalance.current = false;
+            setIsPending(false);
         }
 
 
@@ -129,24 +138,24 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
         }
     }, [open]);
 
-    useEffect(() => {
-        if (!user) {
-            setAddress("");
-            return;
-        }
+    // useEffect(() => {
+    //     if (!user) {
+    //         setAddress("");
+    //         return;
+    //     }
 
-        const [privyUser] = user.linkedAccounts.filter(
-            (account) =>
-                account.type === "wallet" &&
-                account.walletClientType === "privy"
-        );
-        if (!privyUser || !(privyUser as any).address) {
-            setAddress("");
-            return;
-        }
+    //     const [privyUser] = user.linkedAccounts.filter(
+    //         (account) =>
+    //             account.type === "wallet" &&
+    //             account.walletClientType === "privy"
+    //     );
+    //     if (!privyUser || !(privyUser as any).address) {
+    //         setAddress("");
+    //         return;
+    //     }
 
-        setAddress((privyUser as any).address);
-    }, [user]);
+    //     setAddress((privyUser as any).address);
+    // }, [user]);
 
     return (
         <Modal open={open} onClose={onClose} className="" closeIcon={<IconClose />} innerClassName="w-[592px] max-w-full p-8 bg-[url('/images/lucky777/modal-bg.svg')] bg-cover bg-top bg-no-repeat font-HackerNoonV2">
@@ -191,7 +200,7 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
                     <div className="text-white">{numberFormatter(0.1 * Number(times), 1, true)}</div>
                 </div>
 
-                <MainBtn onClick={() => handleSelectTimes(Number(times))} />
+                <MainBtn isPending={isPending} onClick={() => handleSelectTimes(Number(times))} />
 
                 <div className="flex w-full justify-between gap-4">
                     <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">
@@ -226,10 +235,10 @@ const IconClose = () => {
     )
 }
 
-const MainBtn = ({ onClick }: { onClick: any }) => {
+const MainBtn = ({ onClick, isPending }: { onClick: any, isPending: boolean }) => {
     return (
-        <button onClick={onClick} className="w-full bg-[#BFFF60] text-[#23223A] text-[14px] py-4 rounded-[6px] mb-8 mt-[30px] border-[#000]">
-            BUY
+        <button onClick={onClick} className="w-full flex items-center justify-center gap-2 bg-[#BFFF60] text-[#23223A] text-[14px] py-4 rounded-[6px] mb-8 mt-[30px] border-[#000]">
+            { isPending && <CircleLoading /> } BUY
         </button>
     )
 }

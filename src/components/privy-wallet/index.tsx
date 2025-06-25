@@ -9,10 +9,10 @@ import useTokenBalance from "@/hooks/use-token-balance";
 import { useDebounceFn, useInterval } from "ahooks";
 import { toast } from "react-toastify";
 import { PrivyContext } from "../privy-provider";
+import { usePrivyAuth } from "@/hooks/use-privy-auth";
 
 const PrivyWallet = () => {
-    const { user, createWallet } = usePrivy();
-    const [address, setAddress] = useState("");
+    const { address } = usePrivyAuth({ isBind: false });
     const [open, setOpen] = useState(false);
     const [showDeposit, setShowDeposit] = useState(1);
     const [isSwitching, setIsSwitching] = useState(false);
@@ -35,26 +35,6 @@ const PrivyWallet = () => {
     useInterval(() => {
         update();
     }, 30000);
-
-    useEffect(() => {
-        if (!user) {
-            setAddress("");
-            return;
-        }
-
-        const [privyUser] = user.linkedAccounts.filter(
-            (account) =>
-                account.type === "wallet" &&
-                account.walletClientType === "privy"
-        );
-
-        if (!privyUser || !(privyUser as any).address) {
-            setAddress("");
-            return;
-        }
-
-        setAddress((privyUser as any).address);
-    }, [user]);
 
     const { openDeposit, setOpenDeposit } = useContext(PrivyContext);
 
