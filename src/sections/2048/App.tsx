@@ -64,7 +64,6 @@ export default function Game2048() {
         getLatestGameBoard,
         playNewMoveTransaction,
         initializeGameTransaction,
-        playNewMoveTransactionThrottled,
     } = useTransactions();
 
     // =============================================================//
