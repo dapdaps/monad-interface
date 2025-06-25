@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Modal from "@/components/modal";
 import { get } from "@/utils/http";
 import { useAccount } from "wagmi";
+import { toast } from "react-toastify";
 import { formatEnglishDate, getUTCDatetime } from "@/utils/date";
 import Empty from "@/components/empty";
 import dayjs from "dayjs";

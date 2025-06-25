@@ -24,26 +24,26 @@ import TimeLocked from "../time-locked";
 const slides = [
   {
     img: "/images/nft/home/main-1.svg",
-    title: "WELCOME ABOARDING NADSA",
+    title: "WELCOME ONBOARDING NADSA",
     desc: `In the vast, uncharted Monad Galaxy, chaos reigned. \nDApps launched at light speed. Yield hubs blinked into existence. Degens floated untethered, with no map to guide them. Monad's hyperspeed finality was revolutionary – but explorers lacked direction.`,
     descTitle: "FROM THE FAR FAR AWAY..."
   },
   {
     img: "/images/nft/home/main-2.svg",
-    title: "WELCOME ABOARDING NADSA",
+    title: "WELCOME ONBOARDING NADSA",
     desc: `NADSA One is a command station in low-Monad orbit, curating the galaxy's top protocols into a single interface. Your mission control for navigating the Monadverse.`,
     descTitle:
       "ENTER NADSA \\_ \n NATIONAL AGENCY FOR DECENTRALISED SPACE APPS."
   },
   {
     img: "/images/nft/home/main-3.svg",
-    title: "WELCOME ABOARDING NADSA",
+    title: "WELCOME ONBOARDING NADSA",
     desc: `A purpose-built command center for seamless exploration of the Monad ecosystem. NADSA One brings together all the bluechip protocols across Monad – from DEXs and lending markets to bridges and beyond – all in one streamlined, in-app experience.`,
     descTitle: "WELCOME ONBOARD TO THE NADSA ONE STATION!"
   },
   {
     img: "/images/nft/home/main-4.svg",
-    title: "WELCOME ABOARDING NADSA",
+    title: "WELCOME ONBOARDING NADSA",
     desc: `Complete your onboarding by minting a unique Sequence Number—your proof of how early you arrived at NADSA. Limited mint window.`,
     descTitle: "Mint yourself a Sequence Number NFT \\_"
   }

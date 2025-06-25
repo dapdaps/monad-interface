@@ -16,6 +16,7 @@ export function useLuckyBera() {
   const { setLastSpinResult, lastSpinResult } = useLuckyBeraStore();
   const [ multiple, setMultiple ] = useState(1);
 
+
   const { run: getSpinUserData, data: spinUserData, loading: spinUserDataLoading } = useRequest<SpinUserData, any>(async () => {
     const res = await get("/game/user", {
       address: address,

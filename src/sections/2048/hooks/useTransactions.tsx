@@ -69,8 +69,10 @@ export function useTransactions() {
     }
 
     useEffect(() => {
-        resetNonceAndBalance();
-    }, [user]);
+        if (privyUserAddress) {
+            resetNonceAndBalance();
+        }
+    }, [user, privyUserAddress]);
 
     // Fetch provider on new login.
     const walletClient = useRef<any>(null);
