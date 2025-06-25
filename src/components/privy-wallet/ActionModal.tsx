@@ -7,6 +7,7 @@ import { useSendTransaction as usePrivySendTransaction } from "@privy-io/react-a
 import { balanceFormated } from "@/utils/balance";
 import { monadTestnet } from "viem/chains";
 import useToast from "@/hooks/use-toast";
+import { usePrivyAuth } from "@/hooks/use-privy-auth";
 
 interface ActionModalProps {
     open: boolean;
@@ -239,16 +240,8 @@ const Withdraw = ({
 }) => {
     const [amount, setAmount] = useState(0);
     const [isPending, setIsPending] = useState(false);
-    const { sendTransaction: sendTransactionPrivy } = usePrivySendTransaction({
-        onSuccess: (params) => {
-            console.log('sendTransactionPrivy', params);
-            setIsPending(false);
-        },
-        onError: (error) => {
-            console.error('sendTransactionPrivy', error);
-            setIsPending(false);
-        }
-    });
+    const { sendTransaction } = usePrivyAuth({ isBind: false });
+  
     const [withdrawAddress, setWithdrawAddress] = useState(rechargeAddress);
 
     const { success, fail } = useToast({
@@ -312,17 +305,9 @@ const Withdraw = ({
                     try {
                         setIsPending(true);
 
-                        const { hash } = await sendTransactionPrivy({
+                        const hash = await sendTransaction({
                             to: rechargeAddress as `0x${string}`,
                             value: BigInt(amount * 1e18),
-                        }, {
-                            uiOptions: {
-                                showWalletUIs: true,
-                                isCancellable: true,
-                                successHeader: 'Withdraw success',
-                                successDescription: 'You\'re all set.',
-                                buttonText: 'Withdraw',
-                            }
                         })
     
                         console.log('hash', hash);
