@@ -22,13 +22,14 @@ import useToast from "@/hooks/use-toast";
 import reportGameRecord from "../utils/report";
 import { toast } from "react-toastify";
 import { usePrivyAuth } from "@/hooks/use-privy-auth";
+import { use2048Store } from "@/stores/use2048";
 
 
 export function useTransactions() {
     // User and Wallet objects.
     const { user } = usePrivy();
     const { ready, wallets } = useWallets();
-
+    const score = use2048Store((store: any) => store.score);
     // Fetch user nonce on new login.
     const userNonce = useRef(0);
     const userBalance = useRef(BigInt(0));
@@ -171,8 +172,7 @@ export function useTransactions() {
                 }, 'bottom-right')
             }
 
-
-            reportGameRecord(transactionHash);
+            reportGameRecord(transactionHash, score);
             //     {
             //     description: `${successText} Time: ${time} ms`,
             //     action: (
@@ -396,6 +396,8 @@ export function useTransactions() {
         // Sign and send transaction: play move
         console.log(`Playing move ${moveCount}!`);
 
+        console.log('playNewMoveTransaction', gameId, board, move, moveCount)
+
         let balance = userBalance.current;
         if (parseFloat(formatEther(balance)) < 0.01) {
             balance = await publicClient.getBalance({
@@ -410,6 +412,8 @@ export function useTransactions() {
         const nonce = userNonce.current;
         userNonce.current = nonce + 1;
         userBalance.current = balance - parseEther("0.005");
+
+        console.log('gameId, move, board', gameId, move, board)
 
         await sendRawTransactionAndConfirm({
             nonce,

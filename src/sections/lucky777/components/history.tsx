@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import Modal from "@/components/modal";
 import { get } from "@/utils/http";
 import { useAccount } from "wagmi";
-import { toast } from "react-toastify";
 import { formatEnglishDate, getUTCDatetime } from "@/utils/date";
 import Empty from "@/components/empty";
 import dayjs from "dayjs";
+import useToast from "@/hooks/use-toast";
 
 const IconClose = () => (
     <div className="mt-[15px] mr-[15px]">
@@ -89,6 +89,7 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
     const [loading, setLoading] = useState(false);
     const { address } = useAccount();
     const dataRef = useRef<any[]>([]);
+    const { fail } = useToast({ isGame: true })
 
     useEffect(() => {
         if (!address) return;
@@ -96,7 +97,9 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
         get(urlMap[type], { address }).then((res) => {
             if (res.code !== 200) {
                 setLoading(false);
-                toast.error(res.message);
+                fail({
+                    title: res.message
+                }, 'bottom-right');
                 return;
             }
             dataRef.current = res.data;
