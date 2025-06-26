@@ -126,12 +126,12 @@ const MainLayoutHeader = (props: Props) => {
                 { pathname === '/dapps' && <LineBottom />}
               </div>
 
-              <div className={clsx(menuCls, pathname === '/tokens' ? hoverCls : '')} onClick={() => { pathname !== '/tokens' && router.push("/tokens") }}>
+              <div className={clsx(menuCls, pathname === '/marketplace' ? hoverCls : '')} onClick={() => { pathname !== '/marketplace' && router.push("/marketplace") }}>
                 <svg className="fill-current" width="16" height="13" viewBox="0 0 16 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M8 0C10.0736 0 11.9888 0.43176 13.416 1.16838C14.128 1.53515 14.7552 1.99708 15.2136 2.55651C15.6768 3.12136 16 3.82781 16 4.64258V8.35665C16 9.17142 15.6768 9.87786 15.2136 10.4427C14.7552 11.0021 14.1288 11.4641 13.416 11.8316C11.9888 12.5675 10.0736 13 8 13C5.9264 13 4.0112 12.5675 2.584 11.8316C1.872 11.4641 1.2448 11.0021 0.7864 10.4427C0.3232 9.87786 0 9.17142 0 8.35665V4.64258C0 3.82781 0.3232 3.12136 0.7864 2.55651C1.2448 1.99708 1.8712 1.53515 2.584 1.16761C4.0112 0.43176 5.9264 0 8 0ZM14.4 7.50241C14.0913 7.73494 13.762 7.94078 13.416 8.11755C11.9888 8.8534 10.0736 9.28593 8 9.28593C5.9264 9.28593 4.0112 8.8534 2.584 8.11755C2.232 7.93572 1.9 7.73067 1.6 7.50241V8.35665C1.6 8.56711 1.68 8.83793 1.9456 9.16213C2.2152 9.49098 2.6432 9.82989 3.2336 10.1348C4.4128 10.7422 6.0976 11.1422 8 11.1422C9.9032 11.1422 11.5872 10.7422 12.7664 10.1348C13.3568 9.82989 13.7848 9.49098 14.0544 9.16213C14.3208 8.83793 14.4 8.56711 14.4 8.35742V7.50241Z" />
                 </svg>
                 <div className={clsx(textCls, '')}>Tokens</div>
-                { pathname === '/tokens' && <LineBottom />}
+                { pathname === '/marketplace' && <LineBottom />}
               </div>
 
               <div className={clsx(menuCls, pathname === '/arcade' ? hoverCls : '')} onClick={() => { pathname !== '/arcade' && router.push("/arcade") }}>

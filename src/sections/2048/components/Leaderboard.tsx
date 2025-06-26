@@ -1,3 +1,4 @@
+import { formatThousandsSeparator } from "@/utils/balance";
 import { get } from "@/utils/http";
 import { useInterval } from "ahooks";
 import React, { useCallback, useEffect, useState } from "react";
@@ -69,11 +70,11 @@ export default function Leaderboard() {
         </div>
       </div> */}
             {/* Description */}
-            <div className="text-[#A6A6DB] text-[14px] text-center mb-3 font-Montserrat">
+            <div className="text-[#A6A6DB] text-[14px] text-center font-Montserrat mt-[10px]">
                 Transmission received: Your 2048 data is live. <br /> Climb the Command Center leaderboard and outsmart the cosmos.
             </div>
             {/* Table */}
-            <div className="mb-2 font-Montserrat">
+            <div className="mb-2 font-Montserrat mt-[20px]">
                 <div className="flex justify-between text-[#A6A6DB] text-[14px] mb-1 px-2">
                     <span>Top 10</span>
                     <span>Score</span>
@@ -90,7 +91,7 @@ export default function Leaderboard() {
                                 </div>
                                 <div className="text-[#fff] text-xs">{item.game_address.slice(0, 5)}...{item.game_address.slice(-5)}</div>
                             </div>
-                            <span className="text-[#fff] text-xs">{item.score}</span>
+                            <span className="text-[#fff] text-xs">{formatThousandsSeparator(item.score)}</span>
                         </div>
                     ))}
  
