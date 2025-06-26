@@ -11,7 +11,7 @@ import getWrapOrUnwrapTx from "./getWrapOrUnwrapTx";
 import quoter from "@/sdk/smart-router";
 import { ethers } from "ethers";
 import dayjs from "dayjs";
-import { AllowanceProvider, MaxAllowanceTransferAmount, PermitSingle, AllowanceTransfer } from "@uniswap/Permit2-sdk";
+import { AllowanceProvider, MaxAllowanceTransferAmount, PermitSingle, AllowanceTransfer } from "@uniswap/permit2-sdk";
 
 export default function useTrade({ chainId, template, from, onSuccess }: any) {
   const slippage: any = useSettingsStore((store: any) => store.slippage);
