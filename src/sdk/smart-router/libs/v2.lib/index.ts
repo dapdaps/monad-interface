@@ -193,7 +193,7 @@ export class V2 {
     }
   }
 
-  private async getPools({ inputCurrency, outputCurrency }: any) {
+  protected async getPools({ inputCurrency, outputCurrency }: any) {
     const pairs = await this.getPairs({
       inputCurrency,
       outputCurrency
@@ -259,7 +259,7 @@ export class V2 {
     return _pools;
   }
 
-  public async bestTrade({ inputCurrency, outputCurrency, inputAmount }: any) {
+  public async bestTrade({ inputCurrency, outputCurrency, inputAmount, isDirectPath }: any) {
     const _inputCurrency = nativeToWNative(inputCurrency);
     const _outputCurrency = nativeToWNative(outputCurrency);
     const pools = await this.getPools({
@@ -279,6 +279,8 @@ export class V2 {
 
     while (paths.length) {
       const path = paths.shift();
+
+      if (isDirectPath && path.length > 1) continue;
 
       for (let i = 0, len = path.length; i < len; i++) {
         const pair = path[i];

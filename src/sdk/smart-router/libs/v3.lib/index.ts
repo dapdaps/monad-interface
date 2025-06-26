@@ -45,14 +45,14 @@ export class V3 {
     this.name = name;
   }
 
-  private getPriceByTick({ tick, tokenA, tokenB, isReserved }: any) {
+  protected getPriceByTick({ tick, tokenA, tokenB, isReserved }: any) {
     const [token0, token1] = isReserved ? [tokenB, tokenA] : [tokenA, tokenB];
     const decimals = token1.decimals - token0.decimals;
     const price = new BigNumber(1.0001 ** tick).div(10 ** decimals).toString();
     return price;
   }
 
-  private getPriceByReverse({
+  protected getPriceByReverse({
     reverse0,
     reverse1,
     tokenA,
@@ -66,7 +66,7 @@ export class V3 {
     return _amount1.div(_amount0).toString();
   }
 
-  private async getPools({ inputCurrency, outputCurrency }: any) {
+  protected async getPools({ inputCurrency, outputCurrency }: any) {
     const tokens = [inputCurrency, ...this.midTokens, outputCurrency];
     const pairs: any[] = [];
     const existsPairs: { [key: string]: boolean } = {};
@@ -250,7 +250,7 @@ export class V3 {
     }));
   }
 
-  public async bestTrade({ inputCurrency, outputCurrency, inputAmount }: any) {
+  public async bestTrade({ inputCurrency, outputCurrency, inputAmount, isDirectPath }: any) {
     const _inputCurrency = nativeToWNative(inputCurrency);
     const _outputCurrency = nativeToWNative(outputCurrency);
     const pools = await this.getPools({
@@ -274,9 +274,9 @@ export class V3 {
 
     if (paths.length === 0) return null;
 
-    return this.getAmounts(paths, inputAmount);
+    return this.getAmounts(paths, inputAmount, isDirectPath);
   }
-  private async getAmounts(paths: any, amount: any) {
+  protected async getAmounts(paths: any, amount: any, isDirectPath?: boolean) {
     let _paths: any = [];
     const hasFee = !!this.fees.length;
     if (this.needFilter) {
@@ -357,6 +357,7 @@ export class V3 {
     let bestPath: any = {};
 
     results.forEach((result: any, i: number) => {
+      if (isDirectPath && _paths[i].pairs.length > 1) return;
       if (result && result.amountOut.gt(bestPath.amountOut || 0)) {
         bestPath = {
           routes: [
