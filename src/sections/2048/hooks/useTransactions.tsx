@@ -176,11 +176,10 @@ export function useTransactions() {
                     title: 'Failed to send transaction.',
                 }, 'bottom-right')
             }
-        if (e) {
-            throw e;
+            if (e) {
+                throw e;
+            }
         }
-
-        
     }
 
     // Returns a the latest stored baord of a game as an array.
