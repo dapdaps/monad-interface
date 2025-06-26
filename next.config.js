@@ -108,29 +108,25 @@ const nextConfig = {
     };
 
     config.optimization.emitOnErrors = true;
-    if (
-      process.env.NEXT_PUBLIC_API === "https://testnet-api-monad.dapdap.net"
-    ) {
-      config.optimization.minimizer = [
-        new TerserPlugin({
-          terserOptions: {
-            compress: {
-              drop_console: true,
-              drop_debugger: true,
-              pure_funcs: ["console.warn"]
-            },
-            mangle: {
-              safari10: true
-            },
-            format: {
-              comments: false
-            },
-            ecma: 2015
+    config.optimization.minimizer = [
+      new TerserPlugin({
+        terserOptions: {
+          compress: {
+            drop_console: true,
+            drop_debugger: true,
+            pure_funcs: ["console.warn"]
           },
-          parallel: true
-        })
-      ];
-    }
+          mangle: {
+            safari10: true
+          },
+          format: {
+            comments: false
+          },
+          ecma: 2015
+        },
+        parallel: true
+      })
+    ];
     return config;
   },
   experimental: {
