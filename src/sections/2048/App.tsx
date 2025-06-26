@@ -25,7 +25,7 @@ import { publicClient } from "./utils/client";
 import { GAME_CONTRACT_ADDRESS } from "./utils/constants";
 import { use2048Store } from "@/stores/use2048";
 import { toast } from "react-toastify";
-
+import Leaderboard from "./components/Leaderboard";
 
 // Types
 export enum Direction {
@@ -60,6 +60,7 @@ export default function Game2048() {
     const { user, createWallet } = usePrivy();
 
     const {
+        privyUserAddress,
         resetNonceAndBalance,
         getLatestGameBoard,
         playNewMoveTransaction,
@@ -81,15 +82,17 @@ export default function Game2048() {
     const [encodedMoves, setEncodedMoves] = useState<EncodedMove[]>([]);
     const [playedMovesCount, setPlayedMovesCount] = useState<number>(0);
     const { setOpenDeposit } = useContext(PrivyContext);
-    const gameId = use2048Store((store: any) => store.gameId);
-    const score = use2048Store((store: any) => store.score);
-    const set2048Store = use2048Store((store: any) => store.set);
+    // const gameId = use2048Store((store: any) => store.gameId);
+    // const score = use2048Store((store: any) => store.score);
+    const updateGameUser = use2048Store((store: any) => store.updateUser);
 
     const [boardState, setBoardState] = useState<BoardState>({
         tiles: [],
         score: 0,
     });
     const [resetBoards, setResetBoards] = useState<BoardState[]>([]);
+
+    const gameUser = use2048Store((store: any) => store.users[privyUserAddress || ''])
 
     // =============================================================//
     //                   Detect and execute moves                   //
@@ -327,12 +330,14 @@ export default function Game2048() {
                     });
                 }
 
+                
                 if (moveCount > 3) {
                     playNewMoveTransaction(
                         activeGameId as Hex,
                         encoded.board,
                         encoded.move,
-                        moveCount
+                        moveCount,
+                        updatedBoardState.score
                     ).catch((error) => {
                         console.error("Error in move transaction:", error);
                         resetBoardOnError(premoveBoard, currentMove, error);
@@ -342,12 +347,12 @@ export default function Game2048() {
                 setBoardState(updatedBoardState);
                 setEncodedMoves(newEncodedMoves);
                 setPlayedMovesCount(moveCount + 1);
-                set2048Store({ score: updatedBoardState.score, gameId: activeGameId });
+                updateGameUser(privyUserAddress, updatedBoardState.score, activeGameId);
 
                 // Check if the game is over
                 if (checkGameOver(updatedBoardState)) {
                     setGameOver(true);
-                    set2048Store({ score: 0, gameId: '' });
+                    updateGameUser(privyUserAddress, 0, '');
                 }
 
                 // Resume moves
@@ -365,30 +370,6 @@ export default function Game2048() {
         await move(direction);
     }
 
-    // =============================================================//
-    //                      Initialize new game                     //
-    // =============================================================//
-
-    const [address, setAddress] = useState("");
-    useEffect(() => {
-        if (!user) {
-            setAddress("");
-            return;
-        }
-
-        const [privyUser] = user.linkedAccounts.filter(
-            (account) =>
-                account.type === "wallet" &&
-                account.walletClientType === "privy"
-        );
-        if (!privyUser || !(privyUser as any).address) {
-            setAddress("");
-            return;
-        }
-
-        setAddress((privyUser as any).address);
-    }, [user]);
-
     // Initialize the game with two random tiles
     const initializeGame = () => {
         setResetBoards([]);
@@ -403,9 +384,10 @@ export default function Game2048() {
         addRandomTile(newBoardState);
 
         setPlayedMovesCount(1);
-        const gameId = randomIDForAddress(address);
-        set2048Store({ gameId, score: 0 });
+        const gameId = randomIDForAddress(privyUserAddress);
+        updateGameUser(privyUserAddress, 0, gameId);
         setActiveGameId(gameId);
+        setIsInited(true)
         setEncodedMoves([tilesToEncodedMove(newBoardState.tiles, 0)]);
 
         setBoardState(newBoardState);
@@ -758,12 +740,12 @@ export default function Game2048() {
     }, []);
 
     useEffect(() => {
-        if (gameId && !isInited) {
-            setActiveGameId(gameId);
+        if (gameUser && !isInited && gameUser.gameId) {
+            setActiveGameId(gameUser.gameId);
             setIsInited(true);
-            resyncGame(gameId, score);
+            resyncGame(gameUser.gameId, gameUser.score);
         }
-    }, [gameId, isInited])
+    }, [gameUser, isInited])
 
 
     return (
@@ -799,7 +781,11 @@ export default function Game2048() {
                     </div>
 
                 </div>
+
+
+
             </Container>
+            <Leaderboard />
         </>
     );
 }

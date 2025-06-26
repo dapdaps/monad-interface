@@ -11,5 +11,6 @@ export const getSignature = (plaintext: string) => {
   encrypted += cipher.final('base64');
   
 
+
   return iv.toString('base64') + encrypted;
 };
