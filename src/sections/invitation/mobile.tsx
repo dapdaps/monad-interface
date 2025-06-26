@@ -14,7 +14,7 @@ const InvitationViewMobile = () => {
   }
 
   return (
-    <div className="fixed top-0 left-0 w-screen h-screen z-[101] bg-black bg-[url('/images/mobile/bg-boat-window.png')] bg-no-repeat bg-top bg-[auto_300px] overflow-y-auto pb-[23px]">
+    <div className="fixed top-0 left-0 w-screen h-screen z-[101] bg-black bg-[url('/images/mobile/bg-boat-window.png')] bg-no-repeat bg-top bg-[auto_300px] overflow-y-auto pb-[20dvh]">
       <img src="/images/logo-green.svg" alt="" className="w-[134px] h-[55px] object-contain mx-auto mt-[45px]" />
       <motion.img
         src="/images/invitation/bg-ticket-straight.png"
