@@ -48,7 +48,7 @@ export default function Leaderboard() {
     const { leaderboard, loading } = useLeaderboard();
 
     return (
-        <div className="absolute left-0 top-[50%] -translate-y-1/2 w-[355px] bg-[#23224A] rounded-r-2xl p-4 mx-auto shadow-lg border border-[#3B3970]">
+        <div className="absolute left-[-1px] top-[50%] -translate-y-1/2 w-[355px] bg-[#23224A] rounded-r-2xl p-4 mx-auto shadow-lg border border-[#3B3970]">
             {/* Header */}
             <div className="flex flex-col items-center mb-2">
                 <div className="bg-[#1A1843] flex-1 border border-[#3E347C] rounded-lg px-4 py-6 mb-1 shadow-[7px_10px_0px_0px_#00000040_inset]">
