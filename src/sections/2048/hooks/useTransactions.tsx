@@ -30,6 +30,7 @@ export function useTransactions() {
     const { user } = usePrivy();
     const { ready, wallets } = useWallets();
     const score = use2048Store((store: any) => store.score);
+    const store2048 = use2048Store((store: any) => store);
     // Fetch user nonce on new login.
     const userNonce = useRef(0);
     const userBalance = useRef(BigInt(0));
@@ -69,8 +70,10 @@ export function useTransactions() {
     }
 
     useEffect(() => {
+        if (privyUserAddress) {
         resetNonceAndBalance();
-    }, [user]);
+        }
+    }, [user, privyUserAddress]);
 
     // Fetch provider on new login.
     const walletClient = useRef<any>(null);
@@ -105,6 +108,7 @@ export function useTransactions() {
         nonce,
         maxFeePerGas = parseGwei("50"),
         maxPriorityFeePerGas = parseGwei("5"),
+        extendData
     }: {
         successText?: string;
         gas: BigInt;
@@ -112,7 +116,8 @@ export function useTransactions() {
         nonce: number;
         maxFeePerGas?: BigInt;
         maxPriorityFeePerGas?: BigInt;
-    }) {
+        extendData?: any;
+    }): Promise<any> {
         let e: Error | null = null;
 
         try {
@@ -172,7 +177,11 @@ export function useTransactions() {
                 }, 'bottom-right')
             }
 
-            reportGameRecord(transactionHash, score);
+            if (extendData) {
+                reportGameRecord(transactionHash, extendData.score, privyUserAddress);
+            }
+
+           
             //     {
             //     description: `${successText} Time: ${time} ms`,
             //     action: (
@@ -220,6 +229,7 @@ export function useTransactions() {
                 }, 'bottom-right')
             }
 
+
             //     {
             //     description: `${successText} Time: ${
             //         Date.now() - startTime
@@ -257,6 +267,8 @@ export function useTransactions() {
         if (e) {
             throw e;
         }
+
+        
     }
 
     // Returns a the latest stored baord of a game as an array.
@@ -285,8 +297,6 @@ export function useTransactions() {
             bigint
         ]
     > {
-
-        console.log('== resyncGame3 ==', gameId);
 
         const [latestBoard, nextMoveNumber] = await publicClient.readContract({
             address: GAME_CONTRACT_ADDRESS,
@@ -391,7 +401,8 @@ export function useTransactions() {
         gameId: Hex,
         board: bigint,
         move: number,
-        moveCount: number
+        moveCount: number,
+        score: number
     ): Promise<void> {
         // Sign and send transaction: play move
         console.log(`Playing move ${moveCount}!`);
@@ -413,7 +424,6 @@ export function useTransactions() {
         userNonce.current = nonce + 1;
         userBalance.current = balance - parseEther("0.005");
 
-        console.log('gameId, move, board', gameId, move, board)
 
         await sendRawTransactionAndConfirm({
             nonce,
@@ -448,21 +458,13 @@ export function useTransactions() {
                 functionName: "play",
                 args: [gameId, move, board],
             }),
+            extendData: {
+                score
+            }
         });
     }
 
-    const { run: playNewMoveTransactionThrottled } = useThrottleFn(
-        async (
-            gameId: Hex,
-            board: bigint,
-            move: number,
-            moveCount: number
-        ) => {
-            console.log('playNewMoveTransactionThrottled: ', 111)
-            await playNewMoveTransaction(gameId, board, move, moveCount);
-        },
-        { wait: 10000 }
-    );
+
 
     useEffect(() => {
         return () => {
@@ -472,10 +474,10 @@ export function useTransactions() {
     }, [])
 
     return {
+        privyUserAddress,
         resetNonceAndBalance,
         initializeGameTransaction,
         playNewMoveTransaction,
-        playNewMoveTransactionThrottled,
         getLatestGameBoard,
     };
 }

@@ -1,11 +1,12 @@
 import { useUserStore } from '@/stores/user';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { get, post } from '@/utils/http';
 import { useAccount } from 'wagmi';
 import useToast from '@/hooks/use-toast';
 import { useWalletName } from '@/hooks/use-wallet-name';
 import { useConnectedWalletsStore } from '@/stores/useConnectedWalletsStore';
 import { usePathname } from 'next/navigation';
+import { useInterval } from 'ahooks';
 
 export function useUser() {
   const { address } = useAccount();
@@ -119,6 +120,13 @@ export function useUser() {
 
     return res.code
   };
+
+  useInterval(() => {
+    const tokens = JSON.parse(window.sessionStorage.getItem('_user') || "{}");
+    if (!tokens.state?.accessToken?.access_token) {
+      getAccessToken();
+    }
+  }, 1000 * 20)
 
   return {
     userInfo,
