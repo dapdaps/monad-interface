@@ -1,17 +1,8 @@
-import React from "react";
+import { get } from "@/utils/http";
+import { useInterval } from "ahooks";
+import React, { useCallback, useEffect, useState } from "react";
 
-const leaderboardData = [
-    { rank: 0, address: "0x25b...2315e", score: "213,256" },
-    { rank: 1, address: "0x25b...2315e", score: "213,256" },
-    { rank: 2, address: "0x25b...2315e", score: "213,256" },
-    { rank: 4, address: "0x25b...2315e", score: "213,256" },
-    { rank: 5, address: "0x25b...2315e", score: "213,256" },
-    { rank: 6, address: "0x25b...2315e", score: "213,256" },
-    { rank: 7, address: "0x25b...2315e", score: "213,256" },
-    { rank: 8, address: "0x25b...2315e", score: "213,256" },
-    { rank: 9, address: "0x25b...2315e", score: "213,256" },
-    { rank: 10, address: "0x25b...2315e", score: "213,256" },
-];
+
 
 const rankColors = [
     "#FFBF49", // 1st
@@ -19,7 +10,42 @@ const rankColors = [
     "#BFFF60",   // 3rd
 ];
 
+export function useLeaderboard() {
+    const [leaderboard, setLeaderboard] = useState<any[]>([]);
+    const [loading, setLoading] = useState(false);
+
+
+    const getRank = useCallback(() => {
+        setLoading(true);
+        get('/game/leaderboard/2048').then(res => {
+            if (res.code !== 200) {
+                setLeaderboard([]);
+            }
+
+            setLeaderboard(res.data)
+        }).catch(() => {
+            setLeaderboard([]);
+        }).finally(() => {
+            setLoading(false);
+        });
+    }, []);
+
+    useInterval(() => {
+        getRank();
+    }, 1000 * 60, {
+        immediate: true,
+    });
+
+    return {
+        leaderboard,
+        loading
+    };
+}
+
 export default function Leaderboard() {
+
+    const { leaderboard, loading } = useLeaderboard();
+
     return (
         <div className="absolute left-0 top-[50%] -translate-y-1/2 w-[355px] bg-[#23224A] rounded-r-2xl p-4 mx-auto shadow-lg border border-[#3B3970]">
             {/* Header */}
@@ -52,21 +78,29 @@ export default function Leaderboard() {
                     <span>Top 10</span>
                     <span>Score</span>
                 </div>
-                <div className="space-y-1 mt-2">
-                    {leaderboardData.map((item, idx) => (
-                        <div key={item.rank} className="flex items-center justify-between px-2 py-1 text-[14px]">
+                <div className="space-y-1 mt-2 min-h-[350px]">
+                    {leaderboard.map((item, idx) => (
+                        <div key={item.id} className="flex items-center justify-between px-2 py-1 text-[14px]">
                             <div className="flex items-center gap-2">
                                 <div className={`w-6 h-6 flex items-center relative justify-center rounded-full text-xs}`}>
                                     <svg className="absolute left-0 top-0" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12.5478 1.53367C13.3367 0.700518 14.6633 0.700519 15.4522 1.53367L17.4202 3.61199C17.811 4.02467 18.3589 4.25161 18.927 4.23612L21.7881 4.15809C22.9351 4.12681 23.8732 5.06489 23.8419 6.21187L23.7639 9.07302C23.7484 9.64114 23.9753 10.189 24.388 10.5798L26.4663 12.5478C27.2995 13.3367 27.2995 14.6633 26.4663 15.4522L24.388 17.4202C23.9753 17.811 23.7484 18.3589 23.7639 18.927L23.8419 21.7881C23.8732 22.9351 22.9351 23.8732 21.7881 23.8419L18.927 23.7639C18.3589 23.7484 17.811 23.9753 17.4202 24.388L15.4522 26.4663C14.6633 27.2995 13.3367 27.2995 12.5478 26.4663L10.5798 24.388C10.189 23.9753 9.64114 23.7484 9.07302 23.7639L6.21186 23.8419C5.06489 23.8732 4.12681 22.9351 4.15809 21.7881L4.23612 18.927C4.25161 18.3589 4.02467 17.811 3.61199 17.4202L1.53367 15.4522C0.700518 14.6633 0.700519 13.3367 1.53367 12.5478L3.61199 10.5798C4.02467 10.189 4.25161 9.64114 4.23612 9.07302L4.15809 6.21186C4.12681 5.06489 5.06489 4.12681 6.21187 4.15809L9.07302 4.23612C9.64114 4.25161 10.189 4.02467 10.5798 3.61199L12.5478 1.53367Z" fill={rankColors[item.rank] || '#7070AB'} />
+                                        <path d="M12.5478 1.53367C13.3367 0.700518 14.6633 0.700519 15.4522 1.53367L17.4202 3.61199C17.811 4.02467 18.3589 4.25161 18.927 4.23612L21.7881 4.15809C22.9351 4.12681 23.8732 5.06489 23.8419 6.21187L23.7639 9.07302C23.7484 9.64114 23.9753 10.189 24.388 10.5798L26.4663 12.5478C27.2995 13.3367 27.2995 14.6633 26.4663 15.4522L24.388 17.4202C23.9753 17.811 23.7484 18.3589 23.7639 18.927L23.8419 21.7881C23.8732 22.9351 22.9351 23.8732 21.7881 23.8419L18.927 23.7639C18.3589 23.7484 17.811 23.9753 17.4202 24.388L15.4522 26.4663C14.6633 27.2995 13.3367 27.2995 12.5478 26.4663L10.5798 24.388C10.189 23.9753 9.64114 23.7484 9.07302 23.7639L6.21186 23.8419C5.06489 23.8732 4.12681 22.9351 4.15809 21.7881L4.23612 18.927C4.25161 18.3589 4.02467 17.811 3.61199 17.4202L1.53367 15.4522C0.700518 14.6633 0.700519 13.3367 1.53367 12.5478L3.61199 10.5798C4.02467 10.189 4.25161 9.64114 4.23612 9.07302L4.15809 6.21186C4.12681 5.06489 5.06489 4.12681 6.21187 4.15809L9.07302 4.23612C9.64114 4.25161 10.189 4.02467 10.5798 3.61199L12.5478 1.53367Z" fill={rankColors[idx] || '#7070AB'} />
                                     </svg>
                                     <div className="relative z-10 text-black w-[28px] h-[28px] flex items-center justify-center left-[2px] top-[2px] text-[12px] font-[600]">{item.rank}</div>
                                 </div>
-                                <div className="text-[#fff] text-xs">{item.address}</div>
+                                <div className="text-[#fff] text-xs">{item.game_address}</div>
                             </div>
                             <span className="text-[#fff] text-xs">{item.score}</span>
                         </div>
                     ))}
+
+                    {
+                        leaderboard.length === 0 && (
+                            <div className="flex items-center justify-center h-full pt-[100px]">
+                                <div className="text-[#A6A6DB] text-[14px]">No data</div>
+                            </div>
+                        )
+                    }
                 </div>
             </div>
             {/* Check history button */}
