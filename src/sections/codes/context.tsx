@@ -6,16 +6,27 @@ import useInviteCodes from './hooks/use-invite-codes';
 import useInviteRecords from './hooks/use-invite-records';
 import { post } from '@/utils/http';
 import useToast from '@/hooks/use-toast';
+import { IMission, useMission } from './hooks/use-mission';
 
-export const CodesContext = createContext<Partial<ICodesContext>>({});
+export const CodesContext = createContext<Partial<ICodesContext & IMission>>({});
 
 function CodesContextProvider({ children }: { children: ReactNode; }) {
   const toast = useToast()
   const {
     loading: inviteCodesLoading,
     inviteCodes,
-    tradeInviteCodes
-  } = useInviteCodes()
+    tradeInviteCodes,
+    handleGetInviteCodes
+  } = useInviteCodes();
+  const {
+    missionData,
+    missionLoading,
+    getMissionData,
+    lastTime,
+    consecutiveList,
+    currentRountCodes
+  } = useMission();
+
   const [updater, setUpdater] = useState(0)
   const { loading: inviteRecordsLoading, inviteRecords } = useInviteRecords(updater)
   const [claimLoading, setClaimLoading] = useState<boolean>()
@@ -48,7 +59,16 @@ function CodesContextProvider({ children }: { children: ReactNode; }) {
         inviteRecordsLoading,
         handleClaim,
         setShowRuleModal,
-        tradeInviteCodes
+        tradeInviteCodes,
+        handleGetInviteCodes,
+
+        // mission
+        missionData,
+        missionLoading,
+        getMissionData,
+        lastTime,
+        consecutiveList,
+        currentRountCodes
       }}
     >
       {children}
@@ -61,5 +81,5 @@ export default CodesContextProvider;
 export function useCodesContext() {
   const context = useContext(CodesContext);
 
-  return context as ICodesContext;
+  return context as ICodesContext & IMission;
 }

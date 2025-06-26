@@ -51,7 +51,7 @@ const MISSION_CODES = new Map([
   ],
 ]);
 
-export function useMission() {
+export function useMission(): IMission {
   const { accountWithAk } = useCustomAccount();
   const { hasNFT } = useNFT({ 
     nftAddress: process.env.NEXT_PUBLIC_CHART_NFT || "0x2d298c1f3a52af45ab3d34637aa293cf8a988c71",
@@ -121,4 +121,13 @@ export function useMission() {
   }, [missionData]);
 
   return { missionData, missionLoading, getMissionData, lastTime, consecutiveList, currentRountCodes };
+}
+
+export interface IMission {
+  missionData: any;
+  missionLoading: boolean;
+  getMissionData: () => void;
+  lastTime: string;
+  consecutiveList: any;
+  currentRountCodes: number;
 }

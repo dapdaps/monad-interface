@@ -1,14 +1,20 @@
 import RuleModal from "./components/rule-modal";
 import CodesDescription from "./components/description";
-import { useMission } from "./hooks/use-mission";
 import CurrentMission from "./components/mission/current";
 import CodesNextDrop from "./components/mission/next-drop";
 import Codes from "./components/codes";
 import Records from "./components/records";
 import RulesButton from "./components/rules-button";
+import { useCodesContext } from "./context";
 
 const CodesMobile = () => {
-  const { missionData, missionLoading, getMissionData, lastTime, currentRountCodes } = useMission();
+  const {
+    missionData,
+    missionLoading,
+    getMissionData,
+    lastTime,
+    currentRountCodes
+  } = useCodesContext();
 
   return (
     <div className="w-full pt-[60px] flex flex-col items-center overflow-y-auto h-screen bg-[url('/images/faucet/bg.png')] bg-no-repeat bg-[position:-800px_-100px] bg-[length:1313px]">

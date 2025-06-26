@@ -34,6 +34,7 @@ export default function useInviteCodes(updater?: any) {
     loading,
     inviteCodes,
     tradeInviteCodes,
-    unUsedInviteCodes
+    unUsedInviteCodes,
+    handleGetInviteCodes
   }
 }
