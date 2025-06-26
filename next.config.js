@@ -60,6 +60,10 @@ const nextConfig = {
     {
       source: "/haha-delete/:path*",
       destination: "https://test.nadsa.space/:path*"
+    },
+    {
+      source: "/pancakeswap.finance/:path*",
+      destination: "https://pancakeswap.finance/:path*"
     }
   ],
   webpack: (config, { dev }) => {
