@@ -58,7 +58,7 @@ const Records = (props: any) => {
         }
       },
       {
-        title: "Stutus",
+        title: "Status",
         dataIndex: "invited",
         width: "20%",
         render: (text: string, record: any) => {
