@@ -2,6 +2,7 @@ import { useLogin, usePrivy, useConnectWallet, useWallets, useUser as usePrivyUs
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useUser from "./use-user";
 import { toast } from "react-toastify";
+import useToast from "./use-toast";
 // import {UserPill} from '@privy-io/react-auth/ui';
 
 export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
@@ -12,6 +13,7 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
     const [loginLoading, setLoginLoading] = useState(false);
     const [address, setAddress] = useState("");
     const { wallet, setActiveWallet } = useActiveWallet();
+    const { fail } = useToast({ isGame: true });
 
 
     useEffect(() => {
@@ -79,6 +81,15 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
                     account.walletClientType === "privy" &&
                     userInfo.game_address.toLowerCase() === account.address.toLowerCase()
             );
+
+            if (!privyUser) {
+                toast.dismiss();
+                fail({
+                    title: 'The EVM address is already bound. Please change the email and log in again.',
+                }, 'bottom-right');
+                logout();
+                return;
+            }
         } else {
             [privyUser] = user.linkedAccounts.filter(
             (account) =>
@@ -93,7 +104,6 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
         }
 
         setAddress((privyUser as any).address);
-
     }, [user, userInfo]);
 
     useEffect(() => {
@@ -109,7 +119,9 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
                     }
                 } else {
                     if (userInfo.game_address.toLowerCase() !== address.toLowerCase()) {
-                        toast.error('The EVM address is already bound. Please change the email and log in again.');
+                        fail({
+                            title: 'The EVM address is already bound. Please change the email and log in again.',
+                        }, 'bottom-right');
                         logout();
                     }
                 }
