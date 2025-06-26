@@ -174,7 +174,7 @@ export function useTransactions() {
                 }, 'bottom-right')
             }
 
-            reportGameRecord(transactionHash, score);
+            reportGameRecord(transactionHash, score, privyUserAddress);
             //     {
             //     description: `${successText} Time: ${time} ms`,
             //     action: (
