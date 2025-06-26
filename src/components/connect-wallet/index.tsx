@@ -83,7 +83,7 @@ const ConnectWallet = ({ className }: { className?: string }) => {
 
     if (userInfo?.twitter?.twitter_user_name) {
       const name = userInfo?.twitter?.twitter_user_name
-      return `${name.slice(0, 4)}...${name.slice(-4)}`
+      return `${name}`
     }
 
     return `${address.slice(0, 5)}...${address.slice(-4)}`;
@@ -276,7 +276,7 @@ const User = (props: any) => {
             <AvatarDisplay hasAvatar={address && !!userInfo?.twitter?.twitter_avatar} userInfo={userInfo} />
             {/* <div className="w-[30px] h-[30px] rounded-[50%] border-2 border-black bg-[conic-gradient(from_180deg_at_50%_50%,#00D1FF_0deg,#FF008A_360deg)]" /> */}
             <div className="flex flex-col gap-[6px] justify-center">
-              <div className="text-white text-[12px] font-[400] leading-[1] font-Unbounded">
+              <div className="text-white w-[140px] text-[12px] font-[400] leading-[1] font-Unbounded whitespace-nowrap overflow-hidden text-ellipsis">
                 {addressShown}
               </div>
               {

@@ -86,14 +86,14 @@ export default function Leaderboard() {
                                     <svg className="absolute left-0 top-0" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M12.5478 1.53367C13.3367 0.700518 14.6633 0.700519 15.4522 1.53367L17.4202 3.61199C17.811 4.02467 18.3589 4.25161 18.927 4.23612L21.7881 4.15809C22.9351 4.12681 23.8732 5.06489 23.8419 6.21187L23.7639 9.07302C23.7484 9.64114 23.9753 10.189 24.388 10.5798L26.4663 12.5478C27.2995 13.3367 27.2995 14.6633 26.4663 15.4522L24.388 17.4202C23.9753 17.811 23.7484 18.3589 23.7639 18.927L23.8419 21.7881C23.8732 22.9351 22.9351 23.8732 21.7881 23.8419L18.927 23.7639C18.3589 23.7484 17.811 23.9753 17.4202 24.388L15.4522 26.4663C14.6633 27.2995 13.3367 27.2995 12.5478 26.4663L10.5798 24.388C10.189 23.9753 9.64114 23.7484 9.07302 23.7639L6.21186 23.8419C5.06489 23.8732 4.12681 22.9351 4.15809 21.7881L4.23612 18.927C4.25161 18.3589 4.02467 17.811 3.61199 17.4202L1.53367 15.4522C0.700518 14.6633 0.700519 13.3367 1.53367 12.5478L3.61199 10.5798C4.02467 10.189 4.25161 9.64114 4.23612 9.07302L4.15809 6.21186C4.12681 5.06489 5.06489 4.12681 6.21187 4.15809L9.07302 4.23612C9.64114 4.25161 10.189 4.02467 10.5798 3.61199L12.5478 1.53367Z" fill={rankColors[idx] || '#7070AB'} />
                                     </svg>
-                                    <div className="relative z-10 text-black w-[28px] h-[28px] flex items-center justify-center left-[2px] top-[2px] text-[12px] font-[600]">{item.rank}</div>
+                                    <div className="relative z-10 text-black w-[28px] h-[28px] flex items-center justify-center left-[2px] top-[2px] text-[12px] font-[600]">{idx + 1}</div>
                                 </div>
-                                <div className="text-[#fff] text-xs">{item.game_address}</div>
+                                <div className="text-[#fff] text-xs">{item.game_address.slice(0, 5)}...{item.game_address.slice(-5)}</div>
                             </div>
                             <span className="text-[#fff] text-xs">{item.score}</span>
                         </div>
                     ))}
-
+ 
                     {
                         leaderboard.length === 0 && (
                             <div className="flex items-center justify-center h-full pt-[100px]">
