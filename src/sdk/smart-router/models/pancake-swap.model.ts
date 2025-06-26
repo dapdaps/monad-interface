@@ -374,7 +374,7 @@ export class PancakeSwapUniversal extends PancakeSwap {
 
     let candidates: CandidatePool[] = [];
     try {
-      const candidatesRes = await fetch(candidatesURL.toString());
+      const candidatesRes = await fetch("/pancakeswap.finance/api/pools/candidates?" + candidatesURL.searchParams.toString());
       const candidatesResJson = await candidatesRes.json();
       candidates = candidatesResJson.data;
     } catch (err: any) {
