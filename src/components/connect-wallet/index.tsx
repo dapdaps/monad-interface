@@ -224,7 +224,7 @@ const ConnectLayout = ({
 
   if (isMobile) {
     return (
-      <div 
+      <div
         onClick={onConnect}
         data-click-sound
         data-bp="1001-001"
@@ -242,7 +242,7 @@ const ConnectLayout = ({
       >
         Connect
       </button>
-  </div>
+    </div>
   )
 }
 
@@ -412,10 +412,10 @@ const DisconnectButton = ({ setMobileUserInfoVisible, handlePlay }: any) => {
 
 const BalanceDisplay = ({ className = "", balanceShown }: any) => (
   <div className={`flex items-center gap-1 ${className}`}>
-    <img 
+    <img
       src='/images/monad.svg'
-      className="w-5 h-5" 
-      alt="" 
+      className="w-5 h-5"
+      alt=""
     />
     <div className="text-[12px] text-white font-[400] font-Unbounded">
       {balanceShown || "-"}

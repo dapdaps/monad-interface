@@ -8,4 +8,5 @@ export interface ICodesContext {
   inviteRecordsLoading: boolean;
   handleClaim: () => void;
   setShowRuleModal: (show: boolean) => void;
+  handleGetInviteCodes: () => Promise<any>;
 }

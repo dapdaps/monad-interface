@@ -1,14 +1,20 @@
 import clsx from "clsx";
 import { memo } from "react";
-import { useMission } from "../../hooks/use-mission";
 import CodesDescription from "../description";
 import CurrentMission from "./current";
 import CodesNextDrop from "./next-drop";
+import { useCodesContext } from "../../context";
 
 export default memo(function Mission(props: any) {
   const { className } = props;
 
-  const { missionData, missionLoading, getMissionData, lastTime, currentRountCodes } = useMission();
+  const {
+    missionData,
+    missionLoading,
+    getMissionData,
+    lastTime,
+    currentRountCodes
+  } = useCodesContext();
 
   return (
     <div className={clsx("flex flex-col items-center", className)}>
