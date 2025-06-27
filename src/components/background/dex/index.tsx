@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import clsx from 'clsx';
+import ExtendDex from "@/components/extend-dex";
+import dapps from "@/configs/swap";
 
 export default function Bg(props: any) {
   const { className } = props;
@@ -56,6 +58,15 @@ export default function Bg(props: any) {
       <div className="bg-[url(/images/dex/bg.png)] w-full h-[374px] bg-center absolute top-[212px] z-[1]" />
       <div className="bg-[url(/images/dex/frames.png)] w-full h-[522px] bg-center absolute top-[78px] z-[5]" />
       <div className="bg-[url(/images/dex/floor.png)] w-full bg-no-repeat h-[302px] absolute top-[600px] bg-cover z-[1]" />
+
+      <ExtendDex dapps={[
+        // dapps.izumi,
+        // dapps.lfj,
+        dapps.pancake,
+        // dapps.openocean,
+        dapps.uniswap,
+        dapps.kuru
+      ]} />
     </div>
   );
 }

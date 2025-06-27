@@ -11,6 +11,7 @@ export default function Swap({ dapp }: any) {
     <div className="relative lg:w-[548px] mt-[88px]">
       <div className="relative z-[2] lg:w-[446px] md:w-[370px] lg:ml-[49px] lg:py-[40px]">
         <Content dapp={dapp} />
+        
       </div>
       {
         !isMobile && (
