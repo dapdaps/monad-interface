@@ -26,21 +26,21 @@ const Modal: React.FC<ModalProps> = ({ open, onClose, data = leaderboardData }) 
   const maxVolume = getMax(data, "volume");
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-      <div className="bg-[#2a2545] rounded-xl shadow-lg w-full max-w-2xl p-6 relative">
+    <div className="fixed inset-0 z-50 flex items-center font-Unbounded text-[12px] text-white justify-center">
+      <div className="bg-[#2B294A] rounded-xl border border-[#2B294A] shadow-lg w-full max-w-2xl relative">
         <div className="overflow-x-auto">
           <table className="min-w-full text-left text-white">
             <thead>
-              <tr className="border-b border-purple-700">
-                <th className="py-2 px-3 font-semibold">dapp</th>
-                <th className="py-2 px-3 font-semibold">Unique nads</th>
-                <th className="py-2 px-3 font-semibold">Transactions</th>
-                <th className="py-2 px-3 font-semibold">Volume (MON)</th>
+              <tr className="border-b border-[#38365E]">
+                <th className="py-2 px-3">dapp</th>
+                <th className="py-2 px-3">Unique nads</th>
+                <th className="py-2 px-3">Transactions</th>
+                <th className="py-2 px-3">Volume (MON)</th>
               </tr>
             </thead>
             <tbody>
               {data.map((item, idx) => (
-                <tr key={item.dapp} className="border-b border-purple-900 last:border-0">
+                <tr key={item.dapp} className="border-b border-[#38365E] last:border-0">
                   <td className="py-2 px-3 whitespace-nowrap">{item.dapp}</td>
                   <td className="py-2 px-3">
                     <div className="flex items-center gap-2">
