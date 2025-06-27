@@ -7,7 +7,7 @@ export default function ExtendDex({ dapps }: any) {
     const router = useRouter();
 
     return (
-        <div className="absolute bottom-[240px] left-[50%] translate-x-[350px] z-50">
+        <div className="absolute top-[340px] left-[50%] translate-x-[350px] z-50">
             <div className="relative z-20">
                 {
                     dapps.map((dapp: any, idx: number) => (
