@@ -13,15 +13,23 @@ const Footer = () => {
             target="_blank"
             data-bp="1001-010"
           >
-            <img src="/images/mobile/x.svg" alt="" />
+            <img src="/images/footer/x.svg" alt="x" className="w-[24px] cursor-pointer" />
           </Link>
           <Link
             className="hover:scale-110 ease-in-out duration-300 w-[24px] h-[24px] cursor-pointer"
-            href="https://t.me/DapDapDiscussion"
+            href="https://mirror.xyz/0xBd6E844F7DaCAF6339C26D5114F83986914803ef"
             target="_blank"
             data-bp="1001-011"
           >
-            <img src="/images/mobile/tg.svg" alt="" />
+            <img src="/images/footer/mirror.svg" alt="mirror" className="w-[24px] cursor-pointer" />
+          </Link>
+          <Link
+            className="group  ease-in-out duration-300 w-[24px] cursor-pointer relative"
+            href="/terminal"
+            target="_blank"
+            data-bp="1001-012"
+          >
+            <img src="/images/footer/terminal.svg" alt="ternimal" className="w-[24px] cursor-pointer" />
           </Link>
         </div>
         <div className="absolute -top-1 left-1/2 -translate-x-1/2">

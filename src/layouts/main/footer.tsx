@@ -34,7 +34,7 @@ export default memo(function Footer() {
       </Link>
       <Link
         className="group  ease-in-out duration-300 w-[24px] cursor-pointer relative"
-        href="./terminal"
+        href="/terminal"
         target="_blank"
         data-bp="1001-012"
       >
