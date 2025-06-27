@@ -43,33 +43,33 @@ const Modal: React.FC<ModalProps> = ({ open, onClose, data = leaderboardData }) 
                 <tr key={item.dapp} className="border-b border-[#38365E] last:border-0">
                   <td className="py-2 px-3 whitespace-nowrap">{item.dapp}</td>
                   <td className="py-2 px-3">
-                    <div className="flex items-center gap-2">
-                      <span className="min-w-[48px] font-mono">{item.uniqueNads.toLocaleString()}</span>
-                      <div className="flex-1 h-2 bg-purple-900 rounded">
+                    <div className="flex items-center gap-2 relative">
+                      <span className="min-w-[48px] relative z-10 pl-[5px] pt-[2px]">{item.uniqueNads.toLocaleString()}</span>
+                      <div className="flex-1 absolute top-0 left-0 w-full">
                         <div
-                          className="h-2 bg-gradient-to-r from-purple-400 to-purple-600 rounded"
+                          className="h-5 bg-[#836EF9]"
                           style={{ width: `${(item.uniqueNads / maxUniqueNads) * 100}%` }}
                         />
                       </div>
                     </div>
                   </td>
                   <td className="py-2 px-3">
-                    <div className="flex items-center gap-2">
-                      <span className="min-w-[48px] font-mono">{item.transactions.toLocaleString()}</span>
-                      <div className="flex-1 h-2 bg-purple-900 rounded">
+                    <div className="flex items-center gap-2 relative">
+                      <span className="min-w-[48px] relative z-10 pl-[5px] pt-[2px]">{item.transactions.toLocaleString()}</span>
+                      <div className="flex-1 absolute top-0 left-0 w-full">
                         <div
-                          className="h-2 bg-gradient-to-r from-purple-400 to-purple-600 rounded"
+                          className="h-5 bg-[#836EF9]"
                           style={{ width: `${(item.transactions / maxTransactions) * 100}%` }}
                         />
                       </div>
                     </div>
                   </td>
                   <td className="py-2 px-3">
-                    <div className="flex items-center gap-2">
-                      <span className="min-w-[48px] font-mono">{item.volume.toLocaleString()}</span>
-                      <div className="flex-1 h-2 bg-purple-900 rounded">
+                    <div className="flex items-center gap-2 relative">
+                      <span className="min-w-[48px] relative z-10 pl-[5px] pt-[2px]">{item.volume.toLocaleString()}</span>
+                      <div className="flex-1 absolute top-0 left-0 w-full">
                         <div
-                          className="h-2 bg-gradient-to-r from-purple-400 to-purple-600 rounded"
+                          className="h-5 bg-[#836EF9]"
                           style={{ width: `${(item.volume / maxVolume) * 100}%` }}
                         />
                       </div>
