@@ -61,11 +61,11 @@ export default function Bg(props: any) {
 
       <ExtendDex dapps={[
         // dapps.izumi,
-        dapps.lfj,
+        // dapps.lfj,
         dapps.pancake,
         // dapps.openocean,
         dapps.uniswap,
-        // dapps.kuru
+        dapps.kuru
       ]} />
     </div>
   );

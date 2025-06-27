@@ -1,16 +1,22 @@
 import clsx from "clsx";
 import { useParams, useRouter } from "next/navigation";
+import { useMemo } from "react";
 
 export default function ExtendDex({ dapps }: any) {
     const urlParams = useParams();
 
     const router = useRouter();
 
+    const _dapps = useMemo(() => {
+        return dapps.filter((dapp: any) => dapp.name.toLowerCase() !== (urlParams.dapp as string)?.toLowerCase());
+    }, [dapps, urlParams]);
+
+
     return (
-        <div className="absolute top-[340px] left-[50%] translate-x-[350px] z-50">
+        <div style={{ top: 240 + _dapps?.length * 100 }} className="absolute left-[50%] translate-x-[350px] z-50">
             <div className="relative z-20">
                 {
-                    dapps.map((dapp: any, idx: number) => (
+                    _dapps.map((dapp: any, idx: number) => (
                         <div 
                         key={dapp.name} 
                         onClick={() => {
