@@ -125,10 +125,10 @@ const Home = () => {
               {/* <div className="w-[84px] h-[115px] absolute right-[119px] top-[92px]">
                 <img src="/images/monad/entry/aperture.gif" className="w-full h-full" alt="" />
               </div> */}
-              <div className="absolute left-1/2 -translate-x-1/2 mr-[50px] top-0">
+              <div className="absolute left-1/2 -translate-x-1/2 mr-[50px] top-[10px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <div className="w-full flex items-center justify-center gap-2">
-                    <img src="/images/monad/icon/bridge-lock.svg" alt="" />
+                    <img src="/images/monad/icon/bridge-lock.svg" className="w-[43px]" alt="" />
                     <div className="text-[12px] font-Unbounded font-[500] leading-[90%] text-[#6D7EA5]">
                       soon
                     </div>
@@ -143,7 +143,7 @@ const Home = () => {
                     //   ease: "linear",
                     // }}
                     src="/images/monad/icon/point-lock.svg"
-                    className="w-[38px] h-[38px]"
+                    className="w-[26px] h-[26px]"
                     alt=""
                   />
                 </div>
@@ -168,7 +168,7 @@ const Home = () => {
               windowWidth < 1440 ? 'scale-[0.86] hover:scale-[0.92]' : '',
               windowWidth >= 1440 && windowWidth < 1920 ? 'hover:scale-[1.03]' : '',
             )}>
-            <div className="absolute left-1/2 -translate-x-[calc(50%+90px)] top-0">
+            <div className="absolute left-1/2 -translate-x-[calc(50%+70px)] top-0">
               <div className="w-full flex gap-[4px] items-center justify-center">
                 <div className="w-full flex items-center justify-center gap-2">
                   <img src="/images/monad/icon/arcade.svg" alt="" className="shrink-0" />
@@ -183,7 +183,7 @@ const Home = () => {
                     ease: "linear",
                   }}
                   src="/images/monad/icon/point-to-right.svg"
-                  className="w-[38px] h-[38px]"
+                  className="w-[26px] h-[26px]"
                   alt=""
                 />
               </div>
@@ -208,10 +208,10 @@ const Home = () => {
             )}
           >
             <div className="relative w-full h-full">
-              <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
+              <div className="absolute left-1/2 -translate-x-1/2 top-[-50px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                   <div className="w-full flex items-center justify-center gap-2">
-                    <img src="/images/monad/icon/codes.svg" alt="" className="shrink-0" />
+                    <img src="/images/monad/icon/codes.svg"  alt="" className="shrink-0 w-[67px]" />
                     {
                       unUsedInviteCodes?.length > 0 && (
                         <div className="shrink-0 px-[8px] h-[18px] text-[12px] font-[900] leading-[90%] flex items-center justify-center font-Unbounded rounded-[21px] border border-black bg-[#BFFF60] shadow-[0px_2px_0px_0px_rgba(0,_0,_0,_0.50)]">
@@ -230,7 +230,7 @@ const Home = () => {
                       ease: "linear",
                     }}
                     src="/images/monad/icon/point.svg"
-                    className="w-[38px] h-[38px]"
+                    className="w-[26px] h-[26px]"
                     alt=""
                   />
                 </div>
@@ -272,9 +272,9 @@ const Home = () => {
             )}
           >
             <div className="relative w-full h-full z-[35]">
-              <div className="absolute left-1/2 -translate-x-1/2 top-[-70px] cursor-pointer">
+              <div className="absolute left-1/2 -translate-x-1/2 top-[-40px] cursor-pointer">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
-                  <img src="/images/monad/icon/faucet.svg" alt="" />
+                  <img src="/images/monad/icon/faucet.svg" alt="" className="w-[74px]" />
                   <motion.img
                     animate={{
                       transform: "rotateY(360deg)",
@@ -285,7 +285,7 @@ const Home = () => {
                       ease: "linear",
                     }}
                     src="/images/monad/icon/point.svg"
-                    className="w-[38px] h-[38px]"
+                    className="w-[26px] h-[26px]"
                     alt=""
                   />
                 </div>
@@ -316,9 +316,9 @@ const Home = () => {
             )}
           >
             <div className="relative w-full h-full">
-              <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
+              <div className="absolute left-1/2 -translate-x-1/2 top-[-50px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
-                  <img src="/images/monad/icon/dApps.svg" alt="" />
+                  <img src="/images/monad/icon/dApps.svg" className="w-[70px]" alt="" />
                   <motion.img
                     animate={{
                       transform: "rotateY(360deg)",
@@ -329,7 +329,7 @@ const Home = () => {
                       ease: "linear",
                     }}
                     src="/images/monad/icon/point.svg"
-                    className="w-[38px] h-[38px]"
+                    className="w-[26px] h-[26px]"
                     alt=""
                   />
                 </div>
@@ -399,9 +399,9 @@ const Home = () => {
             )}
           >
             <div className="relative w-full h-full">
-              <div className="absolute left-1/2 -translate-x-1/2 top-[-70px]">
+              <div className="absolute left-1/2 -translate-x-1/2 top-[-50px]">
                 <div className="w-full flex flex-col gap-[2px] items-center justify-center">
-                  <img src="/images/monad/icon/tokens.svg" alt="" />
+                  <img src="/images/monad/icon/tokens.svg" className="w-[75px]" alt="" />
                   <motion.img
                     animate={{
                       transform: "rotateY(360deg)",
@@ -412,7 +412,7 @@ const Home = () => {
                       ease: "linear",
                     }}
                     src="/images/monad/icon/point.svg"
-                    className="w-[38px] h-[38px]"
+                    className="w-[26px] h-[26px]"
                     alt=""
                   />
                 </div>

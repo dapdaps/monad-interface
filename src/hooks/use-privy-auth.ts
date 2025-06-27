@@ -18,15 +18,15 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
 
     useEffect(() => {
         try {
-            if (user && !user.wallet) {
+        if (user && !user.wallet) {
                 const [privyUser] = user.linkedAccounts?.filter(
                     (account) =>
                         account.type === "wallet" &&
                         account.walletClientType === "privy"
                 );
                 if (!privyUser || !(privyUser as any).address) {
-                    createWallet();
-                }
+            createWallet();
+        }
             }
         } catch (e) {
             console.log(e)
@@ -92,10 +92,10 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
             }
         } else {
             [privyUser] = user.linkedAccounts.filter(
-                (account) =>
-                    account.type === "wallet" &&
-                    account.walletClientType === "privy"
-            );
+            (account) =>
+                account.type === "wallet" &&
+                account.walletClientType === "privy"
+        );
         }
 
         if (!privyUser || !(privyUser as any).address) {

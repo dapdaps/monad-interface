@@ -292,7 +292,7 @@ const User = (props: any) => {
               }
 
               {/*<div className="flex items-center gap-1">
-                 <img
+                <img
                   src={walletInfo.icon}
                   className="w-4 object-contain"
                   alt=""
@@ -304,7 +304,7 @@ const User = (props: any) => {
                 </div>
                 <div className="bg-white bg-opacity-20 p-[1px] rounded-[4px] text-[8px] text-[#A6A6DB] font-Unbounded">
                   {currentChainInfo?.testnet ? "Testnet" : "Mainnet"}
-                </div> 
+                </div>
               </div>*/}
             </div>
           </div>
@@ -355,18 +355,18 @@ const User = (props: any) => {
           zIndex: 100
         }}
       >
-        {isMobile ? (
-          <div className="flex items-center gap-1" onClick={handleConnect}>
-            <AvatarDisplay hasAvatar={address && !!userInfo?.twitter?.twitter_avatar} userInfo={userInfo} />
-            <div className="w-[1px] h-[23px] bg-[#A6A6DB] bg-opacity-30 mx-[14px]"></div>
-            <BalanceDisplay balanceShown={balanceShown} />
-          </div>
-        ) : (
-          <div className="flex items-center gap-1">
-            <BalanceDisplay balanceShown={balanceShown} />
-            <AvatarDisplay hasAvatar={address && !!userInfo?.twitter?.twitter_avatar} userInfo={userInfo} />
-          </div>
-        )}
+      {isMobile ? (
+            <div className="flex items-center gap-1" onClick={handleConnect}>
+              <AvatarDisplay hasAvatar={address && !!userInfo?.twitter?.twitter_avatar} userInfo={userInfo} />
+              <div className="w-[1px] h-[23px] bg-[#A6A6DB] bg-opacity-30 mx-[14px]"></div>
+              <BalanceDisplay balanceShown={balanceShown} />
+            </div>
+          ) : (
+            <div className="flex items-center gap-1">
+              <BalanceDisplay balanceShown={balanceShown} />
+              <AvatarDisplay hasAvatar={address && !!userInfo?.twitter?.twitter_avatar} userInfo={userInfo} />
+            </div>
+          )}
       </Popover>
     </motion.div>
   );

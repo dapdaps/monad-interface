@@ -179,7 +179,6 @@ export function useTransactions() {
             if (e) {
                 throw e;
             }
-
         }
     }
 
