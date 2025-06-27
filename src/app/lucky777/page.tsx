@@ -1,7 +1,6 @@
 "use client";
-
-import LuckyBeraView from "@/sections/lucky777";
+import { redirect } from "next/navigation";
 
 export default function GamePage() {
-  return <LuckyBeraView />;
+  redirect("/arcade/lucky777");
 }

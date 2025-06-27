@@ -1,11 +1,7 @@
 'use client';
-import { useState } from 'react';
-import Game2048 from '@/sections/2048/main';
-export default function Game2048Page() {
+import { redirect } from 'next/navigation';
 
-  return (
-    <div>
-      <Game2048 />
-    </div>
-  );
+export default function Game2048Page() {
+  redirect("/arcade/2048");
+  
 }
