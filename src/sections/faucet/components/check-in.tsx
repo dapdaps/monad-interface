@@ -4,11 +4,7 @@ import useCustomAccount from '@/hooks/use-account';
 import { useFaucetContext } from '@/sections/faucet/context';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import clsx from 'clsx';
-import {
-  differenceInMilliseconds,
-  endOfToday,
-  format
-} from 'date-fns';
+import { differenceInMilliseconds } from 'date-fns';
 import { useEffect, useRef, useState } from 'react';
 const FaucetCheckIn = (props: any) => {
   const { className } = props;
@@ -29,7 +25,7 @@ const FaucetCheckIn = (props: any) => {
   }
 
   const [countdown, setCountdown] = useState('00:00:00');
-  const checkinRef = useRef(null)
+  const checkinRef = useRef<any>(null)
 
   const formatCountdown = (milliseconds: number) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
@@ -44,8 +40,11 @@ const FaucetCheckIn = (props: any) => {
   };
   function calculateRemainingTime() {
     const now = new Date();
-    const endOfDay = endOfToday();
-    const remainingMs = differenceInMilliseconds(endOfDay, now);
+    const utcNow = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds()));
+    const utcTomorrow = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0));
+    
+    const remainingMs = differenceInMilliseconds(utcTomorrow, utcNow);
+
     return formatCountdown(remainingMs)
   }
   useEffect(() => {
@@ -100,7 +99,7 @@ const FaucetCheckIn = (props: any) => {
         }
       </button>
 
-      <BackgroundSound ref={checkinRef} src="/audios/faucet/checkin.mp3" />
+      <BackgroundSound ref={checkinRef} src="/audios/faucet/checkin.mp3" config={{}} />
     </>
   );
 };

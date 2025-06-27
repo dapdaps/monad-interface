@@ -29,10 +29,10 @@ const CurrentMission = (props: any) => {
           const matchedText = text.match(link.reg)?.[0] || '';
 
           return (
-            <div key={index} className="flex items-center gap-[5px]">
-              <div className="flex-1 w-0 overflow-hidden text-ellipsis whitespace-nowrap">
+            <div key={index} className="flex items-center gap-[5px] md:justify-center">
+              <div className={clsx("overflow-hidden text-ellipsis whitespace-nowrap", isMobile ? "" : "flex-1 w-0 ")}>
                 {parts[0]}
-                <Link href={link.link} prefetch={true} className="underline underline-offset-2 hover:text-[#78FEFF]">
+                <Link href={link.link} prefetch={true} className={clsx("underline underline-offset-2", isMobile ? "" : "hover:text-[#78FEFF]")}>
                   {matchedText}
                 </Link>
                 {parts[1]}
@@ -64,7 +64,7 @@ const CurrentMission = (props: any) => {
 
   return (
     <div className={clsx("w-full p-[13px_15px_12px_15px] rounded-[6px] border border-[#26274B] bg-[#31305A] flex items-center justify-between gap-[16px] text-white font-Unbounded text-[14px]", className)}>
-      <div className="flex-1 min-h-[17px] leading-[200%]">
+      <div className={clsx("flex-1 min-h-[17px] leading-[200%] md:w-full", isMobile && missionLoading ? "flex justify-center" : "")}>
         {
           missionLoading ? (
             <Skeleton width={200} height={18} borderRadius={4} />
