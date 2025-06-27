@@ -44,15 +44,6 @@ export function useTransactions() {
         if (!user) {
             return;
         }
-        // const [privyUser] = user.linkedAccounts.filter(
-        //     (account) =>
-        //         account.type === "wallet" &&
-        //         account.walletClientType === "privy"
-        // );
-        // if (!privyUser || !(privyUser as any).address) {
-        //     return;
-        // }
-        // const privyUserAddress = (privyUser as any).address;
 
         const nonce = await publicClient.getTransactionCount({
             address: privyUserAddress as Hex,
@@ -132,7 +123,17 @@ export function useTransactions() {
             }
 
             const startTime = Date.now();
-            const signedTransaction = await provider.signTransaction({
+            // const signedTransaction = await provider.signTransaction({
+            //     to: GAME_CONTRACT_ADDRESS,
+            //     account: privyUserAddress,
+            //     data,
+            //     nonce,
+            //     gas,
+            //     maxFeePerGas,
+            //     maxPriorityFeePerGas,
+            // });
+
+            const tx = await provider.sendTransaction({
                 to: GAME_CONTRACT_ADDRESS,
                 account: privyUserAddress,
                 data,
@@ -140,117 +141,34 @@ export function useTransactions() {
                 gas,
                 maxFeePerGas,
                 maxPriorityFeePerGas,
-            });
+            })
 
-            // const environment = import.meta.env.VITE_APP_ENVIRONMENT;
-            // const rpc =
-            //     environment === "prod"
-            //         ? import.meta.env.VITE_MONAD_RPC_URL! ||
-            //           monadTestnet.rpcUrls.default.http[0]
-            //         : monadTestnet.rpcUrls.default.http[0];
-            const response = await post({
-                url: rpc,
-                params: {
-                    id: 0,
-                    jsonrpc: "2.0",
-                    method: "eth_sendRawTransaction",
-                    params: [signedTransaction],
-                },
-            });
             const time = Date.now() - startTime;
 
-            if (response.error) {
-                console.log(`Failed sent in ${time} ms`);
-                throw Error(response.error.message);
-            }
 
-            const transactionHash: Hex = response.result;
-
-            // Fire toast info with benchmark and transaction hash.
-            console.log(`Transaction sent in ${time} ms: ${response.result}`);
+            // // Fire toast info with benchmark and transaction hash.
+            // console.log(`Transaction sent in ${time} ms: ${response.result}`);
             if (window.location.pathname.includes('2048')) {
                 info({
                     title: 'Sent transaction.',
                     text: `${successText} Time: ${time} ms`,
-                    tx: transactionHash,
+                    tx: tx,
                     chainId: monadTestnet.id,
                 }, 'bottom-right')
             }
 
             if (extendData) {
-                reportGameRecord(transactionHash, extendData.score, privyUserAddress);
+                reportGameRecord(tx, extendData.score, privyUserAddress);
             }
 
-           
-            //     {
-            //     description: `${successText} Time: ${time} ms`,
-            //     action: (
-            //         <Button
-            //             className="outline outline-white"
-            //             onClick={() =>
-            //                 window.open(
-            //                     `https://testnet.monadexplorer.com/tx/${transactionHash}`,
-            //                     "_blank",
-            //                     "noopener,noreferrer"
-            //                 )
-            //             }
-            //         >
-            //             <div className="flex items-center gap-1 p-1">
-            //                 <p>View</p>
-            //             </div>
-            //         </Button>
-            //     ),
-            // }
-
-            // Confirm transaction
-            const receipt = await waitForTransactionReceipt(publicClient, {
-                hash: transactionHash,
-            });
-
-            if (receipt.status == "reverted") {
-                console.log(
-                    `Failed confirmation in ${Date.now() - startTime} ms`
-                );
-                throw Error(
-                    `Failed to confirm transaction: ${transactionHash}`
-                );
-            }
-
-            console.log(
-                `Transaction confirmed in ${Date.now() - startTime} ms: ${response.result
-                }`
-            );
             if (window.location.pathname.includes('2048')) {
                 success({
                     title: 'Confirmed transaction.',
                     text: `${successText} Time: ${Date.now() - startTime} ms`,
-                    tx: transactionHash,
+                    tx: tx,
                     chainId: monadTestnet.id,
                 }, 'bottom-right')
             }
-
-
-            //     {
-            //     description: `${successText} Time: ${
-            //         Date.now() - startTime
-            //     } ms`,
-            //     action: (
-            //         <Button
-            //             className="outline outline-white"
-            //             onClick={() =>
-            //                 window.open(
-            //                     `https://testnet.monadexplorer.com/tx/${transactionHash}`,
-            //                     "_blank",
-            //                     "noopener,noreferrer"
-            //                 )
-            //             }
-            //         >
-            //             <div className="flex items-center gap-1 p-1">
-            //                 <p>View</p>
-            //             </div>
-            //         </Button>
-            //     ),
-            // }
         } catch (error) {
             e = error as Error;
             if (window.location.pathname.includes('2048')) {
@@ -258,17 +176,10 @@ export function useTransactions() {
                     title: 'Failed to send transaction.',
                 }, 'bottom-right')
             }
-
-            //     {
-            //     description: `Error: ${e.message}`,
-            // }
+            if (e) {
+                throw e;
+            }
         }
-
-        if (e) {
-            throw e;
-        }
-
-        
     }
 
     // Returns a the latest stored baord of a game as an array.
@@ -463,8 +374,6 @@ export function useTransactions() {
             }
         });
     }
-
-
 
     useEffect(() => {
         return () => {
