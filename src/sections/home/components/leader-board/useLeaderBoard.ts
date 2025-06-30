@@ -18,13 +18,16 @@ export const useLeaderBoardDapp = ({ type, defaultItem = 'user' }: { type: 'dapp
         const response = await get(urls[type]);
         if (response.code === 200) {
             const newLeaderboard = [...response.data];
+            
             newLeaderboard.sort((a, b) => b.transactions - a.transactions);
             const front3Transactions = newLeaderboard.slice(0, 3);
             setTransactionsFront3(front3Transactions[front3Transactions.length - 1].transactions);
 
-            newLeaderboard.sort((a, b) => b.users - a.users);
-            const front3 = newLeaderboard.slice(0, 3);
-            setUserFront3(front3[front3.length - 1].users);
+            if (type === 'dapp') {
+                newLeaderboard.sort((a, b) => b.users - a.users);
+                const front3 = newLeaderboard.slice(0, 3);
+                setUserFront3(front3[front3.length - 1].users);
+            }
 
             setLeaderboard(newLeaderboard);
         } else {

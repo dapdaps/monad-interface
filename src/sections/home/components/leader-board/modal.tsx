@@ -61,7 +61,7 @@ const Modal: React.FC<ModalProps> = ({ open, onClose, type }) => {
   const { leaderboard, maxUniqueNads, maxTransactions, sortType, item, sort, userFront3, transactionsFront3, loading } = useLeaderBoardDapp({ type, defaultItem: type === 'dapp' ? 'user' : 'transactions' });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center font-Unbounded text-[12px] text-[#D7D7F6] justify-end pr-[200px]" onClick={() => {
+    <div className="fixed inset-0 z-50 flex items-center font-Unbounded text-[12px] text-[#D7D7F6] justify-end pr-[250px]" onClick={() => {
       onClose();
     }}>
       <div className="bg-[#2B294A] rounded-xl border border-[#2B294A] shadow-lg w-full max-w-2xl relative" onClick={(e) => e.stopPropagation()}>
