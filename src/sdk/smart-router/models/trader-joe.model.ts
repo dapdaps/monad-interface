@@ -5,6 +5,9 @@ import routerAbi from "../config/abi/router-trader-joe";
 import bytesAbi from "../config/abi/lfj-bytes";
 import axios from "axios";
 import weth from "../config/weth";
+import { multicall } from "../utils/multicall";
+import { multicallAddresses } from "@/utils/multicall";
+import { DEFAULT_CHAIN_ID } from "@/configs";
 
 // const Interface = new utils.Interface(routerAbi);
 // console.log(
@@ -71,7 +74,7 @@ export class TraderJoe {
 
     const tokens: string[] = [bestRoute.tokenIn.address];
     const percents: number[] = [];
-    const flags: number[] = [];
+    // const flags: number[] = [];
     const pairsAddress: string[] = [];
     const tokenInIds: number[] = [];
     const tokenOutIds: number[] = [];
@@ -101,44 +104,100 @@ export class TraderJoe {
 
     tokens.push(bestRoute.tokenOut.address);
 
-    let nodes = bestRoute.tokenIn.swaps as any[];
-
-    while (nodes.length > 0) {
-      const swap = nodes.shift();
-      if (swap.tokenOut.address === bestRoute.tokenOut.address) {
-        const pairIdx = endSwaps.findIndex(
-          (p) => swap.pair.address === p.pair.address
-        );
-        swap.isLastToken = true;
-        if (pairIdx !== -1) {
-          endSwaps.splice(pairIdx, 1);
-        }
-        endSwaps.push(swap);
-      } else {
-        const pairIdx = frontSwaps.findIndex(
-          (p) => swap.pair.address === p.pair.address
-        );
-        if (pairIdx !== -1) {
-          swap.isLastToken = true;
-          frontSwaps.splice(pairIdx, 1);
-        }
-        frontSwaps.push(swap);
+    const calcFrontNodes = (swap: any, _frontSwaps: any) => {
+      const pairIdx = _frontSwaps.findIndex(
+        (p: any) => swap.pair.address === p.pair.address
+      );
+      if (pairIdx !== -1) {
+        _frontSwaps.splice(pairIdx, 1);
       }
+      if (swap.tokenOut.address === bestRoute.tokenOut.address) {
+        swap.isLastToken = true;
+      }
+      _frontSwaps.push(swap);
+    };
 
+    const calcFirstNodes = (swap: any) => {
+      calcFrontNodes(swap, frontSwaps);
+    };
+
+    for (let i = 0; i < bestRoute.tokenIn.swaps.length; i++) {
+      calcFirstNodes(bestRoute.tokenIn.swaps[i]);
+    }
+
+    for (let j = 0; j < bestRoute.tokenIn.swaps.length; j++) {
+      const swap = bestRoute.tokenIn.swaps[j];
       if (swap.tokenOut.swaps.length) {
-        nodes = nodes.concat(swap.tokenOut.swaps);
+        let nodes: any = swap.tokenOut.swaps;
+        while (nodes.length > 0) {
+          const swap: any = nodes.shift();
+
+          calcFrontNodes(swap, frontSwaps);
+
+          if (swap.tokenOut.swaps.length) {
+            nodes = nodes.concat(swap.tokenOut.swaps);
+          }
+        }
       }
     }
 
+    // old algorithm
+    // let nodes = bestRoute.tokenIn.swaps as any[];
+    // while (nodes.length > 0) {
+    //   const swap = nodes.shift();
+    //   if (swap.tokenOut.address === bestRoute.tokenOut.address) {
+    //     const pairIdx = endSwaps.findIndex(
+    //       (p) => swap.pair.address === p.pair.address
+    //     );
+    //     swap.isLastToken = true;
+    //     if (pairIdx !== -1) {
+    //       endSwaps.splice(pairIdx, 1);
+    //     }
+    //     endSwaps.push(swap);
+    //   } else {
+    //     const pairIdx = frontSwaps.findIndex(
+    //       (p) => swap.pair.address === p.pair.address
+    //     );
+    //     if (pairIdx !== -1) {
+    //       swap.isLastToken = true;
+    //       frontSwaps.splice(pairIdx, 1);
+    //     }
+    //     frontSwaps.push(swap);
+    //   }
+
+    //   if (swap.tokenOut.swaps.length) {
+    //     nodes = nodes.concat(swap.tokenOut.swaps);
+    //   }
+    // }
+
+    const generateFlagsCalls: any = [];
+    const DEX_ID: any = {
+      "v2": 3, // LFJ_LIQUIDITY_BOOK_ID
+      "v1": 1, // UNISWAP_V2_ID
+      "univ3": 4, // UNISWAP_V3_ID
+    };
+
     [...frontSwaps, ...endSwaps].forEach((swap) => {
-      let _flag = 0;
-      if (swap.pair.type === "v1") {
-        _flag = swap.pair.tokenX === swap.tokenIn.address ? 257 : 256;
-      } else {
-        _flag = swap.pair.tokenX === swap.tokenIn.address ? 1027 : 1026;
-      }
+      // let _flag = 0;
+      // if (swap.pair.type === "v1") {
+      //   _flag = swap.pair.tokenX === swap.tokenIn.address ? 257 : 256;
+      // } else {
+      //   _flag = swap.pair.tokenX === swap.tokenIn.address ? 1027 : 1026;
+      // }
       percents.push(swap.isLastToken ? 10000 : swap.amountBp);
-      flags.push(_flag);
+      // flags.push(_flag);
+      generateFlagsCalls.push({
+        address: this.ROUTE_BYTES[inputCurrency.chainId],
+        name: "generateFlags",
+        params: [
+          // dexId
+          DEX_ID[swap.pair.type] || 1,
+          // zeroForOne
+          swap.pair.tokenX === swap.tokenIn.address,
+          // callback
+          swap.pair.type === "univ3"
+        ]
+      });
       pairsAddress.push(swap.pair.address);
 
       tokenInIds.push(
@@ -147,6 +206,14 @@ export class TraderJoe {
       tokenOutIds.push(
         tokens.findIndex((token) => token === swap.tokenOut.address)
       );
+    });
+
+    const flagsResults = await multicall({
+      abi: bytesAbi,
+      calls: generateFlagsCalls,
+      options: { requireSuccess: false },
+      multicallAddress: multicallAddresses[DEFAULT_CHAIN_ID],
+      provider: provider
     });
 
     // const _params = await BytesRouter.decodeRoute(
@@ -170,11 +237,11 @@ export class TraderJoe {
       tokens,
       pairsAddress,
       percents,
-      flags,
+      flagsResults.flat(),
       tokenInIds,
       tokenOutIds
     );
-    // console.log(221, routesBytes);
+
     const returnData = {
       outputCurrencyAmount,
       noPair: false,
