@@ -21,7 +21,7 @@ export default memo(function Footer() {
         data-bp="1001-010"
       >
         <img src="/images/footer/x.svg" alt="x" className="w-[24px] cursor-pointer" />
-        <Tip text="X · @0xNADSA" />
+        <Tip text="X · @0xNADSA" offset={40} />
       </Link>
       <Link
         className="group ease-in-out duration-300 w-[24px] cursor-pointer relative"
@@ -34,7 +34,7 @@ export default memo(function Footer() {
       </Link>
       <Link
         className="group  ease-in-out duration-300 w-[24px] cursor-pointer relative"
-        href="./terminal"
+        href="/terminal"
         target="_blank"
         data-bp="1001-012"
       >
@@ -54,14 +54,14 @@ export default memo(function Footer() {
 });
 
 
-const Tip = ({ text }: { text: string }) => {
+const Tip = ({ text, offset = 0 }: { text: string, offset?: number }) => {
   return (
-    <div className="absolute group-hover:opacity-100 opacity-0 transition-all duration-300 left-1/2 -translate-x-1/2 bottom-[110%] z-50">
+    <div style={{ marginLeft: offset }} className="absolute group-hover:opacity-100 opacity-0 transition-all duration-300 left-1/2 -translate-x-1/2 bottom-[110%] z-50">
       <div className="relative flex flex-col items-center">
-        <div className="px-4 py-2 rounded-lg bg-[#423F6A] text-white font-bold-[300] text-[10px] shadow-lg font-Unbounded whitespace-nowrap">
+        <div className="px-4 py-2 rounded-lg bg-[#1A1843CC] text-white font-bold-[300] text-[10px] shadow-lg font-Unbounded whitespace-nowrap">
           {text}
         </div>
-        <div className="w-0 h-0 border-x-8 border-x-transparent border-t-[10px] mt-[-1px] border-t-[#423F6A]"></div>
+        <div style={{ marginLeft: -offset * 2 }} className="w-0 h-0 border-x-8 border-x-transparent border-t-[10px] mt-[-1px] border-t-[#423F6A]"></div>
       </div>
     </div>
   )
