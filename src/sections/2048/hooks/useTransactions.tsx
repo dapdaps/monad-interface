@@ -73,20 +73,13 @@ export function useTransactions() {
     // User and Wallet objects.
     const { user } = usePrivy();
     const { ready, wallets } = useWallets();
-    const score = use2048Store((store: any) => store.score);
-    const store2048 = use2048Store((store: any) => store);
     // Fetch user nonce on new login.
     const userNonce = useRef(0);
     const userBalance = useRef(BigInt(0));
     const userAddress = useRef("");
-    const rpcStore = useRpcStore();
     const { address: privyUserAddress } = usePrivyAuth({ isBind: false });
-    const rpc = useMemo(() => RPC_LIST[rpcStore.selected].url, [rpcStore.selected]);
     const { info, success, fail, dismiss } = useToast({ isGame: true });
     const queue = useRef(new AdvancedPromiseQueue(1));
-
-
-
     // Resets nonce and balance
     async function resetNonceAndBalance() {
         if (!user) {
