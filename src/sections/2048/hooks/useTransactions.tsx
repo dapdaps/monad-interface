@@ -162,14 +162,37 @@ export function useTransactions() {
 
             // // Fire toast info with benchmark and transaction hash.
             // console.log(`Transaction sent in ${time} ms: ${response.result}`);
-            const receipt = await waitForTransactionReceipt(provider.transport, {
-                hash: tx,
-            });
+            // const receipt = await waitForTransactionReceipt(provider.transport, {
+            //     hash: tx,
+            //     retryCount: 3,
+            //     pollingInterval: 4000,
+            // });
 
-            console.log('receipt', receipt)
+            // console.log('receipt', receipt)
+
+
+            // let receipt = null;
+            // try {
+            //     receipt = await getTransactionReceipt(provider.transport, {
+            //         hash: tx,
+            //     });
+            // } catch (error) {
+            //     console.log('error', error)
+            // }
+            
+            // console.log('receipt', receipt)
+
+            let receipt = { status: 'success' }
+
 
             if (extendData) {
                 reportGameRecord(tx, extendData.score, privyUserAddress);
+            } else {
+                receipt = await waitForTransactionReceipt(provider.transport, {
+                    hash: tx,
+                    retryCount: 3,
+                    pollingInterval: 4000,
+                });
             }
 
             if (receipt.status === 'success') {
