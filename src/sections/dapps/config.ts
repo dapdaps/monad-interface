@@ -39,7 +39,7 @@ export const ALL_DAPP_LIST: IDapp[] = [
     type: "Dex",
     link: "/dex/lfj",
     desc: "The onchain trading platform built for winners. One-stop DEX, Aggregator & Screener for Monad. Discover & buy every token at the best prices.",
-    disabled: true
+    disabled: false
   },
   // feedback-6
   // {
@@ -62,7 +62,7 @@ export const ALL_DAPP_LIST: IDapp[] = [
     type: "Lending",
     link: "/lending/timeswap",
     desc: "Timeswap is the first oracleless lending/borrowing protocol — enabling the creation of money markets for ANY ERC20 tokens.",
-    disabled: true
+    disabled: false
   },
   {
     name: "LEVR",
