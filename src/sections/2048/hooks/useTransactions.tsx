@@ -15,7 +15,7 @@ import {
     parseEther,
     parseGwei,
 } from "viem";
-import { waitForTransactionReceipt } from "viem/actions";
+import { waitForTransactionReceipt, getTransactionReceipt } from "viem/actions";
 import { monadTestnet } from "viem/chains";
 import { useRpcStore } from "@/stores/rpc";
 import useToast from "@/hooks/use-toast";
@@ -133,6 +133,18 @@ export function useTransactions() {
             //     maxPriorityFeePerGas,
             // });
 
+            // console.log('provider:', provider)
+
+            // const tx = await provider.sendRawTransaction({ serializedTransaction: signedTransaction })
+
+            if (window.location.pathname.includes('2048')) {
+                info({
+                    title: 'Sent transaction.',
+                    text: `${successText}`,
+                    chainId: monadTestnet.id,
+                }, 'bottom-right')
+            }
+
             const tx = await provider.sendTransaction({
                 to: GAME_CONTRACT_ADDRESS,
                 account: privyUserAddress,
@@ -143,31 +155,37 @@ export function useTransactions() {
                 maxPriorityFeePerGas,
             })
 
-            const time = Date.now() - startTime;
+            // const time = Date.now() - startTime;
+
+            console.log('tx', tx)
 
 
             // // Fire toast info with benchmark and transaction hash.
             // console.log(`Transaction sent in ${time} ms: ${response.result}`);
-            if (window.location.pathname.includes('2048')) {
-                info({
-                    title: 'Sent transaction.',
-                    text: `${successText} Time: ${time} ms`,
-                    tx: tx,
-                    chainId: monadTestnet.id,
-                }, 'bottom-right')
-            }
+            const receipt = await waitForTransactionReceipt(provider.transport, {
+                hash: tx,
+            });
+
+            console.log('receipt', receipt)
 
             if (extendData) {
                 reportGameRecord(tx, extendData.score, privyUserAddress);
             }
 
-            if (window.location.pathname.includes('2048')) {
-                success({
-                    title: 'Confirmed transaction.',
-                    text: `${successText} Time: ${Date.now() - startTime} ms`,
-                    tx: tx,
-                    chainId: monadTestnet.id,
+            if (receipt.status === 'success') {
+                if (window.location.pathname.includes('2048')) {
+                    success({
+                        title: 'Confirmed transaction.',
+                        text: `${successText} Time: ${Date.now() - startTime} ms`,
+                        tx: tx,
+                        chainId: monadTestnet.id,
+                    }, 'bottom-right')
+                }
+            } else {
+                fail({
+                    title: 'Failed to send transaction.',
                 }, 'bottom-right')
+                throw new Error('Failed to send transaction.')
             }
         } catch (error) {
             e = error as Error;
