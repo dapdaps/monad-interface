@@ -6,6 +6,8 @@ const urls = {
     nadsa: '/dashboard/trade/user',
 }
 
+const unUsedDapps = ['magiceden', 'iZumi', 'OpenOcean'].map((item) => item.toLowerCase());
+
 export const useLeaderBoardDapp = ({ type, defaultItem = 'user' }: { type: 'dapp' | 'nadsa', defaultItem?: 'user' | 'transactions' }) => {
     const [leaderboard, setLeaderboard] = useState<any[]>([]);
     const [sortType, setSortType] = useState<'asc' | 'desc'>('asc');
@@ -17,14 +19,14 @@ export const useLeaderBoardDapp = ({ type, defaultItem = 'user' }: { type: 'dapp
         setLoading(true);
         const response = await get(urls[type]);
         if (response.code === 200) {
-            const newLeaderboard = [...response.data];
+            const newLeaderboard = response.data.filter((item: any) => !unUsedDapps.includes(item.name.toLowerCase()));
             
-            newLeaderboard.sort((a, b) => b.transactions - a.transactions);
+            newLeaderboard.sort((a: any, b: any) => b.transactions - a.transactions);
             const front3Transactions = newLeaderboard.slice(0, 3);
             setTransactionsFront3(front3Transactions[front3Transactions.length - 1].transactions);
 
             if (type === 'dapp') {
-                newLeaderboard.sort((a, b) => b.users - a.users);
+                newLeaderboard.sort((a: any, b: any) => b.users - a.users);
                 const front3 = newLeaderboard.slice(0, 3);
                 setUserFront3(front3[front3.length - 1].users);
             }
