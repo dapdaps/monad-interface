@@ -19,7 +19,11 @@ export const useLeaderBoardDapp = ({ type, defaultItem = 'user' }: { type: 'dapp
         setLoading(true);
         const response = await get(urls[type]);
         if (response.code === 200) {
-            const newLeaderboard = response.data.filter((item: any) => !unUsedDapps.includes(item.name.toLowerCase()));
+            let newLeaderboard = response.data
+
+            if (type === 'dapp') {
+                newLeaderboard = newLeaderboard.filter((item: any) => !unUsedDapps.includes(item.name.toLowerCase()));
+            }
             
             newLeaderboard.sort((a: any, b: any) => b.transactions - a.transactions);
             const front3Transactions = newLeaderboard.slice(0, 3);

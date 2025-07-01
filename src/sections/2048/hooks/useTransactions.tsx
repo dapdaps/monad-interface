@@ -1,10 +1,8 @@
-import { RPC_LIST } from "@/configs/rpc";
+
 import { publicClient } from "../utils/client";
 import { GAME_CONTRACT_ADDRESS } from "../utils/constants";
-import { post } from "../utils/fetch";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { useEffect, useMemo, useRef } from "react";
-import { useThrottleFn } from 'ahooks';
 
 import {
     createWalletClient,
@@ -17,12 +15,10 @@ import {
 } from "viem";
 import { waitForTransactionReceipt, getTransactionReceipt } from "viem/actions";
 import { monadTestnet } from "viem/chains";
-import { useRpcStore } from "@/stores/rpc";
 import useToast from "@/hooks/use-toast";
 import reportGameRecord from "../utils/report";
 import { toast } from "react-toastify";
 import { usePrivyAuth } from "@/hooks/use-privy-auth";
-import { use2048Store } from "@/stores/use2048";
 
 
 class AdvancedPromiseQueue {
