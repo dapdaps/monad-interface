@@ -15,6 +15,7 @@ import { useDebounceFn } from "ahooks";
 import useInviteCodes from "../codes/hooks/use-invite-codes";
 import Starfield from "./Starfield";
 import CodesMission from "./components/codes-mission";
+import LeaderBoard from "./components/leader-board";
 import Link from "next/link";
 
 const itemWidth = 51;
@@ -93,6 +94,7 @@ const Home = () => {
       <Starfield className="bg-[#000]" />
       <div className="absolute top-0 left-0 right-0 h-[calc(623/14.4*var(--rem))] bg-[url(/images/monad/background/bg3.png)] bg-no-repeat bg-contain">
         <CodesMission className="z-[8]" />
+        <LeaderBoard />
       </div>
       <div
         ref={boatFloorRef}
