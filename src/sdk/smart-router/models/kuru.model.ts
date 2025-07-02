@@ -59,7 +59,7 @@ export class Kuru {
     );
 
     const _minAmountOut = utils.parseUnits(
-      ((amountOut * (10000 - slippage)) / 10000).toFixed(outputCurrency.decimals),
+      BigNumber(amountOut).times(1 - slippage).toFixed(outputCurrency.decimals),
       outputCurrency.decimals
     );
 
@@ -73,7 +73,7 @@ export class Kuru {
         inputCurrency.decimals,
         outputCurrency.decimals,
         BigNumber(slippage).times(100).toNumber(),
-        !inputCurrency.isNative
+        true
       );
     } catch(err: any) {
       this.log("estimateGas failed: %o", err);
