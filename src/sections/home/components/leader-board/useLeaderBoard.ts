@@ -20,7 +20,7 @@ export const useLeaderBoardDapp = ({ type, defaultItem = 'user' }: { type: 'dapp
         const response = await get(urls[type]);
         if (response.code === 200) {
             let newLeaderboard = response.data
-            
+
             if (type === 'dapp') {
                 newLeaderboard = newLeaderboard.filter((item: any) => !unUsedDapps.includes(item.name.toLowerCase()));
             }
