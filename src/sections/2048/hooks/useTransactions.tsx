@@ -1,10 +1,8 @@
-import { RPC_LIST } from "@/configs/rpc";
+
 import { publicClient } from "../utils/client";
 import { GAME_CONTRACT_ADDRESS } from "../utils/constants";
-import { post } from "../utils/fetch";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { useEffect, useMemo, useRef } from "react";
-import { useThrottleFn } from 'ahooks';
 
 import {
     createWalletClient,
@@ -17,28 +15,67 @@ import {
 } from "viem";
 import { waitForTransactionReceipt, getTransactionReceipt } from "viem/actions";
 import { monadTestnet } from "viem/chains";
-import { useRpcStore } from "@/stores/rpc";
 import useToast from "@/hooks/use-toast";
 import reportGameRecord from "../utils/report";
 import { toast } from "react-toastify";
 import { usePrivyAuth } from "@/hooks/use-privy-auth";
-import { use2048Store } from "@/stores/use2048";
 
+
+class AdvancedPromiseQueue {
+    queue: (() => Promise<any>)[];
+    concurrency: number;
+    activeCount: number;
+    isProcessing: boolean;
+
+    constructor(concurrency = 1) {
+        this.queue = [];
+        this.concurrency = concurrency;
+        this.activeCount = 0;
+        this.isProcessing = false;
+    }
+
+    enqueue(fn: () => Promise<any>) {
+        this.queue.push(fn);
+        this.processQueue();
+    }
+
+    async processQueue() {
+        if (this.isProcessing || this.activeCount >= this.concurrency) return;
+        this.isProcessing = true;
+
+        while (this.queue.length > 0 && this.activeCount < this.concurrency) {
+            const currentPromise = this.queue.shift();
+            if (!currentPromise) continue;
+            this.activeCount++;
+            try {
+                await currentPromise();
+            } catch (error) {
+                console.error("Failed to send transaction:", error);
+                this.queue = [];
+                break;
+            } finally {
+                this.activeCount--;
+            }
+        }
+
+        this.isProcessing = false;
+        if (this.queue.length > 0 && this.activeCount < this.concurrency) {
+            this.processQueue();
+        }
+    }
+}
 
 export function useTransactions() {
     // User and Wallet objects.
     const { user } = usePrivy();
     const { ready, wallets } = useWallets();
-    const score = use2048Store((store: any) => store.score);
-    const store2048 = use2048Store((store: any) => store);
     // Fetch user nonce on new login.
     const userNonce = useRef(0);
     const userBalance = useRef(BigInt(0));
     const userAddress = useRef("");
-    const rpcStore = useRpcStore();
     const { address: privyUserAddress } = usePrivyAuth({ isBind: false });
-    const rpc = useMemo(() => RPC_LIST[rpcStore.selected].url, [rpcStore.selected]);
     const { info, success, fail, dismiss } = useToast({ isGame: true });
+    const queue = useRef(new AdvancedPromiseQueue(1));
     // Resets nonce and balance
     async function resetNonceAndBalance() {
         if (!user) {
@@ -162,14 +199,34 @@ export function useTransactions() {
 
             // // Fire toast info with benchmark and transaction hash.
             // console.log(`Transaction sent in ${time} ms: ${response.result}`);
-            const receipt = await waitForTransactionReceipt(provider.transport, {
-                hash: tx,
-            });
+            // const receipt = await waitForTransactionReceipt(provider.transport, {
+            //     hash: tx,
+            //     retryCount: 3,
+            //     pollingInterval: 4000,
+            // });
 
-            console.log('receipt', receipt)
+            // console.log('receipt', receipt)
+
+
+            // let receipt = null;
+            // try {
+            //     receipt = await getTransactionReceipt(provider.transport, {
+            //         hash: tx,
+            //     });
+            // } catch (error) {
+            //     console.log('error', error)
+            // }
+
+            // console.log('receipt', receipt)
+
+            let receipt = { status: 'success' }
 
             if (extendData) {
                 reportGameRecord(tx, extendData.score, privyUserAddress);
+            } else {
+                receipt = await waitForTransactionReceipt(provider.transport, {
+                    hash: tx,
+                });
             }
 
             if (receipt.status === 'success') {
@@ -290,40 +347,42 @@ export function useTransactions() {
         userNonce.current = nonce + 1;
         userBalance.current = balance - parseEther("0.0075");
 
-        await sendRawTransactionAndConfirm({
-            nonce: nonce,
-            successText: "Started game!",
-            gas: BigInt(150_000),
-            data: encodeFunctionData({
-                abi: [
-                    {
-                        type: "function",
-                        name: "startGame",
-                        inputs: [
-                            {
-                                name: "gameId",
-                                type: "bytes32",
-                                internalType: "bytes32",
-                            },
-                            {
-                                name: "boards",
-                                type: "uint128[4]",
-                                internalType: "uint128[4]",
-                            },
-                            {
-                                name: "moves",
-                                type: "uint8[3]",
-                                internalType: "uint8[3]",
-                            },
-                        ],
-                        outputs: [],
-                        stateMutability: "nonpayable",
-                    },
-                ],
-                functionName: "startGame",
-                args: [gameId, boards, moves],
-            }),
-        });
+        queue.current.enqueue(async function () {
+            await sendRawTransactionAndConfirm({
+                nonce: nonce,
+                successText: "Started game!",
+                gas: BigInt(150_000),
+                data: encodeFunctionData({
+                    abi: [
+                        {
+                            type: "function",
+                            name: "startGame",
+                            inputs: [
+                                {
+                                    name: "gameId",
+                                    type: "bytes32",
+                                    internalType: "bytes32",
+                                },
+                                {
+                                    name: "boards",
+                                    type: "uint128[4]",
+                                    internalType: "uint128[4]",
+                                },
+                                {
+                                    name: "moves",
+                                    type: "uint8[3]",
+                                    internalType: "uint8[3]",
+                                },
+                            ],
+                            outputs: [],
+                            stateMutability: "nonpayable",
+                        },
+                    ],
+                    functionName: "startGame",
+                    args: [gameId, boards, moves],
+                }),
+            });
+        })
     }
 
     async function playNewMoveTransaction(
@@ -353,44 +412,45 @@ export function useTransactions() {
         userNonce.current = nonce + 1;
         userBalance.current = balance - parseEther("0.005");
 
-
-        await sendRawTransactionAndConfirm({
-            nonce,
-            successText: `Played move ${moveCount}`,
-            gas: BigInt(100_000),
-            data: encodeFunctionData({
-                abi: [
-                    {
-                        type: "function",
-                        name: "play",
-                        inputs: [
-                            {
-                                name: "gameId",
-                                type: "bytes32",
-                                internalType: "bytes32",
-                            },
-                            {
-                                name: "move",
-                                type: "uint8",
-                                internalType: "uint8",
-                            },
-                            {
-                                name: "resultBoard",
-                                type: "uint128",
-                                internalType: "uint128",
-                            },
-                        ],
-                        outputs: [],
-                        stateMutability: "nonpayable",
-                    },
-                ],
-                functionName: "play",
-                args: [gameId, move, board],
-            }),
-            extendData: {
-                score
-            }
-        });
+        queue.current.enqueue(async function () {
+            await sendRawTransactionAndConfirm({
+                nonce,
+                successText: `Played move ${moveCount}`,
+                gas: BigInt(100_000),
+                data: encodeFunctionData({
+                    abi: [
+                        {
+                            type: "function",
+                            name: "play",
+                            inputs: [
+                                {
+                                    name: "gameId",
+                                    type: "bytes32",
+                                    internalType: "bytes32",
+                                },
+                                {
+                                    name: "move",
+                                    type: "uint8",
+                                    internalType: "uint8",
+                                },
+                                {
+                                    name: "resultBoard",
+                                    type: "uint128",
+                                    internalType: "uint128",
+                                },
+                            ],
+                            outputs: [],
+                            stateMutability: "nonpayable",
+                        },
+                    ],
+                    functionName: "play",
+                    args: [gameId, move, board],
+                }),
+                extendData: {
+                    score
+                }
+            });
+        })
     }
 
     useEffect(() => {

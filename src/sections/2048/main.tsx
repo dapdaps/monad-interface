@@ -6,7 +6,6 @@ import { LoginContainer } from '@/sections/terminal/login';
 
 export default function Game2048() {
 
-
     return (
         <LoginContainer>
             <GamePrivyProvider>

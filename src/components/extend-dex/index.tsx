@@ -13,7 +13,7 @@ export default function ExtendDex({ dapps }: any) {
 
 
     return (
-        <div style={{ top: 240 + _dapps?.length * 100 }} className="absolute left-[50%] translate-x-[350px] z-50">
+        <div style={{ top: 640 - _dapps?.length * 100 }} className="absolute left-[50%] translate-x-[350px] z-50">
             <div className="relative z-20">
                 {
                     _dapps.map((dapp: any, idx: number) => (
@@ -31,7 +31,7 @@ export default function ExtendDex({ dapps }: any) {
                     ))
                 }
             </div>
-            <img src="/images/dapps/extend-bg.svg" className="translate-y-[-15px] translate-x-[-1px]" alt="extend-dex" />
+            <img src="/images/dapps/extend-bg.svg" className="translate-y-[-15px] translate-x-[-15px]" alt="extend-dex" />
         </div>
     )
 }
