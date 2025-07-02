@@ -117,7 +117,7 @@ const RulesModal = ({ open, onClose }: RulesModalProps) => {
                                 <div>You can select <span className="font-bold">10x or 50x</span> mode before spinning:</div>
                                 <div>• Spin cost: <span className="font-bold">10x or 50x</span> spins</div>
                                 <div>• Rewards: <span className="font-bold">10x or 50x</span> base prizes</div>
-                                <div>Example: Hit 3 NASDA on 10x mode = <span className="font-bold">80 MON</span></div>
+                                <div>Example: Hit 3 NASDA on 10x mode = <span className="font-bold">50 MON</span></div>
                             </div>
 
                             <div className="flex items-center gap-2 mt-[20px] text-[#A6A6DB] italic">
