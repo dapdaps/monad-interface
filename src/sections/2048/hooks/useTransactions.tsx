@@ -19,6 +19,7 @@ import useToast from "@/hooks/use-toast";
 import reportGameRecord from "../utils/report";
 import { toast } from "react-toastify";
 import { usePrivyAuth } from "@/hooks/use-privy-auth";
+import { use2048Store } from "@/stores/use2048";
 
 
 class AdvancedPromiseQueue {
@@ -26,12 +27,14 @@ class AdvancedPromiseQueue {
     concurrency: number;
     activeCount: number;
     isProcessing: boolean;
+    errorCallBack: (error: Error) => void;
 
-    constructor(concurrency = 1) {
+    constructor(concurrency = 1, errorCallBack: (error: Error) => void) {
         this.queue = [];
         this.concurrency = concurrency;
         this.activeCount = 0;
         this.isProcessing = false;
+        this.errorCallBack = errorCallBack || (() => { });
     }
 
     enqueue(fn: () => Promise<any>) {
@@ -52,6 +55,7 @@ class AdvancedPromiseQueue {
             } catch (error) {
                 console.error("Failed to send transaction:", error);
                 this.queue = [];
+                this.errorCallBack(error as Error);
                 break;
             } finally {
                 this.activeCount--;
@@ -65,7 +69,7 @@ class AdvancedPromiseQueue {
     }
 }
 
-export function useTransactions() {
+export function useTransactions({ errorCallBack }: { errorCallBack: (error: Error) => void }) {
     // User and Wallet objects.
     const { user } = usePrivy();
     const { ready, wallets } = useWallets();
@@ -75,7 +79,12 @@ export function useTransactions() {
     const userAddress = useRef("");
     const { address: privyUserAddress } = usePrivyAuth({ isBind: false });
     const { info, success, fail, dismiss } = useToast({ isGame: true });
-    const queue = useRef(new AdvancedPromiseQueue(1));
+    const queue = useRef(new AdvancedPromiseQueue(1, (error: Error) => {
+        resetNonceAndBalance()
+        errorCallBack(error);
+    }));
+    const updateGameUser = use2048Store((store: any) => store.updateUser);
+    const gameUser = use2048Store((store: any) => store.users[privyUserAddress || ''])
     // Resets nonce and balance
     async function resetNonceAndBalance() {
         if (!user) {
@@ -223,6 +232,7 @@ export function useTransactions() {
 
             if (extendData) {
                 reportGameRecord(tx, extendData.score, privyUserAddress);
+                updateGameUser(privyUserAddress, extendData.score, gameUser.gameId);
             } else {
                 receipt = await waitForTransactionReceipt(provider.transport, {
                     hash: tx,
