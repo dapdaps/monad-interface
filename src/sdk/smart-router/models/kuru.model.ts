@@ -63,21 +63,46 @@ export class Kuru {
       outputCurrency.decimals
     );
 
-    let gasLimit: any = 4000000;
-    try {
-      gasLimit = await TokenSwap.estimateGas(
-        provider.getSigner(account),
-        this.RouterAddress[chainId],
-        bestPath,
-        inputAmount,
-        inputCurrency.decimals,
-        outputCurrency.decimals,
-        BigNumber(slippage).times(100).toNumber(),
-        true
-      );
-    } catch(err: any) {
-      this.log("estimateGas failed: %o", err);
-    }
+    // ⚠️ too low, use default gasLimit
+    // let gasLimit: any = 4000000;
+    // try {
+    //   gasLimit = await TokenSwap.estimateGas(
+    //     provider.getSigner(account),
+    //     this.RouterAddress[chainId],
+    //     bestPath,
+    //     inputAmount,
+    //     inputCurrency.decimals,
+    //     outputCurrency.decimals,
+    //     BigNumber(slippage).times(100).toNumber(),
+    //     true
+    //   );
+    //   this.log("estimateGas: %o", gasLimit.toString());
+    //   gasLimit = BigNumber(gasLimit.toString()).multipliedBy(1.2).toFixed(0);
+    // } catch(err: any) {
+    //   this.log("estimateGas failed: %o", err);
+    // }
+
+    const result: any = {
+      txn: null,
+      outputCurrencyAmount: amountOut,
+      noPair: true,
+      routerAddress: this.RouterAddress[chainId],
+      routes: [
+        {
+          percentage: 100,
+          routes: [
+            {
+              token0: {
+                symbol: inputCurrency.symbol
+              },
+              token1: {
+                symbol: outputCurrency.symbol
+              }
+            }
+          ]
+        }
+      ]
+    };
 
     try {
       const txRequest = await TokenSwap.constructSwapTransaction(
@@ -86,7 +111,6 @@ export class Kuru {
         bestPath,
         _amount,
         _minAmountOut,
-        { gasLimit }
       );
 
       if (txRequest.gasLimit) {
@@ -95,31 +119,14 @@ export class Kuru {
           .toFixed(0);
       }
 
-      return {
-        txn: txRequest,
-        outputCurrencyAmount: amountOut,
-        noPair: false,
-        routerAddress: this.RouterAddress[chainId],
-        routes: [
-          {
-            percentage: 100,
-            routes: [
-              {
-                token0: {
-                  symbol: inputCurrency.symbol
-                },
-                token1: {
-                  symbol: outputCurrency.symbol
-                }
-              }
-            ]
-          }
-        ]
-      };
+      result.txn = txRequest;
+      result.noPair = false;
+
+      return result;
     } catch (error) {
       this.log("quoter error: %o", error);
     }
 
-    return false;
+    return result;
   }
 }
