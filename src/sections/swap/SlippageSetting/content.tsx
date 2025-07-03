@@ -35,11 +35,11 @@ export default function SlippageSettingContent({ show }: any) {
             </div>
           ))}
         </div>
-        <div className="text-black grow h-[40px] rounded-[12px] border border-[#373A53] bg-white flex gap-[10px] items-center pr-[10px]">
+        <div className="text-black grow h-[40px] rounded-[12px] border border-[#373A53] bg-white flex gap-[4px] items-center pr-[5px]">
           <input
             placeholder="0.5"
             value={settingStore.getSlippage()}
-            className="border-0 leading-[40px] pl-[20px] bg-transparent w-full "
+            className="border-0 leading-[40px] pl-[5px] bg-transparent w-full flex-1"
             onChange={(ev: any) => {
               settingStore.setSlippage(Number(ev.target.value));
               setType(Number(ev.target.value) !== 0.5 ? "Custom" : "Auto");
