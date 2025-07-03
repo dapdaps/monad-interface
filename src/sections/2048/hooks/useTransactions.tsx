@@ -471,6 +471,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
     }, [])
 
     return {
+        userBalance,
         privyUserAddress,
         resetNonceAndBalance,
         initializeGameTransaction,
