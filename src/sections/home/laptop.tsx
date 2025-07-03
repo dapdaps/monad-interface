@@ -95,6 +95,7 @@ const Home = () => {
       <div className="absolute top-0 left-0 right-0 h-[calc(623/14.4*var(--rem))] bg-[url(/images/monad/background/bg3.png)] bg-no-repeat bg-contain">
         <CodesMission className="z-[8]" />
         <LeaderBoard />
+        <div className="absolute left-0 right-0 top-[100%] h-[1000px] bg-[#0f0f2b]" />
       </div>
       <div
         ref={boatFloorRef}
