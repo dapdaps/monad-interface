@@ -9,11 +9,14 @@ export const PrivyContext = createContext<any>('');
 const { Provider } = PrivyContext;
 export default function GamePrivyProvider({ children }: { children: React.ReactNode }) {
     const [openDeposit, setOpenDeposit] = useState(false);
+    const [needDeposit, setNeedDeposit] = useState(false)
 
     return (
         <Provider value={{
             openDeposit,
             setOpenDeposit,
+            needDeposit,
+            setNeedDeposit
         }}>
             <PrivyProvider
                 appId={process.env.NEXT_PUBLIC_PRIVY_API_KEY || 'cmbgmatho012fl90mlki6e324'}

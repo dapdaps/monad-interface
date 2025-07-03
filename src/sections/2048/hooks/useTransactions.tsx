@@ -55,6 +55,8 @@ class AdvancedPromiseQueue {
             } catch (error) {
                 console.error("Failed to send transaction:", error);
                 this.queue = [];
+                this.isProcessing = false;
+                this.activeCount = 0;
                 this.errorCallBack(error as Error);
                 break;
             } finally {
@@ -66,6 +68,12 @@ class AdvancedPromiseQueue {
         if (this.queue.length > 0 && this.activeCount < this.concurrency) {
             this.processQueue();
         }
+    }
+
+    clearQueue() {
+        this.queue = [];
+        this.activeCount = 0;
+        this.isProcessing = false;
     }
 }
 
@@ -231,6 +239,14 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             let receipt = { status: 'success' }
 
             if (extendData) {
+                // if (Math.random() < 0.2) {
+                //     receipt = await waitForTransactionReceipt(provider.transport, {
+                //         hash: tx,
+                //         retryCount: 2,
+                //         pollingInterval: 10000,
+                //     });
+                // }
+
                 reportGameRecord(tx, extendData.score, privyUserAddress);
                 updateGameUser(privyUserAddress, extendData.score, gameUser.gameId);
             } else {
@@ -328,10 +344,6 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
 
         return [latestBoard, nextMoveNumber];
     }
-
-
-
-
 
     // Initializes a game. Calls `prepareGame` and `startGame`.
     async function initializeGameTransaction(
@@ -471,10 +483,12 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
     }, [])
 
     return {
+        userBalance,
         privyUserAddress,
         resetNonceAndBalance,
         initializeGameTransaction,
         playNewMoveTransaction,
         getLatestGameBoard,
+        clearQueue: () => queue.current.clearQueue(),
     };
 }

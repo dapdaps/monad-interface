@@ -16,6 +16,7 @@ import {
     hexToBigInt,
     isAddress,
     keccak256,
+    parseEther,
     toBytes,
     toHex,
 } from "viem";
@@ -26,6 +27,7 @@ import { GAME_CONTRACT_ADDRESS } from "./utils/constants";
 import { use2048Store } from "@/stores/use2048";
 import { toast } from "react-toastify";
 import Leaderboard from "./components/Leaderboard";
+import useToast from "@/hooks/use-toast";
 
 // Types
 export enum Direction {
@@ -60,11 +62,13 @@ export default function Game2048() {
     const { user, createWallet } = usePrivy();
 
     const {
+        userBalance,
         privyUserAddress,
         resetNonceAndBalance,
         getLatestGameBoard,
         playNewMoveTransaction,
         initializeGameTransaction,
+        clearQueue,
     } = useTransactions({
         errorCallBack: (error: Error) => {
             resyncGame(activeGameId, gameUser?.score)
@@ -85,10 +89,11 @@ export default function Game2048() {
     const [activeGameId, setActiveGameId] = useState<Hex>("0x");
     const [encodedMoves, setEncodedMoves] = useState<EncodedMove[]>([]);
     const [playedMovesCount, setPlayedMovesCount] = useState<number>(0);
-    const { setOpenDeposit } = useContext(PrivyContext);
+    const { setOpenDeposit, needDeposit, setNeedDeposit } = useContext(PrivyContext);
     // const gameId = use2048Store((store: any) => store.gameId);
     // const score = use2048Store((store: any) => store.score);
     const updateGameUser = use2048Store((store: any) => store.updateUser);
+    const { fail } = useToast({ isGame: true })
 
     const [boardState, setBoardState] = useState<BoardState>({
         tiles: [],
@@ -131,6 +136,7 @@ export default function Game2048() {
 
         if (error.message.includes("insufficient balance")) {
             setOpenDeposit(true)
+            setNeedDeposit(true)
         }
     }
 
@@ -144,8 +150,6 @@ export default function Game2048() {
         const handleKeyDown = async (event: KeyboardEvent) => {
             console.log('== gameOver ==', gameOver, isAnimating, user);
             if (!user || gameOver || isAnimating) return;
-
-            console.log('== handleKeyDown ==', event.key);
 
             switch (event.key) {
                 case "ArrowUp":
@@ -208,6 +212,20 @@ export default function Game2048() {
 
     // Move tiles in the specified direction
     const move = async (direction: Direction) => {
+        if (needDeposit) {
+            await resetNonceAndBalance();
+            if (userBalance.current < Number(parseEther('0.1'))) {
+                setOpenDeposit(true)
+                fail({
+                    title: 'Insufficient balance',
+                    description: 'Please deposit more MON to continue playing.',
+                })
+                return;
+            } else {
+                setNeedDeposit(false)
+            }
+        }
+
         const premoveBoard = boardState;
         const currentMove = playedMovesCount;
 
@@ -330,6 +348,7 @@ export default function Game2048() {
                         moves
                     ).catch((error) => {
                         console.error("Error in init transaction:", error);
+                        resetNonceAndBalance();
                         resetBoardOnError(premoveBoard, currentMove, error);
                     });
                 }
@@ -376,6 +395,7 @@ export default function Game2048() {
 
     // Initialize the game with two random tiles
     const initializeGame = () => {
+        clearQueue();
         setResetBoards([]);
 
         const newBoardState: BoardState = {
@@ -397,6 +417,7 @@ export default function Game2048() {
         setBoardState(newBoardState);
         setGameError(false);
         setGameOver(false);
+
     };
 
     function randomIDForAddress(address: string): Hex {
