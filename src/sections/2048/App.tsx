@@ -68,6 +68,7 @@ export default function Game2048() {
         getLatestGameBoard,
         playNewMoveTransaction,
         initializeGameTransaction,
+        clearQueue,
     } = useTransactions({
         errorCallBack: (error: Error) => {
             resyncGame(activeGameId, gameUser?.score)
@@ -149,8 +150,6 @@ export default function Game2048() {
         const handleKeyDown = async (event: KeyboardEvent) => {
             console.log('== gameOver ==', gameOver, isAnimating, user);
             if (!user || gameOver || isAnimating) return;
-
-            console.log('== handleKeyDown ==', event.key);
 
             switch (event.key) {
                 case "ArrowUp":
@@ -395,6 +394,7 @@ export default function Game2048() {
 
     // Initialize the game with two random tiles
     const initializeGame = () => {
+        clearQueue();
         setResetBoards([]);
 
         const newBoardState: BoardState = {
@@ -416,6 +416,7 @@ export default function Game2048() {
         setBoardState(newBoardState);
         setGameError(false);
         setGameOver(false);
+        
     };
 
     function randomIDForAddress(address: string): Hex {

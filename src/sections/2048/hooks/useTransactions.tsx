@@ -67,6 +67,12 @@ class AdvancedPromiseQueue {
             this.processQueue();
         }
     }
+
+    clearQueue() {
+        this.queue = [];
+        this.activeCount = 0;
+        this.isProcessing = false;
+    }
 }
 
 export function useTransactions({ errorCallBack }: { errorCallBack: (error: Error) => void }) {
@@ -329,10 +335,6 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
         return [latestBoard, nextMoveNumber];
     }
 
-
-
-
-
     // Initializes a game. Calls `prepareGame` and `startGame`.
     async function initializeGameTransaction(
         gameId: Hex,
@@ -477,5 +479,6 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
         initializeGameTransaction,
         playNewMoveTransaction,
         getLatestGameBoard,
+        clearQueue: () => queue.current.clearQueue(),
     };
 }
