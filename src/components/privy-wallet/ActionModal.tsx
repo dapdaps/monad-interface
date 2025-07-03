@@ -172,7 +172,13 @@ const Deposit = ({
                     type="number"
                     min={0}
                     value={amount}
-                    onChange={e => setAmount(Number(e.target.value))}
+                    onKeyDown={e => {
+                        e.stopPropagation();
+                    }}
+                    onChange={e => {
+                        e.stopPropagation();
+                        setAmount(Number(e.target.value))
+                    }}
                     className="flex-1 bg-transparent outline-none text-white text-[14px] px-0 font-Montserrat"
                 />
                 <button
@@ -265,6 +271,9 @@ const Withdraw = ({
                 <input
                     placeholder="0x..."
                     value={withdrawAddress}
+                    onKeyDown={e => {
+                        e.stopPropagation();
+                    }}
                     onChange={e => setWithdrawAddress(e.target.value)}
                     className="flex-1 bg-transparent outline-none text-white text-[14px]  px-0 font-Montserrat"
                 />
@@ -283,7 +292,13 @@ const Withdraw = ({
                     type="number"
                     min={1}
                     value={amount}
-                    onChange={e => setAmount(Number(e.target.value))}
+                    onKeyDown={e => {
+                        e.stopPropagation();
+                    }}
+                    onChange={e => {
+                        e.stopPropagation();
+                        setAmount(Number(e.target.value))
+                    }}
                     className="flex-1 bg-transparent outline-none text-white text-[14px]  px-0 font-Montserrat"
                 />
                 <button
