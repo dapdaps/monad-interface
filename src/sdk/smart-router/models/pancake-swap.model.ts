@@ -482,7 +482,7 @@ export class PancakeSwapUniversal extends PancakeSwap {
     const routerAddress = "0x94D220C58A23AE0c2eE29344b00A30D1c2d9F1bc";
     let type = "v3";
 
-    if (BigNumber(bestTrade?.amountOut).lt(v2Route?.amountOut)) {
+    if (!bestTrade || BigNumber(bestTrade?.amountOut || 0).lt(v2Route?.amountOut || 0)) {
       bestTrade = v2Route;
       type = "v2";
     }

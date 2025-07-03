@@ -15,7 +15,10 @@ export class Kuru {
       { symbol: "WMON", address: "0x760AfE86e5de5fa0Ee542fc7B7B713e1c5425701" }
     ]
   };
-  constructor(chainId: number) {}
+  private log(str: string, ...restParams: any) {
+    console.log(`%cKuru ${str}`, "background: #bcf886;", ...restParams);
+  }
+  constructor(chainId: number) { }
   private getTokenAddress(token: any) {
     return token.isNative
       ? "0x0000000000000000000000000000000000000000"
@@ -47,7 +50,7 @@ export class Kuru {
       poolFetcher,
       pools
     );
-    console.log("bestPath", bestPath);
+    this.log("bestPath: %o", bestPath);
     const amountOut = bestPath.output;
 
     const _amount = utils.parseUnits(
@@ -56,28 +59,33 @@ export class Kuru {
     );
 
     const _minAmountOut = utils.parseUnits(
-      ((amountOut * (100 - slippage)) / 100).toFixed(outputCurrency.decimals),
+      BigNumber(amountOut).times(1 - slippage).toFixed(outputCurrency.decimals),
       outputCurrency.decimals
     );
 
-    const txRequest = await TokenSwap.constructSwapTransaction(
-      provider.getSigner(account),
-      this.RouterAddress[chainId],
-      bestPath,
-      _amount,
-      _minAmountOut
-    );
+    // ⚠️ too low, use default gasLimit
+    // let gasLimit: any = 4000000;
+    // try {
+    //   gasLimit = await TokenSwap.estimateGas(
+    //     provider.getSigner(account),
+    //     this.RouterAddress[chainId],
+    //     bestPath,
+    //     inputAmount,
+    //     inputCurrency.decimals,
+    //     outputCurrency.decimals,
+    //     BigNumber(slippage).times(100).toNumber(),
+    //     true
+    //   );
+    //   this.log("estimateGas: %o", gasLimit.toString());
+    //   gasLimit = BigNumber(gasLimit.toString()).multipliedBy(1.2).toFixed(0);
+    // } catch(err: any) {
+    //   this.log("estimateGas failed: %o", err);
+    // }
 
-    if (txRequest.gasLimit) {
-      txRequest.gasLimit = BigNumber(txRequest.gasLimit.toString())
-        .multipliedBy(1.2)
-        .toFixed(0);
-    }
-
-    return {
-      txn: txRequest,
+    const result: any = {
+      txn: null,
       outputCurrencyAmount: amountOut,
-      noPair: false,
+      noPair: true,
       routerAddress: this.RouterAddress[chainId],
       routes: [
         {
@@ -95,5 +103,30 @@ export class Kuru {
         }
       ]
     };
+
+    try {
+      const txRequest = await TokenSwap.constructSwapTransaction(
+        provider.getSigner(account),
+        this.RouterAddress[chainId],
+        bestPath,
+        _amount,
+        _minAmountOut,
+      );
+
+      if (txRequest.gasLimit) {
+        txRequest.gasLimit = BigNumber(txRequest.gasLimit.toString())
+          .multipliedBy(1.2)
+          .toFixed(0);
+      }
+
+      result.txn = txRequest;
+      result.noPair = false;
+
+      return result;
+    } catch (error) {
+      this.log("quoter error: %o", error);
+    }
+
+    return result;
   }
 }
