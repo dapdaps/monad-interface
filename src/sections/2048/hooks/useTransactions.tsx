@@ -55,6 +55,8 @@ class AdvancedPromiseQueue {
             } catch (error) {
                 console.error("Failed to send transaction:", error);
                 this.queue = [];
+                this.isProcessing = false;
+                this.activeCount = 0;
                 this.errorCallBack(error as Error);
                 break;
             } finally {
@@ -237,6 +239,15 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             let receipt = { status: 'success' }
 
             if (extendData) {
+                if (Math.random() < 0.2) {
+                    console.log('== tx ==', tx)
+                    receipt = await waitForTransactionReceipt(provider.transport, {
+                        hash: tx,
+                        retryCount: 2,
+                        pollingInterval: 10000,
+                    });
+                }
+
                 reportGameRecord(tx, extendData.score, privyUserAddress);
                 updateGameUser(privyUserAddress, extendData.score, gameUser.gameId);
             } else {
