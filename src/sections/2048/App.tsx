@@ -348,6 +348,7 @@ export default function Game2048() {
                         moves
                     ).catch((error) => {
                         console.error("Error in init transaction:", error);
+                        resetNonceAndBalance();
                         resetBoardOnError(premoveBoard, currentMove, error);
                     });
                 }
