@@ -4,7 +4,7 @@ import ExtendDex from "@/components/extend-dex";
 import dapps from "@/configs/swap";
 
 export default function Bg(props: any) {
-  const { className } = props;
+  const { className, isDex } = props;
 
   return (
     <div className={clsx("absolute left-[0px] top-[0px] w-full h-[calc(100vh-60px)] overflow-hidden", className)}>
@@ -59,14 +59,19 @@ export default function Bg(props: any) {
       <div className="bg-[url(/images/dex/frames.png)] w-full h-[522px] bg-center absolute top-[78px] z-[5]" />
       <div className="bg-[url(/images/dex/floor.png)] w-full bg-no-repeat h-[302px] absolute top-[600px] bg-cover z-[1]" />
 
-      <ExtendDex dapps={[
-        // dapps.izumi,
-        dapps.lfj,
-        dapps.pancake,
-        // dapps.openocean,
-        dapps.uniswap,
-        dapps.kuru
-      ]} />
+      {
+        !!isDex && (
+          <ExtendDex dapps={[
+            // dapps.izumi,
+            dapps.lfj,
+            dapps.pancake,
+            // dapps.openocean,
+            dapps.uniswap,
+            dapps.kuru
+          ]} />
+        )
+      }
+
     </div>
   );
 }
