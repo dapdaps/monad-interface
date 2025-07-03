@@ -239,14 +239,13 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             let receipt = { status: 'success' }
 
             if (extendData) {
-                if (Math.random() < 0.2) {
-                    console.log('== tx ==', tx)
-                    receipt = await waitForTransactionReceipt(provider.transport, {
-                        hash: tx,
-                        retryCount: 2,
-                        pollingInterval: 10000,
-                    });
-                }
+                // if (Math.random() < 0.2) {
+                //     receipt = await waitForTransactionReceipt(provider.transport, {
+                //         hash: tx,
+                //         retryCount: 2,
+                //         pollingInterval: 10000,
+                //     });
+                // }
 
                 reportGameRecord(tx, extendData.score, privyUserAddress);
                 updateGameUser(privyUserAddress, extendData.score, gameUser.gameId);
