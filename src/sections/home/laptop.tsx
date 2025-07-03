@@ -94,7 +94,8 @@ const Home = () => {
       <Starfield className="bg-[#000]" />
       <div className="absolute top-0 left-0 right-0 h-[calc(623/14.4*var(--rem))] bg-[url(/images/monad/background/bg3.png)] bg-no-repeat bg-contain">
         <CodesMission className="z-[8]" />
-        <LeaderBoard />
+        {/* Amy#20250703: disable leader board */}
+        {/* <LeaderBoard /> */}
       </div>
       <div
         ref={boatFloorRef}
