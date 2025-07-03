@@ -65,7 +65,11 @@ export default function Game2048() {
         getLatestGameBoard,
         playNewMoveTransaction,
         initializeGameTransaction,
-    } = useTransactions();
+    } = useTransactions({
+        errorCallBack: (error: Error) => {
+            resyncGame(activeGameId, gameUser?.score)
+        }
+    });
 
     // =============================================================//
     //                         Game State                           //
@@ -347,7 +351,7 @@ export default function Game2048() {
                 setBoardState(updatedBoardState);
                 setEncodedMoves(newEncodedMoves);
                 setPlayedMovesCount(moveCount + 1);
-                updateGameUser(privyUserAddress, updatedBoardState.score, activeGameId);
+                // updateGameUser(privyUserAddress, updatedBoardState.score, activeGameId);
 
                 // Check if the game is over
                 if (checkGameOver(updatedBoardState)) {
@@ -385,8 +389,8 @@ export default function Game2048() {
 
         setPlayedMovesCount(1);
         const gameId = randomIDForAddress(privyUserAddress);
-        updateGameUser(privyUserAddress, 0, gameId);
         setActiveGameId(gameId);
+        updateGameUser(privyUserAddress, 0, gameId);
         setIsInited(true)
         setEncodedMoves([tilesToEncodedMove(newBoardState.tiles, 0)]);
 
@@ -763,7 +767,7 @@ export default function Game2048() {
                         <Board
                             containerRef={gameContainerRef}
                             tiles={boardState.tiles}
-                            score={boardState.score}
+                            score={gameUser?.score || 0}
                             gameOver={gameOver}
                             gameError={gameError}
                             gameErrorText={gameErrorText}
@@ -774,7 +778,7 @@ export default function Game2048() {
 
                     <div className="flex items-center justify-between w-full mt-[30px]">
                         <div className="flex flex-col items-start justify-between w-[175px]">
-                            <Scorecard score={boardState.score} />
+                            <Scorecard score={gameUser?.score} />
                             <LoginButton resetGame={initializeGame} />
                         </div>
                         <Controller handleMove={handleMove} />
