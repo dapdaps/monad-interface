@@ -64,7 +64,7 @@ const Starfield: React.FC<StarfieldProps> = ({
     }
     
     // Clear canvas and set background
-    ctx.fillStyle = "rgba(0,10,20,1)";
+    ctx.fillStyle = "#141476";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
     // Draw stars
