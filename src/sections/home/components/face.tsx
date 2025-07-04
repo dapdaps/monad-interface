@@ -22,13 +22,22 @@ export default function Face() {
                 className="w-[50px] absolute top-0 left-[136px] max-w-[50px]"
                 alt="face"
                 animate={{
-                    scale: [1, 1.1, 1]
+                    scale: [1, 1.1, 1],
+                    rotate: [0, 180, 360]
                 }}
                 transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 0.5
+                    scale: {
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 0.5
+                    },
+                    rotate: {
+                        duration: 6,
+                        repeat: Infinity,
+                        ease: "linear",
+                        delay: 0.5
+                    }
                 }}
             />
 
@@ -37,13 +46,22 @@ export default function Face() {
                 className="w-[50px] absolute top-[70px] left-[106px] max-w-[50px]"
                 alt="face"
                 animate={{
-                    scale: [1, 1.1, 1]
+                    scale: [1, 1.1, 1],
+                    rotate: [0, 180, 360]
                 }}
                 transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 1
+                    scale: {
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 1
+                    },
+                    rotate: {
+                        duration: 6,
+                        repeat: Infinity,
+                        ease: "linear",
+                        delay: 1
+                    }
                 }}
             />
 
@@ -52,13 +70,22 @@ export default function Face() {
                 className="w-[50px] absolute top-[-70px] left-[30px] max-w-[50px]"
                 alt="face"
                 animate={{
-                    scale: [1, 1.1, 1]
+                    scale: [1, 1.1, 1],
+                    rotate: [0, 180, 360]
                 }}
                 transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 1.5
+                    scale: {
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: 1.5
+                    },
+                    rotate: {
+                        duration: 6,
+                        repeat: Infinity,
+                        ease: "linear",
+                        delay: 1.5
+                    }
                 }}
             />
         </div>
