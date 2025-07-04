@@ -5,7 +5,7 @@ export default function Face() {
         <div className="absolute left-[18%] top-[10%] ">
             <motion.img
                 src="/images/monad/background/face.png"
-                className="w-[126px] absolute top-0 left-0 max-w-[156px]"
+                className="w-[130px] absolute top-0 left-0 max-w-[156px]"
                 alt="face"
                 animate={{
                     y: [0, -10, 0]
