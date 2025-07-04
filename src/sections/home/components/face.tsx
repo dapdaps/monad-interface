@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 export default function Face() {
     return (
-        <div className="absolute left-[15%] top-[10%] ">
+        <div className="absolute left-[18%] top-[10%] ">
             <motion.img
                 src="/images/monad/background/face.png"
                 className="w-[156px] absolute top-0 left-0 max-w-[156px]"
@@ -49,7 +49,7 @@ export default function Face() {
 
             <motion.img
                 src="/images/monad/background/star-3.png"
-                className="w-[50px] absolute top-[-50px] left-[30px] max-w-[50px]"
+                className="w-[50px] absolute top-[-70px] left-[30px] max-w-[50px]"
                 alt="face"
                 animate={{
                     scale: [1, 1.1, 1]
