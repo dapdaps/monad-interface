@@ -17,6 +17,7 @@ import Starfield from "./Starfield";
 import CodesMission from "./components/codes-mission";
 import LeaderBoard from "./components/leader-board";
 import Link from "next/link";
+import Face from "./components/face";
 
 const itemWidth = 51;
 const itemGap = 6;
@@ -92,7 +93,9 @@ const Home = () => {
   return (
     <div className={`w-full ${window.innerHeight < 900 ? 'min-h-[900px] overflow-y-auto' : 'h-[100dvh]'} relative overflow-hidden`}>
       <Starfield className="bg-[#000]" />
+      <Face />
       <div className="absolute top-0 left-0 right-0 h-[calc(623/14.4*var(--rem))] bg-[url(/images/monad/background/bg3.png)] bg-no-repeat bg-contain">
+        
         <CodesMission className="z-[8]" />
         {/* Amy#20250703: disable leader board */}
         {/* <LeaderBoard /> */}
