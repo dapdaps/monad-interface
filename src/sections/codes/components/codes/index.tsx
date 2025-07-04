@@ -66,8 +66,13 @@ export default memo(function Codes(props: any) {
               }
             </div>
             <div className={clsx("overflow-auto h-[248px] p-[17px_24px] grid grid-cols-2 content-start gap-[16px_24px] text-[#03E212] text-[18px] font-HackerNoonV2 leading-[120%]", listClassName)}>
+              <CodeCountdown
+                missionData={missionData}
+                lastTime={lastTime}
+                getInviteCodes={handleGetInviteCodes}
+              />
               {
-                inviteCodes?.map((code: any) => (
+                inviteCodes?.sort(((a: any, b: any) => a.used - b.used))?.map((code: any) => (
                   <div className="flex items-center gap-[12px] border p-[8px_0_8px_8px] h-[37px] border-[#03E212] bg-[rgba(0,0,0,0.72)]">
                     <span className={clsx(code?.used ? "text-[#005D06] line-through" : "[text-shadow:0_0_10px_rgba(3,226,18,0.5)]")}>{code.code}</span>
                     {
@@ -86,11 +91,6 @@ export default memo(function Codes(props: any) {
                   </div>
                 ))
               }
-              <CodeCountdown
-                missionData={missionData}
-                lastTime={lastTime}
-                getInviteCodes={handleGetInviteCodes}
-              />
             </div>
           </>
         ) : (

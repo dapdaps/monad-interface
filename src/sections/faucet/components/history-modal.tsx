@@ -4,7 +4,11 @@ import HistoryBgSvg from '@public/images/faucet/history_bg.svg';
 import { memo, useEffect } from "react";
 import { useFaucetContext } from "../context";
 import useCheckinList from "../hooks/use-checkin-list";
-import { format } from 'date-fns';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
+
 export default memo(function HistoryModal() {
   const { showHistory, setShowHistory } = useFaucetContext();
   const { loading, checkinList, getCheckinList } = useCheckinList()
@@ -29,7 +33,7 @@ export default memo(function HistoryModal() {
     render: (text: string, record: any) => {
       return (
         <div className='text-white font-Unbounded text-[14px] font-light leading-[150%]'>
-          {format(record?.created_at, "yyyy-MM-dd hh:mm:ss")}
+          {dayjs.utc(record?.created_at).format("YYYY-MM-DD HH:mm:ss UTC")}
         </div>
       );
     },
