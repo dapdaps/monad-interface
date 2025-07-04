@@ -18,13 +18,13 @@ export default memo(function Mobile() {
   } = useFaucetContext();
   const store = useFaucetStore()
   return (
-    <div className="w-full h-full bg-[#0E0F29] overflow-auto scrollbar-hide">
+    <div className="w-full h-screen bg-[#0E0F29] overflow-auto scrollbar-hide">
       <div className="w-full h-full bg-[url('/images/faucet/mobile/bg.png')] bg-no-repeat bg-top bg-cover">
-        <div className='relative m-[60px_0_20px] flex justify-center'>
+        <div className='relative p-[60px_0_20px] flex justify-center'>
           <FaucetFontSvg />
           <div
             data-bp="1002-003"
-            className='absolute right-[10px] top-[3px] cursor-pointer text-[#A5FFFD] font-DogicaPixel text-[12px] leading-[150%]'
+            className='absolute right-[10px] top-[43px] cursor-pointer text-[#A5FFFD] font-DogicaPixel text-[12px] leading-[150%]'
             onClick={() => {
               store.set({
                 showRule: true
