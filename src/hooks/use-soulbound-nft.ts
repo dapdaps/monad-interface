@@ -97,6 +97,9 @@ export const useSoulboundNFT = ({ nftAddress, autoChecking = true }: { nftAddres
     const checkNFT = useCallback(async (): Promise<void> => {
         setChecking(true);
         try {
+
+            console.log('checkNFT: ', address)
+
             const provider = new ethers.providers.JsonRpcProvider(rpc);
 
             const nftContract = new ethers.Contract(
@@ -111,15 +114,15 @@ export const useSoulboundNFT = ({ nftAddress, autoChecking = true }: { nftAddres
 
             const balance = await nftContract.balanceOf(address);
 
-            let tokenId = ''
-            tokenId = await nftContract.tokenOfOwnerByIndex(address, 0);
+            console.log('balance: ', balance.toString())
 
             if (balance.toString() === '0') {
                 setHasNFT(false);
                 setTokenIds([]);
             } else {
+                const tokenId = await nftContract.tokenOfOwnerByIndex(address, 0);
                 setHasNFT(true);
-                setTokenIds([tokenId.toString()]);
+                // setTokenIds([tokenId.toString()]);
             }
 
         } catch (error) {
