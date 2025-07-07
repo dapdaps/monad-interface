@@ -1,5 +1,5 @@
 
-import { publicClient } from "../utils/client";
+import { pollTransactionStatus, publicClient } from "../utils/client";
 import { GAME_CONTRACT_ADDRESS } from "../utils/constants";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { useEffect, useMemo, useRef } from "react";
@@ -88,6 +88,9 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
     const { address: privyUserAddress } = usePrivyAuth({ isBind: false });
     const { info, success, fail, dismiss } = useToast({ isGame: true });
     const queue = useRef(new AdvancedPromiseQueue(1, (error: Error) => {
+        fail({
+            title: 'Transaction failed, resetting state',
+        }, 'bottom-right')
         resetNonceAndBalance()
         errorCallBack(error);
     }));
@@ -239,16 +242,20 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             let receipt = { status: 'success' }
 
             if (extendData) {
-                // if (Math.random() < 0.2) {
-                //     receipt = await waitForTransactionReceipt(provider.transport, {
-                //         hash: tx,
-                //         retryCount: 2,
-                //         pollingInterval: 10000,
-                //     });
-                // }
+                if (Math.random() < 0.2) {
+                    console.log('pollTransactionStatus')
+                    pollTransactionStatus(tx, 5, 4000).catch((error) => {
+                        fail({
+                            title: 'Transaction failed, resetting state',
+                        }, 'bottom-right')
+                        resetNonceAndBalance()
+                        errorCallBack(error);
+                    })
+                }
 
                 reportGameRecord(tx, extendData.score, privyUserAddress);
                 updateGameUser(privyUserAddress, extendData.score, gameUser.gameId);
+                
             } else {
                 receipt = await waitForTransactionReceipt(provider.transport, {
                     hash: tx,

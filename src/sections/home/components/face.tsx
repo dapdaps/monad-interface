@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 export default function Face() {
     return (
         <div className="absolute left-[18%] top-[10%] ">
-            <motion.img
+            <motion.img 
                 src="/images/monad/background/face.png"
                 className="w-[130px] absolute top-0 left-0 max-w-[156px]"
                 alt="face"
