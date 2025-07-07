@@ -2,6 +2,7 @@ import { formatThousandsSeparator } from "@/utils/balance";
 import { get } from "@/utils/http";
 import { useInterval } from "ahooks";
 import React, { useCallback, useEffect, useState } from "react";
+import Round from "./Round";
 
 
 
@@ -46,9 +47,11 @@ export function useLeaderboard() {
 export default function Leaderboard() {
 
     const { leaderboard, loading } = useLeaderboard();
+    const [open, setOpen] = useState(false);
 
     return (
-        <div className="absolute left-[-1px] top-[50%] -translate-y-1/2 w-[355px] bg-[#23224A] rounded-r-2xl p-4 mx-auto shadow-lg border border-[#3B3970]">
+        <>
+        <div className="absolute left-[-1px] top-[50%] -translate-y-1/2 w-[355px] bg-[#23224A] rounded-r-2xl pt-4 overflow-hidden mx-auto shadow-lg border border-[#3B3970]">
             {/* Header */}
             <div className="flex flex-col items-center mb-2">
                 <div className="bg-[#1A1843] flex-1 border border-[#3E347C] rounded-lg px-4 py-6 mb-1 shadow-[7px_10px_0px_0px_#00000040_inset]">
@@ -74,7 +77,7 @@ export default function Leaderboard() {
                 Transmission received: Your 2048 data is live. <br /> Climb the Command Center leaderboard and outsmart the cosmos.
             </div>
             {/* Table */}
-            <div className="mb-2 font-Montserrat mt-[20px]">
+            <div className="mb-2 px-4 font-Montserrat mt-[20px]">
                 <div className="flex justify-between text-[#A6A6DB] text-[14px] mb-1 px-2">
                     <span>Top 10</span>
                     <span>Score</span>
@@ -94,7 +97,7 @@ export default function Leaderboard() {
                             <span className="text-[#fff] text-xs">{formatThousandsSeparator(item.score)}</span>
                         </div>
                     ))}
- 
+
                     {
                         leaderboard.length === 0 && (
                             <div className="flex items-center justify-center h-full pt-[100px]">
@@ -105,8 +108,11 @@ export default function Leaderboard() {
                 </div>
             </div>
             {/* Check history button */}
-            {/* <button className="w-full mt-3 py-2 rounded-lg bg-[#28275A] text-[#A3B7FF] text-sm font-bold">Check history</button> */}
+            <button onClick={() => setOpen(true)} className="w-full mt-3 py-3  bg-[#1E1D33] text-[#A6A6DB] text-[14px] font-Montserrat">Check history</button>
         </div>
+
+        <Round open={open} onClose={() => setOpen(false)}/>
+        </>
     );
 }
 
