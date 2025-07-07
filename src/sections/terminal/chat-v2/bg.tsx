@@ -27,7 +27,7 @@ const ChatBg = (props: any) => {
       />
       <img src="/images/terminal/icon-target.gif" alt="" className="w-[100px] h-[100px] shrink-0 object-contain object-center absolute left-[42px] top-[167px]" />
       <img src="/images/terminal/icon-target.gif" alt="" className="w-[100px] h-[100px] shrink-0 object-contain object-center absolute right-[37px] bottom-[24px]" />
-      <Starfield speed={1.5} numStars={1000} />
+      <Starfield speed={1.5} numStars={1000} bgColor="#010101" />
     </div>
   );
 };
