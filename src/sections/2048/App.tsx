@@ -417,7 +417,7 @@ export default function Game2048() {
         setBoardState(newBoardState);
         setGameError(false);
         setGameOver(false);
-
+        
     };
 
     function randomIDForAddress(address: string): Hex {
