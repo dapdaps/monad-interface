@@ -3,7 +3,7 @@ import { pollTransactionStatus, publicClient } from "../utils/client";
 import { GAME_CONTRACT_ADDRESS } from "../utils/constants";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { useEffect, useMemo, useRef } from "react";
-
+import { useThrottleFn } from 'ahooks';
 import {
     createWalletClient,
     custom,
@@ -242,15 +242,17 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             let receipt = { status: 'success' }
 
             if (extendData) {
-                if (Math.random() < 0.2) {
-                    pollTransactionStatus(tx, 5, 4000).catch((error) => {
-                        fail({
-                            title: 'Transaction failed, resetting state',
-                        }, 'bottom-right')
-                        resetNonceAndBalance()
-                        errorCallBack(error);
-                    })
-                }
+                // if (Math.random() < 0.2) {
+                //     // pollTransactionStatus(tx, 5, 4000).catch((error) => {
+                //     //     fail({
+                //     //         title: 'Transaction failed, resetting state',
+                //     //     }, 'bottom-right')
+                //     //     resetNonceAndBalance()
+                //     //     errorCallBack(error);
+                //     // })
+                //     throttledRun(tx)
+                // }
+                throttledRun(tx)
 
                 reportGameRecord(tx, extendData.score, privyUserAddress);
                 updateGameUser(privyUserAddress, extendData.score, gameUser.gameId);
@@ -487,6 +489,23 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             toast.clearWaitingQueue()
         }
     }, [])
+
+    const { run: throttledRun } = useThrottleFn(
+        (tx: string) => {
+            pollTransactionStatus(tx, 5, 4000).catch((error) => {
+                fail({
+                    title: 'Transaction failed, resetting state',
+                }, 'bottom-right')
+                resetNonceAndBalance()
+                errorCallBack(error);
+            })
+        },
+        {
+            wait: 10000,
+            leading: false,
+            trailing: true,
+        }
+    );
 
     return {
         userBalance,
