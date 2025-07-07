@@ -243,7 +243,6 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
 
             if (extendData) {
                 if (Math.random() < 0.2) {
-                    console.log('pollTransactionStatus')
                     pollTransactionStatus(tx, 5, 4000).catch((error) => {
                         fail({
                             title: 'Transaction failed, resetting state',

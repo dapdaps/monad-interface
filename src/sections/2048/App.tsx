@@ -26,7 +26,7 @@ import { publicClient } from "./utils/client";
 import { GAME_CONTRACT_ADDRESS } from "./utils/constants";
 import { use2048Store } from "@/stores/use2048";
 import { toast } from "react-toastify";
-import Leaderboard from "./components/Leaderboard";
+import Leaderboard from "./components/leaderboard";
 import useToast from "@/hooks/use-toast";
 
 // Types
@@ -417,6 +417,7 @@ export default function Game2048() {
         setBoardState(newBoardState);
         setGameError(false);
         setGameOver(false);
+        clearQueue();
         
     };
 
