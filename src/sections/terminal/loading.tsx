@@ -53,7 +53,7 @@ const ChatLoading = (props: any, ref: any) => {
         className
       )}
     >
-      <Starfield className="!static !z-[0]" />
+      <Starfield className="!static !z-[0]" bgColor="#010101" />
       <motion.img
         ref={boatRef}
         src="/images/chat/loading-bg.png"
