@@ -61,6 +61,7 @@ export default function Game2048() {
 
     const { user, createWallet } = usePrivy();
     const [activeGameId, setActiveGameId] = useState<Hex>("0x");
+    const [playedMovesCount, setPlayedMovesCount] = useState<number>(0);
     const {
         userBalance,
         privyUserAddress,
@@ -70,9 +71,10 @@ export default function Game2048() {
         initializeGameTransaction,
         clearQueue,
     } = useTransactions({
-        errorCallBack: (error: Error) => {
-            resyncGame(activeGameId, gameUser?.score)
-        }
+        errorCallBack: async (error: Error) => {
+            await resyncGame(activeGameId, gameUser?.score)
+        },
+        playedMovesCount,
     });
 
     // =============================================================//
@@ -86,9 +88,9 @@ export default function Game2048() {
     const [faucetModalOpen, setFaucetModalOpen] = useState<boolean>(false);
     const [isInited, setIsInited] = useState<boolean>(false);
 
-
+    
     const [encodedMoves, setEncodedMoves] = useState<EncodedMove[]>([]);
-    const [playedMovesCount, setPlayedMovesCount] = useState<number>(0);
+    
     const { setOpenDeposit, needDeposit, setNeedDeposit } = useContext(PrivyContext);
     // const gameId = use2048Store((store: any) => store.gameId);
     // const score = use2048Store((store: any) => store.score);
