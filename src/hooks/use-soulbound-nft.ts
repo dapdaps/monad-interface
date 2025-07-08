@@ -98,7 +98,6 @@ export const useSoulboundNFT = ({ nftAddress, autoChecking = true }: { nftAddres
         setChecking(true);
         try {
 
-
             const provider = new ethers.providers.JsonRpcProvider(rpc);
 
             const nftContract = new ethers.Contract(

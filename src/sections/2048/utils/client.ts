@@ -42,6 +42,8 @@ export async function pollTransactionStatus(
             const provider = new ethers.providers.JsonRpcProvider(rpc);
             const receipt = await provider.getTransactionReceipt(txHash);
 
+            console.log('pollTransactionStatus receipt', receipt)
+
             // Case 1: Receipt exists (transaction has been mined)
             if (receipt) {
                 // Distinguish between success (status=1) and failure (status=0)
@@ -60,6 +62,8 @@ export async function pollTransactionStatus(
             // Check if maximum retry attempts reached
             if (retries === maxRetries) {
                 onCheck?.(null, retries, new Error(`Transaction ${txHash} timeout unconfirmed`));
+                console.log('pollTransactionStatus Failed to comfirm transaction.')
+                throw new Error('Transaction failed.')
                 return null;
             }
 
@@ -80,6 +84,7 @@ export async function pollTransactionStatus(
                 console.log('pollTransactionStatus Failed to comfirm transaction.')
                 throw new Error('Failed to comfirm transaction.')
             }
+
 
             retries++;
             await new Promise(resolve => setTimeout(resolve, pollInterval));
