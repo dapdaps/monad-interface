@@ -3,7 +3,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import useUser from "./use-user";
 import { toast } from "react-toastify";
 import useToast from "./use-toast";
-// import {UserPill} from '@privy-io/react-auth/ui';
 
 export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
     const { userInfo, getUserInfo, bindGameAddress } = useUser();

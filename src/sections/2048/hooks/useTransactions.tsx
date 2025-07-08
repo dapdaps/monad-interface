@@ -3,7 +3,7 @@ import { pollTransactionStatus, publicClient } from "../utils/client";
 import { GAME_CONTRACT_ADDRESS } from "../utils/constants";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { useEffect, useMemo, useRef } from "react";
-
+import { useThrottleFn } from 'ahooks';
 import {
     createWalletClient,
     custom,
@@ -91,8 +91,8 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
         fail({
             title: 'Transaction failed, resetting state',
         }, 'bottom-right')
-        resetNonceAndBalance()
         errorCallBack(error);
+        toast.clearWaitingQueue()
     }));
     const updateGameUser = use2048Store((store: any) => store.updateUser);
     const gameUser = use2048Store((store: any) => store.users[privyUserAddress || ''])
@@ -168,6 +168,13 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
     }): Promise<any> {
         let e: Error | null = null;
 
+        console.log('nonce:', nonce)
+
+        // @ts-ignore
+        if (window.activeGameId !== activeGameId) {
+            return;
+        }
+
         try {
             // Sign and send transaction.
             const provider = walletClient.current;
@@ -216,68 +223,30 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
 
             console.log('tx', tx)
 
-
-            // // Fire toast info with benchmark and transaction hash.
-            // console.log(`Transaction sent in ${time} ms: ${response.result}`);
-            // const receipt = await waitForTransactionReceipt(provider.transport, {
-            //     hash: tx,
-            //     retryCount: 3,
-            //     pollingInterval: 4000,
-            // });
-
-            // console.log('receipt', receipt)
-
-
-            // let receipt = null;
-            // try {
-            //     receipt = await getTransactionReceipt(provider.transport, {
-            //         hash: tx,
-            //     });
-            // } catch (error) {
-            //     console.log('error', error)
-            // }
-
-            // console.log('receipt', receipt)
-
-            let receipt = { status: 'success' }
+            // @ts-ignore
+            if (window.activeGameId !== gameUser.gameId) {
+                return;
+            }
 
             if (extendData) {
-                if (Math.random() < 0.2) {
-                    console.log('pollTransactionStatus')
-                    pollTransactionStatus(tx, 5, 4000).catch((error) => {
-                        fail({
-                            title: 'Transaction failed, resetting state',
-                        }, 'bottom-right')
-                        resetNonceAndBalance()
-                        errorCallBack(error);
-                    })
-                }
-
+                throttledRun(tx)
                 reportGameRecord(tx, extendData.score, privyUserAddress);
-                updateGameUser(privyUserAddress, extendData.score, gameUser.gameId);
-                
+                updateGameUser(privyUserAddress, extendData.score, extendData.gameId);
             } else {
-                receipt = await waitForTransactionReceipt(provider.transport, {
-                    hash: tx,
-                });
+                await pollTransactionStatus(tx, 10, 1000)
             }
 
-            if (receipt.status === 'success') {
-                if (window.location.pathname.includes('2048')) {
-                    success({
-                        title: 'Confirmed transaction.',
-                        text: `${successText} Time: ${Date.now() - startTime} ms`,
-                        tx: tx,
-                        chainId: monadTestnet.id,
-                    }, 'bottom-right')
-                }
-            } else {
-                fail({
-                    title: 'Failed to send transaction.',
+            if (window.location.pathname.includes('2048')) {
+                success({
+                    title: 'Confirmed transaction.',
+                    text: `${successText} Time: ${Date.now() - startTime} ms`,
+                    tx: tx,
+                    chainId: monadTestnet.id,
                 }, 'bottom-right')
-                throw new Error('Failed to send transaction.')
             }
+
         } catch (error) {
+            console.log('error', error)
             e = error as Error;
             if (window.location.pathname.includes('2048')) {
                 fail({
@@ -441,6 +410,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
         userNonce.current = nonce + 1;
         userBalance.current = balance - parseEther("0.005");
 
+
         queue.current.enqueue(async function () {
             await sendRawTransactionAndConfirm({
                 nonce,
@@ -476,7 +446,8 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                     args: [gameId, move, board],
                 }),
                 extendData: {
-                    score
+                    score,
+                    gameId,
                 }
             });
         })
@@ -488,6 +459,23 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             toast.clearWaitingQueue()
         }
     }, [])
+
+    const { run: throttledRun } = useThrottleFn(
+        (tx: string) => {
+            pollTransactionStatus(tx, 5, 2000).catch((error) => {
+                fail({
+                    title: 'Transaction failed, resetting state',
+                }, 'bottom-right')
+                resetNonceAndBalance()
+                errorCallBack(error);
+            })
+        },
+        {
+            wait: 10000,
+            leading: false,
+            trailing: true,
+        }
+    );
 
     return {
         userBalance,
