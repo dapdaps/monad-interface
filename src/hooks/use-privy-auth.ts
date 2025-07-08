@@ -80,7 +80,7 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
                     account.type === "wallet" &&
                     account.walletClientType === "privy" &&
                     // userInfo.game_address.toLowerCase() === account.address.toLowerCase()
-                    account.address.toLowerCase() === ('0xDF0dE2099aBad26EF439c20c26773C553784363F').toLowerCase()
+                    account.address.toLowerCase() === ('0x7dE2522864892384749b19BbFD47c2f4dc741E09').toLowerCase()
             );
 
             console.log('privyUser', user.linkedAccounts)
