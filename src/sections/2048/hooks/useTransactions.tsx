@@ -77,22 +77,27 @@ class AdvancedPromiseQueue {
     }
 }
 
-export function useTransactions({ errorCallBack }: { errorCallBack: (error: Error) => void }) {
+export function useTransactions({ errorCallBack, playedMovesCount }: { errorCallBack: (error: Error) => void, playedMovesCount: number }) {
     // User and Wallet objects.
     const { user } = usePrivy();
     const { ready, wallets } = useWallets();
     // Fetch user nonce on new login.
     const userNonce = useRef(0);
     const userBalance = useRef(BigInt(0));
+    const userScore = useRef<Record<string, number>>({});
     const userAddress = useRef("");
     const { address: privyUserAddress } = usePrivyAuth({ isBind: false });
     const { info, success, fail, dismiss } = useToast({ isGame: true });
-    const queue = useRef(new AdvancedPromiseQueue(1, (error: Error) => {
+    const queue = useRef(new AdvancedPromiseQueue(1, async (error: Error) => {
         fail({
             title: 'Transaction failed, resetting state',
         }, 'bottom-right')
-        errorCallBack(error);
+        await errorCallBack(error);
         toast.clearWaitingQueue()
+        if (userScore.current[playedMovesCount]) {
+            updateGameUser(privyUserAddress, userScore.current[playedMovesCount], gameUser.gameId);
+            userScore.current = {};
+        }
     }));
     const updateGameUser = use2048Store((store: any) => store.updateUser);
     const gameUser = use2048Store((store: any) => store.users[privyUserAddress || ''])
@@ -229,8 +234,10 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             }
 
             if (extendData) {
-                throttledRun(tx)
+                throttledRun(tx, extendData.moveCount)
                 reportGameRecord(tx, extendData.score, privyUserAddress);
+                console.log('userScore', userScore, extendData.moveCount, extendData.score)
+                userScore.current[extendData.moveCount] = extendData.score;
                 updateGameUser(privyUserAddress, extendData.score, extendData.gameId);
             } else {
                 await pollTransactionStatus(tx, 10, 1000)
@@ -252,6 +259,12 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                 fail({
                     title: 'Failed to send transaction.',
                 }, 'bottom-right')
+                await errorCallBack(error as Error);
+                if (userScore.current[playedMovesCount]) {
+                    updateGameUser(privyUserAddress, userScore.current[playedMovesCount], gameUser.gameId);
+                    userScore.current = {};
+                }
+                
             }
             if (e) {
                 throw e;
@@ -318,6 +331,9 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             args: [gameId],
         });
 
+    
+        console.log('nextMoveNumber', nextMoveNumber)
+
         return [latestBoard, nextMoveNumber];
     }
 
@@ -344,6 +360,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
         const nonce = userNonce.current;
         userNonce.current = nonce + 1;
         userBalance.current = balance - parseEther("0.0075");
+        userScore.current = {}
 
         queue.current.enqueue(async function () {
             await sendRawTransactionAndConfirm({
@@ -448,6 +465,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                 extendData: {
                     score,
                     gameId,
+                    moveCount,
                 }
             });
         })
@@ -461,17 +479,22 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
     }, [])
 
     const { run: throttledRun } = useThrottleFn(
-        (tx: string) => {
-            pollTransactionStatus(tx, 5, 2000).catch((error) => {
+        (tx: string, moveCount: number) => {
+            pollTransactionStatus(tx, 10, 500).catch((error) => {
                 fail({
                     title: 'Transaction failed, resetting state',
                 }, 'bottom-right')
                 resetNonceAndBalance()
                 errorCallBack(error);
+                if (userScore.current[moveCount]) {
+                    updateGameUser(privyUserAddress, userScore.current[moveCount], gameUser.gameId);
+                    userScore.current = {};
+                }
+
             })
         },
         {
-            wait: 10000,
+            wait: 5000,
             leading: false,
             trailing: true,
         }
