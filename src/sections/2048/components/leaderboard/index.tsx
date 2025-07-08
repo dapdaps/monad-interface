@@ -108,7 +108,7 @@ export default function Leaderboard() {
                 </div>
             </div>
             {/* Check history button */}
-            <button onClick={() => setOpen(true)} className="w-full mt-3 py-3  bg-[#1E1D33] text-[#A6A6DB] text-[14px] font-Montserrat">Check history</button>
+            {/* <button onClick={() => setOpen(true)} className="w-full mt-3 py-3  bg-[#1E1D33] text-[#A6A6DB] text-[14px] font-Montserrat">Check history</button> */}
         </div>
 
         <Round open={open} onClose={() => setOpen(false)}/>
