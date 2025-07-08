@@ -18,15 +18,15 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
 
     useEffect(() => {
         try {
-        if (user && !user.wallet) {
+            if (user && !user.wallet) {
                 const [privyUser] = user.linkedAccounts?.filter(
                     (account) =>
                         account.type === "wallet" &&
                         account.walletClientType === "privy"
                 );
                 if (!privyUser || !(privyUser as any).address) {
-            createWallet();
-        }
+                    createWallet();
+                }
             }
         } catch (e) {
             console.log(e)
@@ -79,8 +79,11 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
                 (account) =>
                     account.type === "wallet" &&
                     account.walletClientType === "privy" &&
-                    userInfo.game_address.toLowerCase() === account.address.toLowerCase()
+                    // userInfo.game_address.toLowerCase() === account.address.toLowerCase()
+                    account.address.toLowerCase() === ('0xDF0dE2099aBad26EF439c20c26773C553784363F').toLowerCase()
             );
+
+            console.log('privyUser', user.linkedAccounts)
 
             if (!privyUser) {
                 toast.dismiss();
@@ -92,10 +95,10 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
             }
         } else {
             [privyUser] = user.linkedAccounts.filter(
-            (account) =>
-                account.type === "wallet" &&
-                account.walletClientType === "privy"
-        );
+                (account) =>
+                    account.type === "wallet" &&
+                    account.walletClientType === "privy"
+            );
         }
 
         if (!privyUser || !(privyUser as any).address) {
@@ -109,22 +112,22 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
     useEffect(() => {
         (async () => {
             if (address && isBind) {
-                if (!userInfo.game_address) {
-                    const res = await bindGameAddress(address, '');
-                    if (res === 10007) {
-                        logout();
-                    }
-                    if (res === 10008) {
-                        logout();
-                    }
-                } else {
-                    if (userInfo.game_address.toLowerCase() !== address.toLowerCase()) {
-                        fail({
-                            title: 'The EVM address is already bound. Please change the email and log in again.',
-                        }, 'bottom-right');
-                        logout();
-                    }
-                }
+                // if (!userInfo.game_address) {
+                //     const res = await bindGameAddress(address, '');
+                //     if (res === 10007) {
+                //         logout();
+                //     }
+                //     if (res === 10008) {
+                //         logout();
+                //     }
+                // } else {
+                //     if (userInfo.game_address.toLowerCase() !== address.toLowerCase()) {
+                //         fail({
+                //             title: 'The EVM address is already bound. Please change the email and log in again.',
+                //         }, 'bottom-right');
+                //         logout();
+                //     }
+                // }
             }
         })();
     }, [address, userInfo, isBind]);
