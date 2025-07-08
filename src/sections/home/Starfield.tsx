@@ -11,12 +11,14 @@ interface StarfieldProps {
   className?: string;
   numStars?: number;
   speed?: number;
+  bgColor?: string;
 }
 
 const Starfield: React.FC<StarfieldProps> = ({ 
   className = '',
   numStars = 1900,
-  speed = 1
+  speed = 1,
+  bgColor = "#141476"
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationIdRef = useRef<number>();
@@ -64,7 +66,7 @@ const Starfield: React.FC<StarfieldProps> = ({
     }
     
     // Clear canvas and set background
-    ctx.fillStyle = "#141476";
+    ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
     // Draw stars
@@ -79,7 +81,7 @@ const Starfield: React.FC<StarfieldProps> = ({
       ctx.fillRect(pixelX, pixelY, pixelRadius, pixelRadius);
       ctx.fillStyle = `rgba(209, 255, 255, ${star.o})`;
     }
-  }, [numStars, initializeStars]);
+  }, [numStars, initializeStars, bgColor]);
 
   const executeFrame = useCallback((canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) => {
     if (animateRef.current) {
