@@ -1,19 +1,9 @@
 import React from "react";
 import Image from "next/image";
-
-// 示例静态数据
-const winners = [
-    { rank: 1, address: "0x25b...2315e", score: "213,256", prize: 26, state: "success" },
-    { rank: 2, address: "0x25b...2315e", score: "213,256", prize: 20, state: "success" },
-    { rank: 3, address: "0x25b...2315e", score: "213,256", prize: 12, state: "success" },
-    { rank: 4, address: "0x25b...2315e", score: "213,256", prize: 6, state: "success" },
-    { rank: 5, address: "0x25b...2315e", score: "213,256", prize: 6, state: "success" },
-    { rank: 6, address: "0x25b...2315e", score: "213,256", prize: 6, state: "success" },
-    { rank: 7, address: "0x25b...2315e", score: "213,256", prize: 6, state: "success" },
-    { rank: 8, address: "0x25b...2315e", score: "213,256", prize: 6, state: "success" },
-    { rank: 9, address: "0x25b...2315e", score: "213,256", prize: 6, state: "success" },
-    { rank: 10, address: "0x25b...2315e", score: "213,256", prize: 6, state: "success" },
-];
+import dayjs from "dayjs";
+import { usePrizeRoundDetail } from "./usePrizeRoundDetail";
+import { formatThousandsSeparator } from "@/utils/balance";
+import CircleLoading from "@/components/circle-loading";
 
 
 const rankColors = [
@@ -26,7 +16,9 @@ export const Icon = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="12" fill="#836EF9"></circle><path d="M11.959 3.65234C9.5602 3.65234 3.65234 9.58932 3.65234 12.0001C3.65234 14.4109 9.5602 20.348 11.959 20.348C14.3578 20.348 20.2657 14.4108 20.2657 12.0001C20.2657 9.58943 14.3578 3.65234 11.959 3.65234ZM10.6645 16.7737C9.65297 16.4967 6.93338 11.7158 7.20907 10.6993C7.48475 9.68266 12.2419 6.94963 13.2534 7.22668C14.265 7.50369 16.9847 12.2845 16.709 13.3011C16.4333 14.3176 11.6761 17.0507 10.6645 16.7737Z" fill="white"></path></svg>
 );
 
-const RoundDetail: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+const RoundDetail: React.FC<{ round: any, onBack: () => void }> = ({ round, onBack }) => {
+    const { prizeRoundDetail, getPrizeRoundDetail, loading } = usePrizeRoundDetail({ round: round.round });
+
     return (
         <div className=" w-full text-white max-w-[600px] mx-auto font-Montserrat">
             <div className="flex items-center mb-2 w-full justify-between mt-[20px] px-4 bg-[#836EF933] rounded-md py-2 cursor-pointer" onClick={onBack}>
@@ -35,24 +27,22 @@ const RoundDetail: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         <path d="M6 11L2 6L6 1" stroke="white" stroke-width="2" stroke-linecap="round" />
                     </svg>
                     <div>
-                        Round 4
+                        Round {round.round}
                     </div>
                 </div>
                 <span className="flex items-center mr-4 gap-2">
                     <Icon />
-                    200
+                    {round.prize}
                 </span>
-                <span className="">6.16-6.22,2025</span>
+                <span className="">{dayjs(round.start_time * 1000).format('MM.DD')} - {dayjs(round.end_time * 1000).format('MM.DD,YYYY')}</span>
             </div>
-            {/* 表头 */}
             <div className="flex  py-2 text-[#A6A6DB] text-[14px]">
                 <div className="flex-[2]">Winner</div>
                 <div className="flex-1 text-center">Score</div>
                 <div className="flex-1 text-center">Prize</div>
-                <div className="flex-1 text-center">State</div>
+                <div className="flex-1 text-right min-w-[150px] pr-8">State</div>
             </div>
-            {/* 列表 */}
-            {winners.map((w, idx) => (
+            {prizeRoundDetail && !loading && prizeRoundDetail.map((w, idx) => (
                 <div
                     key={w.rank}
                     className="flex items-center py-3  text-[14px]"
@@ -64,20 +54,36 @@ const RoundDetail: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                             </svg>
                             <div className="relative z-10 text-black w-[28px] h-[28px] flex items-center justify-center left-[2px] top-[2px] text-[12px] font-[600]">{idx + 1}</div>
                         </div>
-                        <span>{w.address}</span>
+                        <span>{w.game_address.slice(0, 5)}...{w.game_address.slice(-5)}</span>
                     </div>
-                    <div className="flex-1 text-center">{w.score}</div>
+                    <div className="flex-1 text-center">{formatThousandsSeparator(w.score)}</div>
                     <div className="flex-1 text-center">{w.prize}</div>
-                    <div className="flex-1 flex justify-center gap-4">
-                        <svg width="18" height="13" viewBox="0 0 18 13" fill="none" className="cursor-pointer" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
-                        </svg>
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="cursor-pointer" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5.36364 9.18182L13 1M13 1H7M13 1V7M4.81818 1H1V13H13V9.18182" stroke="#A9ADB8" />
-                        </svg>
-                    </div>
+                    {
+                        w.tx_hash && <div className="flex-1 flex gap-4 justify-end pr-4">
+                            <svg width="18" height="13" viewBox="0 0 18 13" fill="none" className="cursor-pointer" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
+                            </svg>
+                            <svg onClick={() => {
+                                window.open(`https://testnet.monvision.io/tx/${w.tx_hash}`, '_blank');
+                            }}  width="14" height="14" viewBox="0 0 14 14" fill="none" className="cursor-pointer" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5.36364 9.18182L13 1M13 1H7M13 1V7M4.81818 1H1V13H13V9.18182" stroke="#A9ADB8" />
+                            </svg>
+                        </div>
+                    }
+
+                    {
+                        !w.tx_hash && <div className="flex-1 flex gap-4 justify-end min-w-[150px] pr-4">
+                            Pending
+                        </div>
+                    }
                 </div>
             ))}
+
+            {
+                loading && <div className="flex items-center justify-center h-full pt-[100px]">
+                    <CircleLoading />
+                </div>
+            }
         </div>
     );
 };

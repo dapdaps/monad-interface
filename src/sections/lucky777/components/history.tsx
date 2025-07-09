@@ -111,8 +111,6 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
 
     useEffect(() => {
         if (dataRef.current.length > 0) {
-            console.log('dataRef.current', dataRef.current, winningOnly);
-
             setData(winningOnly ? dataRef.current.filter((item: any) => Number(item.amount) > 0) : dataRef.current);
         } else {
             setData([]);
