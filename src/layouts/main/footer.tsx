@@ -6,11 +6,12 @@ import Sound from "@/components/sound";
 import useIsMobile from "@/hooks/use-isMobile";
 import FooterMobile from './mobile/footer'
 
-export default memo(function Footer() {
+export default memo(function Footer(props: any) {
+  const { isSound = true, isRpc = true, isWallet = true } = props;
 
   const isMobile = useIsMobile();
 
-  if (isMobile) return <FooterMobile />;
+  if (isMobile && isWallet) return <FooterMobile {...props} />;
 
   return (
     <div className="z-[99] fixed bottom-0 left-0 flex items-center gap-[10px] pl-[12px] w-[164px] h-[38px]">
@@ -45,9 +46,13 @@ export default memo(function Footer() {
 
       <div className="fixed right-[10px] bottom-[6px] z-50 flex items-center gap-[8px]">
         {
-          !isMobile && <Sound />
+          !isMobile && isSound && <Sound />
         }
-        <Rpc />
+        {
+          isRpc && (
+            <Rpc />
+          )
+        }
       </div>
     </div>
   );
