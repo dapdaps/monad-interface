@@ -26,7 +26,7 @@ import { publicClient } from "./utils/client";
 import { GAME_CONTRACT_ADDRESS } from "./utils/constants";
 import { use2048Store } from "@/stores/use2048";
 import { toast } from "react-toastify";
-import Leaderboard from "./components/Leaderboard";
+import Leaderboard from "./components/leaderboard";
 import useToast from "@/hooks/use-toast";
 
 // Types
@@ -60,7 +60,8 @@ export default function Game2048() {
     // =============================================================//
 
     const { user, createWallet } = usePrivy();
-
+    const [activeGameId, setActiveGameId] = useState<Hex>("0x");
+    const [playedMovesCount, setPlayedMovesCount] = useState<number>(0);
     const {
         userBalance,
         privyUserAddress,
@@ -70,9 +71,10 @@ export default function Game2048() {
         initializeGameTransaction,
         clearQueue,
     } = useTransactions({
-        errorCallBack: (error: Error) => {
-            resyncGame(activeGameId, gameUser?.score)
-        }
+        errorCallBack: async (error: Error) => {
+            await resyncGame(activeGameId, gameUser?.score)
+        },
+        playedMovesCount,
     });
 
     // =============================================================//
@@ -86,9 +88,9 @@ export default function Game2048() {
     const [faucetModalOpen, setFaucetModalOpen] = useState<boolean>(false);
     const [isInited, setIsInited] = useState<boolean>(false);
 
-    const [activeGameId, setActiveGameId] = useState<Hex>("0x");
+    
     const [encodedMoves, setEncodedMoves] = useState<EncodedMove[]>([]);
-    const [playedMovesCount, setPlayedMovesCount] = useState<number>(0);
+    
     const { setOpenDeposit, needDeposit, setNeedDeposit } = useContext(PrivyContext);
     // const gameId = use2048Store((store: any) => store.gameId);
     // const score = use2048Store((store: any) => store.score);
@@ -396,6 +398,7 @@ export default function Game2048() {
     // Initialize the game with two random tiles
     const initializeGame = () => {
         clearQueue();
+        resetNonceAndBalance()
         setResetBoards([]);
 
         const newBoardState: BoardState = {
@@ -409,6 +412,8 @@ export default function Game2048() {
 
         setPlayedMovesCount(1);
         const gameId = randomIDForAddress(privyUserAddress);
+        // @ts-ignore
+        window.activeGameId = gameId;
         setActiveGameId(gameId);
         updateGameUser(privyUserAddress, 0, gameId);
         setIsInited(true)
@@ -417,7 +422,6 @@ export default function Game2048() {
         setBoardState(newBoardState);
         setGameError(false);
         setGameOver(false);
-        
     };
 
     function randomIDForAddress(address: string): Hex {
@@ -766,6 +770,8 @@ export default function Game2048() {
 
     useEffect(() => {
         if (gameUser && !isInited && gameUser.gameId) {
+            // @ts-ignore
+            window.activeGameId = gameUser.gameId;
             setActiveGameId(gameUser.gameId);
             setIsInited(true);
             resyncGame(gameUser.gameId, gameUser.score);
