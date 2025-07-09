@@ -115,14 +115,12 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
             startSpinBalance.current = false;
             setIsPending(false);
         }
-
-
     }, [address, refreshData, sendTransaction, tokenBalance, spinUserData]);
 
     useInterval(async () => {
-        if (spinBalance.current === spinUserData.spin_balance && startSpinBalance.current) {
+        if (spinUserData &&spinBalance.current === spinUserData.spin_balance && startSpinBalance.current) {
             refreshData();
-        } else {
+        } else if (spinUserData) {
             startSpinBalance.current = false;
             spinBalance.current = spinUserData.spin_balance;
         }

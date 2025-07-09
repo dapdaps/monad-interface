@@ -30,7 +30,7 @@ function getTimeLeftToUTC24() {
   };
 }
 
-const WHEEL_SIZE = 500;
+const WHEEL_SIZE = 600;
 const WHEEL_AREA = 120;
 const WHEEL_ICON_SIZE = 65;
 const SPIN_PROGRESS_BASE = 10; // percent
@@ -539,7 +539,6 @@ export default memo(function Tiger(props: any) {
 
         <div className="absolute w-[386px] h-[168px] left-1/2 top-[148px] -translate-x-1/2 overflow-hidden">
           {/*#region Left*/}
-
           <motion.div
             className="absolute left-0 top-1/2 translate-x-[calc(-50%_+_60px)] -translate-y-1/2 [perspective:1000px]"
             style={{
@@ -571,9 +570,8 @@ export default memo(function Tiger(props: any) {
               }
             </motion.div>
           </motion.div>
-
-
           {/*#endregion*/}
+
           {/*#region Center*/}
           <motion.div
             className="absolute left-1/2 top-1/2 translate-x-[calc(-50%_+_5px)] -translate-y-1/2 [perspective:1000px]"
@@ -607,6 +605,7 @@ export default memo(function Tiger(props: any) {
             </motion.div>
           </motion.div>
           {/*#endregion*/}
+
           {/*#region Right*/}
           <motion.div
             className="absolute right=0 top-1/2 translate-x-[calc(-50%_+_340px)] -translate-y-1/2 [perspective:1000px]"
@@ -814,11 +813,24 @@ export default memo(function Tiger(props: any) {
             >Buy</motion.button>
           </div>
         </div>
+
+        <div className='absolute bottom-[80px] left-[40px] z-[2] w-[127px] h-[175px]'>
+          <img src="/images/lucky777/chogstarrr-t.png" alt="" className='w-full h-full absolute top-0 left-0' />
+          <div
+            className="absolute left-1/2 -translate-x-1/2 bottom-[26px] font-Montserrat text-[14px] font-bold italic text-white rotate-[-5deg]"
+            style={{
+              WebkitTextStroke: '1px #000',
+            }}
+          >
+            49/50
+          </div>
+        </div>
       </div>
 
       <BuyTimesModal open={openBuyTimes} spinUserData={spinUserData} onClose={() => setOpenBuyTimes(false)} refreshData={getSpinUserData} />
       <HistoryModal open={openHistory} onClose={() => setOpenHistory(false)} />
       <RulesModal open={openRules} onClose={() => setOpenRules(false)} />
+      
     </div>
   )
 });

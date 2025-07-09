@@ -46,6 +46,10 @@ export function useLuckyBera() {
       fail({ title: `Spin failed: ${res.message || res.data}` }, 'bottom-right');
       return false;
     }
+
+    console.log('handleSpinResult:', res.data);
+    // res.data.draw_code = '666';
+
     reloadSpinData(res.data);
     return res.data;
   }, {
