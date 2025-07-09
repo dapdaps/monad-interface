@@ -59,7 +59,7 @@ const RoundDetail: React.FC<{ round: any, onBack: () => void }> = ({ round, onBa
                     <div className="flex-1 text-center">{formatThousandsSeparator(w.score)}</div>
                     <div className="flex-1 text-center">{w.prize}</div>
                     {
-                        w.tx_hash && <div className="flex-1 flex gap-4 justify-end pr-4">
+                        w.tx_hash && <div className="flex-1 flex gap-4 justify-end pr-4 min-w-[150px]">
                             <svg width="18" height="13" viewBox="0 0 18 13" fill="none" className="cursor-pointer" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
                             </svg>
