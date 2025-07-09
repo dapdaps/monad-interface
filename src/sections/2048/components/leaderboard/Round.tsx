@@ -41,7 +41,6 @@ const Round: React.FC<RoundProps> = ({ open, onClose }) => {
                     <div className="text-center mt-[-10px]">
                         <img src="/images/2048/leaderboard-title.svg" alt="leaderboard 2048" className="w-[295px] mx-auto max-w-full" />
                     </div>
-
                     {
                         !showRoundDetail && <div className="w-full mt-[20px]">
                             <div className="grid grid-cols-3 text-[#A6A6DB] text-[14px] px-6 py-2">
