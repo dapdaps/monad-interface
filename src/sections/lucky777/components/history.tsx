@@ -192,7 +192,7 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                                     {
                                         item.code === '666' && (<>
                                             <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                WL
+                                                1 WL
                                                 <img src="/images/lucky777/chogstarrr-icon.png" alt="ML" className="w-[20px] h-[20px]" />
                                             </div>
                                             <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">Pending</div>
