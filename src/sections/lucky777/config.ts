@@ -20,14 +20,14 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     icon: "/images/lucky777/logo/monad.svg",
     value: SpinCategory.Gem,
     centerScale: 0.85,
-    centerY: 5,
+    centerY: 0,
   },
   [SpinCategory.Bear]: {
     code: "3",
     icon: "/images/lucky777/logo/molandak.svg",
     value: SpinCategory.Bear,
     centerScale: 0.85,
-    centerY: 5,
+    centerY: 0,
   },
   [SpinCategory.Bee]: {
     code: "4",
@@ -41,14 +41,14 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     icon: "/images/lucky777/logo/chog.svg",
     value: SpinCategory.Honey,
     centerScale: 0.85,
-    centerY: -5,
+    centerY: 5,
   },
   [SpinCategory.Chogstarrr]: {
     code: "6",
     icon: "/images/lucky777/logo/chogstarrr.png",
     value: SpinCategory.Chogstarrr,
     centerScale: 1,
-    centerY: 3,
+    centerY: 15,
   },
 };
 

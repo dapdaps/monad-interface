@@ -46,7 +46,7 @@ export default function Notice() {
     // }
 
     return (
-        <div className="absolute top-[-90px] left-[50%] -translate-x-1/2 w-[446px] h-[74px] bg-[#1D1E22CC] rounded-[16px] overflow-hidden border-[1px] border-[#6750FF] px-8 shadow-[0_0_24px_4px_rgba(128,0,255,0.2)]">
+        <div className="absolute top-[-90px] left-[50%] -translate-x-1/2 w-[446px] h-[74px] bg-[#1D1E22CC] rounded-[16px] overflow-hidden border-[1px] border-[#6750FF] shadow-[0_0_24px_4px_rgba(128,0,255,0.2)]">
             <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                     key={index}
@@ -54,10 +54,10 @@ export default function Notice() {
                     animate={{ y: 0 }}
                     exit={{ y: '-100%' }}
                     transition={{ duration: 0.5 }}
-                    className="absolute w-full left-0 top-0 h-[74px] text-center flex items-center justify-center"
+                    className="absolute w-full left-0 top-0 h-[74px] flex justify-start pl-4"
                 >
-                    <div className="flex items-center space-x-4 py-2">
-                        <div className="mr-2 ml-1 flex-shrink-0">
+                    <div className="flex items-center space-x-2 py-2">
+                        <div className="mx-1 flex-shrink-0">
                             <img src="/images/lucky777/reward.svg" alt="" className="w-[42px] h-[42px]" />
                         </div>
                         <div >
@@ -68,7 +68,7 @@ export default function Notice() {
                                 item && <div className="mt-1 flex justify-start items-center space-x-2 font-Pixelmix text-[14px] text-[#C7C7D9]">
                                     <span>[{dayjs(item.timestamp * 1000).format('HH:mm:ss')}]</span>
                                     <span className="text-[#C7C7D9]">[{item.name ? addressFormated(item.name) : addressFormated(item.address)}]</span>
-                                    <TypingText text={item.code !== '666' ? `Win ${item.amount} MON` : `1 ChogStarrr`} speed={50} />
+                                    <TypingText text={item.draw_code !== '666' ? `Win ${item.amount} MON` : `1 hogstarrr WL`} speed={50} />
                                     {/* {
                                         item.code !== '666' && (<a
                                             href={`https://testnet.monvision.io/tx/${item.tx_hash}`}

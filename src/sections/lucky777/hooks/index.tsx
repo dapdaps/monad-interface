@@ -50,6 +50,9 @@ export function useLuckyBera() {
 
     console.log('handleSpinResult:', res.data);
     // res.data.draw_code = '666';
+    if (res.data.draw_code === '666') {
+      getChogStarrr();
+    }
 
     reloadSpinData(res.data);
     return res.data;

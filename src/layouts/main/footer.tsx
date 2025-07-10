@@ -66,7 +66,7 @@ const Tip = ({ text, offset = 0 }: { text: string, offset?: number }) => {
         <div className="px-4 py-2 rounded-lg bg-[#1A1843CC] text-white font-bold-[300] text-[10px] shadow-lg font-Unbounded whitespace-nowrap">
           {text}
         </div>
-        <div style={{ marginLeft: -offset * 2 }} className="w-0 h-0 border-x-8 border-x-transparent border-t-[10px] mt-[-1px] border-t-[#423F6A]"></div>
+        <div style={{ marginLeft: -offset * 2 }} className="w-0 h-0 border-x-8 border-x-transparent border-t-[10px] mt-[-1px] border-t-[#1A1843CC]"></div>
       </div>
     </div>
   )

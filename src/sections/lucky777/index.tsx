@@ -1,5 +1,5 @@
 "use client"
-import React from 'react';
+import React, { useState } from 'react';
 import Tiger from './components/tiger'
 import { useLuckyBera } from '@/sections/lucky777/hooks';
 import { useBuyHoney } from '@/sections/lucky777/hooks/buy-honey';
@@ -30,9 +30,11 @@ const TigerView: React.FC<any> = () => {
     chogStarrr,
   } = useLuckyBera();
   const { visible, toggleVisible } = useBuyHoney();
+  const [update, setUpdate] = useState<any>(1);
 
   return (
     <Tiger
+      key={update}
       spinUserData={spinUserData}
       lastSpinResult={lastSpinResult}
       getSpinUserData={getSpinUserData}
@@ -41,6 +43,7 @@ const TigerView: React.FC<any> = () => {
       multiple={multiple}
       setMultiple={setMultiple}
       chogStarrr={chogStarrr}
+      onUpdate={() => setUpdate(update + 1)}
     />
   );
 };

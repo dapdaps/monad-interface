@@ -30,7 +30,7 @@ function getTimeLeftToUTC24() {
   };
 }
 
-const WHEEL_SIZE = 600;
+// const WHEEL_SIZE = 600;
 const WHEEL_AREA = 120;
 const WHEEL_ICON_SIZE = 65;
 const SPIN_PROGRESS_BASE = 10; // percent
@@ -38,8 +38,8 @@ const EXPLOSION_COIN_SIZE = 100;
 
 const TOTAL_SPINS = 50;
 
-const SpinCategories = Object.values(SPIN_CATEGORIES);
-const SpinCategoryRotation = WHEEL_AREA / SpinCategories.length;
+// const SpinCategories = Object.values(SPIN_CATEGORIES);
+// const SpinCategoryRotation = WHEEL_AREA / SpinCategories.length;
 const SpinBase = 10;
 
 const WheelInfinityDelay = 0.3;
@@ -64,6 +64,21 @@ export default memo(function Tiger(props: any) {
     chogStarrr,
   } = props;
 
+  const [WHEEL_SIZE, setWHEEL_SIZE] = useState(Number(chogStarrr?.remaining) > 0 ? 600 : 500);
+  const [SpinCategories, setSpinCategories] = useState(Object.values(SPIN_CATEGORIES));
+  const [SpinCategoryRotation, setSpinCategoryRotation] = useState(WHEEL_AREA / SpinCategories.length);
+
+  useEffect(() => {
+    if (Number(chogStarrr?.remaining) > 0) {
+      setWHEEL_SIZE(600);
+      setSpinCategoryRotation(WHEEL_AREA / 6);
+    } else {
+      setWHEEL_SIZE(500);
+      setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '6'));
+      setSpinCategoryRotation(WHEEL_AREA / 5);
+    }
+  }, [chogStarrr]);
+
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [openBuyTimes, setOpenBuyTimes] = useState(false);
   const [openHistory, setOpenHistory] = useState(false);
@@ -77,7 +92,7 @@ export default memo(function Tiger(props: any) {
   const [pressed1, setPressed1] = useState(false);
   const [pressed2, setPressed2] = useState(false);
   const [pressed3, setPressed3] = useState(false);
-  
+
   const soundStore = useSoundStore()
 
   const [leftWheel, leftWheelAnimate] = useAnimate();
@@ -399,11 +414,18 @@ export default memo(function Tiger(props: any) {
       // setTitle(DEFAULT_UNLUCKY_TITLE);
       playSound(2)
       startCoinExplosion(res);
+
+      
     } else {
       if (res.draw_code === '666') {
         success({ title: `WON 1 ChogStarrr` }, 'bottom-right');
         setTitle(('WON 1 ChogStarrr').repeat(2));
         playSound(2)
+        setTimeout(() => {
+          if (Number(chogStarrr?.remaining) === 0) {
+            startSlowScroll()
+          }
+        }, 3000);
       } else {
         setTitle(DEFAULT_UNLUCKY_TITLE);
       }
@@ -693,8 +715,9 @@ export default memo(function Tiger(props: any) {
             data-bp="1009-009"
             data-click-sound
             className="group absolute bottom-[280px] left-[190px] z-[4] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x1.svg')] bg-no-repeat bg-center bg-contain "
-            animate={{ backgroundImage: 
-              spinUserData?.spin_balance < 1 ? "url('/images/lucky777/multiple/x1-disabled.svg')" : multiple === 1 ? "url('/images/lucky777/multiple/x1-press.svg')" : "url('/images/lucky777/multiple/x1.svg')" 
+            animate={{
+              backgroundImage:
+                spinUserData?.spin_balance < 1 ? "url('/images/lucky777/multiple/x1-disabled.svg')" : multiple === 1 ? "url('/images/lucky777/multiple/x1-press.svg')" : "url('/images/lucky777/multiple/x1.svg')"
             }}
             onClick={() => {
               if (spinUserData?.spin_balance < 1) {
@@ -713,8 +736,10 @@ export default memo(function Tiger(props: any) {
             data-click-sound
             data-bp="1009-010"
             className="absolute group bottom-[280px] left-[80px] z-[4] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x10.svg')] bg-no-repeat bg-center bg-contain "
-            animate={{ backgroundImage: 
-              spinUserData?.spin_balance < 10 ? "url('/images/lucky777/multiple/x10-disabled.svg')" : multiple === 10 ? "url('/images/lucky777/multiple/x10-press.svg')" : "url('/images/lucky777/multiple/x10.svg')" }}
+            animate={{
+              backgroundImage:
+                spinUserData?.spin_balance < 10 ? "url('/images/lucky777/multiple/x10-disabled.svg')" : multiple === 10 ? "url('/images/lucky777/multiple/x10-press.svg')" : "url('/images/lucky777/multiple/x10.svg')"
+            }}
             onClick={() => {
               if (spinUserData?.spin_balance < 10) {
                 return;
@@ -732,8 +757,10 @@ export default memo(function Tiger(props: any) {
             data-bp="1009-011"
             data-click-sound
             className="absolute group bottom-[320px] left-[150px] z-[2] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x50.svg')] bg-no-repeat bg-center bg-contain "
-            animate={{ backgroundImage: 
-              spinUserData?.spin_balance < 50 ? "url('/images/lucky777/multiple/x50-disabled.svg')" : multiple === 50 ? "url('/images/lucky777/multiple/x50-press.svg')" : "url('/images/lucky777/multiple/x50.svg')" }}
+            animate={{
+              backgroundImage:
+                spinUserData?.spin_balance < 50 ? "url('/images/lucky777/multiple/x50-disabled.svg')" : multiple === 50 ? "url('/images/lucky777/multiple/x50-press.svg')" : "url('/images/lucky777/multiple/x50.svg')"
+            }}
             onClick={() => {
               if (spinUserData?.spin_balance < 50) {
                 return;
@@ -821,20 +848,25 @@ export default memo(function Tiger(props: any) {
           </div>
         </div>
 
-        <div className='absolute bottom-[80px] left-[40px] z-[2] w-[127px] h-[175px]'>
-          <img src="/images/lucky777/chogstarrr-t.png" alt="" className='w-full h-full absolute top-0 left-0' />
-          <div
-            className="absolute left-1/2 -translate-x-1/2 bottom-[26px] font-Montserrat text-[14px] font-bold italic text-white rotate-[-5deg] drop-shadow-[2px_2px_0_#000] [text-shadow:0_0_2px_#000,1px_1px_0_#000,-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000]"
-          >
-            {chogStarrr.remaining}/{chogStarrr.total}
-          </div>
-        </div>
+        {
+          Number(chogStarrr?.remaining) > 0 && (
+            <div className='absolute bottom-[80px] left-[40px] z-[2] w-[127px] h-[175px]'>
+              <img src="/images/lucky777/chogstarrr-t.png" alt="" className='w-full h-full absolute top-0 left-0' />
+              <div
+                className="absolute left-1/2 -translate-x-1/2 bottom-[26px] font-Montserrat text-[14px] font-bold italic text-white rotate-[-5deg] drop-shadow-[2px_2px_0_#000] [text-shadow:0_0_2px_#000,1px_1px_0_#000,-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000]"
+              >
+                {chogStarrr.remaining}/{chogStarrr.total}
+              </div>
+            </div>
+          )
+        }
+
       </div>
 
       <BuyTimesModal open={openBuyTimes} spinUserData={spinUserData} onClose={() => setOpenBuyTimes(false)} refreshData={getSpinUserData} />
       <HistoryModal open={openHistory} onClose={() => setOpenHistory(false)} />
       <RulesModal open={openRules} onClose={() => setOpenRules(false)} />
-      
+
     </div>
   )
 });
