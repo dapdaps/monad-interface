@@ -192,7 +192,7 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                                     {
                                         item.code === '666' && (<>
                                             <div className="flex-1 flex items-center gap-2 whitespace-nowrap">ChogStarrr</div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end">Pending</div>
+                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">Pending</div>
                                         </>
                                         )
                                     }
@@ -222,7 +222,7 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                                                 }
 
                                                 {
-                                                    Number(item.amount) > 0 && !item.tx_hash && <>Pending</>
+                                                    Number(item.amount) > 0 && !item.tx_hash && <span className="text-[#78FEFF]">Pending</span>
                                                 }
 
                                                 {

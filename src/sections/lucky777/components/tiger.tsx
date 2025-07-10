@@ -394,13 +394,19 @@ export default memo(function Tiger(props: any) {
     }
 
     if (Number(res.draw_amount) > 0) {
-      success({ title: `Get ${res.draw_amount} MON` }, 'bottom-right');
+      success({ title: `WON ${res.draw_amount} MON` }, 'bottom-right');
       setTitle(('WON ' + res.draw_amount + ' MON!').repeat(2));
       // setTitle(DEFAULT_UNLUCKY_TITLE);
       playSound(2)
       startCoinExplosion(res);
     } else {
-      setTitle(DEFAULT_UNLUCKY_TITLE);
+      if (res.draw_code === '666') {
+        success({ title: `WON 1 ChogStarrr` }, 'bottom-right');
+        setTitle(('WON 1 ChogStarrr').repeat(2));
+        playSound(2)
+      } else {
+        setTitle(DEFAULT_UNLUCKY_TITLE);
+      }
     }
 
     // if (Number(res.draw_code) % 111 === 0 || (res.points_balance >= MAX_POINT && spinUserData?.points_balance < MAX_POINT)) {
