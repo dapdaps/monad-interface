@@ -182,46 +182,58 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                                 </>
                             )
                         }
+
                         {
                             type === "payouts" && (
                                 <>
                                     <div className="flex-1 flex items-center gap-2">
                                         X {item.spin}
                                     </div>
-                                    <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                        {item.amount} MON
-                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <circle cx="10" cy="10" r="10" fill="#836EF9" />
-                                            <path d="M9.99996 4C8.26731 4 4 8.2672 4 9.99996C4 11.7327 8.26731 16 9.99996 16C11.7326 16 16 11.7326 16 9.99996C16 8.26727 11.7327 4 9.99996 4ZM9.06497 13.431C8.33432 13.2319 6.36993 9.79563 6.56906 9.06498C6.76819 8.33429 10.2044 6.36992 10.935 6.56905C11.6657 6.76815 13.6301 10.2043 13.431 10.935C13.2318 11.6657 9.79563 13.6301 9.06497 13.431Z" fill="white" />
-                                        </svg>
-                                    </div>
-                                    <div className="flex-1 flex items-center gap-2 justify-end">
-                                        {
-                                            Number(item.amount) > 0 && item.tx_hash && <>
-                                                
-                                                <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
+                                    {
+                                        item.code === '666' && (<>
+                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">ChogStarrr</div>
+                                            <div className="flex-1 flex items-center gap-2 justify-end">Pending</div>
+                                        </>
+                                        )
+                                    }
+
+                                    {
+                                        item.code !== '666' && (<>
+                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
+                                                {item.amount} MON
+                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <circle cx="10" cy="10" r="10" fill="#836EF9" />
+                                                    <path d="M9.99996 4C8.26731 4 4 8.2672 4 9.99996C4 11.7327 8.26731 16 9.99996 16C11.7326 16 16 11.7326 16 9.99996C16 8.26727 11.7327 4 9.99996 4ZM9.06497 13.431C8.33432 13.2319 6.36993 9.79563 6.56906 9.06498C6.76819 8.33429 10.2044 6.36992 10.935 6.56905C11.6657 6.76815 13.6301 10.2043 13.431 10.935C13.2318 11.6657 9.79563 13.6301 9.06497 13.431Z" fill="white" />
                                                 </svg>
-                                                <a href={`https://testnet.monvision.io/tx/${item.tx_hash}`} target="_blank" rel="noreferrer">
-                                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M5.36364 9.18182L13 1M13 1H7M13 1V7M4.81818 1H1V13H13V9.18182" stroke="#A9ADB8" />
-                                                    </svg>
-                                                </a>
-                                            </>
-                                        }
+                                            </div>
+                                            <div className="flex-1 flex items-center gap-2 justify-end">
+                                                {
+                                                    Number(item.amount) > 0 && item.tx_hash && <>
 
-                                        {
-                                            Number(item.amount) > 0 && !item.tx_hash && <>Pending</>
-                                        }
+                                                        <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
+                                                        </svg>
+                                                        <a href={`https://testnet.monvision.io/tx/${item.tx_hash}`} target="_blank" rel="noreferrer">
+                                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M5.36364 9.18182L13 1M13 1H7M13 1V7M4.81818 1H1V13H13V9.18182" stroke="#A9ADB8" />
+                                                            </svg>
+                                                        </a>
+                                                    </>
+                                                }
 
-                                        {
-                                            Number(item.amount) === 0 && <>-</>
-                                        }
-                                    </div>
+                                                {
+                                                    Number(item.amount) > 0 && !item.tx_hash && <>Pending</>
+                                                }
+
+                                                {
+                                                    Number(item.amount) === 0 && <>-</>
+                                                }
+                                            </div>
+                                        </>)
+                                    }
                                 </>
                             )
                         }
-
                     </div>
                 ))}
             </div>
