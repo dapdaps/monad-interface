@@ -69,6 +69,7 @@ export default function Game2048() {
         playNewMoveTransaction,
         initializeGameTransaction,
         clearQueue,
+        throttledplayNewMoveTransaction
     } = useTransactions({
         errorCallBack: (error: Error) => {
             resyncGame(activeGameId, gameUser?.score)
@@ -365,6 +366,14 @@ export default function Game2048() {
                         console.error("Error in move transaction:", error);
                         resetBoardOnError(premoveBoard, currentMove, error);
                     });
+
+                    // throttledplayNewMoveTransaction(
+                    //     activeGameId as Hex,
+                    //     encoded.board,
+                    //     encoded.move,
+                    //     moveCount,
+                    //     updatedBoardState.score
+                    // )
                 }
 
                 setBoardState(updatedBoardState);
