@@ -27,6 +27,7 @@ const TigerView: React.FC<any> = () => {
     getSpinUserData,
     multiple,
     setMultiple,
+    chogStarrr,
   } = useLuckyBera();
   const { visible, toggleVisible } = useBuyHoney();
 
@@ -39,6 +40,7 @@ const TigerView: React.FC<any> = () => {
       toggleOutHoneyVisible={toggleVisible}
       multiple={multiple}
       setMultiple={setMultiple}
+      chogStarrr={chogStarrr}
     />
   );
 };

@@ -61,6 +61,7 @@ export default memo(function Tiger(props: any) {
     getSpinUserData,
     multiple,
     setMultiple,
+    chogStarrr,
   } = props;
 
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -822,7 +823,7 @@ export default memo(function Tiger(props: any) {
               WebkitTextStroke: '1px #000',
             }}
           >
-            49/50
+            {chogStarrr.remaining}/{chogStarrr.total}
           </div>
         </div>
       </div>
