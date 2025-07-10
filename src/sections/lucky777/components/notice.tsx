@@ -69,7 +69,7 @@ export default function Notice() {
                                     <span>[{dayjs(item.timestamp * 1000).format('HH:mm:ss')}]</span>
                                     <span className="text-[#C7C7D9]">[{item.name ? addressFormated(item.name) : addressFormated(item.address)}]</span>
                                     <TypingText text={item.code !== '666' ? `Win ${item.amount} MON` : `1 ChogStarrr`} speed={50} />
-                                    {
+                                    {/* {
                                         item.code !== '666' && (<a
                                             href={`https://testnet.monvision.io/tx/${item.tx_hash}`}
                                             target="_blank"
@@ -78,7 +78,7 @@ export default function Notice() {
                                         >
                                             TX
                                         </a>)
-                                    }
+                                    } */}
                                 </div>
                             }
 
