@@ -51,7 +51,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
   const { handleReport, handleReportWithoutDebounce } = useClickTracking()
 
   const status = useMemo(() => {
-    if (!address || isLoadingFollow || !isFollow) {
+    if (!address) {
       return 0;
     }
 
