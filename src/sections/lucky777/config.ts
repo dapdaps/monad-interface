@@ -41,7 +41,7 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     icon: "/images/lucky777/logo/chog.svg",
     value: SpinCategory.Honey,
     centerScale: 0.85,
-    centerY: 5,
+    centerY: 0,
   },
   [SpinCategory.Chogstarrr]: {
     code: "6",
