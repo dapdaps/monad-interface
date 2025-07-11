@@ -424,11 +424,11 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
         console.log('playNewMoveTransaction', gameId, board, move, moveCount)
 
         let balance = userBalance.current;
-        if (parseFloat(formatEther(balance)) < 0.01) {
+        if (parseFloat(formatEther(balance)) < 0.05) {
             balance = await publicClient.getBalance({
                 address: userAddress.current as Hex,
             });
-            if (parseFloat(formatEther(balance)) < 0.01) {
+            if (parseFloat(formatEther(balance)) < 0.05) {
                 throw Error("Signer has insufficient balance.");
             }
             userBalance.current = balance;
