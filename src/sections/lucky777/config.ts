@@ -48,7 +48,7 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     icon: "/images/lucky777/logo/chogstarrr.png",
     value: SpinCategory.Chogstarrr,
     centerScale: 1,
-    centerY: 15,
+    centerY: 10,
   },
 };
 

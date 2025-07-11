@@ -438,8 +438,6 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             moveCount,
             fn: async function () {
 
-                const random = Math.random()
-                console.log('pollTransactionStatus:random', random)
                 // const nonce = random < 0.8 ? userNonce.current : userNonce.current + 1;
                 const nonce = userNonce.current;
                 userNonce.current = nonce + 1;

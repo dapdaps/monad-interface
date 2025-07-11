@@ -72,12 +72,15 @@ export default memo(function Tiger(props: any) {
     if (Number(chogStarrr?.remaining) > 0) {
       setWHEEL_SIZE(600);
       setSpinCategoryRotation(WHEEL_AREA / 6);
+      setSpinCategories(Object.values(SPIN_CATEGORIES));
     } else {
       setWHEEL_SIZE(500);
       setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '6'));
       setSpinCategoryRotation(WHEEL_AREA / 5);
     }
   }, [chogStarrr]);
+
+  console.log('SpinCategories:', SpinCategories)
 
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [openBuyTimes, setOpenBuyTimes] = useState(false);
