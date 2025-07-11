@@ -1,6 +1,6 @@
 import Footer from "@/layouts/main/footer";
 
-const systemMaintenanceDowntimeExpected = process.env.NEXT_PUBLIC_SYSTEM_MAINTENANCE_DOWNTIME_EXPECTED || "July 7, 2025 at 13:30 UTC";
+const systemMaintenanceDowntimeExpected = process.env.NEXT_PUBLIC_SYSTEM_MAINTENANCE_DOWNTIME_EXPECTED || "July 9, 2025 at 14:00 UTC";
 
 const Downtime = () => {
   return (
