@@ -1,6 +1,6 @@
 import { useDebounceFn, useRequest } from 'ahooks';
 import { get, post } from '@/utils/http';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { SpinResultData, SpinUserData } from '@/sections/lucky777/config';
 import useToast from '@/hooks/use-toast';
 import { useLuckyBeraStore } from '@/sections/lucky777/store';
@@ -15,6 +15,7 @@ export function useLuckyBera() {
   const { address } = useAccount();
   const { setLastSpinResult, lastSpinResult } = useLuckyBeraStore();
   const [ multiple, setMultiple ] = useState(1);
+  const [ chogStarrr, setChogStarrr ] = useState<any>({});
 
 
   const { run: getSpinUserData, data: spinUserData, loading: spinUserDataLoading } = useRequest<SpinUserData, any>(async () => {
@@ -46,15 +47,36 @@ export function useLuckyBera() {
       fail({ title: `Spin failed: ${res.message || res.data}` }, 'bottom-right');
       return false;
     }
+
+    console.log('handleSpinResult:', res.data);
+    // res.data.draw_code = '666';
+    if (res.data.draw_code === '666') {
+      getChogStarrr();
+    }
+
     reloadSpinData(res.data);
     return res.data;
   }, {
     manual: true,
   });
 
+  const getChogStarrr = useCallback(async () => {
+    const res = await get("/game/777/reward/whitelist");
+
+    if (res.code !== 200) {
+      setChogStarrr({
+        total: 50,
+        remaining: 50,
+      });
+    } else if (res.data && Array.isArray(res.data)) {
+      setChogStarrr(res.data.find((item: any) => item.category.toLowerCase() === 'chogstarrr'));
+    }
+  }, [])
+
   useEffect(() => {
     if (!address) return;
     getSpinUserData();
+    getChogStarrr();
   }, [address]);
 
   return {
@@ -67,5 +89,6 @@ export function useLuckyBera() {
     lastSpinResult,
     multiple,
     setMultiple,
+    chogStarrr,
   };
 }
