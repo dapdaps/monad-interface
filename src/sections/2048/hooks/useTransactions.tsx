@@ -273,7 +273,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                 console.log('latestBoard', latestBoard)
                 console.log('nextMoveNumber', nextMoveNumber)
                 queue.current.clearQueue()
-                queue.current.resumeQueue(Number(nextMoveNumber))
+                queue.current.resumeQueue(Number(nextMoveNumber) - 1)
 
             }
             // if (e) {
@@ -502,7 +502,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                 if (res === 'CONFIRMED') {
                     const [ ,nextMoveNumber] = await getLatestGameBoard(gameUser.gameId as Hex)
                     console.log('pollTransactionStatus nextMoveNumber', nextMoveNumber)
-                    queue.current.queueBank = queue.current.queueBank.filter(item => item.moveCount > Number(nextMoveNumber))
+                    queue.current.queueBank = queue.current.queueBank.filter(item => item.moveCount > Number(nextMoveNumber) - 1)
                 }
             }).catch(async (error) => {
                 fail({
@@ -512,7 +512,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                 const [latestBoard, nextMoveNumber] = await getLatestGameBoard(gameUser.gameId as Hex)
                 console.log('pollTransactionStatus latestBoard', latestBoard)
                 console.log('pollTransactionStatus nextMoveNumber', nextMoveNumber)
-                queue.current.resumeQueue(Number(nextMoveNumber))
+                queue.current.resumeQueue(Number(nextMoveNumber) - 1)
                 // errorCallBack(error, moveCount);
             })
         },
