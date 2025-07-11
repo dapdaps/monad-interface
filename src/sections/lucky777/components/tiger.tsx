@@ -80,8 +80,6 @@ export default memo(function Tiger(props: any) {
     }
   }, [chogStarrr]);
 
-  console.log('SpinCategories:', SpinCategories)
-
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [openBuyTimes, setOpenBuyTimes] = useState(false);
   const [openHistory, setOpenHistory] = useState(false);

@@ -87,7 +87,7 @@ export default function Game2048() {
     const [faucetModalOpen, setFaucetModalOpen] = useState<boolean>(false);
     const [isInited, setIsInited] = useState<boolean>(false);
 
-    
+
     const [encodedMoves, setEncodedMoves] = useState<EncodedMove[]>([]);
     const [playedMovesCount, setPlayedMovesCount] = useState<number>(0);
     const { setOpenDeposit, needDeposit, setNeedDeposit } = useContext(PrivyContext);
@@ -220,7 +220,7 @@ export default function Game2048() {
                 fail({
                     title: 'Insufficient balance',
                     description: 'Please deposit more MON to continue playing.',
-                })
+                }, 'bottom-right')
                 return;
             } else {
                 setNeedDeposit(false)
@@ -343,29 +343,21 @@ export default function Game2048() {
                         newEncodedMoves[3].move,
                     ] as readonly [number, number, number];
 
-                    initializeGameTransaction(
+                    await initializeGameTransaction(
                         activeGameId,
                         boards,
                         moves
-                    ).catch((error) => {
-                        console.error("Error in init transaction:", error);
-                        resetNonceAndBalance();
-                        resetBoardOnError(premoveBoard, currentMove, error);
-                    });
+                    )
                 }
 
-                
                 if (moveCount > 3) {
-                    playNewMoveTransaction(
+                    await playNewMoveTransaction(
                         activeGameId as Hex,
                         encoded.board,
                         encoded.move,
                         moveCount,
                         updatedBoardState.score
-                    ).catch((error) => {
-                        console.error("Error in move transaction:", error);
-                        resetBoardOnError(premoveBoard, currentMove, error);
-                    });
+                    )
 
                     // throttledplayNewMoveTransaction(
                     //     activeGameId as Hex,

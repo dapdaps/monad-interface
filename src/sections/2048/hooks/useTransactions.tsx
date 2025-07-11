@@ -508,8 +508,6 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                 }, 'bottom-right')
                 await resetNonceAndBalance()
                 const [latestBoard, nextMoveNumber] = await getLatestGameBoard(gameUser.gameId as Hex)
-                console.log('pollTransactionStatus latestBoard', latestBoard)
-                console.log('pollTransactionStatus nextMoveNumber', nextMoveNumber)
                 queue.current.resumeQueue(Number(nextMoveNumber) - 1)
                 // errorCallBack(error, moveCount);
             })
