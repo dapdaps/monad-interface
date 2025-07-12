@@ -8,7 +8,7 @@ import GuideView from "@/sections/invitation/guide";
 import Downtime from "@/components/downtime";
 
 // process.env.NEXT_PUBLIC_SYSTEM_MAINTENANCE_DOWNTIME === "true"
-const isSystemMaintenanceDowntime = false;
+const isSystemMaintenanceDowntime = true;
 
 export default function Layout({ children }: any) {
   const pathname = usePathname();
