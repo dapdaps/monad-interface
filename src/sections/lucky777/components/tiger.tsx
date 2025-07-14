@@ -62,23 +62,28 @@ export default memo(function Tiger(props: any) {
     multiple,
     setMultiple,
     chogStarrr,
+    monadverse,
   } = props;
 
-  const [WHEEL_SIZE, setWHEEL_SIZE] = useState(Number(chogStarrr?.remaining) > 0 ? 700 : 600);
+  const [WHEEL_SIZE, setWHEEL_SIZE] = useState(Number(chogStarrr?.remaining) > 0 ? 600 : 500);
   const [SpinCategories, setSpinCategories] = useState(Object.values(SPIN_CATEGORIES));
   const [SpinCategoryRotation, setSpinCategoryRotation] = useState(WHEEL_AREA / SpinCategories.length);
 
   useEffect(() => {
     if (Number(chogStarrr?.remaining) > 0) {
-      setWHEEL_SIZE(700);
-      setSpinCategoryRotation(WHEEL_AREA / 7);
-      setSpinCategories(Object.values(SPIN_CATEGORIES));
-    } else {
+      setWHEEL_SIZE(600);
+      setSpinCategoryRotation(WHEEL_AREA / 6);
+      setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '7'));
+    } else if (Number(monadverse?.remaining) > 0) {
       setWHEEL_SIZE(600);
       setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '6'));
       setSpinCategoryRotation(WHEEL_AREA / 6);
+    } else {
+      setWHEEL_SIZE(500);
+      setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '6' && it.code !== '7'));
+      setSpinCategoryRotation(WHEEL_AREA / 5);
     }
-  }, [chogStarrr]);
+  }, [chogStarrr, monadverse]);
 
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [openBuyTimes, setOpenBuyTimes] = useState(false);
@@ -856,6 +861,19 @@ export default memo(function Tiger(props: any) {
                 className="absolute left-1/2 -translate-x-1/2 bottom-[26px] font-Montserrat text-[14px] font-bold italic text-white rotate-[-5deg] drop-shadow-[2px_2px_0_#000] [text-shadow:0_0_2px_#000,1px_1px_0_#000,-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000]"
               >
                 {chogStarrr.remaining}/{chogStarrr.total}
+              </div>
+            </div>
+          )
+        }
+
+        {
+          Number(monadverse?.remaining) > 0 && (
+            <div className='absolute bottom-[80px] left-[40px] z-[2] w-[127px] h-[175px]'>
+              <img src="/images/lucky777/monadverse-t.png" alt="" className='w-full h-full absolute top-0 left-0' />
+              <div
+                className="absolute left-1/2 -translate-x-1/2 bottom-[26px] font-Montserrat text-[14px] font-bold italic text-white rotate-[-5deg] drop-shadow-[2px_2px_0_#000] [text-shadow:0_0_2px_#000,1px_1px_0_#000,-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000]"
+              >
+                {monadverse.remaining}/{monadverse.total}
               </div>
             </div>
           )
