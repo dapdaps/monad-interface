@@ -64,19 +64,19 @@ export default memo(function Tiger(props: any) {
     chogStarrr,
   } = props;
 
-  const [WHEEL_SIZE, setWHEEL_SIZE] = useState(Number(chogStarrr?.remaining) > 0 ? 600 : 500);
+  const [WHEEL_SIZE, setWHEEL_SIZE] = useState(Number(chogStarrr?.remaining) > 0 ? 700 : 600);
   const [SpinCategories, setSpinCategories] = useState(Object.values(SPIN_CATEGORIES));
   const [SpinCategoryRotation, setSpinCategoryRotation] = useState(WHEEL_AREA / SpinCategories.length);
 
   useEffect(() => {
     if (Number(chogStarrr?.remaining) > 0) {
-      setWHEEL_SIZE(600);
-      setSpinCategoryRotation(WHEEL_AREA / 6);
+      setWHEEL_SIZE(700);
+      setSpinCategoryRotation(WHEEL_AREA / 7);
       setSpinCategories(Object.values(SPIN_CATEGORIES));
     } else {
-      setWHEEL_SIZE(500);
+      setWHEEL_SIZE(600);
       setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '6'));
-      setSpinCategoryRotation(WHEEL_AREA / 5);
+      setSpinCategoryRotation(WHEEL_AREA / 6);
     }
   }, [chogStarrr]);
 
@@ -358,6 +358,8 @@ export default memo(function Tiger(props: any) {
       return;
     }
 
+    console.log('spinUserData1:', new Date().getSeconds());
+
 
     if (!spinUserData?.spin_balance || spinUserData?.spin_balance <= 0) {
       fail({ title: 'No spins left' }, 'bottom-right');
@@ -365,17 +367,18 @@ export default memo(function Tiger(props: any) {
     }
 
     if (spinUserData?.spin_balance < multiple) {
-      fail({ title: 'No enough balance' }, 'bottom-right');
+      fail({ title: 'No enough spins balance' }, 'bottom-right');
       return;
     }
 
-    setPressed3(true);
-    setTimeout(() => {
-      setPressed3(false)
-    }, 7500);
+    console.log('spinUserData palying sound:', new Date().getSeconds());
 
-    setAnimateSpinning(true);
     const machineSoundAudio = playSound(1);
+    setPressed3(true);
+    // setTimeout(() => {
+    //   setPressed3(false)
+    // }, 7500);
+    setAnimateSpinning(true);
     setTitle(DEFAULT_TITLE);
     console.log('spinUserData:', spinUserData);
 
@@ -385,7 +388,9 @@ export default memo(function Tiger(props: any) {
     // request api
     const res = await handleSpinResult();
 
-    console.log('res:', res);
+    // console.log('spinUserData res:', res);
+    // console.log('spinUserData res.draw_code:', res.draw_code);
+    // res.draw_code = '333'
 
     if (!res) {
       // animations.leftWheelAnimation.pause();
@@ -396,6 +401,7 @@ export default memo(function Tiger(props: any) {
         machineSoundAudio.pause();
         machineSoundAudio.currentTime = 0;
       }
+      setPressed3(false)
       return;
     }
 
@@ -415,8 +421,6 @@ export default memo(function Tiger(props: any) {
       // setTitle(DEFAULT_UNLUCKY_TITLE);
       playSound(2)
       startCoinExplosion(res);
-
-      
     } else {
       if (res.draw_code === '666') {
         success({ title: `WON 1 ChogStarrr` }, 'bottom-right');
@@ -432,15 +436,10 @@ export default memo(function Tiger(props: any) {
       }
     }
 
-    // if (Number(res.draw_code) % 111 === 0 || (res.points_balance >= MAX_POINT && spinUserData?.points_balance < MAX_POINT)) {
-    //   startCoinExplosion(res);
-    // }
-
-    // if (res.points_balance >= MAX_POINT && spinUserData?.points_balance < MAX_POINT) {
-    //   setTitle('WON 1 MON!');
-    // }
-
+    setPressed3(false)
     setAnimateSpinning(false);
+
+    console.log('spinUserData2:', spinUserData);
 
   }, {
     manual: true,
