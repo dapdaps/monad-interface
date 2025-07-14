@@ -61,7 +61,6 @@ export default memo(function Footer(props: any) {
         <Tip text="discord.gg/dapdap" />
       </Link>
 
-
       <div className="fixed right-[10px] bottom-[6px] z-50 flex items-center gap-[8px]">
         {
           !isMobile && isSound && <Sound />
