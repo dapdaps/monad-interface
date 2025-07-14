@@ -83,7 +83,7 @@ const FaucetCheckIn = (props: any) => {
           account ? (
             <>
               {
-                (captchaLoading || checkinInfoLoading || isEthereumMainnetBalanceLoading) && (
+                (captchaLoading || checkinInfoLoading) && (
                   <Loading size={14} />
                 )
               }
