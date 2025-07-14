@@ -370,10 +370,9 @@ export default memo(function Tiger(props: any) {
     }
 
     setPressed3(true);
-    setTimeout(() => {
-      setPressed3(false)
-    }, 7500);
-
+    // setTimeout(() => {
+    //   setPressed3(false)
+    // }, 7500);
     setAnimateSpinning(true);
     const machineSoundAudio = playSound(1);
     setTitle(DEFAULT_TITLE);
@@ -396,6 +395,7 @@ export default memo(function Tiger(props: any) {
         machineSoundAudio.pause();
         machineSoundAudio.currentTime = 0;
       }
+      setPressed3(false)
       return;
     }
 
@@ -415,8 +415,6 @@ export default memo(function Tiger(props: any) {
       // setTitle(DEFAULT_UNLUCKY_TITLE);
       playSound(2)
       startCoinExplosion(res);
-
-
     } else {
       if (res.draw_code === '666') {
         success({ title: `WON 1 ChogStarrr` }, 'bottom-right');
@@ -432,14 +430,7 @@ export default memo(function Tiger(props: any) {
       }
     }
 
-    // if (Number(res.draw_code) % 111 === 0 || (res.points_balance >= MAX_POINT && spinUserData?.points_balance < MAX_POINT)) {
-    //   startCoinExplosion(res);
-    // }
-
-    // if (res.points_balance >= MAX_POINT && spinUserData?.points_balance < MAX_POINT) {
-    //   setTitle('WON 1 MON!');
-    // }
-
+    setPressed3(false)
     setAnimateSpinning(false);
 
   }, {
