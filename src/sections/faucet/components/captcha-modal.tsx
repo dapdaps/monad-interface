@@ -32,7 +32,9 @@ export default memo(function CaptchaModal() {
         setCaptchaSolution("")
       }}
     >
-      <div className="md:w-[368px] w-[452px] md:h-[258px] text-[#A5FFFD] font-DogicaPixel">
+      <div onClick={(e) => {
+        e.stopPropagation();
+      }} className="md:w-[368px] w-[452px] md:h-[258px] text-[#A5FFFD] font-DogicaPixel">
         <div className="absolute md:-left-[10px] -left-[20px] md:-top-[10px] -top-[20px] md:w-[390px] w-[494px] md:h-[400px] h-[300px]">
           {
             isMobile ? (
