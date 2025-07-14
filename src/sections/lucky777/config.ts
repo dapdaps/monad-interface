@@ -53,10 +53,10 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
   },
   [SpinCategory.Monadverse]: {
     code: "7",
-    icon: "/images/lucky777/logo/chogstarrr.png",
+    icon: "/images/lucky777/logo/monadverse.png",
     value: SpinCategory.Monadverse,
     centerScale: 1,
-    centerY: 10,
+    centerY: -4,
   },
 };
 
