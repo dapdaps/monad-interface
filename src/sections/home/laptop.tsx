@@ -99,7 +99,7 @@ const Home = () => {
         <CodesMission className="z-[8]" />
         {/* Amy#20250703: disable leader board */}
         {/* <LeaderBoard /> */}
-        <div className="absolute left-0 right-0 top-[100%] h-[1000px] bg-[#0f0f2b]" />
+        <div className="absolute left-0 right-0 top-[100%] h-[500px] bg-[#0f0f2b]" />
       </div>
       <div
         ref={boatFloorRef}
