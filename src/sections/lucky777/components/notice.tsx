@@ -68,7 +68,15 @@ export default function Notice() {
                                 item && <div className="mt-1 flex justify-start items-center space-x-2 font-Pixelmix text-[14px] text-[#C7C7D9]">
                                     <span>[{dayjs(item.timestamp * 1000).format('HH:mm:ss')}]</span>
                                     <span className="text-[#C7C7D9]">[{item.name ? addressFormated(item.name) : addressFormated(item.address)}]</span>
-                                    <TypingText text={item.draw_code !== '666' ? `Win ${item.amount} MON` : `1 chogstarrr WL`} speed={50} />
+                                    {
+                                        item.draw_code === '666' && <TypingText text={`Win 1 chogstarrr WL`} speed={50} />
+                                    }
+                                    {
+                                        item.draw_code === '777' && <TypingText text={`Win 1 monadverse WL`} speed={50} />
+                                    }
+                                    {
+                                        item.draw_code !== '666' && item.draw_code !== '777' && <TypingText text={`Win ${item.amount} MON`} speed={50} />
+                                    }
                                     {/* {
                                         item.code !== '666' && (<a
                                             href={`https://testnet.monvision.io/tx/${item.tx_hash}`}
