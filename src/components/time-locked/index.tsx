@@ -2,12 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 interface TimeLockedProps {
     children: React.ReactNode;
-    cooldownTime?: number; // 冷却时间（毫秒），默认3000ms
-    onLockedClick?: () => void; // 冷却期间点击的回调
+    cooldownTime?: number;
+    onLockedClick?: () => void;
     className?: string;
     disabled?: boolean;
-    showCountdown?: boolean; // 是否显示倒计时
-    countdownFormat?: 'seconds' | 'milliseconds'; // 倒计时格式
+    showCountdown?: boolean;
+    countdownFormat?: 'seconds' | 'milliseconds';
 }
 
 const TimeLocked: React.FC<TimeLockedProps> = ({

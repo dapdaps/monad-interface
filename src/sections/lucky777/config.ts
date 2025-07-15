@@ -5,6 +5,7 @@ export enum SpinCategory {
   Bee = "bee",
   Honey = "honey",
   Chogstarrr = "chogstarrr",
+  Monadverse = "monadverse",
 }
 
 export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
@@ -49,6 +50,13 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     value: SpinCategory.Chogstarrr,
     centerScale: 1,
     centerY: 10,
+  },
+  [SpinCategory.Monadverse]: {
+    code: "7",
+    icon: "/images/lucky777/logo/monadverse.png",
+    value: SpinCategory.Monadverse,
+    centerScale: 1,
+    centerY: -4,
   },
 };
 

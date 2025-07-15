@@ -43,6 +43,23 @@ export default memo(function Footer(props: any) {
         <Tip text="NADSA Terminal" />
       </Link>
 
+      <Link
+        className="group  ease-in-out duration-300 w-[24px] cursor-pointer relative"
+        href="https://www.dapdap.net/"
+        target="_blank"
+      >
+        <img src="/images/footer/dapdap.svg" alt="dapp" className="w-[24px] cursor-pointer" />
+        <Tip text="Powered by DapDap" />
+      </Link>
+
+      <Link
+        className="group  ease-in-out duration-300 w-[24px] cursor-pointer relative"
+        href="https://www.discord.gg/dapdap"
+        target="_blank"
+      >
+        <img src="/images/footer/discord.svg" alt="discord" className="w-[24px] cursor-pointer" />
+        <Tip text="discord.gg/dapdap" />
+      </Link>
 
       <div className="fixed right-[10px] bottom-[6px] z-50 flex items-center gap-[8px]">
         {

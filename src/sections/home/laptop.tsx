@@ -44,15 +44,19 @@ const Home = () => {
       const boatFloorHeight = boatFloorRef.current.offsetHeight;
 
       if (window.innerHeight >= boatFloorHeight) {
-        const diffHeight = window.innerHeight - boatFloorHeight;
-        if (diffHeight < fixedHeight) {
-          setBoatFloorStyles({ top: fixedHeight, bottom: "unset" });
-          setBoatFensStyles({ bottom: -(fixedHeight - diffHeight) });
-        } else {
-          setBoatFloorStyles({ bottom: 0 });
-          setBoatFensStyles({ bottom: 0 });
-        }
+        // const diffHeight = window.innerHeight - boatFloorHeight;
+        // if (diffHeight < fixedHeight) {
+        //   // console.log('window.innerHeight 2', window.innerHeight)
+        //   // setBoatFloorStyles({ top: fixedHeight, bottom: "unset" });
+        //   // setBoatFensStyles({ bottom: -(fixedHeight - diffHeight) });
+        // } else {
+        //   setBoatFloorStyles({ bottom: 0 });
+        //   setBoatFensStyles({ bottom: 0 });
+        // }
+        setBoatFloorStyles({ bottom: 0 });
+        setBoatFensStyles({ bottom: 0 });
       } else {
+        console.log('window.innerHeight', window.innerHeight)
         setBoatFloorStyles({ top: fixedHeight, bottom: "unset" });
         setBoatFensStyles({ bottom: -(boatFloorHeight + fixedHeight - (window.innerHeight < 900 ? 900 : window.innerHeight) - 10) });
       }
@@ -99,7 +103,9 @@ const Home = () => {
         <CodesMission className="z-[8]" />
         {/* Amy#20250703: disable leader board */}
         {/* <LeaderBoard /> */}
-        <div className="absolute left-0 right-0 top-[100%] h-[1000px] bg-[#0f0f2b]" />
+        {
+          window.innerHeight >= 900 && <div className="absolute left-0 right-0 top-[100%] h-[500px] bg-[#0f0f2b]" />
+        }
       </div>
       <div
         ref={boatFloorRef}
