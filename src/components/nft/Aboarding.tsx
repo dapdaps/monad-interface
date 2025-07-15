@@ -361,7 +361,7 @@ export default function Aboarding({
                                     <XWrqapper>
                                       {
                                         !buttonText && <div className="" onClick={(e) => {
-                                          e.stopPropagation();
+                                          // e.stopPropagation();
                                           checkFollowX()
                                         }}>
                                           <div

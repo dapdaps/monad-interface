@@ -28,8 +28,8 @@ export default function useXFollow() {
             const data = res.data;
 
             if (res.code === 200) {
-                setIsFollow(data.following);
-                setNftStore({ isFollowNADSA: data.following });
+                // setIsFollow(data.following);
+                // setNftStore({ isFollowNADSA: data.following });
             } else {
                 fail(data.message || 'Check follow relationship failed');
             }
