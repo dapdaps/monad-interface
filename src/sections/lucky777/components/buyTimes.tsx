@@ -62,8 +62,6 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
             return;
         }
 
-        console.log('address:', address);
-
         try {
             setIsPending(true);
             spinBalance.current = spinUserData.spin_balance;

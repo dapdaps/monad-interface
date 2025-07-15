@@ -363,9 +363,6 @@ export default memo(function Tiger(props: any) {
       return;
     }
 
-    console.log('spinUserData1:', new Date().getSeconds());
-
-
     if (!spinUserData?.spin_balance || spinUserData?.spin_balance <= 0) {
       fail({ title: 'No spins left' }, 'bottom-right');
       return;
@@ -376,8 +373,6 @@ export default memo(function Tiger(props: any) {
       return;
     }
 
-    console.log('spinUserData palying sound:', new Date().getSeconds());
-
     const machineSoundAudio = playSound(1);
     setPressed3(true);
     // setTimeout(() => {
@@ -385,17 +380,12 @@ export default memo(function Tiger(props: any) {
     // }, 7500);
     setAnimateSpinning(true);
     setTitle(DEFAULT_TITLE);
-    console.log('spinUserData:', spinUserData);
-
     // start wheel scroll
     const animations = await startInfinityScroll();
 
     // request api
     const res = await handleSpinResult();
 
-    // console.log('spinUserData res:', res);
-    // console.log('spinUserData res.draw_code:', res.draw_code);
-    // res.draw_code = '333'
 
     if (!res) {
       // animations.leftWheelAnimation.pause();
@@ -452,9 +442,6 @@ export default memo(function Tiger(props: any) {
 
     setPressed3(false)
     setAnimateSpinning(false);
-
-    console.log('spinUserData2:', spinUserData);
-
   }, {
     manual: true,
   });
