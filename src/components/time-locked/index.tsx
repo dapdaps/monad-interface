@@ -23,9 +23,9 @@ const TimeLocked: React.FC<TimeLockedProps> = ({
     const [remainingTime, setRemainingTime] = useState(0);
 
     const handleClick = useCallback((e: React.MouseEvent) => {
+        e.stopPropagation();
         if (disabled || isLocked) {
             e.preventDefault();
-            e.stopPropagation();
             onLockedClick?.();
             return;
         }
