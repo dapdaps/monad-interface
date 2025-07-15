@@ -436,6 +436,15 @@ export default memo(function Tiger(props: any) {
             startSlowScroll()
           }
         }, 3000);
+      } else if (res.draw_code === '777') {
+        success({ title: `WON 1 GTD` }, 'bottom-right');
+        setTitle(('WON 1 GTD').repeat(2));
+        playSound(2)
+        setTimeout(() => {
+          if (Number(monadverse?.remaining) === 0) {
+            startSlowScroll()
+          }
+        }, 3000);
       } else {
         setTitle(DEFAULT_UNLUCKY_TITLE);
       }
