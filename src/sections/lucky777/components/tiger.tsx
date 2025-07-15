@@ -871,7 +871,7 @@ export default memo(function Tiger(props: any) {
             <div className='absolute bottom-[80px] left-[40px] z-[2] w-[127px] h-[175px]'>
               <img src="/images/lucky777/monadverse-t.png" alt="" className='w-full h-full absolute top-0 left-0' />
               <div
-                className="absolute left-1/2 -translate-x-1/2 bottom-[26px] font-Montserrat text-[14px] font-bold italic text-white rotate-[-5deg] drop-shadow-[2px_2px_0_#000] [text-shadow:0_0_2px_#000,1px_1px_0_#000,-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000]"
+                className="absolute right-[20px] bottom-[70px] font-Montserrat text-[14px] font-bold italic text-white rotate-[-5deg] drop-shadow-[2px_2px_0_#000] [text-shadow:0_0_2px_#000,1px_1px_0_#000,-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000]"
               >
                 {monadverse.remaining}/{monadverse.total}
               </div>
