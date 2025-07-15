@@ -205,7 +205,20 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                                     }
 
                                     {
-                                        item.code !== '666' && (<>
+                                        item.code === '777' && (<>
+                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
+                                                1 GTD
+                                                <img src="/images/lucky777/monadverse-icon.png" alt="ML" className="w-[20px] h-[20px]" />
+                                            </div>
+                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
+                                                <span className="text-[#78FEFF]">Pending</span>
+                                            </div>
+                                        </>
+                                        )
+                                    }
+
+                                    {
+                                        item.code !== '666' && item.code !== '777' && (<>
                                             <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
                                                 {item.amount} MON
                                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

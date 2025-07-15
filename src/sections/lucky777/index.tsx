@@ -28,6 +28,7 @@ const TigerView: React.FC<any> = () => {
     multiple,
     setMultiple,
     chogStarrr,
+    monadverse,
   } = useLuckyBera();
   const { visible, toggleVisible } = useBuyHoney();
   const [update, setUpdate] = useState<any>(1);
@@ -43,6 +44,7 @@ const TigerView: React.FC<any> = () => {
       multiple={multiple}
       setMultiple={setMultiple}
       chogStarrr={chogStarrr}
+      monadverse={monadverse}
       onUpdate={() => setUpdate(update + 1)}
     />
   );

@@ -16,14 +16,13 @@ export function useLuckyBera() {
   const { setLastSpinResult, lastSpinResult } = useLuckyBeraStore();
   const [ multiple, setMultiple ] = useState(1);
   const [ chogStarrr, setChogStarrr ] = useState<any>({});
+  const [ monadverse, setMonadverse ] = useState<any>({});
 
 
   const { run: getSpinUserData, data: spinUserData, loading: spinUserDataLoading } = useRequest<SpinUserData, any>(async () => {
     const res = await get("/game/user", {
       address: address,
     });
-
-    console.log('getSpinUserData:', res);
 
     if (res.code !== 200) {
       return {}; 
@@ -48,10 +47,9 @@ export function useLuckyBera() {
       return false;
     }
 
-    console.log('handleSpinResult:', res.data);
     // res.data.draw_code = '666';
-    if (res.data.draw_code === '666') {
-      getChogStarrr();
+    if (res.data.draw_code === '666' || res.data.draw_code === '777') {
+      getWhitelist();
     }
 
     reloadSpinData(res.data);
@@ -60,7 +58,7 @@ export function useLuckyBera() {
     manual: true,
   });
 
-  const getChogStarrr = useCallback(async () => {
+  const getWhitelist = useCallback(async () => {
     const res = await get("/game/777/reward/whitelist");
 
     if (res.code !== 200) {
@@ -68,15 +66,20 @@ export function useLuckyBera() {
         total: 50,
         remaining: 50,
       });
+      setMonadverse({
+        total: 69,
+        remaining: 69,
+      });
     } else if (res.data && Array.isArray(res.data)) {
       setChogStarrr(res.data.find((item: any) => item.category.toLowerCase() === 'chogstarrr'));
+      setMonadverse(res.data.find((item: any) => item.category.toLowerCase() === 'monadverse'));
     }
   }, [])
 
   useEffect(() => {
     if (!address) return;
     getSpinUserData();
-    getChogStarrr();
+    getWhitelist();
   }, [address]);
 
   return {
@@ -90,5 +93,6 @@ export function useLuckyBera() {
     multiple,
     setMultiple,
     chogStarrr,
+    monadverse,
   };
 }
