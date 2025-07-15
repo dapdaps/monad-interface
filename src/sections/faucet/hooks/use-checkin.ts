@@ -41,7 +41,7 @@ export default function useCheckin() {
   async function handleGetCaptcha() {
     try {
       setCaptchaLoading(true)
-      if (checkinList?.length === 0) {
+      if (!checkinList ||checkinList?.length === 0) {
         const { data: ethereumMainnetBalance } = await refetchEthereumMainnetBalance()
         if (ethereumMainnetBalance && Big(ethereumMainnetBalance?.formatted || 0).lt(0.01)) {
           setErrorMsg("To check in and get MON, you need at least 0.01 ETH on Ethereum.")
