@@ -8,7 +8,6 @@ import Operation from "./components/operation";
 export default memo(function Laptop() {
   const { tokensArray, activeType, setActiveType } = usePage()
   const [native, bridged, meme] = tokensArray
-  console.log('===native', native)
   return (
     <Background>
       <div className="h-full flex justify-center gap-[14px]">

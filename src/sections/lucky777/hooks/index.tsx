@@ -24,8 +24,6 @@ export function useLuckyBera() {
       address: address,
     });
 
-    console.log('getSpinUserData:', res);
-
     if (res.code !== 200) {
       return {}; 
     }
