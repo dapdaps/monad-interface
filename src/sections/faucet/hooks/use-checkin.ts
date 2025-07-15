@@ -31,7 +31,8 @@ export default function useCheckin() {
   const toast = useToast()
 
   const {
-    data: ethereumMainnetBalance,
+    data,
+    refetch: refetchEthereumMainnetBalance,
   } = useBalance({
     address: account as `0x${string}`,
     chainId: mainnet.id,
@@ -41,6 +42,7 @@ export default function useCheckin() {
     try {
       setCaptchaLoading(true)
       if (checkinList?.length === 0) {
+        const { data: ethereumMainnetBalance } = await refetchEthereumMainnetBalance()
         if (ethereumMainnetBalance && Big(ethereumMainnetBalance?.formatted || 0).lt(0.01)) {
           setErrorMsg("To check in and get MON, you need at least 0.01 ETH on Ethereum.")
           setCaptchaLoading(false)
