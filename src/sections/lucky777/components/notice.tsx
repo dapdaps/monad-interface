@@ -72,7 +72,7 @@ export default function Notice() {
                                         item.draw_code === '666' && <TypingText text={`Win 1 chogstarrr WL`} speed={50} />
                                     }
                                     {
-                                        item.draw_code === '777' && <TypingText text={`Win 1 monadverse WL`} speed={50} />
+                                        item.draw_code === '777' && <TypingText text={`Win 1 GTD WL`} speed={50} />
                                     }
                                     {
                                         item.draw_code !== '666' && item.draw_code !== '777' && <TypingText text={`Win ${item.amount} MON`} speed={50} />
