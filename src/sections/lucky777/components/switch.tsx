@@ -2,14 +2,18 @@ import { useState } from "react";
 
 interface SwitchProps {
   isOpen: boolean;
+  onOpenSwitch: (isOpen: boolean) => void;
   setIsOpenSwitch: (isOpen: boolean) => void;
 }
 
 export default function Switch(props: SwitchProps) {
-  const { isOpen, setIsOpenSwitch } = props;
+  const { isOpen, setIsOpenSwitch, onOpenSwitch } = props;
 
   return (
-    <div data-click-sound className="absolute bottom-[80px] right-[115px] z-[2] w-[122px] cursor-pointer" onClick={() => setIsOpenSwitch(!isOpen)}>
+    <div data-click-sound className="absolute bottom-[80px] right-[115px] z-[2] w-[122px] cursor-pointer" onClick={() => {
+      setIsOpenSwitch(!isOpen);
+      onOpenSwitch(!isOpen);
+    }}>
       {
         isOpen ? (
           <div>
