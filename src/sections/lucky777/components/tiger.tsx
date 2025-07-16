@@ -45,7 +45,7 @@ const TOTAL_SPINS = 50;
 // const SpinCategoryRotation = WHEEL_AREA / SpinCategories.length;
 const SpinBase = 10;
 
-const WheelInfinityDelay = 0.3;
+const WheelInfinityDelay = 0.1;
 const WheelInfinitySlowDuration = 25;
 const WheelInfinityAnimation: any = {
   duration: WheelInfinityDelay,
@@ -71,6 +71,7 @@ export default memo(function Tiger(props: any) {
     prizeStatus,
     isOpenSwitch,
     setIsOpenSwitch,
+    spinUserDataLoading
   } = props;
 
   const [WHEEL_SIZE, setWHEEL_SIZE] = useState(Number(chogStarrr?.remaining) > 0 ? 600 : 500);
@@ -84,7 +85,7 @@ export default memo(function Tiger(props: any) {
     setWHEEL_SIZE(100 * prizeStatus.length);
     setSpinCategoryRotation(WHEEL_AREA / prizeStatus.length);
     setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => prizeStatus.includes(Number(it.code))));
-   
+
   }, [prizeStatus]);
 
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -453,7 +454,7 @@ export default memo(function Tiger(props: any) {
             startSlowScroll()
           }
         }, 3000);
-      }  else {
+      } else {
         setTitle(DEFAULT_UNLUCKY_TITLE);
       }
     }
@@ -862,7 +863,23 @@ export default memo(function Tiger(props: any) {
         <div className="font-HackerNoonV2 w-[309px] h-[93px] absolute bottom-[80px] left-[200px] z-[2] px-[12px] py-[10px]">
           <div className="flex items-center justify-between text-[20px]">
             <div className="text-[#A5FFFD] ">Times:</div>
-            <div className="text-[#A5FFFD]">{spinUserData?.spin_balance}</div>
+            <div className="flex items-center gap-[2px] cursor-pointer" onClick={() => {
+              getSpinUserData();
+            }}>
+              <motion.svg
+                width="22"
+                height="22"
+                viewBox="0 0 22 22"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                animate={spinUserDataLoading ? { rotate: 360 } : { rotate: 0 }}
+                transition={spinUserDataLoading ? { repeat: Infinity, duration: 1, ease: "linear" } : { duration: 0 }}
+                style={{ originX: "50%", originY: "50%" }}
+              >
+                <path d="M10.7362 18.7455C6.88384 18.7455 3.74969 15.6543 3.74969 11.8543C3.74969 8.05504 6.88384 4.96387 10.7362 4.96387C11.903 4.96387 13.0591 5.25391 14.0796 5.8024C14.5804 6.07225 14.7684 6.69809 14.4985 7.19953C14.2313 7.70184 13.6057 7.88961 13.1021 7.61912C12.381 7.23111 11.5633 7.02637 10.7362 7.02637C8.021 7.02637 5.81219 9.19221 5.81219 11.8543C5.81219 14.5171 8.021 16.683 10.7362 16.683C12.9813 16.683 14.9418 15.1958 15.5029 13.0669C15.6492 12.5165 16.2145 12.1886 16.7639 12.333C17.3143 12.4787 17.6434 13.0426 17.4984 13.5933C16.6966 16.6264 13.9159 18.7455 10.7362 18.7455Z" fill="#6D7EA5" />
+                <path d="M17.1712 8.74491L15.2535 3.84239C15.1203 3.50186 14.6653 3.43891 14.4448 3.73067L11.1229 8.12637C10.9025 8.41813 11.087 8.83879 11.451 8.87403L16.6908 9.38084C17.0378 9.41457 17.2982 9.06975 17.1712 8.74491Z" fill="#6D7EA5" />
+              </motion.svg>
+              <span className="text-[#A5FFFD]">{spinUserData?.spin_balance}</span></div>
           </div>
 
           <div className="flex items-center justify-between mt-[10px]">
