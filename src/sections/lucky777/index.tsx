@@ -33,6 +33,8 @@ const TigerView: React.FC<any> = () => {
     slmnd,
     prizes,
     prizeStatus,
+    isOpenSwitch,
+    setIsOpenSwitch,
   } = useLuckyBera();
   const { visible, toggleVisible } = useBuyHoney();
   const [update, setUpdate] = useState<any>(1); 
@@ -53,6 +55,8 @@ const TigerView: React.FC<any> = () => {
       slmnd={slmnd}
       prizes={prizes}
       prizeStatus={prizeStatus}
+      isOpenSwitch={isOpenSwitch}
+      setIsOpenSwitch={setIsOpenSwitch}
       onUpdate={() => setUpdate(update + 1)}
     />
   );
