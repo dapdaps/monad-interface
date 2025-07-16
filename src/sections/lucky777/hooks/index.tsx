@@ -53,8 +53,6 @@ export function useLuckyBera() {
       getWhitelist();
     }
 
-    res.data.draw_codes = [9, 3, 1]
-
     const codes: any[] = [];
     res.data.draw_codes.forEach((item: any) => {
       if (!prizes.current.includes(item)) {
@@ -65,8 +63,6 @@ export function useLuckyBera() {
      
       codes.push(item);
     }); 
-
-    console.log('codes', prizes.current, codes);
 
     res.data.draw_codes = codes
     res.data.draw_code = codes.join('');
