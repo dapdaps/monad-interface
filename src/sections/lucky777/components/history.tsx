@@ -234,7 +234,7 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                                         item.code === '999' && (<>
                                             <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
                                                 1 SLMND
-                                                <img src="/images/lucky777/slmnd-icon.png" alt="ML" className="w-[20px] h-[20px]" />
+                                                <img src="/images/lucky777/smlmonad-icon.png" alt="ML" className="w-[20px] h-[20px]" />
                                             </div>
                                             <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
                                                 <span className="text-[#78FEFF]">Pending</span>

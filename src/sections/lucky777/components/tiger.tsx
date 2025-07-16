@@ -16,6 +16,7 @@ import RulesModal from './rules';
 import { useSoundStore } from '@/stores/sound';
 import Notice from './notice';
 import NftT from './nftT';
+import Switch from './switch';
 dayjs.extend(duration);
 
 function getTimeLeftToUTC24() {
@@ -453,7 +454,7 @@ export default memo(function Tiger(props: any) {
           }
         }, 3000);
       } else if (res.draw_code === '999') {
-        success({ title: `WON 1 SLMND` }, 'bottom-right');
+        success({ title: `WON 1 SLMND WL` }, 'bottom-right');
         setTitle(('WON 1 SLMND').repeat(2));
         playSound(2)
         setTimeout(() => {
@@ -852,8 +853,10 @@ export default memo(function Tiger(props: any) {
           />
         </div>
 
-        <div className={"absolute bottom-[80px] right-[145px] z-[2] w-[81px] h-[116px] bg-top bg-contain bg-no-repeat " + (spinUserData?.spin_balance > 0 ? "bg-[url('/images/lucky777/switch.svg')]" : "bg-[url('/images/lucky777/switch-no.svg')]")}>
-        </div>
+        {/* <div className={"absolute bottom-[80px] right-[145px] z-[2] w-[81px] h-[116px] bg-top bg-contain bg-no-repeat " + (spinUserData?.spin_balance > 0 ? "bg-[url('/images/lucky777/switch.svg')]" : "bg-[url('/images/lucky777/switch-no.svg')]")}>
+        </div> */}
+
+        
 
         <div className="font-HackerNoonV2 w-[309px] h-[93px] absolute bottom-[80px] left-[200px] z-[2] px-[12px] py-[10px]">
           <div className="flex items-center justify-between text-[20px]">
@@ -874,6 +877,8 @@ export default memo(function Tiger(props: any) {
             >Buy</motion.button>
           </div>
         </div>
+
+        {/* <Switch isOpen={spinUserData?.spin_balance > 0} /> */}
 
         <NftT monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} />
 
