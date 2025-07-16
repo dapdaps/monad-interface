@@ -9,7 +9,7 @@ import { usePrivyAuth } from '@/hooks/use-privy-auth';
 import { useAccount } from 'wagmi';
 
 
-const ALL_PRIZES = [1, 2, 3, 4, 5, 6, 7];
+const ALL_PRIZES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 export function useLuckyBera() {
   const { fail } = useToast({ isGame: true });
   const { address } = useAccount();
@@ -17,6 +17,8 @@ export function useLuckyBera() {
   const [multiple, setMultiple] = useState(1);
   const [chogStarrr, setChogStarrr] = useState<any>({});
   const [monadverse, setMonadverse] = useState<any>({});
+  const [monadoo, setMonadoo] = useState<any>({});
+  const [slmn, setSlmn] = useState<any>({});
   const prizes = useRef<any[]>([1, 2, 3, 4, 5, 6, 7]);
 
 
@@ -86,8 +88,20 @@ export function useLuckyBera() {
         remaining: 0,
       });
     } else if (res.data && Array.isArray(res.data)) {
-      setChogStarrr(res.data.find((item: any) => item.category.toLowerCase() === 'chogstarrr'));
-      setMonadverse(res.data.find((item: any) => item.category.toLowerCase() === 'monadverse'));
+      res.data.forEach((item: any) => {
+        if (item.category.toLowerCase() === 'chogstarrr') {
+          setChogStarrr(item);
+        }
+        if (item.category.toLowerCase() === 'monadverse') {
+          setMonadverse(item);
+        }
+        if (item.category.toLowerCase() === 'monadoo') {
+          setMonadoo(item);
+        }
+        if (item.category.toLowerCase() === 'salmonads') {
+          setSlmn(item);
+        }
+      });
     }
   }, [])
 
@@ -98,12 +112,20 @@ export function useLuckyBera() {
   }, [address]);
 
   useEffect(() => {
+    let newPrizes = [...ALL_PRIZES];
     if (chogStarrr.remaining > 0) {
-      prizes.current = ALL_PRIZES.filter((item: any) => item !== 6);
+      newPrizes = newPrizes.filter((item: any) => item !== 6);
     }
     if (monadverse.remaining > 0) {
-      prizes.current = ALL_PRIZES.filter((item: any) => item !== 7);
+      newPrizes = ALL_PRIZES.filter((item: any) => item !== 7);
     }
+    if (monadoo.remaining > 0) {
+      newPrizes = ALL_PRIZES.filter((item: any) => item !== 8);
+    }
+    if (slmn.remaining > 0) {
+      newPrizes = ALL_PRIZES.filter((item: any) => item !== 9);
+    }
+    prizes.current = newPrizes;
   }, [chogStarrr, monadverse]);
 
   return {
@@ -118,5 +140,8 @@ export function useLuckyBera() {
     setMultiple,
     chogStarrr,
     monadverse,
+    monadoo,
+    slmn,
+    prizes,
   };
 }

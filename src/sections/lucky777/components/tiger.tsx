@@ -63,6 +63,9 @@ export default memo(function Tiger(props: any) {
     setMultiple,
     chogStarrr,
     monadverse,
+    monadoo,
+    slmn,
+    prizes,
   } = props;
 
   const [WHEEL_SIZE, setWHEEL_SIZE] = useState(Number(chogStarrr?.remaining) > 0 ? 600 : 500);
@@ -70,20 +73,29 @@ export default memo(function Tiger(props: any) {
   const [SpinCategoryRotation, setSpinCategoryRotation] = useState(WHEEL_AREA / SpinCategories.length);
 
   useEffect(() => {
-    if (Number(chogStarrr?.remaining) > 0) {
-      setWHEEL_SIZE(600);
-      setSpinCategoryRotation(WHEEL_AREA / 6);
-      setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '7'));
-    } else if (Number(monadverse?.remaining) > 0) {
-      setWHEEL_SIZE(600);
-      setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '6'));
-      setSpinCategoryRotation(WHEEL_AREA / 6);
-    } else {
-      setWHEEL_SIZE(500);
-      setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '6' && it.code !== '7'));
-      setSpinCategoryRotation(WHEEL_AREA / 5);
+    console.log('prizes', prizes.current);
+
+    if (!prizes.current || prizes.current.length === 0) {
+      return;
     }
-  }, [chogStarrr, monadverse]);
+    setWHEEL_SIZE(100 * prizes.current.length);
+    setSpinCategoryRotation(WHEEL_AREA / prizes.current.length);
+    setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => prizes.current.includes(Number(it.code))));
+
+    // if (Number(chogStarrr?.remaining) > 0) {
+    //   setWHEEL_SIZE(600);
+    //   setSpinCategoryRotation(WHEEL_AREA / 6);
+    //   setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '7'));
+    // } else if (Number(monadverse?.remaining) > 0) {
+    //   setWHEEL_SIZE(600);
+    //   setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '6'));
+    //   setSpinCategoryRotation(WHEEL_AREA / 6);
+    // } else {
+    //   setWHEEL_SIZE(500);
+    //   setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '6' && it.code !== '7'));
+    //   setSpinCategoryRotation(WHEEL_AREA / 5);
+    // }
+  }, [chogStarrr, monadverse, monadoo, slmn]);
 
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [openBuyTimes, setOpenBuyTimes] = useState(false);
