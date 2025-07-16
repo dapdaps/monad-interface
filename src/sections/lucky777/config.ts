@@ -57,7 +57,7 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     code: "7",
     icon: "/images/lucky777/logo/monadverse.png",
     value: SpinCategory.Monadverse,
-    centerScale: 1,
+    centerScale: 0.9,
     centerY: -4,
   },
   [SpinCategory.Monadoon]: {
@@ -71,7 +71,7 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     code: "9",
     icon: "/images/lucky777/logo/slmnd.png",
     value: SpinCategory.Slmnd,
-    centerScale: 1,
+    centerScale: 0.9,
     centerY: 0,
   },
 };
