@@ -53,16 +53,20 @@ export function useLuckyBera() {
       getWhitelist();
     }
 
+    res.data.draw_codes = [9, 3, 1]
+
     const codes: any[] = [];
     res.data.draw_codes.forEach((item: any) => {
       if (!prizes.current.includes(item)) {
-        const randomIndex = Math.floor(Math.random() * prizes.current.length);
+        const randomIndex = Math.floor(Math.random() * (prizes.current.length));
         codes.push(prizes.current[randomIndex]);
         return;
       }
      
       codes.push(item);
     }); 
+
+    console.log('codes', prizes.current, codes);
 
     res.data.draw_codes = codes
     res.data.draw_code = codes.join('');
@@ -98,12 +102,14 @@ export function useLuckyBera() {
   }, [address]);
 
   useEffect(() => {
-    if (chogStarrr.remaining > 0) {
-      prizes.current = ALL_PRIZES.filter((item: any) => item !== 6);
+    let newPrizes = [...ALL_PRIZES];
+    if (chogStarrr.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 6);
     }
-    if (monadverse.remaining > 0) {
-      prizes.current = ALL_PRIZES.filter((item: any) => item !== 7);
+    if (monadverse.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 7);
     }
+    prizes.current = newPrizes;
   }, [chogStarrr, monadverse]);
 
   return {
