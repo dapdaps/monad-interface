@@ -26,9 +26,9 @@ export default function NftT(props: any) {
         {nfts.length > 0 && (
           <motion.div
             key={nfts[currentIndex].key}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.05 }}
+            initial={{ opacity: 0, }}
+            animate={{ opacity: 1, }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
             className='absolute w-full h-full left-0 top-0'
           >
