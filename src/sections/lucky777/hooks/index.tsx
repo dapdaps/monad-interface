@@ -56,7 +56,7 @@ export function useLuckyBera() {
     const codes: any[] = [];
     res.data.draw_codes.forEach((item: any) => {
       if (!prizes.current.includes(item)) {
-        const randomIndex = Math.floor(Math.random() * prizes.current.length);
+        const randomIndex = Math.floor(Math.random() * (prizes.current.length));
         codes.push(prizes.current[randomIndex]);
         return;
       }
@@ -98,12 +98,14 @@ export function useLuckyBera() {
   }, [address]);
 
   useEffect(() => {
-    if (chogStarrr.remaining > 0) {
-      prizes.current = ALL_PRIZES.filter((item: any) => item !== 6);
+    let newPrizes = [...ALL_PRIZES];
+    if (chogStarrr.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 6);
     }
-    if (monadverse.remaining > 0) {
-      prizes.current = ALL_PRIZES.filter((item: any) => item !== 7);
+    if (monadverse.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 7);
     }
+    prizes.current = newPrizes;
   }, [chogStarrr, monadverse]);
 
   return {
