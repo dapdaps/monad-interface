@@ -67,8 +67,9 @@ export default memo(function Tiger(props: any) {
     monadverse,
     monadoon,
     slmnd,
-    prizes,
     prizeStatus,
+    isOpenSwitch,
+    setIsOpenSwitch,
   } = props;
 
   const [WHEEL_SIZE, setWHEEL_SIZE] = useState(Number(chogStarrr?.remaining) > 0 ? 600 : 500);
@@ -856,8 +857,6 @@ export default memo(function Tiger(props: any) {
         {/* <div className={"absolute bottom-[80px] right-[145px] z-[2] w-[81px] h-[116px] bg-top bg-contain bg-no-repeat " + (spinUserData?.spin_balance > 0 ? "bg-[url('/images/lucky777/switch.svg')]" : "bg-[url('/images/lucky777/switch-no.svg')]")}>
         </div> */}
 
-        
-
         <div className="font-HackerNoonV2 w-[309px] h-[93px] absolute bottom-[80px] left-[200px] z-[2] px-[12px] py-[10px]">
           <div className="flex items-center justify-between text-[20px]">
             <div className="text-[#A5FFFD] ">Times:</div>
@@ -878,7 +877,7 @@ export default memo(function Tiger(props: any) {
           </div>
         </div>
 
-        {/* <Switch isOpen={spinUserData?.spin_balance > 0} /> */}
+        <Switch isOpen={isOpenSwitch} setIsOpenSwitch={setIsOpenSwitch} />
 
         <NftT monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} />
 

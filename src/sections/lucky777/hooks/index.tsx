@@ -21,6 +21,7 @@ export function useLuckyBera() {
   const [slmnd, setSlmnd] = useState<any>({});
   const prizes = useRef<any[]>(ALL_PRIZES);
   const [prizeStatus, setPrizeStatus] = useState(ALL_PRIZES)
+  const [isOpenSwitch, setIsOpenSwitch] = useState(false);
 
 
   const { run: getSpinUserData, data: spinUserData, loading: spinUserDataLoading } = useRequest<SpinUserData, any>(async () => {
@@ -140,6 +141,8 @@ export function useLuckyBera() {
     setPrizeStatus(newPrizes);
   }, [chogStarrr, monadverse, monadoon, slmnd]);
 
+
+
   return {
     spinUserData,
     spinUserDataLoading,
@@ -156,5 +159,7 @@ export function useLuckyBera() {
     slmnd,
     prizes,
     prizeStatus,
+    isOpenSwitch,
+    setIsOpenSwitch,
   };
 }
