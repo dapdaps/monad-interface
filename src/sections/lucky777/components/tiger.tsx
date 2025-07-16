@@ -17,6 +17,7 @@ import { useSoundStore } from '@/stores/sound';
 import Notice from './notice';
 import NftT from './nftT';
 import Switch from './switch';
+import { sleep } from '@/sections/bridge/lib/util';
 dayjs.extend(duration);
 
 function getTimeLeftToUTC24() {
@@ -77,28 +78,13 @@ export default memo(function Tiger(props: any) {
   const [SpinCategoryRotation, setSpinCategoryRotation] = useState(WHEEL_AREA / SpinCategories.length);
 
   useEffect(() => {
-    console.log('prizes', prizeStatus);
-
     if (!prizeStatus || prizeStatus.length === 0) {
       return;
     }
     setWHEEL_SIZE(100 * prizeStatus.length);
     setSpinCategoryRotation(WHEEL_AREA / prizeStatus.length);
     setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => prizeStatus.includes(Number(it.code))));
-
-    // if (Number(chogStarrr?.remaining) > 0) {
-    //   setWHEEL_SIZE(600);
-    //   setSpinCategoryRotation(WHEEL_AREA / 6);
-    //   setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '7'));
-    // } else if (Number(monadverse?.remaining) > 0) {
-    //   setWHEEL_SIZE(600);
-    //   setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '6'));
-    //   setSpinCategoryRotation(WHEEL_AREA / 6);
-    // } else {
-    //   setWHEEL_SIZE(500);
-    //   setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '6' && it.code !== '7'));
-    //   setSpinCategoryRotation(WHEEL_AREA / 5);
-    // }
+   
   }, [prizeStatus]);
 
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -127,6 +113,8 @@ export default memo(function Tiger(props: any) {
   const spinTimerInfinityLeft = useRef<any>();
   const spinTimerInfinityCenter = useRef<any>();
   const spinTimerInfinityRight = useRef<any>();
+  const [disabledBtnSpin, setDisabledBtnSpin] = useState(false);
+  const isOpenSwitchRef = useRef(isOpenSwitch);
 
   useInterval(() => {
     setFreeTimes(getTimeLeftToUTC24());
@@ -375,11 +363,13 @@ export default memo(function Tiger(props: any) {
 
     if (!spinUserData?.spin_balance || spinUserData?.spin_balance <= 0) {
       fail({ title: 'No spins left' }, 'bottom-right');
+      setIsOpenSwitch(false);
       return;
     }
 
     if (spinUserData?.spin_balance < multiple) {
       fail({ title: 'No enough spins balance' }, 'bottom-right');
+      setIsOpenSwitch(false);
       return;
     }
 
@@ -470,6 +460,13 @@ export default memo(function Tiger(props: any) {
 
     setPressed3(false)
     setAnimateSpinning(false);
+
+    if (isOpenSwitchRef.current) {
+      setDisabledBtnSpin(true);
+      setTimeout(() => {
+        handleSpin();
+      }, 1000);
+    }
   }, {
     manual: true,
   });
@@ -815,7 +812,12 @@ export default memo(function Tiger(props: any) {
               transformOrigin: "center bottom",
               y: 15,
             }}
-            onClick={handleSpin}
+            onClick={() => {
+              if (disabledBtnSpin) {
+                return;
+              }
+              handleSpin();
+            }}
           >
             <div style={{
               transform: pressed3 ? 'translateY(-3px)' : 'translateY(-20px)'
@@ -877,7 +879,12 @@ export default memo(function Tiger(props: any) {
           </div>
         </div>
 
-        <Switch isOpen={isOpenSwitch} setIsOpenSwitch={setIsOpenSwitch} />
+        <Switch isOpen={isOpenSwitch} setIsOpenSwitch={setIsOpenSwitch} onOpenSwitch={(isOpenSwitch) => {
+          isOpenSwitchRef.current = isOpenSwitch;
+          if (!isOpenSwitch) {
+            setDisabledBtnSpin(false);
+          }
+        }} />
 
         <NftT monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} />
 

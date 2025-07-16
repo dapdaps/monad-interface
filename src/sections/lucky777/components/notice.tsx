@@ -75,7 +75,7 @@ export default function Notice() {
                                         item.draw_code === '777' && <TypingText text={`Win 1 GTD WL`} speed={50} />
                                     }
                                     {
-                                        item.draw_code === '888' && <TypingText text={`Win 1 Monadoon WL`} speed={50} />
+                                        item.draw_code === '888' && <TypingText text={`Win 1 Monadoon`} speed={50} />
                                     }
                                     {
                                         item.draw_code === '999' && <TypingText text={`Win 1 SLMND WL`} speed={50} />
