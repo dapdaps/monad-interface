@@ -16,7 +16,7 @@ export default function NftT(props: any) {
     if (nfts.length <= 1) return;
     const timer = setInterval(() => {
       setCurrentIndex(i => (i + 1) % nfts.length);
-    }, 3000);
+    }, 5000);
     return () => clearInterval(timer);
   }, [nfts.length]);
 
