@@ -6,8 +6,8 @@ export enum SpinCategory {
   Honey = "honey",
   Chogstarrr = "chogstarrr",
   Monadverse = "monadverse",
-  Monadoo = "monadoo",
-  Slmn = "slmn",
+  Monadoon = "monadoon",
+  Slmnd = "slmnd",
 }
 
 export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
@@ -60,19 +60,19 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     centerScale: 1,
     centerY: -4,
   },
-  [SpinCategory.Monadoo]: {
+  [SpinCategory.Monadoon]: {
     code: "8",
     icon: "/images/lucky777/logo/monadoon.png",
-    value: SpinCategory.Monadoo,
+    value: SpinCategory.Monadoon,
     centerScale: 1,
-    centerY: -4,
+    centerY: 0,
   },
-  [SpinCategory.Slmn]: {
+  [SpinCategory.Slmnd]: {
     code: "9",
     icon: "/images/lucky777/logo/slmnd.png",
-    value: SpinCategory.Slmn,
+    value: SpinCategory.Slmnd,
     centerScale: 1,
-    centerY: -4,
+    centerY: 0,
   },
 };
 

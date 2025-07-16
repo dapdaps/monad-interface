@@ -17,9 +17,10 @@ export function useLuckyBera() {
   const [multiple, setMultiple] = useState(1);
   const [chogStarrr, setChogStarrr] = useState<any>({});
   const [monadverse, setMonadverse] = useState<any>({});
-  const [monadoo, setMonadoo] = useState<any>({});
-  const [slmn, setSlmn] = useState<any>({});
-  const prizes = useRef<any[]>([1, 2, 3, 4, 5, 6, 7]);
+  const [monadoon, setMonadoon] = useState<any>({});
+  const [slmnd, setSlmnd] = useState<any>({});
+  const prizes = useRef<any[]>(ALL_PRIZES);
+  const [prizeStatus, setPrizeStatus] = useState(ALL_PRIZES)
 
 
   const { run: getSpinUserData, data: spinUserData, loading: spinUserDataLoading } = useRequest<SpinUserData, any>(async () => {
@@ -62,9 +63,9 @@ export function useLuckyBera() {
         codes.push(prizes.current[randomIndex]);
         return;
       }
-     
+
       codes.push(item);
-    }); 
+    });
 
     res.data.draw_codes = codes
     res.data.draw_code = codes.join('');
@@ -87,6 +88,15 @@ export function useLuckyBera() {
         total: 69,
         remaining: 0,
       });
+      setMonadoon({
+        total: 200,
+        remaining: 0,
+      });
+      setSlmnd({
+        total: 30,
+        remaining: 0,
+      });
+      
     } else if (res.data && Array.isArray(res.data)) {
       res.data.forEach((item: any) => {
         if (item.category.toLowerCase() === 'chogstarrr') {
@@ -95,11 +105,11 @@ export function useLuckyBera() {
         if (item.category.toLowerCase() === 'monadverse') {
           setMonadverse(item);
         }
-        if (item.category.toLowerCase() === 'monadoo') {
-          setMonadoo(item);
+        if (item.category.toLowerCase() === 'monadoon') {
+          setMonadoon(item);
         }
         if (item.category.toLowerCase() === 'salmonads') {
-          setSlmn(item);
+          setSlmnd(item);
         }
       });
     }
@@ -113,20 +123,22 @@ export function useLuckyBera() {
 
   useEffect(() => {
     let newPrizes = [...ALL_PRIZES];
-    if (chogStarrr.remaining > 0) {
+
+    if (chogStarrr.remaining === 0) {
       newPrizes = newPrizes.filter((item: any) => item !== 6);
     }
-    if (monadverse.remaining > 0) {
-      newPrizes = ALL_PRIZES.filter((item: any) => item !== 7);
+    if (monadverse.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 7);
     }
-    if (monadoo.remaining > 0) {
-      newPrizes = ALL_PRIZES.filter((item: any) => item !== 8);
+    if (monadoon.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 8);
     }
-    if (slmn.remaining > 0) {
-      newPrizes = ALL_PRIZES.filter((item: any) => item !== 9);
+    if (slmnd.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 9);
     }
     prizes.current = newPrizes;
-  }, [chogStarrr, monadverse]);
+    setPrizeStatus(newPrizes);
+  }, [chogStarrr, monadverse, monadoon, slmnd]);
 
   return {
     spinUserData,
@@ -140,8 +152,9 @@ export function useLuckyBera() {
     setMultiple,
     chogStarrr,
     monadverse,
-    monadoo,
-    slmn,
+    monadoon,
+    slmnd,
     prizes,
+    prizeStatus,
   };
 }
