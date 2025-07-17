@@ -23,7 +23,7 @@ export default memo(function Laptop() {
   return (
     <div className="w-full h-screen bg-[#0E0F29]">
       <div className="w-full h-full bg-[url('/images/faucet/bg.png')] bg-no-repeat bg-top bg-cover">
-        <div className="w-full h-full flex justify-center items-start pt-[110px] bg-[linear-gradient(180deg,_#000_0%,_rgba(0,_0,_0,_0.00)_100%)] bg-no-repeat bg-top bg-[length:100%_37.79%]">
+        <div className="w-full h-full flex justify-center items-start pt-[80px] bg-[linear-gradient(180deg,_#000_0%,_rgba(0,_0,_0,_0.00)_100%)] bg-no-repeat bg-top bg-[length:100%_37.79%]">
           <FaucetCard bodyClassName="relative !p-0 border border-transparent">
             <div
               data-bp="1002-003"
