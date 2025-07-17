@@ -3,11 +3,11 @@ import useToast from "@/hooks/use-toast";
 import { get, post } from "@/utils/http";
 import { mainnet } from 'viem/chains';
 import Big from "big.js";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useBalance, useTransactionCount } from 'wagmi';
 import useCheckinList from "./use-checkin-list";
 
-export default function useCheckin() {
+export default function useCheckin({ hasNft }: { hasNft: boolean }) {
   const { account, accountWithAk } = useCustomAccount();
   const { data: txCount, isLoading } = useTransactionCount({
     address: account,
@@ -15,7 +15,6 @@ export default function useCheckin() {
   })
 
   const { loading, checkinList, getCheckinList } = useCheckinList()
-
 
   useEffect(() => {
     if (account) {
@@ -31,8 +30,9 @@ export default function useCheckin() {
   const toast = useToast()
 
   const {
-    data,
+    data: ethereumMainnetBalance,
     refetch: refetchEthereumMainnetBalance,
+    isFetching: isEthereumMainnetBalanceLoading,
   } = useBalance({
     address: account as `0x${string}`,
     chainId: mainnet.id,
@@ -41,7 +41,8 @@ export default function useCheckin() {
   async function handleGetCaptcha() {
     try {
       setCaptchaLoading(true)
-      if (!checkinList ||checkinList?.length === 0) {
+
+      if ((!checkinList || checkinList?.length === 0) && !hasNft) {
         const { data: ethereumMainnetBalance } = await refetchEthereumMainnetBalance()
         if (ethereumMainnetBalance && Big(ethereumMainnetBalance?.formatted || 0).lt(0.01)) {
           setErrorMsg("To check in and get MON, you need at least 0.01 ETH on Ethereum.")
@@ -79,6 +80,11 @@ export default function useCheckin() {
       handleGetCaptcha()
     }
   }
+
+  const hasEhereumMainnetBalanceBalance = useMemo(() => {
+    return !!(checkinList?.length > 0 || (ethereumMainnetBalance?.value && Number(ethereumMainnetBalance?.value) >= 10 ** 16) && txCount && txCount > 0);
+  }, [ethereumMainnetBalance, checkinList, txCount]);
+
   return {
     captchaLoading,
     captchaId,
@@ -90,6 +96,10 @@ export default function useCheckin() {
     checkinSuccess,
     setCheckinSuccess,
     handleCheckIn,
-    handleGetCaptcha
+    handleGetCaptcha,
+    hasEhereumMainnetBalanceBalance,
+    isEthereumMainnetBalanceLoading,
+    ethereumMainnetBalance,
+    refetchEthereumMainnetBalance,
   }
 }
