@@ -54,7 +54,7 @@ export default function NftT(props: any) {
             transition={{ duration: 0.2 }}
             className='absolute w-full h-full left-0 top-0'
           >
-            <img src={nfts[currentIndex].img} alt="" className={clsx('w-[127px] absolute top-0 left-0', nfts[currentIndex].key === 'monadoon' ? 'h-[175px]' : 'h-[175px]')} />
+            <img src={nfts[currentIndex].img} alt="" className={clsx('w-[127px] absolute top-0 left-0', nfts[currentIndex].cls, nfts[currentIndex].key === 'monadoon' ? 'h-[175px]' : 'h-[175px]')} />
             <div className="absolute right-[30px] bottom-[75px] font-Montserrat text-[14px] font-bold italic text-white rotate-[-5deg] drop-shadow-[2px_2px_0_#000] [text-shadow:0_0_2px_#000,1px_1px_0_#000,-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000]">
               {nfts[currentIndex].data.remaining}/{nfts[currentIndex].data.total}
             </div>
