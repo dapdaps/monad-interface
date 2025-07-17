@@ -14,20 +14,14 @@ import { useBalance } from 'wagmi';
 import { mainnet } from 'viem/chains';
 import useCheckinInfo from './hooks/use-checkin-info';
 import useCheckin from './hooks/use-checkin';
+import useMultiNft from './hooks/useMultiNft';
 
 export const FaucetContext = createContext<Partial<IFaucetContext>>({});
 
 function FaucetContextProvider({ children }: { children: ReactNode; }) {
   const toast = useToast();
   const { account, accountWithAk } = useCustomAccount();
-
-  const {
-    data: ethereumMainnetBalance,
-    isLoading: isEthereumMainnetBalanceLoading
-  } = useBalance({
-    address: account as `0x${string}`,
-    chainId: mainnet.id,
-  });
+  const { multiNft, multiNftLoading, baseUri, NFT_ADDRESSES, getMultiNft, hasNft } = useMultiNft();
   const {
     captchaLoading,
     captchaId,
@@ -40,7 +34,15 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
     setCheckinSuccess,
     handleCheckIn,
     handleGetCaptcha,
-  } = useCheckin()
+    hasEhereumMainnetBalanceBalance,
+    isEthereumMainnetBalanceLoading,
+    ethereumMainnetBalance,
+    refetchEthereumMainnetBalance
+  } = useCheckin({
+    hasNft: hasNft,
+  })
+
+  
 
   const {
     loading: checkinInfoLoading,
@@ -63,6 +65,7 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
       value={{
         ethereumMainnetBalance,
         isEthereumMainnetBalanceLoading,
+        hasEhereumMainnetBalanceBalance,
         checkinInfo,
         checkinInfoLoading,
         captchaLoading,
@@ -79,7 +82,14 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
         showHistory,
         setShowHistory,
         handleCheckIn,
-        handleGetCaptcha
+        handleGetCaptcha,
+        multiNft, 
+        multiNftLoading, 
+        baseUri, 
+        NFT_ADDRESSES, 
+        getMultiNft, 
+        hasNft,
+        refetchEthereumMainnetBalance
       }}
     >
       {children}
