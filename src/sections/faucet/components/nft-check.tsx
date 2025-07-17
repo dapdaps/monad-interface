@@ -3,7 +3,7 @@ import { useFaucetContext } from "../context";
 
 export default function NftCheck() {
     const { multiNft, multiNftLoading, baseUri, NFT_ADDRESSES, getMultiNft, hasNft } = useFaucetContext();
-    
+
     return (
         <div className="font-DogicaPixel bg-[#6D7EA524] mx-[25px] px-[15px] py-[10px] rounded-[4px] mb-[40px] mt-[10px]">
             <div className="flex items-center gap-[10px] justify-between w-full">

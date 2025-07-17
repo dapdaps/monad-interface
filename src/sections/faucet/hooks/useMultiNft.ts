@@ -125,7 +125,6 @@ export default function useMultiNft() {
         setMultiNftLoading(false);
     }, [address, rpc, refresh, multiNftLoading]);
 
-
     useEffect(() => {
         getMultiNft();
     }, [address]);
