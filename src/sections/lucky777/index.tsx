@@ -29,9 +29,16 @@ const TigerView: React.FC<any> = () => {
     setMultiple,
     chogStarrr,
     monadverse,
+    monadoon,
+    slmnd,
+    prizes,
+    prizeStatus,
+    isOpenSwitch,
+    setIsOpenSwitch,
+    spinUserDataLoading,
   } = useLuckyBera();
   const { visible, toggleVisible } = useBuyHoney();
-  const [update, setUpdate] = useState<any>(1);
+  const [update, setUpdate] = useState<any>(1); 
 
   return (
     <Tiger
@@ -39,12 +46,19 @@ const TigerView: React.FC<any> = () => {
       spinUserData={spinUserData}
       lastSpinResult={lastSpinResult}
       getSpinUserData={getSpinUserData}
+      spinUserDataLoading={spinUserDataLoading}
       handleSpinResult={handleSpinResult}
       toggleOutHoneyVisible={toggleVisible}
       multiple={multiple}
       setMultiple={setMultiple}
       chogStarrr={chogStarrr}
       monadverse={monadverse}
+      monadoon={monadoon}
+      slmnd={slmnd}
+      prizes={prizes}
+      prizeStatus={prizeStatus}
+      isOpenSwitch={isOpenSwitch}
+      setIsOpenSwitch={setIsOpenSwitch}
       onUpdate={() => setUpdate(update + 1)}
     />
   );

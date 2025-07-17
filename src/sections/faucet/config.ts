@@ -45,6 +45,15 @@ export interface IFaucetContext {
 
   handleCheckIn(): Promise<void>;
   handleGetCaptcha(): Promise<void>;
+
+  multiNft: any;
+  multiNftLoading: boolean;
+  baseUri: string;
+  NFT_ADDRESSES: string[];
+  getMultiNft: () => void;
+  hasNft: boolean;
+  hasEhereumMainnetBalanceBalance: boolean;
+  refetchEthereumMainnetBalance: () => void;
 }
 
 export interface ICheckedItem {
