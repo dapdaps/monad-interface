@@ -11,8 +11,14 @@ import VerificationModal from './components/verification-modal';
 import { useSize } from 'ahooks';
 import HistoryButton from './components/history-button';
 import HistoryModal from './components/history-modal';
+import useMultiNft from './hooks/useMultiNft';
+import NftCheck from './components/nft-check';
+import EthBalance from './components/eth-balance';
+
+
 export default memo(function Laptop() {
   const store = useFaucetStore()
+  
 
   return (
     <div className="w-full h-screen bg-[#0E0F29]">
@@ -21,17 +27,24 @@ export default memo(function Laptop() {
           <FaucetCard bodyClassName="relative !p-0 border border-transparent">
             <div
               data-bp="1002-003"
-              className='absolute right-[34px] -top-[13px] cursor-pointer text-[#A5FFFD] font-DogicaPixel text-[12px] leading-[150%]'
+              className='absolute right-[34px] top-[22px] underline cursor-pointer text-[#A5FFFD] font-DogicaPixel text-[12px] leading-[150%]'
               onClick={() => {
                 store.set({
                   showRule: true
                 })
               }}
             >Rules</div>
-            <div className='m-[25px_32px_17px] p-[12px_101px] rounded-[4px] bg-[rgba(165,255,253,0.20)] text-center text-[#A5FFFD] font-Unbounded text-[12px] leading-[150%]'>
+            <div className="flex items-center justify-between pl-[25px] pt-[25px] font-DogicaPixel font-bold">
+              <div>Satisfy one of the following requirements to check-in & earn MON</div>
+            </div>
+
+            <EthBalance />
+            <NftCheck />
+
+            {/* <div className='m-[25px_32px_17px] p-[12px_101px] rounded-[4px] bg-[rgba(165,255,253,0.20)] text-center text-[#A5FFFD] font-Unbounded text-[12px] leading-[150%]'>
               Testnet tokens are for development purposes only and have no real value.
               To check in and receive MON, you must have at least 0.01 ETH and a transaction history on Ethereum mainnet.
-            </div>
+            </div> */}
 
             <EnergyBars />
             <Summary />
