@@ -365,6 +365,7 @@ export default memo(function Tiger(props: any) {
     if (!spinUserData?.spin_balance || spinUserData?.spin_balance <= 0) {
       fail({ title: 'No spins left' }, 'bottom-right');
       setIsOpenSwitch(false);
+      isOpenSwitchRef.current = false
       setDisabledBtnSpin(false);
       return;
     }
@@ -372,6 +373,7 @@ export default memo(function Tiger(props: any) {
     if (spinUserData?.spin_balance < multiple) {
       fail({ title: 'No enough spins balance' }, 'bottom-right');
       setIsOpenSwitch(false);
+      isOpenSwitchRef.current = false
       setDisabledBtnSpin(false);
       return;
     }
