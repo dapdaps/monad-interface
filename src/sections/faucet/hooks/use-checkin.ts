@@ -43,9 +43,9 @@ export default function useCheckin({ hasNft }: { hasNft: boolean }) {
       setCaptchaLoading(true)
 
       if ((!checkinList || checkinList?.length === 0) && !hasNft) {
-        const { data: ethereumMainnetBalance } = await refetchEthereumMainnetBalance()
+        // const { data: ethereumMainnetBalance } = await refetchEthereumMainnetBalance()
         if (ethereumMainnetBalance && Big(ethereumMainnetBalance?.formatted || 0).lt(0.01)) {
-          setErrorMsg("To check in and get MON, you need at least 0.01 ETH on Ethereum.")
+          setErrorMsg("To check in and get MON, you need at least 0.01 ETH on Ethereum, or hold an ecosystem NFTs.")
           setCaptchaLoading(false)
           return
         }
