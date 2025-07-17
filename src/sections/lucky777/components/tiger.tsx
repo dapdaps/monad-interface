@@ -328,16 +328,19 @@ export default memo(function Tiger(props: any) {
       rotateX: [leftWheelRotation.get(), leftWheelCodeRotation]
     }, {
       type: "spring",
+      duration: 1,
       onComplete: () => {
         centerWheelAnimate(centerWheel.current, {
           rotateX: [centerWheelRotation.get(), centerWheelCodeRotation]
         }, {
           type: "spring",
+          duration: 1,
           onComplete: () => {
             rightWheelAnimate(rightWheel.current, {
               rotateX: [rightWheelRotation.get(), rightWheelCodeRotation]
             }, {
               type: "spring",
+              duration: 1,
               onComplete: () => {
                 resolve({});
               },
