@@ -20,6 +20,10 @@ export default function NftT(props: any) {
     return () => clearInterval(timer);
   }, [nfts.length]);
 
+  if (nfts.length === 0) {
+    return null;
+  }
+
   return (
     <div className='absolute bottom-[80px] left-[40px] z-[2] w-[137px] h-[180px]'>
       {
