@@ -904,6 +904,8 @@ export default memo(function Tiger(props: any) {
           isOpenSwitchRef.current = isOpenSwitch;
           if (!isOpenSwitch) {
             setDisabledBtnSpin(false);
+          } else {
+            handleSpin();
           }
         }} />
 

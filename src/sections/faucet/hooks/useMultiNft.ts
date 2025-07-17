@@ -8,7 +8,7 @@ import multicallAddresses from "@/sdk/smart-router/config/multicall";
 import { monadTestnet } from "viem/chains";
 
 const NFT_ADDRESSES = [
-    '0x006300ab0e8969c88dcf2e7c070e6c29b6081c1f', // https://magiceden.io/collections/monad-testnet/0x006300ab0e8969c88dcf2e7c070e6c29b6081c1f
+    process.env.NEXT_PUBLIC_CHART_NFT || '0x006300ab0e8969c88dcf2e7c070e6c29b6081c1f', // https://magiceden.io/collections/monad-testnet/0x006300ab0e8969c88dcf2e7c070e6c29b6081c1f
     '0xc5c9425d733b9f769593bd2814b6301916f91271', // https://magiceden.io/collections/monad-testnet/0xc5c9425d733b9f769593bd2814b6301916f91271
     '0x78ed9a576519024357ab06d9834266a04c9634b7', // https://magiceden.io/collections/monad-testnet/0x78ed9a576519024357ab06d9834266a04c9634b7
     '0x2ace467d5c55d75cf04ae7b9c7672bc499d8e246', // https://magiceden.us/collections/monad-testnet/0x2ace467d5c55d75cf04ae7b9c7672bc499d8e246
