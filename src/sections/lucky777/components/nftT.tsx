@@ -32,7 +32,14 @@ export default function NftT(props: any) {
             key={nft.key}
             className='absolute w-full h-full left-0 top-0'
           >
-            <img src='/images/lucky777/t-bg.png' alt="" className={clsx('w-[137px] absolute top-0 left-0 h-[180px]')} />
+            {
+              nfts.length > 1 && (
+                nfts.map((nft, index) => (
+                  <img src={nft.img} alt="" className={clsx('w-[127px] absolute top-0 left-0 h-[175px]')} />
+                ))
+              )
+            }
+            {/* <img src='/images/lucky777/t-bg.png' alt="" className={clsx('w-[137px] absolute top-0 left-0 h-[180px]')} /> */}
             <img src={nfts[currentIndex].img} alt="" className={clsx('w-[127px] absolute top-0 left-0 h-[175px]')} />
           </div>
         ))
