@@ -1,4 +1,4 @@
-import { motion, useAnimate, useMotionValue } from 'framer-motion';
+import { AnimatePresence, motion, useAnimate, useMotionValue } from 'framer-motion';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { SPIN_CATEGORIES, SpinCategory } from '@/sections/lucky777/config';
 import { numberFormatter } from '@/utils/number-formatter';
@@ -15,6 +15,9 @@ import duration from 'dayjs/plugin/duration';
 import RulesModal from './rules';
 import { useSoundStore } from '@/stores/sound';
 import Notice from './notice';
+import NftT from './nftT';
+import Switch from './switch';
+import { sleep } from '@/sections/bridge/lib/util';
 dayjs.extend(duration);
 
 function getTimeLeftToUTC24() {
@@ -42,7 +45,7 @@ const TOTAL_SPINS = 50;
 // const SpinCategoryRotation = WHEEL_AREA / SpinCategories.length;
 const SpinBase = 10;
 
-const WheelInfinityDelay = 0.3;
+const WheelInfinityDelay = 0.1;
 const WheelInfinitySlowDuration = 25;
 const WheelInfinityAnimation: any = {
   duration: WheelInfinityDelay,
@@ -63,6 +66,12 @@ export default memo(function Tiger(props: any) {
     setMultiple,
     chogStarrr,
     monadverse,
+    monadoon,
+    slmnd,
+    prizeStatus,
+    isOpenSwitch,
+    setIsOpenSwitch,
+    spinUserDataLoading
   } = props;
 
   const [WHEEL_SIZE, setWHEEL_SIZE] = useState(Number(chogStarrr?.remaining) > 0 ? 600 : 500);
@@ -70,20 +79,14 @@ export default memo(function Tiger(props: any) {
   const [SpinCategoryRotation, setSpinCategoryRotation] = useState(WHEEL_AREA / SpinCategories.length);
 
   useEffect(() => {
-    if (Number(chogStarrr?.remaining) > 0) {
-      setWHEEL_SIZE(600);
-      setSpinCategoryRotation(WHEEL_AREA / 6);
-      setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '7'));
-    } else if (Number(monadverse?.remaining) > 0) {
-      setWHEEL_SIZE(600);
-      setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '6'));
-      setSpinCategoryRotation(WHEEL_AREA / 6);
-    } else {
-      setWHEEL_SIZE(500);
-      setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => it.code !== '6' && it.code !== '7'));
-      setSpinCategoryRotation(WHEEL_AREA / 5);
+    if (!prizeStatus || prizeStatus.length === 0) {
+      return;
     }
-  }, [chogStarrr, monadverse]);
+    setWHEEL_SIZE(100 * prizeStatus.length);
+    setSpinCategoryRotation(WHEEL_AREA / prizeStatus.length);
+    setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => prizeStatus.includes(Number(it.code))));
+
+  }, [prizeStatus]);
 
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [openBuyTimes, setOpenBuyTimes] = useState(false);
@@ -111,6 +114,8 @@ export default memo(function Tiger(props: any) {
   const spinTimerInfinityLeft = useRef<any>();
   const spinTimerInfinityCenter = useRef<any>();
   const spinTimerInfinityRight = useRef<any>();
+  const [disabledBtnSpin, setDisabledBtnSpin] = useState(false);
+  const isOpenSwitchRef = useRef(isOpenSwitch);
 
   useInterval(() => {
     setFreeTimes(getTimeLeftToUTC24());
@@ -292,12 +297,12 @@ export default memo(function Tiger(props: any) {
 
   const startWheelResultScroll: (params: any) => Promise<any> = (params) => new Promise((resolve) => {
     // calc wheel position
-    const { draw_code, category } = params.data;
-    const [leftCode, centerCode, rightCode] = [draw_code.slice(0, 1), draw_code.slice(1, 2), draw_code.slice(2)];
+    const { draw_codes, category } = params.data;
+    const [leftCode, centerCode, rightCode] = draw_codes;
 
-    const leftCategoryIndex = SpinCategories.findIndex((it) => it.code === leftCode);
-    const centerCategoryIndex = SpinCategories.findIndex((it) => it.code === centerCode);
-    const rightCategoryIndex = SpinCategories.findIndex((it) => it.code === rightCode);
+    const leftCategoryIndex = SpinCategories.findIndex((it) => Number(it.code) === Number(leftCode));
+    const centerCategoryIndex = SpinCategories.findIndex((it) => Number(it.code) === Number(centerCode));
+    const rightCategoryIndex = SpinCategories.findIndex((it) => Number(it.code) === Number(rightCode));
 
     console.log(
       "lottery code is left: %o(%o), center: %o(%o), right: %o(%o)",
@@ -314,31 +319,28 @@ export default memo(function Tiger(props: any) {
     const rightRandomArea = 0;
     const baseRotation = 360 * SpinBase;
 
-    console.log("lottery wheel random area: %o, center: %o, right: %o", leftRandomArea, centerRandomArea, rightRandomArea);
-
-
-    // const leftWheelCodeRotation = baseRotation + WHEEL_AREA * leftRandomArea + (WHEEL_AREA - leftCategoryIndex * SpinCategoryRotation) - 1;
 
     const leftWheelCodeRotation = baseRotation + WHEEL_AREA * leftRandomArea + (WHEEL_AREA - leftCategoryIndex * SpinCategoryRotation) - 1;
     const centerWheelCodeRotation = baseRotation + WHEEL_AREA * centerRandomArea + (WHEEL_AREA - centerCategoryIndex * SpinCategoryRotation) - 1;
     const rightWheelCodeRotation = baseRotation + WHEEL_AREA * rightRandomArea + (WHEEL_AREA - rightCategoryIndex * SpinCategoryRotation) - 1;
 
-    console.log("lottery wheel rotation left: %o, center: %o, right: %o", leftWheelCodeRotation, centerWheelCodeRotation, rightWheelCodeRotation);
-
     leftWheelAnimate(leftWheel.current, {
       rotateX: [leftWheelRotation.get(), leftWheelCodeRotation]
     }, {
       type: "spring",
+      duration: 1,
       onComplete: () => {
         centerWheelAnimate(centerWheel.current, {
           rotateX: [centerWheelRotation.get(), centerWheelCodeRotation]
         }, {
           type: "spring",
+          duration: 1,
           onComplete: () => {
             rightWheelAnimate(rightWheel.current, {
               rotateX: [rightWheelRotation.get(), rightWheelCodeRotation]
             }, {
               type: "spring",
+              duration: 1,
               onComplete: () => {
                 resolve({});
               },
@@ -365,11 +367,17 @@ export default memo(function Tiger(props: any) {
 
     if (!spinUserData?.spin_balance || spinUserData?.spin_balance <= 0) {
       fail({ title: 'No spins left' }, 'bottom-right');
+      setIsOpenSwitch(false);
+      isOpenSwitchRef.current = false
+      setDisabledBtnSpin(false);
       return;
     }
 
     if (spinUserData?.spin_balance < multiple) {
       fail({ title: 'No enough spins balance' }, 'bottom-right');
+      setIsOpenSwitch(false);
+      isOpenSwitchRef.current = false
+      setDisabledBtnSpin(false);
       return;
     }
 
@@ -435,6 +443,24 @@ export default memo(function Tiger(props: any) {
             startSlowScroll()
           }
         }, 3000);
+      } else if (res.draw_code === '888') {
+        success({ title: `WON 1 Monadoon` }, 'bottom-right');
+        setTitle(('WON 1 Monadoon').repeat(2));
+        playSound(2)
+        setTimeout(() => {
+          if (Number(monadoon?.remaining) === 0) {
+            startSlowScroll()
+          }
+        }, 3000);
+      } else if (res.draw_code === '999') {
+        success({ title: `WON 1 SLMND WL` }, 'bottom-right');
+        setTitle(('WON 1 SLMND').repeat(2));
+        playSound(2)
+        setTimeout(() => {
+          if (Number(slmnd?.remaining) === 0) {
+            startSlowScroll()
+          }
+        }, 3000);
       } else {
         setTitle(DEFAULT_UNLUCKY_TITLE);
       }
@@ -442,6 +468,13 @@ export default memo(function Tiger(props: any) {
 
     setPressed3(false)
     setAnimateSpinning(false);
+
+    if (isOpenSwitchRef.current) {
+      setDisabledBtnSpin(true);
+      setTimeout(() => {
+        handleSpin();
+      }, 1000);
+    }
   }, {
     manual: true,
   });
@@ -638,7 +671,7 @@ export default memo(function Tiger(props: any) {
 
           {/*#region Right*/}
           <motion.div
-            className="absolute right=0 top-1/2 translate-x-[calc(-50%_+_340px)] -translate-y-1/2 [perspective:1000px]"
+            className="absolute right=0 top-1/2 translate-x-[calc(-50%_+_335px)] -translate-y-1/2 [perspective:1000px]"
             style={{
               width: WHEEL_SIZE,
               height: WHEEL_SIZE,
@@ -787,7 +820,12 @@ export default memo(function Tiger(props: any) {
               transformOrigin: "center bottom",
               y: 15,
             }}
-            onClick={handleSpin}
+            onClick={() => {
+              if (disabledBtnSpin) {
+                return;
+              }
+              handleSpin();
+            }}
           >
             <div style={{
               transform: pressed3 ? 'translateY(-3px)' : 'translateY(-20px)'
@@ -826,13 +864,29 @@ export default memo(function Tiger(props: any) {
           />
         </div>
 
-        <div className={"absolute bottom-[80px] right-[145px] z-[2] w-[81px] h-[116px] bg-top bg-contain bg-no-repeat " + (spinUserData?.spin_balance > 0 ? "bg-[url('/images/lucky777/switch.svg')]" : "bg-[url('/images/lucky777/switch-no.svg')]")}>
-        </div>
+        {/* <div className={"absolute bottom-[80px] right-[145px] z-[2] w-[81px] h-[116px] bg-top bg-contain bg-no-repeat " + (spinUserData?.spin_balance > 0 ? "bg-[url('/images/lucky777/switch.svg')]" : "bg-[url('/images/lucky777/switch-no.svg')]")}>
+        </div> */}
 
         <div className="font-HackerNoonV2 w-[309px] h-[93px] absolute bottom-[80px] left-[200px] z-[2] px-[12px] py-[10px]">
           <div className="flex items-center justify-between text-[20px]">
             <div className="text-[#A5FFFD] ">Times:</div>
-            <div className="text-[#A5FFFD]">{spinUserData?.spin_balance}</div>
+            <div className="flex items-center gap-[2px] cursor-pointer" onClick={() => {
+              getSpinUserData();
+            }}>
+              <motion.svg
+                width="22"
+                height="22"
+                viewBox="0 0 22 22"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                animate={spinUserDataLoading ? { rotate: 360 } : { rotate: 0 }}
+                transition={spinUserDataLoading ? { repeat: Infinity, duration: 1, ease: "linear" } : { duration: 0 }}
+                style={{ originX: "50%", originY: "50%" }}
+              >
+                <path d="M10.7362 18.7455C6.88384 18.7455 3.74969 15.6543 3.74969 11.8543C3.74969 8.05504 6.88384 4.96387 10.7362 4.96387C11.903 4.96387 13.0591 5.25391 14.0796 5.8024C14.5804 6.07225 14.7684 6.69809 14.4985 7.19953C14.2313 7.70184 13.6057 7.88961 13.1021 7.61912C12.381 7.23111 11.5633 7.02637 10.7362 7.02637C8.021 7.02637 5.81219 9.19221 5.81219 11.8543C5.81219 14.5171 8.021 16.683 10.7362 16.683C12.9813 16.683 14.9418 15.1958 15.5029 13.0669C15.6492 12.5165 16.2145 12.1886 16.7639 12.333C17.3143 12.4787 17.6434 13.0426 17.4984 13.5933C16.6966 16.6264 13.9159 18.7455 10.7362 18.7455Z" fill="#6D7EA5" />
+                <path d="M17.1712 8.74491L15.2535 3.84239C15.1203 3.50186 14.6653 3.43891 14.4448 3.73067L11.1229 8.12637C10.9025 8.41813 11.087 8.83879 11.451 8.87403L16.6908 9.38084C17.0378 9.41457 17.2982 9.06975 17.1712 8.74491Z" fill="#6D7EA5" />
+              </motion.svg>
+              <span className="text-[#A5FFFD]">{spinUserData?.spin_balance}</span></div>
           </div>
 
           <div className="flex items-center justify-between mt-[10px]">
@@ -849,31 +903,16 @@ export default memo(function Tiger(props: any) {
           </div>
         </div>
 
-        {
-          Number(chogStarrr?.remaining) > 0 && (
-            <div className='absolute bottom-[80px] left-[40px] z-[2] w-[127px] h-[175px]'>
-              <img src="/images/lucky777/chogstarrr-t.png" alt="" className='w-full h-full absolute top-0 left-0' />
-              <div
-                className="absolute left-1/2 -translate-x-1/2 bottom-[26px] font-Montserrat text-[14px] font-bold italic text-white rotate-[-5deg] drop-shadow-[2px_2px_0_#000] [text-shadow:0_0_2px_#000,1px_1px_0_#000,-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000]"
-              >
-                {chogStarrr.remaining}/{chogStarrr.total}
-              </div>
-            </div>
-          )
-        }
+        <Switch isOpen={isOpenSwitch} setIsOpenSwitch={setIsOpenSwitch} onOpenSwitch={(isOpenSwitch) => {
+          isOpenSwitchRef.current = isOpenSwitch;
+          if (!isOpenSwitch) {
+            setDisabledBtnSpin(false);
+          } else {
+            handleSpin();
+          }
+        }} />
 
-        {
-          Number(monadverse?.remaining) > 0 && (
-            <div className='absolute bottom-[80px] left-[40px] z-[2] w-[127px] h-[175px]'>
-              <img src="/images/lucky777/monadverse-t.png" alt="" className='w-full h-full absolute top-0 left-0' />
-              <div
-                className="absolute right-[20px] bottom-[70px] font-Montserrat text-[14px] font-bold italic text-white rotate-[-5deg] drop-shadow-[2px_2px_0_#000] [text-shadow:0_0_2px_#000,1px_1px_0_#000,-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000]"
-              >
-                {monadverse.remaining}/{monadverse.total}
-              </div>
-            </div>
-          )
-        }
+        <NftT monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} />
 
       </div>
 
