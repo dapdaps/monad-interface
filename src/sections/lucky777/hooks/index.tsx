@@ -80,23 +80,40 @@ export function useLuckyBera() {
   const getWhitelist = useCallback(async () => {
     const res = await get("/game/777/reward/whitelist");
 
+    setChogStarrr({
+      total: 50,
+      remaining: 0,
+    });
+    setMonadverse({
+      total: 69,
+      remaining: 0,
+    });
+    setMonadoon({
+      total: 200,
+      remaining: 0,
+    });
+    setSlmnd({
+      total: 30,
+      remaining: 0,
+    });
+
     if (res.code !== 200) {
-      setChogStarrr({
-        total: 50,
-        remaining: 0,
-      });
-      setMonadverse({
-        total: 69,
-        remaining: 0,
-      });
-      setMonadoon({
-        total: 200,
-        remaining: 0,
-      });
-      setSlmnd({
-        total: 30,
-        remaining: 0,
-      });
+      // setChogStarrr({
+      //   total: 50,
+      //   remaining: 0,
+      // });
+      // setMonadverse({
+      //   total: 69,
+      //   remaining: 0,
+      // });
+      // setMonadoon({
+      //   total: 200,
+      //   remaining: 0,
+      // });
+      // setSlmnd({
+      //   total: 30,
+      //   remaining: 0,
+      // });
       
     } else if (res.data && Array.isArray(res.data)) {
       res.data.forEach((item: any) => {
