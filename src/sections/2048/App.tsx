@@ -485,6 +485,8 @@ export default function Game2048() {
             score: score || 0,
         };
 
+        console.log('2048 0 ==', gameId, score)
+
         const [latestBoard, nextMoveNumber] = await getLatestGameBoard(
             gameId || activeGameId
         );
