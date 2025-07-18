@@ -72,7 +72,7 @@ export default function useCheckin({ hasNft, checkinInfo }: { hasNft: boolean, c
   }
 
   const hasEhereumMainnetBalanceBalance = useMemo(() => {
-    return !!(checkinInfo?.total_check_in > 0 || ((ethereumMainnetBalance?.value && Number(ethereumMainnetBalance?.value) >= 10 ** 16) && txCount && txCount > 0));
+    return !!(((ethereumMainnetBalance?.value && Number(ethereumMainnetBalance?.value) >= 10 ** 16) && txCount && txCount > 0));
   }, [ethereumMainnetBalance, checkinInfo, txCount]);
 
   return {
