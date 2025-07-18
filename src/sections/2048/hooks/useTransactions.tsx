@@ -103,9 +103,9 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
     const { address: privyUserAddress } = usePrivyAuth({ isBind: false });
     const { info, success, fail, dismiss } = useToast({ isGame: true });
     const queue = useRef(new AdvancedPromiseQueue(1, (error: Error, moveCount: number) => {
-        fail({
-            title: 'Transaction failed, resetting state',
-        }, 'bottom-right')
+        // fail({
+        //     title: 'Transaction failed, resetting state',
+        // }, 'bottom-right')
         // errorCallBack(error);
         // toast.clearWaitingQueue()
     }));
@@ -248,7 +248,11 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                 reportGameRecord(tx, extendData.score, privyUserAddress);
                 updateGameUser(privyUserAddress, extendData.score, extendData.gameId);
             } else {
-                await pollTransactionStatus(tx, 10, 1000)
+                try {
+                    await pollTransactionStatus(tx, 20, 1000)
+                } catch (error) {
+                    throw 'Create Game failed.'
+                }
             }
 
             if (window.location.pathname.includes('2048')) {
@@ -264,6 +268,16 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             console.log('error', error)
             e = error as Error;
             if (window.location.pathname.includes('2048')) {
+                if (error === 'Create Game failed.') {
+                    fail({
+                        title: 'Failed to start game please start again.',
+                    }, 'bottom-right')
+                    queue.current.clearQueue(true)
+                    await resetNonceAndBalance()
+                    errorCallBack(error as any)
+                    return
+                }
+
                 fail({
                     title: 'Failed to send transaction.',
                 }, 'bottom-right')
@@ -361,10 +375,11 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             userBalance.current = balance;
         }
 
+        // clear queue
+        queue.current.clearQueue(true)
+
         // Sign and send transaction: start game
         console.log("Starting game!");
-
-
 
         queue.current.enqueue({
             moveCount: 0,
@@ -372,7 +387,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                 const nonce = userNonce.current;
                 userNonce.current = nonce + 1;
                 userBalance.current = balance - parseEther("0.0075");
-
+        
                 await sendRawTransactionAndConfirm({
                     nonce: nonce,
                     successText: "Started game!",
@@ -407,8 +422,12 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                         args: [gameId, boards, moves],
                     }),
                 });
+
+
             }
         })
+
+        
     }
 
     async function playNewMoveTransaction(
@@ -490,6 +509,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
         return () => {
             toast.dismiss()
             toast.clearWaitingQueue()
+            queue.current.clearQueue(true)
         }
     }, [])
 
@@ -498,7 +518,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             console.log('pollTransactionStatus throttledRun', tx, new Date().getSeconds())
             pollTransactionStatus(tx, 5, 1000).then(async (res) => {
                 if (res === 'CONFIRMED') {
-                    const [ ,nextMoveNumber] = await getLatestGameBoard(gameUser.gameId as Hex)
+                    const [, nextMoveNumber] = await getLatestGameBoard(gameUser.gameId as Hex)
                     console.log('pollTransactionStatus nextMoveNumber', nextMoveNumber)
                     queue.current.queueBank = queue.current.queueBank.filter(item => item.moveCount > Number(nextMoveNumber) - 1)
                 }
