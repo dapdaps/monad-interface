@@ -46,6 +46,7 @@ class AdvancedPromiseQueue {
     enqueue(item: PromiseQueueItem) {
         this.queue.push(item);
         this.queueBank.push(item);
+        console.log('enqueue', this.queue)
         this.processQueue();
     }
 
@@ -54,6 +55,7 @@ class AdvancedPromiseQueue {
         this.isProcessing = true;
         while (this.queue.length > 0 && this.activeCount < this.concurrency) {
             const currentPromise = this.queue.shift();
+            console.log('enqueue processQueue', this.queue)
             if (!currentPromise) continue;
             this.activeCount++;
             try {
@@ -85,9 +87,9 @@ class AdvancedPromiseQueue {
 
     resumeQueue(moveCount: number) {
         this.clearQueue();
+        console.log('resumeQueue', this.queueBank)
         this.queue = this.queueBank.filter((item) => item.moveCount >= moveCount);
         this.queueBank = [...this.queue];
-        this.isProcessing = false;
         this.processQueue();
     }
 }
@@ -355,6 +357,8 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             args: [gameId],
         });
 
+        console.log('2048 getLatestGameBoard', latestBoard, nextMoveNumber)
+
         return [latestBoard, nextMoveNumber];
     }
 
@@ -519,14 +523,15 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             pollTransactionStatus(tx, 5, 1000).then(async (res) => {
                 if (res === 'CONFIRMED') {
                     const [, nextMoveNumber] = await getLatestGameBoard(gameUser.gameId as Hex)
-                    console.log('pollTransactionStatus nextMoveNumber', nextMoveNumber)
-                    queue.current.queueBank = queue.current.queueBank.filter(item => item.moveCount > Number(nextMoveNumber) - 1)
+                    console.log('2048 pollTransactionStatus nextMoveNumber', nextMoveNumber)
+                    queue.current.queueBank = queue.current.queueBank.filter(item => item.moveCount >= Number(nextMoveNumber) - 1)
                 }
             }).catch(async (error) => {
                 fail({
                     title: 'Transaction failed, resetting state',
                 }, 'bottom-right')
                 await resetNonceAndBalance()
+                console.log('2048 pollTransactionStatus error', error)
                 const [latestBoard, nextMoveNumber] = await getLatestGameBoard(gameUser.gameId as Hex)
                 queue.current.resumeQueue(Number(nextMoveNumber) - 1)
                 // errorCallBack(error, moveCount);
