@@ -18,7 +18,9 @@ const FaucetCheckIn = (props: any) => {
     checkinInfo,
     checkinInfoLoading,
     captchaLoading,
-    handleGetCaptcha
+    handleGetCaptcha,
+    hasEhereumMainnetBalanceBalance,
+    hasNft
   } = useFaucetContext();
 
   const soundStore = useSoundStore()

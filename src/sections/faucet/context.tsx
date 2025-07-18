@@ -22,6 +22,13 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
   const toast = useToast();
   const { account, accountWithAk } = useCustomAccount();
   const { multiNft, multiNftLoading, baseUri, NFT_ADDRESSES, getMultiNft, hasNft } = useMultiNft();
+
+  const {
+    loading: checkinInfoLoading,
+    checkinInfo,
+    handleQueryCheckIn
+  } = useCheckinInfo()
+
   const {
     captchaLoading,
     captchaId,
@@ -40,15 +47,12 @@ function FaucetContextProvider({ children }: { children: ReactNode; }) {
     refetchEthereumMainnetBalance
   } = useCheckin({
     hasNft: hasNft,
+    checkinInfo
   })
 
   
 
-  const {
-    loading: checkinInfoLoading,
-    checkinInfo,
-    handleQueryCheckIn
-  } = useCheckinInfo()
+ 
   
   const [showHistory, setShowHistory] = useState(false)
 

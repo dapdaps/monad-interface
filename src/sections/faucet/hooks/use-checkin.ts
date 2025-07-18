@@ -5,22 +5,12 @@ import { mainnet } from 'viem/chains';
 import Big from "big.js";
 import { useEffect, useMemo, useState } from "react";
 import { useBalance, useTransactionCount } from 'wagmi';
-import useCheckinList from "./use-checkin-list";
-
-export default function useCheckin({ hasNft }: { hasNft: boolean }) {
+export default function useCheckin({ hasNft, checkinInfo }: { hasNft: boolean, checkinInfo: any }) {
   const { account, accountWithAk } = useCustomAccount();
   const { data: txCount, isLoading } = useTransactionCount({
     address: account,
     chainId: mainnet.id,
   })
-
-  const { loading, checkinList, getCheckinList } = useCheckinList()
-
-  useEffect(() => {
-    if (account) {
-      getCheckinList()
-    }
-  }, [account])
 
   const [captchaLoading, setCaptchaLoading] = useState(false)
   const [captchaId, setCaptchaId] = useState("")
@@ -42,7 +32,7 @@ export default function useCheckin({ hasNft }: { hasNft: boolean }) {
     try {
       setCaptchaLoading(true)
 
-      if ((!checkinList || checkinList?.length === 0) && !hasNft) {
+      if ((!checkinInfo || checkinInfo?.total_check_in === 0) && !hasNft) {
         // const { data: ethereumMainnetBalance } = await refetchEthereumMainnetBalance()
         if (ethereumMainnetBalance && Big(ethereumMainnetBalance?.formatted || 0).lt(0.01)) {
           setErrorMsg("To check in and get MON, you need at least 0.01 ETH on Ethereum, or hold an ecosystem NFTs.")
@@ -82,8 +72,8 @@ export default function useCheckin({ hasNft }: { hasNft: boolean }) {
   }
 
   const hasEhereumMainnetBalanceBalance = useMemo(() => {
-    return !!(checkinList?.length > 0 || (ethereumMainnetBalance?.value && Number(ethereumMainnetBalance?.value) >= 10 ** 16) && txCount && txCount > 0);
-  }, [ethereumMainnetBalance, checkinList, txCount]);
+    return !!(checkinInfo?.total_check_in > 0 || ((ethereumMainnetBalance?.value && Number(ethereumMainnetBalance?.value) >= 10 ** 16) && txCount && txCount > 0));
+  }, [ethereumMainnetBalance, checkinInfo, txCount]);
 
   return {
     captchaLoading,
