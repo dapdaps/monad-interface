@@ -6,6 +6,7 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import clsx from 'clsx';
 import { differenceInMilliseconds } from 'date-fns';
 import { useEffect, useRef, useState } from 'react';
+import { useSoundStore } from '@/stores/sound';
 const FaucetCheckIn = (props: any) => {
   const { className } = props;
 
@@ -19,6 +20,8 @@ const FaucetCheckIn = (props: any) => {
     captchaLoading,
     handleGetCaptcha
   } = useFaucetContext();
+
+  const soundStore = useSoundStore()
 
   const { today_check_in } = checkinInfo ?? {
 
@@ -75,7 +78,10 @@ const FaucetCheckIn = (props: any) => {
             openConnectModal?.();
             return;
           }
-          checkinRef?.current?.play();
+          if (!soundStore?.muted) {
+            checkinRef?.current?.play();
+          }
+          
           handleGetCaptcha();
         }}
       >
