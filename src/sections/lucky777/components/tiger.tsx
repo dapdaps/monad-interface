@@ -374,7 +374,8 @@ export default memo(function Tiger(props: any) {
       return;
     }
 
-    if (!spinUserData?.spin_balance || spinUserData?.spin_balance <= 0) {
+
+    if (leftSpin < multiple || !spinUserData?.spin_balance || spinUserData?.spin_balance <= 0) {
       fail({ title: 'No spins left' }, 'bottom-right');
       setIsOpenSwitch(false);
       isOpenSwitchRef.current = false
