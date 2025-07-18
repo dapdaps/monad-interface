@@ -5,8 +5,6 @@ import { useEffect, useMemo, useState } from 'react';
 export default function EthBalance() {
     const { hasEhereumMainnetBalanceBalance, isEthereumMainnetBalanceLoading, refetchEthereumMainnetBalance } = useFaucetContext();
 
-    console.log('isEthereumMainnetBalanceLoading', hasEhereumMainnetBalanceBalance);
-
     return (
         <div className="flex items-center justify-between px-[15px] font-DogicaPixel bg-[#6D7EA524] mx-[25px] h-[38px] rounded-[4px] mt-[10px]">
             <div className="text-[#A6A6DB]">* Have 0.01 ETH and transaction history on Ethereum.</div>
