@@ -74,6 +74,9 @@ export default memo(function Tiger(props: any) {
     spinUserDataLoading
   } = props;
 
+  const [leftSpin, setLeftSpin] = useState(0);
+
+  
   const [WHEEL_SIZE, setWHEEL_SIZE] = useState(Number(chogStarrr?.remaining) > 0 ? 600 : 500);
   const [SpinCategories, setSpinCategories] = useState(Object.values(SPIN_CATEGORIES));
   const [SpinCategoryRotation, setSpinCategoryRotation] = useState(WHEEL_AREA / SpinCategories.length);
@@ -87,6 +90,12 @@ export default memo(function Tiger(props: any) {
     setSpinCategories(Object.values(SPIN_CATEGORIES).filter((it) => prizeStatus.includes(Number(it.code))));
 
   }, [prizeStatus]);
+
+  useEffect(() => {
+    if (spinUserData) {
+      setLeftSpin(spinUserData?.spin_balance);
+    }
+  }, [spinUserData]);
 
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [openBuyTimes, setOpenBuyTimes] = useState(false);
@@ -365,7 +374,8 @@ export default memo(function Tiger(props: any) {
       return;
     }
 
-    if (!spinUserData?.spin_balance || spinUserData?.spin_balance <= 0) {
+
+    if (leftSpin < multiple || !spinUserData?.spin_balance || spinUserData?.spin_balance <= 0) {
       fail({ title: 'No spins left' }, 'bottom-right');
       setIsOpenSwitch(false);
       isOpenSwitchRef.current = false
@@ -383,6 +393,7 @@ export default memo(function Tiger(props: any) {
 
     const machineSoundAudio = playSound(1);
     setPressed3(true);
+    setLeftSpin(leftSpin - multiple);
     // setTimeout(() => {
     //   setPressed3(false)
     // }, 7500);
@@ -886,7 +897,7 @@ export default memo(function Tiger(props: any) {
                 <path d="M10.7362 18.7455C6.88384 18.7455 3.74969 15.6543 3.74969 11.8543C3.74969 8.05504 6.88384 4.96387 10.7362 4.96387C11.903 4.96387 13.0591 5.25391 14.0796 5.8024C14.5804 6.07225 14.7684 6.69809 14.4985 7.19953C14.2313 7.70184 13.6057 7.88961 13.1021 7.61912C12.381 7.23111 11.5633 7.02637 10.7362 7.02637C8.021 7.02637 5.81219 9.19221 5.81219 11.8543C5.81219 14.5171 8.021 16.683 10.7362 16.683C12.9813 16.683 14.9418 15.1958 15.5029 13.0669C15.6492 12.5165 16.2145 12.1886 16.7639 12.333C17.3143 12.4787 17.6434 13.0426 17.4984 13.5933C16.6966 16.6264 13.9159 18.7455 10.7362 18.7455Z" fill="#6D7EA5" />
                 <path d="M17.1712 8.74491L15.2535 3.84239C15.1203 3.50186 14.6653 3.43891 14.4448 3.73067L11.1229 8.12637C10.9025 8.41813 11.087 8.83879 11.451 8.87403L16.6908 9.38084C17.0378 9.41457 17.2982 9.06975 17.1712 8.74491Z" fill="#6D7EA5" />
               </motion.svg>
-              <span className="text-[#A5FFFD]">{spinUserData?.spin_balance}</span></div>
+              <span className="text-[#A5FFFD]">{leftSpin}</span></div>
           </div>
 
           <div className="flex items-center justify-between mt-[10px]">

@@ -39,7 +39,8 @@ export function useLuckyBera() {
   });
 
   const { run: reloadSpinData } = useDebounceFn((lastSpinResult: any) => {
-    getSpinUserData();
+    // getSpinUserData();
+    console.log('reloadSpinData', lastSpinResult);
     setLastSpinResult(lastSpinResult);
   }, { wait: 5000 });
 
@@ -53,7 +54,7 @@ export function useLuckyBera() {
     }
 
     // res.data.draw_code = '666';
-    if (res.data.draw_codes.join('') === '666' || res.data.draw_codes.join('') === '777') {
+    if (res.data.draw_codes.join('') === '666' || res.data.draw_codes.join('') === '777' || res.data.draw_codes.join('') === '888' || res.data.draw_codes.join('') === '999') {
       getWhitelist();
     }
 

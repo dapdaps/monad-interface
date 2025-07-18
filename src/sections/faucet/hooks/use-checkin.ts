@@ -3,25 +3,14 @@ import useToast from "@/hooks/use-toast";
 import { get, post } from "@/utils/http";
 import { mainnet } from 'viem/chains';
 import Big from "big.js";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useBalance, useTransactionCount } from 'wagmi';
-import useCheckinList from "./use-checkin-list";
-
-export default function useCheckin() {
+export default function useCheckin({ hasNft, checkinInfo }: { hasNft: boolean, checkinInfo: any }) {
   const { account, accountWithAk } = useCustomAccount();
   const { data: txCount, isLoading } = useTransactionCount({
     address: account,
     chainId: mainnet.id,
   })
-
-  const { loading, checkinList, getCheckinList } = useCheckinList()
-
-
-  useEffect(() => {
-    if (account) {
-      getCheckinList()
-    }
-  }, [account])
 
   const [captchaLoading, setCaptchaLoading] = useState(false)
   const [captchaId, setCaptchaId] = useState("")
@@ -31,8 +20,9 @@ export default function useCheckin() {
   const toast = useToast()
 
   const {
-    data,
+    data: ethereumMainnetBalance,
     refetch: refetchEthereumMainnetBalance,
+    isFetching: isEthereumMainnetBalanceLoading,
   } = useBalance({
     address: account as `0x${string}`,
     chainId: mainnet.id,
@@ -41,10 +31,11 @@ export default function useCheckin() {
   async function handleGetCaptcha() {
     try {
       setCaptchaLoading(true)
-      if (!checkinList ||checkinList?.length === 0) {
-        const { data: ethereumMainnetBalance } = await refetchEthereumMainnetBalance()
+
+      if ((!checkinInfo || checkinInfo?.total_check_in === 0) && !hasNft) {
+        // const { data: ethereumMainnetBalance } = await refetchEthereumMainnetBalance()
         if (ethereumMainnetBalance && Big(ethereumMainnetBalance?.formatted || 0).lt(0.01)) {
-          setErrorMsg("To check in and get MON, you need at least 0.01 ETH on Ethereum.")
+          setErrorMsg("To check in and get MON, you need at least 0.01 ETH on Ethereum, or hold an ecosystem NFTs.")
           setCaptchaLoading(false)
           return
         }
@@ -79,6 +70,11 @@ export default function useCheckin() {
       handleGetCaptcha()
     }
   }
+
+  const hasEhereumMainnetBalanceBalance = useMemo(() => {
+    return !!(((ethereumMainnetBalance?.value && Number(ethereumMainnetBalance?.value) >= 10 ** 16) && txCount && txCount > 0));
+  }, [ethereumMainnetBalance, checkinInfo, txCount]);
+
   return {
     captchaLoading,
     captchaId,
@@ -90,6 +86,10 @@ export default function useCheckin() {
     checkinSuccess,
     setCheckinSuccess,
     handleCheckIn,
-    handleGetCaptcha
+    handleGetCaptcha,
+    hasEhereumMainnetBalanceBalance,
+    isEthereumMainnetBalanceLoading,
+    ethereumMainnetBalance,
+    refetchEthereumMainnetBalance,
   }
 }
