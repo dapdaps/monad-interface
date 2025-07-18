@@ -106,7 +106,7 @@ const MainLayoutHeader = (props: Props) => {
   return (
     <header
       className={clsx(
-        "flex w-full lg:h-[60px] md:h-[40px] stroke-black font-CherryBomb top-0 z-50 bear-header",
+        "flex w-full justify-between lg:h-[60px] md:h-[40px] stroke-black font-CherryBomb top-0 z-50 bear-header",
         FIXED_HEADER_PATHNAME.some((reg) => reg.test(pathname))
           ? "fixed"
           : "sticky",
@@ -114,7 +114,7 @@ const MainLayoutHeader = (props: Props) => {
       )}
       style={style}
     >
-      <div className="min-w-[120px]">
+      <div className={clsx("min-w-[120px]", isMobile ? "z-[1]" : "")}>
         {DONT_NEED_SHOW_BACK.includes(pathname) ? (
           <div />
         ) : (
@@ -136,7 +136,7 @@ const MainLayoutHeader = (props: Props) => {
         )}
       </div>
 
-      <div className={clsx("flex-1", isMobile ? "w-[100vw] absolute left-0 top-0 right-0" : "flex items-center justify-center relative")}>
+      <div className={clsx("flex-1", isMobile ? "w-[100vw] absolute left-0 top-0 right-0" + (isMobileMenuOpen ? " z-[3]" : "") : "flex items-center justify-center relative")}>
         {
           !isMobile && (
             <div className="absolute px-[30px] flex items-center justify-between left-1/2 -translate-x-1/2 top-0 bg-[url('/images/header/menu_bg.svg')] bg-contain bg-no-repeat bg-center w-[806px] h-[52px] font-Unbounded">
@@ -253,7 +253,7 @@ const MainLayoutHeader = (props: Props) => {
 
       <div className="min-w-[120px] flex justify-end">
         {isMobile ? (
-          <div className="w-[40px] h-[40px] flex items-center">
+          <div className="w-[40px] h-[40px] flex items-center z-[2]">
             <Sound />
           </div>
         ) : (
