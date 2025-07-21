@@ -35,20 +35,20 @@ const networks = {
       //   disabledLend: true,
       // },
       // USDT/WMONAD
-      {
-        id: "7fd07692-cd2d-4ffc-b19c-5b379d9332ba",
-        tokens: [
-          monad.usdt,
-          {
-            ...monad.wmon,
-            icon: "/images/tokens/WMONAD.svg",
-          },
-        ],
-        transitionPrice01: 0.66666666,
-        transitionPrice10: 1.5,
-        duration: 90,
-        disabledLend: true,
-      },
+      // {
+      //   id: "7fd07692-cd2d-4ffc-b19c-5b379d9332ba",
+      //   tokens: [
+      //     monad.usdt,
+      //     {
+      //       ...monad.wmon,
+      //       icon: "/images/tokens/WMONAD.svg",
+      //     },
+      //   ],
+      //   transitionPrice01: 0.66666666,
+      //   transitionPrice10: 1.5,
+      //   duration: 90,
+      //   disabledLend: true,
+      // },
       // shMON/WBTC
       // {
       //   id: "7156f0f9-ac21-40a3-ac40-0801903d9b5f",
@@ -61,15 +61,29 @@ const networks = {
       //   duration: 60,
       // },
       // shMON/WSOL
+      // {
+      //   id: "16bb51fc-0b5d-4b44-b76b-918f5014b6c5",
+      //   tokens: [
+      //     monad.shmon,
+      //     monad.wsol,
+      //   ],
+      //   transitionPrice01: 0.06666667,
+      //   transitionPrice10: 15,
+      //   duration: 90,
+      // },
+      // USDT/WMONAD
       {
-        id: "16bb51fc-0b5d-4b44-b76b-918f5014b6c5",
         tokens: [
-          monad.shmon,
-          monad.wsol,
+          monad.usdt,
+          {
+            ...monad.wmon,
+            icon: "/images/tokens/WMONAD.svg",
+          },
         ],
-        transitionPrice01: 0.06666667,
-        transitionPrice10: 15,
+        transitionPrice01: 0.8333333,
+        transitionPrice10: 1.2,
         duration: 90,
+        disabledLend: false,
       },
     ],
   }
