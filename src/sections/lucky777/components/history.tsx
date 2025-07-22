@@ -111,7 +111,7 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
 
     useEffect(() => {
         if (dataRef.current.length > 0) {
-            setData(winningOnly ? dataRef.current.filter((item: any) => Number(item.amount) > 0) : dataRef.current);
+            setData(winningOnly ? dataRef.current.filter((item: any) => (Number(item.amount) > 0) || (Number(item.code) % 111 === 0)) : dataRef.current);
         } else {
             setData([]);
         }
