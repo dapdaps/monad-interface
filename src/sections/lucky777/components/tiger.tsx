@@ -45,7 +45,7 @@ const TOTAL_SPINS = 50;
 // const SpinCategoryRotation = WHEEL_AREA / SpinCategories.length;
 const SpinBase = 10;
 
-const WheelInfinityDelay = 0.1;
+const WheelInfinityDelay = 0.3;
 const WheelInfinitySlowDuration = 25;
 const WheelInfinityAnimation: any = {
   duration: WheelInfinityDelay,
@@ -762,10 +762,10 @@ export default memo(function Tiger(props: any) {
             className="group absolute bottom-[280px] left-[190px] z-[4] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x1.svg')] bg-no-repeat bg-center bg-contain "
             animate={{
               backgroundImage:
-                spinUserData?.spin_balance < 1 ? "url('/images/lucky777/multiple/x1-disabled.svg')" : multiple === 1 ? "url('/images/lucky777/multiple/x1-press.svg')" : "url('/images/lucky777/multiple/x1.svg')"
+              leftSpin < 1 ? "url('/images/lucky777/multiple/x1-disabled.svg')" : multiple === 1 ? "url('/images/lucky777/multiple/x1-press.svg')" : "url('/images/lucky777/multiple/x1.svg')"
             }}
             onClick={() => {
-              if (spinUserData?.spin_balance < 1) {
+              if (leftSpin < 1) {
                 return;
               }
               setMultiple(1);
@@ -783,10 +783,10 @@ export default memo(function Tiger(props: any) {
             className="absolute group bottom-[280px] left-[80px] z-[4] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x10.svg')] bg-no-repeat bg-center bg-contain "
             animate={{
               backgroundImage:
-                spinUserData?.spin_balance < 10 ? "url('/images/lucky777/multiple/x10-disabled.svg')" : multiple === 10 ? "url('/images/lucky777/multiple/x10-press.svg')" : "url('/images/lucky777/multiple/x10.svg')"
+              leftSpin < 10 ? "url('/images/lucky777/multiple/x10-disabled.svg')" : multiple === 10 ? "url('/images/lucky777/multiple/x10-press.svg')" : "url('/images/lucky777/multiple/x10.svg')"
             }}
             onClick={() => {
-              if (spinUserData?.spin_balance < 10) {
+              if (leftSpin < 10) {
                 return;
               }
               setMultiple(10);
@@ -804,10 +804,10 @@ export default memo(function Tiger(props: any) {
             className="absolute group bottom-[320px] left-[150px] z-[2] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x50.svg')] bg-no-repeat bg-center bg-contain "
             animate={{
               backgroundImage:
-                spinUserData?.spin_balance < 50 ? "url('/images/lucky777/multiple/x50-disabled.svg')" : multiple === 50 ? "url('/images/lucky777/multiple/x50-press.svg')" : "url('/images/lucky777/multiple/x50.svg')"
+              leftSpin < 50 ? "url('/images/lucky777/multiple/x50-disabled.svg')" : multiple === 50 ? "url('/images/lucky777/multiple/x50-press.svg')" : "url('/images/lucky777/multiple/x50.svg')"
             }}
             onClick={() => {
-              if (spinUserData?.spin_balance < 50) {
+              if (leftSpin < 50) {
                 return;
               }
               setMultiple(50);
