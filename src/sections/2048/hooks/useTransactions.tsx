@@ -466,6 +466,8 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                 userNonce.current = nonce + 1;
                 userBalance.current = balance - parseEther("0.005");
 
+                console.log('playNewMoveTransaction nonce', userBalance.current, userNonce.current)
+
                 await sendRawTransactionAndConfirm({
                     nonce,
                     successText: `Played move ${moveCount}`,
@@ -531,6 +533,15 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                     title: 'Transaction failed, resetting state',
                 }, 'bottom-right')
                 await resetNonceAndBalance()
+                if (userBalance.current < parseEther("0.005")) {
+                    while(true) {
+                        await new Promise(resolve => setTimeout(resolve, 3000))
+                        await resetNonceAndBalance()
+                        if (userBalance.current > parseEther("0.005")) {
+                            break
+                        }
+                    }
+                }
                 console.log('2048 pollTransactionStatus error', error)
                 const [latestBoard, nextMoveNumber] = await getLatestGameBoard(gameUser.gameId as Hex)
                 queue.current.resumeQueue(Number(nextMoveNumber) - 1)

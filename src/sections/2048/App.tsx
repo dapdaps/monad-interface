@@ -377,6 +377,7 @@ export default function Game2048() {
                 if (checkGameOver(updatedBoardState)) {
                     setGameOver(true);
                     updateGameUser(privyUserAddress, 0, '');
+                    clearQueue()
                 }
 
                 // Resume moves
@@ -485,13 +486,9 @@ export default function Game2048() {
             score: score || 0,
         };
 
-        console.log('2048 0 ==', gameId, score)
-
         const [latestBoard, nextMoveNumber] = await getLatestGameBoard(
             gameId || activeGameId
         );
-
-        console.log('== newTile 1 ==', latestBoard);
 
         let nonzero = false;
         for (let i = 0; i < 4; i++) {
