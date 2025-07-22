@@ -99,11 +99,11 @@ export default function LoginButton({ resetGame }: LoginButtonProps) {
         } catch (e) {
             console.log((e as any).message);
             console.log("Error fetching testnet MON: ", e);
-            toast.info(`You'll need MON to play this game.`,
-                //      {
-                //     description: `Continue playing and try the in-game faucet or fund directly.`,
-                // }
-            );
+            // toast.info(`You'll need MON to play this game.`,
+            //     //      {
+            //     //     description: `Continue playing and try the in-game faucet or fund directly.`,
+            //     // }
+            // );
         }
 
         setFaucetLoading(false);

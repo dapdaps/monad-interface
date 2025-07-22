@@ -61,7 +61,6 @@ export default function Game2048() {
 
     const { user, createWallet } = usePrivy();
     const [activeGameId, setActiveGameId] = useState<Hex>("0x");
-    const [playedMovesCount, setPlayedMovesCount] = useState<number>(0);
     const {
         userBalance,
         privyUserAddress,
@@ -70,11 +69,11 @@ export default function Game2048() {
         playNewMoveTransaction,
         initializeGameTransaction,
         clearQueue,
+        throttledplayNewMoveTransaction
     } = useTransactions({
-        errorCallBack: async (error: Error) => {
-            await resyncGame(activeGameId, gameUser?.score)
-        },
-        playedMovesCount,
+        errorCallBack: (error: Error) => {
+            resyncGame(activeGameId, gameUser?.score)
+        }
     });
 
     // =============================================================//
@@ -88,9 +87,9 @@ export default function Game2048() {
     const [faucetModalOpen, setFaucetModalOpen] = useState<boolean>(false);
     const [isInited, setIsInited] = useState<boolean>(false);
 
-    
+
     const [encodedMoves, setEncodedMoves] = useState<EncodedMove[]>([]);
-    
+    const [playedMovesCount, setPlayedMovesCount] = useState<number>(0);
     const { setOpenDeposit, needDeposit, setNeedDeposit } = useContext(PrivyContext);
     // const gameId = use2048Store((store: any) => store.gameId);
     // const score = use2048Store((store: any) => store.score);
@@ -221,7 +220,7 @@ export default function Game2048() {
                 fail({
                     title: 'Insufficient balance',
                     description: 'Please deposit more MON to continue playing.',
-                })
+                }, 'bottom-right')
                 return;
             } else {
                 setNeedDeposit(false)
@@ -344,29 +343,29 @@ export default function Game2048() {
                         newEncodedMoves[3].move,
                     ] as readonly [number, number, number];
 
-                    initializeGameTransaction(
+                    await initializeGameTransaction(
                         activeGameId,
                         boards,
                         moves
-                    ).catch((error) => {
-                        console.error("Error in init transaction:", error);
-                        resetNonceAndBalance();
-                        resetBoardOnError(premoveBoard, currentMove, error);
-                    });
+                    )
                 }
 
-                
                 if (moveCount > 3) {
-                    playNewMoveTransaction(
+                    await playNewMoveTransaction(
                         activeGameId as Hex,
                         encoded.board,
                         encoded.move,
                         moveCount,
                         updatedBoardState.score
-                    ).catch((error) => {
-                        console.error("Error in move transaction:", error);
-                        resetBoardOnError(premoveBoard, currentMove, error);
-                    });
+                    )
+
+                    // throttledplayNewMoveTransaction(
+                    //     activeGameId as Hex,
+                    //     encoded.board,
+                    //     encoded.move,
+                    //     moveCount,
+                    //     updatedBoardState.score
+                    // )
                 }
 
                 setBoardState(updatedBoardState);
@@ -485,6 +484,8 @@ export default function Game2048() {
             tiles: [],
             score: score || 0,
         };
+
+        console.log('2048 0 ==', gameId, score)
 
         const [latestBoard, nextMoveNumber] = await getLatestGameBoard(
             gameId || activeGameId
