@@ -11,12 +11,12 @@ const NFT_ADDRESSES = [
     '0x006300ab0e8969c88dcf2e7c070e6c29b6081c1f', // https://magiceden.io/collections/monad-testnet/0x006300ab0e8969c88dcf2e7c070e6c29b6081c1f
     '0xc5c9425d733b9f769593bd2814b6301916f91271', // https://magiceden.io/collections/monad-testnet/0xc5c9425d733b9f769593bd2814b6301916f91271
     '0x78ed9a576519024357ab06d9834266a04c9634b7', // https://magiceden.io/collections/monad-testnet/0x78ed9a576519024357ab06d9834266a04c9634b7
-    '0x2ace467d5c55d75cf04ae7b9c7672bc499d8e246', // https://magiceden.us/collections/monad-testnet/0x2ace467d5c55d75cf04ae7b9c7672bc499d8e246
     '0x7260fe3d8f5b2accde605852423a902d7f5314ce', // https://magiceden.io/collections/monad-testnet/0x7260fe3d8f5b2accde605852423a902d7f5314ce
     '0x4fcf36ac3d46ef5c3f91b8e3714c9bfdb46d63a3', // https://magiceden.io/collections/monad-testnet/0x4fcf36ac3d46ef5c3f91b8e3714c9bfdb46d63a3
     '0xe8f0635591190fb626f9d13c49b60626561ed145', // https://magiceden.io/collections/monad-testnet/0xe8f0635591190fb626f9d13c49b60626561ed145
-    '0x26c86f2835c114571df2b6ce9ba52296cc0fa6bb', // https://magiceden.io/collections/monad-testnet/0x26c86f2835c114571df2b6ce9ba52296cc0fa6bb
     '0x6ed438b2a8eff227e7e54b5324926941b140eea0', // https://magiceden.io/collections/monad-testnet/0x6ed438b2a8eff227e7e54b5324926941b140eea0
+    '0x2ace467d5c55d75cf04ae7b9c7672bc499d8e246', //1155 // https://magiceden.us/collections/monad-testnet/0x2ace467d5c55d75cf04ae7b9c7672bc499d8e246
+    '0x26c86f2835c114571df2b6ce9ba52296cc0fa6bb', //1155 // https://magiceden.io/collections/monad-testnet/0x26c86f2835c114571df2b6ce9ba52296cc0fa6bb
 ]
 
 const NFT_METADATA = [
@@ -35,11 +35,7 @@ const NFT_METADATA = [
         tokenURI: 'https://img.reservoir.tools/images/v2/monad-testnet/i9YO%2F4yHXUdJsWcTqhqvf5%2FEEjhsBi2TXBlrzvV3uC41QPySPXqGEXirnaA47%2BHziZD5H2zdh9AquCJk%2FwPL%2BlKU6TtUnF7lwfMbPHMjPi3QdSJOZP2sla59D4GQ4O7BJePi5gIYEGPm%2FCP%2FW6VVWg%3D%3D',
         balance: 0
     },
-    {
-        name: 'Monadverse Genesis Hatch',
-        tokenURI: 'https://img.reservoir.tools/images/v2/monad-testnet/rSNTYhb5erNxjAvRIO43VmyRWA65FLBByGN48YnLWEaK1qhgk0UdUhpIzDeYZajJDUHBbk7Vw%2BRf7ieKh8bG8cfRHt8dabqwxqUT7fGDRQ2jQ9xbclnJkgXu4f4ivW2Q.gif', 
-        balance: 0
-    },
+   
     {
         name: 'Coronad GTD PASS',
         tokenURI: 'https://img.reservoir.tools/images/v2/monad-testnet/i9YO%2F4yHXUdJsWcTqhqvfy%2Fhb6jno%2BLy8eeCNfg%2B2y%2FXPXT8vPjPxzYvh4u4gmEr50jV6Y2%2FWz%2BM3r%2FMsJGW1jrTW8idrkGjLQNbc7y7kX%2Bv%2F38q9WQWsAzQGxrCCYVJ%2FO91DKH9bsIwUHi5leUW6A%3D%3D.gif',
@@ -56,13 +52,19 @@ const NFT_METADATA = [
         balance: 0
     },
     {
-        name: 'Lil Chogstars: Testnet Starlist',
-        tokenURI: 'https://img.reservoir.tools/images/v2/monad-testnet/%2BF4uAprNqLw%2FUAbX2wIMCCDOrSMYnuquZ7uLfI8jfCPx91ji8y8t28ju7WegcOBEsQLRSAiSOMA7ZurgZAhJ3AA67Rq0%2BZO1NuXhfxuje7tsQOVTtxZ1gIq9RRIa64oWT8z0aA577xll1PUwCpHISw%3D%3D',
+        name: 'Blocknads',
+        tokenURI: '/images/faucet/nft-blocknads.avif',
+        balance: 0
+    },
+
+    {
+        name: 'Monadverse Genesis Hatch',
+        tokenURI: 'https://img.reservoir.tools/images/v2/monad-testnet/rSNTYhb5erNxjAvRIO43VmyRWA65FLBByGN48YnLWEaK1qhgk0UdUhpIzDeYZajJDUHBbk7Vw%2BRf7ieKh8bG8cfRHt8dabqwxqUT7fGDRQ2jQ9xbclnJkgXu4f4ivW2Q.gif', 
         balance: 0
     },
     {
-        name: 'Blocknads',
-        tokenURI: '/images/faucet/nft-blocknads.avif',
+        name: 'Lil Chogstars: Testnet Starlist',
+        tokenURI: 'https://img.reservoir.tools/images/v2/monad-testnet/%2BF4uAprNqLw%2FUAbX2wIMCCDOrSMYnuquZ7uLfI8jfCPx91ji8y8t28ju7WegcOBEsQLRSAiSOMA7ZurgZAhJ3AA67Rq0%2BZO1NuXhfxuje7tsQOVTtxZ1gIq9RRIa64oWT8z0aA577xll1PUwCpHISw%3D%3D',
         balance: 0
     },
 ]
@@ -86,15 +88,15 @@ export default function useMultiNft() {
         try {
             const provider = new ethers.providers.JsonRpcProvider(rpc);
 
-            const calls = NFT_ADDRESSES.map((nftAddress: any) => ({
+            const call721s = NFT_ADDRESSES.slice(0, 7).map((nftAddress: any) => ({
                 address: nftAddress,
                 name: 'balanceOf',
                 params: [address]
             }));
 
-            const multicallResults = await multicall({
+            const multicall721Results = await multicall({
                 abi: ['function balanceOf(address owner) view returns (uint256)'],
-                calls,
+                calls: call721s,
                 options: {
                     requireSuccess: false
                 },
@@ -102,10 +104,11 @@ export default function useMultiNft() {
                 provider
             });
 
-            const _multiNft: any = [...NFT_METADATA];
+            const _multiNft: any = [...NFT_METADATA.slice(0, 7)];
             let hasNft = false;
-            if (multicallResults && multicallResults.length > 0) {
-                multicallResults.forEach((result: any, index: number) => {
+
+            if (multicall721Results && multicall721Results.length > 0) {
+                multicall721Results.forEach((result: any, index: number) => {
                     if (result) {
                         _multiNft[index].balance = result[0].toNumber();
                         hasNft = true;
@@ -113,10 +116,39 @@ export default function useMultiNft() {
                     }
                     _multiNft[index].balance = 0;
                 });
-
             }
+
+            const call1155s = NFT_ADDRESSES.slice(7).map((nftAddress: any) => ({
+                address: nftAddress,
+                name: 'balanceOf',
+                params: [address, 0]
+            }));
+
+            const multicall1155Results = await multicall({
+                abi: ['function balanceOf(address owner, uint256 tokenId) view returns (uint256)'],
+                calls: call1155s,
+                options: {
+                    requireSuccess: false
+                },
+                multicallAddress: multicallAddresses[monadTestnet.id],
+                provider
+            });
+
+            const _multi1155Nft: any = [...NFT_METADATA.slice(7)];
+
+            if (multicall1155Results && multicall1155Results.length > 0) {
+                multicall1155Results.forEach((result: any, index: number) => {
+                    if (result) {
+                        _multi1155Nft[index].balance = result[0].toNumber();
+                        hasNft = true;
+                        return
+                    }
+                    _multi1155Nft[index].balance = 0;
+                });
+            }
+
             setHasNft(hasNft);
-            setMultiNft(_multiNft);
+            setMultiNft([..._multiNft, ..._multi1155Nft]);
         } catch (error) {
             console.error("Failed to get multi NFT:", error);
             setError("Failed to get multi NFT");
@@ -125,8 +157,42 @@ export default function useMultiNft() {
         setMultiNftLoading(false);
     }, [address, rpc, refresh, multiNftLoading]);
 
+    const checkNFT = useCallback(async (): Promise<void> => {
+        try {
+            const provider = new ethers.providers.JsonRpcProvider(rpc);
+
+            const nftContract = new ethers.Contract(
+                '0x26c86f2835c114571df2b6ce9ba52296cc0fa6bb',
+                [
+                    "function ownerOf(uint256 tokenId) view returns (address)",
+                    "function balanceOf(address owner, uint256 tokenId) view returns (uint256)",
+                    "function balanceOfBatch(address[] owners, uint256[] tokenIds) view returns (uint256[])",
+                    "function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)",
+                    "function tokensOfOwner(address owner) view returns (uint256[])",
+                ],
+                provider
+            );
+
+            const balance = await nftContract.balanceOf('0x157Fbe61A20Ef5943FdDA4291F63DC5a9f93ee7C', 0);
+            console.log('balance:', balance);
+
+            if (balance.toString() === '0') {
+            } else {
+                
+            }
+
+
+        } catch (error) {
+            console.error("Error checking NFT ownership:", error);
+           
+        } finally {
+            
+        }
+    }, []);
+
     useEffect(() => {
         getMultiNft();
+        checkNFT();
     }, [address]);
 
     return {
