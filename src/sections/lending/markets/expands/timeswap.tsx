@@ -5,6 +5,7 @@ import Big from 'big.js';
 import LazyImage from '@/components/layz-image';
 import ActionVisibleButton from '@/sections/lending/components/action-visible-button';
 import { LENDING_ACTION_TYPE_MAP } from '@/sections/lending/config';
+import { useEffect, useState } from 'react';
 
 const TimeSwap = (props: any) => {
   // ⚠️if you want to add other parameters, please add them in the expand-table component
@@ -14,9 +15,14 @@ const TimeSwap = (props: any) => {
     handleCurrentAction,
   } = useLendingContext();
 
+  const [transitionPriceDirection, setTransitionPriceDirection] = useState<any>(false);
   const toggleTransitionPriceDirection = () => {
-    row.transitionPriceDirection = !row.transitionPriceDirection;
+    setTransitionPriceDirection(!transitionPriceDirection);
   };
+
+  useEffect(() => {
+    setTransitionPriceDirection(row.transitionPriceDirection);
+  }, [row]);
 
   return (
     <>
@@ -44,11 +50,11 @@ const TimeSwap = (props: any) => {
         </LabelValue>
         <LabelValue label="Transition Price">
           <div className="">
-            {numberFormatter(row[row.transitionPriceDirection ? "transitionPrice01" : "transitionPrice10"], 2, true)}
+            {numberFormatter(row[transitionPriceDirection ? "transitionPrice01" : "transitionPrice10"], 2, true)}
           </div>
           <div className="text-[#A6A6DB]">
             {
-              row.transitionPriceDirection
+              transitionPriceDirection
                 ? row.tokens.map((t: any) => t.symbol).join("/")
                 : row.tokens.map((t: any) => t.symbol).reverse().join("/")
             }
