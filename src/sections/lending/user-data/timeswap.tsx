@@ -1,77 +1,86 @@
 import { ethers } from 'ethers';
-import Big from 'big.js';
 import { numberRemoveEndZero } from '@/utils/number-formatter';
+import { multicall, multicallAddresses } from '@/utils/multicall';
+import { DEFAULT_CHAIN_ID } from '@/configs';
 
 export const timeswap = async (params: any) => {
   const { config, markets, provider, account } = params;
 
-  const contract = new ethers.Contract(
-    config.timeswapV2TokenNft,
-    POSITION_ABI,
-    provider
-  );
+  const multicallAddress = multicallAddresses[DEFAULT_CHAIN_ID];
 
-  const readPosition = async (readParams: { contractParams: (market?: any) => any[]; method: string; }) => {
-    const { contractParams, method } = readParams;
+  const readPosition = async () => {
+    const calls: any = [];
+    // 0: borrowed debt position
+    // 1: lending position
+    markets.forEach((market: any) => {
+      calls.push({
+        address: config.timeswapV2TokenNft,
+        name: "positionOf",
+        params: [
+          account,
+          {
+            token0: market.poolData.pool.token0.address,
+            token1: market.poolData.pool.token1.address,
+            strike: market.poolData.pool.strike,
+            maturity: market.poolData.pool.maturity,
+            position: 0, // borrowed debt position
+          }
+        ]
+      });
+      calls.push({
+        address: config.timeswapV2TokenNft,
+        name: "positionOf",
+        params: [
+          account,
+          {
+            token0: market.poolData.pool.token0.address,
+            token1: market.poolData.pool.token1.address,
+            strike: market.poolData.pool.strike,
+            maturity: market.poolData.pool.maturity,
+            position: 2, // lending position
+          }
+        ]
+      });
+    });
 
-    const results = await Promise.allSettled(
-      markets.map(async (market: any) => {
-        try {
-          const _contractParams = contractParams(market);
-          const res = await contract[method](..._contractParams);
-          return {
-            id: market.id,
-            positionOf: ethers.utils.formatUnits(res, market.poolData.pool.token1.decimals)
-          };
-        } catch (err) {
-          console.warn(`Failed to load user-data for market ${market.id}:`, err);
-          return null;
-        }
-      })
-    );
+    const result = await multicall({
+      abi: POSITION_ABI,
+      calls,
+      options: {},
+      multicallAddress,
+      provider
+    });
 
-    return results
-      .map(result => result.status === 'fulfilled' ? result.value : null)
-      .filter(Boolean);
+    const borrowPositionOfs: any = [];
+    const lendPositionOfs: any = [];
+    markets.forEach((market: any, index: number) => {
+      const currentLendDecimals = market.poolData?.pool.isToken1Base ? market.poolData.pool.token1.decimals : market.poolData?.pool.token0.decimals;
+      const currentBorrowDecimals = market.poolData?.pool.isToken1Base ? market.poolData.pool.token0.decimals : market.poolData?.pool.token1.decimals;
+      const [borrowPositionOf] = result[index + (index + 0)] || [];
+      const [lendPositionOf] = result[index + (index + 1)] || [];
+      borrowPositionOfs.push({
+        id: market.id,
+        positionOf: ethers.utils.formatUnits(borrowPositionOf || "0", currentBorrowDecimals),
+      });
+      lendPositionOfs.push({
+        id: market.id,
+        positionOf: ethers.utils.formatUnits(lendPositionOf || "0", currentLendDecimals),
+      });
+    });
+
+    return {
+      lendPositionOfs,
+      borrowPositionOfs,
+    };
   };
 
-  const [borrowPositionOfs, lendPositionOfs] = await Promise.all([
-    readPosition({
-      method: "positionOf",
-      contractParams: (market) => ([
-        account,
-        {
-          token0: market.poolData.pool.token0.address,
-          token1: market.poolData.pool.token1.address,
-          strike: market.poolData.pool.strike,
-          maturity: market.poolData.pool.maturity,
-          position: 0, // borrowed debt position
-        }
-      ]),
-    }),
-    readPosition({
-      method: "positionOf",
-      contractParams: (market) => ([
-        account,
-        {
-          token0: market.poolData.pool.token0.address,
-          token1: market.poolData.pool.token1.address,
-          strike: market.poolData.pool.strike,
-          maturity: market.poolData.pool.maturity,
-          position: 2, // lending position
-        }
-      ]),
-    })
-  ]);
+  const { borrowPositionOfs, lendPositionOfs } = await readPosition();
 
   return markets.reduce((acc: any, market: any) => {
     acc[market.id] = {
       lendBalance: lendPositionOfs.find((it: any) => it.id === market.id)?.positionOf ?? "0",
       borrowBalance: borrowPositionOfs.find((it: any) => it.id === market.id)?.positionOf ?? "0",
     };
-    const currDecimals = (market.poolData?.pool.isToken1Base ? market.poolData.pool.token1.decimals : market.poolData?.pool.token0.decimals) ?? market.tokens[0].decimals;
-    acc[market.id].lendBalance = Big(acc[market.id].lendBalance).div(10 ** (18 - currDecimals)).toFixed(currDecimals, Big.roundDown);
-    acc[market.id].borrowBalance = Big(acc[market.id].borrowBalance).div(10 ** (18 - currDecimals)).toFixed(currDecimals, Big.roundDown);
     acc[market.id].lendBalance = numberRemoveEndZero(acc[market.id].lendBalance);
     acc[market.id].borrowBalance = numberRemoveEndZero(acc[market.id].borrowBalance);
     return acc;

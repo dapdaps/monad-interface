@@ -96,9 +96,9 @@ const TimeSwap = (props: any) => {
                     <DescriptionTitle
                       descriptionClassName="!p-[5px_10px]"
                       className="!text-white"
-                      description={numberFormatter(Big(row.balance || 0).div(row.transitionPrice10), row.tokens[1]?.decimals, true, { round: 0, isShort: true, isShortUppercase: true })}
+                      description={numberFormatter(Big(row.balance || 0).div(row.transitionPrice10 || 1), row.tokens[1]?.decimals, true, { round: 0, isShort: true, isShortUppercase: true })}
                     >
-                      {numberFormatter(Big(row.balance || 0).div(row.transitionPrice10), 4, true, { round: 0, isShort: true, isShortUppercase: true, isZeroPrecision: true })}
+                      {numberFormatter(Big(row.balance || 0).div(row.transitionPrice10 || 1), 4, true, { round: 0, isShort: true, isShortUppercase: true, isZeroPrecision: true })}
                     </DescriptionTitle>
                     <LazyImage
                       src={row.tokens[1].icon}
@@ -131,9 +131,9 @@ const TimeSwap = (props: any) => {
                   <DescriptionTitle
                     descriptionClassName="!p-[5px_10px]"
                     className="!text-white"
-                    description={numberFormatter(Big(row.balance || 0).times(row.transitionPrice10), row.tokens[0]?.decimals, true, { isShort: true, isShortUppercase: true })}
+                    description={numberFormatter(Big(row.balance || 0).times(row.transitionPrice10 || 1), row.tokens[0]?.decimals, true, { isShort: true, isShortUppercase: true })}
                   >
-                    {numberFormatter(Big(row.balance || 0).times(row.transitionPrice10), 4, true, { round: 0, isShort: true, isShortUppercase: true, isZeroPrecision: true })}
+                    {numberFormatter(Big(row.balance || 0).times(row.transitionPrice10 || 1), 4, true, { round: 0, isShort: true, isShortUppercase: true, isZeroPrecision: true })}
                   </DescriptionTitle>
                   <LazyImage
                     src={row.tokens[0].icon}
@@ -209,7 +209,7 @@ const TimeSwap = (props: any) => {
           )
         }
         {
-          type.value === LendingActionType.Borrow && (
+          (type.value === LendingActionType.Borrow && !row.isExpeired) && (
             <>
               {
                 !repayApproved ? (
