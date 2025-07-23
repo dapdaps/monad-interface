@@ -41,6 +41,7 @@ export function useLending(props: any): Lending {
   const [currentMarket, setCurrentMarket] = useState();
   const [currentYoursMarket, setCurrentYoursMarket] = useState();
   const [markets, setMarkets] = useState<any[]>([]);
+  const [allMarkets, setAllMarkets] = useState<any[]>([]);
   const [marketsOrderKey, setMarketsOrderKey] = useState<string>(dapp.marketOrderKey);
   const [marketsOrderDirection, setMarketsOrderDirection] = useState<LendingOrderDirection>(LendingOrderDirection.Desc);
   const [yoursOrderKey, setYoursOrderKey] = useState<string>(dapp.yoursOrderKey);
@@ -176,7 +177,8 @@ export function useLending(props: any): Lending {
   const getMarkets = () => {
     setLoading(true);
     dapp.loadData({ config: dapp }).then((res: any) => {
-      setMarkets(res);
+      setMarkets(res.markets || []);
+      setAllMarkets(res.allMarkets || []);
       setLoading(false);
     });
   };
@@ -189,10 +191,11 @@ export function useLending(props: any): Lending {
     setUserDataLoading(true);
     dapp.loadUserData({
       config: dapp,
-      markets,
+      markets: markets,
       provider,
       account,
     }).then((res: any) => {
+      console.log("getUserData res: %o", res);
       setUserData(res);
       setUserDataLoading(false);
     });
@@ -233,8 +236,6 @@ export function useLending(props: any): Lending {
     yoursOrderDirection,
     isMobile,
   ]);
-
-  console.log("marketsList: %o", marketsList);
 
   return {
     config: dapp,
