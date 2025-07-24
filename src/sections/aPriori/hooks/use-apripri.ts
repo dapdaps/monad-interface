@@ -90,8 +90,11 @@ export default function useAPriori() {
             const response = await fetch(`https://stake-api.apr.io/withdrawal_requests?address=${account}`);
             const data = await response.json();
             console.log('data:', data);
+            return data;
         } catch (error) {
         }
+
+        return null;
     }
 
     const handleClaim = async (requestId: number) => {

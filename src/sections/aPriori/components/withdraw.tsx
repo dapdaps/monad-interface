@@ -8,6 +8,7 @@ import useAPriori, { APRIORI_CONTRACT_ADDRESS } from "../hooks/use-apripri";
 import { useThrottleFn } from "ahooks";
 import useToast from "@/hooks/use-toast";
 import CircleLoading from "@/components/circle-loading";
+import Big from "big.js";
 
 const TOKENS = [
     {
@@ -29,7 +30,10 @@ export default function Stake() {
     const [receive, setReceive] = useState<string>("0");
     const [tokens, setTokens] = useState<any[]>(TOKENS);
     const [rate, setRate] = useState<string>("1");
+    const [pending, setPending] = useState<any[]>([]);
+    const [ready, setReady] = useState<any[]>([]);
     const [isStakeLoading, setIsStakeLoading] = useState<boolean>(false);
+    const [tabIndex, setTabIndex] = useState<number>(0);
 
     const { balances } = useTokensBalance(tokens)
     const { success, fail } = useToast()
@@ -43,7 +47,7 @@ export default function Stake() {
         const _percent = e.target.value || 0;
         setPercent(_percent);
     };
-    const { getConvertToAssets, handleWithdraw } = useAPriori()
+    const { getConvertToAssets, handleWithdraw, getWithdrawalRequests, handleClaim } = useAPriori()
 
     useEffect(() => {
         throttledGetConvertToAssets(amount)
@@ -52,7 +56,6 @@ export default function Stake() {
     const { run: throttledGetConvertToAssets } = useThrottleFn((amount) => {
         if (!amount) return;
 
-       
         getConvertToAssets(amount).then((res) => {
             setReceive(res);
         });
@@ -66,10 +69,23 @@ export default function Stake() {
         getConvertToAssets('1').then((res) => {
             setRate(res);
         })
+
+
     }, []);
 
+    useEffect(() => {
+        getWithdrawalRequests().then((res) => {
+            const pending = res.filter((item: any) => !item.is_claimable);
+            const ready = res.filter((item: any) => item.is_claimable);
+            console.log('pending:', pending)
+            console.log('ready:', ready)
+            setPending(pending)
+            setReady(ready)
+        })
+    }, [])
+
     return (
-        <div className="pt-4">
+        <div className="pt-4 relative">
             <h2 className="text-[18px] text-white mb-2">Unstake MON</h2>
             <div className="bg-[#26234B] rounded-xl p-5 mb-4 lg:bg-white/5">
                 <div className="flex justify-between items-center mb-2">
@@ -127,53 +143,123 @@ export default function Stake() {
                 </div>
             </div>
 
-            <div className="bg-[#26234B] rounded-xl p-5 mt-4 lg:bg-white/5">
-                <div className="flex justify-between items-center mb-2">
-                    <span className="text-[14px] text-[#A6A6DB] font-semibold">Receive</span>
-                </div>
-                <div className="flex items-center mb-2 justify-between">
-                    <div className="text-[26px] text-white mr-3">{balanceFormated(receive)}</div>
-                    <div className="flex flex-col items-end">
-                        <div className="flex items-center bg-[#3B3860] rounded-lg px-3 py-1 cursor-pointer">
-                            <span className="w-5 h-5 mr-2 inline-block bg-[url('/images/monad.svg')] bg-contain bg-center bg-no-repeat" />
-                            <span className="text-white font-semibold">MON</span>
-                        </div>
-                        <span className="text-[10px] text-[#B6B3D6] mt-[5px]">balance: {balanceFormated(balances['native'])}</span>
+            <div className="flex gap-4 mt-6 mb-2">
+                {/* Use aPriori Card */}
+                <div className="flex-1 min-w-[220px] bg-[#23224A] rounded-xl border border-[#B6B3D6] p-5 flex flex-col gap-2 shadow-md">
+                    <div className="text-[#E7E2FF] text-[14px] font-semibold mb-2">Use aPriori</div>
+                    <div className="flex justify-between text-[#A6A6DB] text-[12px]">
+                        <span>Rate:</span>
+                        <span className="text-white">1 : 1</span>
+                    </div>
+                    <div className="flex justify-between text-[#A6A6DB] text-[12px]">
+                        <span>Wait time:</span>
+                        <span className="text-white">10 minutes</span>
+                    </div>
+                    <div className="flex justify-between text-[#A6A6DB] text-[12px]">
+                        <span>You receive:</span>
+                        <span className="text-white">{balanceFormated(receive)} MON</span>
                     </div>
                 </div>
-                <div className="text-[#B6B3D6] text-sm mb-2">$-</div>
+                {/* Use Pool Card */}
+                <div className="flex-1 min-w-[220px] bg-[#6B6A8B] bg-opacity-50 rounded-xl p-5 flex flex-col gap-2 opacity-60 cursor-not-allowed">
+                    <div className="flex justify-between items-center mb-2">
+                        <span className="text-[#C7C6E5] text-[14px] font-semibold">Use Pool</span>
+                        <span className="text-[#C7C6E5] text-[10px]">Coming soon</span>
+                    </div>
+                    <div className="flex justify-between text-[#C7C6E5] text-[12px]">
+                        <span>Rate:</span>
+                        <span></span>
+                    </div>
+                    <div className="flex justify-between text-[#C7C6E5] text-[12px]">
+                        <span>Wait time:</span>
+                        <span></span>
+                    </div>
+                    <div className="flex justify-between text-[#C7C6E5] text-[12px]">
+                        <span>You receive:</span>
+                        <span></span>
+                    </div>
+                </div>
             </div>
-            <div className="text-white text-sm mt-4 mb-2">1 MON = {rate} aprMON</div>
-            <button disabled={isStakeLoading || Number(amount) >= Number(balances[APRIORI_CONTRACT_ADDRESS]) || Number(amount) <= 0} onClick={async () => {
-                if (Number(amount) >= Number(balances[APRIORI_CONTRACT_ADDRESS])) {
-                    console.log('Insufficient balance')
-                    fail({
-                        title: 'Insufficient balance'
-                    })
-                    return;
-                }
+            <button
+                disabled={isStakeLoading || Number(amount) >= Number(balances[APRIORI_CONTRACT_ADDRESS]) || Number(amount) <= 0}
+                onClick={async () => {
+                    if (Number(amount) >= Number(balances[APRIORI_CONTRACT_ADDRESS])) {
+                        console.log('Insufficient balance')
+                        fail({
+                            title: 'Insufficient balance'
+                        })
+                        return;
+                    }
 
-                setIsStakeLoading(true)
-                const tx = await handleWithdraw(amount)
-                console.log('tx:', tx)
-                if (tx) {
-                    success({
-                        title: 'Withdraw successful',
-                        description: 'Withdraw successful',
-                        icon: 'success',
-                        tx: tx,
-                        chainId: monadTestnet.id,
-                    })
-                } else {
-                    fail({
-                        title: 'Withdraw failed'
-                    })
-                }
-                setIsStakeLoading(false)
-            }} className="w-full py-3 flex justify-center items-center mt-2 gap-2 rounded-xl bg-[#8B87FF] text-white text-[18px] hover:opacity-80 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                    setIsStakeLoading(true)
+                    const tx = await handleWithdraw(amount)
+                    console.log('tx:', tx)
+                    if (tx) {
+                        success({
+                            title: 'Withdraw successful',
+                            description: 'Withdraw successful',
+                            icon: 'success',
+                            tx: tx,
+                            chainId: monadTestnet.id,
+                        })
+                    } else {
+                        fail({
+                            title: 'Withdraw failed'
+                        })
+                    }
+                    setIsStakeLoading(false)
+                }} className="w-full py-3 flex justify-center items-center mt-5 gap-2 rounded-xl bg-[#8B87FF] text-white text-[18px] hover:opacity-80 transition disabled:opacity-50 disabled:cursor-not-allowed">
                 {isStakeLoading ? <CircleLoading size={20} /> : null}
-                Withdraw
+                Request Withdrawls
             </button>
+
+            <div className="w-[370px] mx-auto mt-8 bg-[#23224A] rounded-2xl shadow-lg border border-[#3B3970] font-Montserrat absolute top-[-100px] right-[-500px]">
+                <div className="flex border-b border-[#35346A]">
+                    <button
+                        className={`flex-1 py-2 text-[18px] transition ${tabIndex === 0
+                            ? "text-[#A6FF7A] border-b-2 border-[#A6FF7A]"
+                            : "text-[#A6A6DB]"
+                            }`}
+                        onClick={() => setTabIndex(0)}
+                    >
+                        {pending.length} Pending
+                    </button>
+                    <button
+                        className={`flex-1 py-2 text-[18px] font-semibold transition ${tabIndex === 1
+                            ? "text-[#A6FF7A] border-b-2 border-[#A6FF7A]"
+                            : "text-[#A6A6DB]"
+                            }`}
+                        onClick={() => setTabIndex(1)}
+                    >
+                        {ready.length} Ready to claim
+                    </button>
+                </div>
+              
+                <div className="divide-y divide-[#35346A]">
+                    {
+                        (tabIndex === 0 ? pending : ready).map((item: any) => (
+                            <div className="flex items-center px-6 py-5" key={item.id}>
+                                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-[#2D2B5A] mr-4">
+                                    <img src="/images/monad.svg" alt="MON" className="w-6 h-6" />
+                                </div>
+                                <div className="flex-1">
+                                    <div className="text-white text-[18px] font-semibold">{balanceFormated(new Big(item.assets).div(10 ** 18).toString())} <span className="text-[#A6A6DB] text-[14px] font-normal ml-1">aprMON</span></div>
+                                </div>
+                                <ChainBtn item={item} handleClaim={handleClaim} getWithdrawalRequests={getWithdrawalRequests} success={success} fail={fail} />
+                            </div>
+                        ))
+                    }
+
+                    {
+                        (tabIndex === 0 ? pending : ready).length === 0 && (
+                            <div className="flex items-center justify-center px-6 py-10">
+                                <div className="text-white text-[18px] text-center font-semibold">No data</div>
+                            </div>
+                        )
+                    }
+
+                </div>
+            </div>
         </div>
     );
 }
@@ -184,3 +270,34 @@ const BalancePercentList = [
     { value: 75, label: "75%" },
     { value: 100, label: "Max" }
 ];
+
+
+const ChainBtn = ({ item, handleClaim, getWithdrawalRequests, success, fail }: { item: any, handleClaim: any, getWithdrawalRequests: any, success: any, fail: any }) => {
+    const [isClaiming, setIsClaiming] = useState<boolean>(false)
+
+    return (
+        <button onClick={async () => {
+            setIsClaiming(true)
+            const tx = await handleClaim(item.id)
+            console.log('tx:', tx)
+            if ( tx ) {
+                success({
+                    title: 'Claim successful',
+                    description: 'Claim successful',
+                    icon: 'success',
+                    tx: tx,
+                    chainId: monadTestnet.id,
+                })
+            } else {
+                fail({
+                    title: 'Claim failed'
+                })
+            }
+            setIsClaiming(false)
+            getWithdrawalRequests()
+        }} className="ml-4 px-6 py-1 flex items-center justify-center gap-2 rounded-lg bg-[#8B87FF] text-white text-[16px] font-bold hover:opacity-80 transition">
+            {isClaiming ? <CircleLoading size={16} /> : ''}
+            Claim
+        </button>
+    )
+}
