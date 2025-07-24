@@ -4,37 +4,37 @@ import useAccount from '@/hooks/use-account';
 import { useEffect } from 'react';
 import Big from 'big.js';
 
-const APRIORI_CONTRACT_ADDRESS = '0xb2f82D0f38dc453D596Ad40A37799446Cc89274A';
+export const APRIORI_CONTRACT_ADDRESS = '0xb2f82D0f38dc453D596Ad40A37799446Cc89274A';
 
 export default function useAPriori() {
     const { account, chainId, provider } = useAccount();
-    const getConvertToShares = async (amount: number) => {
-        if (!account || !chainId || !provider) return 0;
+    const getConvertToShares = async (amount: string) => {
+        if (!account || !chainId || !provider) return '0';
 
         try {
-            const amountInWei = ethers.utils.parseEther(amount.toString());
+            const amountInWei = ethers.utils.parseEther(amount);
             const contract = new ethers.Contract(APRIORI_CONTRACT_ADDRESS, ABI, provider);
             const shares = await contract.convertToShares(amountInWei);
-            console.log('shares:', shares.toString());
-            return Number(shares.toString());
+            console.log('shares:', new Big(shares.toString()).div(10 ** 18).toString());
+            return new Big(shares.toString()).div(10 ** 18).toString();
         } catch (error) {
             console.error('Error converting to shares:', error);
-            return 0;
+            return '0';
         }
     }
 
-    const getConvertToAssets = async (amount: number) => {
-        if (!account || !chainId || !provider) return 0;
+    const getConvertToAssets = async (amount: string) => {
+        if (!account || !chainId || !provider) return '0';
 
         try {
-            const amountInWei = ethers.utils.parseEther(amount.toString());
+            const amountInWei = ethers.utils.parseEther(amount);
             const contract = new ethers.Contract(APRIORI_CONTRACT_ADDRESS, ABI, provider);
             const assets = await contract.convertToAssets(amountInWei);
-            console.log('assets:', assets.toString());
-            return Number(assets.toString());
+            console.log('assets:', new Big(assets.toString()).div(10 ** 18).toString());
+            return new Big(assets.toString()).div(10 ** 18).toString();
         } catch (error) {
             console.error('Error converting to assets:', error);
-            return 0;
+            return '0';
         }
     }
 
@@ -48,37 +48,38 @@ export default function useAPriori() {
             return new Big(balance.toString()).div(10 ** 18).toString();
         } catch (error) {
             console.error('Error getting balance:', error);
-            return 0;
+            return '0';
         }
     }
 
-    const handleStake = async (amount: number) => {
+    const handleStake = async (amount: string) => {
         if (!account || !chainId || !provider) return 0;
 
         try {
-            const amountInWei = ethers.utils.parseEther(amount.toString());
+            const amountInWei = ethers.utils.parseEther(amount);
             const contract = new ethers.Contract(APRIORI_CONTRACT_ADDRESS, ABI, provider.getSigner());
             const tx = await contract.deposit(amountInWei, account, { value: amountInWei });
             await tx.wait();
             console.log('tx:', tx);
+            return tx.hash;
         } catch (error) {
             console.error('Error staking:', error);
-            return 0;
+            return null;
         }
     }
 
-    const handleWithdraw = async (amount: number) => {
+    const handleWithdraw = async (amount: string) => {
         if (!account || !chainId || !provider) return 0;
 
         try {
-            const amountInWei = ethers.utils.parseEther(amount.toString());
+            const amountInWei = ethers.utils.parseEther(amount);
             const contract = new ethers.Contract(APRIORI_CONTRACT_ADDRESS, ABI, provider.getSigner());
             const tx = await contract.requestRedeem(amountInWei, account, account);
             await tx.wait();
-            console.log('tx:', tx);
+            return tx.hash;
         } catch (error) {
             console.error('Error withdrawing:', error);
-            return 0;
+            return null;
         }
     }
 
@@ -121,9 +122,10 @@ export default function useAPriori() {
             const tx = await contract.redeem([requestId], account);
             await tx.wait();
             console.log('tx:', tx);
+            return tx.hash;
         } catch (error) {
             console.error('Error claiming:', error);
-            return 0;
+            return null;
         }
     }
 
