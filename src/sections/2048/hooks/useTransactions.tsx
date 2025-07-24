@@ -21,43 +21,49 @@ import { toast } from "react-toastify";
 import { usePrivyAuth } from "@/hooks/use-privy-auth";
 import { use2048Store } from "@/stores/use2048";
 
+interface PromiseQueueItem {
+    fn: () => Promise<any>;
+    moveCount: number;
+}
 
 class AdvancedPromiseQueue {
-    queue: (() => Promise<any>)[];
+    queue: PromiseQueueItem[];
+    queueBank: PromiseQueueItem[];
     concurrency: number;
     activeCount: number;
     isProcessing: boolean;
-    errorCallBack: (error: Error) => void;
+    errorCallBack: (error: Error, moveCount: number) => void;
 
-    constructor(concurrency = 1, errorCallBack: (error: Error) => void) {
+    constructor(concurrency = 1, errorCallBack: (error: Error, moveCount: number) => void) {
         this.queue = [];
+        this.queueBank = [];
         this.concurrency = concurrency;
         this.activeCount = 0;
         this.isProcessing = false;
         this.errorCallBack = errorCallBack || (() => { });
     }
 
-    enqueue(fn: () => Promise<any>) {
-        this.queue.push(fn);
+    enqueue(item: PromiseQueueItem) {
+        this.queue.push(item);
+        this.queueBank.push(item);
+        console.log('enqueue', this.queue)
         this.processQueue();
     }
 
     async processQueue() {
         if (this.isProcessing || this.activeCount >= this.concurrency) return;
         this.isProcessing = true;
-
         while (this.queue.length > 0 && this.activeCount < this.concurrency) {
             const currentPromise = this.queue.shift();
+            console.log('enqueue processQueue', this.queue)
             if (!currentPromise) continue;
             this.activeCount++;
             try {
-                await currentPromise();
+                await currentPromise.fn();
             } catch (error) {
                 console.error("Failed to send transaction:", error);
-                this.queue = [];
-                this.isProcessing = false;
-                this.activeCount = 0;
-                this.errorCallBack(error as Error);
+                this.clearQueue(true);
+                this.errorCallBack(error as Error, currentPromise.moveCount);
                 break;
             } finally {
                 this.activeCount--;
@@ -70,34 +76,40 @@ class AdvancedPromiseQueue {
         }
     }
 
-    clearQueue() {
+    clearQueue(isClearAll: boolean = false) {
         this.queue = [];
+        if (isClearAll) {
+            this.queueBank = [];
+        }
         this.activeCount = 0;
         this.isProcessing = false;
     }
+
+    resumeQueue(moveCount: number) {
+        this.clearQueue();
+        console.log('resumeQueue', this.queueBank)
+        this.queue = this.queueBank.filter((item) => item.moveCount >= moveCount);
+        this.queueBank = [...this.queue];
+        this.processQueue();
+    }
 }
 
-export function useTransactions({ errorCallBack, playedMovesCount }: { errorCallBack: (error: Error) => void, playedMovesCount: number }) {
+export function useTransactions({ errorCallBack }: { errorCallBack: (error: Error) => void }) {
     // User and Wallet objects.
     const { user } = usePrivy();
     const { ready, wallets } = useWallets();
     // Fetch user nonce on new login.
     const userNonce = useRef(0);
     const userBalance = useRef(BigInt(0));
-    const userScore = useRef<Record<string, number>>({});
     const userAddress = useRef("");
     const { address: privyUserAddress } = usePrivyAuth({ isBind: false });
     const { info, success, fail, dismiss } = useToast({ isGame: true });
-    const queue = useRef(new AdvancedPromiseQueue(1, async (error: Error) => {
-        fail({
-            title: 'Transaction failed, resetting state',
-        }, 'bottom-right')
-        await errorCallBack(error);
-        toast.clearWaitingQueue()
-        if (userScore.current[playedMovesCount]) {
-            updateGameUser(privyUserAddress, userScore.current[playedMovesCount], gameUser.gameId);
-            userScore.current = {};
-        }
+    const queue = useRef(new AdvancedPromiseQueue(1, (error: Error, moveCount: number) => {
+        // fail({
+        //     title: 'Transaction failed, resetting state',
+        // }, 'bottom-right')
+        // errorCallBack(error);
+        // toast.clearWaitingQueue()
     }));
     const updateGameUser = use2048Store((store: any) => store.updateUser);
     const gameUser = use2048Store((store: any) => store.users[privyUserAddress || ''])
@@ -234,13 +246,15 @@ export function useTransactions({ errorCallBack, playedMovesCount }: { errorCall
             }
 
             if (extendData) {
-                throttledRun(tx, extendData.moveCount)
+                throttledRun(tx)
                 reportGameRecord(tx, extendData.score, privyUserAddress);
-                console.log('userScore', userScore, extendData.moveCount, extendData.score)
-                userScore.current[extendData.moveCount] = extendData.score;
                 updateGameUser(privyUserAddress, extendData.score, extendData.gameId);
             } else {
-                await pollTransactionStatus(tx, 10, 1000)
+                try {
+                    await pollTransactionStatus(tx, 20, 1000)
+                } catch (error) {
+                    throw 'Create Game failed.'
+                }
             }
 
             if (window.location.pathname.includes('2048')) {
@@ -256,19 +270,31 @@ export function useTransactions({ errorCallBack, playedMovesCount }: { errorCall
             console.log('error', error)
             e = error as Error;
             if (window.location.pathname.includes('2048')) {
+                if (error === 'Create Game failed.') {
+                    fail({
+                        title: 'Failed to start game please start again.',
+                    }, 'bottom-right')
+                    queue.current.clearQueue(true)
+                    await resetNonceAndBalance()
+                    errorCallBack(error as any)
+                    return
+                }
+
                 fail({
                     title: 'Failed to send transaction.',
                 }, 'bottom-right')
-                await errorCallBack(error as Error);
-                if (userScore.current[playedMovesCount]) {
-                    updateGameUser(privyUserAddress, userScore.current[playedMovesCount], gameUser.gameId);
-                    userScore.current = {};
-                }
-                
+
+                await resetNonceAndBalance()
+                const [latestBoard, nextMoveNumber] = await getLatestGameBoard(gameUser.gameId as Hex)
+                console.log('latestBoard', latestBoard)
+                console.log('nextMoveNumber', nextMoveNumber)
+                queue.current.clearQueue()
+                queue.current.resumeQueue(Number(nextMoveNumber) - 1)
+
             }
-            if (e) {
-                throw e;
-            }
+            // if (e) {
+            //     throw e;
+            // }
         }
     }
 
@@ -331,8 +357,7 @@ export function useTransactions({ errorCallBack, playedMovesCount }: { errorCall
             args: [gameId],
         });
 
-    
-        console.log('nextMoveNumber', nextMoveNumber)
+        console.log('2048 getLatestGameBoard', latestBoard, nextMoveNumber)
 
         return [latestBoard, nextMoveNumber];
     }
@@ -354,50 +379,59 @@ export function useTransactions({ errorCallBack, playedMovesCount }: { errorCall
             userBalance.current = balance;
         }
 
+        // clear queue
+        queue.current.clearQueue(true)
+
         // Sign and send transaction: start game
         console.log("Starting game!");
 
-        const nonce = userNonce.current;
-        userNonce.current = nonce + 1;
-        userBalance.current = balance - parseEther("0.0075");
-        userScore.current = {}
+        queue.current.enqueue({
+            moveCount: 0,
+            fn: async function () {
+                const nonce = userNonce.current;
+                userNonce.current = nonce + 1;
+                userBalance.current = balance - parseEther("0.0075");
+        
+                await sendRawTransactionAndConfirm({
+                    nonce: nonce,
+                    successText: "Started game!",
+                    gas: BigInt(150_000),
+                    data: encodeFunctionData({
+                        abi: [
+                            {
+                                type: "function",
+                                name: "startGame",
+                                inputs: [
+                                    {
+                                        name: "gameId",
+                                        type: "bytes32",
+                                        internalType: "bytes32",
+                                    },
+                                    {
+                                        name: "boards",
+                                        type: "uint128[4]",
+                                        internalType: "uint128[4]",
+                                    },
+                                    {
+                                        name: "moves",
+                                        type: "uint8[3]",
+                                        internalType: "uint8[3]",
+                                    },
+                                ],
+                                outputs: [],
+                                stateMutability: "nonpayable",
+                            },
+                        ],
+                        functionName: "startGame",
+                        args: [gameId, boards, moves],
+                    }),
+                });
 
-        queue.current.enqueue(async function () {
-            await sendRawTransactionAndConfirm({
-                nonce: nonce,
-                successText: "Started game!",
-                gas: BigInt(150_000),
-                data: encodeFunctionData({
-                    abi: [
-                        {
-                            type: "function",
-                            name: "startGame",
-                            inputs: [
-                                {
-                                    name: "gameId",
-                                    type: "bytes32",
-                                    internalType: "bytes32",
-                                },
-                                {
-                                    name: "boards",
-                                    type: "uint128[4]",
-                                    internalType: "uint128[4]",
-                                },
-                                {
-                                    name: "moves",
-                                    type: "uint8[3]",
-                                    internalType: "uint8[3]",
-                                },
-                            ],
-                            outputs: [],
-                            stateMutability: "nonpayable",
-                        },
-                    ],
-                    functionName: "startGame",
-                    args: [gameId, boards, moves],
-                }),
-            });
+
+            }
         })
+
+        
     }
 
     async function playNewMoveTransaction(
@@ -413,61 +447,67 @@ export function useTransactions({ errorCallBack, playedMovesCount }: { errorCall
         console.log('playNewMoveTransaction', gameId, board, move, moveCount)
 
         let balance = userBalance.current;
-        if (parseFloat(formatEther(balance)) < 0.01) {
+        if (parseFloat(formatEther(balance)) < 0.05) {
             balance = await publicClient.getBalance({
                 address: userAddress.current as Hex,
             });
-            if (parseFloat(formatEther(balance)) < 0.01) {
+            if (parseFloat(formatEther(balance)) < 0.05) {
                 throw Error("Signer has insufficient balance.");
             }
             userBalance.current = balance;
         }
 
-        const nonce = userNonce.current;
-        userNonce.current = nonce + 1;
-        userBalance.current = balance - parseEther("0.005");
+        queue.current.enqueue({
+            moveCount,
+            fn: async function () {
 
+                // const nonce = random < 0.8 ? userNonce.current : userNonce.current + 1;
+                const nonce = userNonce.current;
+                userNonce.current = nonce + 1;
+                userBalance.current = balance - parseEther("0.005");
 
-        queue.current.enqueue(async function () {
-            await sendRawTransactionAndConfirm({
-                nonce,
-                successText: `Played move ${moveCount}`,
-                gas: BigInt(100_000),
-                data: encodeFunctionData({
-                    abi: [
-                        {
-                            type: "function",
-                            name: "play",
-                            inputs: [
-                                {
-                                    name: "gameId",
-                                    type: "bytes32",
-                                    internalType: "bytes32",
-                                },
-                                {
-                                    name: "move",
-                                    type: "uint8",
-                                    internalType: "uint8",
-                                },
-                                {
-                                    name: "resultBoard",
-                                    type: "uint128",
-                                    internalType: "uint128",
-                                },
-                            ],
-                            outputs: [],
-                            stateMutability: "nonpayable",
-                        },
-                    ],
-                    functionName: "play",
-                    args: [gameId, move, board],
-                }),
-                extendData: {
-                    score,
-                    gameId,
-                    moveCount,
-                }
-            });
+                console.log('playNewMoveTransaction nonce', userBalance.current, userNonce.current)
+
+                await sendRawTransactionAndConfirm({
+                    nonce,
+                    successText: `Played move ${moveCount}`,
+                    gas: BigInt(100_000),
+                    data: encodeFunctionData({
+                        abi: [
+                            {
+                                type: "function",
+                                name: "play",
+                                inputs: [
+                                    {
+                                        name: "gameId",
+                                        type: "bytes32",
+                                        internalType: "bytes32",
+                                    },
+                                    {
+                                        name: "move",
+                                        type: "uint8",
+                                        internalType: "uint8",
+                                    },
+                                    {
+                                        name: "resultBoard",
+                                        type: "uint128",
+                                        internalType: "uint128",
+                                    },
+                                ],
+                                outputs: [],
+                                stateMutability: "nonpayable",
+                            },
+                        ],
+                        functionName: "play",
+                        args: [gameId, move, board],
+                    }),
+                    extendData: {
+                        score,
+                        gameId,
+                        moveCount,
+                    }
+                });
+            },
         })
     }
 
@@ -475,23 +515,55 @@ export function useTransactions({ errorCallBack, playedMovesCount }: { errorCall
         return () => {
             toast.dismiss()
             toast.clearWaitingQueue()
+            queue.current.clearQueue(true)
         }
     }, [])
 
     const { run: throttledRun } = useThrottleFn(
-        (tx: string, moveCount: number) => {
-            pollTransactionStatus(tx, 10, 500).catch((error) => {
+        async (tx: string) => {
+            console.log('pollTransactionStatus throttledRun', tx, new Date().getSeconds())
+            pollTransactionStatus(tx, 5, 1000).then(async (res) => {
+                if (res === 'CONFIRMED') {
+                    const [, nextMoveNumber] = await getLatestGameBoard(gameUser.gameId as Hex)
+                    console.log('2048 pollTransactionStatus nextMoveNumber', nextMoveNumber)
+                    queue.current.queueBank = queue.current.queueBank.filter(item => item.moveCount >= Number(nextMoveNumber) - 1)
+                }
+            }).catch(async (error) => {
                 fail({
                     title: 'Transaction failed, resetting state',
                 }, 'bottom-right')
-                resetNonceAndBalance()
-                errorCallBack(error);
-                if (userScore.current[moveCount]) {
-                    updateGameUser(privyUserAddress, userScore.current[moveCount], gameUser.gameId);
-                    userScore.current = {};
+                await resetNonceAndBalance()
+                if (userBalance.current < parseEther("0.005")) {
+                    while(true) {
+                        await new Promise(resolve => setTimeout(resolve, 3000))
+                        await resetNonceAndBalance()
+                        if (userBalance.current > parseEther("0.005")) {
+                            break
+                        }
+                    }
                 }
-
+                console.log('2048 pollTransactionStatus error', error)
+                const [latestBoard, nextMoveNumber] = await getLatestGameBoard(gameUser.gameId as Hex)
+                queue.current.resumeQueue(Number(nextMoveNumber) - 1)
+                // errorCallBack(error, moveCount);
             })
+        },
+        {
+            wait: 5000,
+            leading: false,
+            trailing: true,
+        }
+    );
+
+    const { run: throttledplayNewMoveTransaction } = useThrottleFn(
+        (
+            gameId: Hex,
+            board: bigint,
+            move: number,
+            moveCount: number,
+            score: number
+        ) => {
+            playNewMoveTransaction(gameId, board, move, moveCount, score)
         },
         {
             wait: 5000,
@@ -506,7 +578,8 @@ export function useTransactions({ errorCallBack, playedMovesCount }: { errorCall
         resetNonceAndBalance,
         initializeGameTransaction,
         playNewMoveTransaction,
+        throttledplayNewMoveTransaction,
         getLatestGameBoard,
-        clearQueue: () => queue.current.clearQueue(),
+        clearQueue: () => queue.current.clearQueue(true),
     };
 }

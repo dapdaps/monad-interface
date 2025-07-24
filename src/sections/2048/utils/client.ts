@@ -34,7 +34,7 @@ export async function pollTransactionStatus(
         retries: number,
         error?: Error
     ) => void
-): Promise<ethers.providers.TransactionReceipt | null> {
+): Promise<null | 'CONFIRMED' | 'FAILED'> {
     let retries = 0;
 
     while (retries <= maxRetries) {
@@ -53,7 +53,7 @@ export async function pollTransactionStatus(
                     console.log('pollTransactionStatus Failed to comfirm transaction.')
                     throw new Error('Transaction failed.')
                 }
-                return receipt; // Return receipt (regardless of success/failure)
+                return status; // Return receipt (regardless of success/failure)
             }
 
             // Case 2: Receipt doesn't exist (transaction not mined)

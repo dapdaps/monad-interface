@@ -24,7 +24,7 @@ export function useLeaderboard() {
                 setLeaderboard([]);
             }
 
-            setLeaderboard(res.data)
+            setLeaderboard(res.data || [])
         }).catch(() => {
             setLeaderboard([]);
         }).finally(() => {
@@ -83,7 +83,7 @@ export default function Leaderboard() {
                     <span>Score</span>
                 </div>
                 <div className="space-y-1 mt-2 min-h-[350px]">
-                    {leaderboard.map((item, idx) => (
+                    {leaderboard?.length > 0 && leaderboard.map((item, idx) => (
                         <div key={item.id} className="flex items-center justify-between px-2 py-1 text-[14px]">
                             <div className="flex items-center gap-2">
                                 <div className={`w-6 h-6 flex items-center relative justify-center rounded-full text-xs}`}>
@@ -99,7 +99,7 @@ export default function Leaderboard() {
                     ))}
 
                     {
-                        leaderboard.length === 0 && (
+                        leaderboard?.length === 0 && (
                             <div className="flex items-center justify-center h-full pt-[100px]">
                                 <div className="text-[#A6A6DB] text-[14px]">No data</div>
                             </div>
@@ -111,7 +111,7 @@ export default function Leaderboard() {
             {/* <button onClick={() => setOpen(true)} className="w-full mt-3 py-3  bg-[#1E1D33] text-[#A6A6DB] text-[14px] font-Montserrat">Check history</button> */}
         </div>
 
-        <Round open={open} onClose={() => setOpen(false)}/>
+        {/* <Round open={open} onClose={() => setOpen(false)}/> */}
         </>
     );
 }
