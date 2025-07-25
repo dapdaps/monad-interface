@@ -61,7 +61,7 @@ export const ALL_DAPP_LIST: IDapp[] = [
     icon: "/images/stake/apriori/logo.png",
     type: "Stake",
     link: "/stake/apriori",
-    desc: "Stake MON to earn rewards. Stake MON to earn rewards.",
+    desc: "aPriori is an MEV infrastructure and liquid staking protocol, designed for the parallel execution era and natively built on Monad.",
     disabled: false
   },
   {
@@ -69,7 +69,7 @@ export const ALL_DAPP_LIST: IDapp[] = [
     icon: "/images/stake/magma/logo.png",
     type: "Stake",
     link: "/stake/magma",
-    desc: "Stake MON to earn rewards.",
+    desc: "Magma is a Liquid Staking Protocol building the first Distributed Validator on Monad and developing MEV to reduce latency by up to 4x.",
     disabled: false
   },
    {

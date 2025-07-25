@@ -3,11 +3,13 @@ import ABI from '../config/abi.json';
 import useAccount from '@/hooks/use-account';
 import { useEffect } from 'react';
 import Big from 'big.js';
+import useAddAction from '@/hooks/use-add-action';
 
 export const APRIORI_CONTRACT_ADDRESS = '0xb2f82D0f38dc453D596Ad40A37799446Cc89274A';
 
 export default function useAPriori() {
     const { account, chainId, provider } = useAccount();
+    const { addAction } = useAddAction("dapp");
     const getConvertToShares = async (amount: string) => {
         if (!account || !chainId || !provider) return '0';
 
@@ -61,6 +63,17 @@ export default function useAPriori() {
             const tx = await contract.deposit(amountInWei, account, { value: amountInWei });
             await tx.wait();
             console.log('tx:', tx);
+            addAction({
+                type: 'Staking',
+                template: 'aPriori',
+                action: 'stake',
+                token: 'native',
+                amount: amount,
+                add: false,
+                status: 1,
+                transactionHash: tx.hash,
+                tokens: ['native'],
+            });
             return tx.hash;
         } catch (error) {
             console.error('Error staking:', error);
@@ -76,6 +89,19 @@ export default function useAPriori() {
             const contract = new ethers.Contract(APRIORI_CONTRACT_ADDRESS, ABI, provider.getSigner());
             const tx = await contract.requestRedeem(amountInWei, account, account);
             await tx.wait();
+
+            addAction({
+                type: 'Staking',
+                template: 'aPriori',
+                action: 'withdraw',
+                token: APRIORI_CONTRACT_ADDRESS,
+                amount: amount,
+                add: false,
+                status: 1,
+                transactionHash: tx.hash,
+                tokens: [APRIORI_CONTRACT_ADDRESS],
+            });
+
             return tx.hash;
         } catch (error) {
             console.error('Error withdrawing:', error);
@@ -125,6 +151,19 @@ export default function useAPriori() {
             const tx = await contract.redeem([requestId], account);
             await tx.wait();
             console.log('tx:', tx);
+
+            addAction({
+                type: 'Staking',
+                template: 'aPriori',
+                action: 'claim',
+                token: APRIORI_CONTRACT_ADDRESS,
+                amount: 0,
+                add: false,
+                status: 1,
+                transactionHash: tx.hash,
+                tokens: [APRIORI_CONTRACT_ADDRESS],
+            });
+
             return tx.hash;
         } catch (error) {
             console.error('Error claiming:', error);
