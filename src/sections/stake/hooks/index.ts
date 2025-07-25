@@ -122,6 +122,7 @@ export function useStake(props: any) {
           type: dapp.type,
           template: dapp.name,
           action: currentTab?.value,
+          sub_type: currentTab?.value,
           token: inputToken,
           amount: inputAmount,
           add: false,

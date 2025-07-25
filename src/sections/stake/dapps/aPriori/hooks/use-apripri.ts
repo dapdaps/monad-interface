@@ -70,6 +70,7 @@ export default function useAPriori() {
                 amount: amount,
                 add: false,
                 status: 1,
+                sub_type: 'stake',
                 transactionHash: tx.hash,
                 tokens: [TOKENS[0]],
             });
@@ -97,6 +98,7 @@ export default function useAPriori() {
                 amount: amount,
                 add: false,
                 status: 1,
+                sub_type: 'withdraw',
                 transactionHash: tx.hash,
                 tokens: [TOKENS[1]],
             });
@@ -159,6 +161,7 @@ export default function useAPriori() {
                 amount: '0',
                 add: false,
                 status: 1,
+                sub_type: 'claim',
                 transactionHash: tx.hash,
                 tokens: [TOKENS[0]],
             });
