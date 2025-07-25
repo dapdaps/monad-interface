@@ -7,11 +7,13 @@ export default [
         chainId: monadTestnet.id,
         decimals: 18,
         isNative: true,
+        symbol: 'MON',
     },
     {
         address: APRIORI_CONTRACT_ADDRESS,
         chainId: monadTestnet.id,
         decimals: 18,
         isNative: false,
+        symbol: 'aprMON',
     }
 ]
