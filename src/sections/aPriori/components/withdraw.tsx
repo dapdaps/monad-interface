@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Range from "@/components/range";
 import { balanceFormated } from "@/utils/balance";
 import clsx from "clsx";
 import useTokensBalance from "@/hooks/use-tokens-balance";
 import { monadTestnet } from "viem/chains";
 import useAPriori, { APRIORI_CONTRACT_ADDRESS } from "../hooks/use-apripri";
-import { useThrottleFn } from "ahooks";
+import { useInterval, useThrottleFn } from "ahooks";
 import useToast from "@/hooks/use-toast";
 import CircleLoading from "@/components/circle-loading";
 import Big from "big.js";
@@ -71,16 +71,22 @@ export default function Stake() {
         })
     }, []);
 
-    useEffect(() => {
+    const getWithdrawalList = useCallback(() => {
         getWithdrawalRequests().then((res) => {
             const pending = res.filter((item: any) => !item.is_claimable);
             const ready = res.filter((item: any) => item.is_claimable);
-            console.log('pending:', pending)
-            console.log('ready:', ready)
             setPending(pending)
             setReady(ready)
         })
     }, [])
+
+    useEffect(() => {
+        getWithdrawalList()
+    }, [])
+
+    useInterval(() => {
+        getWithdrawalList()
+    }, 1000)
 
     return (
         <div className="pt-4 relative">
@@ -152,7 +158,7 @@ export default function Stake() {
                     <div className="text-[#E7E2FF] text-[14px] font-semibold mb-2">Use aPriori</div>
                     <div className="flex justify-between text-[#A6A6DB] text-[12px]">
                         <span>Rate:</span>
-                        <span className="text-white">1 : 1</span>
+                        <span className="text-white">1 : {rate}</span>
                     </div>
                     <div className="flex justify-between text-[#A6A6DB] text-[12px]">
                         <span>Wait time:</span>
@@ -186,8 +192,7 @@ export default function Stake() {
             <button
                 disabled={isStakeLoading || Number(amount) > Number(balances[APRIORI_CONTRACT_ADDRESS]) || Number(amount) <= 0}
                 onClick={async () => {
-                    if (Number(amount) >= Number(balances[APRIORI_CONTRACT_ADDRESS])) {
-                        console.log('Insufficient balance')
+                    if (Number(amount) > Number(balances[APRIORI_CONTRACT_ADDRESS])) {
                         fail({
                             title: 'Insufficient balance'
                         })
@@ -216,7 +221,7 @@ export default function Stake() {
                 Request Withdrawls
             </button>
 
-            <div className="w-[370px] mx-auto mt-8 bg-[#23224A] rounded-2xl shadow-lg border border-[#3B3970] font-Montserrat absolute top-[-100px] right-[-500px]">
+            <div className="w-[370px] mx-auto mt-8 bg-[#23224A] rounded-2xl shadow-lg border border-[#3B3970] font-Montserrat absolute top-[-95px] right-[-500px]">
                 <div className="flex border-b border-[#35346A]">
                     <button
                         className={`flex-1 py-2 text-[18px] transition ${tabIndex === 0
@@ -248,7 +253,17 @@ export default function Stake() {
                                 <div className="flex-1">
                                     <div className="text-white text-[18px] font-semibold">{balanceFormated(new Big(item.assets).div(10 ** 18).toString())} <span className="text-[#A6A6DB] text-[14px] font-normal ml-1">aprMON</span></div>
                                 </div>
-                                <ChainBtn item={item} handleClaim={handleClaim} getWithdrawalRequests={getWithdrawalRequests} success={success} fail={fail} />
+                                {
+                                    item.is_claimable && (
+                                        <ChainBtn item={item} handleClaim={handleClaim} getWithdrawalRequests={getWithdrawalRequests} success={success} fail={fail} />
+                                    )
+                                }
+
+                                {
+                                    !item.is_claimable && (
+                                        <TimeItem item={item} />
+                                    )
+                                }
                             </div>
                         ))
                     }
@@ -256,7 +271,9 @@ export default function Stake() {
                     {
                         (tabIndex === 0 ? pending : ready).length === 0 && (
                             <div className="flex items-center justify-center px-6 py-10">
-                                <div className="text-white text-[18px] text-center font-semibold">No data</div>
+                                <div className="text-white text-[18px] text-center font-semibold">{
+                                    tabIndex === 0 ? "No pending requests found." : "No claimable requests found."
+                                }</div>
                             </div>
                         )
                     }
@@ -301,5 +318,19 @@ const ChainBtn = ({ item, handleClaim, getWithdrawalRequests, success, fail }: {
             {isClaiming ? <CircleLoading size={16} /> : ''}
             Claim
         </button>
+    )
+}
+
+const TimeItem = ({ item }: { item: any }) => {
+    const [time, setTime] = useState<number>(10)
+
+    useInterval(() => {
+        setTime(10 - Math.floor((new Date().getTime() - item.requested_at * 1000) / 1000 / 60))
+    }, 1000)
+
+    return (
+        <div className="text-[#A6A6DB] text-[14px] font-normal ml-1">
+            ~{ time } minutes
+        </div>
     )
 }

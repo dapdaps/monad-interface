@@ -18,10 +18,6 @@ export default memo(function Laptop() {
   } = usePage()
 
 
-
-  console.log("====dappsArray", dappsArray)
-
-
   return (
     <div className="flex flex-col h-[calc(100vh-60px)] pt-[30px] overflow-hidden">
 
