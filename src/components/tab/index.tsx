@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import clsx from 'clsx';
 import useIsMobile from '@/hooks/use-isMobile';
 
-const LendingTabs = (props: any) => {
+const NormalTabs = (props: any) => {
   const {
     tabs,
     tabWidth,
@@ -73,7 +73,7 @@ const LendingTabs = (props: any) => {
   );
 };
 
-export default LendingTabs;
+export default NormalTabs;
 
 export interface Tab {
   label: string;
