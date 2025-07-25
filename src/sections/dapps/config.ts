@@ -58,7 +58,7 @@ export const ALL_DAPP_LIST: IDapp[] = [
   },
   {
     name: "aPriori",
-    icon: "/images/stake/apriori/logo.svg",
+    icon: "/images/stake/apriori/logo.png",
     type: "Stake",
     link: "/stake/apriori",
     desc: "Stake MON to earn rewards. Stake MON to earn rewards.",
