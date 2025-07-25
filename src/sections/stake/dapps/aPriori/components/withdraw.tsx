@@ -211,7 +211,7 @@ export default function Stake() {
                 Request Withdrawls
             </button>
 
-            <div className="w-[370px] mx-auto mt-8 bg-[#23224A] rounded-2xl shadow-lg border border-[#3B3970] font-Montserrat absolute top-[-95px] right-[-460px]">
+            <div className="w-[370px] mx-auto mt-8 bg-[#23224A] rounded-2xl shadow-lg border border-[#3B3970] font-Montserrat absolute top-[-80px] right-[-460px]">
                 <div className="flex border-b border-[#35346A]">
                     <button
                         className={`flex-1 py-2 text-[18px] transition ${tabIndex === 0
