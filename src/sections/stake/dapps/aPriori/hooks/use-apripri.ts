@@ -71,7 +71,7 @@ export default function useAPriori() {
                 add: false,
                 status: 1,
                 transactionHash: tx.hash,
-                tokens: [TOKENS[0], TOKENS[1]],
+                tokens: [TOKENS[0]],
             });
             return tx.hash;
         } catch (error) {
@@ -98,7 +98,7 @@ export default function useAPriori() {
                 add: false,
                 status: 1,
                 transactionHash: tx.hash,
-                tokens: [TOKENS[1], TOKENS[0]],
+                tokens: [TOKENS[1]],
             });
 
             return tx.hash;
