@@ -32,7 +32,7 @@ export default function Stake() {
     const [rate, setRate] = useState<string>("1");
     const [isStakeLoading, setIsStakeLoading] = useState<boolean>(false);
 
-    const { balances } = useTokensBalance(tokens)
+    const { balances, queryBalance } = useTokensBalance(tokens)
     const { success, fail } = useToast()
 
     const [percent, setPercent] = useState<any>(0);
@@ -177,6 +177,7 @@ export default function Stake() {
                         title: 'Stake failed'
                     })
                 }
+                queryBalance()
                 setIsStakeLoading(false)
             }} className="w-full py-3 flex justify-center items-center mt-2 gap-2 rounded-xl bg-[#8B87FF] text-white text-[18px] hover:opacity-80 transition disabled:opacity-50 disabled:cursor-not-allowed">
                 {isStakeLoading ? <CircleLoading size={20} /> : null}

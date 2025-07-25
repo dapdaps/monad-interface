@@ -35,7 +35,7 @@ export default function Stake() {
     const [isStakeLoading, setIsStakeLoading] = useState<boolean>(false);
     const [tabIndex, setTabIndex] = useState<number>(0);
 
-    const { balances } = useTokensBalance(tokens)
+    const { balances, queryBalance } = useTokensBalance(tokens)
     const { success, fail } = useToast()
 
     const [percent, setPercent] = useState<any>(0);
@@ -73,6 +73,7 @@ export default function Stake() {
 
     const getWithdrawalList = useCallback(() => {
         getWithdrawalRequests().then((res) => {
+            if (!res) return;
             const pending = res.filter((item: any) => !item.is_claimable);
             const ready = res.filter((item: any) => item.is_claimable);
             setPending(pending)
@@ -215,6 +216,7 @@ export default function Stake() {
                             title: 'Withdraw failed'
                         })
                     }
+                    queryBalance()
                     setIsStakeLoading(false)
                 }} className="w-full py-3 flex justify-center items-center mt-5 gap-2 rounded-xl bg-[#8B87FF] text-white text-[18px] hover:opacity-80 transition disabled:opacity-50 disabled:cursor-not-allowed">
                 {isStakeLoading ? <CircleLoading size={20} /> : null}
