@@ -4,8 +4,7 @@ import useAccount from '@/hooks/use-account';
 import { useEffect } from 'react';
 import Big from 'big.js';
 import useAddAction from '@/hooks/use-add-action';
-
-export const APRIORI_CONTRACT_ADDRESS = '0xb2f82D0f38dc453D596Ad40A37799446Cc89274A';
+import TOKENS, { APRIORI_CONTRACT_ADDRESS } from '../config/tokens';
 
 export default function useAPriori() {
     const { account, chainId, provider } = useAccount();
@@ -72,7 +71,7 @@ export default function useAPriori() {
                 add: false,
                 status: 1,
                 transactionHash: tx.hash,
-                tokens: ['native'],
+                tokens: [TOKENS[0], TOKENS[1]],
             });
             return tx.hash;
         } catch (error) {
@@ -99,7 +98,7 @@ export default function useAPriori() {
                 add: false,
                 status: 1,
                 transactionHash: tx.hash,
-                tokens: [APRIORI_CONTRACT_ADDRESS],
+                tokens: [TOKENS[1], TOKENS[0]],
             });
 
             return tx.hash;
@@ -161,8 +160,9 @@ export default function useAPriori() {
                 add: false,
                 status: 1,
                 transactionHash: tx.hash,
-                tokens: [APRIORI_CONTRACT_ADDRESS],
+                tokens: [TOKENS[0], TOKENS[1]],
             });
+            
 
             return tx.hash;
         } catch (error) {

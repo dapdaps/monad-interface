@@ -4,27 +4,11 @@ import { balanceFormated } from "@/utils/balance";
 import clsx from "clsx";
 import useTokensBalance from "@/hooks/use-tokens-balance";
 import { monadTestnet } from "viem/chains";
-import useAPriori, { APRIORI_CONTRACT_ADDRESS } from "../hooks/use-apripri";
+import useAPriori from "../hooks/use-apripri";
 import { useThrottleFn } from "ahooks";
 import useToast from "@/hooks/use-toast";
-import Loading from "@/components/loading";
 import CircleLoading from "@/components/circle-loading";
-
-const TOKENS = [
-    {
-        address: "0x0000000000000000000000000000000000000000",
-        chainId: monadTestnet.id,
-        decimals: 18,
-        isNative: true,
-    },
-    {
-        address: APRIORI_CONTRACT_ADDRESS,
-        chainId: monadTestnet.id,
-        decimals: 18,
-        isNative: false,
-    }
-]
-
+import TOKENS, { APRIORI_CONTRACT_ADDRESS } from "../config/tokens";
 export default function Stake() {
     const [amount, setAmount] = useState<string>("");
     const [receive, setReceive] = useState<string>("0");
