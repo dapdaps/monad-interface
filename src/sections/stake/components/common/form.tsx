@@ -22,7 +22,7 @@ const CommonForm = (props: any) => {
   } = useStakeContext();
 
   return (
-    <div className={clsx("w-full px-[37px] pt-8", className)}>
+    <div className={clsx("w-full px-[37px] md:px-[10px] pt-8 md:pt-4", className)}>
       <div className="text-[18px] text-white mb-2">
         {currentTab.value === "stake" ? "Stake" : "Unstake"} {currentTab.value === "stake" ? inputToken?.symbol : outputToken?.symbol}
       </div>
