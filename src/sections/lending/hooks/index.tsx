@@ -1,4 +1,4 @@
-import { Tab } from '@/sections/lending/components/tabs';
+import { Tab } from '@/components/tab';
 import { useEffect, useMemo, useState } from 'react';
 import {
   LENDING_ACTION_TYPE_MAP,
