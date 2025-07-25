@@ -4,7 +4,7 @@ import { monadTestnet } from "viem/chains";
 export default {
   basic: {
     name: "aPriori",
-    icon: "/images/stake/apriori/logo.svg",
+    icon: "/images/stake/apriori/logo.png",
     type: "Staking",
     path: '/stake/apriori',
   },
