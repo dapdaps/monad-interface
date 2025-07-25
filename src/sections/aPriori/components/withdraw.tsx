@@ -69,8 +69,6 @@ export default function Stake() {
         getConvertToAssets('1').then((res) => {
             setRate(res);
         })
-
-
     }, []);
 
     useEffect(() => {

@@ -113,11 +113,11 @@ export default memo(function Mobile() {
           <RectangularButton
             type={3}
             data-bp="1003-004"
-            clicked={activeType === "Lending"}
+            clicked={activeType === "Stake"}
             className="w-[65px] h-[30px] uppercase"
-            onClick={() => handleClickButton("Lending")}
+            onClick={() => handleClickButton("Stake")}
           >
-            Lending
+            Stake
           </RectangularButton>
           <RectangularButton
             type={2}

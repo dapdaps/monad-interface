@@ -19,9 +19,9 @@ export default memo(function Laptop() {
 
 
 
-  console.log("====scrollSize", scrollSize)
-  console.log("====containerSize", containerSize)
-  console.log("====scroll", scroll)
+  console.log("====dappsArray", dappsArray)
+
+
   return (
     <div className="flex flex-col h-[calc(100vh-60px)] pt-[30px] overflow-hidden">
 
@@ -134,11 +134,11 @@ export default memo(function Laptop() {
               <RectangularButton
                 type={3}
                 data-bp="1003-004"
-                clicked={activeType === "Lending"}
+                clicked={activeType === "Stake"}
                 className="w-[76px] h-[36px] uppercase"
-                onClick={() => handleClickButton("Lending")}
+                onClick={() => handleClickButton("Stake")}
               >
-                Lending
+                Stake
               </RectangularButton>
               <RectangularButton
                 type={2}

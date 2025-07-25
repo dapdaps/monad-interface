@@ -57,6 +57,14 @@ export const ALL_DAPP_LIST: IDapp[] = [
     desc: "Find, trade and launch your coins on a fully on-chain CLOB. Built for traders, powered by Monad."
   },
   {
+    name: "aPriori",
+    icon: "/images/stake/apriori.svg",
+    type: "Stake",
+    link: "/stake/apriori",
+    desc: "Stake MON to earn rewards. Stake MON to earn rewards.",
+    disabled: false
+  },
+   {
     name: "Timeswap",
     icon: "/images/dapps/icons/timeswap.svg",
     type: "Lending",
