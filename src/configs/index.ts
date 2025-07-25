@@ -11,3 +11,4 @@ export enum HTTP_CODE {
 
 export const DEFAULT_SWAP_DAPP = "izumi";
 export const DEFAULT_LENDING_DAPP = "timeswap";
+export const DEFAULT_STAKE_DAPP = "apriori";
