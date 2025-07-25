@@ -32,7 +32,7 @@ export const Tab: React.FC<TabProps> = ({ children, defaultActiveKey, onChange }
           </div>
         ))}
       </div>
-      <div className="">
+      <div className="p-4">
         {children.find((child) => child.props.tabKey === activeKey)}
       </div>
     </div>

@@ -9,7 +9,7 @@ export default function DexLayout({
 }) {
   return (
     <div className="w-full relative">
-      <div className="relative z-[20] flex justify-center">{children}</div>
+      <div className="relative z-[20] lg:w-[548px] mx-auto">{children}</div>
       <Bg isDex />
     </div>
   );

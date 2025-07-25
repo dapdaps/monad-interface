@@ -89,7 +89,7 @@ export default function useAPriori() {
         try {
             const response = await fetch(`https://stake-api.apr.io/withdrawal_requests?address=${account}`);
             const data = await response.json();
-            console.log('data:', data);
+            // console.log('data:', data);
             return data;
         } catch (error) {
         }
@@ -138,7 +138,7 @@ export default function useAPriori() {
         try {
             const response = await fetch('https://stake-api.apr.io/info');
             const data = await response.json();
-            console.log('data:', data);
+            // console.log('data:', data);
         } catch (error) {
             console.error('Error getting TVL:', error);
         }
