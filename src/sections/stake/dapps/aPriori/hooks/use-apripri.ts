@@ -157,7 +157,7 @@ export default function useAPriori() {
                 template: 'aPriori',
                 action: 'claim',
                 token: APRIORI_CONTRACT_ADDRESS,
-                amount: 0,
+                amount: '0',
                 add: false,
                 status: 1,
                 transactionHash: tx.hash,
