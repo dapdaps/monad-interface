@@ -31,7 +31,7 @@ const StakeCommon = (props: any) => {
             alt=""
             className={clsx("w-[26px] h-[26px] object-center object-contain shrink-0", iconImgClassName)}
           />
-          <div className="text-[18px] font-[600] text-black leading-[100%] font-Unbounded">
+          <div className="text-[18px] font-[600] text-black md:text-white leading-[100%] font-Unbounded">
             {dapp.name}
           </div>
         </div>

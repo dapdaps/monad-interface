@@ -14,7 +14,7 @@ export default function APriori() {
     const { dapp } = useStakeContext();
 
     return (
-        <div className="relative lg:w-[548px] mt-[88px]">
+        <div className="relative lg:w-[548px] mt-[88px] md:w-full md:mt-[10px]">
             <div className="relative z-[2] lg:w-[446px] md:w-[370px] lg:ml-[49px] lg:py-[40px]">
                 <Tab
                     defaultActiveKey="1"

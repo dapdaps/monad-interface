@@ -2,8 +2,7 @@ import StakeCommon from "./components/common";
 import StakeContextProvider from "./context";
 import APriori from "./dapps/aPriori";
 import { useStake } from "./hooks";
-import CommonStake from "./components/common/stake";
-import CommonWithdraw from "./components/common/withdraw";
+import CommonForm from "./components/common/form";
 
 const StakeView = (props: any) => {
   const { dapp } = props;
@@ -14,12 +13,32 @@ const StakeView = (props: any) => {
     {
       label: "Stake",
       value: "stake",
-      content: <CommonStake />
+      content: (
+        <CommonForm
+          foot={(
+            dapp.name === "Magma" && (
+              <div className="text-white text-sm mt-4 mb-2">
+                1 {stake.inputToken?.symbol} = 1 {stake.outputToken?.symbol}
+              </div>
+            )
+          )}
+        />
+      )
     },
     {
       label: "Withdraw",
       value: "withdraw",
-      content: <CommonWithdraw />
+      content: (
+        <CommonForm
+          foot={(
+            dapp.name === "Magma" && (
+              <div className="text-white text-sm mt-4 mb-2">
+                1 {stake.inputToken?.symbol} = 1 {stake.outputToken?.symbol}
+              </div>
+            )
+          )}
+        />
+      )
     },
   ];
 
@@ -34,7 +53,7 @@ const StakeView = (props: any) => {
         !["aPriori"].includes(dapp.name) && (
           <StakeCommon
             tabs={TABS}
-            tabWidth={"50%"}
+            tabWidth={223}
             onTab={stake.onCurrentTab}
             currentTab={stake.currentTab}
             className=""
