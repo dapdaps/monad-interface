@@ -1,17 +1,18 @@
 import clsx from "clsx";
 import "./index.css";
-export default function Range({ value, onChange, style, className }: any) {
+export default function Range({ value, onChange, style, className, disabled }: any) {
   return (
-    <div style={style} className={clsx("range relative", className)}>
+    <div style={style} className={clsx("range relative", disabled ? "opacity-50" : "", className)}>
       <input
         type="range"
         value={value}
+        disabled={disabled}
         onChange={onChange}
         className="appearance-none"
       />
       <div
         className={clsx(
-          "absolute top-0 left-0 h-[4px] rounded-[16px] bg-[#A6A6DB]"
+          "absolute top-0 left-0 h-[4px] rounded-[16px] bg-[#A6A6DB]",
         )}
         style={{ width: value + "%" }}
       />
