@@ -4,26 +4,13 @@ import { balanceFormated } from "@/utils/balance";
 import clsx from "clsx";
 import useTokensBalance from "@/hooks/use-tokens-balance";
 import { monadTestnet } from "viem/chains";
-import useAPriori, { APRIORI_CONTRACT_ADDRESS } from "../hooks/use-apripri";
+import useAPriori from "../hooks/use-apripri";
 import { useInterval, useThrottleFn } from "ahooks";
 import useToast from "@/hooks/use-toast";
 import CircleLoading from "@/components/circle-loading";
 import Big from "big.js";
+import TOKENS, { APRIORI_CONTRACT_ADDRESS } from "../config/tokens";
 
-const TOKENS = [
-    {
-        address: "0x0000000000000000000000000000000000000000",
-        chainId: monadTestnet.id,
-        decimals: 18,
-        isNative: true,
-    },
-    {
-        address: APRIORI_CONTRACT_ADDRESS,
-        chainId: monadTestnet.id,
-        decimals: 18,
-        isNative: false,
-    }
-]
 
 export default function Stake() {
     const [amount, setAmount] = useState<string>("");
@@ -87,7 +74,7 @@ export default function Stake() {
 
     useInterval(() => {
         getWithdrawalList()
-    }, 1000)
+    }, 1000 * 30)
 
     return (
         <div className="pt-4 relative">
@@ -155,7 +142,7 @@ export default function Stake() {
 
             <div className="flex gap-4 mt-6 mb-2">
                 {/* Use aPriori Card */}
-                <div className="flex-1 min-w-[220px] bg-[#23224A] rounded-xl border border-[#B6B3D6] p-5 flex flex-col gap-2 shadow-md">
+                <div className="flex-1  bg-[#23224A] rounded-xl border border-[#B6B3D6] p-5 flex flex-col gap-2 shadow-md">
                     <div className="text-[#E7E2FF] text-[14px] font-semibold mb-2">Use aPriori</div>
                     <div className="flex justify-between text-[#A6A6DB] text-[12px]">
                         <span>Rate:</span>
@@ -171,7 +158,7 @@ export default function Stake() {
                     </div>
                 </div>
                 {/* Use Pool Card */}
-                <div className="flex-1 min-w-[220px] bg-[#6B6A8B] bg-opacity-50 rounded-xl p-5 flex flex-col gap-2 opacity-60 cursor-not-allowed">
+                <div className="flex-1 bg-[#6B6A8B] bg-opacity-50 rounded-xl p-5 flex flex-col gap-2 opacity-60 cursor-not-allowed">
                     <div className="flex justify-between items-center mb-2">
                         <span className="text-[#C7C6E5] text-[14px] font-semibold">Use Pool</span>
                         <span className="text-[#C7C6E5] text-[10px]">Coming soon</span>
@@ -217,13 +204,14 @@ export default function Stake() {
                         })
                     }
                     queryBalance()
+                    getWithdrawalList()
                     setIsStakeLoading(false)
                 }} className="w-full py-3 flex justify-center items-center mt-5 gap-2 rounded-xl bg-[#8B87FF] text-white text-[18px] hover:opacity-80 transition disabled:opacity-50 disabled:cursor-not-allowed">
                 {isStakeLoading ? <CircleLoading size={20} /> : null}
                 Request Withdrawls
             </button>
 
-            <div className="w-[370px] mx-auto mt-8 bg-[#23224A] rounded-2xl shadow-lg border border-[#3B3970] font-Montserrat absolute top-[-95px] right-[-500px]">
+            <div className="w-[370px] mx-auto mt-8 bg-[#23224A] rounded-2xl shadow-lg border border-[#3B3970] font-Montserrat absolute top-[-95px] right-[-460px]">
                 <div className="flex border-b border-[#35346A]">
                     <button
                         className={`flex-1 py-2 text-[18px] transition ${tabIndex === 0
@@ -244,7 +232,7 @@ export default function Stake() {
                         {ready.length} Ready to claim
                     </button>
                 </div>
-              
+
                 <div className="divide-y divide-[#35346A]">
                     {
                         (tabIndex === 0 ? pending : ready).map((item: any) => (
@@ -253,7 +241,7 @@ export default function Stake() {
                                     <img src="/images/monad.svg" alt="MON" className="w-6 h-6" />
                                 </div>
                                 <div className="flex-1">
-                                    <div className="text-white text-[18px] font-semibold">{balanceFormated(new Big(item.assets).div(10 ** 18).toString())} <span className="text-[#A6A6DB] text-[14px] font-normal ml-1">aprMON</span></div>
+                                    <div className="text-white text-[18px] font-semibold">{balanceFormated(new Big(item.assets).div(10 ** 18).toString())} <span className="text-[#A6A6DB] text-[14px] font-normal ml-1">MON</span></div>
                                 </div>
                                 {
                                     item.is_claimable && (
@@ -263,7 +251,7 @@ export default function Stake() {
 
                                 {
                                     !item.is_claimable && (
-                                        <TimeItem item={item} />
+                                        <TimeItem item={item} getWithdrawalRequests={getWithdrawalRequests} />
                                     )
                                 }
                             </div>
@@ -301,7 +289,7 @@ const ChainBtn = ({ item, handleClaim, getWithdrawalRequests, success, fail }: {
             setIsClaiming(true)
             const tx = await handleClaim(item.id)
             console.log('tx:', tx)
-            if ( tx ) {
+            if (tx) {
                 success({
                     title: 'Claim successful',
                     description: 'Claim successful',
@@ -315,7 +303,9 @@ const ChainBtn = ({ item, handleClaim, getWithdrawalRequests, success, fail }: {
                 })
             }
             setIsClaiming(false)
-            getWithdrawalRequests()
+            setTimeout(() => {
+                getWithdrawalRequests()
+            }, 1000)
         }} className="ml-4 px-6 py-1 flex items-center justify-center gap-2 rounded-lg bg-[#8B87FF] text-white text-[16px] font-bold hover:opacity-80 transition">
             {isClaiming ? <CircleLoading size={16} /> : ''}
             Claim
@@ -323,16 +313,22 @@ const ChainBtn = ({ item, handleClaim, getWithdrawalRequests, success, fail }: {
     )
 }
 
-const TimeItem = ({ item }: { item: any }) => {
+const TimeItem = ({ item, getWithdrawalRequests }: { item: any, getWithdrawalRequests: any }) => {
     const [time, setTime] = useState<number>(10)
 
     useInterval(() => {
         setTime(10 - Math.floor((new Date().getTime() - item.requested_at * 1000) / 1000 / 60))
     }, 1000)
 
+    useEffect(() => {
+        if (time <= 1) {
+            getWithdrawalRequests()
+        }
+    }, [time])
+
     return (
         <div className="text-[#A6A6DB] text-[14px] font-normal ml-1">
-            ~{ time } minutes
+            ~{time <= 0 ? 0 : time} minutes
         </div>
     )
 }
