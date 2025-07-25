@@ -40,7 +40,7 @@ export default function Stake() {
 
     const [percent, setPercent] = useState<any>(0);
     const handleRangeChange = (e: any, isAmountChange = true) => {
-        const formatedBalance = String(balances['native'] || 0);
+        const formatedBalance = String(balances[APRIORI_CONTRACT_ADDRESS] || 0);
         if (["-", "Loading", "0"].includes(formatedBalance)) return;
         const amount = Number(formatedBalance) * (e.target.value || 0) / 100;
         setAmount(amount.toString());
@@ -99,6 +99,8 @@ export default function Stake() {
                             const val = e.target.value.replace(/\s+/g, "");
                             if (!/^\d*\.?\d*$/.test(val)) return;
                             setAmount(val);
+                            const _percent = Number(val) / Number(balances[APRIORI_CONTRACT_ADDRESS]) * 100;
+                            setPercent(_percent > 100 ? 100 : _percent);
                         }}
                         inputMode="decimal"
                         pattern="^\d*\.?\d*$"
@@ -108,7 +110,10 @@ export default function Stake() {
                             <span className="w-5 h-5 mr-2 inline-block bg-[url('https://tokens.pancakeswap.finance/images/monad-testnet/aprMON.svg')] bg-contain bg-center bg-no-repeat" />
                             <span className="text-[#C18CFF] font-semibold">aprMON</span>
                         </div>
-                        <span className="text-[10px] text-[#B6B3D6] underline mt-[5px]">balance: {balanceFormated(balances[APRIORI_CONTRACT_ADDRESS])}</span>
+                        <span onClick={() => {
+                            setAmount(balances[APRIORI_CONTRACT_ADDRESS])
+                            setPercent(100);
+                        }} className="text-[10px] cursor-pointer text-[#B6B3D6] underline mt-[5px]">balance: {balanceFormated(balances[APRIORI_CONTRACT_ADDRESS])}</span>
                     </div>
                 </div>
                 <div className="text-[#B6B3D6] text-sm mb-2">$-</div>
@@ -179,7 +184,7 @@ export default function Stake() {
                 </div>
             </div>
             <button
-                disabled={isStakeLoading || Number(amount) >= Number(balances[APRIORI_CONTRACT_ADDRESS]) || Number(amount) <= 0}
+                disabled={isStakeLoading || Number(amount) > Number(balances[APRIORI_CONTRACT_ADDRESS]) || Number(amount) <= 0}
                 onClick={async () => {
                     if (Number(amount) >= Number(balances[APRIORI_CONTRACT_ADDRESS])) {
                         console.log('Insufficient balance')
@@ -255,7 +260,6 @@ export default function Stake() {
                             </div>
                         )
                     }
-
                 </div>
             </div>
         </div>
