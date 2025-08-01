@@ -3,7 +3,7 @@ import { monad } from "../tokens/monad-testnet";
 export default {
   name: "Kuru",
   logo: "/images/dapps/icons/kuru.svg",
-  path: "/dex/kuru",
+  path: "/dex?dapp=kuru",
   defaultInputCurrency: monad["mon"],
   tokens: {
     10143: [

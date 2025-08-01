@@ -6,9 +6,9 @@ export default {
     name: "aPriori",
     icon: "/images/stake/apriori/logo.png",
     type: "Staking",
-    path: '/stake/apriori',
+    path: "/stake?dapp=apriori"
   },
   networks: {
     [monadTestnet.id]: {}
   }
-}
+};

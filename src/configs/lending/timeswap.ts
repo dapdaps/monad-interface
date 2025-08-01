@@ -1,11 +1,11 @@
 import { monad } from "../tokens/monad-testnet";
-import { monadTestnet } from 'viem/chains';
+import { monadTestnet } from "viem/chains";
 
 const basic = {
-  name: 'Timeswap',
-  type: 'Lending',
-  icon: '/images/dapps/icons/timeswap.svg',
-  path: '/lending/timeswap',
+  name: "Timeswap",
+  type: "Lending",
+  icon: "/images/dapps/icons/timeswap.svg",
+  path: "/lending?dapp=timeswap"
 };
 
 const networks = {
@@ -25,7 +25,7 @@ const networks = {
         transitionPrice01: 1.02040816,
         transitionPrice10: 0.98,
         duration: 60,
-        disabledLend: true,
+        disabledLend: true
       },
       // USDT/WMONAD
       {
@@ -33,21 +33,21 @@ const networks = {
         transitionPrice01: 0.66666666,
         transitionPrice10: 1.5,
         duration: 90,
-        disabledLend: true,
+        disabledLend: true
       },
       // shMON/WBTC
       {
         id: "7156f0f9-ac21-40a3-ac40-0801903d9b5f",
         transitionPrice01: 0.0001,
         transitionPrice10: 10000,
-        duration: 60,
+        duration: 60
       },
       // shMON/WSOL
       {
         id: "16bb51fc-0b5d-4b44-b76b-918f5014b6c5",
         transitionPrice01: 0.06666667,
         transitionPrice10: 15,
-        duration: 90,
+        duration: 90
       },
       // USDT/WMONAD
       {
@@ -55,9 +55,9 @@ const networks = {
         transitionPrice01: 0.8333333,
         transitionPrice10: 1.2,
         duration: 90,
-        disabledLend: false,
-      },
-    ],
+        disabledLend: false
+      }
+    ]
   }
 };
 
