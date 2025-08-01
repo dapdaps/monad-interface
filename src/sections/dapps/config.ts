@@ -64,14 +64,14 @@ export const ALL_DAPP_LIST: IDapp[] = [
     desc: "aPriori is an MEV infrastructure and liquid staking protocol, designed for the parallel execution era and natively built on Monad.",
     disabled: false
   },
-  // {
-  //   name: "Magma",
-  //   icon: "/images/stake/magma/logo.png",
-  //   type: "Stake",
-  //   link: "/stake/magma",
-  //   desc: "Magma is a Liquid Staking Protocol building the first Distributed Validator on Monad and developing MEV to reduce latency by up to 4x.",
-  //   disabled: false
-  // },
+  {
+    name: "Magma",
+    icon: "/images/stake/magma/logo.png",
+    type: "Stake",
+    link: "/stake/magma",
+    desc: "Magma is a Liquid Staking Protocol building the first Distributed Validator on Monad and developing MEV to reduce latency by up to 4x.",
+    disabled: false
+  },
    {
     name: "Timeswap",
     icon: "/images/dapps/icons/timeswap.svg",
