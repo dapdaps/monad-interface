@@ -68,7 +68,7 @@ export const ALL_DAPP_LIST: IDapp[] = [
     name: "Magma",
     icon: "/images/stake/magma/logo.png",
     type: "Stake",
-    link: "/stake/magma",
+    link: "/stake?dapp=magma",
     desc: "Magma is a Liquid Staking Protocol building the first Distributed Validator on Monad and developing MEV to reduce latency by up to 4x.",
     disabled: false
   },
