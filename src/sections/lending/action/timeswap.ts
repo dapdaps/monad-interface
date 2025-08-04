@@ -96,6 +96,11 @@ export const timeswap = async (actionParams: any) => {
   }
 
   if (action.value === LendingActionType.Repay) {
+    let repayPositionAmount = ethers.utils.parseUnits(actionAmount, actionToken.decimals);
+    if (Big(actionAmount || 0).gte(market.balance)) {
+      repayPositionAmount = ethers.utils.parseUnits(market.balance, actionToken.decimals);
+    }
+
     contract = new ethers.Contract(
       config.repayContract,
       REPAY_ABI,
@@ -111,7 +116,7 @@ export const timeswap = async (actionParams: any) => {
         to: account,
         isToken0: !market.poolData.pool.isToken1Base,
         isLong0: true,
-        positionAmount: parsedActionAmount,
+        positionAmount: repayPositionAmount,
         maxTokenAmount: parsedAmount,
         deadline: Math.floor(dayjs().add(20, "minutes").valueOf() / 1000),
       }
