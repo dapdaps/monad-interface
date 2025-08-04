@@ -25,7 +25,7 @@ export default function ExtendDex({ dapps }: any) {
           <div
             key={dapp.name}
             onClick={() => {
-              router.push(`./${dapp.name.toLowerCase()}`);
+              router.push(`/dex?dapp=${dapp.name.toLowerCase()}`);
             }}
             className={clsx(
               "w-[120px] flex h-[94px] cursor-pointer bg-[#40357E] border border-[#000000] rounded-[6px] p-[2px]",
