@@ -10,6 +10,8 @@ import useToast from "@/hooks/use-toast";
 import CircleLoading from "@/components/circle-loading";
 import Big from "big.js";
 import TOKENS, { APRIORI_CONTRACT_ADDRESS } from "../config/tokens";
+import { useAccount, useSwitchChain } from "wagmi";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 
 export default function Stake() {
@@ -177,39 +179,17 @@ export default function Stake() {
                     </div>
                 </div>
             </div>
-            <button
-                disabled={isStakeLoading || Number(amount) > Number(balances[APRIORI_CONTRACT_ADDRESS]) || Number(amount) <= 0}
-                onClick={async () => {
-                    if (Number(amount) > Number(balances[APRIORI_CONTRACT_ADDRESS])) {
-                        fail({
-                            title: 'Insufficient balance'
-                        })
-                        return;
-                    }
-
-                    setIsStakeLoading(true)
-                    const tx = await handleWithdraw(amount)
-                    console.log('tx:', tx)
-                    if (tx) {
-                        success({
-                            title: 'Withdraw successful',
-                            description: 'Withdraw successful',
-                            icon: 'success',
-                            tx: tx,
-                            chainId: monadTestnet.id,
-                        })
-                    } else {
-                        fail({
-                            title: 'Withdraw failed'
-                        })
-                    }
-                    queryBalance()
-                    getWithdrawalList()
-                    setIsStakeLoading(false)
-                }} className="w-full py-3 flex justify-center items-center mt-5 gap-2 rounded-xl bg-[#8B87FF] text-white text-[18px] hover:opacity-80 transition disabled:opacity-50 disabled:cursor-not-allowed">
-                {isStakeLoading ? <CircleLoading size={20} /> : null}
-                Request Withdrawls
-            </button>
+            <WithdrawBtn
+                isStakeLoading={isStakeLoading}
+                amount={amount}
+                balances={balances}
+                handleWithdraw={handleWithdraw}
+                setIsStakeLoading={setIsStakeLoading}
+                queryBalance={queryBalance}
+                fail={fail}
+                getWithdrawalList={getWithdrawalList}
+                success={success}
+            />
 
             <div className="w-[370px] mx-auto mt-8 bg-[#23224A] rounded-2xl shadow-lg border border-[#3B3970] font-Montserrat absolute top-[-80px] right-[-460px]">
                 <div className="flex border-b border-[#35346A]">
@@ -245,7 +225,7 @@ export default function Stake() {
                                 </div>
                                 {
                                     item.is_claimable && (
-                                        <ChainBtn item={item} handleClaim={handleClaim} getWithdrawalRequests={getWithdrawalRequests} success={success} fail={fail} />
+                                        <ChaimBtn item={item} handleClaim={handleClaim} getWithdrawalRequests={getWithdrawalRequests} success={success} fail={fail} />
                                     )
                                 }
 
@@ -280,9 +260,22 @@ const BalancePercentList = [
     { value: 100, label: "Max" }
 ];
 
-
-const ChainBtn = ({ item, handleClaim, getWithdrawalRequests, success, fail }: { item: any, handleClaim: any, getWithdrawalRequests: any, success: any, fail: any }) => {
+const clsCliam = 'ml-4 px-6 py-1 flex items-center justify-center gap-2 rounded-lg bg-[#8B87FF] text-white text-[16px] font-bold hover:opacity-80 transition'
+const ChaimBtn = ({ item, handleClaim, getWithdrawalRequests, success, fail }: { item: any, handleClaim: any, getWithdrawalRequests: any, success: any, fail: any }) => {
     const [isClaiming, setIsClaiming] = useState<boolean>(false)
+    const { address, chainId } = useAccount()
+    const { openConnectModal } = useConnectModal();
+    const { switchChain } = useSwitchChain()
+
+    if (chainId !== monadTestnet.id) {
+        return <button
+            type="button"
+            className={clsCliam}
+            onClick={() => {
+                switchChain({ chainId: monadTestnet.id })
+            }}
+        >Switch Chain</button>
+    }
 
     return (
         <button onClick={async () => {
@@ -306,7 +299,7 @@ const ChainBtn = ({ item, handleClaim, getWithdrawalRequests, success, fail }: {
             setTimeout(() => {
                 getWithdrawalRequests()
             }, 1000)
-        }} className="ml-4 px-6 py-1 flex items-center justify-center gap-2 rounded-lg bg-[#8B87FF] text-white text-[16px] font-bold hover:opacity-80 transition">
+        }} className={clsCliam}>
             {isClaiming ? <CircleLoading size={16} /> : ''}
             Claim
         </button>
@@ -330,5 +323,80 @@ const TimeItem = ({ item, getWithdrawalRequests }: { item: any, getWithdrawalReq
         <div className="text-[#A6A6DB] text-[14px] font-normal ml-1">
             ~{time <= 0 ? 0 : time} minutes
         </div>
+    )
+}
+
+const cls = 'w-full h-[60px] flex items-center justify-center rounded-[6px] text-[#fff] bg-[#8B87FF] text-[18px] font-[600] mt-[16px] cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed'
+
+const WithdrawBtn = ({
+    isStakeLoading,
+    amount,
+    balances,
+    handleWithdraw,
+    setIsStakeLoading,
+    queryBalance,
+    fail,
+    getWithdrawalList,
+    success }: { isStakeLoading: boolean, amount: string, balances: any, handleWithdraw: any, setIsStakeLoading: any, queryBalance: any, fail: any, getWithdrawalList: any, success: any }) => {
+    const { address, chainId } = useAccount()
+    const { openConnectModal } = useConnectModal();
+    const { switchChain } = useSwitchChain()
+
+    if (!address) {
+        return <button
+            type="button"
+            className={cls}
+            onClick={() => {
+                openConnectModal?.()
+            }}
+        >
+            Connect Wallet
+        </button>
+    }
+
+    if (chainId !== monadTestnet.id) {
+        return <button
+            type="button"
+            className={cls}
+            onClick={() => {
+                switchChain({ chainId: monadTestnet.id })
+            }}
+        >Switch Chain</button>
+    }
+
+    return (
+        <button
+            disabled={isStakeLoading || Number(amount) > Number(balances[APRIORI_CONTRACT_ADDRESS]) || Number(amount) <= 0}
+            onClick={async () => {
+                if (Number(amount) > Number(balances[APRIORI_CONTRACT_ADDRESS])) {
+                    fail({
+                        title: 'Insufficient balance'
+                    })
+                    return;
+                }
+
+                setIsStakeLoading(true)
+                const tx = await handleWithdraw(amount)
+                console.log('tx:', tx)
+                if (tx) {
+                    success({
+                        title: 'Withdraw successful',
+                        description: 'Withdraw successful',
+                        icon: 'success',
+                        tx: tx,
+                        chainId: monadTestnet.id,
+                    })
+                } else {
+                    fail({
+                        title: 'Withdraw failed'
+                    })
+                }
+                queryBalance()
+                getWithdrawalList()
+                setIsStakeLoading(false)
+            }} className={cls}>
+            {isStakeLoading ? <CircleLoading size={20} /> : null}
+            Request Withdrawls
+        </button>
     )
 }
