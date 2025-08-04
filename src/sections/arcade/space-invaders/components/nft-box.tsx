@@ -5,7 +5,7 @@ const NftBox = (props: any) => {
   const { className } = props;
 
   return (
-    <div className={clsx("absolute z-[3] right-[1.5vw] bottom-[2.2vw] w-[5vw] h-[4.86vw]", className)}>
+    <div className={clsx("absolute z-[3] right-[clamp(1px,_1.5vw,_calc(var(--nadsa-laptop-width)*0.015))] bottom-[clamp(1px,_2.2vw,_calc(var(--nadsa-laptop-width)*0.022))] w-[clamp(1px,_5vw,_calc(var(--nadsa-laptop-width)*0.05))] h-[clamp(1px,_4.86vw,_calc(var(--nadsa-laptop-width)*0.0486))]", className)}>
       <motion.img
         src="/images/arcade/space-invaders/reward-box.png"
         alt=""
@@ -24,7 +24,7 @@ const NftBox = (props: any) => {
       <motion.img
         src="/images/arcade/space-invaders/reward-nft-avatar.png"
         alt=""
-        className="absolute right-[-5.4vw] top-0 w-[5.556vw] h-[5vw] object-center object-contain origin-left"
+        className="absolute right-[clamp(calc(var(--nadsa-laptop-width)_*_-0.054),_-5.4vw,_1px)] top-0 w-[clamp(1px,_5.556vw,_calc(var(--nadsa-laptop-width)*0.05556))] h-[clamp(1px,_5vw,_calc(var(--nadsa-laptop-width)*0.05))] object-center object-contain origin-left"
         animate={{
           rotate: [0, 5, -5, 2, -2, 0],
           scale: [1, 1.05, 1.1, 1.15, 1.1, 1],

@@ -23,6 +23,7 @@ const Dashboard = (props: any) => {
     currentLayer,
     onGameStart,
     gameStarted,
+    onVerifierOpen,
   } = useSpaceInvadersContext();
 
   const amountIndex = useMemo(() => {
@@ -31,7 +32,7 @@ const Dashboard = (props: any) => {
 
   return (
     <div className={clsx(
-      "fixed text-white font-[DelaGothicOne] font-[400] leading-[100%] text-[1.11vw] left-1/2 -translate-x-1/2 bottom-0 z-[4] w-[41.67vw] h-[14.03vw] rounded-t-[0.83vw] border border-b-0 bg-[#191B25]",
+      "fixed text-white font-[DelaGothicOne] font-[400] leading-[100%] text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] left-1/2 -translate-x-1/2 bottom-0 z-[4] w-[clamp(1px,_41.67vw,_calc(var(--nadsa-laptop-width)*0.4167))] h-[clamp(1px,_14.03vw,_calc(var(--nadsa-laptop-width)*0.1403))] rounded-t-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] border border-b-0 bg-[#191B25]",
       gameFailed ? "border-[#FF3434] bg-[linear-gradient(0deg,_rgba(255,_52,_52,_0.06)_0%,_rgba(255,_52,_52,_0.06)_100%)]" : "border-[#3E347C]",
     )}>
       {
@@ -50,13 +51,13 @@ const Dashboard = (props: any) => {
           <>
             {
               gameFailed ? (
-                <div className="flex justify-center items-center gap-[1.04vw] pt-[1vw]">
+                <div className="flex justify-center items-center gap-[clamp(1px,_1.04vw,_calc(var(--nadsa-laptop-width)*0.0104))] pt-[clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01))]">
                   <img
                     src="/images/arcade/space-invaders/icon-attacked.png"
                     alt=""
-                    className="w-[3.61vw] h-[3.61vw] shrink-0"
+                    className="w-[clamp(1px,_3.61vw,_calc(var(--nadsa-laptop-width)*0.0361))] h-[clamp(1px,_3.61vw,_calc(var(--nadsa-laptop-width)*0.0361))] shrink-0"
                   />
-                  <div className="text-[#FF3434] text-[1.81vw] font-[DelaGothicOne] font-[400] leading-[100%]">
+                  <div className="text-[#FF3434] text-[clamp(1px,_1.81vw,_calc(var(--nadsa-laptop-width)*0.0181))] font-[DelaGothicOne] font-[400] leading-[100%]">
                     ATTACKED
                   </div>
                 </div>
@@ -74,16 +75,16 @@ const Dashboard = (props: any) => {
                   cashOutPending={cashOutPending}
                 />
               ) : (
-                <div className="flex justify-center items-center gap-[0.83vw] shrink-0 mt-[1vw]">
+                <div className="flex justify-center items-center gap-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] shrink-0 mt-[clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01))]">
                   <div className="">
                     BET
                   </div>
-                  <div className="relative ml-[0.49vw] flex-0 flex justify-center items-center bg-[rgba(255,_255,_255,_0.10)] h-[3.19vw] border border-[#3B3951] rounded-[0.83vw] backdrop-blur-[1.74vw] p-[0.35vw]">
+                  <div className="relative ml-[clamp(1px,_0.49vw,_calc(var(--nadsa-laptop-width)*0.0049))] flex-0 flex justify-center items-center bg-[rgba(255,_255,_255,_0.10)] h-[clamp(1px,_3.19vw,_calc(var(--nadsa-laptop-width)*0.0319))] border border-[#3B3951] rounded-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] backdrop-blur-[clamp(1px,_1.74vw,_calc(var(--nadsa-laptop-width)*0.0174))] p-[clamp(1px,_0.35vw,_calc(var(--nadsa-laptop-width)*0.0035))]">
                     {
                       AMOUNT_OPTIONS.map((option) => (
                         <button
                           type="button"
-                          className="w-[6.81vw] h-full flex justify-center items-center relative z-[1] button"
+                          className="w-[clamp(1px,_6.81vw,_calc(var(--nadsa-laptop-width)*0.0681))] h-full flex justify-center items-center relative z-[1] button"
                           onClick={() => {
                             onAmountChange?.(option.value);
                           }}
@@ -93,7 +94,7 @@ const Dashboard = (props: any) => {
                       ))
                     }
                     <motion.div
-                      className="w-[6.81vw] h-[calc(100%_-_0.7vw)] bg-[#5237FF] border border-[#413C54] rounded-[0.69vw] absolute z-[0] left-[0.35vw] top-[0.35vw]"
+                      className="w-[clamp(1px,_6.81vw,_calc(var(--nadsa-laptop-width)*0.0681))] h-[calc(100%_-_clamp(1px,_0.7vw,_calc(var(--nadsa-laptop-width)*0.007)))] bg-[#5237FF] border border-[#413C54] rounded-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] absolute z-[0] left-[clamp(1px,_0.35vw,_calc(var(--nadsa-laptop-width)*0.0035))] top-[clamp(1px,_0.35vw,_calc(var(--nadsa-laptop-width)*0.0035))]"
                       initial={{
                         x: 0,
                       }}
@@ -104,7 +105,7 @@ const Dashboard = (props: any) => {
                   </div>
                   <button
                     type="button"
-                    className="button w-[10vw] flex-0 h-[3.19vw] rounded-[0.83vw] border border-[#413C54] bg-[#5237FF] text-white font-[DelaGothicOne] font-[400] leading-[100%] text-[1.11vw] flex justify-center items-center gap-[0.5vw]"
+                    className="button w-[clamp(1px,_10vw,_calc(var(--nadsa-laptop-width)*0.1))] flex-0 h-[clamp(1px,_3.19vw,_calc(var(--nadsa-laptop-width)*0.0319))] rounded-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] border border-[#413C54] bg-[#5237FF] text-white font-[DelaGothicOne] font-[400] leading-[100%] text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] flex justify-center items-center gap-[clamp(1px,_0.5vw,_calc(var(--nadsa-laptop-width)*0.005))]"
                     onClick={onGameStart}
                   >
                     GO!
@@ -112,16 +113,16 @@ const Dashboard = (props: any) => {
                 </div>
               )
             }
-            <div className="flex justify-between items-center gap-[5.42vw] pl-[2.22vw] pr-[4.1vw] mt-[1vw]">
+            <div className="flex justify-between items-center gap-[clamp(1px,_5.42vw,_calc(var(--nadsa-laptop-width)*0.0542))] pl-[clamp(1px,_2.22vw,_calc(var(--nadsa-laptop-width)*0.0222))] pr-[clamp(1px,_4.1vw,_calc(var(--nadsa-laptop-width)*0.041))] mt-[clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01))]">
               <button
                 type="button"
-                className="flex items-center gap-[0.49vw] text-[#8A87AA] text-[1.11vw] font-[400] leading-[100%] font-[SpaceGrotesk]"
+                className="flex items-center gap-[clamp(1px,_0.49vw,_calc(var(--nadsa-laptop-width)*0.0049))] text-[#8A87AA] text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] font-[400] leading-[100%] font-[SpaceGrotesk]"
                 onClick={onMapChange}
               >
                 <img
                   src="/images/arcade/space-invaders/icon-reload.png"
                   alt=""
-                  className="w-[1.39vw] h-[1.39vw] flex-0 object-center object-contain"
+                  className="w-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] h-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] flex-0 object-center object-contain"
                 />
                 <div className="">Shuffle Gates</div>
               </button>
@@ -129,12 +130,13 @@ const Dashboard = (props: any) => {
                 gameFailed && (
                   <button
                     type="button"
-                    className="flex items-center gap-[0.49vw] text-[#8A87AA] text-[1.11vw] font-[400] leading-[100%] font-[SpaceGrotesk]"
+                    className="flex items-center gap-[clamp(1px,_0.49vw,_calc(var(--nadsa-laptop-width)*0.0049))] text-[#8A87AA] text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] font-[400] leading-[100%] font-[SpaceGrotesk]"
+                    onClick={onVerifierOpen}
                   >
                     <img
                       src="/images/arcade/space-invaders/icon-provably.png"
                       alt=""
-                      className="w-[1.39vw] h-[1.39vw] flex-0 object-center object-contain"
+                      className="w-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] h-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] flex-0 object-center object-contain"
                     />
                     <div className="">Provably fair</div>
                   </button>
@@ -142,27 +144,29 @@ const Dashboard = (props: any) => {
               }
               <button
                 type="button"
-                className="flex items-center gap-[0.49vw] text-[#12FFC0] text-[0.83vw] font-[400] leading-[100%] font-[DelaGothicOne] !cursor-default"
+                className="flex items-center gap-[clamp(1px,_0.49vw,_calc(var(--nadsa-laptop-width)*0.0049))] text-[#12FFC0] text-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] font-[400] leading-[100%] font-[DelaGothicOne] !cursor-default"
               >
                 <img
                   src="/images/arcade/space-invaders/icon-wallet.png"
                   alt=""
-                  className="w-[1.39vw] h-[1.39vw] flex-0 object-center object-contain"
+                  className="w-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] h-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] flex-0 object-center object-contain"
                 />
                 <div className="">4.2 MON</div>
               </button>
             </div>
-            <div className="absolute right-[-13.75vw] bottom-[2vw] pl-[2.29vw] pt-[1.36vw] w-[13.75vw] h-[11.94vw] bg-[url('/images/arcade/space-invaders/nft-board.png')] bg-no-repeat bg-left bg-contain">
-              <div className="flex items-center gap-[0.42vw]">
+            <div
+              className="absolute right-[clamp(calc(var(--nadsa-laptop-width)_*_-0.1375),_-13.75vw,_1px)] bottom-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))] pl-[clamp(1px,_2.29vw,_calc(var(--nadsa-laptop-width)*0.0229))] pt-[clamp(1px,_1.36vw,_calc(var(--nadsa-laptop-width)*0.0136))] w-[clamp(1px,_13.75vw,_calc(var(--nadsa-laptop-width)*0.1375))] h-[clamp(1px,_11.94vw,_calc(var(--nadsa-laptop-width)*0.1194))] bg-[url('/images/arcade/space-invaders/nft-board.png')] bg-no-repeat bg-left bg-contain"
+            >
+              <div className="flex items-center gap-[clamp(1px,_0.42vw,_calc(var(--nadsa-laptop-width)*0.0042))]">
                 <img
                   src="/images/arcade/space-invaders/nft-avatar.png"
                   alt=""
-                  className="w-[3.47vw] h-[3.47vw] object-center object-contain flex-0"
+                  className="w-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width)*0.0347))] h-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width)*0.0347))] object-center object-contain flex-0"
                 />
-                <div className="font-[Unbounded] text-white text-[0.83vw] font-[500] leading-[normal]">
-                  <div className="text-[#A6A6DB] text-[0.69vw] font-[300]">NFT Airdrop</div>
+                <div className="font-[Unbounded] text-white text-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] font-[500] leading-[normal]">
+                  <div className="text-[#A6A6DB] text-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] font-[300]">NFT Airdrop</div>
                   <div className="">Monadverse</div>
-                  <div className="text-[#03E212] font-[HackerNoonV2] font-[400] leading-[120%] mt-[0.2vw]">
+                  <div className="text-[#03E212] font-[HackerNoonV2] font-[400] leading-[120%] mt-[clamp(1px,_0.2vw,_calc(var(--nadsa-laptop-width)*0.002))]">
                     50/50
                   </div>
                 </div>
@@ -181,17 +185,17 @@ const CurrentLayer = (props: any) => {
   const { className, multiple, amount } = props;
 
   return (
-    <div className={clsx("flex justify-center items-center gap-[6.25vw] pt-[2.08vw]", className)}>
-      <div className="text-[2.08vw]">
+    <div className={clsx("flex justify-center items-center gap-[clamp(1px,_6.25vw,_calc(var(--nadsa-laptop-width)*0.0625))] pt-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))]", className)}>
+      <div className="text-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))]">
         {numberFormatter(multiple, 2, true, { isZeroPrecision: true })}x
       </div>
-      <div className="flex items-center gap-[0.556vw]">
+      <div className="flex items-center gap-[clamp(1px,_0.556vw,_calc(var(--nadsa-laptop-width)*0.00556))]">
         <img
           src={monad["mon"].icon}
           alt=""
-          className="w-[2.08vw] h-[2.08vw] object-center object-contain flex-0"
+          className="w-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))] h-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))] object-center object-contain flex-0"
         />
-        <div className="text-[#BFFF60] text-[2.08vw]">
+        <div className="text-[#BFFF60] text-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))]">
           {numberFormatter(amount, 2, true)}
         </div>
       </div>
@@ -204,10 +208,10 @@ const CashOut = (props: any) => {
 
   return (
     <>
-      <div className="flex justify-center items-center pt-[1.6vw]">
+      <div className="flex justify-center items-center pt-[clamp(1px,_1.6vw,_calc(var(--nadsa-laptop-width)*0.016))]">
         <button
           type="button"
-          className="disabled:opacity-50 disabled:!cursor-not-allowed w-[25.69vw] h-[3.19vw] gap-[0.5vw] border border-[#413C54] bg-[#5237FF] rounded-[0.69vw] flex justify-center items-center button text-white text-[1.11vw] font-[DelaGothicOne] font-[400] leading-[100%] uppercase"
+          className="disabled:opacity-50 disabled:!cursor-not-allowed w-[clamp(1px,_25.69vw,_calc(var(--nadsa-laptop-width)*0.2569))] h-[clamp(1px,_3.19vw,_calc(var(--nadsa-laptop-width)*0.0319))] gap-[clamp(1px,_0.5vw,_calc(var(--nadsa-laptop-width)*0.005))] border border-[#413C54] bg-[#5237FF] rounded-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] flex justify-center items-center button text-white text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] font-[DelaGothicOne] font-[400] leading-[100%] uppercase"
           onClick={onCashOut}
           disabled={cashOutPending}
         >
@@ -219,7 +223,7 @@ const CashOut = (props: any) => {
           <div>Cash Out</div>
         </button>
       </div>
-      <div className="flex justify-center items-center pt-[1.5vw] text-[#8A87AA] font-[SpaceGrotesk]">
+      <div className="flex justify-center items-center pt-[clamp(1px,_1.5vw,_calc(var(--nadsa-laptop-width)*0.015))] text-[#8A87AA] font-[SpaceGrotesk]">
         Game Hash: {addressFormated("0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef")}
       </div>
     </>

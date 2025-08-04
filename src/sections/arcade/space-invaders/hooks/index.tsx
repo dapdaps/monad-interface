@@ -117,6 +117,12 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const [userGameData, setUserGameData] = useState<any>(null);
   // game started
   const [gameStarted, setGameStarted] = useState<any>(false);
+  // verifier modal
+  const [verifierVisible, setVerifierVisible] = useState<any>(false);
+  const [verifierData, setVerifierData] = useState<any>(void 0);
+  // when game failed, popup failed ghost
+  const [failedGhostVisible, setFailedGhostVisible] = useState<any>(false);
+  const [failedGhostPosition, setFailedGhostPosition] = useState<any>([0, 0]);
 
   const [gameFailed, currentLayer] = useMemo(() => {
     return [
@@ -135,7 +141,8 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     setData(cloneDeep(_data));
   }, {});
 
-  const { runAsync: onOpen, loading: openning } = useRequest(async (layer: any, item: any) => {
+  const { runAsync: onOpen, loading: openning } = useRequest(async (layer: any, item: any, opts?: any) => {
+    const { ev } = opts ?? {};
     const result: any = { isOpen: false };
     const _data: any = data.slice();
     const currentLayerIndex: any = _data.findIndex((_it: any) => _it.layer === layer.layer);
@@ -193,6 +200,16 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     });
     setData(_data);
     setGameStarted(false);
+    
+    // Set failed ghost position and visibility
+    if (ev) {
+      // Use viewport-relative coordinates
+      const x = ev.clientX;
+      const y = ev.clientY;
+      setFailedGhostPosition([x, y]);
+      setFailedGhostVisible(true);
+    }
+    
     return result;
   }, { manual: true });
 
@@ -231,14 +248,14 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
 
     if (res.code === 0) {
       toast.success({
-        title: "Cash out success!",
+        title: "Cash out successfully",
       });
       setUserGameData(void 0);
       setGameStarted(false);
       onReset();
     } else {
       toast.fail({
-        title: "Cash out failed!",
+        title: "Cash out failed",
       });
     }
   }, { manual: true });
@@ -254,6 +271,16 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const onGameStart = () => {
     onReset();
     setGameStarted(true);
+  };
+
+  const onVerifierClose = () => {
+    setVerifierVisible(false);
+    setVerifierData(void 0);
+  };
+
+  const onVerifierOpen = () => {
+    setVerifierVisible(true);
+    setVerifierData(cloneDeep(data));
   };
 
   useEffect(() => {
@@ -299,6 +326,13 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     currentLayer,
     gameStarted,
     onGameStart,
+    verifierVisible,
+    onVerifierClose,
+    onVerifierOpen,
+    verifierData,
+    failedGhostVisible,
+    failedGhostPosition,
+    setFailedGhostVisible,
   };
 };
 
@@ -307,7 +341,7 @@ export interface SpaceInvaders {
   data: any;
   mapData: any;
   loading: boolean;
-  onOpen: (layer: any, item: any) => Promise<void>;
+  onOpen: (layer: any, item: any, opts?: any) => Promise<void>;
   openning: boolean;
   onAmountChange: (amount: string) => void;
   amount: string;
@@ -320,4 +354,11 @@ export interface SpaceInvaders {
   currentLayer: any;
   gameStarted: boolean;
   onGameStart: () => void;
+  verifierVisible: boolean;
+  onVerifierClose: () => void;
+  onVerifierOpen: () => void;
+  verifierData: any;
+  failedGhostVisible: boolean;
+  failedGhostPosition: any;
+  setFailedGhostVisible: (visible: boolean) => void;
 }
