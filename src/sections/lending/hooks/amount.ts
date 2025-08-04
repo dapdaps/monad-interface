@@ -49,7 +49,7 @@ export function useAmount(props: any) {
     if (action.value === LendingActionType.Repay) {
       if (config.name === "Timeswap") {
         return [
-          numberRemoveEndZero(Big(market.balance || 0).times(market.transitionPrice10 || 1).toFixed(market.tokens[0]?.decimals || 18)),
+          numberRemoveEndZero(Big(market.balance || 0).times(market.transitionPrice10 || 1).toFixed(market.tokens[0]?.decimals || 18, Big.roundUp)),
           false,
           token0
         ];
@@ -101,7 +101,7 @@ export function useAmount(props: any) {
           if (token1BalanceLoading) {
             return "";
           }
-          if (Big(amount || 0).gt(0) && Big(amount || 0).gt(Big(market.balance || 0).times(market.transitionPrice10 || 1).toFixed(market.tokens[0]?.decimals || 18))) {
+          if (Big(amount || 0).gt(0) && Big(amount || 0).gt(Big(market.balance || 0).times(market.transitionPrice10 || 1).toFixed(market.tokens[0]?.decimals || 18, Big.roundUp))) {
             return "Exceeding total debt";
           }
           if (Big(amount || 0).gt(0) && Big(amount || 0).gt(token0Balance || 0)) {
