@@ -1,39 +1,36 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from "react";
 
-import chains from './lib/util/chainConfig'
-import Card from './Card';
-import TokenAmout from './TokenAmount';
-import Routes from './Routes';
-import SubmitBtn from './SubmitBtn';
-import Confirm from './Confrim';
+import chains from "./lib/util/chainConfig";
+import Card from "./Card";
+import TokenAmout from "./TokenAmount";
+import Routes from "./Routes";
+import SubmitBtn from "./SubmitBtn";
+import Confirm from "./Confrim";
 
-import PageBack from '@/components/back';
-import useIsMobile from '@/hooks/use-isMobile';
+import PageBack from "@/components/back";
+import useIsMobile from "@/hooks/use-isMobile";
 // import MenuButton from '@/components/mobile/menuButton';
-import { useParams } from 'next/navigation';
-import History from './History';
-import Big from 'big.js';
+import { useSearchParams } from "next/navigation";
+import History from "./History";
 import { useAccount, useSwitchChain } from "wagmi";
-import { formatLongText } from '@/utils/utils';
-import allTokens from './lib/allTokens';
-import useBridge from './Hooks/useBridge';
+import { formatLongText } from "@/utils/utils";
+import allTokens from "./lib/allTokens";
+import useBridge from "./Hooks/useBridge";
 
-import type { Token, Chain } from '@/types';
-import { motion } from 'framer-motion';
-import { tokenPairs } from './lib/bridges/orbiter/config';
-import useBridgeType from './Hooks/useBridgeType';
-import Nft from './Nft';
-import { Tab } from '@/components/tab/Tab';
-import { TabItem } from '@/components/tab/TabItem';
-import useClickTracking from '@/hooks/use-click-tracking';
-
-
+import type { Token, Chain } from "@/types";
+import { motion } from "framer-motion";
+import { tokenPairs } from "./lib/bridges/orbiter/config";
+import useBridgeType from "./Hooks/useBridgeType";
+import Nft from "./Nft";
+import { Tab } from "@/components/tab/Tab";
+import { TabItem } from "@/components/tab/TabItem";
+import useClickTracking from "@/hooks/use-click-tracking";
 
 const DappHeader: React.FC = () => {
-  const { dapp: dappName } = useParams();
+  const params = useSearchParams();
+  const dappName = params.get("dapp");
   const isMobile = useIsMobile();
   const { bridgeType } = useBridgeType();
-
 
   if (dappName) {
     return (
@@ -43,9 +40,7 @@ const DappHeader: React.FC = () => {
           alt={bridgeType.name}
           className="w-[30px] mr-2"
         />
-        <span className=" text-xl text-black">
-          {bridgeType.name}
-        </span>
+        <span className=" text-xl text-black">{bridgeType.name}</span>
       </div>
     );
   }
@@ -67,20 +62,22 @@ const DappHeader: React.FC = () => {
 };
 
 const ComingSoon = false;
-const chainList = Object.values(chains).filter((chain) => [10143, 11155111].includes(chain.chainId));
+const chainList = Object.values(chains).filter((chain) =>
+  [10143, 11155111].includes(chain.chainId)
+);
 
 export default function Bridge() {
-  const { handleReport } = useClickTracking()
+  const { handleReport } = useClickTracking();
   const [confirmShow, setConfirmShow] = useState(false);
-  const [historyShow, setHistoryShow] = useState(false)
-  const [activeTab, setActiveTab] = useState('pending')
-  const isMobile = useIsMobile()
+  const [historyShow, setHistoryShow] = useState(false);
+  const [activeTab, setActiveTab] = useState("pending");
+  const isMobile = useIsMobile();
   const { switchChain } = useSwitchChain();
-  const { address, chainId } = useAccount()
-  const [limitBera, setLimitBera] = useState(0)
-  const targetRef = useRef<HTMLDivElement>(null)
-  const [targetX, setTargetX] = useState('0px')
-  const [targetY, setTargetY] = useState('0px')
+  const { address, chainId } = useAccount();
+  const [limitBera, setLimitBera] = useState(0);
+  const targetRef = useRef<HTMLDivElement>(null);
+  const [targetX, setTargetX] = useState("0px");
+  const [targetY, setTargetY] = useState("0px");
 
   const {
     fromChain,
@@ -105,109 +102,125 @@ export default function Bridge() {
     selectedRoute,
     routes,
     executeRoute,
-    getStatus,
+    getStatus
   } = useBridge({
     originFromChain: chains[11155111],
     originToChain: chains[10143],
     derection: 1,
     account: address,
-    defaultBridgeText: 'Bridge',
-  })
+    defaultBridgeText: "Bridge"
+  });
 
   const _allTokens = useMemo(() => {
     if (!fromToken) {
-      return allTokens
+      return allTokens;
     }
 
-    const newAllTokens: any = {}
+    const newAllTokens: any = {};
     Object.keys(allTokens).map((key: any) => {
       newAllTokens[key] = allTokens[key].filter((token: Token) => {
-        let symbol = token.symbol.toUpperCase()
-        return tokenPairs[fromChain.chainId][fromToken.symbol.toUpperCase()] === symbol
-      })
+        let symbol = token.symbol.toUpperCase();
+        return (
+          tokenPairs[fromChain.chainId][fromToken.symbol.toUpperCase()] ===
+          symbol
+        );
+      });
     });
 
     return allTokens;
-  }, [fromToken, fromChain])
+  }, [fromToken, fromChain]);
 
   useEffect(() => {
     if (!fromToken) {
-      setToToken(undefined)
-      return
+      setToToken(undefined);
+      return;
     }
-    const tokenPair = tokenPairs[fromChain.chainId][fromToken?.symbol.toUpperCase()]
+    const tokenPair =
+      tokenPairs[fromChain.chainId][fromToken?.symbol.toUpperCase()];
     if (tokenPair) {
-      const token = allTokens[toChain.chainId].find((token: Token) => token.symbol.toUpperCase() === tokenPair) as Token
+      const token = allTokens[toChain.chainId].find(
+        (token: Token) => token.symbol.toUpperCase() === tokenPair
+      ) as Token;
       if (tokenPairs[toChain.chainId][tokenPair]) {
-        setToToken(token)
+        setToToken(token);
       } else {
-        setToToken(undefined)
+        setToToken(undefined);
       }
     } else {
-      setToToken(undefined)
+      setToToken(undefined);
     }
-  }, [fromChain, fromToken])
+  }, [fromChain, fromToken]);
 
   useEffect(() => {
-    setFromToken(allTokens[11155111][0])
-    setToToken(allTokens[10143][1])
-  }, [])
+    setFromToken(allTokens[11155111][0]);
+    setToToken(allTokens[10143][1]);
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {
       if (targetRef.current) {
-        const target = targetRef.current
-        if (!target) return
-        const rect = target.getBoundingClientRect()
+        const target = targetRef.current;
+        if (!target) return;
+        const rect = target.getBoundingClientRect();
 
-        const targetX = rect.left
-        const targetY = rect.top
+        const targetX = rect.left;
+        const targetY = rect.top;
 
-        setTargetX((targetX - window.innerWidth / 2 - 100) + 'px')
-        setTargetY((targetY - window.innerHeight + 60) + 'px')
+        setTargetX(targetX - window.innerWidth / 2 - 100 + "px");
+        setTargetY(targetY - window.innerHeight + 60 + "px");
       }
-    }, 2000)
-  }, [targetRef])
+    }, 2000);
+  }, [targetRef]);
 
   return (
     <>
-      <div style={{ backgroundSize: '100% auto' }} className='h-[100vh] overflow-hidden relative mt-[-60px] pt-[110px] bg-[url("/images/bridge/full-bg.png")] bg-cover bg-right-bottom bg-no-repeat'>
-        {isMobile ? null : <div className='absolute left-[36px] md:left-[15px] top-[31px] md:top-[14px] z-[12]' />}
-        <div style={{ backgroundSize: '100% auto' }} className='absolute bottom-0 right-0 w-full '>
-
+      <div
+        style={{ backgroundSize: "100% auto" }}
+        className='h-[100vh] overflow-hidden relative mt-[-60px] pt-[110px] bg-[url("/images/bridge/full-bg.png")] bg-cover bg-right-bottom bg-no-repeat'
+      >
+        {isMobile ? null : (
+          <div className="absolute left-[36px] md:left-[15px] top-[31px] md:top-[14px] z-[12]" />
+        )}
+        <div
+          style={{ backgroundSize: "100% auto" }}
+          className="absolute bottom-0 right-0 w-full "
+        >
           <img src="/images/bridge/bg-animate.gif" />
-          <div ref={targetRef} className='w-[1px] h-[1px] absolute bottom-[93%] right-[11%]'></div>
+          <div
+            ref={targetRef}
+            className="w-[1px] h-[1px] absolute bottom-[93%] right-[11%]"
+          ></div>
           <motion.div
             key={targetX}
             initial={{
-              bottom: '0', 
-              left: '52%',
-              scale: 2,
+              bottom: "0",
+              left: "52%",
+              scale: 2
             }}
             className='absolute w-[100px] h-[120px] bg-[url("/images/bridge/man.gif")] bg-cover bg-right-bottom bg-no-repeat'
             animate={{
               x: [0, targetX],
-              y: [0, targetY], 
-              scale: [2, 0.01],
+              y: [0, targetY],
+              scale: [2, 0.01]
             }}
             transition={{
               duration: 24,
               repeat: Infinity,
               repeatDelay: 0,
-              ease: 'easeOut'
+              ease: "easeOut"
             }}
           />
-
         </div>
 
-
-        <div className='lg:w-[520px] md:w-[92.307vw] m-auto relative z-10'>
+        <div className="lg:w-[520px] md:w-[92.307vw] m-auto relative z-10">
           <DappHeader />
-          <Card className='mt-[-35px]'>
-
-            <Tab defaultActiveKey="1" onChange={(key) => {
-              handleReport(key === "1" ? "1005-002" : "1005-001")
-            }}>
+          <Card className="mt-[-35px]">
+            <Tab
+              defaultActiveKey="1"
+              onChange={(key) => {
+                handleReport(key === "1" ? "1005-002" : "1005-001");
+              }}
+            >
               <TabItem tab="Token" tabKey="1">
                 <div>
                   <TokenAmout
@@ -218,79 +231,116 @@ export default function Bridge() {
                     token={fromToken ?? null}
                     amount={sendAmount}
                     onAmountChange={(v: string) => {
-                      onSendAmountChange(v)
+                      onSendAmountChange(v);
                     }}
                     chainList={chainList}
                     onChainChange={(chain: Chain) => {
-                      setFromChain(chain)
+                      setFromChain(chain);
                     }}
                     onTokenChange={(token: Token) => {
-                      setFromToken(token)
+                      setFromToken(token);
                     }}
                     comingSoon={ComingSoon}
                   />
-                  <div className='h-[8px] md:h-4 flex justify-center items-center' onClick={() => {
-                    const [_fromChain, _toChain] = [toChain, fromChain]
-                    const [_fromToken, _toToken] = [toToken, fromToken]
-                    setFromChain(_fromChain)
-                    setToChain(_toChain)
-                    setFromToken(_fromToken)
-                    setToToken(_toToken)
-                    setLimitBera(limitBera === 0 ? 1 : 0)
-                  }}>
-                    <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="1" y="1" width="36" height="36" rx="7" fill="#75759D" stroke="#2B294A" stroke-width="2" />
-                      <path d="M19.4999 14V24.5M19.4999 24.5L14 19M19.4999 24.5L25 19" stroke="white" stroke-width="2" stroke-linecap="round" />
+                  <div
+                    className="h-[8px] md:h-4 flex justify-center items-center"
+                    onClick={() => {
+                      const [_fromChain, _toChain] = [toChain, fromChain];
+                      const [_fromToken, _toToken] = [toToken, fromToken];
+                      setFromChain(_fromChain);
+                      setToChain(_toChain);
+                      setFromToken(_fromToken);
+                      setToToken(_toToken);
+                      setLimitBera(limitBera === 0 ? 1 : 0);
+                    }}
+                  >
+                    <svg
+                      width="38"
+                      height="38"
+                      viewBox="0 0 38 38"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        x="1"
+                        y="1"
+                        width="36"
+                        height="36"
+                        rx="7"
+                        fill="#75759D"
+                        stroke="#2B294A"
+                        stroke-width="2"
+                      />
+                      <path
+                        d="M19.4999 14V24.5M19.4999 24.5L14 19M19.4999 24.5L25 19"
+                        stroke="white"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
                     </svg>
-
                   </div>
                   <TokenAmout
                     allTokens={_allTokens}
                     isDest={true}
                     limitBera={limitBera === 0}
-                    amount={reciveAmount ?? ''}
+                    amount={reciveAmount ?? ""}
                     chainList={chainList}
                     chain={toChain}
                     token={toToken ?? null}
                     disabledInput={true}
                     onChainChange={(chain: Chain) => {
-                      setToChain(chain)
+                      setToChain(chain);
                     }}
                     onTokenChange={(token: Token) => {
-                      setToToken(token)
+                      setToToken(token);
                     }}
                     comingSoon={ComingSoon}
                   />
-                  <div className='flex items-center justify-between pt-[17px] text-[12px] text-[#A6A6DB]'>
+                  <div className="flex items-center justify-between pt-[17px] text-[12px] text-[#A6A6DB]">
                     <div>Receive address</div>
-                    <div className='flex items-center gap-2 text-[#fff]'>
+                    <div className="flex items-center gap-2 text-[#fff]">
                       <div>{formatLongText(address, 6, 6)}</div>
                     </div>
                   </div>
 
-                  {
-                    routes && routes.length > 0 && toToken && (
-                      <Routes fromChain={fromChain} selectedRoute={selectedRoute} setSelectedRoute={setSelectedRoute} toToken={toToken as Token} routes={routes} />
-                    )
-                  }
+                  {routes && routes.length > 0 && toToken && (
+                    <Routes
+                      fromChain={fromChain}
+                      selectedRoute={selectedRoute}
+                      setSelectedRoute={setSelectedRoute}
+                      toToken={toToken as Token}
+                      routes={routes}
+                    />
+                  )}
 
                   <SubmitBtn
                     fromChainId={fromChain.chainId}
                     isLoading={quoteLoading || sendLoading}
                     disabled={sendDisabled || !selectedRoute}
                     onClick={async () => {
-                      const isSuccess = await executeRoute()
+                      const isSuccess = await executeRoute();
                       if (isSuccess) {
-                        setConfirmShow(true)
+                        setConfirmShow(true);
                       }
-                    }} comingSoon={ComingSoon} />
+                    }}
+                    comingSoon={ComingSoon}
+                  />
                 </div>
               </TabItem>
-              <TabItem tab={<div className='text-[16px]'>NFT<span className='text-[12px] text-[#A6A6DB] ml-2'>Soon</span></div>} tabKey="2">
+              <TabItem
+                tab={
+                  <div className="text-[16px]">
+                    NFT
+                    <span className="text-[12px] text-[#A6A6DB] ml-2">
+                      Soon
+                    </span>
+                  </div>
+                }
+                tabKey="2"
+              >
                 <Nft />
               </TabItem>
             </Tab>
-
           </Card>
 
           <Confirm
@@ -299,19 +349,24 @@ export default function Bridge() {
             fromToken={fromToken as Token}
             toToken={toToken as Token}
             amount={sendAmount}
-            receiveAmount={reciveAmount ?? ''}
+            receiveAmount={reciveAmount ?? ""}
             show={confirmShow}
             onClose={() => {
               setConfirmShow(false);
             }}
             showHistory={() => {
-              setHistoryShow(true)
-              setActiveTab('pending')
+              setHistoryShow(true);
+              setActiveTab("pending");
             }}
           />
         </div>
-        <History activeTab={activeTab} getStatus={getStatus} setActiveTab={setActiveTab} isOpen={historyShow} setIsOpen={setHistoryShow} />
-
+        <History
+          activeTab={activeTab}
+          getStatus={getStatus}
+          setActiveTab={setActiveTab}
+          isOpen={historyShow}
+          setIsOpen={setHistoryShow}
+        />
       </div>
     </>
   );
