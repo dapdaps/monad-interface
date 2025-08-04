@@ -1,7 +1,8 @@
 import useToast from "@/hooks/use-toast";
+import { usePrivy } from "@privy-io/react-auth";
 import { useRequest } from "ahooks";
 import { cloneDeep } from "lodash";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export enum LayerStatus {
   Succeed,
@@ -13,6 +14,7 @@ export enum LayerStatus {
 const mockMap = [
   {
     layer: 1,
+    multiple: 1.1,
     status: LayerStatus.Unlocked,
     items: [
       { id: 1 },
@@ -26,6 +28,7 @@ const mockMap = [
   },
   {
     layer: 2,
+    multiple: 1.32,
     status: LayerStatus.Locked,
     items: [
       { id: 8 },
@@ -37,6 +40,7 @@ const mockMap = [
   },
   {
     layer: 3,
+    multiple: 1.66,
     status: LayerStatus.Locked,
     items: [
       { id: 13 },
@@ -46,6 +50,7 @@ const mockMap = [
   },
   {
     layer: 4,
+    multiple: 2.21,
     status: LayerStatus.Locked,
     items: [
       { id: 16 },
@@ -57,7 +62,9 @@ const mockMap = [
   },
   {
     layer: 5,
+    multiple: 3.34,
     status: LayerStatus.Locked,
+    nft: true,
     items: [
       { id: 21, isGhost: true },
       { id: 22 },
@@ -70,6 +77,7 @@ const mockMap = [
   },
   {
     layer: 6,
+    multiple: 6.23,
     status: LayerStatus.Locked,
     items: [
       { id: 28 },
@@ -82,6 +90,7 @@ const mockMap = [
   },
   {
     layer: 7,
+    multiple: 2.21,
     status: LayerStatus.Locked,
     items: [
       { id: 34, isGhost: true },
@@ -94,6 +103,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { } = props ?? {};
 
   const toast = useToast();
+  const { user } = usePrivy();
 
   const containerRef = useRef<any>(null);
 
@@ -101,6 +111,23 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const [mapData, setMapData] = useState([]);
   // use for dynamic data
   const [data, setData] = useState([]);
+  // play amount
+  const [amount, setAmount] = useState("0.1");
+  // before opened game
+  const [userGameData, setUserGameData] = useState<any>(null);
+  // game started
+  const [gameStarted, setGameStarted] = useState<any>(false);
+
+  const [gameFailed, currentLayer] = useMemo(() => {
+    return [
+      data?.some((_it: any) => _it.status === LayerStatus.Failed),
+      data?.find((_it: any) => _it.status === LayerStatus.Unlocked),
+    ];
+  }, [data]);
+
+  const onReset = () => {
+    setData(cloneDeep(mapData));
+  };
 
   const { loading } = useRequest(async () => {
     const _data: any = mockMap.sort((a: any, b: any) => b.layer - a.layer);
@@ -109,18 +136,19 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   }, {});
 
   const { runAsync: onOpen, loading: openning } = useRequest(async (layer: any, item: any) => {
-    let toastId: any = toast.loading({
-      title: "Opening...",
-    });
-
+    const result: any = { isOpen: false };
     const _data: any = data.slice();
     const currentLayerIndex: any = _data.findIndex((_it: any) => _it.layer === layer.layer);
     const currentLayer: any = _data[currentLayerIndex];
     const currentItem: any = currentLayer.items.find((_it: any) => _it.id === item.id);
 
-    if (currentLayer.status !== LayerStatus.Unlocked) {
-      return;
+    if (currentLayer.status !== LayerStatus.Unlocked || !gameStarted) {
+      return result;
     }
+
+    let toastId: any = toast.loading({
+      title: "Opening...",
+    });
 
     const mockReq = () => new Promise<any>((resolve) => {
       const timer = setTimeout(() => {
@@ -138,6 +166,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     const res = await mockReq();
 
     toast.dismiss(toastId);
+    result.isOpen = true;
 
     // not ghost
     if (res.data.success) {
@@ -146,14 +175,14 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       if (currentLayerIndex - 1 >= 0) {
         _data[currentLayerIndex - 1].status = LayerStatus.Unlocked;
         setData(_data);
-        return;
+        return result;
       }
       // final winner
       toast.success({
         title: "Congratulations! You've won the game!",
       });
       setData(_data);
-      return;
+      return result;
     }
 
     // is ghost
@@ -163,7 +192,69 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       title: "Game over! You've lost the game!",
     });
     setData(_data);
+    setGameStarted(false);
+    return result;
   }, { manual: true });
+
+  const { loading: userGameDataLoading } = useRequest(async () => {
+    if (!user || !user.wallet) {
+      setUserGameData(void 0);
+      return false;
+    }
+    setUserGameData({
+      amount: 0.1,
+      multiple: 1.1,
+      claimed: false,
+      hash: "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+    });
+  }, {
+    refreshDeps: [user],
+  });
+
+  const { runAsync: onCashOut, loading: cashOutPending } = useRequest(async () => {
+    const mockReq = () => new Promise((resolve) => {
+      const timer = setTimeout(() => {
+        clearTimeout(timer);
+        resolve({
+          code: 0,
+        });
+      }, 1500);
+    });
+
+    let toastId: any = toast.loading({
+      title: "Processing cash out...",
+    });
+
+    const res: any = await mockReq();
+
+    toast.dismiss(toastId);
+
+    if (res.code === 0) {
+      toast.success({
+        title: "Cash out success!",
+      });
+      setUserGameData(void 0);
+      setGameStarted(false);
+      onReset();
+    } else {
+      toast.fail({
+        title: "Cash out failed!",
+      });
+    }
+  }, { manual: true });
+
+  const onAmountChange = (_amount: string) => {
+    setAmount(_amount);
+  };
+
+  const onMapChange = () => {
+    setData(cloneDeep(mapData));
+  };
+
+  const onGameStart = () => {
+    onReset();
+    setGameStarted(true);
+  };
 
   useEffect(() => {
     if (mapData.length > 0 && containerRef.current) {
@@ -176,13 +267,13 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
             behavior: "smooth",
           });
         }, 0);
-        
+
         // Cleanup function: cancel setTimeout when component unmounts
         return () => {
           clearTimeout(timeoutId);
         };
       });
-      
+
       // Cleanup function: cancel requestAnimationFrame when component unmounts
       return () => {
         cancelAnimationFrame(animationId);
@@ -197,6 +288,17 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     loading,
     onOpen,
     openning,
+    onAmountChange,
+    amount,
+    onMapChange,
+    userGameData,
+    userGameDataLoading,
+    onCashOut,
+    cashOutPending,
+    gameFailed,
+    currentLayer,
+    gameStarted,
+    onGameStart,
   };
 };
 
@@ -207,4 +309,15 @@ export interface SpaceInvaders {
   loading: boolean;
   onOpen: (layer: any, item: any) => Promise<void>;
   openning: boolean;
+  onAmountChange: (amount: string) => void;
+  amount: string;
+  onMapChange: () => void;
+  userGameData: any;
+  userGameDataLoading: boolean;
+  onCashOut: () => Promise<void>;
+  cashOutPending: boolean;
+  gameFailed: boolean;
+  currentLayer: any;
+  gameStarted: boolean;
+  onGameStart: () => void;
 }

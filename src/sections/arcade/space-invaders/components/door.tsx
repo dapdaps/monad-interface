@@ -1,6 +1,7 @@
 import { motion, useAnimate } from "framer-motion";
 import { useSpaceInvadersContext } from "../context";
 import { LayerStatus } from "../hooks";
+import { useEffect } from "react";
 
 const Door = (props: any) => {
   const { item, layer } = props;
@@ -15,11 +16,22 @@ const Door = (props: any) => {
       return;
     }
 
-    await onOpen?.(layer, item);
+    const res: any = await onOpen?.(layer, item);
+
+    if (!res?.isOpen) {
+      return;
+    }
 
     leftAnimate(leftRef.current, { x: "-2.8vw" });
     rightAnimate(rightRef.current, { x: "2.8vw" });
   };
+
+  useEffect(() => {
+    if (![LayerStatus.Succeed, LayerStatus.Failed].includes(layer.status)) {
+      leftAnimate(leftRef.current, { x: "0" });
+      rightAnimate(rightRef.current, { x: "0" });
+    }
+  }, [layer]);
 
   return (
     <motion.div

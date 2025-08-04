@@ -4,11 +4,18 @@ import { motion } from "framer-motion";
 import Door from "./components/door";
 import SpaceInvadersContextProvider from "./context";
 import { LayerStatus, useSpaceInvaders } from "./hooks";
+import Dashboard from "./components/dashboard";
+import Multiple from "./components/multiple";
+import { numberFormatter } from "@/utils/number-formatter";
+import NftBox from "./components/nft-box";
 
 const SpaceInvadersView = (props: any) => {
   const spaceInvaders = useSpaceInvaders(props);
 
-  const { containerRef, data } = spaceInvaders;
+  const {
+    containerRef,
+    data,
+  } = spaceInvaders;
 
   return (
     <SpaceInvadersContextProvider value={spaceInvaders}>
@@ -31,8 +38,8 @@ const SpaceInvadersView = (props: any) => {
             times: [0, 0.4, 0.8, 1],
           }}
         />
-        <div className="relative w-full h-full z-[2] pt-[103px]">
-          <div className="w-[82.71vw] min-h-[500px] mx-auto flex flex-col">
+        <div className="relative w-full z-[2] pt-[103px] pb-[11.4vw]">
+          <div className="w-[82.71vw] min-h-[100dvh] mx-auto flex flex-col relative z-[2]">
             <div className="relative w-full shrink-0">
               <img
                 src="/images/arcade/space-invaders/dome.png"
@@ -94,6 +101,17 @@ const SpaceInvadersView = (props: any) => {
                             isBorder ? "w-[116.9%] ml-[-8.45%]" : "w-[116.4%] ml-[-8.2%]",
                           )}
                         >
+                          <Multiple
+                            layer={layer}
+                            className="absolute left-0 top-1/2 -translate-y-[calc(50%_+_1vw)] translate-x-[-95%] z-[2]"
+                          >
+                            {numberFormatter(layer.multiple, 2, true, { isZeroPrecision: true })}
+                          </Multiple>
+                          {
+                            layer.nft && (
+                              <NftBox />
+                            )
+                          }
                           <div
                             className={clsx(
                               "relative flex justify-center w-full h-full",
@@ -150,6 +168,14 @@ const SpaceInvadersView = (props: any) => {
               </div>
             </div>
           </div>
+          <div className="w-full absolute z-[1] translate-y-[-4.2vw] h-[6.11vw] border border-black bg-[linear-gradient(180deg,_#373B58_0%,_#212437_100%)]">
+          </div>
+          <img
+            src="/images/arcade/space-invaders/bg-stairs.png"
+            alt=""
+            className="w-full h-[12.64vw] absolute bottom-0 left-0 z-[3]"
+          />
+          <Dashboard />
         </div>
       </div>
     </SpaceInvadersContextProvider>

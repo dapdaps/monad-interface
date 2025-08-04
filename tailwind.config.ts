@@ -18,7 +18,8 @@ const config: Config = {
       DogicaPixel: ["Dogica Pixel"],
       HackerNoonV2: ["HackerNoonV2"],
       SpaceMono: ["SpaceMono"],
-      Pixelmix: ["Pixelmix"]
+      Pixelmix: ["Pixelmix"],
+      DelaGothicOne: ["DelaGothicOne"]
     },
     backgroundImage: {
       vault: "linear-gradient(245deg, #F18E4E 12.36%, #D5B8DB 63.87%)",
