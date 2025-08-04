@@ -2,6 +2,9 @@ import clsx from "clsx";
 import { useStakeContext } from "../../context";
 import StakeInput from "../input";
 import Button from "@/components/button";
+import { useAccount, useSwitchChain } from "wagmi";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { monadTestnet } from "viem/chains";
 
 const CommonForm = (props: any) => {
   const { className, foot } = props;
@@ -50,7 +53,7 @@ const CommonForm = (props: any) => {
         isPrice={false}
       />
       {foot}
-      <Button
+      {/* <Button
         type="primary"
         className="w-full mt-2 !h-[60px]"
         loading={buttonValid.loading}
@@ -58,9 +61,57 @@ const CommonForm = (props: any) => {
         onClick={onStake}
       >
         {buttonValid.text}
-      </Button>
+      </Button> */}
+      <Actiontn buttonValid={buttonValid} onStake={onStake} />
     </div>
   );
 };
 
 export default CommonForm;
+
+export const Actiontn = ({
+  buttonValid,
+  onStake,
+}: {
+  buttonValid: any;
+  onStake: () => void;
+}) => {
+  const { address, chainId } = useAccount()
+  const { openConnectModal } = useConnectModal();
+  const { switchChain } = useSwitchChain()
+
+  if (!address) {
+    return <Button
+      type="primary"
+      className="w-full mt-2 !h-[60px]"
+      onClick={() => {
+        openConnectModal?.()
+      }}
+    >
+      Connect Wallet
+    </Button>
+  }
+
+  if (chainId !== monadTestnet.id) {
+    return <Button
+      type="primary"
+      className="w-full mt-2 !h-[60px]"
+      onClick={() => {
+        switchChain({ chainId: monadTestnet.id })
+      }}
+    >Switch Chain</Button>
+  }
+
+
+  return (
+    <Button
+      type="primary"
+      className="w-full mt-2 !h-[60px]"
+      loading={buttonValid.loading}
+      disabled={!buttonValid.valid || buttonValid.loading}
+      onClick={onStake}
+    >
+      {buttonValid.text}
+    </Button>
+  )
+}
