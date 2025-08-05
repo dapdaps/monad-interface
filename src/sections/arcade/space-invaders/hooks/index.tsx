@@ -659,15 +659,40 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   };
 
   useEffect(() => {
-    if (currentGame && containerRef.current) {
+    if (data && containerRef.current) {
       // Use requestAnimationFrame to ensure scrolling after the next frame is rendered
       const animationId = requestAnimationFrame(() => {
         // Use setTimeout to ensure DOM is completely updated
         const timeoutId = setTimeout(() => {
-          containerRef.current.scrollTo({
-            top: containerRef.current.scrollHeight,
-            behavior: "smooth",
-          });
+          // Find the first layer with status === LayerStatus.Unlocked
+          const unlockedLayerIndex = data.findIndex(layer => layer.status === LayerStatus.Unlocked);
+          
+          if (unlockedLayerIndex !== -1) {
+            // Find the corresponding DOM element for the unlocked layer
+            const layerElements = containerRef.current.querySelectorAll('[data-layer-index]');
+            const unlockedElement = Array.from(layerElements).find((element: any) => {
+              const layerIndex = parseInt(element.getAttribute('data-layer-index'));
+              return layerIndex === unlockedLayerIndex;
+            });
+            
+            if (unlockedElement) {
+              // Scroll to the unlocked layer and center it vertically
+              const containerRect = containerRef.current.getBoundingClientRect();
+              const elementRect = (unlockedElement as HTMLElement).getBoundingClientRect();
+              const scrollTop = containerRef.current.scrollTop + elementRect.top - containerRect.top - (containerRect.height / 2) + (elementRect.height / 2);
+              
+              containerRef.current.scrollTo({
+                top: scrollTop,
+                behavior: "smooth",
+              });
+            }
+          } else {
+            // If no unlocked layer found, scroll to bottom
+            containerRef.current.scrollTo({
+              top: containerRef.current.scrollHeight,
+              behavior: "smooth",
+            });
+          }
         }, 0);
 
         // Cleanup function: cancel setTimeout when component unmounts
@@ -681,7 +706,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         cancelAnimationFrame(animationId);
       };
     }
-  }, [currentGame]);
+  }, [data]);
 
   return {
     gameLoading,

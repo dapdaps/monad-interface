@@ -107,6 +107,7 @@ const SpaceInvadersView = (props: any) => {
                       return (
                         <div
                           key={layerIndex}
+                          data-layer-index={layerIndex}
                           className={clsx(
                             "relative h-[clamp(1px,_14.03vw,_calc(var(--nadsa-laptop-width)*0.1403))] pb-[clamp(1px,_2.06vw,_calc(var(--nadsa-laptop-width)*0.0206))] bg-[url('/images/arcade/space-invaders/floor.png')] bg-no-repeat bg-bottom bg-contain",
                             isBorder ? "w-[116.9%] ml-[-8.45%]" : "w-[116.4%] ml-[-8.2%]",
