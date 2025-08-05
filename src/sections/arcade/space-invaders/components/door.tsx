@@ -1,29 +1,34 @@
 import { motion, useAnimate } from "framer-motion";
 import { useSpaceInvadersContext } from "../context";
-import { LayerStatus } from "../hooks";
 import { useEffect } from "react";
+import { LayerStatus } from "../config";
+import clsx from "clsx";
 
 const Door = (props: any) => {
-  const { item, layer } = props;
+  const { tileIndex, layer, layerIndex } = props;
 
-  const { onOpen, openning } = useSpaceInvadersContext();
+  const { onOpen, openning, currentGameData } = useSpaceInvadersContext();
 
   const [leftRef, leftAnimate] = useAnimate();
   const [rightRef, rightAnimate] = useAnimate();
+
+  const doorOpenAnimation = () => {
+    leftAnimate(leftRef.current, { x: "clamp(calc(var(--nadsa-laptop-width) * -0.028), -2.8vw, 1px)" });
+    rightAnimate(rightRef.current, { x: "clamp(1px, 2.8vw, calc(var(--nadsa-laptop-width)*0.028))" });
+  };
 
   const handleClick = async (e: any) => {
     if (openning || layer.status !== LayerStatus.Unlocked) {
       return;
     }
 
-    const res: any = await onOpen?.(layer, item, { ev: e });
+    const res: any = await onOpen?.(layer, tileIndex, { ev: e });
 
     if (!res?.isOpen) {
       return;
     }
 
-    leftAnimate(leftRef.current, { x: "clamp(calc(var(--nadsa-laptop-width) * -0.028), -2.8vw, 1px)" });
-    rightAnimate(rightRef.current, { x: "clamp(1px, 2.8vw, calc(var(--nadsa-laptop-width)*0.028))" });
+    doorOpenAnimation();
   };
 
   useEffect(() => {
@@ -31,20 +36,29 @@ const Door = (props: any) => {
       leftAnimate(leftRef.current, { x: "0" });
       rightAnimate(rightRef.current, { x: "0" });
     }
-  }, [layer]);
+    if (layer.status === LayerStatus.Failed && layer?.deathTileIndex === tileIndex) {
+      doorOpenAnimation();
+    }
+    if (layer.status === LayerStatus.Succeed && currentGameData?.selected_tiles?.[layerIndex] === tileIndex) {
+      doorOpenAnimation();
+    }
+  }, [layer, currentGameData]);
 
   return (
     <motion.div
-      className="relative w-[clamp(1px,_7.74vw,_calc(var(--nadsa-laptop-width)*0.0774))] h-[clamp(1px,_8.02vw,_calc(var(--nadsa-laptop-width)*0.0802))] shrink-0 overflow-hidden cursor-pointer pl-[clamp(1px,_0.75vw,_calc(var(--nadsa-laptop-width)*0.0075))] pr-[clamp(1px,_0.75vw,_calc(var(--nadsa-laptop-width)*0.0075))] pt-[clamp(1px,_0.48vw,_calc(var(--nadsa-laptop-width)*0.0048))] pb-[clamp(1px,_0.9vw,_calc(var(--nadsa-laptop-width)*0.009))]"
+      className={clsx(
+        "relative w-[clamp(1px,_7.74vw,_calc(var(--nadsa-laptop-width)*0.0774))] h-[clamp(1px,_8.02vw,_calc(var(--nadsa-laptop-width)*0.0802))] shrink-0 overflow-hidden pl-[clamp(1px,_0.75vw,_calc(var(--nadsa-laptop-width)*0.0075))] pr-[clamp(1px,_0.75vw,_calc(var(--nadsa-laptop-width)*0.0075))] pt-[clamp(1px,_0.48vw,_calc(var(--nadsa-laptop-width)*0.0048))] pb-[clamp(1px,_0.9vw,_calc(var(--nadsa-laptop-width)*0.009))]",
+        layer.status === LayerStatus.Unlocked ? "cursor-pointer" : "cursor-not-allowed",
+      )}
       onClick={handleClick}
     >
       <motion.div
         className="relative flex justify-center items-center z-[1] w-full h-full overflow-hidden [clip-path:polygon(clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01))_0,_calc(100%_-_clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01)))_0,_100%_clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01)),_100%_100%,_0_100%,_0_clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01)))]"
         style={{
-          backgroundColor: layer.status === LayerStatus.Succeed
+          backgroundColor: (layer.status === LayerStatus.Succeed && currentGameData?.selected_tiles?.[layerIndex] === tileIndex)
             ? "#BFFF60"
             : (
-              layer.status === LayerStatus.Failed
+              (layer.status === LayerStatus.Failed && layer?.deathTileIndex === tileIndex)
                 ? "#EE4444"
                 : "unset"
             ),
@@ -63,15 +77,29 @@ const Door = (props: any) => {
           className="w-[clamp(1px,_3.27vw,_calc(var(--nadsa-laptop-width)*0.0327))] h-[clamp(1px,_6.75vw,_calc(var(--nadsa-laptop-width)*0.0675))] object-bottom absolute z-[2] right-[clamp(1px,_0.06vw,_calc(var(--nadsa-laptop-width)*0.0006))] top-[clamp(1px,_0.02vw,_calc(var(--nadsa-laptop-width)*0.0002))]"
         />
         {
-          item.isGhost && (
-            <motion.img
-              src="/images/arcade/space-invaders/ghost.png"
-              alt=""
-              className="w-[clamp(1px,_4.86vw,_calc(var(--nadsa-laptop-width)*0.0486))] h-[clamp(1px,_4.86vw,_calc(var(--nadsa-laptop-width)*0.0486))] object-center object-contain absolute"
-              style={{
-                zIndex: layer.status === LayerStatus.Succeed ? 3 : 1,
-              }}
-            />
+          layer?.deathTileIndex === tileIndex && (
+            <>
+              <motion.img
+                src="/images/arcade/space-invaders/ghost.png"
+                alt=""
+                className="w-[clamp(1px,_4.86vw,_calc(var(--nadsa-laptop-width)*0.0486))] h-[clamp(1px,_4.86vw,_calc(var(--nadsa-laptop-width)*0.0486))] object-center object-contain absolute"
+                style={{
+                  zIndex: layer.status !== LayerStatus.Failed ? 3 : 1,
+                }}
+              />
+              {
+                layer.status !== LayerStatus.Failed && (
+                  <motion.img
+                    src="/images/arcade/space-invaders/ban-bar.png"
+                    alt=""
+                    className="w-[clamp(1px,_5.97vw,_calc(var(--nadsa-laptop-width)*0.0597))] h-[clamp(1px,_4.72vw,_calc(var(--nadsa-laptop-width)*0.0472))] object-center object-contain absolute"
+                    style={{
+                      zIndex: 4,
+                    }}
+                  />
+                )
+              }
+            </>
           )
         }
       </motion.div>

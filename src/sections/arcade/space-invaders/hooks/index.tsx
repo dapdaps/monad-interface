@@ -1,155 +1,376 @@
 import useToast from "@/hooks/use-toast";
 import { usePrivy } from "@privy-io/react-auth";
-import { useRequest } from "ahooks";
+import { useRequest, useDebounceFn } from "ahooks";
 import { cloneDeep } from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
-
-export enum LayerStatus {
-  Succeed,
-  Failed,
-  Locked,
-  Unlocked,
-}
-
-const mockMap = [
-  {
-    layer: 1,
-    multiple: 1.1,
-    status: LayerStatus.Unlocked,
-    items: [
-      { id: 1 },
-      { id: 2 },
-      { id: 3 },
-      { id: 4 },
-      { id: 5 },
-      { id: 6, isGhost: true },
-      { id: 7 },
-    ],
-  },
-  {
-    layer: 2,
-    multiple: 1.32,
-    status: LayerStatus.Locked,
-    items: [
-      { id: 8 },
-      { id: 9, isGhost: true },
-      { id: 10 },
-      { id: 11 },
-      { id: 12 },
-    ],
-  },
-  {
-    layer: 3,
-    multiple: 1.66,
-    status: LayerStatus.Locked,
-    items: [
-      { id: 13 },
-      { id: 14 },
-      { id: 15, isGhost: true },
-    ],
-  },
-  {
-    layer: 4,
-    multiple: 2.21,
-    status: LayerStatus.Locked,
-    items: [
-      { id: 16 },
-      { id: 17 },
-      { id: 18, isGhost: true },
-      { id: 19 },
-      { id: 20 },
-    ],
-  },
-  {
-    layer: 5,
-    multiple: 3.34,
-    status: LayerStatus.Locked,
-    nft: true,
-    items: [
-      { id: 21, isGhost: true },
-      { id: 22 },
-      { id: 23 },
-      { id: 24 },
-      { id: 25 },
-      { id: 26 },
-      { id: 27 },
-    ],
-  },
-  {
-    layer: 6,
-    multiple: 6.23,
-    status: LayerStatus.Locked,
-    items: [
-      { id: 28 },
-      { id: 29 },
-      { id: 30 },
-      { id: 31 },
-      { id: 32, isGhost: true },
-      { id: 33 },
-    ],
-  },
-  {
-    layer: 7,
-    multiple: 2.21,
-    status: LayerStatus.Locked,
-    items: [
-      { id: 34, isGhost: true },
-      { id: 35 },
-    ],
-  },
-];
+import { get, post } from '@/utils/http';
+import { EndGameRes, GAME_CONTRACT_ADDRESS, LastGame, LastGameStatus, Layer, LayerRow, LayerStatus, NFTItem, OpenTileRes, StartGameRes } from "../config";
+import Big from "big.js";
+import { requestContract } from "../utils";
+import { GAME_ABI } from "../abi";
+import { getSignature } from "@/utils/signature";
+import { usePrivyAccount } from "./use-account";
+import { Contract, utils } from "ethers";
+import { useBlockNumber } from "wagmi";
 
 export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { } = props ?? {};
 
   const toast = useToast();
   const { user } = usePrivy();
+  const { accountWithAk, provider, account } = usePrivyAccount();
+  const { data: blockNumber } = useBlockNumber({ watch: true });
 
   const containerRef = useRef<any>(null);
+  const unLockedLayerRef = useRef<any>(null);
+  const lastBalanceUpdateRef = useRef<number>(0);
 
-  // used for layout
-  const [mapData, setMapData] = useState([]);
+  // current playing game
+  const [currentGame, setCurrentGame] = useState<Layer>();
   // use for dynamic data
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<LayerRow[]>([]);
   // play amount
   const [amount, setAmount] = useState("0.1");
-  // before opened game
-  const [userGameData, setUserGameData] = useState<any>(null);
+  // backend game data
+  const [currentGameData, setCurrentGameData] = useState<Partial<StartGameRes>>();
   // game started
   const [gameStarted, setGameStarted] = useState<any>(false);
   // verifier modal
   const [verifierVisible, setVerifierVisible] = useState<any>(false);
-  const [verifierData, setVerifierData] = useState<any>(void 0);
+  const [verifierData, setVerifierData] = useState<LayerRow[]>();
   // when game failed, popup failed ghost
   const [failedGhostVisible, setFailedGhostVisible] = useState<any>(false);
   const [failedGhostPosition, setFailedGhostPosition] = useState<any>([0, 0]);
 
-  const [gameFailed, currentLayer] = useMemo(() => {
+  const [gameLost, gameWon, currentLayer, currentWinLayer] = useMemo<[boolean, boolean, LayerRow | undefined, LayerRow | undefined]>(() => {
     return [
       data?.some((_it: any) => _it.status === LayerStatus.Failed),
+      data?.some((_it: any) => _it.status === LayerStatus.Succeed),
       data?.find((_it: any) => _it.status === LayerStatus.Unlocked),
+      data?.filter((_it: any) => _it.status === LayerStatus.Succeed)
+        ?.sort((a, b) => Big(b.multiplier).minus(a.multiplier).toNumber())
+      ?.[0],
     ];
   }, [data]);
 
   const onReset = () => {
-    setData(cloneDeep(mapData));
+    const _currentGame = allGameMaps?.find((_game) => _game.id === currentGame?.id) ?? allGameMaps?.[0];
+    setData(cloneDeep(_currentGame?.rows || []));
   };
 
   const { loading } = useRequest(async () => {
-    const _data: any = mockMap.sort((a: any, b: any) => b.layer - a.layer);
-    setMapData(cloneDeep(_data));
-    setData(cloneDeep(_data));
+    // const _data: any = mockMap.sort((a: any, b: any) => b.layer - a.layer);
+    // setMapData(cloneDeep(_data));
+    // setData(cloneDeep(_data));
   }, {});
 
-  const { runAsync: onOpen, loading: openning } = useRequest(async (layer: any, item: any, opts?: any) => {
+  const { data: userBalance, loading: userBalanceLoading, runAsync: getUserBalance } = useRequest(async () => {
+    if (!provider || !account) return "0";
+    const balanceWei = await provider.getBalance(account);
+    const balanceMON = utils.formatUnits(balanceWei, 18);
+    return balanceMON || "0";
+  }, {
+    refreshDeps: [account, provider]
+  });
+
+  // Debounce function to ensure balance fetch interval is not less than 3 seconds
+  const { run: debouncedGetUserBalance } = useDebounceFn(
+    async () => {
+      const now = Date.now();
+      if (now - lastBalanceUpdateRef.current >= 3000) {
+        lastBalanceUpdateRef.current = now;
+        await getUserBalance();
+      }
+    },
+    { wait: 3000 }
+  );
+
+  // Listen for blockNumber changes and automatically fetch user balance
+  useEffect(() => {
+    if (blockNumber && account && provider) {
+      debouncedGetUserBalance();
+    }
+  }, [blockNumber, account, provider, debouncedGetUserBalance]);
+
+  const startButton = useMemo<{ text: string; disabled: boolean; tooltip: string; }>(() => {
+    const buttonResult = { text: "Go!", disabled: true, tooltip: "" };
+    if (!amount || Big(amount).lte(0)) {
+      buttonResult.tooltip = "Select an amount";
+      return buttonResult;
+    }
+    if (Big(amount).gt(Big(userBalance || "0"))) {
+      buttonResult.tooltip = "Insufficient balance";
+      return buttonResult;
+    }
+    if (!gameStarted && currentGameData?.status === LastGameStatus.Ongoing) {
+      buttonResult.text = "Continue";
+    }
+    buttonResult.disabled = false;
+    return buttonResult;
+  }, [amount, userBalance, currentGameData, gameStarted]);
+
+  const { runAsync: onReportServer } = useRequest<any, [api: string, gameId: string, txHash: string]>(async (api, gameId, txHash) => {
+    try {
+      const ssParams = new URLSearchParams();
+      ssParams.set("gameId", gameId);
+      ssParams.set("txHash", txHash);
+      const ss = getSignature(ssParams.toString());
+      await post(api, {
+        game_id: gameId,
+        ss,
+        tx_hash: txHash,
+      });
+    } catch (err: any) {
+      console.log("report start game failed: %o", err);
+    }
+  }, {
+    manual: true,
+  });
+
+  const onChainGameStart = async (params: any) => {
+    const {
+      game_id,
+      seed_hash,
+      algo_variant,
+      game_config,
+      deadline,
+      signature,
+      toastId,
+    } = params;
+
+    const signer = provider?.getSigner(account);
+
+    try {
+      const contractRes = await requestContract({
+        address: GAME_CONTRACT_ADDRESS,
+        abi: GAME_ABI,
+        provider: signer,
+        params: [
+          game_id,
+          seed_hash,
+          algo_variant,
+          game_config,
+          deadline,
+          signature,
+        ],
+        method: "startGame",
+        value: amount,
+        toast,
+        toastId,
+      });
+
+      toast.dismiss(toastId);
+
+      if (!contractRes.success) {
+        const errorMessage = contractRes.error || "Transaction failed";
+        console.error("Contract call failed:", errorMessage);
+
+        toast.fail({
+          title: "Prepare game failed",
+          text: errorMessage.includes("InternalRpcError")
+            ? "Network error, please try again later"
+            : errorMessage,
+        });
+        return;
+      }
+
+      if (contractRes.status !== 1) {
+        toast.fail({
+          title: "Prepare game failed",
+          text: "Transaction was not successful",
+        });
+        return;
+      }
+
+      // start game success
+      console.log("Game started successfully:", contractRes.transactionHash);
+
+      // report to server
+      onReportServer("/game/deathfun/create/transaction", game_id, contractRes.transactionHash as string);
+
+      setCurrentGameData((prev) => {
+        const _currentGameData = { ...prev };
+        _currentGameData.create_hash = contractRes.transactionHash;
+        return _currentGameData;
+      });
+      setGameStarted(true);
+      onReset();
+
+      toast.success({
+        title: "Game started successfully!",
+      });
+
+    } catch (err: any) {
+      console.log("chain game start failed: %o", err);
+      toast.dismiss(toastId);
+
+      toast.fail({
+        title: "Prepare game failed",
+        text: err.message || "Please try again later",
+      });
+    }
+  };
+
+  const getChainGameId = async (gameId?: string) => {
+    const gameContract = new Contract(GAME_CONTRACT_ADDRESS, GAME_ABI, provider);
+    const gameChainId = await gameContract.getChainGameId(gameId);
+    return { value: utils.formatUnits(gameChainId), chainGameId: gameChainId };
+  };
+
+  const getChainGameDetails = async (chainGameId?: any) => {
+    const gameContract = new Contract(GAME_CONTRACT_ADDRESS, GAME_ABI, provider);
+    const gameDetails = await gameContract.getGameDetails(chainGameId);
+    console.log("gameDetails: %o", gameDetails);
+  };
+
+  const { runAsync: onGameStart, loading: gameStartLoading } = useRequest<Partial<StartGameRes>, any>(async () => {
+    if (!currentGame) {
+      return;
+    }
+
+    let toastId: any = toast.loading({
+      title: "Preparing game...",
+    });
+
+    // Continue game
+    if (currentGameData?.status === LastGameStatus.Ongoing) {
+      // not finished, check create_hash
+      if (!currentGameData?.create_hash) {
+        // if gameChainId does not exist, re-upload to the chain
+        if (Big(currentGameData?.gameChainId || 0).eq(0)) {
+          try {
+            await onChainGameStart({
+              ...currentGameData,
+              toastId,
+            });
+          } catch (err: any) {
+            console.log("continue game failed: %o", err);
+          }
+        }
+        else {
+          // Backend block crawling
+        }
+      }
+      return;
+    }
+
+    try {
+      const res = await post("/game/deathfun/create", {
+        bet_amount: amount,
+        death_fun_id: currentGame.id,
+      });
+      if (res.code !== 200 || !res.data) {
+        toast.dismiss(toastId);
+        toast.fail({
+          title: "Start game failed",
+          text: res.message || "Please try again later",
+        });
+        return;
+      }
+      setCurrentGameData({
+        ...res.data,
+        // status: LastGameStatus.Ongoing,
+        selected_tiles: [],
+      });
+      await onChainGameStart({
+        ...res.data,
+        toastId,
+      });
+      return res.data;
+    } catch (err: any) {
+      console.log("start game failed: %o", err);
+    }
+
+    toast.dismiss(toastId);
+    return;
+  }, {
+    manual: true,
+  });
+
+  const { runAsync: onGameEnd, loading: gameEndLoading } = useRequest<Partial<EndGameRes>, [result: LayerStatus.Failed | LayerStatus.Succeed]>(async (result) => {
+    if (!currentGame || !currentGameData) {
+      return;
+    }
+
+    // User won
+    // click - cash out button
+    if (result === LayerStatus.Succeed) {
+
+      let toastId: any = toast.loading({
+        title: "Processing cash out...",
+      });
+
+      try {
+        const res = await post("/game/deathfun/end", {
+          game_id: currentGameData.game_id,
+        });
+        if (res.code !== 200) {
+          toast.dismiss(toastId);
+          toast.fail({
+            title: "Cash out failed",
+            text: res.message || "Please try again later",
+          });
+          return;
+        }
+        const signer = provider?.getSigner(account);
+
+        const contractRes = await requestContract({
+          address: GAME_CONTRACT_ADDRESS,
+          abi: GAME_ABI,
+          provider: signer,
+          params: [
+            res.data.chain_game_id,
+            res.data.reward_amount,
+            res.data.game_state,
+            res.data.seed,
+            res.data.deadline,
+            res.data.signature,
+          ],
+          method: "endGame",
+          toast,
+          toastId,
+        });
+        toast.dismiss(toastId);
+
+        if (!contractRes.success || contractRes.status !== 1) {
+          toast.fail({
+            title: "Cash out failed",
+            text: "Please try again later",
+          });
+          return;
+        }
+
+        toast.success({
+          title: "Cash out successfully",
+        });
+
+        // end game success
+        // report to server
+        onReportServer("/game/deathfun/end/transaction", currentGameData.game_id as string, contractRes.transactionHash as string);
+
+        setGameStarted(false);
+        setCurrentGameData(void 0);
+        return res.data;
+      } catch (err: any) {
+        console.log("end game failed: %o", err);
+      }
+    }
+    // User lost
+    else {
+      // when open door failed, backend will update game status to failed
+    }
+  }, {
+    manual: true,
+  });
+
+  const { runAsync: onOpen, loading: openning } = useRequest(async (layer: LayerRow, tileIndex: number, opts?: { ev?: any; }) => {
     const { ev } = opts ?? {};
     const result: any = { isOpen: false };
-    const _data: any = data.slice();
-    const currentLayerIndex: any = _data.findIndex((_it: any) => _it.layer === layer.layer);
-    const currentLayer: any = _data[currentLayerIndex];
-    const currentItem: any = currentLayer.items.find((_it: any) => _it.id === item.id);
+    const _data: LayerRow[] = data.slice();
+    const currentLayerIndex: number = _data.findIndex((_it) => _it.multiplier === layer.multiplier);
+    const currentLayer: LayerRow = _data[currentLayerIndex];
 
-    if (currentLayer.status !== LayerStatus.Unlocked || !gameStarted) {
+    if (currentLayer.status !== LayerStatus.Unlocked || !gameStarted || !currentGameData) {
       return result;
     }
 
@@ -157,27 +378,49 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       title: "Opening...",
     });
 
-    const mockReq = () => new Promise<any>((resolve) => {
-      const timer = setTimeout(() => {
-        const res = {
-          code: 0,
-          data: {
-            success: !currentItem?.isGhost,
-          },
-        };
-        resolve(res);
-        clearTimeout(timer);
-      }, 1500);
-    });
+    let response: OpenTileRes;
+    try {
+      const res = await post("/game/deathfun/select-tile", {
+        game_id: currentGameData.game_id,
+        tileIndex,
+      });
+      toast.dismiss(toastId);
+      if (res.code !== 200 || !res.data) {
+        toast.fail({
+          title: "Open failed",
+          text: "Please try again later",
+        });
+        return result;
+      }
+      response = res.data;
+    } catch (err: any) {
+      console.log("open door failed: %o", err);
+      toast.fail({
+        title: "Open failed",
+        text: err.message,
+      });
+      return result;
+    }
 
-    const res = await mockReq();
-
-    toast.dismiss(toastId);
     result.isOpen = true;
 
+    currentLayer.deathTileIndex = response.currentRow.deathTileIndex;
+    setCurrentGameData((prev) => {
+      const _currentGameData = { ...prev };
+      if (!_currentGameData.selected_tiles) {
+        _currentGameData.selected_tiles = [];
+      }
+      _currentGameData.selected_tiles[_data.length - 1 - currentLayerIndex] = tileIndex;
+      return _currentGameData;
+    });
+
     // not ghost
-    if (res.data.success) {
+    if (response.currentRow.deathTileIndex !== tileIndex) {
       currentLayer.status = LayerStatus.Succeed;
+      // refresh nft
+      if (_data.length - 1 - currentLayerIndex === currentNFT?.row_index) {
+        getAllNFTList();
+      }
       // go to next layer
       if (currentLayerIndex - 1 >= 0) {
         _data[currentLayerIndex - 1].status = LayerStatus.Unlocked;
@@ -200,7 +443,8 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     });
     setData(_data);
     setGameStarted(false);
-    
+    getLastGame();
+
     // Set failed ghost position and visibility
     if (ev) {
       // Use viewport-relative coordinates
@@ -209,68 +453,199 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       setFailedGhostPosition([x, y]);
       setFailedGhostVisible(true);
     }
-    
+
     return result;
   }, { manual: true });
 
-  const { loading: userGameDataLoading } = useRequest(async () => {
-    if (!user || !user.wallet) {
-      setUserGameData(void 0);
-      return false;
+  const { runAsync: onCashOut, loading: cashOutPending } = useRequest(async () => {
+    await onGameEnd(LayerStatus.Succeed);
+  }, { manual: true });
+
+  const { data: allGameMaps, loading: allGameMapsLoading } = useRequest<Layer[], any>(async () => {
+    try {
+      const res = await get("/game/deathfun/all");
+      if (res.code !== 200) {
+        return [];
+      }
+      const _list: Layer[] = res.data || [];
+      _list.forEach((_it: Layer) => {
+        _it.rows.forEach((_row, _idx) => {
+          _row.gameId = _it.id;
+          _row.status = _idx === 0 ? LayerStatus.Unlocked : LayerStatus.Locked;
+        });
+        _it.rows = _it.rows.sort((a, b) => Big(a.multiplier).minus(b.multiplier).lt(0) ? 1 : -1);
+      });
+      console.log("all game maps: %o", _list);
+      return _list;
+    } catch (err: any) {
+      console.log("get all game map failed: %o", err);
     }
-    setUserGameData({
-      amount: 0.1,
-      multiple: 1.1,
-      claimed: false,
-      hash: "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
-    });
-  }, {
-    refreshDeps: [user],
+    return [];
   });
 
-  const { runAsync: onCashOut, loading: cashOutPending } = useRequest(async () => {
-    const mockReq = () => new Promise((resolve) => {
-      const timer = setTimeout(() => {
-        clearTimeout(timer);
-        resolve({
-          code: 0,
-        });
-      }, 1500);
-    });
-
-    let toastId: any = toast.loading({
-      title: "Processing cash out...",
-    });
-
-    const res: any = await mockReq();
-
-    toast.dismiss(toastId);
-
-    if (res.code === 0) {
-      toast.success({
-        title: "Cash out successfully",
-      });
-      setUserGameData(void 0);
-      setGameStarted(false);
-      onReset();
-    } else {
-      toast.fail({
-        title: "Cash out failed",
-      });
+  const { data: lastGame, loading: LastGameLoading, runAsync: getLastGame } = useRequest<Partial<LastGame>, any>(async () => {
+    if (!accountWithAk || !allGameMaps?.length) {
+      return {};
     }
-  }, { manual: true });
+    const setDefaultCurrentGame = () => {
+      setCurrentGame(allGameMaps[0]);
+      setData(cloneDeep(allGameMaps[0]?.rows || []));
+    };
+    try {
+      const res = await get("/game/deathfun/active");
+      if (res.code !== 200) {
+        setDefaultCurrentGame();
+        return {};
+      }
+      // first time to play the game
+      if (!res.data) {
+        // set first map as current game
+        setDefaultCurrentGame();
+      }
+      // show last game data
+      else {
+        const matchedGame = allGameMaps.find((game) => {
+          if (game.rows.length !== res.data.rows.length) {
+            return false;
+          }
+
+          const sortedGameRows = [...game.rows].sort((a, b) =>
+            Big(a.multiplier).minus(b.multiplier).toNumber()
+          );
+          const sortedDataRows = [...res.data.rows].sort((a, b) =>
+            Big(a.multiplier).minus(b.multiplier).toNumber()
+          );
+
+          return sortedGameRows.every((gameRow, index) => {
+            const dataRow = sortedDataRows[index];
+            return gameRow.multiplier === dataRow.multiplier &&
+              gameRow.tiles === dataRow.tiles;
+          });
+        });
+
+        const _rows: LayerRow[] = res.data.rows
+          .map((row: LayerRow, index: number) => {
+            let _status = LayerStatus.Locked;
+            if (typeof row.deathTileIndex === "number") {
+              if (row.deathTileIndex === res.data.selected_tiles?.[index]) {
+                _status = LayerStatus.Failed;
+              } else {
+                _status = LayerStatus.Succeed;
+              }
+            }
+            return {
+              ...row,
+              gameId: matchedGame?.id || -1,
+              status: _status,
+            };
+          })
+          .sort((a: LayerRow, b: LayerRow) => Big(b.multiplier).minus(a.multiplier).toNumber());
+          for (let i = _rows.length - 1; i >= 0; i--) {
+            if (_rows[i].status === LayerStatus.Failed) {
+              break;
+            }
+            if (_rows[i].status !== LayerStatus.Succeed) {
+              _rows[i].status = LayerStatus.Unlocked;
+              break;
+            }
+          }
+
+        const _currentGame = {
+          id: matchedGame?.id || -1,
+          rows: _rows,
+        };
+        setCurrentGame(_currentGame);
+        setData(cloneDeep(_currentGame?.rows || []));
+        setAmount(res.data.bet_amount);
+
+        const { value: gameChainId } = await getChainGameId(res.data.game_id);
+        setCurrentGameData({
+          ...res.data,
+          signature: res.data.create_signature,
+          gameChainId,
+        });
+
+        if (res.data.status === LastGameStatus.Ongoing) {
+          if (Big(gameChainId || 0).gt(0)) {
+            setGameStarted(true);
+          }
+        }
+
+        if ([LastGameStatus.Win].includes(res.data.status)) {
+          // check end_hash
+          if (!res.data.end_hash) {
+            // if gameChainId does not exist, re-upload to the chain
+            if (Big(gameChainId || 0).eq(0)) {
+
+            }
+            else {
+              // Backend block crawling
+            }
+          }
+        }
+      }
+      return res.data || {};
+    } catch (err: any) {
+      setDefaultCurrentGame();
+      console.log("get all game map failed: %o", err);
+    }
+    return {};
+  }, {
+    refreshDeps: [accountWithAk, allGameMaps]
+  });
+
+  const { data: allNFTList, loading: allNFTListLoading, runAsync: getAllNFTList } = useRequest<NFTItem[], any>(async () => {
+    try {
+      const res = await get("/game/deathfun/reward/whitelist");
+      if (res.code !== 200) {
+        return [];
+      }
+      return res.data || [];
+    } catch (err: any) {
+      console.log("get whitelist failed: %o", err);
+    }
+  });
+  const [currentNFT] = useMemo<[NFTItem | undefined]>(() => {
+    return [
+      allNFTList?.[0]
+    ];
+  }, [allNFTList]);
+
+  const [gameLoading] = useMemo(() => {
+    return [
+      allGameMapsLoading || LastGameLoading
+    ];
+  }, [allGameMapsLoading, LastGameLoading]);
 
   const onAmountChange = (_amount: string) => {
     setAmount(_amount);
   };
 
   const onMapChange = () => {
-    setData(cloneDeep(mapData));
-  };
-
-  const onGameStart = () => {
-    onReset();
-    setGameStarted(true);
+    if (!allGameMaps?.length) {
+      return;
+    }
+    if (gameStarted) {
+      toast.fail({
+        title: "Game is in progress",
+      });
+      return;
+    }
+    if (!currentGame) {
+      // set first map as current game
+      setCurrentGame(allGameMaps[0]);
+      setData(cloneDeep(allGameMaps[0]?.rows || []));
+      return;
+    }
+    let nextGame: Layer;
+    const currentGameIndex = allGameMaps.findIndex((_it) => _it.id === currentGame?.id);
+    if (currentGameIndex >= allGameMaps.length - 1) {
+      nextGame = allGameMaps[0];
+    } else {
+      nextGame = allGameMaps[currentGameIndex + 1];
+    }
+    setCurrentGame(nextGame);
+    setData(cloneDeep(nextGame?.rows || []));
   };
 
   const onVerifierClose = () => {
@@ -284,7 +659,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   };
 
   useEffect(() => {
-    if (mapData.length > 0 && containerRef.current) {
+    if (currentGame && containerRef.current) {
       // Use requestAnimationFrame to ensure scrolling after the next frame is rendered
       const animationId = requestAnimationFrame(() => {
         // Use setTimeout to ensure DOM is completely updated
@@ -306,26 +681,32 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         cancelAnimationFrame(animationId);
       };
     }
-  }, [mapData]);
+  }, [currentGame]);
 
   return {
+    gameLoading,
+    allGameMaps,
+    lastGame,
+    startButton,
     containerRef,
+    unLockedLayerRef,
     data,
-    mapData,
+    currentGame,
     loading,
     onOpen,
     openning,
     onAmountChange,
     amount,
     onMapChange,
-    userGameData,
-    userGameDataLoading,
     onCashOut,
     cashOutPending,
-    gameFailed,
+    gameLost,
+    gameWon,
     currentLayer,
+    currentWinLayer,
     gameStarted,
     onGameStart,
+    gameStartLoading,
     verifierVisible,
     onVerifierClose,
     onVerifierOpen,
@@ -333,32 +714,54 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     failedGhostVisible,
     failedGhostPosition,
     setFailedGhostVisible,
+    userBalance,
+    userBalanceLoading,
+    currentGameData,
+    allNFTList,
+    allNFTListLoading,
+    currentNFT,
+    getChainGameId,
+    getChainGameDetails,
   };
 };
 
 export interface SpaceInvaders {
+  gameLoading: boolean;
+  allGameMaps?: Layer[];
+  lastGame?: Partial<LastGame>;
+  startButton: { text: string; disabled: boolean; tooltip: string; };
   containerRef: any;
-  data: any;
-  mapData: any;
+  unLockedLayerRef: any;
+  data: LayerRow[];
+  currentGame?: Layer;
   loading: boolean;
   onOpen: (layer: any, item: any, opts?: any) => Promise<void>;
   openning: boolean;
   onAmountChange: (amount: string) => void;
   amount: string;
   onMapChange: () => void;
-  userGameData: any;
-  userGameDataLoading: boolean;
   onCashOut: () => Promise<void>;
   cashOutPending: boolean;
-  gameFailed: boolean;
-  currentLayer: any;
+  gameLost: boolean;
+  gameWon: boolean;
+  currentLayer?: LayerRow;
+  currentWinLayer?: LayerRow;
   gameStarted: boolean;
   onGameStart: () => void;
+  gameStartLoading: boolean;
   verifierVisible: boolean;
   onVerifierClose: () => void;
   onVerifierOpen: () => void;
-  verifierData: any;
+  verifierData?: LayerRow[];
   failedGhostVisible: boolean;
   failedGhostPosition: any;
   setFailedGhostVisible: (visible: boolean) => void;
+  userBalance?: string;
+  userBalanceLoading: boolean;
+  currentGameData?: Partial<StartGameRes>;
+  allNFTList?: NFTItem[];
+  currentNFT?: NFTItem;
+  allNFTListLoading: boolean;
+  getChainGameId: (gameId?: string) => Promise<{ value: string; chainGameId: any; }>;
+  getChainGameDetails: (chainGameId?: any) => Promise<any>;
 }

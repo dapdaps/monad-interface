@@ -3,13 +3,14 @@ import clsx from "clsx";
 import { motion } from "framer-motion";
 import Door from "./components/door";
 import SpaceInvadersContextProvider from "./context";
-import { LayerStatus, useSpaceInvaders } from "./hooks";
+import { useSpaceInvaders } from "./hooks";
 import Dashboard from "./components/dashboard";
 import Multiple from "./components/multiple";
 import { numberFormatter } from "@/utils/number-formatter";
 import NftBox from "./components/nft-box";
 import VerifierModal from "./components/verifier/modal";
 import FailedGhost from "./components/failed-ghost";
+import { LayerStatus } from "./config";
 
 const SpaceInvadersView = (props: any) => {
   const spaceInvaders = useSpaceInvaders(props);
@@ -17,6 +18,7 @@ const SpaceInvadersView = (props: any) => {
   const {
     containerRef,
     data,
+    currentNFT,
   } = spaceInvaders;
 
   return (
@@ -99,7 +101,7 @@ const SpaceInvadersView = (props: any) => {
                 />
                 <div className="w-full h-0 flex-1 relative bg-[#28293D] pt-[clamp(1px,_0.3vw,_calc(var(--nadsa-laptop-width)*0.003))]">
                   {
-                    data.map((layer: any, layerIndex: number) => {
+                    data.map((layer, layerIndex) => {
                       const isBorder = [LayerStatus.Unlocked, LayerStatus.Failed].includes(layer.status);
                       const isBg = [LayerStatus.Locked, LayerStatus.Failed].includes(layer.status);
                       return (
@@ -114,10 +116,10 @@ const SpaceInvadersView = (props: any) => {
                             layer={layer}
                             className="absolute left-0 top-1/2 -translate-y-[calc(50%_+_clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01)))] translate-x-[-95%] z-[2]"
                           >
-                            {numberFormatter(layer.multiple, 2, true, { isZeroPrecision: true })}
+                            {numberFormatter(layer.multiplier, 2, true, { isZeroPrecision: true })}
                           </Multiple>
                           {
-                            layer.nft && (
+                            (data.length - 1 - layerIndex) === currentNFT?.row_index && (
                               <NftBox />
                             )
                           }
@@ -131,12 +133,13 @@ const SpaceInvadersView = (props: any) => {
                           >
                             <div className="relative z-[1] w-[86%] h-full bg-[linear-gradient(180deg,_#28293D_0%,_#36375C_100%)] flex justify-center items-end gap-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))]">
                               {
-                                layer.items.map((item: any, index: number) => {
+                                [...new Array(layer.tiles).fill(0)].map((_, index: number) => {
                                   return (
                                     <Door
                                       key={`${layerIndex}-${index}`}
                                       layer={layer}
-                                      item={item}
+                                      layerIndex={data.length - 1 - layerIndex}
+                                      tileIndex={index}
                                     />
                                   );
                                 })

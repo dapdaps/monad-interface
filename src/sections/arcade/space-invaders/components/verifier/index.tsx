@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { useSpaceInvadersContext } from "../../context";
+import { useEffect } from "react";
 
 const Verifier = (props: any) => {
   const { className } = props;
@@ -7,7 +8,21 @@ const Verifier = (props: any) => {
   const {
     verifierData,
     onVerifierClose,
+    currentGameData,
+    getChainGameId,
+    getChainGameDetails,
   } = useSpaceInvadersContext();
+
+  useEffect(() => {
+    if (!currentGameData?.game_id) {
+      return;
+    }
+    getChainGameId?.(currentGameData.game_id).then((res) => {
+      getChainGameDetails?.(res.chainGameId).then((res) => {
+        console.log("res: %o", res);
+      });
+    });
+  }, [currentGameData]);
 
   return (
     <div className="font-[Montserrat] text-[14px] font-[600] text-white leading-[150%] px-[26px]">
@@ -16,30 +31,30 @@ const Verifier = (props: any) => {
       </div>
       <TitleCard title="Row Tile Counts" className="!mt-[29px]">
         {
-          verifierData?.map((layer: any) => layer.items.length)?.join(",")
+          verifierData?.map((layer) => layer.tiles)?.join(",")
         }
       </TitleCard>
       <TitleCard title="Seed">
         0x018f43dfacd0e4b859ffc2b1708fd4d59ef96555f95ddb98fb6bdb7b3a6ac6f9
       </TitleCard>
       <TitleCard title="Hash">
-        0x6489ff9d32a90c717a19cef3ee2608df6fe802aa7026a3d2030bd549dc6e430d
+        {currentGameData?.create_hash}
       </TitleCard>
       <div className="mt-[12px] flex flex-col gap-[10px] items-stretch pl-[10px]">
         {
-          verifierData?.map((layer: any, layerIndex: number) => (
+          verifierData?.map((layer, layerIndex) => (
             <div key={layerIndex} className="flex items-center justify-between gap-[20px]">
               <div className="flex-0 w-[30px] flex items-center">
-                {layer.layer}
+                {verifierData?.length - (layerIndex + 1)}
               </div>
               <div className="flex-1 flex items-center justify-center gap-[12px]">
                 {
-                  layer.items.map((item: any, itemIndex: number) => (
+                  [...new Array(layer.tiles).fill(0)].map((_, itemIndex) => (
                     <div
                       key={`${layerIndex}-${itemIndex}`}
                       className={clsx(
                         "flex-0 w-[36px] h-[36px] rounded-[6px]",
-                        item.isGhost ? "bg-[#F13636]" : "bg-black/30"
+                        layer.deathTileIndex === itemIndex ? "bg-[#F13636]" : "bg-black/30"
                       )}
                     />
                   ))

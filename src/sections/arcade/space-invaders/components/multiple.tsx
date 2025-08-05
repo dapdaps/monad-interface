@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { LayerStatus } from "../hooks";
+import { LayerStatus } from "../config";
 
 const Multiple = (props: any) => {
   const { layer, className, children } = props;
