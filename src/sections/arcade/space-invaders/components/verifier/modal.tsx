@@ -2,7 +2,7 @@ import MonadBaseCard from "@/components/card/monad-base-card";
 import Modal from "@/components/modal";
 import Index from "./index";
 import { useSpaceInvadersContext } from "../../context";
-import IconClose from "@public/images/arcade/space-invaders/icon-close.svg";
+// import IconClose from "@public/images/arcade/space-invaders/icon-close.svg";
 
 const VerifierModal = (props: any) => {
   const { } = props;
@@ -16,7 +16,7 @@ const VerifierModal = (props: any) => {
     <Modal
       open={verifierVisible}
       onClose={onVerifierClose}
-      closeIcon={<IconClose />}
+      // closeIcon={<IconClose />}
       closeIconClassName="!right-[25px]"
     >
       <MonadBaseCard
