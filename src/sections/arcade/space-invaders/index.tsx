@@ -185,7 +185,7 @@ const SpaceInvadersView = (props: any) => {
           <div className="w-full absolute z-[1] translate-y-[clamp(calc(var(--nadsa-laptop-width)_*_-0.042),_-4.2vw,_1px)] h-[clamp(1px,_6.11vw,_calc(var(--nadsa-laptop-width)*0.0611))] border border-black bg-[linear-gradient(180deg,_#373B58_0%,_#212437_100%)]">
           </div>
           <img
-            src="/images/arcade/space-invaders/bg-stairs.png"
+            src="/images/arcade/space-invaders/bg-stairs2.png"
             alt=""
             className="w-full h-[clamp(1px,_12.64vw,_calc(var(--nadsa-laptop-width)*0.1264))] absolute bottom-0 left-0 z-[3]"
           />
