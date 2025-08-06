@@ -41,6 +41,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   // when game failed, popup failed ghost
   const [failedGhostVisible, setFailedGhostVisible] = useState<any>(false);
   const [failedGhostPosition, setFailedGhostPosition] = useState<any>([0, 0]);
+  const [recordsVisible, setRecordsVisible] = useState<any>(false);
 
   const [gameLost, gameWon, currentLayer, currentWinLayer] = useMemo<[boolean, boolean, LayerRow | undefined, LayerRow | undefined]>(() => {
     return [
@@ -741,6 +742,8 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     allNFTListLoading,
     getChainGameId,
     getChainGameDetails,
+    recordsVisible,
+    setRecordsVisible,
   };
 };
 
@@ -782,4 +785,6 @@ export interface SpaceInvaders {
   allNFTListLoading: boolean;
   getChainGameId: (gameId?: string) => Promise<{ value: string; chainGameId: any; }>;
   getChainGameDetails: (chainGameId?: any) => Promise<any>;
+  recordsVisible: boolean;
+  setRecordsVisible: (visible: boolean) => void;
 }

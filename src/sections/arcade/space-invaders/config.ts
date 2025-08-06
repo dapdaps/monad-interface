@@ -48,6 +48,12 @@ export enum LastGameStatus {
   Lose,
 }
 
+export const LastGameStatusMap: Record<LastGameStatus, string> = {
+  [LastGameStatus.Ongoing]: "Ongoing",
+  [LastGameStatus.Win]: "Won",
+  [LastGameStatus.Lose]: "Loss",
+};
+
 export interface LastGame {
   algo_variant: string;
   bet_amount: number;

@@ -11,6 +11,7 @@ const FlexTable = (props: FlexTableProps) => {
     bodyClass = '',
     bodyClassName = '',
     bodyWrapClass = '',
+    loadingClassName = '',
     loading,
     list,
     columns,
@@ -89,7 +90,7 @@ const FlexTable = (props: FlexTableProps) => {
           </div>
         )}
         {loading ? (
-          <div className='flex items-center justify-center py-[30px] flex-col'>
+          <div className={clsx('flex items-center justify-center py-[30px] flex-col', loadingClassName)}>
             <Loading size={24} />
           </div>
         ) : (
@@ -161,6 +162,7 @@ export type FlexTableProps = {
   bodyClass?: string;
   bodyWrapClass?: string;
   bodyClassName?: string;
+  loadingClassName?: string;
   pagination?: any;
   renderEmpty?(): any;
   sortDataIndex?: string;
