@@ -6,7 +6,7 @@ export const ALL_DAPP_LIST: IDapp[] = [
   //   name: "iZumi",
   //   icon: "/images/dapps/icons/iZumi.svg",
   //   type: "Dex",
-  //   link: "/dex/izumi",
+  //   link: "/dex?dapp=izumi",
   //   desc: "iZUMi Finance is a multi-chain DeFi protocol providing one-stop DEX-as-a-Service (DaaS)."
   // },
   {
@@ -14,7 +14,7 @@ export const ALL_DAPP_LIST: IDapp[] = [
     name: "PancakeSwap",
     icon: "/images/dapps/icons/Pancake.svg",
     type: "Dex",
-    link: "/dex/pancake",
+    link: "/dex?dapp=pancake",
     desc: "Trade and earn crypto on the all-in-one decentralized exchange. Enjoy low fees, high liquidity, and a user-friendly interface.",
     disabled: false
   },
@@ -22,7 +22,7 @@ export const ALL_DAPP_LIST: IDapp[] = [
     name: "Uniswap",
     icon: "/images/dapps/icons/uniswap.png",
     type: "Dex",
-    link: "/dex/uniswap",
+    link: "/dex?dapp=uniswap",
     desc: "The largest onchain marketplace. Buy and sell crypto on Monad and 11+ other chains."
   },
   // feedback-6
@@ -30,14 +30,14 @@ export const ALL_DAPP_LIST: IDapp[] = [
   //   name: "OpenOcean",
   //   icon: "/images/dapps/icons/OpenOcean.svg",
   //   type: "Dex",
-  //   link: "/dex/openocean",
+  //   link: "/dex?dapp=openocean",
   //   desc: "A leading DEX aggregator on 30+ chains, with its swap API powering 180+ projects like MetaMask, Rabby, Li.Fi, and more."
   // },
   {
     name: "LFJ",
     icon: "/images/dapps/icons/LFJ.svg",
     type: "Dex",
-    link: "/dex/lfj",
+    link: "/dex?dapp=lfj",
     desc: "The onchain trading platform built for winners. One-stop DEX, Aggregator & Screener for Monad. Discover & buy every token at the best prices.",
     disabled: false
   },
@@ -46,37 +46,37 @@ export const ALL_DAPP_LIST: IDapp[] = [
   //   name: "Orbiter",
   //   icon: "https://assets.dapdap.net/images/100-obiter.png",
   //   type: "bridge",
-  //   link: "/bridge/obiter",
+  //   link: "/bridge?dapp=obiter",
   //   desc: "Orbiter Finance is a decentralized cross-rollup bridge that offers secure, low cost and almost instant transfer."
   // },
   {
     name: "Kuru",
     icon: "/images/dapps/icons/kuru.svg",
     type: "Dex",
-    link: "/dex/kuru",
+    link: "/dex?dapp=kuru",
     desc: "Find, trade and launch your coins on a fully on-chain CLOB. Built for traders, powered by Monad."
   },
   {
     name: "aPriori",
     icon: "/images/stake/apriori/logo.png",
     type: "Stake",
-    link: "/stake/apriori",
+    link: "/stake?dapp=apriori",
     desc: "aPriori is an MEV infrastructure and liquid staking protocol, designed for the parallel execution era and natively built on Monad.",
     disabled: false
   },
-  // {
-  //   name: "Magma",
-  //   icon: "/images/stake/magma/logo.png",
-  //   type: "Stake",
-  //   link: "/stake/magma",
-  //   desc: "Magma is a Liquid Staking Protocol building the first Distributed Validator on Monad and developing MEV to reduce latency by up to 4x.",
-  //   disabled: false
-  // },
-   {
+  {
+    name: "Magma",
+    icon: "/images/stake/magma/logo.png",
+    type: "Stake",
+    link: "/stake?dapp=magma",
+    desc: "Magma is a Liquid Staking Protocol building the first Distributed Validator on Monad and developing MEV to reduce latency by up to 4x.",
+    disabled: false
+  },
+  {
     name: "Timeswap",
     icon: "/images/dapps/icons/timeswap.svg",
     type: "Lending",
-    link: "/lending/timeswap",
+    link: "/lending?dapp=timeswap",
     desc: "Timeswap is the first oracleless lending/borrowing protocol — enabling the creation of money markets for ANY ERC20 tokens.",
     disabled: false
   },

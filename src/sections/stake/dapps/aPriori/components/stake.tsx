@@ -9,6 +9,9 @@ import { useThrottleFn } from "ahooks";
 import useToast from "@/hooks/use-toast";
 import CircleLoading from "@/components/circle-loading";
 import TOKENS, { APRIORI_CONTRACT_ADDRESS } from "../config/tokens";
+import { useAccount, useSwitchChain } from "wagmi";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { switchChain } from "@wagmi/core";
 export default function Stake() {
     const [amount, setAmount] = useState<string>("");
     const [receive, setReceive] = useState<string>("0");
@@ -39,7 +42,7 @@ export default function Stake() {
     const { run: throttledGetConvertToAssets } = useThrottleFn((amount) => {
         if (!amount) return;
 
-       
+
         getConvertToShares(amount).then((res) => {
             setReceive(res);
         });
@@ -136,37 +139,16 @@ export default function Stake() {
                 <div className="text-[#B6B3D6] text-sm mb-2">$-</div>
             </div>
             <div className="text-white text-sm mt-4 mb-2">1 MON = {rate} aprMON</div>
-            <button disabled={isStakeLoading || Number(amount) >= Number(balances['native']) || Number(amount) <= 0} onClick={async () => {
-                if (Number(amount) >= Number(balances['native'])) {
-                    console.log('Insufficient balance')
-                    fail({
-                        title: 'Insufficient balance'
-                    })
-                    return;
-                }
-
-                setIsStakeLoading(true)
-                const tx = await handleStake(amount)
-                console.log('tx:', tx)
-                if (tx) {
-                    success({
-                        title: 'Stake successful',
-                        description: 'Stake successful',
-                        icon: 'success',
-                        tx: tx,
-                        chainId: monadTestnet.id,
-                    })
-                } else {
-                    fail({
-                        title: 'Stake failed'
-                    })
-                }
-                queryBalance()
-                setIsStakeLoading(false)
-            }} className="w-full py-3 flex justify-center items-center mt-2 gap-2 rounded-xl bg-[#8B87FF] text-white text-[18px] hover:opacity-80 transition disabled:opacity-50 disabled:cursor-not-allowed">
-                {isStakeLoading ? <CircleLoading size={20} /> : null}
-                Stake
-            </button>
+            <StakeBtn
+                isStakeLoading={isStakeLoading}
+                amount={amount}
+                balances={balances}
+                handleStake={handleStake}
+                setIsStakeLoading={setIsStakeLoading}
+                queryBalance={queryBalance}
+                fail={fail}
+                success={success}
+            />
         </div>
     );
 }
@@ -177,3 +159,74 @@ const BalancePercentList = [
     { value: 75, label: "75%" },
     { value: 100, label: "Max" }
 ];
+
+const cls = 'w-full h-[60px] flex items-center justify-center rounded-[6px] text-[#fff] bg-[#8B87FF] text-[18px] font-[600] mt-[16px] cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed'
+export const StakeBtn = ({
+    isStakeLoading,
+    amount,
+    balances,
+    handleStake,
+    setIsStakeLoading,
+    queryBalance,
+    fail,
+    success }: { isStakeLoading: boolean, amount: string, balances: any, handleStake: any, setIsStakeLoading: any, queryBalance: any, fail: any, success: any }) => {
+    const { address, chainId } = useAccount()
+    const { openConnectModal } = useConnectModal();
+    const { switchChain } = useSwitchChain()
+
+    if (!address) {
+        return <button
+            type="button"
+            className={cls}
+            onClick={() => {
+                openConnectModal?.()
+            }}
+        >
+            Connect Wallet
+        </button>
+    }
+
+    if (chainId !== monadTestnet.id) {
+        return <button
+            type="button"
+            className={cls}
+            onClick={() => {
+                switchChain({ chainId: monadTestnet.id })
+            }}
+        >Switch Chain</button>
+    }
+
+    return (
+        <button disabled={isStakeLoading || Number(amount) >= Number(balances['native']) || Number(amount) <= 0} onClick={async () => {
+            if (Number(amount) >= Number(balances['native'])) {
+                console.log('Insufficient balance')
+                fail({
+                    title: 'Insufficient balance'
+                })
+                return;
+            }
+
+            setIsStakeLoading(true)
+            const tx = await handleStake(amount)
+            console.log('tx:', tx)
+            if (tx) {
+                success({
+                    title: 'Stake successful',
+                    description: 'Stake successful',
+                    icon: 'success',
+                    tx: tx,
+                    chainId: monadTestnet.id,
+                })
+            } else {
+                fail({
+                    title: 'Stake failed'
+                })
+            }
+            queryBalance()
+            setIsStakeLoading(false)
+        }} className={cls}>
+            {isStakeLoading ? <CircleLoading size={20} /> : null}
+            Stake
+        </button>
+    )
+}
