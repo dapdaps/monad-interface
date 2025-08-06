@@ -104,12 +104,21 @@ const Nft = (props: any) => {
                     2d ago
                   </LabelValue>
                   <LabelValue label="Status" valueClassName="flex items-center gap-[10px]">
-                    <div className="text-[#Received]">
-                      Received
+                    <div className={clsx(nft.tx_hash ? "text-[#BFFF60]" : "text-[#63AEF4]")}>
+                      {nft.tx_hash ? "Received" : "Pending"}
                     </div>
-                    <div className="underline underline-offset-2">
-                      Tx
-                    </div>
+                    {
+                      nft.tx_hash && (
+                        <a
+                          target="_blank"
+                          className="underline underline-offset-2"
+                          href={`${monadTestnet.blockExplorers?.default.url}/tx/${nft.tx_hash}`}
+                          rel="noreferrer nofollow noopener"
+                        >
+                          Tx
+                        </a>
+                      )
+                    }
                   </LabelValue>
                 </div>
               </div>

@@ -12,6 +12,7 @@ import { getSignature } from "@/utils/signature";
 import { usePrivyAccount } from "./use-account";
 import { Contract, utils } from "ethers";
 import { useBlockNumber } from "wagmi";
+import useAudioPlay from "@/hooks/use-audio";
 
 export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { } = props ?? {};
@@ -20,6 +21,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { user } = usePrivy();
   const { accountWithAk, provider, account } = usePrivyAccount();
   const { data: blockNumber } = useBlockNumber({ watch: true });
+  const { play: palyAudio } = useAudioPlay();
 
   const containerRef = useRef<any>(null);
   const unLockedLayerRef = useRef<any>(null);
@@ -186,6 +188,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       });
       setGameStarted(true);
       onReset();
+      palyAudio("/audios/arcade/space-invaders/start.ogg");
 
       toast.success({
         title: "Game on. Reach for the stars",
@@ -431,6 +434,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     setData(_data);
     setGameStarted(false);
     getLastGame();
+    palyAudio("/audios/arcade/space-invaders/death.ogg");
 
     // Set failed ghost position and visibility
     if (ev) {
