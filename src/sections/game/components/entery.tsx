@@ -11,13 +11,18 @@ const Entry: React.FC<any> = () => {
     <div className="w-full h-full  bg-no-repeat bg-cover bg-top">
       <LoginContainer>
         <div className='w-full h-full flex items-center justify-center flex-col'>
-          <div className='text-[42px] font-HackerNoonV2 text-[#E7E2FF] mb-[60px]'>arcade</div>
-          <div className='w-full flex items-center justify-center gap-[105px]'>
-            <div className='w-[400px] h-[600px] relative flex flex-col items-center justify-end'>
+          <div className='text-[clamp(1px,_2.92vw,_calc(var(--nadsa-laptop-width)*0.0292))] font-HackerNoonV2 text-[#E7E2FF] mb-[clamp(1px,_4.17vw,_calc(var(--nadsa-laptop-width)*0.0417))]'>arcade</div>
+          <div className='w-full flex items-center justify-center gap-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width)*0.0347))]'>
+
+            <motion.div
+              className="w-[clamp(1px,_25vw,_calc(var(--nadsa-laptop-width)*0.25))] h-[clamp(1px,_37.5vw,_calc(var(--nadsa-laptop-width)*0.375))] relative flex flex-col items-center justify-end"
+              whileHover={{
+                scale: 1.11,
+              }}
+            >
               <img src="/images/game/lucky-bg.svg" className='w-full h-full absolute top-0 left-0 ' />
-              <motion.img
-                src="/images/game/lucky7777.svg"
-                className='w-[466px] absolute top-[30px] left-[-50px] max-w-[466px]'
+              <motion.div
+                className="w-[clamp(1px,_27.78vw,_calc(var(--nadsa-laptop-width)*0.2778))] h-[clamp(1px,_28.06vw,_calc(var(--nadsa-laptop-width)*0.2806))] absolute top-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))] left-[clamp(calc(var(--nadsa-laptop-width)*-0.0347),_-3.47vw,_1px)] bg-[url('/images/game/lucky7777.svg')] bg-no-repeat bg-center bg-contain"
                 animate={{
                   y: [0, -20, 0]
                 }}
@@ -27,18 +32,50 @@ const Entry: React.FC<any> = () => {
                   ease: "easeInOut"
                 }}
               />
-              <img src="/images/game/lucky-coin.svg" className='w-[533px] absolute top-[-20px] left-[-100px] max-w-[533px]' />
-              <div className="text-[22px] font-HackerNoonV2 text-[#E7E2FF] relative drop-shadow-[0px_0px_10px_#E7E2FF80]">LUCKY 777</div>
-              <img data-bp="1009-002" onClick={() => {
-                router.push("/arcade/lucky777");
-              }} src="/images/game/lucky-start.svg" className='w-[136px] relative my-[20px] cursor-pointer hover:scale-110 transition-transform duration-200' />
+              <div className="w-[clamp(1px,_36.46vw,_calc(var(--nadsa-laptop-width)*0.3646))] h-[clamp(1px,_37.08vw,_calc(var(--nadsa-laptop-width)*0.3708))] absolute z-[2] top-[0] left-[clamp(calc(var(--nadsa-laptop-width)*-0.048),_-4.8vw,_1px)] bg-[url('/images/game/lucky777-coins.png')] bg-no-repeat bg-center bg-contain" />
+              <div className="text-[clamp(1px,_1.53vw,_calc(var(--nadsa-laptop-width)*0.0153))] font-HackerNoonV2 text-[#E7E2FF] relative drop-shadow-[0px_0px_10px_#E7E2FF80]">LUCKY 777</div>
+              <img
+                data-bp="1009-002"
+                onClick={() => {
+                  router.push("/arcade/lucky777");
+                }}
+                src="/images/game/lucky-start.svg"
+                className='w-[clamp(1px,_9.44vw,_calc(var(--nadsa-laptop-width)*0.0944))] relative z-[3] my-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] cursor-pointer hover:scale-110 transition-transform duration-200'
+              />
               <Link href="/arcade/lucky777" prefetch={true}></Link>
-            </div>
-            <div className='w-[400px] h-[600px] relative flex flex-col items-center justify-end'>
+            </motion.div>
+
+            <motion.div
+              className="w-[clamp(1px,_25vw,_calc(var(--nadsa-laptop-width)*0.25))] h-[clamp(1px,_37.5vw,_calc(var(--nadsa-laptop-width)*0.375))] relative flex flex-col items-center justify-end"
+              whileHover={{
+                scale: 1.11,
+              }}
+            >
+              <img src="/images/game/space-invaders.png" className='w-full h-full absolute top-0 left-0 ' />
+              <div className="w-[clamp(1px,_7.99vw,_calc(var(--nadsa-laptop-width)*0.0799))] h-[clamp(1px,_40.35vw,_calc(var(--nadsa-laptop-width)*0.4035))] absolute z-[2] top-[clamp(calc(var(--nadsa-laptop-width)*-0.02),_-2vw,_1px)] right-[clamp(calc(var(--nadsa-laptop-width)*-0.02),_-2vw,_1px)] bg-[url('/images/game/space-invaders-coins.png')] bg-no-repeat bg-center bg-contain" />
+              <div className="text-[clamp(1px,_1.53vw,_calc(var(--nadsa-laptop-width)*0.0153))] font-HackerNoonV2 text-[#E7E2FF] relative drop-shadow-[0px_0px_10px_#E7E2FF80]">
+                Space Invaders
+              </div>
+              <img
+                data-bp="1009-004"
+                onClick={() => {
+                  router.push("/arcade/space-invaders");
+                }}
+                src="/images/game/2048-start.svg"
+                className='w-[clamp(1px,_9.44vw,_calc(var(--nadsa-laptop-width)*0.0944))] relative my-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] cursor-pointer hover:scale-110 transition-transform duration-200'
+              />
+              <Link href="/arcade/space-invaders" prefetch={true}></Link>
+            </motion.div>
+
+            <motion.div
+              className='w-[clamp(1px,_25vw,_calc(var(--nadsa-laptop-width)*0.25))] h-[clamp(1px,_37.5vw,_calc(var(--nadsa-laptop-width)*0.375))] relative flex flex-col items-center justify-end'
+              whileHover={{
+                scale: 1.11,
+              }}
+            >
               <img src="/images/game/2048-bg.svg" className='w-full h-full object-cover absolute top-0 left-0' />
-              <motion.img
-                src="/images/game/2048.png"
-                className='w-[330px] absolute top-[40px] left-[60px]'
+              <motion.div
+                className="bg-[url('/images/game/2048.png')] bg-no-repeat bg-center bg-contain w-[clamp(1px,_20vw,_calc(var(--nadsa-laptop-width)*0.20))] h-[clamp(1px,_26.94vw,_calc(var(--nadsa-laptop-width)*0.2694))] absolute top-[clamp(1px,_2.78vw,_calc(var(--nadsa-laptop-width)*0.0278))] left-[clamp(1px,_4.17vw,_calc(var(--nadsa-laptop-width)*0.0417))]"
                 animate={{
                   y: [0, -20, 0]
                 }}
@@ -48,13 +85,21 @@ const Entry: React.FC<any> = () => {
                   ease: "easeInOut"
                 }}
               />
-              <img src="/images/game/2048-coin.png" className='w-[513px] absolute top-[-30px] left-[-50px] max-w-[513px]' />
-              <div className="text-[22px] font-HackerNoonV2 text-[#E7E2FF] relative drop-shadow-[0px_0px_10px_#E7E2FF80]">2048 on MONAD</div>
-              <img data-bp="1009-003" onClick={() => {
-                router.push("/arcade/2048");
-              }} src="/images/game/2048-start.svg" className='w-[136px] relative my-[20px] cursor-pointer hover:scale-110 transition-transform duration-200' />
+              <div className="w-[clamp(1px,_10.97vw,_calc(var(--nadsa-laptop-width)*0.1097))] h-[clamp(1px,_33.54vw,_calc(var(--nadsa-laptop-width)*0.3354))] absolute top-[clamp(calc(var(--nadsa-laptop-width)*-0.0278),_-2.78vw,_1px)] right-[clamp(calc(var(--nadsa-laptop-width)*-0.04),_-4vw,_1px)] bg-[url('/images/game/2048-coins.png')] bg-no-repeat bg-contain bg-center" />
+              <div className="text-[clamp(1px,_1.53vw,_calc(var(--nadsa-laptop-width)*0.0153))] font-HackerNoonV2 text-[#E7E2FF] relative drop-shadow-[0px_0px_10px_#E7E2FF80]">
+                2048 on MONAD
+              </div>
+              <img
+                data-bp="1009-003"
+                onClick={() => {
+                  router.push("/arcade/2048");
+                }}
+                src="/images/game/2048-start.svg"
+                className='w-[clamp(1px,_9.44vw,_calc(var(--nadsa-laptop-width)*0.0944))] relative my-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] cursor-pointer hover:scale-110 transition-transform duration-200'
+              />
               <Link href="/arcade/2048" prefetch={true}></Link>
-            </div>
+            </motion.div>
+
           </div>
         </div>
       </LoginContainer>
