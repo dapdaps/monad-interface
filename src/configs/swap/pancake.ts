@@ -2,7 +2,7 @@ import { monad } from "../tokens/monad-testnet";
 
 export default {
   name: "Pancake",
-  logo: "/assets/dapps/pancake.png",
+  logo: "/images/dapps/icons/Pancake.svg",
   path: "/dex?dapp=pancake",
   defaultInputCurrency: monad["mon"],
   tokens: {
