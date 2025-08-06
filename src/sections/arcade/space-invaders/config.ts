@@ -90,6 +90,7 @@ export interface StartGameRes {
   create_hash?: string;
   gameChainId?: string;
   selected_tiles?: number[];
+  seed?: string;
 }
 
 export interface EndGameRes {

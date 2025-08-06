@@ -19,6 +19,8 @@ const Results = (props: any) => {
   const { className } = props;
 
   const {
+    formatRows,
+    onVerifierOpen,
   } = useSpaceInvadersContext();
   const {
     userStatistics,
@@ -186,7 +188,13 @@ const Results = (props: any) => {
               type="button"
               className="rounded-[4px] flex items-center justify-center border border-[#A6A6DB] opacity-50 w-[49px] h-[22px] flex-shrink-0 text-[#A6A6DB] text-[12px] transition-all duration-300 hover:border-[#ACACE2] hover:bg-[#4D4D73] hover:text-white hover:opacity-100"
               onClick={() => {
-
+                const rows = formatRows?.(record.rows, record.select_tiles?.split(",")?.map(((tile: string) => Number(tile))), record.deathfun_id);
+                if (!rows) return;
+                onVerifierOpen?.({
+                  rows,
+                  seed: record.seed,
+                  seed_hash: record.seed_hash,
+                });
               }}
             >
               Verify

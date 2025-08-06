@@ -31,21 +31,21 @@ const Verifier = (props: any) => {
       </div>
       <TitleCard title="Row Tile Counts" className="!mt-[29px]">
         {
-          verifierData?.map((layer) => layer.tiles)?.join(",")
+          verifierData?.rows?.map((layer) => layer.tiles)?.join(",")
         }
       </TitleCard>
       <TitleCard title="Seed">
-        0x018f43dfacd0e4b859ffc2b1708fd4d59ef96555f95ddb98fb6bdb7b3a6ac6f9
+        {verifierData?.seed}
       </TitleCard>
       <TitleCard title="Hash">
-        {currentGameData?.create_hash}
+        {verifierData?.seed_hash}
       </TitleCard>
       <div className="mt-[12px] flex flex-col gap-[10px] items-stretch pl-[10px]">
         {
-          verifierData?.map((layer, layerIndex) => (
+          verifierData?.rows?.map((layer, layerIndex) => (
             <div key={layerIndex} className="flex items-center justify-between gap-[20px]">
               <div className="flex-0 w-[30px] flex items-center">
-                {verifierData?.length - (layerIndex + 1)}
+                {(verifierData?.rows?.length || 0) - (layerIndex + 1)}
               </div>
               <div className="flex-1 flex items-center justify-center gap-[12px]">
                 {
