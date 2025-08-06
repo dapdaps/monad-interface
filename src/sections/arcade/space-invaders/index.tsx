@@ -11,6 +11,7 @@ import NftBox from "./components/nft-box";
 import VerifierModal from "./components/verifier/modal";
 import FailedGhost from "./components/failed-ghost";
 import { LayerStatus } from "./config";
+import RecordsModal from "./components/records/modal";
 
 const SpaceInvadersView = (props: any) => {
   const spaceInvaders = useSpaceInvaders(props);
@@ -193,6 +194,7 @@ const SpaceInvadersView = (props: any) => {
       </div>
       <VerifierModal />
       <FailedGhost />
+      <RecordsModal />
     </SpaceInvadersContextProvider>
   );
 };

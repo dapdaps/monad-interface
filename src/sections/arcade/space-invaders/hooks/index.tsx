@@ -37,10 +37,11 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const [gameStarted, setGameStarted] = useState<any>(false);
   // verifier modal
   const [verifierVisible, setVerifierVisible] = useState<any>(false);
-  const [verifierData, setVerifierData] = useState<LayerRow[]>();
+  const [verifierData, setVerifierData] = useState<{ rows?: LayerRow[]; seed?: string; seed_hash?: string; }>();
   // when game failed, popup failed ghost
   const [failedGhostVisible, setFailedGhostVisible] = useState<any>(false);
   const [failedGhostPosition, setFailedGhostPosition] = useState<any>([0, 0]);
+  const [recordsVisible, setRecordsVisible] = useState<any>(false);
 
   const [gameLost, gameWon, currentLayer, currentWinLayer] = useMemo<[boolean, boolean, LayerRow | undefined, LayerRow | undefined]>(() => {
     return [
@@ -57,12 +58,6 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     const _currentGame = allGameMaps?.find((_game) => _game.id === currentGame?.id) ?? allGameMaps?.[0];
     setData(cloneDeep(_currentGame?.rows || []));
   };
-
-  const { loading } = useRequest(async () => {
-    // const _data: any = mockMap.sort((a: any, b: any) => b.layer - a.layer);
-    // setMapData(cloneDeep(_data));
-    // setData(cloneDeep(_data));
-  }, {});
 
   const { data: userBalance, loading: userBalanceLoading, runAsync: getUserBalance } = useRequest(async () => {
     if (!provider || !account) return "0";
@@ -218,8 +213,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
 
   const getChainGameDetails = async (chainGameId?: any) => {
     const gameContract = new Contract(GAME_CONTRACT_ADDRESS, GAME_ABI, provider);
-    const gameDetails = await gameContract.getGameDetails(chainGameId);
-    console.log("gameDetails: %o", gameDetails);
+    return gameContract.getGameDetails(chainGameId);
   };
 
   const { runAsync: onGameStart, loading: gameStartLoading } = useRequest<Partial<StartGameRes>, any>(async () => {
@@ -479,6 +473,28 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     return [];
   });
 
+  const formatRows = (rows: LayerRow[], selected_tiles?: number[], deathfun_id?: number) => {
+    return rows
+      .map((row: LayerRow, index: number) => {
+        let _status = LayerStatus.Locked;
+        if (typeof row.deathTileIndex === "number") {
+          if (typeof selected_tiles?.[index] === "number") {
+            if (row.deathTileIndex === selected_tiles?.[index]) {
+              _status = LayerStatus.Failed;
+            } else {
+              _status = LayerStatus.Succeed;
+            }
+          }
+        }
+        return {
+          ...row,
+          gameId: deathfun_id || -1,
+          status: _status,
+        };
+      })
+      .sort((a: LayerRow, b: LayerRow) => Big(b.multiplier).minus(a.multiplier).toNumber());
+  };
+
   const { data: lastGame, loading: LastGameLoading, runAsync: getLastGame } = useRequest<Partial<LastGame>, any>(async () => {
     if (!accountWithAk || !allGameMaps?.length) {
       return {};
@@ -519,25 +535,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
           });
         });
 
-        const _rows: LayerRow[] = res.data.rows
-          .map((row: LayerRow, index: number) => {
-            let _status = LayerStatus.Locked;
-            if (typeof row.deathTileIndex === "number") {
-              if (typeof res.data.selected_tiles?.[index] === "number") {
-                if (row.deathTileIndex === res.data.selected_tiles?.[index]) {
-                  _status = LayerStatus.Failed;
-                } else {
-                  _status = LayerStatus.Succeed;
-                }
-              }
-            }
-            return {
-              ...row,
-              gameId: matchedGame?.id || -1,
-              status: _status,
-            };
-          })
-          .sort((a: LayerRow, b: LayerRow) => Big(b.multiplier).minus(a.multiplier).toNumber());
+        const _rows: LayerRow[] = formatRows(res.data.rows, res.data.selected_tiles, matchedGame?.id);
         if (res.data.status === LastGameStatus.Ongoing) {
           for (let i = _rows.length - 1; i >= 0; i--) {
             if (_rows[i].status === LayerStatus.Failed) {
@@ -648,9 +646,14 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     setVerifierData(void 0);
   };
 
-  const onVerifierOpen = () => {
+  const onVerifierOpen = (params?: { rows?: LayerRow[]; seed?: string; seed_hash?: string; }) => {
+    const { rows, seed, seed_hash } = params || {};
     setVerifierVisible(true);
-    setVerifierData(cloneDeep(data));
+    setVerifierData({
+      rows: cloneDeep(rows || data),
+      seed: seed || currentGameData?.seed,
+      seed_hash: seed_hash || currentGameData?.seed_hash,
+    });
   };
 
   useEffect(() => {
@@ -712,7 +715,6 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     unLockedLayerRef,
     data,
     currentGame,
-    loading,
     onOpen,
     openning,
     onAmountChange,
@@ -741,6 +743,9 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     allNFTListLoading,
     getChainGameId,
     getChainGameDetails,
+    recordsVisible,
+    setRecordsVisible,
+    formatRows,
   };
 };
 
@@ -753,7 +758,6 @@ export interface SpaceInvaders {
   unLockedLayerRef: any;
   data: LayerRow[];
   currentGame?: Layer;
-  loading: boolean;
   onOpen: (layer: any, item: any, opts?: any) => Promise<void>;
   openning: boolean;
   onAmountChange: (amount: string) => void;
@@ -770,8 +774,8 @@ export interface SpaceInvaders {
   gameStartLoading: boolean;
   verifierVisible: boolean;
   onVerifierClose: () => void;
-  onVerifierOpen: () => void;
-  verifierData?: LayerRow[];
+  onVerifierOpen: (params?: { rows?: LayerRow[]; seed?: string; seed_hash?: string; }) => void;
+  verifierData?: { rows?: LayerRow[]; seed?: string; seed_hash?: string; };
   failedGhostVisible: boolean;
   failedGhostPosition: any;
   setFailedGhostVisible: (visible: boolean) => void;
@@ -782,4 +786,7 @@ export interface SpaceInvaders {
   allNFTListLoading: boolean;
   getChainGameId: (gameId?: string) => Promise<{ value: string; chainGameId: any; }>;
   getChainGameDetails: (chainGameId?: any) => Promise<any>;
+  recordsVisible: boolean;
+  setRecordsVisible: (visible: boolean) => void;
+  formatRows: (rows: LayerRow[], selected_tiles?: number[], deathfun_id?: number) => LayerRow[];
 }

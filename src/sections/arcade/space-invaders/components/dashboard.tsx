@@ -37,6 +37,7 @@ const Dashboard = (props: any) => {
     currentGameData,
     allNFTList,
     allNFTListLoading,
+    setRecordsVisible,
   } = useSpaceInvadersContext();
 
   const amountIndex = useMemo(() => {
@@ -48,18 +49,21 @@ const Dashboard = (props: any) => {
       "fixed text-white font-[DelaGothicOne] font-[400] leading-[100%] text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] left-1/2 -translate-x-1/2 bottom-0 z-[4] w-[clamp(1px,_41.67vw,_calc(var(--nadsa-laptop-width)*0.4167))] h-[clamp(1px,_14.03vw,_calc(var(--nadsa-laptop-width)*0.1403))] rounded-t-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] border border-b-0 bg-[#191B25]",
       gameLost ? "border-[#FF3434] bg-[linear-gradient(0deg,_rgba(255,_52,_52,_0.06)_0%,_rgba(255,_52,_52,_0.06)_100%)]" : "border-[#3E347C]",
     )}>
+      <div className="absolute z-[1] top-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] right-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] flex justify-end items-center">
+        <button
+          type="button"
+          className="text-[#8A87AA] font-[SpaceGrotesk]"
+          onClick={() => {
+            setRecordsVisible?.(true);
+          }}
+        >
+          Stats
+        </button>
+      </div>
       {
         cashOutPending ? (
           <>
-            <div className="flex justify-end items-center pt-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] pr-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))]">
-              <button
-                type="button"
-                className="text-[#8A87AA] font-[SpaceGrotesk] !cursor-default"
-              >
-                Stats
-              </button>
-            </div>
-            <div className="mt-[5px] flex justify-center items-center gap-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] font-[DelaGothicOne] text-center text-[#BFFF60] text-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))]">
+            <div className="mt-[5px] flex justify-center items-center gap-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] font-[DelaGothicOne] text-center text-[#BFFF60] text-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] pt-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))]">
               <div className="">Processing Payout</div>
               <motion.img
                 src="/images/arcade/space-invaders/icon-loading.svg"
@@ -90,6 +94,7 @@ const Dashboard = (props: any) => {
                 cashOutPending={cashOutPending}
                 currentWinLayer={currentWinLayer}
                 currentGameData={currentGameData}
+                className="mt-[clamp(1px,_1.6vw,_calc(var(--nadsa-laptop-width)*0.016))]"
               />
             </>
           ) : (
@@ -120,6 +125,7 @@ const Dashboard = (props: any) => {
                     cashOutPending={cashOutPending}
                     currentWinLayer={currentWinLayer}
                     currentGameData={currentGameData}
+                    className="mt-[clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01))]"
                   />
                 ) : (
                   <div className="flex justify-center items-center gap-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] shrink-0 mt-[clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01))]">
@@ -180,7 +186,7 @@ const Dashboard = (props: any) => {
                   </div>
                 )
               }
-              <div className="flex justify-between items-center gap-[clamp(1px,_5.42vw,_calc(var(--nadsa-laptop-width)*0.0542))] pl-[clamp(1px,_2.22vw,_calc(var(--nadsa-laptop-width)*0.0222))] pr-[clamp(1px,_4.1vw,_calc(var(--nadsa-laptop-width)*0.041))] mt-[clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01))]">
+              <div className="flex justify-between items-center gap-[clamp(1px,_5.42vw,_calc(var(--nadsa-laptop-width)*0.0542))] pt-[clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01))] pl-[clamp(1px,_2.22vw,_calc(var(--nadsa-laptop-width)*0.0222))] pr-[clamp(1px,_4.1vw,_calc(var(--nadsa-laptop-width)*0.041))]">
                 <button
                   type="button"
                   className="disabled:opacity-50 disabled:!cursor-not-allowed flex items-center gap-[clamp(1px,_0.49vw,_calc(var(--nadsa-laptop-width)*0.0049))] text-[#8A87AA] text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] font-[400] leading-[100%] font-[SpaceGrotesk]"
@@ -199,7 +205,9 @@ const Dashboard = (props: any) => {
                     <button
                       type="button"
                       className="flex items-center gap-[clamp(1px,_0.49vw,_calc(var(--nadsa-laptop-width)*0.0049))] text-[#8A87AA] text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] font-[400] leading-[100%] font-[SpaceGrotesk]"
-                      onClick={onVerifierOpen}
+                      onClick={() => {
+                        onVerifierOpen?.();
+                      }}
                     >
                       <img
                         src="/images/arcade/space-invaders/icon-provably.png"
@@ -292,7 +300,7 @@ const CurrentLayer = (props: any) => {
   const { className, multiple = 1, amount } = props;
 
   return (
-    <div className={clsx("flex justify-center items-center gap-[clamp(1px,_6.25vw,_calc(var(--nadsa-laptop-width)*0.0625))] pt-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))]", className)}>
+    <div className={clsx("flex justify-center items-center gap-[clamp(1px,_6.25vw,_calc(var(--nadsa-laptop-width)*0.0625))] pt-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))]", className)}>
       <div className="text-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))]">
         {numberFormatter(multiple, 2, true, { isZeroPrecision: true })}x
       </div>
@@ -315,7 +323,7 @@ const CashOut = (props: any) => {
 
   return (
     <>
-      <div className="flex justify-center items-center pt-[clamp(1px,_1.6vw,_calc(var(--nadsa-laptop-width)*0.016))]">
+      <div className={clsx("flex justify-center items-center", className)}>
         <button
           type="button"
           className="disabled:opacity-50 disabled:!cursor-not-allowed w-[clamp(1px,_25.69vw,_calc(var(--nadsa-laptop-width)*0.2569))] h-[clamp(1px,_3.19vw,_calc(var(--nadsa-laptop-width)*0.0319))] gap-[clamp(1px,_0.5vw,_calc(var(--nadsa-laptop-width)*0.005))] border border-[#413C54] bg-[#5237FF] rounded-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] flex justify-center items-center button text-white text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] font-[DelaGothicOne] font-[400] leading-[100%] uppercase"
