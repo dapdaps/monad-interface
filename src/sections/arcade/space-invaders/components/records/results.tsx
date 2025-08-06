@@ -8,12 +8,11 @@ import { numberFormatter } from "@/utils/number-formatter";
 import Big from "big.js";
 import { formatLongText } from "@/utils/utils";
 import useToast from "@/hooks/use-toast";
-import dayjs from "dayjs";
-import { useTimeAgo } from "../../hooks/use-time-ago";
 import { LastGameStatusMap, LastGameStatus } from "../../config";
 import { monadTestnet } from "viem/chains";
 import Pagination from "@/components/pagination";
 import Skeleton from "react-loading-skeleton";
+import TimeAgo from "./time-ago";
 
 const Results = (props: any) => {
   const { className } = props;
@@ -95,8 +94,7 @@ const Results = (props: any) => {
       dataIndex: "date",
       width: 100,
       render: (text: any, record: any, idx: number) => {
-        const mockDate = "2025-08-06 18:25:00";
-        return <TimeAgo date={mockDate} />;
+        return <TimeAgo date={record.created_at} />;
       },
     },
     {
@@ -259,13 +257,3 @@ const Results = (props: any) => {
 };
 
 export default Results;
-
-const TimeAgo = (props: any) => {
-  const { date, className } = props;
-
-  const { timeAgo } = useTimeAgo({ date });
-
-  return (
-    <div className={className}>{timeAgo}</div>
-  );
-};

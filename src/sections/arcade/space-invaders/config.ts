@@ -67,6 +67,7 @@ export interface LastGame {
   seed_hash: string;
   selected_tiles: number[];
   status: LastGameStatus;
+  reward?: NFTItem;
 }
 
 export interface OpenTileRes {
@@ -85,6 +86,7 @@ export interface StartGameRes {
   game_id: string;
   seed_hash: string;
   signature: string;
+  reward?: NFTItem;
 
   status?: LastGameStatus;
   create_hash?: string;
@@ -106,6 +108,6 @@ export interface NFTItem {
   token_address: string;
   category: string;
   total: number;
-  row_index: number;
+  multiplier: string;
   remaining: number;
 }

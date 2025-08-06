@@ -7,7 +7,7 @@ import clsx from "clsx";
 const Door = (props: any) => {
   const { tileIndex, layer, layerIndex } = props;
 
-  const { onOpen, openning, currentGameData } = useSpaceInvadersContext();
+  const { onOpen, openning, currentGameData, gameStarted } = useSpaceInvadersContext();
 
   const [leftRef, leftAnimate] = useAnimate();
   const [rightRef, rightAnimate] = useAnimate();
@@ -47,10 +47,11 @@ const Door = (props: any) => {
   return (
     <motion.div
       className={clsx(
-        "relative w-[clamp(1px,_7.74vw,_calc(var(--nadsa-laptop-width)*0.0774))] h-[clamp(1px,_8.02vw,_calc(var(--nadsa-laptop-width)*0.0802))] shrink-0 overflow-hidden pl-[clamp(1px,_0.75vw,_calc(var(--nadsa-laptop-width)*0.0075))] pr-[clamp(1px,_0.75vw,_calc(var(--nadsa-laptop-width)*0.0075))] pt-[clamp(1px,_0.48vw,_calc(var(--nadsa-laptop-width)*0.0048))] pb-[clamp(1px,_0.9vw,_calc(var(--nadsa-laptop-width)*0.009))]",
-        layer.status === LayerStatus.Unlocked ? "cursor-pointer" : "cursor-not-allowed",
+        "relative opacity-80 transition-opacity duration-150 w-[clamp(1px,_7.74vw,_calc(var(--nadsa-laptop-width)*0.0774))] h-[clamp(1px,_8.02vw,_calc(var(--nadsa-laptop-width)*0.0802))] shrink-0 overflow-hidden pl-[clamp(1px,_0.75vw,_calc(var(--nadsa-laptop-width)*0.0075))] pr-[clamp(1px,_0.75vw,_calc(var(--nadsa-laptop-width)*0.0075))] pt-[clamp(1px,_0.48vw,_calc(var(--nadsa-laptop-width)*0.0048))] pb-[clamp(1px,_0.9vw,_calc(var(--nadsa-laptop-width)*0.009))]",
+        (gameStarted && layer.status === LayerStatus.Unlocked) ? "cursor-pointer hover:opacity-100" : "cursor-not-allowed",
       )}
       onClick={handleClick}
+      data-click-sound="/audios/arcade/space-invaders/click.ogg"
     >
       <motion.div
         className="relative flex justify-center items-center z-[1] w-full h-full overflow-hidden [clip-path:polygon(clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01))_0,_calc(100%_-_clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01)))_0,_100%_clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01)),_100%_100%,_0_100%,_0_clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01)))]"

@@ -77,7 +77,7 @@ body {
   /* 设计标准是 1440px， 分成 100 份 */
   --rem: calc(1440 / 100) * 1px;
   --wcm-z-index: 999;
-  --nadsa-laptop-width: 1440px;
+  --nadsa-laptop-width: 1008px;
 }
 
 @media (prefers-color-scheme: dark) {

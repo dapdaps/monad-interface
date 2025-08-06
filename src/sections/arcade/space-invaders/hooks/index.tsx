@@ -12,6 +12,7 @@ import { getSignature } from "@/utils/signature";
 import { usePrivyAccount } from "./use-account";
 import { Contract, utils } from "ethers";
 import { useBlockNumber } from "wagmi";
+import useAudioPlay from "@/hooks/use-audio";
 
 export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { } = props ?? {};
@@ -20,6 +21,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { user } = usePrivy();
   const { accountWithAk, provider, account } = usePrivyAccount();
   const { data: blockNumber } = useBlockNumber({ watch: true });
+  const { play: palyAudio } = useAudioPlay();
 
   const containerRef = useRef<any>(null);
   const unLockedLayerRef = useRef<any>(null);
@@ -177,9 +179,6 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         return;
       }
 
-      // start game success
-      console.log("Game started successfully:", contractRes.transactionHash);
-
       // report to server
       onReportServer("/game/deathfun/create/transaction", game_id, contractRes.transactionHash as string);
 
@@ -189,9 +188,10 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       });
       setGameStarted(true);
       onReset();
+      palyAudio("/audios/arcade/space-invaders/start.ogg");
 
       toast.success({
-        title: "Game started successfully!",
+        title: "Game on. Reach for the stars",
       });
 
     } catch (err: any) {
@@ -408,7 +408,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     if (response.currentRow.deathTileIndex !== tileIndex) {
       currentLayer.status = LayerStatus.Succeed;
       // refresh nft
-      if (allNFTList?.some((nft) => nft.row_index === _data.length - 1 - currentLayerIndex)) {
+      if (currentGameData?.reward?.multiplier === currentLayer.multiplier) {
         getAllNFTList();
       }
       // go to next layer
@@ -429,11 +429,12 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     // game over
     currentLayer.status = LayerStatus.Failed;
     toast.fail({
-      title: "Game over! You've lost the game!",
+      title: "Kaboom! Invader got you",
     });
     setData(_data);
     setGameStarted(false);
     getLastGame();
+    palyAudio("/audios/arcade/space-invaders/death.ogg");
 
     // Set failed ghost position and visibility
     if (ev) {
