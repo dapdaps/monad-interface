@@ -19,7 +19,7 @@ const SpaceInvadersView = (props: any) => {
   const {
     containerRef,
     data,
-    allNFTList,
+    currentGameData,
   } = spaceInvaders;
 
   return (
@@ -121,8 +121,8 @@ const SpaceInvadersView = (props: any) => {
                             {numberFormatter(layer.multiplier, 2, true, { isZeroPrecision: true })}
                           </Multiple>
                           {
-                            allNFTList?.some((nft) => nft.row_index === data.length - 1 - layerIndex) && (
-                              <NftBox nft={allNFTList.find((nft) => nft.row_index === data.length - 1 - layerIndex)} />
+                            currentGameData?.reward?.multiplier === layer.multiplier && (
+                              <NftBox nft={currentGameData?.reward} />
                             )
                           }
                           <div

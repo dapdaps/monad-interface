@@ -408,7 +408,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     if (response.currentRow.deathTileIndex !== tileIndex) {
       currentLayer.status = LayerStatus.Succeed;
       // refresh nft
-      if (allNFTList?.some((nft) => nft.row_index === _data.length - 1 - currentLayerIndex)) {
+      if (currentGameData?.reward?.multiplier === currentLayer.multiplier) {
         getAllNFTList();
       }
       // go to next layer

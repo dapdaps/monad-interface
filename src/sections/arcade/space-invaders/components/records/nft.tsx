@@ -8,6 +8,7 @@ import { NFT_AVATARS } from "../../config";
 import useToast from "@/hooks/use-toast";
 import { formatLongText } from "@/utils/utils";
 import { monadTestnet } from "viem/chains";
+import TimeAgo from "./time-ago";
 
 const Nft = (props: any) => {
   const { className } = props;
@@ -101,7 +102,7 @@ const Nft = (props: any) => {
                     />
                   </LabelValue>
                   <LabelValue label="Date" valueClassName="">
-                    2d ago
+                    <TimeAgo date={nft.created_at} />
                   </LabelValue>
                   <LabelValue label="Status" valueClassName="flex items-center gap-[10px]">
                     <div className={clsx(nft.tx_hash ? "text-[#BFFF60]" : "text-[#63AEF4]")}>
