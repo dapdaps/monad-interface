@@ -177,9 +177,6 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         return;
       }
 
-      // start game success
-      console.log("Game started successfully:", contractRes.transactionHash);
-
       // report to server
       onReportServer("/game/deathfun/create/transaction", game_id, contractRes.transactionHash as string);
 
@@ -191,7 +188,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       onReset();
 
       toast.success({
-        title: "Game started successfully!",
+        title: "Game on. Reach for the stars",
       });
 
     } catch (err: any) {
@@ -429,7 +426,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     // game over
     currentLayer.status = LayerStatus.Failed;
     toast.fail({
-      title: "Game over! You've lost the game!",
+      title: "Kaboom! Invader got you",
     });
     setData(_data);
     setGameStarted(false);
