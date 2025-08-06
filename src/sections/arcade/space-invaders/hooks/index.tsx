@@ -188,10 +188,9 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       // report to server
       onReportServer("/game/deathfun/create/transaction", game_id, contractRes.transactionHash as string);
 
-      setCurrentGameData((prev) => {
-        const _currentGameData = { ...prev };
-        _currentGameData.create_hash = contractRes.transactionHash;
-        return _currentGameData;
+      setCurrentGameData({
+        ...params,
+        create_hash: contractRes.transactionHash,
       });
       setGameStarted(true);
       onReset();
@@ -267,13 +266,9 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         });
         return;
       }
-      setCurrentGameData({
-        ...res.data,
-        // status: LastGameStatus.Ongoing,
-        selected_tiles: [],
-      });
       await onChainGameStart({
         ...res.data,
+        selected_tiles: [],
         toastId,
       });
       return res.data;
@@ -346,10 +341,11 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
 
         // end game success
         // report to server
-        onReportServer("/game/deathfun/end/transaction", currentGameData.game_id as string, contractRes.transactionHash as string);
+        onReportServer("/game/deathfun/end/transaction", currentGameData.game_id as string, contractRes.transactionHash as string).then(() => {
+          getLastGame();
+        });
 
         setGameStarted(false);
-        setCurrentGameData(void 0);
         return res.data;
       } catch (err: any) {
         console.log("end game failed: %o", err);
@@ -527,10 +523,12 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
           .map((row: LayerRow, index: number) => {
             let _status = LayerStatus.Locked;
             if (typeof row.deathTileIndex === "number") {
-              if (row.deathTileIndex === res.data.selected_tiles?.[index]) {
-                _status = LayerStatus.Failed;
-              } else {
-                _status = LayerStatus.Succeed;
+              if (typeof res.data.selected_tiles?.[index] === "number") {
+                if (row.deathTileIndex === res.data.selected_tiles?.[index]) {
+                  _status = LayerStatus.Failed;
+                } else {
+                  _status = LayerStatus.Succeed;
+                }
               }
             }
             return {
@@ -540,6 +538,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
             };
           })
           .sort((a: LayerRow, b: LayerRow) => Big(b.multiplier).minus(a.multiplier).toNumber());
+        if (res.data.status === LastGameStatus.Ongoing) {
           for (let i = _rows.length - 1; i >= 0; i--) {
             if (_rows[i].status === LayerStatus.Failed) {
               break;
@@ -549,6 +548,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
               break;
             }
           }
+        }
 
         const _currentGame = {
           id: matchedGame?.id || -1,
@@ -666,7 +666,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         const timeoutId = setTimeout(() => {
           // Find the first layer with status === LayerStatus.Unlocked
           const unlockedLayerIndex = data.findIndex(layer => layer.status === LayerStatus.Unlocked);
-          
+
           if (unlockedLayerIndex !== -1) {
             // Find the corresponding DOM element for the unlocked layer
             const layerElements = containerRef.current.querySelectorAll('[data-layer-index]');
@@ -674,13 +674,13 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
               const layerIndex = parseInt(element.getAttribute('data-layer-index'));
               return layerIndex === unlockedLayerIndex;
             });
-            
+
             if (unlockedElement) {
               // Scroll to the unlocked layer and center it vertically
               const containerRect = containerRef.current.getBoundingClientRect();
               const elementRect = (unlockedElement as HTMLElement).getBoundingClientRect();
               const scrollTop = containerRef.current.scrollTop + elementRect.top - containerRect.top - (containerRect.height / 2) + (elementRect.height / 2);
-              
+
               containerRef.current.scrollTo({
                 top: scrollTop,
                 behavior: "smooth",
