@@ -15,7 +15,7 @@ const GameEntry = dynamic(() => import("@/components/game-entry"), {
   loading: () => null
 });
 
-const FIXED_HEADER_PATHNAME = [/^\/faucet$/, /^\/$/, /^\/codes$/];
+const FIXED_HEADER_PATHNAME = [/^\/faucet$/, /^\/$/, /^\/codes$/, /^\/arcade\/space-invaders$/];
 
 export async function getServerSideProps({ res }: any) {
   const is404 = res.statusCode === 404;
