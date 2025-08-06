@@ -20,8 +20,12 @@ const nextConfig = {
   output: "standalone",
   rewrites: async () => [
     {
-      source: "/assets/:path*",
-      destination: "https://asset.dapdap.net/:path*"
+      source: "/images/:path*",
+      destination: "https://assets.nadsa.space/images/:path*"
+    },
+    {
+      source: "/audios/:path*",
+      destination: "https://assets.nadsa.space/audios/:path*"
     },
     {
       source: "/dapdap/:path*",
