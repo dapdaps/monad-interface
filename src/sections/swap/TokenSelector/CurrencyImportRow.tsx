@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const CurrencyRow = styled.div`
   padding: 10px 30px;
@@ -49,9 +49,7 @@ export default function CurrencyImportRow({
     <CurrencyRow
       style={{
         opacity: !disabled ? 1 : 0.6,
-        cursor: !disabled
-          ? "url('../../public/images/cursor.svg') 12 0"
-          : 'not-allowed'
+        cursor: !disabled ? "url('/images/cursor.svg') 12 0" : "not-allowed"
       }}
     >
       <CurrencyLabel>
