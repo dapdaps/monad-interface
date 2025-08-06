@@ -414,7 +414,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     if (response.currentRow.deathTileIndex !== tileIndex) {
       currentLayer.status = LayerStatus.Succeed;
       // refresh nft
-      if (_data.length - 1 - currentLayerIndex === currentNFT?.row_index) {
+      if (allNFTList?.some((nft) => nft.row_index === _data.length - 1 - currentLayerIndex)) {
         getAllNFTList();
       }
       // go to next layer
@@ -605,11 +605,6 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       console.log("get whitelist failed: %o", err);
     }
   });
-  const [currentNFT] = useMemo<[NFTItem | undefined]>(() => {
-    return [
-      allNFTList?.[0]
-    ];
-  }, [allNFTList]);
 
   const [gameLoading] = useMemo(() => {
     return [
@@ -744,7 +739,6 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     currentGameData,
     allNFTList,
     allNFTListLoading,
-    currentNFT,
     getChainGameId,
     getChainGameDetails,
   };
@@ -785,7 +779,6 @@ export interface SpaceInvaders {
   userBalanceLoading: boolean;
   currentGameData?: Partial<StartGameRes>;
   allNFTList?: NFTItem[];
-  currentNFT?: NFTItem;
   allNFTListLoading: boolean;
   getChainGameId: (gameId?: string) => Promise<{ value: string; chainGameId: any; }>;
   getChainGameDetails: (chainGameId?: any) => Promise<any>;

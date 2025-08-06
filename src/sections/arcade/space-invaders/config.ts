@@ -1,6 +1,10 @@
 export const GAME_CONTRACT_ADDRESS = "0xA55DfF58C456e0bBEaF5088bD25BF7E404C86186";
 export const GAME_ADMIN_ADDRESS = "0xC5813B10E363F8264085391383664776f9931444";
 
+export const NFT_AVATARS: any = {
+  "0x9eca361b21b8fcf47566aa19888b013b9d9fe386": "/images/arcade/space-invaders/nfts/SpaceInvaders.png",
+};
+
 export const AMOUNT_OPTIONS = [
   {
     value: "0.1",
@@ -92,6 +96,7 @@ export interface EndGameRes {
 }
 
 export interface NFTItem {
+  token_address: string;
   category: string;
   total: number;
   row_index: number;
