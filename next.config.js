@@ -107,6 +107,36 @@ const nextConfig = {
       splitChunks: {
         chunks: "all",
         cacheGroups: {
+          ethers: {
+            test: /[\\/]node_modules[\\/]ethers[\\/]/,
+            name: "ethers",
+            priority: 20,
+            chunks: "all"
+          },
+          wagmi: {
+            test: /[\\/]node_modules[\\/]wagmi[\\/]/,
+            name: "wagmi",
+            priority: 20,
+            chunks: "all"
+          },
+          viem: {
+            test: /[\\/]node_modules[\\/]viem[\\/]/,
+            name: "viem",
+            priority: 20,
+            chunks: "all"
+          },
+          framerMotion: {
+            test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
+            name: "framer-motion",
+            priority: 20,
+            chunks: "all"
+          },
+          d3: {
+            test: /[\\/]node_modules[\\/]d3[\\/]/,
+            name: "d3",
+            priority: 20,
+            chunks: "all"
+          },
           vendors: {
             test: /[\\/]node_modules[\\/]/,
             priority: -10,
@@ -163,6 +193,17 @@ const nextConfig = {
       "date-fns",
       "ethers"
     ]
+  },
+  modularizeImports: {
+    "framer-motion": {
+      transform: "framer-motion/{{member}}"
+    },
+    ahooks: {
+      transform: "ahooks/{{member}}"
+    },
+    wagmi: {
+      transform: "wagmi/{{member}}"
+    }
   },
   images: {
     domains: ["s3.amazonaws.com"]
