@@ -12,6 +12,7 @@ import { getSignature } from "@/utils/signature";
 import { usePrivyAccount } from "./use-account";
 import { Contract, utils } from "ethers";
 import { useBlockNumber } from "wagmi";
+import { useSoundStore } from "@/stores/sound";
 
 export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { } = props ?? {};
@@ -20,6 +21,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { user } = usePrivy();
   const { accountWithAk, provider, account } = usePrivyAccount();
   const { data: blockNumber } = useBlockNumber({ watch: true });
+  const soundStore = useSoundStore();
 
   const containerRef = useRef<any>(null);
   const unLockedLayerRef = useRef<any>(null);
@@ -58,11 +60,6 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       ?.[0],
     ];
   }, [data]);
-
-  const onReset = () => {
-    const _currentGame = allGameMaps?.find((_game) => _game.id === currentGame?.id) ?? allGameMaps?.[0];
-    setData(cloneDeep(_currentGame?.rows || []));
-  };
 
   const { data: userBalance, loading: userBalanceLoading, runAsync: getUserBalance } = useRequest(async () => {
     if (!provider || !account) return "0";
@@ -190,7 +187,12 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         create_hash: contractRes.transactionHash,
       });
       setGameStarted(true);
-      onReset();
+      const _currentGame = allGameMaps?.find((_game) => _game.id === currentGame?.id) ?? allGameMaps?.[0];
+      const _data = cloneDeep(_currentGame?.rows || []);
+      _data.forEach((row, index) => {
+        row.status = index === _data.length - 1 ? LayerStatus.Unlocked : LayerStatus.Locked;
+      });
+      setData(_data);
       playSoundEffect(SoundEffectType.Start);
 
       toast.success({
@@ -466,7 +468,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       _list.forEach((_it: Layer) => {
         _it.rows.forEach((_row, _idx) => {
           _row.gameId = _it.id;
-          _row.status = _idx === 0 ? LayerStatus.Unlocked : LayerStatus.Locked;
+          _row.status = LayerStatus.Locked;
         });
         _it.rows = _it.rows.sort((a, b) => Big(a.multiplier).minus(b.multiplier).lt(0) ? 1 : -1);
       });
@@ -663,6 +665,9 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   };
 
   const playSoundEffect = (type: SoundEffectType) => {
+    if (soundStore?.muted) {
+      return;
+    }
     switch (type) {
       case SoundEffectType.Cashout:
         if (soundEffectCashoutRef.current) {
@@ -706,7 +711,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         // Use setTimeout to ensure DOM is completely updated
         const timeoutId = setTimeout(() => {
           // Find the first layer with status === LayerStatus.Unlocked
-          const unlockedLayerIndex = data.findIndex(layer => layer.status === LayerStatus.Unlocked);
+          const unlockedLayerIndex = data.findIndex(layer => [LayerStatus.Unlocked, LayerStatus.Failed].includes(layer.status));
 
           if (unlockedLayerIndex !== -1) {
             // Find the corresponding DOM element for the unlocked layer
@@ -779,6 +784,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     failedGhostVisible,
     failedGhostPosition,
     setFailedGhostVisible,
+    setFailedGhostPosition,
     userBalance,
     userBalanceLoading,
     currentGameData,
@@ -828,6 +834,7 @@ export interface SpaceInvaders {
   failedGhostVisible: boolean;
   failedGhostPosition: any;
   setFailedGhostVisible: (visible: boolean) => void;
+  setFailedGhostPosition: (position: any) => void;
   userBalance?: string;
   userBalanceLoading: boolean;
   currentGameData?: Partial<StartGameRes>;

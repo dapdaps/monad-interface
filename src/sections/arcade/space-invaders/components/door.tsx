@@ -1,6 +1,6 @@
 import { motion, useAnimate } from "framer-motion";
 import { useSpaceInvadersContext } from "../context";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { LayerStatus, SoundEffectType } from "../config";
 import clsx from "clsx";
 
@@ -13,10 +13,17 @@ const Door = (props: any) => {
     currentGameData,
     gameStarted,
     playSoundEffect,
+    gameLost,
   } = useSpaceInvadersContext();
 
   const [leftRef, leftAnimate] = useAnimate();
   const [rightRef, rightAnimate] = useAnimate();
+
+  const [isLostLocked] = useMemo(() => {
+    return [
+      gameLost && layer.deathTileIndex === tileIndex && layer.status === LayerStatus.Locked
+    ];
+  }, [gameLost, layer, tileIndex]);
 
   const doorOpenAnimation = () => {
     leftAnimate(leftRef.current, { x: "clamp(calc(var(--nadsa-laptop-width) * -0.028), -2.8vw, 1px)" });
@@ -49,7 +56,10 @@ const Door = (props: any) => {
     if (layer.status === LayerStatus.Succeed && currentGameData?.selected_tiles?.[layerIndex] === tileIndex) {
       doorOpenAnimation();
     }
-  }, [layer, currentGameData]);
+    if (isLostLocked) {
+      doorOpenAnimation();
+    }
+  }, [layer, currentGameData, isLostLocked]);
 
   return (
     <motion.div
@@ -65,7 +75,7 @@ const Door = (props: any) => {
           backgroundColor: (layer.status === LayerStatus.Succeed && currentGameData?.selected_tiles?.[layerIndex] === tileIndex)
             ? "#BFFF60"
             : (
-              (layer.status === LayerStatus.Failed && layer?.deathTileIndex === tileIndex)
+              ((layer.status === LayerStatus.Failed && layer?.deathTileIndex === tileIndex) || isLostLocked)
                 ? "#EE4444"
                 : "unset"
             ),
@@ -95,7 +105,7 @@ const Door = (props: any) => {
                 }}
               />
               {
-                layer.status !== LayerStatus.Failed && (
+                (layer.status !== LayerStatus.Failed && !isLostLocked) && (
                   <motion.img
                     src="/images/arcade/space-invaders/ban-bar.png"
                     alt=""

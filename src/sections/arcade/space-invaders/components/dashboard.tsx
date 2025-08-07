@@ -311,7 +311,7 @@ const CurrentLayer = (props: any) => {
           className="w-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))] h-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))] object-center object-contain flex-0"
         />
         <div className="text-[#BFFF60] text-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))]">
-          {numberFormatter(amount, 2, true)}
+          {numberFormatter(Big(amount || 0).times(multiple || 1), 2, true)}
         </div>
       </div>
     </div>
