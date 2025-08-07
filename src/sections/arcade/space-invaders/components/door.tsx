@@ -1,13 +1,19 @@
 import { motion, useAnimate } from "framer-motion";
 import { useSpaceInvadersContext } from "../context";
 import { useEffect } from "react";
-import { LayerStatus } from "../config";
+import { LayerStatus, SoundEffectType } from "../config";
 import clsx from "clsx";
 
 const Door = (props: any) => {
   const { tileIndex, layer, layerIndex } = props;
 
-  const { onOpen, openning, currentGameData, gameStarted } = useSpaceInvadersContext();
+  const {
+    onOpen,
+    openning,
+    currentGameData,
+    gameStarted,
+    playSoundEffect,
+  } = useSpaceInvadersContext();
 
   const [leftRef, leftAnimate] = useAnimate();
   const [rightRef, rightAnimate] = useAnimate();
@@ -22,6 +28,7 @@ const Door = (props: any) => {
       return;
     }
 
+    playSoundEffect?.(SoundEffectType.Open);
     const res: any = await onOpen?.(layer, tileIndex, { ev: e });
 
     if (!res?.isOpen) {
@@ -51,7 +58,6 @@ const Door = (props: any) => {
         (gameStarted && layer.status === LayerStatus.Unlocked) ? "cursor-pointer hover:opacity-100" : "cursor-not-allowed",
       )}
       onClick={handleClick}
-      data-click-sound="/audios/arcade/space-invaders/click.ogg"
     >
       <motion.div
         className="relative flex justify-center items-center z-[1] w-full h-full overflow-hidden [clip-path:polygon(clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01))_0,_calc(100%_-_clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01)))_0,_100%_clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01)),_100%_100%,_0_100%,_0_clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01)))]"

@@ -12,6 +12,7 @@ import VerifierModal from "./components/verifier/modal";
 import FailedGhost from "./components/failed-ghost";
 import { LayerStatus } from "./config";
 import RecordsModal from "./components/records/modal";
+import SoundEffects from "./components/sound-effects";
 
 const SpaceInvadersView = (props: any) => {
   const spaceInvaders = useSpaceInvaders(props);
@@ -195,6 +196,7 @@ const SpaceInvadersView = (props: any) => {
       <VerifierModal />
       <FailedGhost />
       <RecordsModal />
+      <SoundEffects />
     </SpaceInvadersContextProvider>
   );
 };
