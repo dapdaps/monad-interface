@@ -80,7 +80,7 @@ const Nft = (props: any) => {
                             className="w-[20px] h-[16px] object-contain object-center shrink-0"
                           />
                           <div className="">
-                            nads245345
+                            {nft.discord}
                           </div>
                         </div>
                       ) : (
