@@ -17,7 +17,7 @@ import { useSoundStore } from "@/stores/sound";
 export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { } = props ?? {};
 
-  const toast = useToast();
+  const toast = useToast({ isGame: true });
   const { user } = usePrivy();
   const { accountWithAk, provider, account } = usePrivyAccount();
   const { data: blockNumber } = useBlockNumber({ watch: true });
@@ -167,7 +167,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
           text: errorMessage.includes("InternalRpcError")
             ? "Network error, please try again later"
             : errorMessage,
-        });
+        }, "bottom-right");
         return;
       }
 
@@ -175,7 +175,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         toast.fail({
           title: "Prepare game failed",
           text: "Transaction was not successful",
-        });
+        }, "bottom-right");
         return;
       }
 
@@ -197,7 +197,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
 
       toast.success({
         title: "Game on. Reach for the stars",
-      });
+      }, "bottom-right");
 
     } catch (err: any) {
       console.log("chain game start failed: %o", err);
@@ -206,7 +206,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       toast.fail({
         title: "Prepare game failed",
         text: err.message || "Please try again later",
-      });
+      }, "bottom-right");
     }
   };
 
@@ -228,7 +228,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
 
     let toastId: any = toast.loading({
       title: "Preparing game...",
-    });
+    }, "bottom-right");
 
     // Continue game
     if (currentGameData?.status === LastGameStatus.Ongoing) {
@@ -262,7 +262,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         toast.fail({
           title: "Start game failed",
           text: res.message || "Please try again later",
-        });
+        }, "bottom-right");
         return;
       }
       await onChainGameStart({
@@ -292,7 +292,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
 
       let toastId: any = toast.loading({
         title: "Processing cash out...",
-      });
+      }, "bottom-right");
 
       try {
         const res = await post("/game/deathfun/end", {
@@ -303,7 +303,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
           toast.fail({
             title: "Cash out failed",
             text: res.message || "Please try again later",
-          });
+          }, "bottom-right");
           return;
         }
         const signer = provider?.getSigner(account);
@@ -330,13 +330,13 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
           toast.fail({
             title: "Cash out failed",
             text: "Please try again later",
-          });
+          }, "bottom-right");
           return;
         }
 
         toast.success({
           title: "Cash out successfully",
-        });
+        }, "bottom-right");
 
         // end game success
         // report to server
@@ -371,7 +371,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
 
     let toastId: any = toast.loading({
       title: "Opening...",
-    });
+    }, "bottom-right");
 
     let response: OpenTileRes;
     try {
@@ -384,7 +384,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         toast.fail({
           title: "Open failed",
           text: "Please try again later",
-        });
+        }, "bottom-right");
         return result;
       }
       response = res.data;
@@ -393,7 +393,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       toast.fail({
         title: "Open failed",
         text: err.message,
-      });
+      }, "bottom-right");
       return result;
     }
 
@@ -425,7 +425,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       // final winner
       toast.success({
         title: "Congratulations! You've won the game!",
-      });
+      }, "bottom-right");
       setData(_data);
       return result;
     }
@@ -435,7 +435,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     currentLayer.status = LayerStatus.Failed;
     toast.fail({
       title: "Kaboom! Invader got you",
-    });
+    }, "bottom-right");
     setData(_data);
     setGameStarted(false);
     getLastGame();
@@ -629,7 +629,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     if (gameStarted) {
       toast.fail({
         title: "Game is in progress",
-      });
+      }, "bottom-right");
       return;
     }
     if (!currentGame) {
