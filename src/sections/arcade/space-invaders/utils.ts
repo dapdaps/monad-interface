@@ -64,7 +64,7 @@ export const requestContract = async (requestParams: RequestContractParams): Pro
           title: "Confirming...",
           tx: tx.hash,
           chainId: DEFAULT_CHAIN_ID,
-        });
+        }, "bottom-right");
       }
 
       const receipt = await tx.wait();

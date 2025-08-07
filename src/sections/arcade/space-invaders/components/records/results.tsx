@@ -82,7 +82,7 @@ const Results = (props: any) => {
                 navigator.clipboard.writeText(record.game_id as string);
                 toast.success({
                   title: `Copied game id ${record.game_id}`,
-                });
+                }, "bottom-right");
               }}
             />
           </div>
@@ -168,7 +168,7 @@ const Results = (props: any) => {
                 navigator.clipboard.writeText(record.create_hash as string);
                 toast.success({
                   title: `Copied payout tx ${record.create_hash}`,
-                });
+                }, "bottom-right");
               }}
             />
           </div>

@@ -97,7 +97,7 @@ const Nft = (props: any) => {
                         navigator.clipboard.writeText(nft.game_id as string);
                         toast.success({
                           title: `Copied game id ${nft.game_id}`,
-                        });
+                        }, "bottom-right");
                       }}
                     />
                   </LabelValue>
