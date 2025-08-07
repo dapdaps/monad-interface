@@ -63,7 +63,7 @@ const Dashboard = (props: any) => {
       {
         cashOutPending ? (
           <>
-            <div className="mt-[5px] flex justify-center items-center gap-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] font-[DelaGothicOne] text-center text-[#BFFF60] text-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] pt-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))]">
+            <div className="mt-[5px] flex justify-center items-center gap-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] font-[DelaGothicOne] text-center text-[#BFFF60] text-[clamp(1px,_1.59vw,_calc(var(--nadsa-laptop-width)*0.0159))] pt-[clamp(1px,_4vw,_calc(var(--nadsa-laptop-width)*0.04))]">
               <div className="">Processing Payout</div>
               <motion.img
                 src="/images/arcade/space-invaders/icon-loading.svg"
@@ -78,7 +78,7 @@ const Dashboard = (props: any) => {
                 }}
               />
             </div>
-            <div className="font-[SpaceGrotesk] text-[#8A87AA] mt-[30px] text-center font-[500]">
+            <div className="font-[SpaceGrotesk] text-[#8A87AA] mt-[clamp(1px,_4vw,_calc(var(--nadsa-laptop-width)*0.04))] text-center font-[500]">
               Your payout of <span className="text-[#BFFF60]">{numberFormatter(Big(currentWinLayer?.multiplier || 1).times(amount || 0), 2, true)} MON</span> is being processed...
             </div>
           </>
@@ -94,14 +94,14 @@ const Dashboard = (props: any) => {
                 cashOutPending={cashOutPending}
                 currentWinLayer={currentWinLayer}
                 currentGameData={currentGameData}
-                className="mt-[clamp(1px,_1.6vw,_calc(var(--nadsa-laptop-width)*0.016))]"
+                className="mt-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))]"
               />
             </>
           ) : (
             <>
               {
                 gameLost ? (
-                  <div className="flex justify-center items-center gap-[clamp(1px,_1.04vw,_calc(var(--nadsa-laptop-width)*0.0104))] pt-[clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01))]">
+                  <div className="flex justify-center items-center gap-[clamp(1px,_1.04vw,_calc(var(--nadsa-laptop-width)*0.0104))] pt-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))]">
                     <img
                       src="/images/arcade/space-invaders/icon-attacked.png"
                       alt=""
@@ -128,7 +128,7 @@ const Dashboard = (props: any) => {
                     className="mt-[clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01))]"
                   />
                 ) : (
-                  <div className="flex justify-center items-center gap-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] shrink-0 mt-[clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01))]">
+                  <div className="flex justify-center items-center gap-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] shrink-0 mt-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))]">
                     <div className="">
                       BET
                     </div>
@@ -186,11 +186,11 @@ const Dashboard = (props: any) => {
                   </div>
                 )
               }
-              <div className="flex justify-between items-center gap-[clamp(1px,_5.42vw,_calc(var(--nadsa-laptop-width)*0.0542))] pt-[clamp(1px,_1vw,_calc(var(--nadsa-laptop-width)*0.01))] pl-[clamp(1px,_2.22vw,_calc(var(--nadsa-laptop-width)*0.0222))] pr-[clamp(1px,_4.1vw,_calc(var(--nadsa-laptop-width)*0.041))]">
+              <div className="flex justify-between items-center gap-[clamp(1px,_5.42vw,_calc(var(--nadsa-laptop-width)*0.0542))] pt-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))] pl-[clamp(1px,_2.22vw,_calc(var(--nadsa-laptop-width)*0.0222))] pr-[clamp(1px,_4.1vw,_calc(var(--nadsa-laptop-width)*0.041))]">
                 <button
                   type="button"
                   className="disabled:opacity-50 disabled:!cursor-not-allowed flex items-center gap-[clamp(1px,_0.49vw,_calc(var(--nadsa-laptop-width)*0.0049))] text-[#8A87AA] text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] font-[400] leading-[100%] font-[SpaceGrotesk]"
-                  disabled={gameLoading || (!gameStarted && currentGameData?.status === LastGameStatus.Ongoing)}
+                  disabled={gameLoading || (!gameStarted && currentGameData?.status === LastGameStatus.Ongoing) || gameStartLoading}
                   onClick={onMapChange}
                 >
                   <img
@@ -237,7 +237,7 @@ const Dashboard = (props: any) => {
         )
       }
       <div
-        className="absolute right-[clamp(calc(var(--nadsa-laptop-width)_*_-0.1375),_-13.75vw,_1px)] bottom-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))] pl-[clamp(1px,_2.29vw,_calc(var(--nadsa-laptop-width)*0.0229))] pt-[clamp(1px,_1.36vw,_calc(var(--nadsa-laptop-width)*0.0136))] pr-[clamp(1px,_0.85vw,_calc(var(--nadsa-laptop-width)*0.0085))] w-[clamp(1px,_13.75vw,_calc(var(--nadsa-laptop-width)*0.1375))] h-[clamp(1px,_11.94vw,_calc(var(--nadsa-laptop-width)*0.1194))] bg-[url('/images/arcade/space-invaders/nft-board.png')] bg-no-repeat bg-left bg-contain"
+        className="absolute right-[clamp(calc(var(--nadsa-laptop-width)_*_-0.16),_-16vw,_1px)] bottom-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))] pl-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))] pt-[clamp(1px,_1.8vw,_calc(var(--nadsa-laptop-width)*0.018))] pr-[clamp(1px,_0.85vw,_calc(var(--nadsa-laptop-width)*0.0085))] w-[clamp(1px,_16vw,_calc(var(--nadsa-laptop-width)*0.16))] h-[clamp(1px,_13.894vw,_calc(var(--nadsa-laptop-width)*0.13894))] bg-[url('/images/arcade/space-invaders/nft-board.png')] bg-no-repeat bg-left bg-contain"
       >
         {
           allNFTListLoading ? (
@@ -300,7 +300,7 @@ const CurrentLayer = (props: any) => {
   const { className, multiple = 1, amount } = props;
 
   return (
-    <div className={clsx("flex justify-center items-center gap-[clamp(1px,_6.25vw,_calc(var(--nadsa-laptop-width)*0.0625))] pt-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))]", className)}>
+    <div className={clsx("flex justify-center items-center gap-[clamp(1px,_6.25vw,_calc(var(--nadsa-laptop-width)*0.0625))] pt-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))]", className)}>
       <div className="text-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))]">
         {numberFormatter(multiple, 2, true, { isZeroPrecision: true })}x
       </div>
@@ -338,7 +338,7 @@ const CashOut = (props: any) => {
           <div>Cash Out</div>
         </button>
       </div>
-      <div className="flex justify-center items-center pt-[clamp(1px,_1.5vw,_calc(var(--nadsa-laptop-width)*0.015))] text-[#8A87AA] font-[SpaceGrotesk]">
+      <div className="flex justify-center items-center pt-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))] text-[#8A87AA] font-[SpaceGrotesk]">
         Game Hash: {addressFormated(currentGameData?.create_hash || "")}
       </div>
     </>

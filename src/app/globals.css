@@ -78,6 +78,7 @@ body {
   --rem: calc(1440 / 100) * 1px;
   --wcm-z-index: 999;
   --nadsa-laptop-width: 1008px;
+  --nadsa-laptop-width-base: 1440px;
 }
 
 @media (prefers-color-scheme: dark) {
