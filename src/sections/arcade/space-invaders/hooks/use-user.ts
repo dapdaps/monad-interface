@@ -40,7 +40,7 @@ export function useUserData(): UserData {
 
   const { runAsync: getUserNfts, data: userNfts, loading: userNftsLoading } = useRequest(async () => {
     try {
-      const res = await get("/game/deathfun/user/nfts");
+      const res = await get("/game/deathfun/user/whitelistRecords");
       if (res.code !== 200) {
         return [];
       }

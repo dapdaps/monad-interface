@@ -16,6 +16,7 @@ import SoundEffects from "./components/sound-effects";
 import Big from "big.js";
 import RewardModal from "./components/reward/modal";
 import { useUserData } from "./hooks/use-user";
+import RulesModal from "./components/rules/modal";
 
 const SpaceInvadersView = (props: any) => {
   const spaceInvaders = useSpaceInvaders(props);
@@ -218,6 +219,7 @@ const SpaceInvadersView = (props: any) => {
       <RecordsModal />
       <SoundEffects />
       <RewardModal />
+      <RulesModal />
     </SpaceInvadersContextProvider>
   );
 };
