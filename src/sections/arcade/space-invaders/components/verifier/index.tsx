@@ -19,7 +19,7 @@ const Verifier = (props: any) => {
     }
     getChainGameId?.(currentGameData.game_id).then((res) => {
       getChainGameDetails?.(res.chainGameId).then((res) => {
-        console.log("res: %o", res);
+        // console.log("res: %o", res);
       });
     });
   }, [currentGameData]);
