@@ -13,6 +13,7 @@ import { usePrivyAccount } from "./use-account";
 import { Contract, utils } from "ethers";
 import { useBlockNumber } from "wagmi";
 import { useSoundStore } from "@/stores/sound";
+import { DEFAULT_CHAIN_ID } from "@/configs";
 
 export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { } = props ?? {};
@@ -336,6 +337,8 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
 
         toast.success({
           title: "Cash out successfully",
+          chainId: DEFAULT_CHAIN_ID,
+          tx: contractRes.transactionHash,
         }, "bottom-right");
 
         // end game success

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import styled from 'styled-components';
 import chains from '@/configs/chains';
-import Loading from '../circle-loading';
+import { motion } from 'framer-motion';
 
 const StyledToast = styled.div`
   border-radius: 16px;
@@ -22,7 +22,6 @@ const StyledContent = styled.div`
   display: flex;
   justify-content: space-between;
   flex-grow: 1;
-  margin-top: 5px;
 `;
 const StyledDesc = styled.div`
   display: flex;
@@ -30,7 +29,7 @@ const StyledDesc = styled.div`
   gap: 5px;
 `;
 const StyledTitle = styled.div`
-  font-size: 12px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
@@ -92,17 +91,39 @@ export default function Toast({
             <circle cx="13" cy="13" r="13" fill="#19D9FF" />
             <path d="M13.5 19V6.5M13.5 6.5L9 11M13.5 6.5L18 11" stroke="black" stroke-width="2" stroke-linecap="round" />
           </svg>
-
+        )}
+        {type === 'pending' && (
+          <div className="w-[26px] h-[26px] rounded-full shrink-0 bg-[#19D9FF] flex items-center justify-center">
+            <motion.svg
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              initial={{ rotate: 0 }}
+              animate={{ rotate: 360 }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+              }}
+            >
+              <path d="M1 9C1 13.4183 4.58172 17 9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1" stroke="black" stroke-width="2" stroke-linecap="round" />
+            </motion.svg>
+          </div>
         )}
       </IconWrapper>
-      {type === 'pending' && <Loading />}
       <StyledContent>
-        <StyledDesc style={{ color: type === 'success' ? '#BFFF60' : '#19D9FF' }}>
+        <StyledDesc
+          style={{
+            color: type === 'success' ? '#BFFF60' : '#19D9FF',
+            paddingRight: tx && chainId ? "48px" : "0",
+          }}
+        >
           <StyledTitle>{title}</StyledTitle>
           {text && <StyledSecondaryText>{text}</StyledSecondaryText>}
           {tx && chainId && (
             <StyledSecondaryText
-              style={{ textDecoration: 'underline', cursor: 'pointer', position: 'absolute', right: '10px', top: '10px', color: '#A9ADB8' }}
+              style={{ textDecoration: 'underline', cursor: 'pointer', position: 'absolute', right: '10px', top: '22px', color: '#A9ADB8' }}
               onClick={() => {
                 window.open(txLink, '_blank');
               }}
