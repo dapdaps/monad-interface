@@ -236,60 +236,64 @@ const Dashboard = (props: any) => {
           )
         )
       }
-      <div
-        className="absolute right-[clamp(calc(var(--nadsa-laptop-width)_*_-0.16),_-16vw,_1px)] bottom-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))] pl-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))] pt-[clamp(1px,_1.8vw,_calc(var(--nadsa-laptop-width)*0.018))] pr-[clamp(1px,_0.85vw,_calc(var(--nadsa-laptop-width)*0.0085))] w-[clamp(1px,_16vw,_calc(var(--nadsa-laptop-width)*0.16))] h-[clamp(1px,_13.894vw,_calc(var(--nadsa-laptop-width)*0.13894))] bg-[url('/images/arcade/space-invaders/nft-board.png')] bg-no-repeat bg-left bg-contain"
-      >
-        {
-          allNFTListLoading ? (
-            <div className="flex w-full items-center gap-[clamp(1px,_0.42vw,_calc(var(--nadsa-laptop-width)*0.0042))]">
-              <Skeleton className="w-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width)*0.0347))] h-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width)*0.0347))]" />
-              <div className="w-0 flex-1">
-                <Skeleton className="h-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] mb-[clamp(1px,_0.2vw,_calc(var(--nadsa-laptop-width)*0.002))]" />
-                <Skeleton className="h-[clamp(1px,_0.80vw,_calc(var(--nadsa-laptop-width)*0.0080))] mb-[clamp(1px,_0.2vw,_calc(var(--nadsa-laptop-width)*0.002))]" />
-                <Skeleton className="h-[clamp(1px,_0.80vw,_calc(var(--nadsa-laptop-width)*0.0080))]" />
-              </div>
-            </div>
-          ) : allNFTList && allNFTList.length > 0 ? (
-            <Swiper
-              modules={[Autoplay]}
-              spaceBetween={0}
-              slidesPerView={1}
-              autoplay={{
-                delay: 3000,
-                disableOnInteraction: false,
-              }}
-              loop={true}
-              className="w-full h-full"
-            >
-              {allNFTList.map((nft, index) => {
-                const avatar = NFT_AVATARS[nft.category];
-                return (
-                  <SwiperSlide key={index}>
-                    <div className="flex w-full items-center gap-[clamp(1px,_0.42vw,_calc(var(--nadsa-laptop-width)*0.0042))]">
-                      <img
-                        src={avatar}
-                        alt=""
-                        className="rounded-[clamp(1px,_0.417vw,_calc(var(--nadsa-laptop-width)*0.00417))] w-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width)*0.0347))] h-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width)*0.0347))] object-center object-contain flex-0"
-                      />
-                      <div className="w-0 flex-1 font-[Unbounded] text-white text-[clamp(1px,_0.80vw,_calc(var(--nadsa-laptop-width)*0.0080))] font-[500] leading-[normal]">
-                        <div className="text-[#A6A6DB] text-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] font-[300]">
-                          NFT Airdrop
+      {
+        allNFTList?.length && (
+          <div
+            className="absolute right-[clamp(calc(var(--nadsa-laptop-width)_*_-0.16),_-16vw,_1px)] bottom-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))] pl-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))] pt-[clamp(1px,_1.8vw,_calc(var(--nadsa-laptop-width)*0.018))] pr-[clamp(1px,_0.85vw,_calc(var(--nadsa-laptop-width)*0.0085))] w-[clamp(1px,_16vw,_calc(var(--nadsa-laptop-width)*0.16))] h-[clamp(1px,_13.894vw,_calc(var(--nadsa-laptop-width)*0.13894))] bg-[url('/images/arcade/space-invaders/nft-board.png')] bg-no-repeat bg-left bg-contain"
+          >
+            {
+              allNFTListLoading ? (
+                <div className="flex w-full items-center gap-[clamp(1px,_0.42vw,_calc(var(--nadsa-laptop-width)*0.0042))]">
+                  <Skeleton className="w-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width)*0.0347))] h-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width)*0.0347))]" />
+                  <div className="w-0 flex-1">
+                    <Skeleton className="h-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] mb-[clamp(1px,_0.2vw,_calc(var(--nadsa-laptop-width)*0.002))]" />
+                    <Skeleton className="h-[clamp(1px,_0.80vw,_calc(var(--nadsa-laptop-width)*0.0080))] mb-[clamp(1px,_0.2vw,_calc(var(--nadsa-laptop-width)*0.002))]" />
+                    <Skeleton className="h-[clamp(1px,_0.80vw,_calc(var(--nadsa-laptop-width)*0.0080))]" />
+                  </div>
+                </div>
+              ) : allNFTList && allNFTList.length > 0 ? (
+                <Swiper
+                  modules={[Autoplay]}
+                  spaceBetween={0}
+                  slidesPerView={1}
+                  autoplay={{
+                    delay: 3000,
+                    disableOnInteraction: false,
+                  }}
+                  loop={true}
+                  className="w-full h-full"
+                >
+                  {allNFTList.map((nft, index) => {
+                    const avatar = NFT_AVATARS[nft.category];
+                    return (
+                      <SwiperSlide key={index}>
+                        <div className="flex w-full items-center gap-[clamp(1px,_0.42vw,_calc(var(--nadsa-laptop-width)*0.0042))]">
+                          <img
+                            src={avatar}
+                            alt=""
+                            className="rounded-[clamp(1px,_0.417vw,_calc(var(--nadsa-laptop-width)*0.00417))] w-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width)*0.0347))] h-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width)*0.0347))] object-center object-contain flex-0"
+                          />
+                          <div className="w-0 flex-1 font-[Unbounded] text-white text-[clamp(1px,_0.80vw,_calc(var(--nadsa-laptop-width)*0.0080))] font-[500] leading-[normal]">
+                            <div className="text-[#A6A6DB] text-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] font-[300]">
+                              NFT Airdrop
+                            </div>
+                            <div className="whitespace-nowrap overflow-hidden text-ellipsis">
+                              {nft?.category}
+                            </div>
+                            <div className="text-[#03E212] font-[HackerNoonV2] font-[400] leading-[120%] mt-[clamp(1px,_0.2vw,_calc(var(--nadsa-laptop-width)*0.002))]">
+                              {nft?.remaining || 0}/{nft?.total || 0}
+                            </div>
+                          </div>
                         </div>
-                        <div className="whitespace-nowrap overflow-hidden text-ellipsis">
-                          {nft?.category}
-                        </div>
-                        <div className="text-[#03E212] font-[HackerNoonV2] font-[400] leading-[120%] mt-[clamp(1px,_0.2vw,_calc(var(--nadsa-laptop-width)*0.002))]">
-                          {nft?.remaining || 0}/{nft?.total || 0}
-                        </div>
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
-          ) : null
-        }
-      </div>
+                      </SwiperSlide>
+                    );
+                  })}
+                </Swiper>
+              ) : null
+            }
+          </div>
+        )
+      }
     </div>
   );
 };
