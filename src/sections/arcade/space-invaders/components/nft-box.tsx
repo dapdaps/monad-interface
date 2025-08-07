@@ -5,7 +5,7 @@ import { NFT_AVATARS } from "../config";
 const NftBox = (props: any) => {
   const { className, nft } = props;
 
-  const avatar = NFT_AVATARS[nft.token_address];
+  const avatar = NFT_AVATARS[nft.category];
 
   return (
     <div className={clsx("absolute z-[3] right-[clamp(1px,_1.5vw,_calc(var(--nadsa-laptop-width)*0.015))] bottom-[clamp(1px,_2.2vw,_calc(var(--nadsa-laptop-width)*0.022))] w-[clamp(1px,_5vw,_calc(var(--nadsa-laptop-width)*0.05))] h-[clamp(1px,_4.86vw,_calc(var(--nadsa-laptop-width)*0.0486))]", className)}>

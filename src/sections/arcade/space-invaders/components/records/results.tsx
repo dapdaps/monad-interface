@@ -70,7 +70,7 @@ const Results = (props: any) => {
     {
       title: "ID",
       dataIndex: "id",
-      width: 85,
+      width: 100,
       render: (text: any, record: any, idx: number) => {
         return (
           <div className="flex items-center gap-[5px]">
@@ -92,7 +92,7 @@ const Results = (props: any) => {
     {
       title: "Date",
       dataIndex: "date",
-      width: 100,
+      width: 110,
       render: (text: any, record: any, idx: number) => {
         return <TimeAgo date={record.created_at} />;
       },
@@ -141,7 +141,7 @@ const Results = (props: any) => {
     {
       title: "Floors",
       dataIndex: "floors",
-      width: 70,
+      width: 60,
       render: (text: any, record: any, idx: number) => {
         const select_tiles = record.select_tiles?.split(",") || [];
         return select_tiles.length;
@@ -150,7 +150,7 @@ const Results = (props: any) => {
     {
       title: "Payout TX",
       dataIndex: "payout TX",
-      width: 100,
+      width: 85,
       render: (text: any, record: any, idx: number) => {
         return (
           <div className="flex items-center gap-[20px] pl-[4px]">

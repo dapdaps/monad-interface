@@ -2,7 +2,13 @@ export const GAME_CONTRACT_ADDRESS = "0xA55DfF58C456e0bBEaF5088bD25BF7E404C86186
 export const GAME_ADMIN_ADDRESS = "0xC5813B10E363F8264085391383664776f9931444";
 
 export const NFT_AVATARS: any = {
-  "0x9eca361b21b8fcf47566aa19888b013b9d9fe386": "/images/arcade/space-invaders/nfts/SpaceInvaders.png",
+  "SpaceInvaders": "/images/arcade/space-invaders/nfts/SpaceInvaders.png",
+  "Blocknads": "/images/arcade/space-invaders/nfts/Blocknads.png",
+  "Chogstar": "/images/arcade/space-invaders/nfts/Chogstar.png",
+  "Dripster": "/images/arcade/space-invaders/nfts/Dripster.png",
+  "LaMouch": "/images/arcade/space-invaders/nfts/LaMouch.png",
+  "Molandaks": "/images/arcade/space-invaders/nfts/Molandaks.png",
+  "Overnads": "/images/arcade/space-invaders/nfts/Overnads.png",
 };
 
 export const AMOUNT_OPTIONS = [

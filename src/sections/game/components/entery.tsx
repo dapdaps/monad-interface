@@ -32,7 +32,7 @@ const Entry: React.FC<any> = () => {
                   ease: "easeInOut"
                 }}
               />
-              <div className="w-[clamp(1px,_36.46vw,_calc(var(--nadsa-laptop-width)*0.3646))] h-[clamp(1px,_37.08vw,_calc(var(--nadsa-laptop-width)*0.3708))] absolute z-[2] top-[0] left-[clamp(calc(var(--nadsa-laptop-width)*-0.048),_-4.8vw,_1px)] bg-[url('/images/game/lucky777-coins.png')] bg-no-repeat bg-center bg-contain" />
+              <div className="w-[clamp(1px,_9.79vw,_calc(var(--nadsa-laptop-width)*0.0979))] h-[clamp(1px,_37.05vw,_calc(var(--nadsa-laptop-width)*0.3705))] absolute z-[2] left-[clamp(calc(var(--nadsa-laptop-width)*-0.048),_-4.8vw,_1px)] top-[clamp(calc(var(--nadsa-laptop-width)*-0.01),_-1vw,_1px)] bg-[url('/images/game/lucky777-coins2.png')] bg-no-repeat bg-center bg-contain" />
               <div className="text-[clamp(1px,_1.53vw,_calc(var(--nadsa-laptop-width)*0.0153))] font-HackerNoonV2 text-[#E7E2FF] relative drop-shadow-[0px_0px_10px_#E7E2FF80]">LUCKY 777</div>
               <img
                 data-bp="1009-002"
@@ -52,7 +52,18 @@ const Entry: React.FC<any> = () => {
               }}
             >
               <img src="/images/game/space-invaders.png" className='w-full h-full absolute top-0 left-0 ' />
-              <div className="w-[clamp(1px,_7.99vw,_calc(var(--nadsa-laptop-width)*0.0799))] h-[clamp(1px,_40.35vw,_calc(var(--nadsa-laptop-width)*0.4035))] absolute z-[2] top-[clamp(calc(var(--nadsa-laptop-width)*-0.02),_-2vw,_1px)] right-[clamp(calc(var(--nadsa-laptop-width)*-0.02),_-2vw,_1px)] bg-[url('/images/game/space-invaders-coins.png')] bg-no-repeat bg-center bg-contain" />
+              <motion.div
+                className="w-[clamp(1px,_31.74vw,_calc(var(--nadsa-laptop-width)*0.3174))] h-[clamp(1px,_40.35vw,_calc(var(--nadsa-laptop-width)*0.4035))] absolute z-[2] top-[clamp(calc(var(--nadsa-laptop-width)*-0.02),_-2vw,_1px)] right-[clamp(calc(var(--nadsa-laptop-width)*-0.03),_-3vw,_1px)] bg-[url('/images/game/space-invaders-coins2.png')] bg-no-repeat bg-center bg-contain"
+                animate={{
+                  y: [0, -20, 0]
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 0.5,
+                }}
+              />
               <div className="text-[clamp(1px,_1.53vw,_calc(var(--nadsa-laptop-width)*0.0153))] font-HackerNoonV2 text-[#E7E2FF] relative drop-shadow-[0px_0px_10px_#E7E2FF80]">
                 Space Invaders
               </div>
@@ -62,7 +73,7 @@ const Entry: React.FC<any> = () => {
                   router.push("/arcade/space-invaders");
                 }}
                 src="/images/game/2048-start.svg"
-                className='w-[clamp(1px,_9.44vw,_calc(var(--nadsa-laptop-width)*0.0944))] relative my-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] cursor-pointer hover:scale-110 transition-transform duration-200'
+                className='w-[clamp(1px,_9.44vw,_calc(var(--nadsa-laptop-width)*0.0944))] relative z-[3] my-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] cursor-pointer hover:scale-110 transition-transform duration-200'
               />
               <Link href="/arcade/space-invaders" prefetch={true}></Link>
             </motion.div>

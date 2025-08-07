@@ -54,7 +54,7 @@ const Nft = (props: any) => {
             </div>
           </div>
         )) : userNfts?.map((nft: any, index: number) => {
-          const nftAvatar = NFT_AVATARS[nft.token_address];
+          const nftAvatar = NFT_AVATARS[nft.category];
           return (
             <div
               key={index}
@@ -68,22 +68,26 @@ const Nft = (props: any) => {
               <div className="flex-1 w-0">
                 <div className="flex w-full items-center justify-between">
                   <div className="text-[18px]">
-                    {nft.category} #{nft.id}
+                    {nft.category}
                   </div>
-                  <div
-                    className="flex items-center gap-[5px] justify-end cursor-pointer"
-                    onClick={async () => {
-                      window.open(`https://magiceden.us/mint-terminal/monad-testnet/${nft.token_address}`, "_blank");
-                    }}
-                  >
-                    <button
-                      type="button"
-                      className="w-[12px] h-[12px] flex-0 bg-[url('/images/game/icon-link.png')] bg-no-repeat bg-center bg-contain"
-                    />
-                    <div className="text-[#A6A6DB]">
-                      Magic Eden
-                    </div>
-                  </div>
+                  {
+                    nft.token_address && (
+                      <div
+                        className="flex items-center gap-[5px] justify-end cursor-pointer"
+                        onClick={async () => {
+                          window.open(`https://magiceden.us/mint-terminal/monad-testnet/${nft.token_address}`, "_blank");
+                        }}
+                      >
+                        <button
+                          type="button"
+                          className="w-[12px] h-[12px] flex-0 bg-[url('/images/game/icon-link.png')] bg-no-repeat bg-center bg-contain"
+                        />
+                        <div className="text-[#A6A6DB]">
+                          Magic Eden
+                        </div>
+                      </div>
+                    )
+                  }
                 </div>
                 <div className="w-full grid grid-cols-3 gap-[10px] mt-[20px]">
                   <LabelValue label="Game ID" valueClassName="flex items-center gap-[5px]">
@@ -108,7 +112,7 @@ const Nft = (props: any) => {
                     <div className={clsx(nft.tx_hash ? "text-[#BFFF60]" : "text-[#63AEF4]")}>
                       {nft.tx_hash ? "Received" : "Pending"}
                     </div>
-                    {
+                    {/* {
                       nft.tx_hash && (
                         <a
                           target="_blank"
@@ -119,7 +123,7 @@ const Nft = (props: any) => {
                           Tx
                         </a>
                       )
-                    }
+                    } */}
                   </LabelValue>
                 </div>
               </div>
