@@ -38,6 +38,7 @@ const Dashboard = (props: any) => {
     allNFTList,
     allNFTListLoading,
     setRecordsVisible,
+    setRulesVisible,
   } = useSpaceInvadersContext();
 
   const amountIndex = useMemo(() => {
@@ -54,7 +55,7 @@ const Dashboard = (props: any) => {
           type="button"
           className="text-[#8A87AA] font-[SpaceGrotesk]"
           onClick={() => {
-            setRecordsVisible?.(true);
+            setRulesVisible?.(true);
           }}
         >
           Rules

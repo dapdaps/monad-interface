@@ -422,6 +422,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       const currentReward = allNFTList?.find((nft) => nft.category.toLowerCase() === response.whitelist_reward?.toLowerCase())
       setRewardData({
         showType: RewardShowType.GetNew,
+        game_id: currentGameData?.game_id,
         ...currentReward,
       });
       setRewardVisible(true);

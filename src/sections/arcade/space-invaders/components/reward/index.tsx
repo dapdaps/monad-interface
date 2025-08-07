@@ -5,6 +5,8 @@ import { RewardShowType } from "../../config";
 import { useMemo, useState } from "react";
 import { useRequest } from "ahooks";
 import { trim } from "lodash";
+import { post } from "@/utils/http";
+import useToast from "@/hooks/use-toast";
 
 const Reward = (props: any) => {
   const { className } = props;
@@ -14,6 +16,7 @@ const Reward = (props: any) => {
     setRewardVisible,
     getUserNfts,
   } = useSpaceInvadersContext();
+  const toast = useToast({ isGame: true });
 
   const [discord, setDiscord] = useState<string>("");
 
@@ -30,18 +33,36 @@ const Reward = (props: any) => {
       return;
     }
 
+    let toastId = toast.loading({
+      title: "Binding...",
+    }, "bottom-right");
     // bind discord
-    const mockReq = () => new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(true);
-      }, 1000);
-    });
-
-    await mockReq();
-
-    // reload user nfts
-    getUserNfts?.();
-    setRewardVisible?.(false);
+    try {
+      const res = await post("/game/deathfun/bindDiscord", {
+        discord_account: trim(discord || ""),
+        game_id: rewardData?.game_id,
+      });
+      toast.dismiss(toastId);
+      if (res.code !== 200) {
+        toast.fail({
+          title: "Bind failed",
+          text: res.message,
+        }, "bottom-right");
+        return;
+      }
+      toast.success({
+        title: "Bind success",
+      }, "bottom-right");
+      // reload user nfts
+      getUserNfts?.();
+      setRewardVisible?.(false);
+    } catch (error: any) {
+      toast.fail({
+        title: "Bind failed",
+        text: error.message,
+      }, "bottom-right");
+      console.log("bind discord error: %o", error);
+    }
   }, {
     manual: true,
   });
