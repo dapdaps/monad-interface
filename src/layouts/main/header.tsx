@@ -174,7 +174,7 @@ const MainLayoutHeader = (props: Props) => {
       return;
     }
 
-    if (pathname.includes("2048") || pathname.includes("777")) {
+    if (pathname.includes("2048") || pathname.includes("777") || pathname.includes("space-invaders")) {
       router.replace("/arcade");
       return;
     }
