@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
-import IconClose from "@public/images/modal/close.svg";
 import useIsMobile from "@/hooks/use-isMobile";
 import { AnimatePresence, motion } from "framer-motion";
 import clsx from "clsx";
@@ -86,7 +85,7 @@ export const ModalContent = (props: ModalProps) => {
               onClick={onClose}
               className={`absolute top-5 right-5 cursor-pointer z-[100] ${closeIconClassName}`}
             >
-              {closeIcon ? closeIcon : <IconClose />}
+              {closeIcon ? closeIcon : <img src="/images/modal/close.svg" />}
             </button>
           ) : null}
           {isMobile && !isForceNormal ? (
