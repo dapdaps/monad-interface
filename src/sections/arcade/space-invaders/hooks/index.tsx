@@ -4,7 +4,7 @@ import { useRequest, useDebounceFn } from "ahooks";
 import { cloneDeep } from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { get, post } from '@/utils/http';
-import { EndGameRes, GAME_CONTRACT_ADDRESS, LastGame, LastGameStatus, Layer, LayerRow, LayerStatus, NFTItem, OpenTileRes, SoundEffectType, StartGameRes } from "../config";
+import { EndGameRes, GAME_CONTRACT_ADDRESS, LastGame, LastGameStatus, Layer, LayerRow, LayerStatus, NFTItem, OpenTileRes, RewardShowType, SoundEffectType, StartGameRes } from "../config";
 import Big from "big.js";
 import { requestContract } from "../utils";
 import { GAME_ABI } from "../abi";
@@ -50,6 +50,9 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const [failedGhostVisible, setFailedGhostVisible] = useState<any>(false);
   const [failedGhostPosition, setFailedGhostPosition] = useState<any>([0, 0]);
   const [recordsVisible, setRecordsVisible] = useState<any>(false);
+  // reward nft / whitelist modal
+  const [rewardVisible, setRewardVisible] = useState<boolean>(false);
+  const [rewardData, setRewardData] = useState<any>();
 
   const [gameLost, gameWon, currentLayer, currentWinLayer] = useMemo<[boolean, boolean, LayerRow | undefined, LayerRow | undefined]>(() => {
     return [
@@ -412,11 +415,21 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       return _currentGameData;
     });
 
+    // get a nft / whitelist reward
+    if (response.whitelist_reward && allNFTList?.some((nft) => nft.category.toLowerCase() === response.whitelist_reward?.toLowerCase())) {
+      const currentReward = allNFTList?.find((nft) => nft.category.toLowerCase() === response.whitelist_reward?.toLowerCase())
+      setRewardData({
+        showType: RewardShowType.GetNew,
+        ...currentReward,
+      });
+      setRewardVisible(true);
+    }
+
     // not ghost
     if (response.currentRow.deathTileIndex !== tileIndex) {
       currentLayer.status = LayerStatus.Succeed;
       // refresh nft
-      if (currentGameData?.reward?.multiplier === currentLayer.multiplier) {
+      if (response.whitelist_reward) {
         getAllNFTList();
       }
       // go to next layer
@@ -707,6 +720,14 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     }
   };
 
+  const handleBindDiscord = (nft: NFTItem) => {
+    setRewardData({
+      showType: RewardShowType.Bind,
+      ...nft,
+    });
+    setRewardVisible(true);
+  };
+
   useEffect(() => {
     if (data && containerRef.current) {
       // Use requestAnimationFrame to ensure scrolling after the next frame is rendered
@@ -804,6 +825,10 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     soundEffectShuffleGatesRef,
     soundEffectStartRef,
     playSoundEffect,
+    rewardVisible,
+    setRewardVisible,
+    rewardData,
+    handleBindDiscord,
   };
 };
 
@@ -854,4 +879,8 @@ export interface SpaceInvaders {
   soundEffectShuffleGatesRef: any;
   soundEffectStartRef: any;
   playSoundEffect: (type: SoundEffectType) => void;
+  rewardVisible: boolean;
+  setRewardVisible: (visible: boolean) => void;
+  rewardData: any;
+  handleBindDiscord: (nft: NFTItem) => void;
 }

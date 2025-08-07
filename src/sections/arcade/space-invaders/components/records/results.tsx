@@ -2,7 +2,6 @@ import clsx from "clsx";
 import { useSpaceInvadersContext } from "../../context";
 import { motion } from "framer-motion";
 import FlexTable from "@/components/flex-table";
-import { useUserData } from "../../hooks/use-user";
 import { useEffect, useMemo } from "react";
 import { numberFormatter } from "@/utils/number-formatter";
 import Big from "big.js";
@@ -20,8 +19,6 @@ const Results = (props: any) => {
   const {
     formatRows,
     onVerifierOpen,
-  } = useSpaceInvadersContext();
-  const {
     userStatistics,
     userStatisticsLoading,
     getUserStatistics,
@@ -32,7 +29,7 @@ const Results = (props: any) => {
     getUserResults,
     userResults,
     userResultsLoading,
-  } = useUserData();
+  } = useSpaceInvadersContext();
   const toast = useToast();
 
   const statistics = useMemo(() => {
@@ -204,9 +201,12 @@ const Results = (props: any) => {
   ];
 
   useEffect(() => {
-    getUserResults();
-    getUserStatistics();
+    getUserResults?.();
   }, [userResultsPage]);
+
+  useEffect(() => {
+    getUserStatistics?.();
+  }, []);
 
   return (
     <motion.div
@@ -248,7 +248,7 @@ const Results = (props: any) => {
           totalPage={userResultsPageTotal}
           pageSize={userResultsPageSize}
           onPageChange={(_page: number) => {
-            setUserResultsPage(_page);
+            setUserResultsPage?.(_page);
           }}
         />
       </div>

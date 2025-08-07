@@ -19,7 +19,8 @@ const config: Config = {
       HackerNoonV2: ["HackerNoonV2"],
       SpaceMono: ["SpaceMono"],
       Pixelmix: ["Pixelmix"],
-      DelaGothicOne: ["DelaGothicOne"]
+      DelaGothicOne: ["DelaGothicOne"],
+      SpaceGrotesk: ["SpaceGrotesk"]
     },
     backgroundImage: {
       vault: "linear-gradient(245deg, #F18E4E 12.36%, #D5B8DB 63.87%)",
