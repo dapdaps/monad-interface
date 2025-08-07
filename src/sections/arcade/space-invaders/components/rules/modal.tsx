@@ -21,7 +21,7 @@ const RulesModal = (props: any) => {
     >
       <MonadBaseCard
         className="w-[676px]"
-        contentClassName=""
+        contentClassName="max-h-[70dvh] overflow-y-auto"
       >
         <Index {...props} />
       </MonadBaseCard>
