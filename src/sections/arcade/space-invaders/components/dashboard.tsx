@@ -237,7 +237,7 @@ const Dashboard = (props: any) => {
         )
       }
       <div
-        className="absolute right-[clamp(calc(var(--nadsa-laptop-width)_*_-0.1375),_-13.75vw,_1px)] bottom-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))] pl-[clamp(1px,_2.29vw,_calc(var(--nadsa-laptop-width)*0.0229))] pt-[clamp(1px,_1.36vw,_calc(var(--nadsa-laptop-width)*0.0136))] pr-[clamp(1px,_0.9vw,_calc(var(--nadsa-laptop-width)*0.009))] w-[clamp(1px,_13.75vw,_calc(var(--nadsa-laptop-width)*0.1375))] h-[clamp(1px,_11.94vw,_calc(var(--nadsa-laptop-width)*0.1194))] bg-[url('/images/arcade/space-invaders/nft-board.png')] bg-no-repeat bg-left bg-contain"
+        className="absolute right-[clamp(calc(var(--nadsa-laptop-width)_*_-0.1375),_-13.75vw,_1px)] bottom-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))] pl-[clamp(1px,_2.29vw,_calc(var(--nadsa-laptop-width)*0.0229))] pt-[clamp(1px,_1.36vw,_calc(var(--nadsa-laptop-width)*0.0136))] pr-[clamp(1px,_0.85vw,_calc(var(--nadsa-laptop-width)*0.0085))] w-[clamp(1px,_13.75vw,_calc(var(--nadsa-laptop-width)*0.1375))] h-[clamp(1px,_11.94vw,_calc(var(--nadsa-laptop-width)*0.1194))] bg-[url('/images/arcade/space-invaders/nft-board.png')] bg-no-repeat bg-left bg-contain"
       >
         {
           allNFTListLoading ? (
@@ -262,14 +262,14 @@ const Dashboard = (props: any) => {
               className="w-full h-full"
             >
               {allNFTList.map((nft, index) => {
-                const avatar = NFT_AVATARS[nft.token_address];
+                const avatar = NFT_AVATARS[nft.category];
                 return (
                   <SwiperSlide key={index}>
                     <div className="flex w-full items-center gap-[clamp(1px,_0.42vw,_calc(var(--nadsa-laptop-width)*0.0042))]">
                       <img
                         src={avatar}
                         alt=""
-                        className="w-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width)*0.0347))] h-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width)*0.0347))] object-center object-contain flex-0"
+                        className="rounded-[clamp(1px,_0.417vw,_calc(var(--nadsa-laptop-width)*0.00417))] w-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width)*0.0347))] h-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width)*0.0347))] object-center object-contain flex-0"
                       />
                       <div className="w-0 flex-1 font-[Unbounded] text-white text-[clamp(1px,_0.80vw,_calc(var(--nadsa-laptop-width)*0.0080))] font-[500] leading-[normal]">
                         <div className="text-[#A6A6DB] text-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] font-[300]">
