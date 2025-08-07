@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { useSpaceInvadersContext } from "../../context";
 import { motion } from "framer-motion";
-import { useUserData } from "../../hooks/use-user";
 import { useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import { NFT_AVATARS } from "../../config";
@@ -15,16 +14,15 @@ const Nft = (props: any) => {
   const { className } = props;
 
   const {
-  } = useSpaceInvadersContext();
-  const {
+    handleBindDiscord,
     userNfts,
     userNftsLoading,
     getUserNfts,
-  } = useUserData();
+  } = useSpaceInvadersContext();
   const toast = useToast();
 
   useEffect(() => {
-    getUserNfts();
+    getUserNfts?.();
   }, []);
 
   return (
@@ -72,7 +70,35 @@ const Nft = (props: any) => {
                     {nft.category} #{nft.id}
                   </div>
                   {
-                    nft.token_address && (
+                    !nft.token_address ? (
+                      !!nft.discord ? (
+                        <div
+                          className="flex items-center gap-[5px] justify-end"
+                        >
+                          <img
+                            src="/images/arcade/space-invaders/icon-discord.png"
+                            className="w-[20px] h-[16px] object-contain object-center shrink-0"
+                          />
+                          <div className="">
+                            nads245345
+                          </div>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          className="h-[24px] flex justify-center items-center gap-[6px] px-[9px] flex-shrink-0 rounded-[6px] border border-[#A6A6DB] bg-[#2B294A] text-white font-montserrat text-[14px] font-medium leading-[14px]"
+                          onClick={() => handleBindDiscord?.(nft)}
+                        >
+                          <img
+                            src="/images/arcade/space-invaders/icon-discord.png"
+                            className="w-[20px] h-[16px] object-contain object-center shrink-0"
+                          />
+                          <div className="">
+                            Bind
+                          </div>
+                        </button>
+                      )
+                    ) : (
                       <div
                         className="flex items-center gap-[5px] justify-end cursor-pointer"
                         onClick={async () => {

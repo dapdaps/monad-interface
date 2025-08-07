@@ -1,0 +1,153 @@
+import clsx from "clsx";
+import { useSpaceInvadersContext } from "../../context";
+import Loading from "@/components/loading";
+import { RewardShowType } from "../../config";
+import { useMemo, useState } from "react";
+import { useRequest } from "ahooks";
+import { trim } from "lodash";
+
+const Reward = (props: any) => {
+  const { className } = props;
+
+  const {
+    rewardData,
+    setRewardVisible,
+    getUserNfts,
+  } = useSpaceInvadersContext();
+
+  const [discord, setDiscord] = useState<string>("");
+
+  const [isGetNew, isNft] = useMemo(() => {
+    return [
+      rewardData?.showType === RewardShowType.GetNew,
+      !!rewardData?.token_address
+    ];
+  }, [rewardData]);
+
+  const { runAsync: handleConfirm, loading: confirmLoading } = useRequest(async () => {
+    if (isNft) {
+      setRewardVisible?.(false);
+      return;
+    }
+
+    // bind discord
+    const mockReq = () => new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, 1000);
+    });
+
+    await mockReq();
+
+    // reload user nfts
+    getUserNfts?.();
+    setRewardVisible?.(false);
+  }, {
+    manual: true,
+  });
+
+  const buttonValid = useMemo(() => {
+    const result = { text: "Confirm", disabled: true, loading: false };
+    if (!trim(discord || "")) {
+      result.text = "Enter your Discord";
+      return result;
+    }
+    if (confirmLoading) {
+      result.loading = true;
+      return result;
+    }
+    result.disabled = false;
+    return result;
+  }, [discord, confirmLoading]);
+
+  return (
+    <div className={clsx("relative w-full text-center font-[DelaGothicOne] text-white text-[16px] leading-[120%] font-[400]", className)}>
+      {
+        isGetNew && (
+          <img
+            src="/images/arcade/space-invaders/reward-modal-title.png"
+            className="absolute top-[-172px] left-1/2 -translate-x-1/2 w-[391px] h-[278px] object-contain object-center"
+          />
+        )
+      }
+      <div className={clsx("", isGetNew ? "pt-[150px]" : "pt-[30px]")}>
+        {
+          isGetNew ? (
+            <div className="text-[32px] leading-[100%]">
+              Congrats!
+            </div>
+          ) : (
+            <div className="text-[32px] leading-[100%]">
+              Bind Discord
+            </div>
+          )
+        }
+        <div className="mt-[33px] font-[SpaceGrotesk]">
+          {isNft ? "You get the NFT" : "Just 1 step more, you will get the NFT"}
+        </div>
+        {
+          isGetNew && (
+            <div className="text-[32px] leading-[100%] mt-[10px]">
+              {rewardData?.category}
+            </div>
+          )
+        }
+        {
+          !isNft && (
+            <div className={clsx("font-[SpaceGrotesk]", isGetNew ? "mt-[70px]" : "mt-[50px]")}>
+              <div className="flex justify-center items-center gap-[4px]">
+                <div>
+                  Fill in your
+                </div>
+                <img
+                  src="/images/arcade/space-invaders/icon-discord.png"
+                  className="w-[20px] h-[16px] object-contain object-center shrink-0"
+                />
+                <div>
+                  Discord account
+                </div>
+              </div>
+              <div className="w-[352px] mt-[17px] mx-auto h-[50px] flex-shrink-0 rounded-[12px] bg-[#0E0F29] relative">
+                <input
+                  type="text"
+                  className="w-full h-full bg-transparent border-none outline-none text-white font-[DelaGothicOne] text-[18px] font-normal leading-[100%] px-4 pr-[40px]"
+                  maxLength={255}
+                  value={discord}
+                  onChange={(e) => setDiscord(e.target.value)}
+                />
+                {
+                  !!trim(discord || "") && (
+                    <button
+                      type="button"
+                      className="w-[18px] h-[18px] absolute z-[1] top-1/2 -translate-y-1/2 right-[10px] bg-[#2B294A] rounded-full bg-[url('/images/arcade/space-invaders/icon-close.svg')] bg-no-repeat bg-center bg-[length:10px_10px]"
+                      onClick={() => setDiscord("")}
+                    />
+                  )
+                }
+              </div>
+            </div>
+          )
+        }
+        <div className="mt-[20px] flex justify-center items-center">
+          <button
+            type="button"
+            className="px-[33px] h-[46px] disabled:opacity-50 disabled:!cursor-not-allowed flex-shrink-0 rounded-[10px] border border-[#413C54] bg-[#5237FF] text-white text-center font-[DelaGothicOne] text-[16px] font-normal leading-[100%] flex justify-center items-center gap-[4px]"
+            disabled={buttonValid.disabled}
+            onClick={handleConfirm}
+          >
+            {
+              buttonValid.loading && (
+                <Loading size={16} />
+              )
+            }
+            <div className="">
+              {buttonValid.text}
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Reward;

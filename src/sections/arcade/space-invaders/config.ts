@@ -83,6 +83,12 @@ export interface OpenTileRes {
   isDeathTile: boolean;
   nextRow: LayerRow;
   status: number;
+  whitelist_reward?: string;
+}
+
+export enum RewardShowType {
+  GetNew,
+  Bind,
 }
 
 export interface StartGameRes {

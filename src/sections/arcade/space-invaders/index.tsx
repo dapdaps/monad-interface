@@ -14,9 +14,12 @@ import { LayerStatus } from "./config";
 import RecordsModal from "./components/records/modal";
 import SoundEffects from "./components/sound-effects";
 import Big from "big.js";
+import RewardModal from "./components/reward/modal";
+import { useUserData } from "./hooks/use-user";
 
 const SpaceInvadersView = (props: any) => {
   const spaceInvaders = useSpaceInvaders(props);
+  const userData = useUserData();
 
   const {
     containerRef,
@@ -25,7 +28,7 @@ const SpaceInvadersView = (props: any) => {
   } = spaceInvaders;
 
   return (
-    <SpaceInvadersContextProvider value={spaceInvaders}>
+    <SpaceInvadersContextProvider value={{ ...spaceInvaders, ...userData}}>
       <div ref={containerRef} className="w-full h-screen overflow-y-auto bg-[#010101] relative">
         <Starfield className="!fixed !z-[0]" bgColor="#010101" />
         <motion.img
@@ -214,6 +217,7 @@ const SpaceInvadersView = (props: any) => {
       <FailedGhost />
       <RecordsModal />
       <SoundEffects />
+      <RewardModal />
     </SpaceInvadersContextProvider>
   );
 };

@@ -2,7 +2,7 @@ import { get } from "@/utils/http";
 import { useRequest } from "ahooks";
 import { useState } from "react";
 
-export function useUserData() {
+export function useUserData(): UserData {
   const { runAsync: getUserStatistics, data: userStatistics, loading: userStatisticsLoading } = useRequest(async () => {
     try {
       const res = await get("/game/deathfun/user/stats");
@@ -67,4 +67,20 @@ export function useUserData() {
     userNfts,
     userNftsLoading,
   };
+}
+
+export interface UserData {
+  userStatistics: any;
+  userStatisticsLoading: boolean;
+  getUserStatistics: () => Promise<any>;
+  userResultsPage: number;
+  setUserResultsPage: (page: number) => void;
+  userResultsPageTotal: number;
+  userResultsPageSize: number;
+  getUserResults: () => Promise<any>;
+  userResults: any;
+  userResultsLoading: boolean;
+  getUserNfts: () => Promise<any>;
+  userNfts: any;
+  userNftsLoading: boolean;
 }
