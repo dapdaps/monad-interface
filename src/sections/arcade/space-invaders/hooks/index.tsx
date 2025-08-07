@@ -4,7 +4,7 @@ import { useRequest, useDebounceFn } from "ahooks";
 import { cloneDeep } from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { get, post } from '@/utils/http';
-import { EndGameRes, GAME_CONTRACT_ADDRESS, LastGame, LastGameStatus, Layer, LayerRow, LayerStatus, NFTItem, OpenTileRes, StartGameRes } from "../config";
+import { EndGameRes, GAME_CONTRACT_ADDRESS, LastGame, LastGameStatus, Layer, LayerRow, LayerStatus, NFTItem, OpenTileRes, SoundEffectType, StartGameRes } from "../config";
 import Big from "big.js";
 import { requestContract } from "../utils";
 import { GAME_ABI } from "../abi";
@@ -12,7 +12,6 @@ import { getSignature } from "@/utils/signature";
 import { usePrivyAccount } from "./use-account";
 import { Contract, utils } from "ethers";
 import { useBlockNumber } from "wagmi";
-import useAudioPlay from "@/hooks/use-audio";
 
 export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { } = props ?? {};
@@ -21,11 +20,15 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { user } = usePrivy();
   const { accountWithAk, provider, account } = usePrivyAccount();
   const { data: blockNumber } = useBlockNumber({ watch: true });
-  const { play: palyAudio } = useAudioPlay();
 
   const containerRef = useRef<any>(null);
   const unLockedLayerRef = useRef<any>(null);
   const lastBalanceUpdateRef = useRef<number>(0);
+  const soundEffectCashoutRef = useRef<any>(null);
+  const soundEffectOpenRef = useRef<any>(null);
+  const soundEffectDeathRef = useRef<any>(null);
+  const soundEffectShuffleGatesRef = useRef<any>(null);
+  const soundEffectStartRef = useRef<any>(null);
 
   // current playing game
   const [currentGame, setCurrentGame] = useState<Layer>();
@@ -188,7 +191,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       });
       setGameStarted(true);
       onReset();
-      palyAudio("/audios/arcade/space-invaders/start.ogg");
+      playSoundEffect(SoundEffectType.Start);
 
       toast.success({
         title: "Game on. Reach for the stars",
@@ -434,7 +437,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     setData(_data);
     setGameStarted(false);
     getLastGame();
-    palyAudio("/audios/arcade/space-invaders/death.ogg");
+    playSoundEffect(SoundEffectType.Death);
 
     // Set failed ghost position and visibility
     if (ev) {
@@ -449,6 +452,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   }, { manual: true });
 
   const { runAsync: onCashOut, loading: cashOutPending } = useRequest(async () => {
+    playSoundEffect(SoundEffectType.Cashout);
     await onGameEnd(LayerStatus.Succeed);
   }, { manual: true });
 
@@ -616,6 +620,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   };
 
   const onMapChange = () => {
+    playSoundEffect(SoundEffectType.ShuffleGates);
     if (!allGameMaps?.length) {
       return;
     }
@@ -655,6 +660,43 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       seed: seed || currentGameData?.seed,
       seed_hash: seed_hash || currentGameData?.seed_hash,
     });
+  };
+
+  const playSoundEffect = (type: SoundEffectType) => {
+    switch (type) {
+      case SoundEffectType.Cashout:
+        if (soundEffectCashoutRef.current) {
+          soundEffectCashoutRef.current.currentTime = 0;
+          soundEffectCashoutRef.current.play();
+        }
+        break;
+      case SoundEffectType.Open:
+        if (soundEffectOpenRef.current) {
+          soundEffectOpenRef.current.currentTime = 0;
+          soundEffectOpenRef.current.play();
+        }
+        break;
+      case SoundEffectType.Death:
+        if (soundEffectDeathRef.current) {
+          soundEffectDeathRef.current.currentTime = 0;
+          soundEffectDeathRef.current.play();
+        }
+        break;
+      case SoundEffectType.ShuffleGates:
+        if (soundEffectShuffleGatesRef.current) {
+          soundEffectShuffleGatesRef.current.currentTime = 0;
+          soundEffectShuffleGatesRef.current.play();
+        }
+        break;
+      case SoundEffectType.Start:
+        if (soundEffectStartRef.current) {
+          soundEffectStartRef.current.currentTime = 0;
+          soundEffectStartRef.current.play();
+        }
+        break;
+      default:
+        break;
+    }
   };
 
   useEffect(() => {
@@ -747,6 +789,12 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     recordsVisible,
     setRecordsVisible,
     formatRows,
+    soundEffectCashoutRef,
+    soundEffectOpenRef,
+    soundEffectDeathRef,
+    soundEffectShuffleGatesRef,
+    soundEffectStartRef,
+    playSoundEffect,
   };
 };
 
@@ -790,4 +838,10 @@ export interface SpaceInvaders {
   recordsVisible: boolean;
   setRecordsVisible: (visible: boolean) => void;
   formatRows: (rows: LayerRow[], selected_tiles?: number[], deathfun_id?: number) => LayerRow[];
+  soundEffectCashoutRef: any;
+  soundEffectOpenRef: any;
+  soundEffectDeathRef: any;
+  soundEffectShuffleGatesRef: any;
+  soundEffectStartRef: any;
+  playSoundEffect: (type: SoundEffectType) => void;
 }

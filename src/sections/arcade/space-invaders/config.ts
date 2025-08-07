@@ -111,3 +111,11 @@ export interface NFTItem {
   multiplier: string;
   remaining: number;
 }
+
+export enum SoundEffectType {
+  Cashout = "cashout",
+  Open = "open",
+  Death = "death",
+  ShuffleGates = "shuffle-gates",
+  Start = "start",
+}

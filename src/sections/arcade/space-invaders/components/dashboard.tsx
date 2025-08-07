@@ -192,7 +192,6 @@ const Dashboard = (props: any) => {
                   className="disabled:opacity-50 disabled:!cursor-not-allowed flex items-center gap-[clamp(1px,_0.49vw,_calc(var(--nadsa-laptop-width)*0.0049))] text-[#8A87AA] text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] font-[400] leading-[100%] font-[SpaceGrotesk]"
                   disabled={gameLoading || (!gameStarted && currentGameData?.status === LastGameStatus.Ongoing)}
                   onClick={onMapChange}
-                  data-click-sound="/audios/arcade/space-invaders/Shuffle-Gates.ogg"
                 >
                   <img
                     src="/images/arcade/space-invaders/icon-reload.png"
@@ -330,7 +329,6 @@ const CashOut = (props: any) => {
           className="disabled:opacity-50 disabled:!cursor-not-allowed w-[clamp(1px,_25.69vw,_calc(var(--nadsa-laptop-width)*0.2569))] h-[clamp(1px,_3.19vw,_calc(var(--nadsa-laptop-width)*0.0319))] gap-[clamp(1px,_0.5vw,_calc(var(--nadsa-laptop-width)*0.005))] border border-[#413C54] bg-[#5237FF] rounded-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] flex justify-center items-center button text-white text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] font-[DelaGothicOne] font-[400] leading-[100%] uppercase"
           onClick={onCashOut}
           disabled={cashOutPending || !currentWinLayer}
-          data-click-sound="/audios/arcade/space-invaders/cashout.ogg"
         >
           {
             cashOutPending && (
