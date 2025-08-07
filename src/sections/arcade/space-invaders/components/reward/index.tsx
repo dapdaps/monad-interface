@@ -83,7 +83,7 @@ const Reward = (props: any) => {
           )
         }
         <div className="mt-[33px] font-[SpaceGrotesk]">
-          {isNft ? "You get the NFT" : "Just 1 step more, you will get the NFT"}
+          {isNft ? "You get the NFT" : `They noticed you. ${isNft ? "NFT dispatched" : "WL confirmed"}`}
         </div>
         {
           isGetNew && (

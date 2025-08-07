@@ -53,6 +53,8 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   // reward nft / whitelist modal
   const [rewardVisible, setRewardVisible] = useState<boolean>(false);
   const [rewardData, setRewardData] = useState<any>();
+  // Rules modal
+  const [rulesVisible, setRulesVisible] = useState<boolean>(false);
 
   const [gameLost, gameWon, currentLayer, currentWinLayer] = useMemo<[boolean, boolean, LayerRow | undefined, LayerRow | undefined]>(() => {
     return [
@@ -829,6 +831,8 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     setRewardVisible,
     rewardData,
     handleBindDiscord,
+    rulesVisible,
+    setRulesVisible,
   };
 };
 
@@ -883,4 +887,6 @@ export interface SpaceInvaders {
   setRewardVisible: (visible: boolean) => void;
   rewardData: any;
   handleBindDiscord: (nft: NFTItem) => void;
+  rulesVisible: boolean;
+  setRulesVisible: (visible: boolean) => void;
 }
