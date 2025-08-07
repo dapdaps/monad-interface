@@ -12,6 +12,7 @@ import { getSignature } from "@/utils/signature";
 import { usePrivyAccount } from "./use-account";
 import { Contract, utils } from "ethers";
 import { useBlockNumber } from "wagmi";
+import { useSoundStore } from "@/stores/sound";
 
 export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { } = props ?? {};
@@ -20,6 +21,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { user } = usePrivy();
   const { accountWithAk, provider, account } = usePrivyAccount();
   const { data: blockNumber } = useBlockNumber({ watch: true });
+  const soundStore = useSoundStore();
 
   const containerRef = useRef<any>(null);
   const unLockedLayerRef = useRef<any>(null);
@@ -663,6 +665,9 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   };
 
   const playSoundEffect = (type: SoundEffectType) => {
+    if (soundStore?.muted) {
+      return;
+    }
     switch (type) {
       case SoundEffectType.Cashout:
         if (soundEffectCashoutRef.current) {
