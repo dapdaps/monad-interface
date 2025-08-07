@@ -9,6 +9,7 @@ import useToast from "@/hooks/use-toast";
 import { formatLongText } from "@/utils/utils";
 import { monadTestnet } from "viem/chains";
 import TimeAgo from "./time-ago";
+import Empty from "@/components/empty";
 
 const Nft = (props: any) => {
   const { className } = props;
@@ -53,7 +54,7 @@ const Nft = (props: any) => {
               </div>
             </div>
           </div>
-        )) : userNfts?.map((nft: any, index: number) => {
+        )) : userNfts?.length ? userNfts?.map((nft: any, index: number) => {
           const nftAvatar = NFT_AVATARS[nft.category];
           return (
             <div
@@ -129,7 +130,11 @@ const Nft = (props: any) => {
               </div>
             </div>
           )
-        })
+        }) : (
+          <div className="w-full py-[50px]">
+            <Empty desc="No data" />
+          </div>
+        )
       }
     </motion.div>
   );
