@@ -69,7 +69,7 @@ const Nft = (props: any) => {
               <div className="flex-1 w-0">
                 <div className="flex w-full items-center justify-between">
                   <div className="text-[18px]">
-                    {nft.category}
+                    {nft.category} #{nft.id}
                   </div>
                   {
                     nft.token_address && (
@@ -113,7 +113,7 @@ const Nft = (props: any) => {
                     <div className={clsx(nft.tx_hash ? "text-[#BFFF60]" : "text-[#63AEF4]")}>
                       {nft.tx_hash ? "Received" : "Pending"}
                     </div>
-                    {/* {
+                    {
                       nft.tx_hash && (
                         <a
                           target="_blank"
@@ -124,7 +124,7 @@ const Nft = (props: any) => {
                           Tx
                         </a>
                       )
-                    } */}
+                    }
                   </LabelValue>
                 </div>
               </div>
