@@ -70,18 +70,18 @@ const Results = (props: any) => {
     {
       title: "ID",
       dataIndex: "id",
-      width: 100,
+      width: 90,
       render: (text: any, record: any, idx: number) => {
         return (
           <div className="flex items-center gap-[5px]">
-            <div className="">{formatLongText(record.game_id)}</div>
+            <div className="">{formatLongText(record.chain_game_id)}</div>
             <button
               type="button"
               className="w-[12px] h-[12px] flex-0 bg-[url('/images/arcade/space-invaders/icon-copy.png')] bg-no-repeat bg-center bg-contain"
               onClick={async () => {
-                navigator.clipboard.writeText(record.game_id as string);
+                navigator.clipboard.writeText(record.chain_game_id as string);
                 toast.success({
-                  title: `Copied game id ${record.game_id}`,
+                  title: `Copied game id ${record.chain_game_id}`,
                 }, "bottom-right");
               }}
             />
@@ -125,7 +125,7 @@ const Results = (props: any) => {
         const resultMON = Big(record.bet_amount || 0).times(record.final_multiplier || 1).minus(record.bet_amount || 0);
         return (
           <div className={clsx(record.status === LastGameStatus.Lose ? "text-[#FF4A4A]" : "text-[#BFFF60]")}>
-            {numberFormatter(resultMON, 2, true, { isLessPrecision: false, prefix: Big(resultMON).gte(0) ? "+" : "" })}
+            {numberFormatter(record.status === LastGameStatus.Lose ? Big(0).minus(record.bet_amount || 0) : resultMON, 2, true, { isLessPrecision: false, prefix: record.status === LastGameStatus.Lose ? "" : (Big(resultMON).gte(0) ? "+" : "") })}
           </div>
         );
       },
@@ -150,7 +150,7 @@ const Results = (props: any) => {
     {
       title: "Payout TX",
       dataIndex: "payout TX",
-      width: 85,
+      width: 95,
       render: (text: any, record: any, idx: number) => {
         return (
           <div className="flex items-center gap-[20px] pl-[4px]">

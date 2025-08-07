@@ -13,6 +13,7 @@ import FailedGhost from "./components/failed-ghost";
 import { LayerStatus } from "./config";
 import RecordsModal from "./components/records/modal";
 import SoundEffects from "./components/sound-effects";
+import Big from "big.js";
 
 const SpaceInvadersView = (props: any) => {
   const spaceInvaders = useSpaceInvaders(props);
@@ -46,7 +47,7 @@ const SpaceInvadersView = (props: any) => {
             times: [0, 0.4, 0.8, 1],
           }}
         />
-        <div className="relative w-full z-[2] pt-[103px] pb-[clamp(1px,_11.4vw,_calc(var(--nadsa-laptop-width)*0.114))]">
+        <div className="relative w-full z-[2] pt-[103px] pb-[clamp(1px,_15vw,_calc(var(--nadsa-laptop-width)*0.15))]">
           <div
             className="w-[clamp(1px,_82.71vw,_calc(var(--nadsa-laptop-width)*0.8271)] min-h-[100dvh] mx-auto flex flex-col relative z-[2]"
             style={{
@@ -122,7 +123,23 @@ const SpaceInvadersView = (props: any) => {
                             {numberFormatter(layer.multiplier, 2, true, { isZeroPrecision: true })}
                           </Multiple>
                           {
-                            currentGameData?.reward?.multiplier === layer.multiplier && (
+                            (() => {
+                              const rewardMultiplier = currentGameData?.reward?.multiplier;
+                              if (!rewardMultiplier) return false;
+
+                              const layerDiffs = data.map(l => ({
+                                layer: l,
+                                diff: Big(l.multiplier).minus(rewardMultiplier).toNumber()
+                              }));
+
+                              const positiveDiffs = layerDiffs.filter(item => item.diff > 0);
+                              if (positiveDiffs.length === 0) return false;
+
+                              const minPositiveDiff = Math.min(...positiveDiffs.map(item => item.diff));
+                              const targetLayer = positiveDiffs.find(item => item.diff === minPositiveDiff)?.layer;
+
+                              return targetLayer?.multiplier === layer.multiplier;
+                            })() && (
                               <NftBox nft={currentGameData?.reward} />
                             )
                           }
@@ -183,7 +200,7 @@ const SpaceInvadersView = (props: any) => {
               </div>
             </div>
           </div>
-          <div className="w-full absolute z-[1] translate-y-[clamp(calc(var(--nadsa-laptop-width)_*_-0.042),_-4.2vw,_1px)] h-[clamp(1px,_6.11vw,_calc(var(--nadsa-laptop-width)*0.0611))] border border-black bg-[linear-gradient(180deg,_#373B58_0%,_#212437_100%)]">
+          <div className="w-full absolute z-[1] translate-y-[clamp(calc(var(--nadsa-laptop-width)_*_-0.042),_-4.2vw,_1px)] h-[clamp(1px,_10.11vw,_calc(var(--nadsa-laptop-width)*0.1011))] border border-black bg-[linear-gradient(180deg,_#373B58_0%,_#212437_100%)]">
           </div>
           <img
             src="/images/arcade/space-invaders/bg-stairs2.png"
