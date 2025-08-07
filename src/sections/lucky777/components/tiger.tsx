@@ -18,6 +18,8 @@ import Notice from './notice';
 import NftT from './nftT';
 import Switch from './switch';
 import { sleep } from '@/sections/bridge/lib/util';
+import Xp from './xp';
+import Redeem from './redeem';
 dayjs.extend(duration);
 
 function getTimeLeftToUTC24() {
@@ -75,8 +77,10 @@ export default memo(function Tiger(props: any) {
   } = props;
 
   const [leftSpin, setLeftSpin] = useState(0);
+  const [xpBalance, setXpBalance] = useState(0);
+  const [xpLevel, setXpLevel] = useState(0);
 
-  
+
   const [WHEEL_SIZE, setWHEEL_SIZE] = useState(Number(chogStarrr?.remaining) > 0 ? 600 : 500);
   const [SpinCategories, setSpinCategories] = useState(Object.values(SPIN_CATEGORIES));
   const [SpinCategoryRotation, setSpinCategoryRotation] = useState(WHEEL_AREA / SpinCategories.length);
@@ -94,6 +98,8 @@ export default memo(function Tiger(props: any) {
   useEffect(() => {
     if (spinUserData) {
       setLeftSpin(spinUserData?.spin_balance);
+      setXpBalance(spinUserData?.xp_balance);
+      setXpLevel(spinUserData?.xp_level);
     }
   }, [spinUserData]);
 
@@ -405,6 +411,8 @@ export default memo(function Tiger(props: any) {
     // request api
     const res = await handleSpinResult();
 
+    
+
 
     if (!res) {
       // animations.leftWheelAnimation.pause();
@@ -423,6 +431,12 @@ export default memo(function Tiger(props: any) {
       ...animations,
       data: res,
     });
+
+    if (res.xp_changed) {
+      setXpBalance(res.xp_balance);
+      setXpLevel(res.xp_level);
+      setLeftSpin(res.spin_balance);
+    }
 
     if (machineSoundAudio) {
       machineSoundAudio.pause();
@@ -560,14 +574,16 @@ export default memo(function Tiger(props: any) {
         bottom: 0,
         marginBottom: '-2px',
         width: '765px',
-        height: '710px',
+        height: '750px',
         transform: `translate(-50%, 0) scale(${Math.min(size.height / 1000, 2)})`,
         transformOrigin: 'bottom center'
       }}>
         <Notice />
         <div className="absolute top-0 left-0 w-full h-full">
-          <img src="/images/lucky777/slot-machine.svg" alt="" className="w-full" />
+          <img src="/images/lucky777/xp/bg.png" alt="" className="w-full" />
         </div>
+        
+        <Xp data={spinUserData} xpBalance={xpBalance} xpLevel={xpLevel} />
 
         <div className={'ml-[10px] overflow-hidden absolute font-HackerNoonV2 text-[60px] leading-[110%] text-[#000] top-[20px] left-1/2 -translate-x-1/2 z-[2] w-[490px] h-[70px] flex flex-col items-center '}>
           <motion.div
@@ -611,7 +627,7 @@ export default memo(function Tiger(props: any) {
           </div>
         </div> */}
 
-        <div className="absolute w-[386px] h-[168px] left-1/2 top-[148px] -translate-x-1/2 overflow-hidden">
+        <div className="absolute w-[386px] h-[168px] left-1/2 top-[194px] -translate-x-1/2 overflow-hidden">
           {/*#region Left*/}
           <motion.div
             className="absolute left-0 top-1/2 translate-x-[calc(-50%_+_60px)] -translate-y-1/2 [perspective:1000px]"
@@ -721,7 +737,7 @@ export default memo(function Tiger(props: any) {
         </div>
 
         <motion.div
-          className="absolute top-[205px] left-[130px] z-[2] w-[64px] h-[50px] bg-[url('/images/lucky777/left-arrow.svg')] bg-top bg-contain bg-no-repeat"
+          className="absolute top-[250px] left-[130px] z-[2] w-[64px] h-[50px] bg-[url('/images/lucky777/left-arrow.svg')] bg-top bg-contain bg-no-repeat"
           key={spinning ? "spinning-left" : "static-left"}
           style={{
             transformOrigin: "left center",
@@ -738,7 +754,7 @@ export default memo(function Tiger(props: any) {
         />
 
         <motion.div
-          className="absolute top-[205px] right-[120px] z-[2] w-[64px] h-[50px] bg-[url('/images/lucky777/right-arrow.svg')] bg-top bg-contain bg-no-repeat"
+          className="absolute top-[250px] right-[120px] z-[2] w-[64px] h-[50px] bg-[url('/images/lucky777/right-arrow.svg')] bg-top bg-contain bg-no-repeat"
           key={spinning ? "spinning-right" : "static-right"}
           style={{
             transformOrigin: "right center",
@@ -759,10 +775,10 @@ export default memo(function Tiger(props: any) {
             type="button"
             data-bp="1009-009"
             data-click-sound
-            className="group absolute bottom-[280px] left-[190px] z-[4] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x1.svg')] bg-no-repeat bg-center bg-contain "
+            className="group absolute bottom-[270px] left-[190px] z-[4] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x1.svg')] bg-no-repeat bg-center bg-contain "
             animate={{
               backgroundImage:
-              leftSpin < 1 ? "url('/images/lucky777/multiple/x1-disabled.svg')" : multiple === 1 ? "url('/images/lucky777/multiple/x1-press.svg')" : "url('/images/lucky777/multiple/x1.svg')"
+                leftSpin < 1 ? "url('/images/lucky777/multiple/x1-disabled.svg')" : multiple === 1 ? "url('/images/lucky777/multiple/x1-press.svg')" : "url('/images/lucky777/multiple/x1.svg')"
             }}
             onClick={() => {
               if (leftSpin < 1) {
@@ -780,10 +796,10 @@ export default memo(function Tiger(props: any) {
             type="button"
             data-click-sound
             data-bp="1009-010"
-            className="absolute group bottom-[280px] left-[80px] z-[4] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x10.svg')] bg-no-repeat bg-center bg-contain "
+            className="absolute group bottom-[270px] left-[80px] z-[4] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x10.svg')] bg-no-repeat bg-center bg-contain "
             animate={{
               backgroundImage:
-              leftSpin < 10 ? "url('/images/lucky777/multiple/x10-disabled.svg')" : multiple === 10 ? "url('/images/lucky777/multiple/x10-press.svg')" : "url('/images/lucky777/multiple/x10.svg')"
+                leftSpin < 10 ? "url('/images/lucky777/multiple/x10-disabled.svg')" : multiple === 10 ? "url('/images/lucky777/multiple/x10-press.svg')" : "url('/images/lucky777/multiple/x10.svg')"
             }}
             onClick={() => {
               if (leftSpin < 10) {
@@ -801,10 +817,10 @@ export default memo(function Tiger(props: any) {
             type="button"
             data-bp="1009-011"
             data-click-sound
-            className="absolute group bottom-[320px] left-[150px] z-[2] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x50.svg')] bg-no-repeat bg-center bg-contain "
+            className="absolute group bottom-[310px] left-[150px] z-[2] w-[68px] h-[35px] bg-[url('/images/lucky777/multiple/x50.svg')] bg-no-repeat bg-center bg-contain "
             animate={{
               backgroundImage:
-              leftSpin < 50 ? "url('/images/lucky777/multiple/x50-disabled.svg')" : multiple === 50 ? "url('/images/lucky777/multiple/x50-press.svg')" : "url('/images/lucky777/multiple/x50.svg')"
+                leftSpin < 50 ? "url('/images/lucky777/multiple/x50-disabled.svg')" : multiple === 50 ? "url('/images/lucky777/multiple/x50-press.svg')" : "url('/images/lucky777/multiple/x50.svg')"
             }}
             onClick={() => {
               if (leftSpin < 50) {
@@ -819,7 +835,7 @@ export default memo(function Tiger(props: any) {
           </motion.button>
         </div>
 
-        <div data-click-sound className="absolute bottom-[290px] left-1/2 -translate-x-1/2 z-[2] w-[202px] h-[86px] flex flex-col items-center  max-w-full  bg-top bg-contain bg-no-repeat">
+        <div data-click-sound className="absolute bottom-[280px] left-1/2 -translate-x-1/2 z-[2] w-[202px] h-[86px] flex flex-col items-center  max-w-full  bg-top bg-contain bg-no-repeat">
           <motion.button
             data-bp="1009-008"
             ref={spinRef}
@@ -852,7 +868,7 @@ export default memo(function Tiger(props: any) {
             data-bp="1009-005"
             type="button"
             data-click-sound
-            className="absolute bottom-[320px] right-[140px] z-[2] w-[116px] h-[32px] bg-[url('/images/lucky777/rules.svg')] bg-no-repeat bg-center bg-contain "
+            className="absolute bottom-[310px] right-[140px] z-[2] w-[116px] h-[32px] bg-[url('/images/lucky777/rules.svg')] bg-no-repeat bg-center bg-contain "
             animate={{ backgroundImage: pressed2 ? "url('/images/lucky777/rules-press.svg')" : "url('/images/lucky777/rules.svg')" }}
             onClick={() => {
               setOpenRules(true);
@@ -865,7 +881,7 @@ export default memo(function Tiger(props: any) {
             data-bp="1009-006"
             type="button"
             data-click-sound
-            className="absolute bottom-[280px] right-[105px] z-[2] w-[136px] h-[32px] bg-[url('/images/lucky777/history-2.svg')] bg-no-repeat bg-center bg-contain"
+            className="absolute bottom-[270px] right-[105px] z-[2] w-[136px] h-[32px] bg-[url('/images/lucky777/history-2.svg')] bg-no-repeat bg-center bg-contain"
             animate={{ backgroundImage: pressed1 ? "url('/images/lucky777/history-2-press.svg')" : "url('/images/lucky777/history-2.svg')" }}
             onClick={() => {
               setOpenHistory(true);
@@ -878,39 +894,45 @@ export default memo(function Tiger(props: any) {
         {/* <div className={"absolute bottom-[80px] right-[145px] z-[2] w-[81px] h-[116px] bg-top bg-contain bg-no-repeat " + (spinUserData?.spin_balance > 0 ? "bg-[url('/images/lucky777/switch.svg')]" : "bg-[url('/images/lucky777/switch-no.svg')]")}>
         </div> */}
 
-        <div className="font-HackerNoonV2 w-[309px] h-[93px] absolute bottom-[80px] left-[200px] z-[2] px-[12px] py-[10px]">
-          <div className="flex items-center justify-between text-[20px]">
-            <div className="text-[#A5FFFD] ">Times:</div>
-            <div className="flex items-center gap-[2px] cursor-pointer" onClick={() => {
-              getSpinUserData();
-            }}>
-              <motion.svg
-                width="22"
-                height="22"
-                viewBox="0 0 22 22"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                animate={spinUserDataLoading ? { rotate: 360 } : { rotate: 0 }}
-                transition={spinUserDataLoading ? { repeat: Infinity, duration: 1, ease: "linear" } : { duration: 0 }}
-                style={{ originX: "50%", originY: "50%" }}
-              >
-                <path d="M10.7362 18.7455C6.88384 18.7455 3.74969 15.6543 3.74969 11.8543C3.74969 8.05504 6.88384 4.96387 10.7362 4.96387C11.903 4.96387 13.0591 5.25391 14.0796 5.8024C14.5804 6.07225 14.7684 6.69809 14.4985 7.19953C14.2313 7.70184 13.6057 7.88961 13.1021 7.61912C12.381 7.23111 11.5633 7.02637 10.7362 7.02637C8.021 7.02637 5.81219 9.19221 5.81219 11.8543C5.81219 14.5171 8.021 16.683 10.7362 16.683C12.9813 16.683 14.9418 15.1958 15.5029 13.0669C15.6492 12.5165 16.2145 12.1886 16.7639 12.333C17.3143 12.4787 17.6434 13.0426 17.4984 13.5933C16.6966 16.6264 13.9159 18.7455 10.7362 18.7455Z" fill="#6D7EA5" />
-                <path d="M17.1712 8.74491L15.2535 3.84239C15.1203 3.50186 14.6653 3.43891 14.4448 3.73067L11.1229 8.12637C10.9025 8.41813 11.087 8.83879 11.451 8.87403L16.6908 9.38084C17.0378 9.41457 17.2982 9.06975 17.1712 8.74491Z" fill="#6D7EA5" />
-              </motion.svg>
-              <span className="text-[#A5FFFD]">{leftSpin}</span></div>
-          </div>
+        <div className="font-HackerNoonV2 w-[349px] absolute bottom-[50px] left-[165px] z-[2] bg-[#31305A] rounded-[6px] p-[10px] border border-[#26274B]">
+          <div className='bg-[#000000] rounded-[6px] border border-[#414266]'>
+            <div className="flex items-center justify-between text-[20px] px-[10px] py-[5px] border-b border-[#A5FFFD5C]">
+              <div className="text-[#A5FFFD] ">Times:</div>
+              <div className="flex items-center gap-[2px] cursor-pointer" onClick={() => {
+                getSpinUserData();
+              }}>
+                <motion.svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 22 22"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  animate={spinUserDataLoading ? { rotate: 360 } : { rotate: 0 }}
+                  transition={spinUserDataLoading ? { repeat: Infinity, duration: 1, ease: "linear" } : { duration: 0 }}
+                  style={{ originX: "50%", originY: "50%" }}
+                >
+                  <path d="M10.7362 18.7455C6.88384 18.7455 3.74969 15.6543 3.74969 11.8543C3.74969 8.05504 6.88384 4.96387 10.7362 4.96387C11.903 4.96387 13.0591 5.25391 14.0796 5.8024C14.5804 6.07225 14.7684 6.69809 14.4985 7.19953C14.2313 7.70184 13.6057 7.88961 13.1021 7.61912C12.381 7.23111 11.5633 7.02637 10.7362 7.02637C8.021 7.02637 5.81219 9.19221 5.81219 11.8543C5.81219 14.5171 8.021 16.683 10.7362 16.683C12.9813 16.683 14.9418 15.1958 15.5029 13.0669C15.6492 12.5165 16.2145 12.1886 16.7639 12.333C17.3143 12.4787 17.6434 13.0426 17.4984 13.5933C16.6966 16.6264 13.9159 18.7455 10.7362 18.7455Z" fill="#6D7EA5" />
+                  <path d="M17.1712 8.74491L15.2535 3.84239C15.1203 3.50186 14.6653 3.43891 14.4448 3.73067L11.1229 8.12637C10.9025 8.41813 11.087 8.83879 11.451 8.87403L16.6908 9.38084C17.0378 9.41457 17.2982 9.06975 17.1712 8.74491Z" fill="#6D7EA5" />
+                </motion.svg>
+                <span className="text-[#A5FFFD]">{leftSpin}</span></div>
+            </div>
 
-          <div className="flex items-center justify-between mt-[10px]">
-            <div className="text-[#A5FFFD] text-[10px] text-left w-[220px]">1 free play available today – expires in {freeTimes.hours}:{freeTimes.minutes}:{freeTimes.seconds}</div>
-            <motion.button
-              data-bp="1009-007"
-              data-click-sound
-              type="button"
-              className=" w-[80px] h-[27px] bg-[#BFFF60] rounded-[6px] text-[14px] text-black border cursor-pointer"
-              onClick={() => {
-                setOpenBuyTimes(true)
-              }}
-            >Buy</motion.button>
+            <div className="flex items-center justify-between p-[10px]">
+              <div className="text-[#A5FFFD] text-[10px] text-left w-[220px] opacity-30">1 Free daily</div>
+              <motion.button
+                data-bp="1009-007"
+                data-click-sound
+                type="button"
+                className=" w-[80px] h-[27px] bg-[#BFFF60] rounded-[6px] text-[14px] text-black border cursor-pointer"
+                onClick={() => {
+                  setOpenBuyTimes(true)
+                }}
+              >Buy</motion.button>
+            </div>
+
+            <Redeem onRedeem={() => {
+              getSpinUserData();
+            }} />
           </div>
         </div>
 

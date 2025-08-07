@@ -25,7 +25,7 @@ export default function NftT(props: any) {
   }
 
   return (
-    <div className='absolute bottom-[80px] left-[40px] z-[2] w-[137px] h-[180px]'>
+    <div className='absolute bottom-[70px] left-[40px] z-[2] w-[137px] h-[180px]'>
       {
         nfts.map((nft, index) => (
           <div
