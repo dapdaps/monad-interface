@@ -43,7 +43,7 @@ export enum LayerStatus {
 export interface LayerRow {
   deathTileIndex?: number;
   multiplier: string;
-  tiles: 2;
+  tiles: number;
 
   // frontend only
   gameId: number;
@@ -92,6 +92,7 @@ export interface OpenTileRes {
   status: number;
   whitelist_reward?: string;
   rows?: LayerRow[];
+  seed?: string;
 }
 
 export enum RewardShowType {
