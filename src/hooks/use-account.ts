@@ -4,7 +4,7 @@ import { useAccount, Config, useConnectorClient } from "wagmi";
 import { DEFAULT_CHAIN_ID } from "@/configs";
 import useUser from '@/hooks/use-user';
 
-function clientToProvider(client: any) {
+export function clientToProvider(client: any) {
   if (!client) return null;
 
   try {

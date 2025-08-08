@@ -28,6 +28,9 @@ export function formatLongText(
   ending: number = 2
 ) {
   if (!text) return text;
+  if (typeof text !== "string") {
+    text = text + "";
+  }
   if (text.length <= front + ending) {
     return text;
   }

@@ -24,6 +24,7 @@ export const numberFormatter = (
     isShort?: boolean;
     isShortUppercase?: boolean;
     round?: Big.RoundingMode;
+    isLessPrecision?: boolean;
   }
 ): any => {
   const {
@@ -33,6 +34,7 @@ export const numberFormatter = (
     isShort,
     isShortUppercase,
     round = Big.roundHalfUp,
+    isLessPrecision = true,
   } = options || {};
 
   const isValid = () => {
@@ -64,7 +66,7 @@ export const numberFormatter = (
     };
   }
 
-  if (Big(value).lt(Big(10).pow(-precision))) {
+  if (isLessPrecision && Big(value).lt(Big(10).pow(-precision))) {
     if (isSimple) {
       return `< ${prefix}${Big(10).pow(-precision).toFixed(precision, round)}`;
     }
