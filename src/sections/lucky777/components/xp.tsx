@@ -28,7 +28,7 @@ export default function Xp({ data, xpBalance, xpLevel }: { data: any, xpBalance:
 
                     <div
                         className="h-[24px] bg-[#C6FF60] rounded-[12px] absolute left-0 top-1/2 -translate-y-1/2 border-2 border-[#2F3163] [box-shadow:0px_-4px_0px_0px_#00000080_inset]"
-                        style={{ width: `${(xpValue / maxXp) * 100}%`, minWidth: '40px', transition: 'width 0.3s' }}
+                        style={{ width: `${(Math.min(xpValue / maxXp, 1)) * 100}%`, minWidth: '40px', transition: 'width 0.3s' }}
                     />
 
                     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full flex justify-center  text-[18px] items-center z-10 text-black">
