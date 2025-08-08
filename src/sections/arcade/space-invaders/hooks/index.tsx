@@ -623,13 +623,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         if ([LastGameStatus.Win].includes(res.data.status)) {
           // check end_hash
           if (!res.data.end_hash) {
-            // if gameChainId does not exist, re-upload to the chain
-            if (Big(gameChainId || 0).eq(0)) {
-              setGameStarted(true);
-            }
-            else {
-              // Backend block crawling
-            }
+            setGameStarted(true);
           }
         }
       }
