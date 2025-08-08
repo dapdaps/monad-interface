@@ -67,7 +67,7 @@ const Nft = (props: any) => {
               <div className="flex-1 w-0">
                 <div className="flex w-full items-center justify-between">
                   <div className="text-[18px]">
-                    {nft.category} #{nft.id}
+                    {nft.category} {!!nft.token_id ? `#${nft.token_id}` : ""}
                   </div>
                   {
                     !nft.token_address ? (
