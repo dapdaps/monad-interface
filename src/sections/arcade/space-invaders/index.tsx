@@ -31,7 +31,7 @@ const SpaceInvadersView = (props: any) => {
   return (
     <SpaceInvadersContextProvider value={{ ...spaceInvaders, ...userData}}>
       <div ref={containerRef} className="w-full h-screen overflow-y-auto bg-[#010101] relative">
-        <Starfield className="!fixed !z-[0]" bgColor="#010101" />
+        <Starfield className="!fixed !z-[0]" bgColor="#010101" numStars={500} />
         <motion.img
           src="/images/arcade/space-invaders/monad-moon.png"
           alt=""

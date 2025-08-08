@@ -172,7 +172,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
           title: "Prepare game failed",
           text: errorMessage.includes("InternalRpcError")
             ? "Network error, please try again later"
-            : errorMessage,
+            : "Insufficient balance to pay gas",
         }, "bottom-right");
         return;
       }
@@ -269,6 +269,10 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
           title: "Start game failed",
           text: res.message || "Please try again later",
         }, "bottom-right");
+        // created game failed
+        if (res.message === "You hava a Death Fun currently ongoing") {
+          getLastGame();
+        }
         return;
       }
       await onChainGameStart({

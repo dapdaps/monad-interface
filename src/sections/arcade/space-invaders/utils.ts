@@ -49,7 +49,7 @@ export const requestContract = async (requestParams: RequestContractParams): Pro
     }
   }
 
-  const maxRetries = 3;
+  const maxRetries = 1;
   let lastError: any;
 
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
