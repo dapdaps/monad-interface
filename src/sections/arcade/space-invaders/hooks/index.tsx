@@ -14,6 +14,7 @@ import { Contract, utils } from "ethers";
 import { useBlockNumber } from "wagmi";
 import { useSoundStore } from "@/stores/sound";
 import { DEFAULT_CHAIN_ID } from "@/configs";
+import { useSpaceInvadersStore } from "../store";
 
 export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { } = props ?? {};
@@ -23,6 +24,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { accountWithAk, provider, account } = usePrivyAccount();
   const { data: blockNumber } = useBlockNumber({ watch: true });
   const soundStore = useSoundStore();
+  const spaceInvadersStore: any = useSpaceInvadersStore();
 
   const containerRef = useRef<any>(null);
   const unLockedLayerRef = useRef<any>(null);
@@ -55,8 +57,6 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const [rewardData, setRewardData] = useState<any>();
   // Rules modal
   const [rulesVisible, setRulesVisible] = useState<boolean>(false);
-  // ghost avatar
-  const [ghostAvatar, setGhostAvatar] = useState<any>(GHOST_AVATARS[0]);
 
   const [gameLost, gameWon, currentLayer, currentWinLayer] = useMemo<[boolean, boolean, LayerRow | undefined, LayerRow | undefined]>(() => {
     return [
@@ -395,10 +395,10 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       return result;
     }
 
-    // get random ghost avatar
-    const randomInt = Math.floor(Math.random() * 100);
-    const newGhostAvatar = randomInt % 2 === 0 ? GHOST_AVATARS[0] : GHOST_AVATARS[1];
-    setGhostAvatar(newGhostAvatar);
+    // reset ghost avatar
+    spaceInvadersStore.set({
+      ghostAvatar: GHOST_AVATARS[0],
+    });
 
     let toastId: any = toast.loading({
       title: "Opening...",
@@ -476,6 +476,12 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
 
     // is ghost
     // game over
+    const randomInt = Math.floor(Math.random() * 100);
+    const newGhostAvatar = randomInt % 2 === 0 ? GHOST_AVATARS[0] : GHOST_AVATARS[1];
+    spaceInvadersStore.set({
+      ghostAvatar: newGhostAvatar,
+    });
+
     currentLayer.status = LayerStatus.Failed;
     toast.fail({
       title: "Kaboom! Invader got you",
@@ -864,7 +870,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     handleBindDiscord,
     rulesVisible,
     setRulesVisible,
-    ghostAvatar,
+    ghostAvatar: spaceInvadersStore.ghostAvatar,
   };
 };
 
