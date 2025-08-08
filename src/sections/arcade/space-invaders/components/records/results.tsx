@@ -120,9 +120,10 @@ const Results = (props: any) => {
       width: 80,
       render: (text: any, record: any, idx: number) => {
         const resultMON = Big(record.bet_amount || 0).times(record.final_multiplier || 1);
+        const finalMON = record.status === LastGameStatus.Lose ? Big(0).minus(record.bet_amount || 0) : resultMON;
         return (
           <div className={clsx(record.status === LastGameStatus.Lose ? "text-[#FF4A4A]" : "text-[#BFFF60]")}>
-            {numberFormatter(record.status === LastGameStatus.Lose ? Big(0).minus(record.bet_amount || 0) : resultMON, 2, true, { isLessPrecision: false, prefix: record.status === LastGameStatus.Lose ? "" : (Big(resultMON).gte(0) ? "+" : "") })}
+            {numberFormatter(finalMON, 2, true, { round: Big.roundDown, isLessPrecision: false, prefix: record.status === LastGameStatus.Lose ? "" : (Big(resultMON).gte(0) ? "+" : "") })}
           </div>
         );
       },
@@ -149,22 +150,25 @@ const Results = (props: any) => {
       dataIndex: "payout TX",
       width: 95,
       render: (text: any, record: any, idx: number) => {
+        if (record.status === LastGameStatus.Lose) {
+          return "-";
+        }
         return (
           <div className="flex items-center gap-[20px] pl-[4px]">
             <button
               type="button"
               className="w-[12px] h-[12px] flex-0 bg-[url('/images/game/icon-link.png')] bg-no-repeat bg-center bg-contain"
               onClick={async () => {
-                window.open(`${monadTestnet.blockExplorers?.default.url}/tx/${record.create_hash}`, "_blank");
+                window.open(`${monadTestnet.blockExplorers?.default.url}/tx/${record.end_hash}`, "_blank");
               }}
             />
             <button
               type="button"
               className="w-[12px] h-[12px] flex-0 bg-[url('/images/arcade/space-invaders/icon-copy.png')] bg-no-repeat bg-center bg-contain"
               onClick={async () => {
-                navigator.clipboard.writeText(record.create_hash as string);
+                navigator.clipboard.writeText(record.end_hash as string);
                 toast.success({
-                  title: `Copied payout tx ${record.create_hash}`,
+                  title: `Copied payout tx ${record.end_hash}`,
                 }, "bottom-right");
               }}
             />
