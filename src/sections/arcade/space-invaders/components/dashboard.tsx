@@ -249,7 +249,7 @@ const Dashboard = (props: any) => {
         )
       }
       {
-        allNFTList?.length && (
+        !!allNFTList?.length && (
           <div
             className="absolute right-[clamp(calc(var(--nadsa-laptop-width)_*_-0.16),_-16vw,_1px)] bottom-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))] pl-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))] pt-[clamp(1px,_1.8vw,_calc(var(--nadsa-laptop-width)*0.018))] pr-[clamp(1px,_0.85vw,_calc(var(--nadsa-laptop-width)*0.0085))] w-[clamp(1px,_16vw,_calc(var(--nadsa-laptop-width)*0.16))] h-[clamp(1px,_13.894vw,_calc(var(--nadsa-laptop-width)*0.13894))] bg-[url('/images/arcade/space-invaders/nft-board.png')] bg-no-repeat bg-left bg-contain"
           >
