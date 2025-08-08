@@ -123,7 +123,7 @@ body {
     -webkit-text-stroke: 1px #e1ff0a;
   }
   .text-stroke-1-836EF9 {
-    -webkit-text-stroke: 1px #836EF9;
+    -webkit-text-stroke: 1px #836ef9;
   }
 
   .scrollbar-hide {
@@ -176,10 +176,10 @@ body {
 button,
 a,
 .cursor-pointer {
-  cursor: url("../../public/images/cursor.svg") 10 6, auto !important;
+  cursor: url("/images/cursor.svg") 10 6, auto !important;
 }
 .cursor-pointer.terminal {
-  cursor: url("../../public/images/cursor-terminal.svg"), auto !important;
+  cursor: url("/images/cursor-terminal.svg"), auto !important;
 }
 
 body::-webkit-scrollbar,
@@ -197,7 +197,7 @@ body::-webkit-scrollbar-thumb,
 div::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.1);
   border-radius: 6px;
-  cursor: url("../../public/images/cursor.svg") 12 0, auto;
+  cursor: url("/images/cursor.svg") 12 0, auto;
 }
 body::-webkit-scrollbar-thumb:hover,
 div::-webkit-scrollbar-thumb:hover {
@@ -322,7 +322,7 @@ input[type="number"]::-webkit-inner-spin-button {
   width: 100%;
   white-space: nowrap;
   color: white;
-  background: #BFFF60;
+  background: #bfff60;
   overflow: hidden;
   clip: rect(0, 900px, 0, 0);
 }
@@ -377,10 +377,11 @@ input[type="number"]::-webkit-inner-spin-button {
   }
 }
 
-
 .animate {
   animation: l11 1s infinite linear;
 }
-@keyframes l11{ 
-  100%{transform: rotate(1turn)}
+@keyframes l11 {
+  100% {
+    transform: rotate(1turn);
+  }
 }

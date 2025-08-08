@@ -41,22 +41,9 @@ export function readClipboard() {
   try {
     return navigator.clipboard.readText();
   } catch (err) {
-    console.log('read clipboard failed: %o', err);
+    console.log("read clipboard failed: %o", err);
   }
-  return Promise.resolve('');
-}
-
-
-export function getProtocolIcon(protocal) {
-  const ImageMapping = {
-    infrared: "/images/dapps/infrared/infrared.svg",
-    bex: "/images/dapps/bex.svg",
-    kodiak: "/images/dapps/kodiak.svg",
-    berps: "/images/dapps/infrared/berps.svg",
-    aquabera: "/images/dapps/infrared/aquabera.png",
-    hub: "/images/dapps/bex.svg"
-  }
-  return ImageMapping?.[protocal?.toLocaleLowerCase()] ?? "/images/dapps/dolomite.svg"
+  return Promise.resolve("");
 }
 
 export const isVideoFile = (url: string) => {
@@ -67,11 +54,11 @@ export const isVideoFile = (url: string) => {
     if (!fileExtMatch) return false;
 
     const extension = fileExtMatch[1].toLowerCase();
-    const videoExtensions = ['mp4', 'webm', 'ogg'];
+    const videoExtensions = ["mp4", "webm", "ogg"];
     return videoExtensions.includes(extension);
   } catch (e) {
-    const videoExtensions = ['.mp4', '.webm', '.ogg'];
-    return videoExtensions.some(ext => url.toLowerCase().includes(ext));
+    const videoExtensions = [".mp4", ".webm", ".ogg"];
+    return videoExtensions.some((ext) => url.toLowerCase().includes(ext));
   }
 };
 
@@ -87,10 +74,10 @@ export function base64ToBlob(base64Data: string) {
   return [new Blob([arrayBuffer], { type: imageType }), imageType.slice(6)];
 }
 
-export async function uploadFile(file: File | Blob, url: string = '/upload') {
+export async function uploadFile(file: File | Blob, url: string = "/upload") {
   try {
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append("file", file);
 
     const response = await postFile(url, formData);
 
@@ -99,23 +86,20 @@ export async function uploadFile(file: File | Blob, url: string = '/upload') {
     } else {
       throw new Error(response.message);
     }
-
   } catch (error) {
-    console.error('uplaod fail:', error);
+    console.error("uplaod fail:", error);
     throw error;
   }
 }
 
 export function shareToX(text: string, link?: string) {
-  let xPath = `https://x.com/intent/tweet?text=${text}`
+  let xPath = `https://x.com/intent/tweet?text=${text}`;
   if (link) {
-    xPath += `&url=${encodeURIComponent(link)}`
+    xPath += `&url=${encodeURIComponent(link)}`;
   }
   window.open(xPath);
 }
 
-
-  
 export function capitalize(str: string) {
   if (!str) return str;
   return str.charAt(0).toUpperCase() + str.substring(1);
