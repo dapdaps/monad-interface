@@ -132,7 +132,7 @@ const Results = (props: any) => {
       dataIndex: "multiplier",
       width: 90,
       render: (text: any, record: any, idx: number) => {
-        return numberFormatter(record.final_multiplier, 2, true) + "x";
+        return numberFormatter(record.status === LastGameStatus.Lose ? 0 :record.final_multiplier, 2, true) + "x";
       },
     },
     {
