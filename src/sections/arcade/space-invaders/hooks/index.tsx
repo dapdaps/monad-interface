@@ -498,6 +498,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     setCurrentGameData((prev) => {
       const _currentGameData = { ...prev };
       _currentGameData.status = LastGameStatus.Lose;
+      _currentGameData.seed = response.seed;
       return _currentGameData;
     });
     playSoundEffect(SoundEffectType.Death);
