@@ -14,6 +14,7 @@ const Door = (props: any) => {
     gameStarted,
     playSoundEffect,
     gameLost,
+    ghostAvatar,
   } = useSpaceInvadersContext();
 
   const [leftRef, leftAnimate] = useAnimate();
@@ -97,7 +98,7 @@ const Door = (props: any) => {
           layer?.deathTileIndex === tileIndex && (
             <>
               <motion.img
-                src="/images/arcade/space-invaders/ghost.png"
+                src={ghostAvatar}
                 alt=""
                 className="w-[clamp(1px,_4.86vw,_calc(var(--nadsa-laptop-width)*0.0486))] h-[clamp(1px,_4.86vw,_calc(var(--nadsa-laptop-width)*0.0486))] object-center object-contain absolute"
                 style={{

@@ -4,7 +4,7 @@ import { useRequest, useDebounceFn } from "ahooks";
 import { cloneDeep } from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { get, post } from '@/utils/http';
-import { EndGameRes, GAME_CONTRACT_ADDRESS, LastGame, LastGameStatus, Layer, LayerRow, LayerStatus, NFTItem, OpenTileRes, RewardShowType, SoundEffectType, StartGameRes } from "../config";
+import { EndGameRes, GAME_CONTRACT_ADDRESS, GHOST_AVATARS, LastGame, LastGameStatus, Layer, LayerRow, LayerStatus, NFTItem, OpenTileRes, RewardShowType, SoundEffectType, StartGameRes } from "../config";
 import Big from "big.js";
 import { requestContract } from "../utils";
 import { GAME_ABI } from "../abi";
@@ -55,6 +55,8 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const [rewardData, setRewardData] = useState<any>();
   // Rules modal
   const [rulesVisible, setRulesVisible] = useState<boolean>(false);
+  // ghost avatar
+  const [ghostAvatar, setGhostAvatar] = useState<any>(GHOST_AVATARS[0]);
 
   const [gameLost, gameWon, currentLayer, currentWinLayer] = useMemo<[boolean, boolean, LayerRow | undefined, LayerRow | undefined]>(() => {
     return [
@@ -392,6 +394,11 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     if (currentLayer.status !== LayerStatus.Unlocked || !gameStarted || !currentGameData || cashOutPending) {
       return result;
     }
+
+    // get random ghost avatar
+    const randomInt = Math.floor(Math.random() * 100);
+    const newGhostAvatar = randomInt % 2 === 0 ? GHOST_AVATARS[0] : GHOST_AVATARS[1];
+    setGhostAvatar(newGhostAvatar);
 
     let toastId: any = toast.loading({
       title: "Opening...",
@@ -857,6 +864,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     handleBindDiscord,
     rulesVisible,
     setRulesVisible,
+    ghostAvatar,
   };
 };
 
@@ -913,4 +921,5 @@ export interface SpaceInvaders {
   handleBindDiscord: (nft: NFTItem) => void;
   rulesVisible: boolean;
   setRulesVisible: (visible: boolean) => void;
+  ghostAvatar: string;
 }
