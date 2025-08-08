@@ -5,7 +5,7 @@ export const GAME_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_API === "https://te
 
 export const GHOST_AVATARS = [
   "/images/arcade/space-invaders/ghost.png",
-  "/images/arcade/space-invaders/ghost-ball.png",
+  "/images/arcade/space-invaders/keone.png",
 ];
 
 export const NFT_AVATARS: any = {
