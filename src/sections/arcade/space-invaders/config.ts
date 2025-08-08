@@ -1,6 +1,11 @@
 export const GAME_CONTRACT_ADDRESS = "0xA55DfF58C456e0bBEaF5088bD25BF7E404C86186";
 export const GAME_ADMIN_ADDRESS = "0xC5813B10E363F8264085391383664776f9931444";
 
+export const GHOST_AVATARS = [
+  "/images/arcade/space-invaders/ghost.png",
+  "/images/arcade/space-invaders/ghost-ball.png",
+];
+
 export const NFT_AVATARS: any = {
   "SpaceInvaders": "/images/arcade/space-invaders/nfts/SpaceInvaders.png",
   "Blocknads": "/images/arcade/space-invaders/nfts/Blocknads.png",
