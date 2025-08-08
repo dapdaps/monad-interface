@@ -349,7 +349,19 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         // end game success
         // report to server
         onReportServer("/game/deathfun/end/transaction", currentGameData.game_id as string, contractRes.transactionHash as string).then(() => {
-          getLastGame();
+          // show all ghosts
+          const _selectedTiles = currentGameData.selected_tiles || [];
+          const _rows: LayerRow[] = formatRows(
+            res.data.rows || [],
+            _selectedTiles,
+            (currentGame?.id || -1) as number
+          );
+          setData(cloneDeep(_rows || []));
+          setCurrentGameData((prev) => {
+            const _currentGameData = { ...prev };
+            _currentGameData.status = LastGameStatus.Win;
+            return _currentGameData;
+          });
         });
 
         setGameStarted(false);
@@ -373,7 +385,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     const currentLayerIndex: number = _data.findIndex((_it) => _it.multiplier === layer.multiplier);
     const currentLayer: LayerRow = _data[currentLayerIndex];
 
-    if (currentLayer.status !== LayerStatus.Unlocked || !gameStarted || !currentGameData) {
+    if (currentLayer.status !== LayerStatus.Unlocked || !gameStarted || !currentGameData || cashOutPending) {
       return result;
     }
 
@@ -408,6 +420,8 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     result.isOpen = true;
 
     currentLayer.deathTileIndex = response.currentRow.deathTileIndex;
+    let _selectedTiles = currentGameData.selected_tiles || [];
+    _selectedTiles[_data.length - 1 - currentLayerIndex] = tileIndex;
     setCurrentGameData((prev) => {
       const _currentGameData = { ...prev };
       if (!_currentGameData.selected_tiles) {
@@ -455,9 +469,20 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     toast.fail({
       title: "Kaboom! Invader got you",
     }, "bottom-right");
-    setData(_data);
+    // setData(_data);
     setGameStarted(false);
-    getLastGame();
+    // show all ghosts
+    const _rows: LayerRow[] = formatRows(
+      response.rows || [],
+      _selectedTiles,
+      (currentGame?.id || -1) as number
+    );
+    setData(cloneDeep(_rows || []));
+    setCurrentGameData((prev) => {
+      const _currentGameData = { ...prev };
+      _currentGameData.status = LastGameStatus.Lose;
+      return _currentGameData;
+    });
     playSoundEffect(SoundEffectType.Death);
 
     // Set failed ghost position and visibility
@@ -600,7 +625,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
           if (!res.data.end_hash) {
             // if gameChainId does not exist, re-upload to the chain
             if (Big(gameChainId || 0).eq(0)) {
-
+              setGameStarted(true);
             }
             else {
               // Backend block crawling

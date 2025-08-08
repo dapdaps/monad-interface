@@ -84,6 +84,7 @@ export interface OpenTileRes {
   nextRow: LayerRow;
   status: number;
   whitelist_reward?: string;
+  rows?: LayerRow[];
 }
 
 export enum RewardShowType {
