@@ -12,12 +12,13 @@ export default function Xp({ data, xpBalance, xpLevel }: { data: any, xpBalance:
 
     return (
         <>
-            <div className="absolute top-[135px] left-[50%] -translate-x-1/2 z-[2] w-[335px] h-[24px] cursor-pointer" onClick={() => setOpen(true)}>
+            <div className="absolute top-[135px] left-[50%] -translate-x-1/2 z-[2] w-[335px] h-[24px]" >
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 flex items-center z-10">
                     <img
                         src={`${IMG_PATH}level-${level}.png`}
                         alt="xp-star"
                         className="w-[75px] h-[55px] cursor-pointer ml-[-70%]"
+                        onClick={() => setOpen(true)}
                     />
                 </div>
                 <div className="w-full relative h-full items-center font-HackerNoonV2">
