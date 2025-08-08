@@ -119,7 +119,7 @@ const Results = (props: any) => {
       dataIndex: "result",
       width: 80,
       render: (text: any, record: any, idx: number) => {
-        const resultMON = Big(record.bet_amount || 0).times(record.final_multiplier || 1).minus(record.bet_amount || 0);
+        const resultMON = Big(record.bet_amount || 0).times(record.final_multiplier || 1);
         return (
           <div className={clsx(record.status === LastGameStatus.Lose ? "text-[#FF4A4A]" : "text-[#BFFF60]")}>
             {numberFormatter(record.status === LastGameStatus.Lose ? Big(0).minus(record.bet_amount || 0) : resultMON, 2, true, { isLessPrecision: false, prefix: record.status === LastGameStatus.Lose ? "" : (Big(resultMON).gte(0) ? "+" : "") })}
