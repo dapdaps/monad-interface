@@ -51,7 +51,7 @@ const Entry: React.FC<any> = () => {
                 scale: 1.11,
               }}
             >
-              <img src="/images/game/space-invaders.png" className='w-full h-full absolute top-0 left-0 ' />
+              <img src="/images/game/space-invaders2.png" className='w-full h-full absolute top-0 left-0 ' />
               <motion.div
                 className="w-[clamp(1px,_31.74vw,_calc(var(--nadsa-laptop-width)*0.3174))] h-[clamp(1px,_40.35vw,_calc(var(--nadsa-laptop-width)*0.4035))] absolute z-[2] top-[clamp(calc(var(--nadsa-laptop-width)*-0.02),_-2vw,_1px)] right-[clamp(calc(var(--nadsa-laptop-width)*-0.03),_-3vw,_1px)] bg-[url('/images/game/space-invaders-coins2.png')] bg-no-repeat bg-center bg-contain"
                 animate={{
