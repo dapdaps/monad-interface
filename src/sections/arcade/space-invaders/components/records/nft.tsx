@@ -28,7 +28,7 @@ const Nft = (props: any) => {
   return (
     <motion.div
       key="results"
-      className={clsx("pt-[30px] px-[48px] flex flex-col gap-[10px] items-stretch", className)}
+      className={clsx("pt-[30px] px-[48px] flex flex-col gap-[10px] items-stretch max-h-[50dvh] overflow-y-auto", className)}
       initial={{ opacity: 0, x: 10 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 10 }}
