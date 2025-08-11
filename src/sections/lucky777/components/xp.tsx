@@ -61,7 +61,7 @@ export default function Xp({ data, xpBalance, xpLevel, maxXp }: { data: any, xpB
                     {
                         !maxThan8 && (
                             <img
-                                src={`${IMG_PATH}prize-${level}.png`}
+                                src={`${IMG_PATH}prize-${level}-1.png`}
                                 alt="xp-token"
                                 className="h-[42px] cursor-pointer"
                             />
@@ -70,7 +70,7 @@ export default function Xp({ data, xpBalance, xpLevel, maxXp }: { data: any, xpB
                     {
                         maxThan8 && (
                             <img
-                                src={`${IMG_PATH}prize-${prizeImg}.png`}
+                                src={`${IMG_PATH}prize-${prizeImg}-1.png`}
                                 alt="xp-token"
                                 className="h-[42px] cursor-pointer"
                             />
