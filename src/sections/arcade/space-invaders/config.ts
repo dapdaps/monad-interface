@@ -1,5 +1,12 @@
-export const GAME_CONTRACT_ADDRESS = "0xA55DfF58C456e0bBEaF5088bD25BF7E404C86186";
-export const GAME_ADMIN_ADDRESS = "0xC5813B10E363F8264085391383664776f9931444";
+export const GAME_CONTRACT_ADDRESS_TEST = "0xA55DfF58C456e0bBEaF5088bD25BF7E404C86186";
+export const GAME_CONTRACT_ADDRESS_PROD = "0x757163592151B66057050A3224EfC12663855612";
+
+export const GAME_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_API === "https://testnet-api-monad.dapdap.net" ? GAME_CONTRACT_ADDRESS_PROD : GAME_CONTRACT_ADDRESS_TEST;
+
+export const GHOST_AVATARS = [
+  "/images/arcade/space-invaders/ghost.png",
+  "/images/arcade/space-invaders/keone.png",
+];
 
 export const NFT_AVATARS: any = {
   "SpaceInvaders": "/images/arcade/space-invaders/nfts/SpaceInvaders.png",
@@ -36,7 +43,7 @@ export enum LayerStatus {
 export interface LayerRow {
   deathTileIndex?: number;
   multiplier: string;
-  tiles: 2;
+  tiles: number;
 
   // frontend only
   gameId: number;
@@ -85,6 +92,7 @@ export interface OpenTileRes {
   status: number;
   whitelist_reward?: string;
   rows?: LayerRow[];
+  seed?: string;
 }
 
 export enum RewardShowType {

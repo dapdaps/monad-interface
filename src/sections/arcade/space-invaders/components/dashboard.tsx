@@ -198,7 +198,7 @@ const Dashboard = (props: any) => {
                   </div>
                 )
               }
-              <div className="flex justify-between items-center gap-[clamp(1px,_5.42vw,_calc(var(--nadsa-laptop-width)*0.0542))] pt-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))] pl-[clamp(1px,_2.22vw,_calc(var(--nadsa-laptop-width)*0.0222))] pr-[clamp(1px,_4.1vw,_calc(var(--nadsa-laptop-width)*0.041))]">
+              <div className="whitespace-nowrap flex justify-between items-center gap-[clamp(1px,_5.42vw,_calc(var(--nadsa-laptop-width)*0.0542))] pt-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))] pl-[clamp(1px,_2.22vw,_calc(var(--nadsa-laptop-width)*0.0222))] pr-[clamp(1px,_4.1vw,_calc(var(--nadsa-laptop-width)*0.041))]">
                 <button
                   type="button"
                   className="disabled:opacity-50 disabled:!cursor-not-allowed flex items-center gap-[clamp(1px,_0.49vw,_calc(var(--nadsa-laptop-width)*0.0049))] text-[#8A87AA] text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] font-[400] leading-[100%] font-[SpaceGrotesk]"
@@ -249,7 +249,7 @@ const Dashboard = (props: any) => {
         )
       }
       {
-        allNFTList?.length && (
+        !!allNFTList?.length && (
           <div
             className="absolute right-[clamp(calc(var(--nadsa-laptop-width)_*_-0.16),_-16vw,_1px)] bottom-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))] pl-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))] pt-[clamp(1px,_1.8vw,_calc(var(--nadsa-laptop-width)*0.018))] pr-[clamp(1px,_0.85vw,_calc(var(--nadsa-laptop-width)*0.0085))] w-[clamp(1px,_16vw,_calc(var(--nadsa-laptop-width)*0.16))] h-[clamp(1px,_13.894vw,_calc(var(--nadsa-laptop-width)*0.13894))] bg-[url('/images/arcade/space-invaders/nft-board.png')] bg-no-repeat bg-left bg-contain"
           >

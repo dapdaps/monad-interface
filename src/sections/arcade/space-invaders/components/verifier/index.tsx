@@ -1,6 +1,5 @@
 import clsx from "clsx";
 import { useSpaceInvadersContext } from "../../context";
-import { useEffect } from "react";
 
 const Verifier = (props: any) => {
   const { className } = props;
@@ -12,17 +11,6 @@ const Verifier = (props: any) => {
     getChainGameId,
     getChainGameDetails,
   } = useSpaceInvadersContext();
-
-  useEffect(() => {
-    if (!currentGameData?.game_id) {
-      return;
-    }
-    getChainGameId?.(currentGameData.game_id).then((res) => {
-      getChainGameDetails?.(res.chainGameId).then((res) => {
-        // console.log("res: %o", res);
-      });
-    });
-  }, [currentGameData]);
 
   return (
     <div className="font-[Montserrat] text-[14px] font-[600] text-white leading-[150%] px-[26px]">

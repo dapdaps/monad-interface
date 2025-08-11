@@ -52,7 +52,7 @@ const Nft = (props: any) => {
               </div>
             </div>
           </div>
-        )) : userNfts?.length ? userNfts?.map((nft: any, index: number) => {
+        )) : !!userNfts?.length ? userNfts?.map((nft: any, index: number) => {
           const nftAvatar = NFT_AVATARS[nft.category];
           return (
             <div

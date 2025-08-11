@@ -128,30 +128,28 @@ const InvitationViewLaptop = (props: any) => {
 
   return (
     <motion.div ref={scopeInvitation} className="fixed top-0 left-0 w-screen h-screen z-[101]">
-      <div className="relative z-[2] w-full h-full flex justify-center items-stretch">
-        <div className="flex-1 h-full bg-black bg-[url('/images/invitation/bg-wall.png')] bg-no-repeat bg-cover bg-bottom" style={wallStyles}></div>
-        <motion.div ref={gateRef} className="w-[94.45vw] min-w-[1772px] h-full shrink-0 bg-[url('/images/invitation/bg-gate-full.png')] bg-no-repeat bg-cover bg-bottom">
-          <motion.div ref={scopeCodePad} className="flex flex-col justify-end items-center gap-[14px] w-full h-full">
-            <Rules />
-            <Code />
-          </motion.div>
-        </motion.div>
-        <div className="flex-1 h-full bg-black bg-[url('/images/invitation/bg-wall.png')] bg-no-repeat bg-cover bg-bottom" style={wallStyles}></div>
-      </div>
+      <motion.img
+        ref={gateRef}
+        src="/images/invitation/bg-gate-full2.png"
+        alt=""
+        className="w-[100vw] h-[100vh] absolute z-[2] left-0 top-0"
+      />
       <motion.img
         ref={scopeLeftDoor}
         src="/images/invitation/bg-door-left.png"
         alt=""
-        className="invitation-bg-door invitation-bg-door-left absolute z-[1] object-contain object-right"
-        style={doorLeftStyles}
+        className="w-[43.8326vw] h-[68.8844vh] absolute z-[1] left-[8.89vw] top-[17.5vh]"
       />
       <motion.img
         ref={scopeRightDoor}
         src="/images/invitation/bg-door-right.png"
         alt=""
-        className="invitation-bg-door invitation-bg-door-right absolute z-[1] object-contain object-left"
-        style={doorRightStyles}
+        className="w-[43.9569vw] h-[68.7922vh] absolute z-[1] right-[8.76vw] top-[17.5vh]"
       />
+      <motion.div ref={scopeCodePad} className="flex flex-col justify-end items-center gap-[14px] w-full h-full relative z-[3]">
+        <Rules />
+        <Code />
+      </motion.div>
     </motion.div>
   );
 };

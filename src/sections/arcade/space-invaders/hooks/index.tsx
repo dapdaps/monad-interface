@@ -4,7 +4,7 @@ import { useRequest, useDebounceFn } from "ahooks";
 import { cloneDeep } from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { get, post } from '@/utils/http';
-import { EndGameRes, GAME_CONTRACT_ADDRESS, LastGame, LastGameStatus, Layer, LayerRow, LayerStatus, NFTItem, OpenTileRes, RewardShowType, SoundEffectType, StartGameRes } from "../config";
+import { EndGameRes, GAME_CONTRACT_ADDRESS, GHOST_AVATARS, LastGame, LastGameStatus, Layer, LayerRow, LayerStatus, NFTItem, OpenTileRes, RewardShowType, SoundEffectType, StartGameRes } from "../config";
 import Big from "big.js";
 import { requestContract } from "../utils";
 import { GAME_ABI } from "../abi";
@@ -14,6 +14,7 @@ import { Contract, utils } from "ethers";
 import { useBlockNumber } from "wagmi";
 import { useSoundStore } from "@/stores/sound";
 import { DEFAULT_CHAIN_ID } from "@/configs";
+import { useSpaceInvadersStore } from "../store";
 
 export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { } = props ?? {};
@@ -23,6 +24,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { accountWithAk, provider, account } = usePrivyAccount();
   const { data: blockNumber } = useBlockNumber({ watch: true });
   const soundStore = useSoundStore();
+  const spaceInvadersStore: any = useSpaceInvadersStore();
 
   const containerRef = useRef<any>(null);
   const unLockedLayerRef = useRef<any>(null);
@@ -172,7 +174,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
           title: "Prepare game failed",
           text: errorMessage.includes("InternalRpcError")
             ? "Network error, please try again later"
-            : errorMessage,
+            : "Insufficient balance to pay gas",
         }, "bottom-right");
         return;
       }
@@ -269,6 +271,10 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
           title: "Start game failed",
           text: res.message || "Please try again later",
         }, "bottom-right");
+        // created game failed
+        if (res.message === "You hava a Death Fun currently ongoing") {
+          getLastGame();
+        }
         return;
       }
       await onChainGameStart({
@@ -389,6 +395,11 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       return result;
     }
 
+    // reset ghost avatar
+    spaceInvadersStore.set({
+      ghostAvatar: GHOST_AVATARS[0],
+    });
+
     let toastId: any = toast.loading({
       title: "Opening...",
     }, "bottom-right");
@@ -465,6 +476,12 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
 
     // is ghost
     // game over
+    const randomInt = Math.floor(Math.random() * 100);
+    const newGhostAvatar = randomInt % 2 === 0 ? GHOST_AVATARS[0] : GHOST_AVATARS[1];
+    spaceInvadersStore.set({
+      ghostAvatar: newGhostAvatar,
+    });
+
     currentLayer.status = LayerStatus.Failed;
     toast.fail({
       title: "Kaboom! Invader got you",
@@ -481,6 +498,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     setCurrentGameData((prev) => {
       const _currentGameData = { ...prev };
       _currentGameData.status = LastGameStatus.Lose;
+      _currentGameData.seed = response.seed;
       return _currentGameData;
     });
     playSoundEffect(SoundEffectType.Death);
@@ -853,6 +871,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     handleBindDiscord,
     rulesVisible,
     setRulesVisible,
+    ghostAvatar: spaceInvadersStore.ghostAvatar,
   };
 };
 
@@ -909,4 +928,5 @@ export interface SpaceInvaders {
   handleBindDiscord: (nft: NFTItem) => void;
   rulesVisible: boolean;
   setRulesVisible: (visible: boolean) => void;
+  ghostAvatar: string;
 }
