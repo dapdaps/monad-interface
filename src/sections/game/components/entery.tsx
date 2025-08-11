@@ -49,7 +49,12 @@ const Entry: React.FC<any> = () => {
               <Link href="/arcade/lucky777" prefetch={true}></Link>
             </motion.div>
 
-            <motion.div className="scale-[1.11] w-[clamp(1px,_25vw,_calc(var(--nadsa-laptop-width-base)*0.25))] h-[clamp(1px,_37.5vw,_calc(var(--nadsa-laptop-width-base)*0.375))] relative flex flex-col items-center justify-end">
+            <motion.div
+              className="w-[clamp(1px,_27.78vw,_calc(var(--nadsa-laptop-width-base)*0.2778))] h-[clamp(1px,_41.67vw,_calc(var(--nadsa-laptop-width-base)*0.4167))] relative flex flex-col items-center justify-end"
+              whileHover={{
+                scale: 1.11,
+              }}
+            >
               <HotGame />
               <img src="/images/game/space-invaders2.png" className='w-full h-full absolute top-0 left-0 ' />
               <motion.div
