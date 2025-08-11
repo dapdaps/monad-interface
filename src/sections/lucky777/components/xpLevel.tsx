@@ -18,7 +18,7 @@ export default function XpLevel({ open, onClose, level }: { open: boolean, onClo
                     </div>
 
 
-                    <div className="h-[500px] overflow-auto">
+                    <div className="h-[500px] overflow-auto text-[14px] font-[Montserrat] leading-[120%]">
                         <div className="w-full mt-[20px] text-white">
                             <div className="mb-[20px] text-[14px] leading-[20px]">
                                 For plays where users don’t win WLs or MON, their icons on the machine will be used to fill up the XP tank. Multipliers applied to XP won.
@@ -47,7 +47,7 @@ export default function XpLevel({ open, onClose, level }: { open: boolean, onClo
                                     Array.from({ length: 8 }).map((_, index) => (
                                         <div key={index} className="flex relative items-center justify-between pl-[50px] pr-[10px]  gap-[12px] h-[62px] w-[320px] bg-[#31305A] rounded-[10px] border-1 border-[#26274B] mb-[10px]">
                                             <div className="w-[199px] h-[30px] flex items-center justify-end pr-[50px] italic font-[900] bg-[url('/images/lucky777/xp/level-xp-bg.png')] bg-no-repeat bg-center bg-contain absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 text-[14px] ml-[-10px]">
-                                                {10 + (index + 1) * 5 - (index === 0 ? 5: 0)} xp</div>
+                                                {10 + (index + 1) * 5 - (index === 0 ? 5 : 0)} xp</div>
                                             <img src={`/images/lucky777/xp/level-${index + 1}.png`} alt="level" className="h-[50px] relative z-10" />
                                             <img src={`/images/lucky777/xp/prize-${index + 1}.png`} alt="level" className="h-[50px] relative z-10" />
                                             <div className="w-[32px] h-[32px] bg-[#55538D] rounded-full absolute left-[10px] top-1/2 -translate-y-1/2"></div>
@@ -72,6 +72,20 @@ export default function XpLevel({ open, onClose, level }: { open: boolean, onClo
                                         )))
                                 }
                             </div>
+                        </div>
+
+                        <div className="w-full mt-[12px] text-white pl-[60px]">
+                            <div className="font-[900] leading-[90%]">
+                                Next Level
+                            </div>
+                            <ul className="list-disc mt-[6px] pl-[12px]">
+                                <li>
+                                    Odd numbers: 50 XP - get 1 MON
+                                </li>
+                                <li>
+                                    Even numbers: 50 XP - get 10 free spins
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
