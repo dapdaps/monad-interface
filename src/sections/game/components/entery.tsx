@@ -12,8 +12,10 @@ const Entry: React.FC<any> = () => {
     <div className="w-full h-full  bg-no-repeat bg-cover bg-top">
       <LoginContainer>
         <div className='w-full h-full flex items-center justify-center flex-col'>
-          <div className='text-[clamp(1px,_2.92vw,_calc(var(--nadsa-laptop-width-base)*0.0292))] font-HackerNoonV2 text-[#E7E2FF] mb-[clamp(1px,_4.17vw,_calc(var(--nadsa-laptop-width-base)*0.0417))]'>arcade</div>
-          <div className='w-full flex items-center justify-center gap-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width-base)*0.0347))]'>
+          <div className='relative z-[2] text-[clamp(1px,_2.92vw,_calc(var(--nadsa-laptop-width-base)*0.0292))] font-HackerNoonV2 text-[#E7E2FF]'>
+            arcade
+          </div>
+          <div className='w-full flex items-center justify-center mt-[clamp(1px,_7vw,_calc(var(--nadsa-laptop-width-base)*0.07))] gap-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width-base)*0.0347))]'>
 
             <motion.div
               className="w-[clamp(1px,_25vw,_calc(var(--nadsa-laptop-width-base)*0.25))] h-[clamp(1px,_37.5vw,_calc(var(--nadsa-laptop-width-base)*0.375))] relative flex flex-col items-center justify-end"
@@ -47,12 +49,7 @@ const Entry: React.FC<any> = () => {
               <Link href="/arcade/lucky777" prefetch={true}></Link>
             </motion.div>
 
-            <motion.div
-              className="w-[clamp(1px,_25vw,_calc(var(--nadsa-laptop-width-base)*0.25))] h-[clamp(1px,_37.5vw,_calc(var(--nadsa-laptop-width-base)*0.375))] relative flex flex-col items-center justify-end"
-              whileHover={{
-                scale: 1.11,
-              }}
-            >
+            <motion.div className="scale-[1.11] w-[clamp(1px,_25vw,_calc(var(--nadsa-laptop-width-base)*0.25))] h-[clamp(1px,_37.5vw,_calc(var(--nadsa-laptop-width-base)*0.375))] relative flex flex-col items-center justify-end">
               <HotGame />
               <img src="/images/game/space-invaders2.png" className='w-full h-full absolute top-0 left-0 ' />
               <motion.div
