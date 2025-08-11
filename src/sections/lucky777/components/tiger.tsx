@@ -101,7 +101,7 @@ export default memo(function Tiger(props: any) {
       setLeftSpin(spinUserData?.spin_balance);
       setXpBalance(spinUserData?.xp_balance);
       setXpLevel(spinUserData?.xp_level);
-      setMaxXp(spinUserData?.game_xp.xp);
+      setMaxXp(spinUserData?.game_xp?.xp);
     }
   }, [spinUserData]);
 
