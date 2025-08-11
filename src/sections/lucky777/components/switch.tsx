@@ -10,7 +10,7 @@ export default function Switch(props: SwitchProps) {
   const { isOpen, setIsOpenSwitch, onOpenSwitch } = props;
 
   return (
-    <div data-click-sound className="absolute bottom-[80px] right-[115px] z-[2] w-[122px] cursor-pointer" onClick={() => {
+    <div data-click-sound className="absolute bottom-[52px] right-[120px] z-[2] w-[122px] h-[139px] cursor-pointer" onClick={() => {
       setIsOpenSwitch(!isOpen);
       onOpenSwitch(!isOpen);
     }}>
@@ -25,6 +25,8 @@ export default function Switch(props: SwitchProps) {
           </div>
         )
       }
+
+      <div className="absolute bottom-[0px] right-0 left-0 h-[30px] bg-[#31305A] rounded-b-[6px] border-b border-l border-r border-[#26274B]"></div>
     </div>
   );
 }
