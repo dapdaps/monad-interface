@@ -84,6 +84,7 @@ export default memo(function Tiger(props: any) {
   const [WHEEL_SIZE, setWHEEL_SIZE] = useState(Number(chogStarrr?.remaining) > 0 ? 600 : 500);
   const [SpinCategories, setSpinCategories] = useState(Object.values(SPIN_CATEGORIES));
   const [SpinCategoryRotation, setSpinCategoryRotation] = useState(WHEEL_AREA / SpinCategories.length);
+  const [maxXp, setMaxXp] = useState(0);
 
   useEffect(() => {
     if (!prizeStatus || prizeStatus.length === 0) {
@@ -100,6 +101,7 @@ export default memo(function Tiger(props: any) {
       setLeftSpin(spinUserData?.spin_balance);
       setXpBalance(spinUserData?.xp_balance);
       setXpLevel(spinUserData?.xp_level);
+      setMaxXp(spinUserData?.game_xp.xp);
     }
   }, [spinUserData]);
 
@@ -435,6 +437,7 @@ export default memo(function Tiger(props: any) {
     if (res.xp_changed) {
       setXpBalance(res.xp_balance);
       setXpLevel(res.xp_level);
+      setMaxXp(res.game_xp.xp);
       setLeftSpin(res.spin_balance);
     }
 
@@ -583,7 +586,7 @@ export default memo(function Tiger(props: any) {
           <img src="/images/lucky777/xp/bg.png" alt="" className="w-full" />
         </div>
         
-        <Xp data={spinUserData} xpBalance={xpBalance} xpLevel={xpLevel} />
+        <Xp data={spinUserData} xpBalance={xpBalance} xpLevel={xpLevel} maxXp={maxXp} />
 
         <div className={'ml-[10px] overflow-hidden absolute font-HackerNoonV2 text-[60px] leading-[110%] text-[#000] top-[20px] left-1/2 -translate-x-1/2 z-[2] w-[490px] h-[70px] flex flex-col items-center '}>
           <motion.div

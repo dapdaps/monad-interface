@@ -3,9 +3,9 @@ import XpLevel from "./xpLevel";
 
 
 const IMG_PATH = '/images/lucky777/xp/';
-export default function Xp({ data, xpBalance, xpLevel }: { data: any, xpBalance: number, xpLevel: number }) {
+export default function Xp({ data, xpBalance, xpLevel, maxXp }: { data: any, xpBalance: number, xpLevel: number, maxXp: number }) {
     const xpValue = xpBalance || 0;
-    const maxXp = data?.game_xp.xp || 10;
+    // const maxXp = data?.game_xp.xp || 10;
     const level = xpLevel || 1;
 
     const [open, setOpen] = useState(false);
