@@ -4,6 +4,7 @@ import { LoginContainer } from '@/sections/terminal/login';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import HotGame from './hot';
 
 const Entry: React.FC<any> = () => {
   const router = useRouter();
@@ -20,6 +21,7 @@ const Entry: React.FC<any> = () => {
                 scale: 1.11,
               }}
             >
+              <HotGame />
               <img src="/images/game/lucky-bg.svg" className='w-full h-full absolute top-0 left-0 ' />
               <motion.div
                 className="w-[clamp(1px,_27.78vw,_calc(var(--nadsa-laptop-width-base)*0.2778))] h-[clamp(1px,_28.06vw,_calc(var(--nadsa-laptop-width-base)*0.2806))] absolute top-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width-base)*0.0208))] left-[clamp(calc(var(--nadsa-laptop-width-base)*-0.0347),_-3.47vw,_1px)] bg-[url('/images/game/lucky7777.svg')] bg-no-repeat bg-center bg-contain"
@@ -51,6 +53,7 @@ const Entry: React.FC<any> = () => {
                 scale: 1.11,
               }}
             >
+              <HotGame />
               <img src="/images/game/space-invaders2.png" className='w-full h-full absolute top-0 left-0 ' />
               <motion.div
                 className="w-[clamp(1px,_31.74vw,_calc(var(--nadsa-laptop-width-base)*0.3174))] h-[clamp(1px,_40.35vw,_calc(var(--nadsa-laptop-width-base)*0.4035))] absolute z-[2] top-[clamp(calc(var(--nadsa-laptop-width-base)*-0.02),_-2vw,_1px)] right-[clamp(calc(var(--nadsa-laptop-width-base)*-0.03),_-3vw,_1px)] bg-[url('/images/game/space-invaders-coins2.png')] bg-no-repeat bg-center bg-contain"
