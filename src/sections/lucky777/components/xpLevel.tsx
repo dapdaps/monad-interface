@@ -49,7 +49,7 @@ export default function XpLevel({ open, onClose, level }: { open: boolean, onClo
                                             <div className="w-[199px] h-[30px] flex items-center justify-end pr-[50px] italic font-[900] bg-[url('/images/lucky777/xp/level-xp-bg.png')] bg-no-repeat bg-center bg-contain absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 text-[14px] ml-[-10px]">
                                                 {50 * (index + 1)} xp</div>
                                             <img src={`/images/lucky777/xp/level-${index + 1}.png`} alt="level" className="h-[50px] relative z-10" />
-                                            <img src={`/images/lucky777/xp/prize-${index + 1}.png`} alt="level" className="h-[50px] relative z-10" />
+                                            <img src={`/images/lucky777/xp/prize-${index + 1}-1.png`} alt="level" className="h-[50px] relative z-10" />
                                             <div className="w-[32px] h-[32px] bg-[#55538D] rounded-full absolute left-[10px] top-1/2 -translate-y-1/2"></div>
                                         </div>
                                     ))
