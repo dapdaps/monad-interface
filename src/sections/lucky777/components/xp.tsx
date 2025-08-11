@@ -31,13 +31,12 @@ export default function Xp({ data, xpBalance, xpLevel, maxXp }: { data: any, xpB
                         maxThan8 && (
                             <div className="relative w-[75px] h-[55px]">
                                 <img
-                                    src={`${IMG_PATH}level-up.png`}
+                                    src={`${IMG_PATH}level-up-2.png`}
                                     alt="xp-star"
-                                    className="w-[75px] h-[55px] cursor-pointer ml-[-70%] absolute top-0 left-0"
+                                    className="h-[55px] cursor-pointer ml-[-40%] absolute top-0 left-0"
                                     onClick={() => setOpen(true)}
                                 />
-
-                                <div className="absolute bottom-[10px] left-[-6px] text-[12px] text-black italic font-Montserrat font-extrabold">lv.{level}</div>
+                                {/* <div className="absolute bottom-[10px] left-[-6px] text-[12px] text-black italic font-Montserrat font-extrabold">lv.{level}</div> */}
                             </div>
                         )
                     }
