@@ -139,4 +139,5 @@ export enum SoundEffectType {
   Death = "death",
   ShuffleGates = "shuffle-gates",
   Start = "start",
+  GetReward = "get-reward",
 }

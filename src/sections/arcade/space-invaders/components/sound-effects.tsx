@@ -7,6 +7,7 @@ const SoundEffects = () => {
     soundEffectDeathRef,
     soundEffectShuffleGatesRef,
     soundEffectStartRef,
+    soundEffectGetRewardRef,
   } = useSpaceInvadersContext();
 
   return (
@@ -58,6 +59,16 @@ const SoundEffects = () => {
       >
         <source
           src="/audios/arcade/space-invaders/start.ogg"
+          type="audio/ogg"
+        />
+      </audio>
+      <audio
+        ref={soundEffectGetRewardRef}
+        autoPlay={false}
+        preload="auto"
+      >
+        <source
+          src="/audios/arcade/space-invaders/NFT-reward.ogg"
           type="audio/ogg"
         />
       </audio>
