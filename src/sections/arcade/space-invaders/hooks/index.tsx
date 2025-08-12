@@ -34,6 +34,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const soundEffectDeathRef = useRef<any>(null);
   const soundEffectShuffleGatesRef = useRef<any>(null);
   const soundEffectStartRef = useRef<any>(null);
+  const soundEffectGetRewardRef = useRef<any>(null);
 
   // current playing game
   const [currentGame, setCurrentGame] = useState<Layer>();
@@ -451,6 +452,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         ...currentReward,
       });
       setRewardVisible(true);
+      playSoundEffect(SoundEffectType.GetReward);
     }
 
     // not ghost
@@ -703,6 +705,13 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     }
     setCurrentGame(nextGame);
     setData(cloneDeep(nextGame?.rows || []));
+    setCurrentGameData((prev) => {
+      const _currentGameData = {
+        ...prev,
+        reward: void 0,
+      };
+      return _currentGameData;
+    });
   };
 
   const onVerifierClose = () => {
@@ -753,6 +762,12 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         if (soundEffectStartRef.current) {
           soundEffectStartRef.current.currentTime = 0;
           soundEffectStartRef.current.play();
+        }
+        break;
+      case SoundEffectType.GetReward:
+        if (soundEffectGetRewardRef.current) {
+          soundEffectGetRewardRef.current.currentTime = 0;
+          soundEffectGetRewardRef.current.play();
         }
         break;
       default:
@@ -864,6 +879,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     soundEffectDeathRef,
     soundEffectShuffleGatesRef,
     soundEffectStartRef,
+    soundEffectGetRewardRef,
     playSoundEffect,
     rewardVisible,
     setRewardVisible,
@@ -921,6 +937,7 @@ export interface SpaceInvaders {
   soundEffectDeathRef: any;
   soundEffectShuffleGatesRef: any;
   soundEffectStartRef: any;
+  soundEffectGetRewardRef: any;
   playSoundEffect: (type: SoundEffectType) => void;
   rewardVisible: boolean;
   setRewardVisible: (visible: boolean) => void;
