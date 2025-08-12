@@ -705,6 +705,13 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     }
     setCurrentGame(nextGame);
     setData(cloneDeep(nextGame?.rows || []));
+    setCurrentGameData((prev) => {
+      const _currentGameData = {
+        ...prev,
+        reward: void 0,
+      };
+      return _currentGameData;
+    });
   };
 
   const onVerifierClose = () => {
