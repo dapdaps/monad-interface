@@ -95,7 +95,7 @@ const Calendar = (props: any) => {
                         )
                       }
                       {
-                        date.timestamp === dayjs("2025-08-30").utc().startOf("day").valueOf() && (
+                        date.timestamp === dayjs("2025-08-30").startOf("day").valueOf() && (
                           <ActivityCard className="ml-[-44px] w-[351px] !font-[700] !h-[45px] !bottom-[unset] top-[30px] items-center flex justify-center !text-[#A6A6DB]">
                             TBD...
                           </ActivityCard>
@@ -184,7 +184,7 @@ const generateAugustDates = () => {
     dates.push({
       date: currentDate.format("DD"),
       day: Weeks[weekIndex as EWeek],
-      timestamp: currentDate.utc().startOf("day").valueOf()
+      timestamp: currentDate.startOf("day").valueOf()
     });
 
     currentDate = currentDate.add(1, "day");
@@ -215,7 +215,7 @@ const ActivityCard = (props: any) => {
 
 const activities: IActivity[] = [
   {
-    timestamp: dayjs("2025-08-13").utc().startOf("day").valueOf(),
+    timestamp: dayjs("2025-08-13").startOf("day").valueOf(),
     content: (
       <ActivityCard className="w-[202px] flex justify-center">
         <img
@@ -232,7 +232,7 @@ const activities: IActivity[] = [
     )
   },
   {
-    timestamp: dayjs("2025-08-15").utc().startOf("day").valueOf(),
+    timestamp: dayjs("2025-08-15").startOf("day").valueOf(),
     content: (
       <ActivityCard className="w-[202px] flex justify-center ml-[8px]">
         <img
@@ -249,7 +249,7 @@ const activities: IActivity[] = [
     )
   },
   {
-    timestamp: dayjs("2025-08-18").utc().startOf("day").valueOf(),
+    timestamp: dayjs("2025-08-18").startOf("day").valueOf(),
     content: (
       <ActivityCard className="w-[177px] flex justify-center ml-[18px]">
         <img
@@ -266,7 +266,7 @@ const activities: IActivity[] = [
     )
   },
   {
-    timestamp: dayjs("2025-08-20").utc().startOf("day").valueOf(),
+    timestamp: dayjs("2025-08-20").startOf("day").valueOf(),
     content: (
       <ActivityCard className="w-[202px] flex justify-center">
         <img
@@ -283,7 +283,7 @@ const activities: IActivity[] = [
     )
   },
   {
-    timestamp: dayjs("2025-08-22").utc().startOf("day").valueOf(),
+    timestamp: dayjs("2025-08-22").startOf("day").valueOf(),
     content: (
       <ActivityCard className="w-[202px] flex justify-center ml-[8px]">
         <img
@@ -300,7 +300,7 @@ const activities: IActivity[] = [
     )
   },
   {
-    timestamp: dayjs("2025-08-25").utc().startOf("day").valueOf(),
+    timestamp: dayjs("2025-08-25").startOf("day").valueOf(),
     content: (
       <ActivityCard className="w-[177px] flex justify-center ml-[18px]">
         <img
@@ -312,7 +312,7 @@ const activities: IActivity[] = [
     )
   },
   {
-    timestamp: dayjs("2025-08-27").utc().startOf("day").valueOf(),
+    timestamp: dayjs("2025-08-27").startOf("day").valueOf(),
     content: (
       <ActivityCard className="w-[202px] flex justify-center">
         <img
