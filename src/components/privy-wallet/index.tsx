@@ -11,6 +11,7 @@ import { useDebounceFn, useInterval } from "ahooks";
 import { toast } from "react-toastify";
 import { PrivyContext } from "../privy-provider";
 import { usePrivyAuth } from "@/hooks/use-privy-auth";
+import CalendarBanner from "./calendar/banner";
 
 const PrivyWallet = () => {
   const containerRef = useRef<any>(null);
@@ -137,6 +138,7 @@ const PrivyWallet = () => {
             </button>
           </div>
         </div>
+        <CalendarBanner />
       </div>
       <ActionModal
         open={open}
