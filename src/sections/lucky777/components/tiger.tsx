@@ -70,6 +70,8 @@ export default memo(function Tiger(props: any) {
     monadverse,
     monadoon,
     slmnd,
+    lamouch,
+    overnads,
     prizeStatus,
     isOpenSwitch,
     setIsOpenSwitch,
@@ -948,7 +950,7 @@ export default memo(function Tiger(props: any) {
           }
         }} />
 
-        <NftT monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} />
+        <NftT monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} />
 
       </div>
 

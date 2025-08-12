@@ -8,6 +8,8 @@ export enum SpinCategory {
   Monadverse = "monadverse",
   Monadoon = "monadoon",
   Slmnd = "slmnd",
+  LaMouch = "lamouch",
+  Overnads = "overnads",
 }
 
 export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
@@ -74,6 +76,21 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     centerScale: 0.9,
     centerY: 0,
   },
+  [SpinCategory.LaMouch]: {
+    code: "10",
+    icon: "/images/lucky777/nft-lamouch-t.png",
+    value: SpinCategory.LaMouch,
+    centerScale: 1,
+    centerY: 0,
+  },
+  [SpinCategory.Overnads]: {
+    code: "11",
+    icon: "/images/lucky777/nft-overnads-t.png",
+    value: SpinCategory.Overnads,
+    centerScale: 0.9,
+    centerY: 0,
+  },
+
 };
 
 export enum SpinMultiplier {
