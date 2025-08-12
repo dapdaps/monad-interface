@@ -9,7 +9,7 @@ export default function NftT(props: any) {
     // { key: "monadoon", data: monadoon, img: "/images/lucky777/nft-monadoon-t.png", cls: 'rotate-[2deg]' },
     // { key: "slmnd", data: slmnd, img: "/images/lucky777/nft-slmnd-t.png", cls: 'rotate-[0deg]' },
     { key: "lamouch", data: lamouch, img: "/images/lucky777/nft-lamouch-t.png", cls: 'rotate-[0deg] w-[127px] h-[175px]' },
-    { key: "overnads", data: overnads, img: "/images/lucky777/nft-overnads-t.png", cls: 'rotate-[0deg] w-[137px] h-[175px]' },
+    { key: "overnads", data: overnads, img: "/images/lucky777/nft-overnads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]' },
   ].filter(nft => Number(nft.data?.remaining) > 0);
 
   const [currentIndex, setCurrentIndex] = useState(0);

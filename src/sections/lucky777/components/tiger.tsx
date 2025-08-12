@@ -491,6 +491,24 @@ export default memo(function Tiger(props: any) {
             startSlowScroll()
           }
         }, 3000);
+      } else if (res.draw_code === '101010') {
+        success({ title: `WON 1 LaMouch` }, 'bottom-right');
+        setTitle(('WON 1 LaMouch').repeat(2));
+        playSound(2)
+        setTimeout(() => {
+          if (Number(lamouch?.remaining) === 0) {
+            startSlowScroll()
+          }
+        }, 3000);
+      } else if (res.draw_code === '111111') {
+        success({ title: `WON 1 Overnads` }, 'bottom-right');
+        setTitle(('WON 1 Overnads').repeat(2));
+        playSound(2)
+        setTimeout(() => {
+          if (Number(overnads?.remaining) === 0) {
+            startSlowScroll()
+          }
+        }, 3000);
       } else {
         setTitle(DEFAULT_UNLUCKY_TITLE);
       }
