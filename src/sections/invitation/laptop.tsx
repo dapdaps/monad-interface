@@ -3,6 +3,7 @@ import Rules from "./components/rules";
 import Code from "./components/code";
 import { useInvitationContext } from "@/context/invitation";
 import { useRef, useEffect, useState } from "react";
+import Footer from "@/layouts/main/footer";
 
 const DEFAULT_DOOR_STYLES = {
   width: "33.89vw",
@@ -149,6 +150,10 @@ const InvitationViewLaptop = (props: any) => {
       <motion.div ref={scopeCodePad} className="flex flex-col justify-end items-center gap-[14px] w-full h-full relative z-[3]">
         <Rules />
         <Code />
+        <Footer 
+          className=""
+          isWallet={false}
+        />
       </motion.div>
     </motion.div>
   );

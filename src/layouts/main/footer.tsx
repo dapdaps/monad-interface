@@ -5,16 +5,20 @@ import Rpc from "@/components/rpc";
 import Sound from "@/components/sound";
 import useIsMobile from "@/hooks/use-isMobile";
 import FooterMobile from './mobile/footer'
+import clsx from "clsx";
 
 export default memo(function Footer(props: any) {
-  const { isSound = true, isRpc = true, isWallet = true } = props;
+  const { isSound = true, isRpc = true, isWallet = true, className } = props;
 
   const isMobile = useIsMobile();
 
   if (isMobile && isWallet) return <FooterMobile {...props} />;
 
   return (
-    <div className="z-[99] fixed bottom-0 left-0 flex items-center gap-[10px] pl-[12px] w-[164px] h-[38px]">
+    <div className={clsx(
+      "z-[99] fixed bottom-0 left-0 flex items-center gap-[10px] pl-[12px] w-[164px] h-[38px]",
+      className
+    )}>
       <Link
         className="group ease-in-out duration-300 w-[24px] cursor-pointer relative"
         href="https://x.com/0xNADSA"
