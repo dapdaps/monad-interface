@@ -315,7 +315,7 @@ const activities: IActivity[] = [
           className="w-[105px] h-[99px] object-center object-contain translate-x-[-5px] translate-y-[-15px]"
         />
          <img
-          src="/images/game/calendar/nft-skrumpeys3.png"
+          src="/images/game/calendar/nft-skrumpeys4.png"
           alt=""
           className="w-[97px] h-[81px] object-center object-contain translate-x-[-10px] translate-y-[30px]"
         />
