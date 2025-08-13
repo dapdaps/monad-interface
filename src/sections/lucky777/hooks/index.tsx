@@ -47,6 +47,7 @@ export function useLuckyBera() {
   }, { wait: 5000 });
 
   const { runAsync: handleSpinResult, data: spinResultData, loading: spinResultDataLoading } = useRequestByToken<SpinResultData | boolean, any>(async () => {
+
     const res = await post("/game/draw", {
       spin: multiple,
     });

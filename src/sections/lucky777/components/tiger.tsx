@@ -407,22 +407,6 @@ export default memo(function Tiger(props: any) {
     const newLeftSpin = leftSpin - multiple;
     setLeftSpin(newLeftSpin);
 
-    if (newLeftSpin < multiple) {
-      if (newLeftSpin < 10) {
-        setMultiple(1)
-      } else {
-        setMultiple(10)
-      }
-
-      setIsOpenSwitch(false);
-      isOpenSwitchRef.current = false
-      if (newLeftSpin <= 0) {
-        setDisabledBtnSpin(false);
-      } else {
-        setDisabledBtnSpin(true);
-      }
-    }
-      
     // setTimeout(() => {
     //   setPressed3(false)
     // }, 7500);
@@ -433,6 +417,18 @@ export default memo(function Tiger(props: any) {
 
     // request api
     const res = await handleSpinResult();
+
+    if (newLeftSpin < multiple) {
+      if (newLeftSpin < 10) {
+        setMultiple(1)
+      } else {
+        setMultiple(10)
+      }
+
+      setIsOpenSwitch(false);
+      isOpenSwitchRef.current = false
+      setDisabledBtnSpin(false);
+    }
 
     if (!res) {
       // animations.leftWheelAnimation.pause();
