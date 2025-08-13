@@ -407,13 +407,14 @@ export default memo(function Tiger(props: any) {
     const newLeftSpin = leftSpin - multiple;
     setLeftSpin(newLeftSpin);
 
-    console.log('newLeftSpin', newLeftSpin);
-
-    if (newLeftSpin < 10) {
-      setMultiple(1)
-    } else {
-      setMultiple(10)
+    if (newLeftSpin < multiple) {
+      if (newLeftSpin < 10) {
+        setMultiple(1)
+      } else {
+        setMultiple(10)
+      }
     }
+      
     // setTimeout(() => {
     //   setPressed3(false)
     // }, 7500);
