@@ -3,6 +3,7 @@ import Keyboards from "./components/keyboards";
 import { AdmissionTicket } from "./components/rules";
 import ConnectButton from "./components/connect-button";
 import { useInvitationContext } from "@/context/invitation";
+import Footer from "@/layouts/main/footer";
 
 const InvitationViewMobile = () => {
   const {
@@ -44,6 +45,10 @@ const InvitationViewMobile = () => {
       <div className="mt-[20px] px-[20px]">
         <Keyboards className="![transform:unset] !w-full" />
       </div>
+      <Footer
+        className=""
+        isWallet={false}
+      />
     </div>
   );
 };
