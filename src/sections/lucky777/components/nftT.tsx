@@ -3,11 +3,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export default function NftT(props: any) {
-  const { monadverse, monadoon, slmnd } = props;
+  const { monadverse, monadoon, slmnd, lamouch, overnads } = props;
   const nfts = [
-    { key: "monadverse", data: monadverse, img: "/images/lucky777/nft-monadverse-t.png", cls: 'rotate-[-2deg]' },
-    { key: "monadoon", data: monadoon, img: "/images/lucky777/nft-monadoon-t.png", cls: 'rotate-[2deg]' },
-    { key: "slmnd", data: slmnd, img: "/images/lucky777/nft-slmnd-t.png", cls: 'rotate-[0deg]' },
+    // { key: "monadverse", data: monadverse, img: "/images/lucky777/nft-monadverse-t.png", cls: 'rotate-[-2deg]' },
+    // { key: "monadoon", data: monadoon, img: "/images/lucky777/nft-monadoon-t.png", cls: 'rotate-[2deg]' },
+    // { key: "slmnd", data: slmnd, img: "/images/lucky777/nft-slmnd-t.png", cls: 'rotate-[0deg]' },
+    { key: "lamouch", data: lamouch, img: "/images/lucky777/nft-lamouch-t.png", cls: 'rotate-[0deg] w-[127px] h-[175px]' },
+    { key: "overnads", data: overnads, img: "/images/lucky777/nft-overnads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]' },
   ].filter(nft => Number(nft.data?.remaining) > 0);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -35,12 +37,12 @@ export default function NftT(props: any) {
             {
               nfts.length > 1 && (
                 nfts.map((nft, index) => (
-                  <img src={nft.img} alt="" className={clsx('w-[127px] absolute top-0 left-0 h-[175px]', nft.cls)} />
+                  <img src={nft.img} alt="" className={clsx('absolute top-0 left-0 ', nft.cls)} />
                 ))
               )
             }
             {/* <img src='/images/lucky777/t-bg.png' alt="" className={clsx('w-[137px] absolute top-0 left-0 h-[180px]')} /> */}
-            <img src={nfts[currentIndex].img} alt="" className={clsx('w-[127px] absolute top-0 left-0 h-[175px]', nfts[currentIndex].cls)} />
+            <img src={nfts[currentIndex].img} alt="" className={clsx('absolute top-0 left-0', nfts[currentIndex].cls)} />
           </div>
         ))
       }

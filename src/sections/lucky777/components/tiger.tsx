@@ -70,6 +70,8 @@ export default memo(function Tiger(props: any) {
     monadverse,
     monadoon,
     slmnd,
+    lamouch,
+    overnads,
     prizeStatus,
     isOpenSwitch,
     setIsOpenSwitch,
@@ -383,7 +385,7 @@ export default memo(function Tiger(props: any) {
     }
 
 
-    if (leftSpin < multiple || !spinUserData?.spin_balance || spinUserData?.spin_balance <= 0) {
+    if (!spinUserData?.spin_balance || spinUserData?.spin_balance <= 0 || leftSpin <= 0) {
       fail({ title: 'No spins left' }, 'bottom-right');
       setIsOpenSwitch(false);
       isOpenSwitchRef.current = false
@@ -391,17 +393,36 @@ export default memo(function Tiger(props: any) {
       return;
     }
 
-    if (spinUserData?.spin_balance < multiple) {
+    if (leftSpin < multiple || spinUserData?.spin_balance <= multiple) {
       fail({ title: 'No enough spins balance' }, 'bottom-right');
       setIsOpenSwitch(false);
       isOpenSwitchRef.current = false
       setDisabledBtnSpin(false);
+     
       return;
     }
 
     const machineSoundAudio = playSound(1);
     setPressed3(true);
-    setLeftSpin(leftSpin - multiple);
+    const newLeftSpin = leftSpin - multiple;
+    setLeftSpin(newLeftSpin);
+
+    if (newLeftSpin < multiple) {
+      if (newLeftSpin < 10) {
+        setMultiple(1)
+      } else {
+        setMultiple(10)
+      }
+
+      setIsOpenSwitch(false);
+      isOpenSwitchRef.current = false
+      if (newLeftSpin <= 0) {
+        setDisabledBtnSpin(false);
+      } else {
+        setDisabledBtnSpin(true);
+      }
+    }
+      
     // setTimeout(() => {
     //   setPressed3(false)
     // }, 7500);
@@ -412,9 +433,6 @@ export default memo(function Tiger(props: any) {
 
     // request api
     const res = await handleSpinResult();
-
-    
-
 
     if (!res) {
       // animations.leftWheelAnimation.pause();
@@ -486,6 +504,24 @@ export default memo(function Tiger(props: any) {
         playSound(2)
         setTimeout(() => {
           if (Number(slmnd?.remaining) === 0) {
+            startSlowScroll()
+          }
+        }, 3000);
+      } else if (res.draw_code === '101010') {
+        success({ title: `WON 1 LaMouch` }, 'bottom-right');
+        setTitle(('WON 1 LaMouch').repeat(2));
+        playSound(2)
+        setTimeout(() => {
+          if (Number(lamouch?.remaining) === 0) {
+            startSlowScroll()
+          }
+        }, 3000);
+      } else if (res.draw_code === '111111') {
+        success({ title: `WON 1 Overnads` }, 'bottom-right');
+        setTitle(('WON 1 Overnads').repeat(2));
+        playSound(2)
+        setTimeout(() => {
+          if (Number(overnads?.remaining) === 0) {
             startSlowScroll()
           }
         }, 3000);
@@ -948,7 +984,7 @@ export default memo(function Tiger(props: any) {
           }
         }} />
 
-        <NftT monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} />
+        <NftT monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} />
 
       </div>
 

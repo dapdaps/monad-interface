@@ -9,7 +9,7 @@ import { usePrivyAuth } from '@/hooks/use-privy-auth';
 import { useAccount } from 'wagmi';
 
 
-const ALL_PRIZES = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const ALL_PRIZES = [1, 2, 3, 4, 5, 10, 11];
 export function useLuckyBera() {
   const { fail } = useToast({ isGame: true });
   const { address } = useAccount();
@@ -19,6 +19,8 @@ export function useLuckyBera() {
   const [monadverse, setMonadverse] = useState<any>({});
   const [monadoon, setMonadoon] = useState<any>({});
   const [slmnd, setSlmnd] = useState<any>({});
+  const [lamouch, setLaMouch] = useState<any>({});
+  const [overnads, setOvernads] = useState<any>({});
   const prizes = useRef<any[]>(ALL_PRIZES);
   const [prizeStatus, setPrizeStatus] = useState(ALL_PRIZES)
   const [isOpenSwitch, setIsOpenSwitch] = useState(false);
@@ -97,6 +99,14 @@ export function useLuckyBera() {
       total: 30,
       remaining: 0,
     });
+    setLaMouch({
+      total: 50,
+      remaining: 0,
+    });
+    setOvernads({
+      total: 50,
+      remaining: 0,
+    });
 
     if (res.code !== 200) {
       // setChogStarrr({
@@ -130,6 +140,12 @@ export function useLuckyBera() {
         if (item.category.toLowerCase() === 'salmonads') {
           setSlmnd(item);
         }
+        if (item.category.toLowerCase() === 'lamouch') {
+          setLaMouch(item);
+        }
+        if (item.category.toLowerCase() === 'overnads') {
+          setOvernads(item);
+        }
       });
     }
   }, [])
@@ -155,6 +171,12 @@ export function useLuckyBera() {
     if (slmnd.remaining === 0) {
       newPrizes = newPrizes.filter((item: any) => item !== 9);
     }
+    if (lamouch.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 10);
+    }
+    if (overnads.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 11);
+    }
     prizes.current = newPrizes;
     setPrizeStatus(newPrizes);
   }, [chogStarrr, monadverse, monadoon, slmnd]);
@@ -175,6 +197,8 @@ export function useLuckyBera() {
     monadverse,
     monadoon,
     slmnd,
+    lamouch,
+    overnads,
     prizes,
     prizeStatus,
     isOpenSwitch,
