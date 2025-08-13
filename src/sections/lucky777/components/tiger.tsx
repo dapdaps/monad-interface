@@ -393,11 +393,16 @@ export default memo(function Tiger(props: any) {
       return;
     }
 
-    if (spinUserData?.spin_balance < multiple) {
+    if (leftSpin < multiple || spinUserData?.spin_balance <= multiple) {
       fail({ title: 'No enough spins balance' }, 'bottom-right');
       setIsOpenSwitch(false);
       isOpenSwitchRef.current = false
       setDisabledBtnSpin(false);
+      if (leftSpin < 10) {
+        setMultiple(1)
+      } else {
+        setMultiple(10)
+      }
       return;
     }
 
