@@ -413,6 +413,14 @@ export default memo(function Tiger(props: any) {
       } else {
         setMultiple(10)
       }
+
+      setIsOpenSwitch(false);
+      isOpenSwitchRef.current = false
+      if (newLeftSpin <= 0) {
+        setDisabledBtnSpin(false);
+      } else {
+        setDisabledBtnSpin(true);
+      }
     }
       
     // setTimeout(() => {
