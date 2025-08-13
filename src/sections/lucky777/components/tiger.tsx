@@ -398,17 +398,22 @@ export default memo(function Tiger(props: any) {
       setIsOpenSwitch(false);
       isOpenSwitchRef.current = false
       setDisabledBtnSpin(false);
-      if (leftSpin < 10) {
-        setMultiple(1)
-      } else {
-        setMultiple(10)
-      }
+     
       return;
     }
 
     const machineSoundAudio = playSound(1);
     setPressed3(true);
-    setLeftSpin(leftSpin - multiple);
+    const newLeftSpin = leftSpin - multiple;
+    setLeftSpin(newLeftSpin);
+
+    console.log('newLeftSpin', newLeftSpin);
+
+    if (newLeftSpin < 10) {
+      setMultiple(1)
+    } else {
+      setMultiple(10)
+    }
     // setTimeout(() => {
     //   setPressed3(false)
     // }, 7500);
@@ -419,9 +424,6 @@ export default memo(function Tiger(props: any) {
 
     // request api
     const res = await handleSpinResult();
-
-    
-
 
     if (!res) {
       // animations.leftWheelAnimation.pause();
