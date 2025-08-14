@@ -13,6 +13,8 @@ export default function NftT(props: any) {
     { key: "deadnads", data: deadnads, img: "/images/lucky777/nft-deadnads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]' },
   ].filter(nft => Number(nft.data?.remaining) > 0);
 
+  console.log('nfts', nfts, monadverse, monadoon, slmnd, lamouch, overnads, deadnads);
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -58,7 +60,7 @@ export default function NftT(props: any) {
             className='absolute w-full h-full left-0 top-0'
           >
             <img src={nfts[currentIndex].img} alt="" className={clsx('w-[127px] absolute top-0 left-0', nfts[currentIndex].cls, nfts[currentIndex].key === 'monadoon' ? 'h-[175px]' : 'h-[175px]')} />
-            <div className="absolute right-[30px] bottom-[75px] font-Montserrat text-[14px] font-bold italic text-white rotate-[-5deg] drop-shadow-[2px_2px_0_#000] [text-shadow:0_0_2px_#000,1px_1px_0_#000,-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000]">
+            <div className="absolute right-[20px] bottom-[75px] font-Montserrat text-[14px] font-bold italic text-white rotate-[-5deg] drop-shadow-[2px_2px_0_#000] [text-shadow:0_0_2px_#000,1px_1px_0_#000,-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000]">
               {nfts[currentIndex].data.remaining}/{nfts[currentIndex].data.total}
             </div>
           </motion.div>

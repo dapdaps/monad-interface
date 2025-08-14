@@ -5,7 +5,6 @@ import { numberFormatter } from '@/utils/number-formatter';
 import { useRequestByToken } from '../hooks/use-request-by-token';
 import BuyTimesModal from './buyTimes';
 import useToast from '@/hooks/use-toast';
-import Big from 'big.js';
 import HistoryModal from './history';
 import { useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
@@ -17,7 +16,6 @@ import { useSoundStore } from '@/stores/sound';
 import Notice from './notice';
 import NftT from './nftT';
 import Switch from './switch';
-import { sleep } from '@/sections/bridge/lib/util';
 import Xp from './xp';
 import Redeem from './redeem';
 dayjs.extend(duration);
@@ -990,7 +988,7 @@ export default memo(function Tiger(props: any) {
           }
         }} />
 
-        <NftT monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} />
+        <NftT monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} />
 
       </div>
 
