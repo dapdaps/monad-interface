@@ -34,7 +34,6 @@ const MainLayout = (props: Props) => {
     return [true];
   }, [isMobile, pathname]);
 
-
   useEffect(() => {
     handleReportNoCode();
     initializePrice();

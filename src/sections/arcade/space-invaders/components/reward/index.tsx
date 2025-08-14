@@ -27,6 +27,8 @@ const Reward = (props: any) => {
     ];
   }, [rewardData]);
 
+  console.log("isGetNew: %o", isGetNew);
+
   const { runAsync: handleConfirm, loading: confirmLoading } = useRequest(async () => {
     if (isNft) {
       setRewardVisible?.(false);
@@ -123,7 +125,7 @@ const Reward = (props: any) => {
         }
         {
           !isNft && (
-            <div className={clsx("font-[SpaceGrotesk]", isGetNew ? "mt-[70px]" : "mt-[50px]")}>
+            <div className={clsx("font-[SpaceGrotesk]", isGetNew ? "mt-[70px] md:mt-[30px]" : "mt-[50px] md:mt-[30px]")}>
               <div className="flex justify-center items-center gap-[4px]">
                 <div>
                   Fill in your

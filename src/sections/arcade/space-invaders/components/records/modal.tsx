@@ -22,7 +22,7 @@ const RecordsModal = (props: any) => {
       closeIconClassName="!right-[25px]"
     >
       <MonadBaseCard
-        className="w-[752px]"
+        className="w-[752px] md:w-full"
         contentClassName=""
       >
         <Index {...props} />
