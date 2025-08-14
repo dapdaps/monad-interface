@@ -15,7 +15,7 @@ export const NFT_INFORMATIONS: any = {
   },
   "Blocknads": {
     category: "GTD",
-    avatar: "/images/arcade/space-invaders/nfts/Blocknads2.png",
+    avatar: "/images/arcade/space-invaders/nfts/Blocknads3.png",
   },
   "Chogstar": {
     category: "GTD",
