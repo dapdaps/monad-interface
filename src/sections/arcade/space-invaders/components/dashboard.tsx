@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { AMOUNT_OPTIONS, LastGameStatus, NFT_AVATARS } from "../config";
+import { AMOUNT_OPTIONS, LastGameStatus, NFT_INFORMATIONS } from "../config";
 import { useSpaceInvadersContext } from "../context";
 import { useMemo } from "react";
 import { monad } from "@/configs/tokens/monad-testnet";
@@ -35,7 +35,7 @@ const Dashboard = (props: any) => {
     gameLoading,
     currentWinLayer,
     currentGameData,
-    allNFTList,
+    allValidNFTList,
     allNFTListLoading,
     setRecordsVisible,
     setRulesVisible,
@@ -249,7 +249,7 @@ const Dashboard = (props: any) => {
         )
       }
       {
-        !!allNFTList?.length && (
+        !!allValidNFTList?.length && (
           <div
             className="absolute right-[clamp(calc(var(--nadsa-laptop-width)_*_-0.16),_-16vw,_1px)] bottom-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))] pl-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))] pt-[clamp(1px,_1.8vw,_calc(var(--nadsa-laptop-width)*0.018))] pr-[clamp(1px,_0.85vw,_calc(var(--nadsa-laptop-width)*0.0085))] w-[clamp(1px,_16vw,_calc(var(--nadsa-laptop-width)*0.16))] h-[clamp(1px,_13.894vw,_calc(var(--nadsa-laptop-width)*0.13894))] bg-[url('/images/arcade/space-invaders/nft-board.png')] bg-no-repeat bg-left bg-contain"
           >
@@ -263,7 +263,7 @@ const Dashboard = (props: any) => {
                     <Skeleton className="h-[clamp(1px,_0.80vw,_calc(var(--nadsa-laptop-width)*0.0080))]" />
                   </div>
                 </div>
-              ) : allNFTList && allNFTList.length > 0 ? (
+              ) : allValidNFTList && allValidNFTList.length > 0 ? (
                 <Swiper
                   modules={[Autoplay]}
                   spaceBetween={0}
@@ -275,13 +275,13 @@ const Dashboard = (props: any) => {
                   loop={true}
                   className="w-full h-full"
                 >
-                  {allNFTList.map((nft, index) => {
-                    const avatar = NFT_AVATARS[nft.category];
+                  {allValidNFTList.map((nft, index) => {
+                    const nftInfo = NFT_INFORMATIONS[nft.category];
                     return (
                       <SwiperSlide key={index}>
                         <div className="flex w-full items-center gap-[clamp(1px,_0.42vw,_calc(var(--nadsa-laptop-width)*0.0042))]">
                           <img
-                            src={avatar}
+                            src={nftInfo?.avatar}
                             alt=""
                             className="rounded-[clamp(1px,_0.417vw,_calc(var(--nadsa-laptop-width)*0.00417))] w-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width)*0.0347))] h-[clamp(1px,_3.47vw,_calc(var(--nadsa-laptop-width)*0.0347))] object-center object-contain flex-0"
                           />
@@ -289,8 +289,13 @@ const Dashboard = (props: any) => {
                             <div className="text-[#A6A6DB] text-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] font-[300]">
                               NFT Airdrop
                             </div>
-                            <div className="whitespace-nowrap overflow-hidden text-ellipsis">
-                              {nft?.category}
+                            <div className="w-full whitespace-nowrap flex items-center gap-[2px]">
+                              <div className="overflow-hidden text-ellipsis">
+                                {nft?.category}
+                              </div>
+                              <div className="shrink-0 text-[#A6A6DB] text-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] font-[300]">
+                                {nftInfo?.category}
+                              </div>
                             </div>
                             <div className="text-[#03E212] font-[HackerNoonV2] font-[400] leading-[120%] mt-[clamp(1px,_0.2vw,_calc(var(--nadsa-laptop-width)*0.002))]">
                               {nft?.remaining || 0}/{nft?.total || 0}
