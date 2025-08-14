@@ -5,13 +5,13 @@ const GameBalance = (props: any) => {
 
   return (
     <div className={clsx(
-      "flex items-center justify-between bg-[#000] rounded-[10px] border border-[#8184CC] px-[clamp(1px,_0.833vw,_calc(var(--nadsa-laptop-width-base)*0.00833))] py-[clamp(1px,_0.556vw,_calc(var(--nadsa-laptop-width-base)*0.00556))] mb-[clamp(1px,_1.389vw,_calc(var(--nadsa-laptop-width-base)*0.01389))] w-full mt-[clamp(1px,_1.389vw,_calc(var(--nadsa-laptop-width-base)*0.01389))] ",
+      "md:w-[unset] md:gap-[14px] md:h-[46px] md:rounded-[10px] md:border-[#383762] md:bg-black/50 md:mt-0 md:py-0 md:px-[14px] flex items-center justify-between bg-[#000] rounded-[10px] border border-[#8184CC] px-[clamp(1px,_0.833vw,_calc(var(--nadsa-laptop-width-base)*0.00833))] py-[clamp(1px,_0.556vw,_calc(var(--nadsa-laptop-width-base)*0.00556))] mb-[clamp(1px,_1.389vw,_calc(var(--nadsa-laptop-width-base)*0.01389))] w-full mt-[clamp(1px,_1.389vw,_calc(var(--nadsa-laptop-width-base)*0.01389))] ",
       className,
     )}>
       <div className="flex items-center">
-        <span className="mr-[clamp(1px,_0.556vw,_calc(var(--nadsa-laptop-width-base)*0.00556))] flex items-center">
+        <span className="md:mr-[8px] mr-[clamp(1px,_0.556vw,_calc(var(--nadsa-laptop-width-base)*0.00556))] flex items-center">
           <svg
-            className="w-[clamp(1px,_1.667vw,_calc(var(--nadsa-laptop-width-base)*0.01667))] h-[clamp(1px,_1.667vw,_calc(var(--nadsa-laptop-width-base)*0.01667))] shrink-0"
+            className="md:w-[24px] md:h-[24px] w-[clamp(1px,_1.667vw,_calc(var(--nadsa-laptop-width-base)*0.01667))] h-[clamp(1px,_1.667vw,_calc(var(--nadsa-laptop-width-base)*0.01667))] shrink-0"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -22,17 +22,19 @@ const GameBalance = (props: any) => {
             <path d="M11.959 3.65234C9.5602 3.65234 3.65234 9.58932 3.65234 12.0001C3.65234 14.4109 9.5602 20.348 11.959 20.348C14.3578 20.348 20.2657 14.4108 20.2657 12.0001C20.2657 9.58943 14.3578 3.65234 11.959 3.65234ZM10.6645 16.7737C9.65297 16.4967 6.93338 11.7158 7.20907 10.6993C7.48475 9.68266 12.2419 6.94963 13.2534 7.22668C14.265 7.50369 16.9847 12.2845 16.709 13.3011C16.4333 14.3176 11.6761 17.0507 10.6645 16.7737Z" fill="white" />
           </svg>
         </span>
-        <span className="text-white text-[clamp(1px,_1.111vw,_calc(var(--nadsa-laptop-width-base)*0.01111))]">
+        <span className="md:text-[16px] md:leading-[100%] text-white text-[clamp(1px,_1.111vw,_calc(var(--nadsa-laptop-width-base)*0.01111))]">
           {Number(tokenBalance || 0).toFixed(4)}
         </span>
       </div>
-      <div className="cursor-pointer float-right" onClick={() => {
-        setOpen(true)
-        setShowDeposit(showDeposit + 1)
-        setIsJustDesposit(false)
-      }}>
+      <div
+        className="cursor-pointer float-right md:float-[unset]"
+        onClick={() => {
+          setOpen(true)
+          setShowDeposit(showDeposit + 1)
+          setIsJustDesposit(false)
+        }}>
         <svg
-          className="w-[clamp(1px,_1.389vw,_calc(var(--nadsa-laptop-width-base)*0.01389))] h-[clamp(1px,_1.389vw,_calc(var(--nadsa-laptop-width-base)*0.01389))] shrink-0"
+          className="md:w-[20px] md:h-[20px] w-[clamp(1px,_1.389vw,_calc(var(--nadsa-laptop-width-base)*0.01389))] h-[clamp(1px,_1.389vw,_calc(var(--nadsa-laptop-width-base)*0.01389))] shrink-0"
           width="20"
           height="20"
           viewBox="0 0 20 20"

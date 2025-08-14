@@ -33,7 +33,7 @@ const SpaceInvadersView = (props: any) => {
 
   return (
     <SpaceInvadersContextProvider value={{ ...spaceInvaders, ...userData }}>
-      <div ref={containerRef} className="w-full h-screen overflow-y-auto bg-[#010101] relative scrollbar-hide">
+      <div ref={containerRef} className="w-full h-full">
         <Starfield className="!fixed !z-[0]" bgColor="#010101" numStars={500} />
         {
           !isMobile && (
@@ -58,7 +58,7 @@ const SpaceInvadersView = (props: any) => {
             />
           )
         }
-        <div className="relative w-full z-[2] pt-[103px] pb-[clamp(1px,_15vw,_calc(var(--nadsa-laptop-width)*0.15))] md:pb-[80.51vw]">
+        <div className="relative w-full z-[2] pt-[103px] md:pt-[30.77vw] pb-[clamp(1px,_15vw,_calc(var(--nadsa-laptop-width)*0.15))] md:pb-[80.51vw]">
           <div
             className={clsx(
               "min-h-[100dvh] mx-auto flex flex-col relative z-[2]",

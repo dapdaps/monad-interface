@@ -5,9 +5,11 @@ import GamePrivyProvider from "@/components/privy-provider";
 
 const SpaceInvadersPage = () => {
   return (
-    <GamePrivyProvider>
-      <SpaceInvadersView />
-    </GamePrivyProvider>
+    <div className="w-full h-screen overflow-y-auto bg-[#010101] relative scrollbar-hide">
+      <GamePrivyProvider>
+        <SpaceInvadersView />
+      </GamePrivyProvider>
+    </div>
   );
 };
 

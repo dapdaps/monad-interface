@@ -5,10 +5,10 @@ const GameAccount = (props: any) => {
   const { className, address } = props;
 
   return (
-    <div className={clsx("flex items-center w-full", className)}>
-      <span className="mr-[clamp(1px,_0.694vw,_calc(var(--nadsa-laptop-width-base)*0.00694))] flex items-center justify-center">
+    <div className={clsx("flex items-center w-full md:text-[14px] md:font-[Montserrat] md:font-[500] md:leading-[150%]", className)}>
+      <span className="md:mr-[10px] mr-[clamp(1px,_0.694vw,_calc(var(--nadsa-laptop-width-base)*0.00694))] flex items-center justify-center">
         <svg
-          className="w-[clamp(1px,_2.639vw,_calc(var(--nadsa-laptop-width-base)*0.02639))] h-[clamp(1px,_2.639vw,_calc(var(--nadsa-laptop-width-base)*0.02639))] shrink-0"
+          className="md:w-[38px] md:h-[38px] w-[clamp(1px,_2.639vw,_calc(var(--nadsa-laptop-width-base)*0.02639))] h-[clamp(1px,_2.639vw,_calc(var(--nadsa-laptop-width-base)*0.02639))] shrink-0"
           width="38"
           height="38"
           viewBox="0 0 38 38"
@@ -23,7 +23,7 @@ const GameAccount = (props: any) => {
         <div className="text-[#A6A6DB] text-left">Game Account</div>
         <div className="text-white flex items-center mt-[clamp(1px,_0.0694vw,_calc(var(--nadsa-laptop-width-base)*0.000694))] cursor-pointer">
           <span>{address && address.slice(0, 5)}...{address && address.slice(-5)}</span>
-          <div className="ml-[clamp(1px,_0.486vw,_calc(var(--nadsa-laptop-width-base)*0.00486))] text-[#a084ff]">
+          <div className="md:ml-[7px] ml-[clamp(1px,_0.486vw,_calc(var(--nadsa-laptop-width-base)*0.00486))] text-[#a084ff]">
             <Copyed value={address || ''} />
           </div>
         </div>

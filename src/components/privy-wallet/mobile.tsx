@@ -18,7 +18,7 @@ const PrivyMobile = (props: any) => {
       <PrivyMobileForm
         {...props}
         className={clsx(
-          "fixed z-10 left-1/2 -translate-x-1/2 top-[14.10vw] w-[93.08vw]",
+          "absolute z-10 left-1/2 -translate-x-1/2 top-[14.10vw] !w-[93.08vw]",
           formClassName
         )}
       />
