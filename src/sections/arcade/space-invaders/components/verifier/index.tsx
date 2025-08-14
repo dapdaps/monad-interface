@@ -19,7 +19,7 @@ const Verifier = (props: any) => {
       </div>
       <TitleCard title="Row Tile Counts" className="!mt-[29px]">
         {
-          verifierData?.rows?.map((layer) => layer.tiles)?.join(",")
+          verifierData?.rows?.map((layer) => layer.tiles)?.reverse()?.join(",")
         }
       </TitleCard>
       <TitleCard title="Seed">

@@ -31,6 +31,8 @@ const TigerView: React.FC<any> = () => {
     monadverse,
     monadoon,
     slmnd,
+    lamouch,
+    overnads,
     prizes,
     prizeStatus,
     isOpenSwitch,
@@ -55,6 +57,8 @@ const TigerView: React.FC<any> = () => {
       monadverse={monadverse}
       monadoon={monadoon}
       slmnd={slmnd}
+      lamouch={lamouch}
+      overnads={overnads}
       prizes={prizes}
       prizeStatus={prizeStatus}
       isOpenSwitch={isOpenSwitch}

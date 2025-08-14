@@ -16,6 +16,8 @@ export const NFT_AVATARS: any = {
   "LaMouch": "/images/arcade/space-invaders/nfts/LaMouch.png",
   "Molandaks": "/images/arcade/space-invaders/nfts/Molandaks.png",
   "Overnads": "/images/arcade/space-invaders/nfts/Overnads.png",
+  "Chog": "/images/arcade/space-invaders/nfts/Chog.png",
+  "Realnads": "/images/arcade/space-invaders/nfts/Realnads.png",
 };
 
 export const AMOUNT_OPTIONS = [
@@ -139,4 +141,5 @@ export enum SoundEffectType {
   Death = "death",
   ShuffleGates = "shuffle-gates",
   Start = "start",
+  GetReward = "get-reward",
 }

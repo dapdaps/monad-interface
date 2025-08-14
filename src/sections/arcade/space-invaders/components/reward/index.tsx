@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useSpaceInvadersContext } from "../../context";
 import Loading from "@/components/loading";
-import { RewardShowType } from "../../config";
+import { NFT_AVATARS, RewardShowType } from "../../config";
 import { useMemo, useState } from "react";
 import { useRequest } from "ahooks";
 import { trim } from "lodash";
@@ -85,10 +85,18 @@ const Reward = (props: any) => {
     <div className={clsx("relative w-full text-center font-[DelaGothicOne] text-white text-[16px] leading-[120%] font-[400]", className)}>
       {
         isGetNew && (
-          <img
-            src="/images/arcade/space-invaders/reward-modal-title.png"
-            className="absolute top-[-172px] left-1/2 -translate-x-1/2 w-[391px] h-[278px] object-contain object-center"
-          />
+          <div className="absolute flex justify-center items-center top-[-172px] left-1/2 -translate-x-1/2 w-[391px] h-[278px] bg-no-repeat bg-center bg-contain bg-[url('/images/arcade/space-invaders/reward-modal-title2.png')]">
+            <div
+              className="w-[110px] h-[110px] rounded-[20px] rotate-[-9.4deg] translate-y-[16px] origin-left-bottom p-[4px] translate-x-[40px] shrink-0 border border-[#323D5D] bg-[#A6A6DB] flex items-center justify-center"
+              style={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 95%, 0% 80%)' }}
+            >
+              <img
+                src={NFT_AVATARS[rewardData?.category]}
+                alt=""
+                className="w-full h-full rounded-[18px] border border-[#000] object-center object-contain shrink-0"
+              />
+            </div>
+          </div>
         )
       }
       <div className={clsx("", isGetNew ? "pt-[150px]" : "pt-[30px]")}>
