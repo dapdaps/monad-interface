@@ -87,7 +87,10 @@ export default function Notice() {
                                         item.draw_code === '111111' && <TypingText text={`Win 1 Overnads`} speed={50} />
                                     }
                                     {
-                                        item.draw_code !== '666' && item.draw_code !== '777' && item.draw_code !== '888' && item.draw_code !== '999' && item.draw_code !== '101010' && item.draw_code !== '111111' && <TypingText text={`Win ${item.amount} MON`} speed={50} />
+                                        item.draw_code === '121212' && <TypingText text={`Win 1 Deadnads`} speed={50} />
+                                    }
+                                    {
+                                        item.draw_code !== '666' && item.draw_code !== '777' && item.draw_code !== '888' && item.draw_code !== '999' && item.draw_code !== '101010' && item.draw_code !== '111111' && item.draw_code !== '121212' && <TypingText text={`Win ${item.amount} MON`} speed={50} />
                                     }
                                     {/* {
                                         item.code !== '666' && (<a
