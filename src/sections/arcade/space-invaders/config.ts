@@ -28,6 +28,7 @@ export const NFT_INFORMATIONS: any = {
   "LaMouch": {
     category: "FCFS",
     avatar: "/images/arcade/space-invaders/nfts/LaMouch.png",
+    received: true,
   },
   "Molandaks": {
     category: "GTD",
@@ -36,6 +37,7 @@ export const NFT_INFORMATIONS: any = {
   "Overnads": {
     category: "GTD",
     avatar: "/images/arcade/space-invaders/nfts/Overnads.png",
+    received: true,
   },
   "Chog": {
     category: "FCFS",
