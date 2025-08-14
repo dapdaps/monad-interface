@@ -13,8 +13,6 @@ export default function NftT(props: any) {
     { key: "deadnads", data: deadnads, img: "/images/lucky777/nft-deadnads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]' },
   ].filter(nft => Number(nft.data?.remaining) > 0);
 
-  console.log('nfts', nfts, monadverse, monadoon, slmnd, lamouch, overnads, deadnads);
-
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
