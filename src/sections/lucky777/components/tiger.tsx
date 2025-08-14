@@ -72,6 +72,7 @@ export default memo(function Tiger(props: any) {
     slmnd,
     lamouch,
     overnads,
+    deadnads,
     prizeStatus,
     isOpenSwitch,
     setIsOpenSwitch,
@@ -518,6 +519,15 @@ export default memo(function Tiger(props: any) {
         playSound(2)
         setTimeout(() => {
           if (Number(overnads?.remaining) === 0) {
+            startSlowScroll()
+          }
+        }, 3000);
+      } else if (res.draw_code === '121212') {
+        success({ title: `WON 1 Deadnads` }, 'bottom-right');
+        setTitle(('WON 1 Deadnads').repeat(2));
+        playSound(2)
+        setTimeout(() => {
+          if (Number(deadnads?.remaining) === 0) {
             startSlowScroll()
           }
         }, 3000);
