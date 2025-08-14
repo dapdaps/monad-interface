@@ -67,7 +67,7 @@ const Door = (props: any) => {
     if (isLostLocked) {
       doorOpenAnimation();
     }
-  }, [layer, currentGameData, isLostLocked]);
+  }, [layer, currentGameData, isLostLocked, isMobile]);
 
   return (
     <motion.div

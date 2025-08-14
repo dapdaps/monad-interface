@@ -18,6 +18,7 @@ import RewardModal from "./components/reward/modal";
 import { useUserData } from "./hooks/use-user";
 import RulesModal from "./components/rules/modal";
 import useIsMobile from "@/hooks/use-isMobile";
+import AllInFire from "./components/all-in-fire";
 
 const SpaceInvadersView = (props: any) => {
   const spaceInvaders = useSpaceInvaders(props);
@@ -72,6 +73,11 @@ const SpaceInvadersView = (props: any) => {
                   className="w-full shrink-0 object-contain object-bottom md:min-w-[125%]"
                 />
               </div>
+              {
+                isMobile && (
+                  <AllInFire className="right-0 top-[-14vw] z-[0]" />
+                )
+              }
               <img
                 src="/images/arcade/space-invaders/title.png"
                 alt=""
