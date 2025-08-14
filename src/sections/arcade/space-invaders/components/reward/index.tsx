@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useSpaceInvadersContext } from "../../context";
 import Loading from "@/components/loading";
-import { NFT_AVATARS, RewardShowType } from "../../config";
+import { NFT_INFORMATIONS, RewardShowType } from "../../config";
 import { useMemo, useState } from "react";
 import { useRequest } from "ahooks";
 import { trim } from "lodash";
@@ -17,6 +17,7 @@ const Reward = (props: any) => {
     getUserNfts,
   } = useSpaceInvadersContext();
   const toast = useToast({ isGame: true });
+  const nftInfo = NFT_INFORMATIONS[rewardData?.category];
 
   const [discord, setDiscord] = useState<string>("");
 
@@ -91,7 +92,7 @@ const Reward = (props: any) => {
               style={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 95%, 0% 80%)' }}
             >
               <img
-                src={NFT_AVATARS[rewardData?.category]}
+                src={nftInfo?.avatar}
                 alt=""
                 className="w-full h-full rounded-[18px] border border-[#000] object-center object-contain shrink-0"
               />
@@ -112,7 +113,7 @@ const Reward = (props: any) => {
           )
         }
         <div className="mt-[33px] font-[SpaceGrotesk]">
-          {isNft ? "You get the NFT" : `They noticed you. ${isNft ? "NFT dispatched" : "WL confirmed"}`}
+          {isNft ? "You get the NFT" : `They noticed you. ${isNft ? `NFT ${nftInfo?.category ? nftInfo?.category + " " : ""}dispatched` : `WL ${nftInfo?.category ? nftInfo?.category + " " : ""}confirmed`}`}
         </div>
         {
           isGetNew && (

@@ -8,16 +8,43 @@ export const GHOST_AVATARS = [
   "/images/arcade/space-invaders/keone.png",
 ];
 
-export const NFT_AVATARS: any = {
-  "SpaceInvaders": "/images/arcade/space-invaders/nfts/SpaceInvaders.png",
-  "Blocknads": "/images/arcade/space-invaders/nfts/Blocknads.png",
-  "Chogstar": "/images/arcade/space-invaders/nfts/Chogstar.png",
-  "Dripster": "/images/arcade/space-invaders/nfts/Dripster.png",
-  "LaMouch": "/images/arcade/space-invaders/nfts/LaMouch.png",
-  "Molandaks": "/images/arcade/space-invaders/nfts/Molandaks.png",
-  "Overnads": "/images/arcade/space-invaders/nfts/Overnads.png",
-  "Chog": "/images/arcade/space-invaders/nfts/Chog.png",
-  "Realnads": "/images/arcade/space-invaders/nfts/Realnads.png",
+export const NFT_INFORMATIONS: any = {
+  "SpaceInvaders": {
+    category: "",
+    avatar: "/images/arcade/space-invaders/nfts/SpaceInvaders.png",
+  },
+  "Blocknads": {
+    category: "GTD",
+    avatar: "/images/arcade/space-invaders/nfts/Blocknads.png",
+  },
+  "Chogstar": {
+    category: "GTD",
+    avatar: "/images/arcade/space-invaders/nfts/Chogstar.png",
+  },
+  "Dripster": {
+    category: "GTD",
+    avatar: "/images/arcade/space-invaders/nfts/Dripster.png",
+  },
+  "LaMouch": {
+    category: "FCFS",
+    avatar: "/images/arcade/space-invaders/nfts/LaMouch.png",
+  },
+  "Molandaks": {
+    category: "GTD",
+    avatar: "/images/arcade/space-invaders/nfts/Molandaks.png",
+  },
+  "Overnads": {
+    category: "GTD",
+    avatar: "/images/arcade/space-invaders/nfts/Overnads.png",
+  },
+  "Chog": {
+    category: "FCFS",
+    avatar: "/images/arcade/space-invaders/nfts/Chog.png",
+  },
+  "Realnads": {
+    category: "GTD",
+    avatar: "/images/arcade/space-invaders/nfts/Realnads.png",
+  },
 };
 
 export const AMOUNT_OPTIONS = [

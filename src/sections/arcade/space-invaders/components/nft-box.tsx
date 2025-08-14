@@ -1,11 +1,11 @@
 import clsx from "clsx";
 import { motion } from "framer-motion";
-import { NFT_AVATARS } from "../config";
+import { NFT_INFORMATIONS } from "../config";
 
 const NftBox = (props: any) => {
   const { className, nft } = props;
 
-  const avatar = NFT_AVATARS[nft.category];
+  const nftInfo = NFT_INFORMATIONS[nft.category];
 
   return (
     <div className={clsx("absolute z-[3] right-[clamp(1px,_1.5vw,_calc(var(--nadsa-laptop-width)*0.015))] bottom-[clamp(1px,_2.2vw,_calc(var(--nadsa-laptop-width)*0.022))] w-[clamp(1px,_5.069vw,_calc(var(--nadsa-laptop-width)*0.05069))] h-[clamp(1px,_4.236vw,_calc(var(--nadsa-laptop-width)*0.04236))]", className)}>
@@ -39,7 +39,7 @@ const NftBox = (props: any) => {
         }}
       >
         <img
-          src={avatar}
+          src={nftInfo?.avatar}
           alt=""
           className="rounded-full object-center object-cover w-[clamp(1px,_4vw,_calc(var(--nadsa-laptop-width)*0.04))] h-[clamp(1px,_4vw,_calc(var(--nadsa-laptop-width)*0.04))]"
           style={{
