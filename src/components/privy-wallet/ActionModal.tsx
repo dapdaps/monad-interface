@@ -17,7 +17,7 @@ interface ActionModalProps {
     playerAddress: string;
     rechargeAddress: string;
     depositInitialAmount: number;
-    showDeposit: number;
+    showDeposit: any;
     isJustDesposit: boolean;
 }
 
@@ -37,9 +37,11 @@ const ActionModal = ({
     useEffect(() => {
         if (showDeposit) {
             setActiveTab("deposit");
+            return;
         }
+        setActiveTab("withdraw");
     }, [showDeposit]);
-    
+
     if (!playerAddress) {
         return null
     }
@@ -48,9 +50,12 @@ const ActionModal = ({
         <Modal open={open} closeIcon={<svg className="ml-[-20px] mt-[10px]" width="10" height="9" viewBox="0 0 10 9" fill="none">
             <path d="M5 3.375L8 0H10L6 4.5L10 9H8L5 5.625L2 9H0L4 4.5L0 0H2L5 3.375Z" fill="#A6A6DB" />
         </svg>} onClose={onClose} innerClassName="font-Montserrat">
-            <div className="relative w-[495px]">
-                <img src="/images/lucky777/modal-bg.png" className="absolute z-1 top-0 left-0 w-full h-full" />
-                <div className="relative p-6 w-[495px] max-w-full py-[50px] px-[50px]">
+            <div className="relative w-[495px] md:w-full">
+                <img
+                    src="/images/lucky777/modal-bg.png"
+                    className="absolute z-1 top-0 left-0 w-full h-full md:min-w-[calc(100%_+_10px)] md:min-h-[calc(100%_+_30px)] md:left-[-5px] md:bottom-[-15px]"
+                />
+                <div className="relative p-6 w-[495px] max-w-full py-[50px] px-[50px] md:py-[30px] md:px-[15px]">
                     {
                         !isJustDesposit && <div className="flex gap-2 justify-center">
                             <button
@@ -211,7 +216,7 @@ const Deposit = ({
                     console.log('hash', hash);
                     onClose();
 
-                    success({ 
+                    success({
                         title: 'Recharge success',
                         tx: hash,
                         chainId: monadTestnet.id,
@@ -348,23 +353,23 @@ const Withdraw = ({
                             },
                             address
                         });
-    
+
                         console.log('hash', hash);
-    
+
                         onClose();
-    
-                        success({ 
+
+                        success({
                             title: 'Withdraw success',
                             tx: hash,
                             chainId: monadTestnet.id,
-                         }, 'bottom-right');
-                    } catch(e) {
+                        }, 'bottom-right');
+                    } catch (e) {
                         setIsPending(false);
                         fail({
                             title: 'Withdraw fail',
                         }, 'bottom-right')
                     }
-                    
+
                 }}
             >
                 {isPending && <CircleLoading className="w-[20px] h-[20px] mr-5" />}

@@ -15,9 +15,10 @@ import { useBlockNumber } from "wagmi";
 import { useSoundStore } from "@/stores/sound";
 import { DEFAULT_CHAIN_ID } from "@/configs";
 import { useSpaceInvadersStore } from "../store";
+import useIsMobile from "@/hooks/use-isMobile";
 
 export function useSpaceInvaders(props?: any): SpaceInvaders {
-  const { } = props ?? {};
+  const { containerRef } = props ?? {};
 
   const toast = useToast({ isGame: true });
   const { user } = usePrivy();
@@ -25,8 +26,9 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { data: blockNumber } = useBlockNumber({ watch: true });
   const soundStore = useSoundStore();
   const spaceInvadersStore: any = useSpaceInvadersStore();
+  const isMobile = useIsMobile();
 
-  const containerRef = useRef<any>(null);
+  // const containerRef = useRef<any>(null);
   const unLockedLayerRef = useRef<any>(null);
   const lastBalanceUpdateRef = useRef<number>(0);
   const soundEffectCashoutRef = useRef<any>(null);
@@ -836,7 +838,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         cancelAnimationFrame(animationId);
       };
     }
-  }, [data]);
+  }, [data, isMobile]);
 
   return {
     gameLoading,
