@@ -1,11 +1,21 @@
+import useIsMobile from "@/hooks/use-isMobile";
+import { numberFormatter } from "@/utils/number-formatter";
+import Big from "big.js";
 import clsx from "clsx";
+import { useMemo } from "react";
 
 const GameBalance = (props: any) => {
   const { className, tokenBalance, setOpen, setShowDeposit, setIsJustDesposit, showDeposit } = props;
 
+  const isMobile = useIsMobile();
+
+  const tokenBalanceFormatted = useMemo(() => {
+    return numberFormatter(tokenBalance, isMobile ? 1 : 4, true, { isShort: true, isShortUppercase: true });
+  }, [tokenBalance, isMobile]);
+
   return (
     <div className={clsx(
-      "md:w-[unset] md:gap-[14px] md:h-[46px] md:rounded-[10px] md:border-[#383762] md:bg-black/50 md:mt-0 md:py-0 md:px-[14px] flex items-center justify-between bg-[#000] rounded-[10px] border border-[#8184CC] px-[clamp(1px,_0.833vw,_calc(var(--nadsa-laptop-width-base)*0.00833))] py-[clamp(1px,_0.556vw,_calc(var(--nadsa-laptop-width-base)*0.00556))] mb-[clamp(1px,_1.389vw,_calc(var(--nadsa-laptop-width-base)*0.01389))] w-full mt-[clamp(1px,_1.389vw,_calc(var(--nadsa-laptop-width-base)*0.01389))] ",
+      "md:w-[unset] md:justify-between md:h-[46px] md:rounded-[10px] md:mb-0 md:border-[#383762] md:bg-black/50 md:mt-0 md:py-0 md:px-[10px] flex items-center justify-between bg-[#000] rounded-[10px] border border-[#8184CC] px-[clamp(1px,_0.833vw,_calc(var(--nadsa-laptop-width-base)*0.00833))] py-[clamp(1px,_0.556vw,_calc(var(--nadsa-laptop-width-base)*0.00556))] mb-[clamp(1px,_1.389vw,_calc(var(--nadsa-laptop-width-base)*0.01389))] w-full mt-[clamp(1px,_1.389vw,_calc(var(--nadsa-laptop-width-base)*0.01389))] ",
       className,
     )}>
       <div className="flex items-center">
@@ -22,15 +32,20 @@ const GameBalance = (props: any) => {
             <path d="M11.959 3.65234C9.5602 3.65234 3.65234 9.58932 3.65234 12.0001C3.65234 14.4109 9.5602 20.348 11.959 20.348C14.3578 20.348 20.2657 14.4108 20.2657 12.0001C20.2657 9.58943 14.3578 3.65234 11.959 3.65234ZM10.6645 16.7737C9.65297 16.4967 6.93338 11.7158 7.20907 10.6993C7.48475 9.68266 12.2419 6.94963 13.2534 7.22668C14.265 7.50369 16.9847 12.2845 16.709 13.3011C16.4333 14.3176 11.6761 17.0507 10.6645 16.7737Z" fill="white" />
           </svg>
         </span>
-        <span className="md:text-[16px] md:leading-[100%] text-white text-[clamp(1px,_1.111vw,_calc(var(--nadsa-laptop-width-base)*0.01111))]">
-          {Number(tokenBalance || 0).toFixed(4)}
+        <span
+          className={clsx(
+            "md:text-[16px] md:leading-[100%] text-white text-[clamp(1px,_1.111vw,_calc(var(--nadsa-laptop-width-base)*0.01111))]",
+            tokenBalanceFormatted?.split(".")?.join("")?.length >= 4 && "md:!text-[12px]",
+          )}
+        >
+          {tokenBalanceFormatted}
         </span>
       </div>
       <div
         className="cursor-pointer float-right md:float-[unset]"
         onClick={() => {
           setOpen(true)
-          setShowDeposit(showDeposit + 1)
+          setShowDeposit(true)
           setIsJustDesposit(false)
         }}>
         <svg

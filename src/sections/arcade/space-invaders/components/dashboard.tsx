@@ -76,12 +76,12 @@ const Dashboard = (props: any) => {
         {
           cashOutPending ? (
             <>
-              <div className="mt-[5px] flex justify-center items-center gap-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] font-[DelaGothicOne] text-center text-[#BFFF60] text-[clamp(1px,_1.59vw,_calc(var(--nadsa-laptop-width)*0.0159))] pt-[clamp(1px,_4vw,_calc(var(--nadsa-laptop-width)*0.04))]">
+              <div className="md:mt-[30px] md:gap-[5px] md:text-[16px] mt-[5px] flex justify-center items-center gap-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] font-[DelaGothicOne] text-center text-[#BFFF60] text-[clamp(1px,_1.59vw,_calc(var(--nadsa-laptop-width)*0.0159))] pt-[clamp(1px,_4vw,_calc(var(--nadsa-laptop-width)*0.04))]">
                 <div className="">Processing Payout</div>
                 <motion.img
                   src="/images/arcade/space-invaders/icon-loading.svg"
                   alt=""
-                  className="flex-0 object-center object-contain w-[clamp(1px,_1.25vw,_calc(var(--nadsa-laptop-width)*0.0125))] h-[clamp(1px,_1.25vw,_calc(var(--nadsa-laptop-width)*0.0125))]"
+                  className="md:w-[16px] md:h-[16px] flex-0 object-center object-contain w-[clamp(1px,_1.25vw,_calc(var(--nadsa-laptop-width)*0.0125))] h-[clamp(1px,_1.25vw,_calc(var(--nadsa-laptop-width)*0.0125))]"
                   animate={{
                     rotate: 360,
                   }}
@@ -233,12 +233,15 @@ const Dashboard = (props: any) => {
                   }
                   <button
                     type="button"
-                    className="md:hidden flex items-center gap-[clamp(1px,_0.49vw,_calc(var(--nadsa-laptop-width)*0.0049))] text-[#12FFC0] text-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] font-[400] leading-[100%] font-[DelaGothicOne] !cursor-default"
+                    className={clsx(
+                      "md:gap-[5px] flex items-center gap-[clamp(1px,_0.49vw,_calc(var(--nadsa-laptop-width)*0.0049))] text-[#12FFC0] text-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] font-[400] leading-[100%] font-[DelaGothicOne] !cursor-default",
+                      gameLost ? "md:hidden" : "md:text-[16px]"
+                    )}
                   >
                     <img
                       src="/images/arcade/space-invaders/icon-wallet.png"
                       alt=""
-                      className="w-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] h-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] flex-0 object-center object-contain"
+                      className="md:w-[20px] md:h-[20px] w-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] h-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] flex-0 object-center object-contain"
                     />
                     <div className="">
                       {numberFormatter(userBalance, 2, true)} MON
@@ -318,17 +321,17 @@ const CurrentLayer = (props: any) => {
   const { className, multiple = 1, amount } = props;
 
   return (
-    <div className={clsx("flex justify-center items-center gap-[clamp(1px,_6.25vw,_calc(var(--nadsa-laptop-width)*0.0625))] pt-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))]", className)}>
-      <div className="text-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))]">
+    <div className={clsx("md:pt-[30px] md:gap-[20px] flex justify-center items-center gap-[clamp(1px,_6.25vw,_calc(var(--nadsa-laptop-width)*0.0625))] pt-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))]", className)}>
+      <div className="md:text-[16px] text-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))]">
         {numberFormatter(multiple, 2, true, { isZeroPrecision: true })}x
       </div>
-      <div className="flex items-center gap-[clamp(1px,_0.556vw,_calc(var(--nadsa-laptop-width)*0.00556))]">
+      <div className="md:gap-[5px] flex items-center gap-[clamp(1px,_0.556vw,_calc(var(--nadsa-laptop-width)*0.00556))]">
         <img
           src={monad["mon"].icon}
           alt=""
-          className="w-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))] h-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))] object-center object-contain flex-0"
+          className="md:w-[20px] md:h-[20px] w-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))] h-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))] object-center object-contain flex-0"
         />
-        <div className="text-[#BFFF60] text-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))]">
+        <div className="md:text-[16px] text-[#BFFF60] text-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))]">
           {numberFormatter(Big(amount || 0).times(multiple || 1), 2, true)}
         </div>
       </div>
@@ -344,7 +347,7 @@ const CashOut = (props: any) => {
       <div className={clsx("flex justify-center items-center", className)}>
         <button
           type="button"
-          className="disabled:opacity-50 disabled:!cursor-not-allowed w-[clamp(1px,_25.69vw,_calc(var(--nadsa-laptop-width)*0.2569))] h-[clamp(1px,_3.19vw,_calc(var(--nadsa-laptop-width)*0.0319))] gap-[clamp(1px,_0.5vw,_calc(var(--nadsa-laptop-width)*0.005))] border border-[#413C54] bg-[#5237FF] rounded-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] flex justify-center items-center button text-white text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] font-[DelaGothicOne] font-[400] leading-[100%] uppercase"
+          className="md:w-[50vw] md:h-[46px] md:text-[16px] md:mt-[20px] md:rounded-[10px] disabled:opacity-50 disabled:!cursor-not-allowed w-[clamp(1px,_25.69vw,_calc(var(--nadsa-laptop-width)*0.2569))] h-[clamp(1px,_3.19vw,_calc(var(--nadsa-laptop-width)*0.0319))] gap-[clamp(1px,_0.5vw,_calc(var(--nadsa-laptop-width)*0.005))] border border-[#413C54] bg-[#5237FF] rounded-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] flex justify-center items-center button text-white text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] font-[DelaGothicOne] font-[400] leading-[100%] uppercase"
           onClick={onCashOut}
           disabled={cashOutPending || !currentWinLayer}
         >
@@ -356,7 +359,7 @@ const CashOut = (props: any) => {
           <div>Cash Out</div>
         </button>
       </div>
-      <div className="flex justify-center items-center pt-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))] text-[#8A87AA] font-[SpaceGrotesk]">
+      <div className="md:pt-[10px] flex justify-center items-center pt-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))] text-[#8A87AA] font-[SpaceGrotesk]">
         Game Hash: {addressFormated(currentGameData?.create_hash || "")}
       </div>
     </>

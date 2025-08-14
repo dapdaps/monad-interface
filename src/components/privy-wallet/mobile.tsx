@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 
 const PrivyMobile = (props: any) => {
-  const { className, formClassName } = props;
+  const { className, formClassName, setOpen, setShowDeposit, setIsJustDesposit, showDeposit } = props;
 
   const pathname = usePathname();
 
@@ -27,7 +27,7 @@ const PrivyMobile = (props: any) => {
 
   return (
     <div className={clsx(
-      "fixed z-10 left-1/2 -translate-x-1/2 top-[25.13vw] w-[92.31vw] p-[8px] rounded-[16px] bg-[#836EF9]",
+      "absolute z-10 left-1/2 -translate-x-1/2 top-[15.13vw] w-[92.31vw] p-[8px] rounded-[16px] bg-[#836EF9]",
       className,
     )}>
       <div className="w-full p-[8px] rounded-[12px] border border-[#3E347C] bg-[#1A1843] shadow-[7px_10px_0_0_rgba(0,_0,_0,_0.25)_inset]">
@@ -40,12 +40,22 @@ const PrivyMobile = (props: any) => {
         <button
           type="button"
           className="flex-1 h-[32px] rounded-[10px] border border-black bg-[radial-gradient(50%_50%_at_50%_50%,#E1FFB5_0%,#B1FF3D_100%)] shadow-[0_0_6px_0_#BFFF60] text-black font-[Montserrat] text-[16px] font-semibold leading-[100%]"
+          onClick={() => {
+            setOpen(true);
+            setShowDeposit(true);
+            setIsJustDesposit(false);
+          }}
         >
           Deposit
         </button>
         <button
           type="button"
           className="flex-1 h-[32px] rounded-[10px] border border-black bg-white/30 text-black font-[Montserrat] text-[16px] font-semibold leading-[100%]"
+          onClick={() => {
+            setOpen(true);
+            setShowDeposit(false);
+            setIsJustDesposit(false);
+          }}
         >
           Withdraw
         </button>
@@ -61,8 +71,11 @@ export const PrivyMobileForm = (props: any) => {
 
   return (
     <div className={clsx("w-full flex justify-between items-center gap-[10px]", className)}>
-      <GameAccount {...restProps} />
-      <GameBalance {...restProps} />
+      <GameAccount {...restProps} className="shrink-0 !w-[unset]" />
+      <GameBalance
+        {...restProps}
+        className="!flex-1 !w-0 overflow-hidden"
+      />
     </div>
   );
 };

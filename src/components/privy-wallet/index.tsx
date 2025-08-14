@@ -24,7 +24,7 @@ const PrivyWallet = () => {
   const isMobile = useIsMobile();
 
   const [open, setOpen] = useState(false);
-  const [showDeposit, setShowDeposit] = useState(1);
+  const [showDeposit, setShowDeposit] = useState(true);
   const [isSwitching, setIsSwitching] = useState(false);
   const [isJustDesposit, setIsJustDesposit] = useState(false);
   const { tokenBalance, update } = useTokenAccountBalance(
@@ -51,7 +51,7 @@ const PrivyWallet = () => {
   useEffect(() => {
     if (openDeposit) {
       setOpen(true)
-      setShowDeposit(showDeposit + 1)
+      setShowDeposit(true)
       setIsJustDesposit(true)
     }
   }, [openDeposit]);

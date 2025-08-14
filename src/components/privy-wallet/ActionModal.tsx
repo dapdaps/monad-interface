@@ -17,7 +17,7 @@ interface ActionModalProps {
     playerAddress: string;
     rechargeAddress: string;
     depositInitialAmount: number;
-    showDeposit: number;
+    showDeposit: any;
     isJustDesposit: boolean;
 }
 
@@ -37,7 +37,9 @@ const ActionModal = ({
     useEffect(() => {
         if (showDeposit) {
             setActiveTab("deposit");
+            return;
         }
+        setActiveTab("withdraw");
     }, [showDeposit]);
 
     if (!playerAddress) {

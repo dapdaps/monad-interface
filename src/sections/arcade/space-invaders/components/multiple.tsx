@@ -24,10 +24,13 @@ const Multiple = (props: any) => {
       >
         {
           isMobile && (
-            <svg className="shrink-0" width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path opacity="0.5" d="M4.63397 1.16895C5.01887 0.502279 5.98113 0.502279 6.36603 1.16895L10.2631 7.91895C10.648 8.58561 10.1669 9.41895 9.39711 9.41895H1.60289C0.833085 9.41895 0.35196 8.58561 0.73686 7.91895L4.63397 1.16895Z" fill="white" />
+            <svg className="shrink-0 translate-y-[1px]" width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                opacity={[LayerStatus.Unlocked, LayerStatus.Failed].includes(layer.status) ? "1" : "0.5"}
+                d="M4.63397 1.16895C5.01887 0.502279 5.98113 0.502279 6.36603 1.16895L10.2631 7.91895C10.648 8.58561 10.1669 9.41895 9.39711 9.41895H1.60289C0.833085 9.41895 0.35196 8.58561 0.73686 7.91895L4.63397 1.16895Z"
+                fill={[LayerStatus.Unlocked, LayerStatus.Failed].includes(layer.status) ? "black" : "white"}
+              />
             </svg>
-
           )
         }
         <div className="">{children}X</div>

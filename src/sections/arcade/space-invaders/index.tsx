@@ -26,14 +26,13 @@ const SpaceInvadersView = (props: any) => {
   const isMobile = useIsMobile();
 
   const {
-    containerRef,
     data,
     currentGameData,
   } = spaceInvaders;
 
   return (
     <SpaceInvadersContextProvider value={{ ...spaceInvaders, ...userData }}>
-      <div ref={containerRef} className="w-full h-full">
+      <div className="w-full h-full">
         <Starfield className="!fixed !z-[0]" bgColor="#010101" numStars={500} />
         {
           !isMobile && (

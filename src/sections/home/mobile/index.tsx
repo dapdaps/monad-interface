@@ -84,8 +84,7 @@ const Mobile = () => {
             className="absolute right-[11%] top-[-9%] w-[141px] h-[145px]"
             data-bp="1001-007"
             onClick={() => {
-              console.log('game')
-              setIsGameOpen(true)
+              router.push("/arcade")
             }}
           >
             <div className="absolute left-1/2 translate-x-[calc(-50%_+_30px)] top-[-50px] cursor-pointer scale-[0.7]">
