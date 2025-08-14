@@ -86,6 +86,7 @@ body {
   --wcm-z-index: 999;
   --nadsa-laptop-width: 1008px;
   --nadsa-laptop-width-base: 1440px;
+  --nadsa-laptop-width-mobile: 780px;
 }
 
 @media (prefers-color-scheme: dark) {

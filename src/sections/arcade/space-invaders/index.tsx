@@ -17,10 +17,12 @@ import Big from "big.js";
 import RewardModal from "./components/reward/modal";
 import { useUserData } from "./hooks/use-user";
 import RulesModal from "./components/rules/modal";
+import useIsMobile from "@/hooks/use-isMobile";
 
 const SpaceInvadersView = (props: any) => {
   const spaceInvaders = useSpaceInvaders(props);
   const userData = useUserData();
+  const isMobile = useIsMobile();
 
   const {
     containerRef,
@@ -29,36 +31,40 @@ const SpaceInvadersView = (props: any) => {
   } = spaceInvaders;
 
   return (
-    <SpaceInvadersContextProvider value={{ ...spaceInvaders, ...userData}}>
-      <div ref={containerRef} className="w-full h-screen overflow-y-auto bg-[#010101] relative">
+    <SpaceInvadersContextProvider value={{ ...spaceInvaders, ...userData }}>
+      <div ref={containerRef} className="w-full h-screen overflow-y-auto bg-[#010101] relative scrollbar-hide">
         <Starfield className="!fixed !z-[0]" bgColor="#010101" numStars={500} />
-        <motion.img
-          src="/images/arcade/space-invaders/monad-moon.png"
-          alt=""
-          className="absolute left-1/2 top-[clamp(1px,_0vw,_calc(var(--nadsa-laptop-width)*0))] z-[1]"
-          style={{
-            x: "-50%",
-            width: "clamp(1px, 32.85vw, calc(var(--nadsa-laptop-width)*0.3285))",
-            height: "clamp(1px, 22.98vw, calc(var(--nadsa-laptop-width)*0.2298))",
-          }}
-          animate={{
-            y: [0, 20, -20, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "easeInOut",
-            times: [0, 0.4, 0.8, 1],
-          }}
-        />
+        {
+          !isMobile && (
+            <motion.img
+              src="/images/arcade/space-invaders/monad-moon.png"
+              alt=""
+              className="absolute left-1/2 top-[clamp(1px,_0vw,_calc(var(--nadsa-laptop-width)*0))] z-[1]"
+              style={{
+                x: "-50%",
+                width: "clamp(1px, 32.85vw, calc(var(--nadsa-laptop-width)*0.3285))",
+                height: "clamp(1px, 22.98vw, calc(var(--nadsa-laptop-width)*0.2298))",
+              }}
+              animate={{
+                y: [0, 20, -20, 0],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "easeInOut",
+                times: [0, 0.4, 0.8, 1],
+              }}
+            />
+          )
+        }
         <div className="relative w-full z-[2] pt-[103px] pb-[clamp(1px,_15vw,_calc(var(--nadsa-laptop-width)*0.15))]">
           <div
-            className="w-[clamp(1px,_82.71vw,_calc(var(--nadsa-laptop-width)*0.8271)] min-h-[100dvh] mx-auto flex flex-col relative z-[2]"
-            style={{
-              width: "clamp(1px, 82.71vw, calc(var(--nadsa-laptop-width)*0.8271)",
-            }}
+            className={clsx(
+              "min-h-[100dvh] mx-auto flex flex-col relative z-[2]",
+              isMobile ? "w-full" : "w-[clamp(1px,_82.71vw,_calc(var(--nadsa-laptop-width)*0.8271))]"
+            )}
           >
-            <div className="relative w-full shrink-0">
+            <div className="relative w-full shrink-0 md:z-[1]">
               <img
                 src="/images/arcade/space-invaders/dome.png"
                 alt=""
@@ -67,7 +73,7 @@ const SpaceInvadersView = (props: any) => {
               <img
                 src="/images/arcade/space-invaders/title.png"
                 alt=""
-                className="w-[clamp(1px,_41.25vw,_calc(var(--nadsa-laptop-width)*0.4125))] h-[clamp(1px,_6.59vw,_calc(var(--nadsa-laptop-width)*0.0659))] absolute left-1/2 -translate-x-1/2 bottom-[clamp(1px,_8vw,_calc(var(--nadsa-laptop-width)*0.08))] z-[1]"
+                className="w-[clamp(1px,_41.25vw,_calc(var(--nadsa-laptop-width)*0.4125))] h-[clamp(1px,_6.59vw,_calc(var(--nadsa-laptop-width)*0.0659)) md:w-[82.05vw] md:h-[9.49vw] absolute left-1/2 -translate-x-1/2 bottom-[clamp(1px,_8vw,_calc(var(--nadsa-laptop-width)*0.08))] z-[1]"
               />
               <motion.img
                 src="/images/arcade/space-invaders/light.png"
