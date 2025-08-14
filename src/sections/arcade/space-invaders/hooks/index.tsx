@@ -669,6 +669,11 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     }
   });
 
+  const allValidNFTList = useMemo(() => {
+    if (!allNFTList || !allNFTList.length) return [];
+    return allNFTList.filter((nft) => Big(nft.remaining || 0).gt(0));
+  }, [allNFTList]);
+
   const [gameLoading] = useMemo(() => {
     return [
       allGameMapsLoading || LastGameLoading
@@ -868,6 +873,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     userBalanceLoading,
     currentGameData,
     allNFTList,
+    allValidNFTList,
     allNFTListLoading,
     getChainGameId,
     getChainGameDetails,
@@ -926,6 +932,7 @@ export interface SpaceInvaders {
   userBalanceLoading: boolean;
   currentGameData?: Partial<StartGameRes>;
   allNFTList?: NFTItem[];
+  allValidNFTList?: NFTItem[];
   allNFTListLoading: boolean;
   getChainGameId: (gameId?: string) => Promise<{ value: string; chainGameId: any; }>;
   getChainGameDetails: (chainGameId?: any) => Promise<any>;
