@@ -3,7 +3,7 @@ import { useSpaceInvadersContext } from "../../context";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
-import { NFT_AVATARS } from "../../config";
+import { NFT_INFORMATIONS } from "../../config";
 import useToast from "@/hooks/use-toast";
 import { formatLongText } from "@/utils/utils";
 import { monadTestnet } from "viem/chains";
@@ -55,14 +55,14 @@ const Nft = (props: any) => {
             </div>
           </div>
         )) : !!userNfts?.length ? userNfts?.map((nft: any, index: number) => {
-          const nftAvatar = NFT_AVATARS[nft.category];
+          const nftInfo = NFT_INFORMATIONS[nft.category];
           return (
             <div
               key={index}
               className="w-full rounded-[6px] bg-black/30 px-[18px] py-[16px] flex items-center justify-between gap-[20px] md:px-[10px] md:py-[10px] md:gap-[10px]"
             >
               <img
-                src={nftAvatar}
+                src={nftInfo?.avatar}
                 alt=""
                 className="w-[96px] h-[96px] rounded-[6px] object-center object-contain flex-0 md:w-[75px] md:h-[75px]"
               />
