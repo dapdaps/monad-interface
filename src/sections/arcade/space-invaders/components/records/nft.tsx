@@ -136,11 +136,11 @@ const Nft = (props: any) => {
                     <TimeAgo date={nft.created_at} />
                   </LabelValue>
                   <LabelValue label="Status" valueClassName="flex items-center gap-[10px]">
-                    <div className={clsx(nft.tx_hash ? "text-[#BFFF60]" : "text-[#63AEF4]")}>
-                      {nft.tx_hash ? "Received" : "Pending"}
+                    <div className={clsx((!!nft.tx_hash || nftInfo?.received) ? "text-[#BFFF60]" : "text-[#63AEF4]")}>
+                      {(!!nft.tx_hash || nftInfo?.received) ? "Received" : "Pending"}
                     </div>
                     {
-                      nft.tx_hash && (
+                      !!nft.tx_hash && (
                         <a
                           target="_blank"
                           className="underline underline-offset-2"
