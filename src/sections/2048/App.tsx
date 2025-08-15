@@ -76,6 +76,9 @@ export default function Game2048() {
             resyncGame(activeGameId, gameUser?.score)
         }
     });
+    const isMobile = useIsMobile();
+
+    const toastLocation = isMobile ? 'bottom-right' : 'top-center';
 
     // =============================================================//
     //                         Game State                           //
@@ -777,7 +780,6 @@ export default function Game2048() {
         }
     }, [gameUser, isInited])
 
-    const isMobile = useIsMobile();
 
 
     return (

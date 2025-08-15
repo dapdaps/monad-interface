@@ -609,7 +609,7 @@ export default memo(function Tiger(props: any) {
   }, [soundStore]);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center pt-[88px]">
+    <div className="w-full h-[100dvh] relative flex flex-col items-center justify-center pt-[88px]">
       <div style={{
         position: 'absolute',
         left: '50%',
