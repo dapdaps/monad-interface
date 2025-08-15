@@ -5,6 +5,8 @@ import { useLuckyBera } from '@/sections/lucky777/hooks';
 import { useBuyHoney } from '@/sections/lucky777/hooks/buy-honey';
 import { LoginContainer } from '@/sections/terminal/login';
 import GamePrivyProvider from '@/components/privy-provider';
+import useIsMobile from '@/hooks/use-isMobile';
+
 
 const LuckyBeraView: React.FC<any> = () => {
 
@@ -41,6 +43,7 @@ const TigerView: React.FC<any> = () => {
   } = useLuckyBera();
   const { visible, toggleVisible } = useBuyHoney();
   const [update, setUpdate] = useState<any>(1); 
+  const isMobile = useIsMobile();
 
   return (
     <Tiger

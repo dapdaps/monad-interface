@@ -20,6 +20,8 @@ import Switch from './switch';
 import { sleep } from '@/sections/bridge/lib/util';
 import Xp from './xp';
 import Redeem from './redeem';
+import useIsMobile from '@/hooks/use-isMobile';
+import AllInFire from '@/sections/arcade/space-invaders/components/all-in-fire';
 dayjs.extend(duration);
 
 function getTimeLeftToUTC24() {
@@ -87,6 +89,7 @@ export default memo(function Tiger(props: any) {
   const [SpinCategories, setSpinCategories] = useState(Object.values(SPIN_CATEGORIES));
   const [SpinCategoryRotation, setSpinCategoryRotation] = useState(WHEEL_AREA / SpinCategories.length);
   const [maxXp, setMaxXp] = useState(0);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (!prizeStatus || prizeStatus.length === 0) {
@@ -540,8 +543,12 @@ export default memo(function Tiger(props: any) {
   });
 
   useEffect(() => {
-    setSize({ width: window.innerWidth, height: window.innerHeight });
-  }, []);
+    if (!isMobile) {
+      setSize({ width: window.innerWidth, height: window.innerHeight });
+    } else {
+      setSize({ width: window.innerWidth, height: window.innerHeight * 0.7 });
+    }
+  }, [isMobile]);
 
   useEffect(() => {
     startSlowScroll();
@@ -610,10 +617,11 @@ export default memo(function Tiger(props: any) {
         marginBottom: '-2px',
         width: '765px',
         height: '750px',
-        transform: `translate(-50%, 0) scale(${Math.min(size.height / 1000, 2)})`,
+        transform: `translate(-50%, ${isMobile ? '-30px' : '0'}) scale(${Math.min(size.height / 1000, 2)})`,
         transformOrigin: 'bottom center'
       }}>
         <Notice />
+        <div className="absolute top-[-30vw] right-[40vw] w-[20vw] h-[20vw]"><AllInFire /></div>
         <div className="absolute top-0 left-0 w-full h-full">
           <img src="/images/lucky777/xp/bg.png" alt="" className="w-full" />
         </div>
