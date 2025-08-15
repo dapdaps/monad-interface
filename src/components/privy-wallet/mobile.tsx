@@ -74,7 +74,7 @@ export const PrivyMobileForm = (props: any) => {
       <GameAccount {...restProps} className="shrink-0 !w-[unset]" />
       <GameBalance
         {...restProps}
-        className="!flex-1 !w-0 overflow-hidden"
+        className="!w-[35vw] overflow-hidden"
       />
     </div>
   );
