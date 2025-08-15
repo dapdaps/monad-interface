@@ -93,7 +93,7 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
   },
   [SpinCategory.Deadnads]: {
     code: "12",
-    icon: "/images/lucky777/logo/deadnads.png",
+    icon: "/images/lucky777/logo/1/deadnads.png",
     value: SpinCategory.Deadnads,
     centerScale: 0.9,
     centerY: 0,
