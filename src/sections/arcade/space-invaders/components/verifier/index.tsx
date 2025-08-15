@@ -13,8 +13,8 @@ const Verifier = (props: any) => {
   } = useSpaceInvadersContext();
 
   return (
-    <div className="font-[Montserrat] text-[14px] font-[600] text-white leading-[150%] px-[26px]">
-      <div className="font-[DelaGothicOne] text-[20px] font-[400] leading-[100%]">
+    <div className="font-[Montserrat] text-[14px] font-[600] text-white leading-[150%] px-[26px] md:px-[10px]">
+      <div className="font-[DelaGothicOne] text-[20px] font-[400] leading-[100%] md:text-[18px]">
         Space Invaders Hash Verifier
       </div>
       <TitleCard title="Row Tile Counts" className="!mt-[29px]">
@@ -31,11 +31,11 @@ const Verifier = (props: any) => {
       <div className="mt-[12px] flex flex-col gap-[10px] items-stretch pl-[10px]">
         {
           verifierData?.rows?.map((layer, layerIndex) => (
-            <div key={layerIndex} className="flex items-center justify-between gap-[20px]">
+            <div key={layerIndex} className="flex items-center justify-between gap-[20px] md:gap-[10px]">
               <div className="flex-0 w-[30px] flex items-center">
                 {(verifierData?.rows?.length || 0) - (layerIndex + 1)}
               </div>
-              <div className="flex-1 flex items-center justify-center gap-[12px]">
+              <div className="flex-1 flex items-center justify-center gap-[12px] md:gap-[5px]">
                 {
                   [...new Array(layer.tiles).fill(0)].map((_, itemIndex) => (
                     <div

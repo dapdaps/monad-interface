@@ -7,10 +7,12 @@ import useTokenPrice from "@/hooks/use-token-price";
 import useUser from "@/hooks/use-user";
 import MainLayoutFooter from "@/layouts/main/footer";
 import MainLayoutHeader from "@/layouts/main/header";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useAccount } from "wagmi";
 import clsx from "clsx";
 import { useInvitationContext } from "@/context/invitation";
+import useIsMobile from "@/hooks/use-isMobile";
+import { usePathname } from "next/navigation";
 
 const MainLayout = (props: Props) => {
   const { children, style } = props;
@@ -20,6 +22,17 @@ const MainLayout = (props: Props) => {
   const { initializePrice } = useTokenPrice();
   const { handleReportNoCode } = useClickTracking();
   const { validUser } = useInvitationContext();
+  const isMobile = useIsMobile();
+  const pathname = usePathname();
+
+  const [isFooter] = useMemo(() => {
+    if (isMobile) {
+      if (["/arcade/space-invaders"].includes(pathname)) {
+        return [false];
+      }
+    }
+    return [true];
+  }, [isMobile, pathname]);
 
   useEffect(() => {
     handleReportNoCode();
@@ -51,7 +64,7 @@ const MainLayout = (props: Props) => {
       }
       <div className="relative grow">{children}</div>
       {
-        validUser && (
+        (validUser && isFooter) && (
           <MainLayoutFooter />
         )
       }

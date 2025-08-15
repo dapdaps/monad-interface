@@ -9,6 +9,7 @@ import { formatLongText } from "@/utils/utils";
 import { monadTestnet } from "viem/chains";
 import TimeAgo from "./time-ago";
 import Empty from "@/components/empty";
+import useIsMobile from "@/hooks/use-isMobile";
 
 const Nft = (props: any) => {
   const { className } = props;
@@ -20,6 +21,7 @@ const Nft = (props: any) => {
     getUserNfts,
   } = useSpaceInvadersContext();
   const toast = useToast();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     getUserNfts?.();
@@ -28,24 +30,24 @@ const Nft = (props: any) => {
   return (
     <motion.div
       key="results"
-      className={clsx("pt-[30px] px-[48px] flex flex-col gap-[10px] items-stretch max-h-[50dvh] overflow-y-auto", className)}
+      className={clsx("pt-[30px] px-[48px] flex flex-col gap-[10px] items-stretch max-h-[50dvh] overflow-y-auto md:px-[10px]", className)}
       initial={{ opacity: 0, x: 10 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 10 }}
     >
       {
-        userNftsLoading ? [...new Array(1).fill(0)].map((_, index) => (
+        userNftsLoading ? [...new Array(2).fill(0)].map((_, index) => (
           <div
             key={index}
             className="w-full rounded-[6px] bg-black/30 px-[18px] py-[16px] flex items-center justify-between gap-[20px]"
           >
-            <Skeleton width={96} height={96} borderRadius={6} className="flex-0" />
+            <Skeleton width={isMobile ? 75 : 96} height={isMobile ? 75 : 96} borderRadius={6} className="flex-0" />
             <div className="flex-1 w-0">
               <div className="flex justify-between items-center">
-                <Skeleton width={160} height={27} borderRadius={6} />
-                <Skeleton width={100} height={27} borderRadius={6} />
+                <Skeleton width={isMobile ? 100 : 160} height={27} borderRadius={6} />
+                <Skeleton width={isMobile ? 75 : 100} height={27} borderRadius={6} />
               </div>
-              <div className="grid grid-cols-3 gap-[10px] mt-[20px]">
+              <div className="grid grid-cols-3 gap-[10px] mt-[20px] md:mt-[10px]">
                 <Skeleton width={60} height={45} borderRadius={6} />
                 <Skeleton width={60} height={45} borderRadius={6} />
                 <Skeleton width={60} height={45} borderRadius={6} />
@@ -57,16 +59,16 @@ const Nft = (props: any) => {
           return (
             <div
               key={index}
-              className="w-full rounded-[6px] bg-black/30 px-[18px] py-[16px] flex items-center justify-between gap-[20px]"
+              className="w-full rounded-[6px] bg-black/30 px-[18px] py-[16px] flex items-center justify-between gap-[20px] md:px-[10px] md:py-[10px] md:gap-[10px]"
             >
               <img
                 src={nftInfo?.avatar}
                 alt=""
-                className="w-[96px] h-[96px] rounded-[6px] object-center object-contain flex-0"
+                className="w-[96px] h-[96px] rounded-[6px] object-center object-contain flex-0 md:w-[75px] md:h-[75px]"
               />
               <div className="flex-1 w-0">
                 <div className="flex w-full items-center justify-between">
-                  <div className="text-[18px]">
+                  <div className="text-[18px] md:text-[16px] flex-1 w-0 overflow-hidden text-ellipsis whitespace-nowrap">
                     {nft.category} {!!nft.token_id ? `#${nft.token_id}` : ""}
                   </div>
                   {
@@ -100,14 +102,14 @@ const Nft = (props: any) => {
                       )
                     ) : (
                       <div
-                        className="flex items-center gap-[5px] justify-end cursor-pointer"
+                        className="flex items-center gap-[5px] justify-end cursor-pointer whitespace-nowrap"
                         onClick={async () => {
                           window.open(`https://magiceden.us/mint-terminal/monad-testnet/${nft.token_address}`, "_blank");
                         }}
                       >
                         <button
                           type="button"
-                          className="w-[12px] h-[12px] flex-0 bg-[url('/images/game/icon-link.png')] bg-no-repeat bg-center bg-contain"
+                          className="w-[12px] h-[12px] flex-0 bg-[url('/images/game/icon-link.png')] bg-no-repeat bg-center bg-contain md:text-[12px]"
                         />
                         <div className="text-[#A6A6DB]">
                           Magic Eden
@@ -116,7 +118,7 @@ const Nft = (props: any) => {
                     )
                   }
                 </div>
-                <div className="w-full grid grid-cols-3 gap-[10px] mt-[20px]">
+                <div className="w-full grid grid-cols-3 gap-[10px] mt-[20px] md:mt-[15px]">
                   <LabelValue label="Game ID" valueClassName="flex items-center gap-[5px]">
                     <div className="">
                       {formatLongText(nft.game_id)}
@@ -136,11 +138,11 @@ const Nft = (props: any) => {
                     <TimeAgo date={nft.created_at} />
                   </LabelValue>
                   <LabelValue label="Status" valueClassName="flex items-center gap-[10px]">
-                    <div className={clsx(nft.tx_hash ? "text-[#BFFF60]" : "text-[#63AEF4]")}>
-                      {nft.tx_hash ? "Received" : "Pending"}
+                    <div className={clsx((!!nft.tx_hash || nftInfo?.received) ? "text-[#BFFF60]" : "text-[#63AEF4]")}>
+                      {(!!nft.tx_hash || nftInfo?.received) ? "Received" : "Pending"}
                     </div>
                     {
-                      nft.tx_hash && (
+                      !!nft.tx_hash && (
                         <a
                           target="_blank"
                           className="underline underline-offset-2"
@@ -173,7 +175,7 @@ const LabelValue = (props: any) => {
 
   return (
     <div className={clsx("flex flex-col gap-[3px] text-[14px] leading-[150%] font-[Montserrat] font-[500]", className)}>
-      <div className={clsx("text-[#A6A6DB]", labelClassName)}>{label}</div>
+      <div className={clsx("text-[#A6A6DB] whitespace-nowrap", labelClassName)}>{label}</div>
       <div className={clsx("text-white", valueClassName)}>{children}</div>
     </div>
   )

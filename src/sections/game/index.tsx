@@ -5,9 +5,11 @@ import GamePrivyProvider from '@/components/privy-provider';
 
 const Game: React.FC<any> = () => {
   return (
-    <GamePrivyProvider>
-      <Entry />
-    </GamePrivyProvider>
+    <div className="w-full h-full md:h-[100dvh] overflow-y-auto scrollbar-hide relative">
+      <GamePrivyProvider>
+        <Entry />
+      </GamePrivyProvider>
+    </div>
   );
 };
 

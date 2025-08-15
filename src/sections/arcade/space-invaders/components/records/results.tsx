@@ -12,6 +12,7 @@ import { monadTestnet } from "viem/chains";
 import Pagination from "@/components/pagination";
 import Skeleton from "react-loading-skeleton";
 import TimeAgo from "./time-ago";
+import GridTable from "@/components/flex-table/grid-table";
 
 const Results = (props: any) => {
   const { className } = props;
@@ -68,7 +69,8 @@ const Results = (props: any) => {
       title: "ID",
       dataIndex: "id",
       width: 90,
-      render: (text: any, record: any, idx: number) => {
+      fixed: true,
+      render: (record: any, idx: number) => {
         return (
           <div className="flex items-center gap-[5px]">
             <div className="">{formatLongText(record.chain_game_id)}</div>
@@ -90,7 +92,7 @@ const Results = (props: any) => {
       title: "Date",
       dataIndex: "date",
       width: 110,
-      render: (text: any, record: any, idx: number) => {
+      render: (record: any, idx: number) => {
         return <TimeAgo date={record.created_at} />;
       },
     },
@@ -98,7 +100,7 @@ const Results = (props: any) => {
       title: "Status",
       dataIndex: "status",
       width: 60,
-      render: (text: any, record: any, idx: number) => {
+      render: (record: any, idx: number) => {
         return (
           <div className={clsx(record.status === LastGameStatus.Lose ? "text-[#FF4A4A]" : "text-[#BFFF60]")}>
             {LastGameStatusMap[record.status as LastGameStatus]}
@@ -110,7 +112,7 @@ const Results = (props: any) => {
       title: "Bet",
       dataIndex: "bet",
       width: 50,
-      render: (text: any, record: any, idx: number) => {
+      render: (record: any, idx: number) => {
         return numberFormatter(record.bet_amount, 2, true);
       },
     },
@@ -118,7 +120,7 @@ const Results = (props: any) => {
       title: "Result",
       dataIndex: "result",
       width: 80,
-      render: (text: any, record: any, idx: number) => {
+      render: (record: any, idx: number) => {
         const resultMON = Big(record.bet_amount || 0).times(record.final_multiplier || 1);
         const finalMON = record.status === LastGameStatus.Lose ? Big(0).minus(record.bet_amount || 0) : resultMON;
         return (
@@ -132,7 +134,7 @@ const Results = (props: any) => {
       title: "Multiplier",
       dataIndex: "multiplier",
       width: 90,
-      render: (text: any, record: any, idx: number) => {
+      render: (record: any, idx: number) => {
         return numberFormatter(record.status === LastGameStatus.Lose ? 0 :record.final_multiplier, 2, true) + "x";
       },
     },
@@ -140,7 +142,7 @@ const Results = (props: any) => {
       title: "Floors",
       dataIndex: "floors",
       width: 60,
-      render: (text: any, record: any, idx: number) => {
+      render: (record: any, idx: number) => {
         const select_tiles = record.select_tiles?.split(",") || [];
         return select_tiles.length;
       },
@@ -149,7 +151,7 @@ const Results = (props: any) => {
       title: "Payout TX",
       dataIndex: "payout TX",
       width: 95,
-      render: (text: any, record: any, idx: number) => {
+      render: (record: any, idx: number) => {
         if (record.status === LastGameStatus.Lose) {
           return "-";
         }
@@ -180,7 +182,7 @@ const Results = (props: any) => {
       title: "Verify",
       dataIndex: "verify",
       width: 80,
-      render: (text: any, record: any, idx: number) => {
+      render: (record: any, idx: number) => {
         return (
           <div className="">
             <button
@@ -220,12 +222,12 @@ const Results = (props: any) => {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -10 }}
     >
-      <div className="px-[30px] grid grid-cols-3 gap-[15px]">
+      <div className="md:px-[10px] px-[30px] grid grid-cols-3 gap-[15px]">
         {
           statistics.map((_statistic) => (
             <div className="rounded-[6px] bg-black/30 h-[72px] flex flex-col justify-center items-center gap-[4px]">
-              <div className="text-[#A6A6DB]">{_statistic.label}</div>
-              <div className="text-[18px] font-[600]">
+              <div className="text-[#A6A6DB] md:text-[14px]">{_statistic.label}</div>
+              <div className="text-[18px] font-[600] md:text-[14px]">
                 {
                   userStatisticsLoading ? (
                     <Skeleton width={100} height={20} borderRadius={6} />
@@ -237,14 +239,15 @@ const Results = (props: any) => {
         }
       </div>
       <div className="mt-[10px]">
-        <FlexTable
+        <GridTable
           columns={columns}
-          list={userResults}
+          data={userResults}
           loading={userResultsLoading}
-          headClass="!px-[30px] !py-[6px]"
-          bodyClass="!px-[30px] !py-[12px] !rounded-[0]"
-          bodyClassName="max-h-[40dvh] overflow-y-auto overflow-x-hidden"
-          loadingClassName="!py-[100px]"
+          className=""
+          headerClassName=""
+          bodyClassName="max-h-[40dvh] overflow-y-auto overflow-x-hidden md:overflow-x-auto scrollbar-hide"
+          rowClassName="!gap-x-[0]"
+          colClassName="first:pl-[30px] md:first:pl-[10px] last:pl-[30px] md:last:pl-[10px]"
         />
         <Pagination
           className="justify-end pr-[30px] mt-[10px]"
