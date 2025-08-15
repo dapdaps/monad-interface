@@ -1,6 +1,7 @@
 import React from "react";
 import Modal from "@/components/modal";
 import useIsMobile from "@/hooks/use-isMobile";
+import clsx from "clsx";
 
 export const IconClose = () => (
     <div className="mt-[15px] mr-[15px]">
@@ -25,7 +26,7 @@ const RulesModal = ({ open, onClose }: RulesModalProps) => {
             closeIcon={<IconClose />}
             innerClassName="font-Unbounded"
         >
-            <div className="relative p-[30px] pt-0">
+            <div className={clsx("relative pt-0", isMobile ? 'p-[10px]' : 'p-[30px]')}>
                 <img src="/images/lucky777/modal-bg.png" alt="LUCKY 777" className="absolute z-1 top-0 left-0 w-full h-full" />
 
                 {
@@ -34,7 +35,7 @@ const RulesModal = ({ open, onClose }: RulesModalProps) => {
                     </div>
                 }
 
-                <div className="flex flex-col items-center w-[562px] pb-[30px] px-[20px] max-w-full z-10 relative text-[12px]">
+                <div className={clsx("flex flex-col items-center pb-[30px]  max-w-full z-10 relative text-[12px]", isMobile ? 'w-[100vw] px-[10px]' : 'w-[562px] px-[20px]')}>
                     <div className="text-center mt-[-16px]">
                         <img src="/images/lucky777/buy-777-title.svg" alt="LUCKY 777" className="w-[183px] mx-auto" />
                     </div>
@@ -45,7 +46,7 @@ const RulesModal = ({ open, onClose }: RulesModalProps) => {
                             <span>Lucky 777 — Game Rules</span>
                         </div>
 
-                        <div className="space-y-[12px]">
+                        <div className="space-y-[12px] max-h-[60vh] overflow-y-auto">
                             <div className="flex items-center gap-2">
                                 <span className="w-[6px] h-[6px] rounded-1 bg-[#BFFF60]"></span>
                                 <span><span className="font-bold">1 free</span>  spin per day</span>

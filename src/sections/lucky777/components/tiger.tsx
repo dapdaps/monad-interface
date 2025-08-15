@@ -629,7 +629,10 @@ export default memo(function Tiger(props: any) {
         transformOrigin: 'bottom center'
       }}>
         <Notice />
-        <div className="absolute top-[-30vw] right-[40vw] w-[20vw] h-[20vw]"><AllInFire /></div>
+        {
+          isMobile && <div className="absolute top-[-30vw] right-[40vw] w-[20vw] h-[20vw]"><AllInFire /></div>
+        }
+
         <div className="absolute top-0 left-0 w-full h-full">
           <img src="/images/lucky777/xp/bg.png" alt="" className="w-full" />
         </div>
