@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import useUser from "./use-user";
 import { toast } from "react-toastify";
 import useToast from "./use-toast";
+import { useDebounceFn } from "ahooks";
 
 export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
     const { userInfo, getUserInfo, bindGameAddress } = useUser();
@@ -16,21 +17,27 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
 
 
     useEffect(() => {
+        createWalletDebounce();
+    }, [user]);
+
+    const { run: createWalletDebounce } = useDebounceFn(async () => {
         try {
-        if (user && !user.wallet) {
+            if (user && !user.wallet) {
                 const [privyUser] = user.linkedAccounts?.filter(
                     (account) =>
                         account.type === "wallet" &&
                         account.walletClientType === "privy"
                 );
                 if (!privyUser || !(privyUser as any).address) {
-            createWallet();
-        }
+                    createWallet();
+                }
             }
         } catch (e) {
             console.log(e)
         }
-    }, [user]);
+    }, {
+        wait: 1000
+    });
 
     const handleLogin = async () => {
         setLoginLoading(true);
@@ -91,10 +98,10 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
             }
         } else {
             [privyUser] = user.linkedAccounts.filter(
-            (account) =>
-                account.type === "wallet" &&
-                account.walletClientType === "privy"
-        );
+                (account) =>
+                    account.type === "wallet" &&
+                    account.walletClientType === "privy"
+            );
         }
 
         if (!privyUser || !(privyUser as any).address) {

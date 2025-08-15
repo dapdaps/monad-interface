@@ -10,6 +10,7 @@ export enum SpinCategory {
   // Slmnd = "slmnd",
   LaMouch = "lamouch",
   Overnads = "overnads",
+  Deadnads = "deadnads",
 }
 
 export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
@@ -87,6 +88,13 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     code: "11",
     icon: "/images/lucky777/overnads.png",
     value: SpinCategory.Overnads,
+    centerScale: 0.9,
+    centerY: 0,
+  },
+  [SpinCategory.Deadnads]: {
+    code: "12",
+    icon: "/images/lucky777/logo/1/deadnads.png",
+    value: SpinCategory.Deadnads,
     centerScale: 0.9,
     centerY: 0,
   },
