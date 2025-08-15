@@ -85,6 +85,8 @@ export default memo(function Tiger(props: any) {
   const [xpLevel, setXpLevel] = useState(0);
 
 
+  console.log('spinUserDataLoading:', spinUserDataLoading)
+
   const [WHEEL_SIZE, setWHEEL_SIZE] = useState(Number(chogStarrr?.remaining) > 0 ? 600 : 500);
   const [SpinCategories, setSpinCategories] = useState(Object.values(SPIN_CATEGORIES));
   const [SpinCategoryRotation, setSpinCategoryRotation] = useState(WHEEL_AREA / SpinCategories.length);
@@ -950,6 +952,7 @@ export default memo(function Tiger(props: any) {
                 <motion.svg
                   width="22"
                   height="22"
+                  key={spinUserDataLoading ? 'spinning' : 'static'}
                   viewBox="0 0 22 22"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
