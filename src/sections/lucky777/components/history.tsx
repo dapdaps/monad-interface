@@ -285,9 +285,10 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                                                 <img src="/images/lucky777/deadnads-icon.png" alt="ML" className="w-[20px] h-[20px]" />
                                             </div>
                                             <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                {/* <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
-                                                </svg>
+                                                </svg> */}
+                                                <span className="text-[#78FEFF]">Pending</span>
                                             </div>
                                         </>
                                         )
