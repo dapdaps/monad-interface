@@ -28,6 +28,7 @@ import { use2048Store } from "@/stores/use2048";
 import { toast } from "react-toastify";
 import Leaderboard from "./components/leaderboard";
 import useToast from "@/hooks/use-toast";
+import useIsMobile from "@/hooks/use-isMobile";
 
 // Types
 export enum Direction {
@@ -776,6 +777,8 @@ export default function Game2048() {
         }
     }, [gameUser, isInited])
 
+    const isMobile = useIsMobile();
+
 
     return (
         <>
@@ -814,7 +817,10 @@ export default function Game2048() {
 
 
             </Container>
-            <Leaderboard />
+
+            {
+                !isMobile && <Leaderboard />
+            }
         </>
     );
 }

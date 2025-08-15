@@ -1,5 +1,6 @@
 import React from "react";
 import Modal from "@/components/modal";
+import useIsMobile from "@/hooks/use-isMobile";
 
 export const IconClose = () => (
     <div className="mt-[15px] mr-[15px]">
@@ -15,6 +16,7 @@ interface RulesModalProps {
 }
 
 const RulesModal = ({ open, onClose }: RulesModalProps) => {
+    const isMobile = useIsMobile();
     return (
         <Modal
             open={open}
@@ -25,6 +27,13 @@ const RulesModal = ({ open, onClose }: RulesModalProps) => {
         >
             <div className="relative p-[30px] pt-0">
                 <img src="/images/lucky777/modal-bg.png" alt="LUCKY 777" className="absolute z-1 top-0 left-0 w-full h-full" />
+
+                {
+                    isMobile && <div className="absolute top-[10px] right-[10px] z-[100]" onClick={onClose}>
+                        <IconClose />
+                    </div>
+                }
+
                 <div className="flex flex-col items-center w-[562px] pb-[30px] px-[20px] max-w-full z-10 relative text-[12px]">
                     <div className="text-center mt-[-16px]">
                         <img src="/images/lucky777/buy-777-title.svg" alt="LUCKY 777" className="w-[183px] mx-auto" />
