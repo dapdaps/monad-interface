@@ -15,7 +15,7 @@ export default function PrivyLogin() {
   }
 
   const content = (
-    <div className="min-h-screen w-full flex items-center justify-center bg-cover bg-center absolute top-0 left-0 z-20 pb-[env(safe-area-inset-bottom)]">
+    <div className="h-[100dvh] w-full flex items-center justify-center bg-cover bg-center absolute top-0 left-0 z-20">
       <div className="absolute inset-0 bg-black/60 backdrop-blur-md z-0" />
       <div className="relative z-10 flex flex-col items-center justify-center px-6 py-12 md:px-3 md:py-3">
         <h1 className="text-[42px] md:text-[9.74vw] font-HackerNoonV2 text-[#E7E2FF] mb-6 text-center drop-shadow-lg tracking-widest">

@@ -13,6 +13,8 @@ import Big from "big.js";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
+import { useScrollDirection } from "../hooks/use-scroll";
+import useIsMobile from "@/hooks/use-isMobile";
 
 const Dashboard = (props: any) => {
   const { } = props;
@@ -39,11 +41,18 @@ const Dashboard = (props: any) => {
     allNFTListLoading,
     setRecordsVisible,
     setRulesVisible,
+    containerRef,
   } = useSpaceInvadersContext();
 
   const amountIndex = useMemo(() => {
     return AMOUNT_OPTIONS.findIndex((option) => option.value === amount);
   }, [amount]);
+
+  const isMobile = useIsMobile();
+  const { scrollDirection, lastScrollTop } = useScrollDirection(containerRef, {
+    debounceWait: 300,
+    threshold: 10
+  });
 
   return (
     <div className="fixed left-1/2 -translate-x-1/2 bottom-0 z-[4]">
@@ -255,8 +264,11 @@ const Dashboard = (props: any) => {
       </div>
       {
         !!allValidNFTList?.length && (
-          <div
+          <motion.div
             className="md:w-[190px] md:h-[164px] md:right-[0] md:bottom-[unset] md:top-[-70px] md:p-[15px_13px_94px_30px] absolute right-[clamp(calc(var(--nadsa-laptop-width)_*_-0.16),_-16vw,_1px)] bottom-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))] pl-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))] pt-[clamp(1px,_1.8vw,_calc(var(--nadsa-laptop-width)*0.018))] pr-[clamp(1px,_0.85vw,_calc(var(--nadsa-laptop-width)*0.0085))] w-[clamp(1px,_16vw,_calc(var(--nadsa-laptop-width)*0.16))] h-[clamp(1px,_13.894vw,_calc(var(--nadsa-laptop-width)*0.13894))] bg-[url('/images/arcade/space-invaders/nft-board.png')] bg-no-repeat bg-left bg-contain"
+            animate={isMobile ? {
+              y: scrollDirection === "up" ? 55 : 0,
+            } : {}}
           >
             {
               allNFTListLoading ? (
@@ -298,7 +310,7 @@ const Dashboard = (props: any) => {
                               <div className="overflow-hidden text-ellipsis">
                                 {nft?.category}
                               </div>
-                              <div className="shrink-0 text-[#A6A6DB] text-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] font-[300]">
+                              <div className="md:text-[10px] shrink-0 text-[#A6A6DB] text-[clamp(1px,_0.69vw,_calc(var(--nadsa-laptop-width)*0.0069))] font-[300]">
                                 {nftInfo?.category}
                               </div>
                             </div>
@@ -313,7 +325,7 @@ const Dashboard = (props: any) => {
                 </Swiper>
               ) : null
             }
-          </div>
+          </motion.div>
         )
       }
     </div>
