@@ -78,7 +78,7 @@ export default function Game2048() {
     });
     const isMobile = useIsMobile();
 
-    const toastLocation = isMobile ? 'bottom-right' : 'top-center';
+    const toastLocation = isMobile ? 'top-center' : 'bottom-right';
 
     // =============================================================//
     //                         Game State                           //
@@ -224,7 +224,7 @@ export default function Game2048() {
                 fail({
                     title: 'Insufficient balance',
                     description: 'Please deposit more MON to continue playing.',
-                }, 'bottom-right')
+                }, toastLocation)
                 return;
             } else {
                 setNeedDeposit(false)

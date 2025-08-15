@@ -106,7 +106,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
     const { address: privyUserAddress } = usePrivyAuth({ isBind: false });
     const { info, success, fail, dismiss } = useToast({ isGame: true });
     const isMobile = useIsMobile();
-    const toastLocation = isMobile ? 'bottom-right' : 'top-center';
+    const toastLocation = isMobile ? 'top-center' : 'bottom-right';
     const queue = useRef(new AdvancedPromiseQueue(1, (error: Error, moveCount: number) => {
         // fail({
         //     title: 'Transaction failed, resetting state',
@@ -394,7 +394,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                 const nonce = userNonce.current;
                 userNonce.current = nonce + 1;
                 userBalance.current = balance - parseEther("0.0075");
-        
+
                 await sendRawTransactionAndConfirm({
                     nonce: nonce,
                     successText: "Started game!",
@@ -434,7 +434,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             }
         })
 
-        
+
     }
 
     async function playNewMoveTransaction(
@@ -537,7 +537,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                 }, toastLocation)
                 await resetNonceAndBalance()
                 if (userBalance.current < parseEther("0.005")) {
-                    while(true) {
+                    while (true) {
                         await new Promise(resolve => setTimeout(resolve, 3000))
                         await resetNonceAndBalance()
                         if (userBalance.current > parseEther("0.005")) {
