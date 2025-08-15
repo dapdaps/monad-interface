@@ -160,7 +160,7 @@ const Nft = (props: any) => {
           )
         }) : (
           <div className="w-full py-[50px]">
-            <Empty desc="Coming soon..." />
+            <Empty desc="No data" />
           </div>
         )
       }
