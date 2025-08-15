@@ -78,7 +78,7 @@ export default function Game2048() {
     });
     const isMobile = useIsMobile();
 
-    const toastLocation = isMobile ? 'bottom-right' : 'top-center';
+    const toastLocation = isMobile ? 'top-center' : 'bottom-right';
 
     // =============================================================//
     //                         Game State                           //
