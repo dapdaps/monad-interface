@@ -278,6 +278,10 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         if (res.message === "You hava a Death Fun currently ongoing") {
           getLastGame();
         }
+        // auto change game map
+        if (res.code === 10009) {
+          onMapChange();
+        }
         return;
       }
       await onChainGameStart({
@@ -607,6 +611,11 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
               gameRow.tiles === dataRow.tiles;
           });
         });
+
+        if (!matchedGame) {
+          setDefaultCurrentGame();
+          return;
+        }
 
         const _rows: LayerRow[] = formatRows(res.data.rows, res.data.selected_tiles, matchedGame?.id);
         if (res.data.status === LastGameStatus.Ongoing) {
