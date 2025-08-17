@@ -49,7 +49,7 @@ const Entry: React.FC<any> = () => {
               <Link href="/arcade/lucky777" prefetch={true}></Link>
             </motion.div>
 
-            <motion.div
+            {/* <motion.div
               className="w-[clamp(1px,_27.78vw,_calc(var(--nadsa-laptop-width-base)*0.2778))] h-[clamp(1px,_41.67vw,_calc(var(--nadsa-laptop-width-base)*0.4167))] relative flex flex-col items-center justify-end"
               whileHover={{
                 scale: 1.11,
@@ -81,7 +81,7 @@ const Entry: React.FC<any> = () => {
                 className='w-[clamp(1px,_9.44vw,_calc(var(--nadsa-laptop-width-base)*0.0944))] relative z-[3] my-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width-base)*0.0139))] cursor-pointer hover:scale-110 transition-transform duration-200'
               />
               <Link href="/arcade/space-invaders" prefetch={true}></Link>
-            </motion.div>
+            </motion.div> */}
 
             <motion.div
               className='w-[clamp(1px,_25vw,_calc(var(--nadsa-laptop-width-base)*0.25))] h-[clamp(1px,_37.5vw,_calc(var(--nadsa-laptop-width-base)*0.375))] relative flex flex-col items-center justify-end'

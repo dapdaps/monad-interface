@@ -221,7 +221,14 @@ const nextConfig = {
         ]
       }
     ];
-  }
+  },
+  redirects: async () => [
+    {
+      source: "/arcade/space-invaders",
+      destination: "/",
+      permanent: true
+    },
+  ]
 };
 
 const withBundleStatsPlugin =
