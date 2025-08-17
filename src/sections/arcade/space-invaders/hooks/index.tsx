@@ -231,13 +231,18 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   };
 
   const { runAsync: onGameStart, loading: gameStartLoading } = useRequest<Partial<StartGameRes>, any>(async () => {
-    if (!currentGame) {
-      return;
-    }
-
     let toastId: any = toast.loading({
       title: "Preparing game...",
     }, "bottom-right");
+
+    if (!currentGame || currentGame.id === -1) {
+      onMapChange();
+      toast.dismiss(toastId);
+      toast.fail({
+        title: "Please try again later",
+      }, "bottom-right");
+      return;
+    }
 
     // Continue game
     if (currentGameData?.status === LastGameStatus.Ongoing) {
