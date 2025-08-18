@@ -12,6 +12,7 @@ import { useInterval } from "ahooks";
 import useToast from "@/hooks/use-toast";
 import { usePrivyAuth } from "@/hooks/use-privy-auth";
 import CircleLoading from "@/components/circle-loading";
+import MonadBaseCard from "@/components/card/monad-base-card";
 
 interface BuyTimesModalProps {
     open: boolean;
@@ -116,7 +117,7 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
     }, [address, refreshData, sendTransaction, tokenBalance, spinUserData]);
 
     useInterval(async () => {
-        if (spinUserData &&spinBalance.current === spinUserData.spin_balance && startSpinBalance.current) {
+        if (spinUserData && spinBalance.current === spinUserData.spin_balance && startSpinBalance.current) {
             refreshData();
         } else if (spinUserData) {
             startSpinBalance.current = false;
@@ -154,68 +155,78 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
     // }, [user]);
 
     return (
-        <Modal open={open} onClose={onClose} className="" closeIcon={<IconClose />} innerClassName="w-[592px] max-w-full p-8 bg-[url('/images/lucky777/modal-bg.svg')] bg-cover bg-top bg-no-repeat font-HackerNoonV2">
-            <div className="flex flex-col items-center">
-                <div className="text-center mt-[-48px]">
-                    <img src="/images/lucky777/buy-777-title.svg" alt="LUCKY 777" className="w-[183px]  mx-auto" />
-                </div>
-                <div className="w-full bg-[#18172B] rounded-[6px] p-[24px] mt-[42px] border-[#414266] rou">
-                    <div className="flex justify-between items-center">
-                        <span className="text-white text-[14px] font-Unbounded">TIMES</span>
-                        <span className="text-[#BFFF60] font-bold text-[18px]">x
-                            <input ref={inputRef} value={times} onChange={(e) => {
-                                if (e.target.value === '') {
-                                    setTimes('');
-                                    return;
-                                }
-
-                                const val = Math.floor(Number(e.target.value));
-                                if (val >= 0) {
-                                    if (val > 99999) {
-                                        setTimes(99999);
-                                        return
+        <Modal
+            open={open}
+            onClose={onClose}
+            className=""
+            closeIcon={<IconClose />}
+        >
+            <MonadBaseCard
+                className="w-[592px] md:w-full"
+                contentClassName=""
+            >
+                <div className="flex flex-col items-center px-[10px]">
+                    <div className="text-center mt-[-48px]">
+                        <img src="/images/lucky777/buy-777-title.svg" alt="LUCKY 777" className="w-[183px]  mx-auto" />
+                    </div>
+                    <div className="w-full bg-[#18172B] rounded-[6px] p-[24px] mt-[42px] border-[#414266] rou">
+                        <div className="flex justify-between items-center">
+                            <span className="text-white text-[14px] font-Unbounded">TIMES</span>
+                            <span className="text-[#BFFF60] font-bold text-[18px]">x
+                                <input ref={inputRef} value={times} onChange={(e) => {
+                                    if (e.target.value === '') {
+                                        setTimes('');
+                                        return;
                                     }
-                                    setTimes(val);
-                                }
-                            }} className="w-[100px] text-center text-[18px] font-bold text-[#BFFF60] bg-transparent border-none outline-none" />
-                        </span>
-                    </div>
-                </div>
 
-                <div className="flex justify-between items-center mt-[15px] text-[14px] font-Unbounded">
-                    <div className="text-[#fff] flex items-center gap-[10px]">
-                        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="13" cy="13" r="13" fill="#836EF9" />
-                            <path d="M12.9999 5.19971C10.7475 5.19971 5.19995 10.7471 5.19995 12.9997C5.19995 15.2522 10.7475 20.7997 12.9999 20.7997C15.2524 20.7997 20.8 15.2522 20.8 12.9997C20.8 10.7472 15.2524 5.19971 12.9999 5.19971ZM11.7844 17.4599C10.8346 17.2011 8.28086 12.734 8.53973 11.7842C8.7986 10.8343 13.2656 8.2806 14.2154 8.53947C15.1653 8.7983 17.7191 13.2653 17.4602 14.2152C17.2013 15.1651 12.7343 17.7188 11.7844 17.4599Z" fill="white" />
+                                    const val = Math.floor(Number(e.target.value));
+                                    if (val >= 0) {
+                                        if (val > 99999) {
+                                            setTimes(99999);
+                                            return
+                                        }
+                                        setTimes(val);
+                                    }
+                                }} className="w-[100px] text-center text-[18px] font-bold text-[#BFFF60] bg-transparent border-none outline-none" />
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="flex justify-between items-center mt-[15px] text-[14px] font-Unbounded md:w-full">
+                        <div className="text-[#fff] flex items-center gap-[10px]">
+                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="13" cy="13" r="13" fill="#836EF9" />
+                                <path d="M12.9999 5.19971C10.7475 5.19971 5.19995 10.7471 5.19995 12.9997C5.19995 15.2522 10.7475 20.7997 12.9999 20.7997C15.2524 20.7997 20.8 15.2522 20.8 12.9997C20.8 10.7472 15.2524 5.19971 12.9999 5.19971ZM11.7844 17.4599C10.8346 17.2011 8.28086 12.734 8.53973 11.7842C8.7986 10.8343 13.2656 8.2806 14.2154 8.53947C15.1653 8.7983 17.7191 13.2653 17.4602 14.2152C17.2013 15.1651 12.7343 17.7188 11.7844 17.4599Z" fill="white" />
+                            </svg>
+                            MON
+                        </div>
+                        <svg width="380" height="2" viewBox="0 0 380 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 1H380" stroke="white" stroke-opacity="0.2" stroke-dasharray="2 2" />
                         </svg>
-                        MON
+                        <div className="text-white">{numberFormatter(0.1 * Number(times), 1, true)}</div>
                     </div>
-                    <svg width="380" height="2" viewBox="0 0 380 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0 1H380" stroke="white" stroke-opacity="0.2" stroke-dasharray="2 2" />
-                    </svg>
-                    <div className="text-white">{numberFormatter(0.1 * Number(times), 1, true)}</div>
-                </div>
 
-                <MainBtn isPending={isPending} onClick={() => handleSelectTimes(Number(times))} />
+                    <MainBtn isPending={isPending} onClick={() => handleSelectTimes(Number(times))} />
 
-                <div className="flex w-full justify-between gap-4">
-                    <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">
-                        <div className="text-[#BFFF60] font-bold mb-2">x10</div>
-                        <img src="/images/lucky777/coin-10.svg" alt="10 coins" className="mb-2 mt-[20px]" />
-                        <MoreBtn onClick={() => handleSelectTimes(10)}>1 MON</MoreBtn>
-                    </div>
-                    <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">
-                        <div className="text-[#BFFF60] font-bold mb-2">x50</div>
-                        <img src="/images/lucky777/coin-50.svg" alt="50 coins" className="mb-2 mt-[11px]" />
-                        <MoreBtn onClick={() => handleSelectTimes(50)}>5 MON</MoreBtn>
-                    </div>
-                    <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">
-                        <div className="text-[#BFFF60] font-bold mb-2">x100</div>
-                        <img src="/images/lucky777/coin-100.svg" alt="100 coins" className="mb-2" />
-                        <MoreBtn onClick={() => handleSelectTimes(100)}>10 MON</MoreBtn>
+                    <div className="flex w-full justify-between gap-4">
+                        <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">
+                            <div className="text-[#BFFF60] font-bold mb-2">x10</div>
+                            <img src="/images/lucky777/coin-10.svg" alt="10 coins" className="mb-2 mt-[20px]" />
+                            <MoreBtn onClick={() => handleSelectTimes(10)}>1 MON</MoreBtn>
+                        </div>
+                        <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">
+                            <div className="text-[#BFFF60] font-bold mb-2">x50</div>
+                            <img src="/images/lucky777/coin-50.svg" alt="50 coins" className="mb-2 mt-[11px]" />
+                            <MoreBtn onClick={() => handleSelectTimes(50)}>5 MON</MoreBtn>
+                        </div>
+                        <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">
+                            <div className="text-[#BFFF60] font-bold mb-2">x100</div>
+                            <img src="/images/lucky777/coin-100.svg" alt="100 coins" className="mb-2" />
+                            <MoreBtn onClick={() => handleSelectTimes(100)}>10 MON</MoreBtn>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </MonadBaseCard>
         </Modal>
     );
 };
@@ -234,7 +245,7 @@ const IconClose = () => {
 const MainBtn = ({ onClick, isPending }: { onClick: any, isPending: boolean }) => {
     return (
         <button onClick={onClick} className="w-full flex items-center justify-center gap-2 bg-[#BFFF60] text-[#23223A] text-[14px] py-4 rounded-[6px] mb-8 mt-[30px] border-[#000]">
-            { isPending && <CircleLoading /> } BUY
+            {isPending && <CircleLoading />} BUY
         </button>
     )
 }
