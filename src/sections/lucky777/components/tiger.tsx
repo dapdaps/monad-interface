@@ -71,6 +71,7 @@ export default memo(function Tiger(props: any) {
     lamouch,
     overnads,
     deadnads,
+    coronad,
     prizeStatus,
     isOpenSwitch,
     setIsOpenSwitch,
@@ -526,6 +527,15 @@ export default memo(function Tiger(props: any) {
         playSound(2)
         setTimeout(() => {
           if (Number(deadnads?.remaining) === 0) {
+            startSlowScroll()
+          }
+        }, 3000);
+      } else if (res.draw_code === '131313') {
+        success({ title: `WON 1 Coronads` }, 'bottom-right');
+        setTitle(('WON 1 Coronads').repeat(2));
+        playSound(2)
+        setTimeout(() => {
+          if (Number(coronad?.remaining) === 0) {
             startSlowScroll()
           }
         }, 3000);
@@ -988,7 +998,7 @@ export default memo(function Tiger(props: any) {
           }
         }} />
 
-        <NftT monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} />
+        <NftT monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} coronad={coronad} />
 
       </div>
 
