@@ -48,6 +48,7 @@ export default function useBindTwitterHome() {
         code,
         redirect_uri: redirectUri
       });
+      toast.dismiss(toastId);
       if (result.code === 10006) {
         const isAddress = address?.toLowerCase() !== result.data.address;
 
@@ -61,7 +62,13 @@ export default function useBindTwitterHome() {
         );
         throw new Error("");
       }
-      if (result.code !== 200) throw new Error(result.msg);
+      if (result.code !== 200) {
+        toast.fail({
+          title: "Bind failed!",
+          text: result.msg,
+        });
+        throw new Error(result.msg);
+      }
 
       setLoading(false);
       setButtonText("");
@@ -74,6 +81,9 @@ export default function useBindTwitterHome() {
           avatar: result.data.twitter_avatar
         },
         code
+      });
+      toast.success({
+        title: `Bind successful!`
       });
     } catch (err) {
       setLoading(false);
