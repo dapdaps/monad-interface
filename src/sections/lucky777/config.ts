@@ -8,9 +8,10 @@ export enum SpinCategory {
   // Monadverse = "monadverse",
   // Monadoon = "monadoon",
   // Slmnd = "slmnd",
-  LaMouch = "lamouch",
-  Overnads = "overnads",
-  Deadnads = "deadnads",
+  // LaMouch = "lamouch",
+  // Overnads = "overnads",
+  // Deadnads = "deadnads",
+  Coronad = "coronad",
 }
 
 export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
@@ -77,25 +78,32 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
   //   centerScale: 0.9,
   //   centerY: 0,
   // },
-  [SpinCategory.LaMouch]: {
-    code: "10",
-    icon: "/images/lucky777/lamouch.png",
-    value: SpinCategory.LaMouch,
+  // [SpinCategory.LaMouch]: {
+  //   code: "10",
+  //   icon: "/images/lucky777/lamouch.png",
+  //   value: SpinCategory.LaMouch,
+  //   centerScale: 1,
+  //   centerY: 0,
+  // },
+  // [SpinCategory.Overnads]: {
+  //   code: "11",
+  //   icon: "/images/lucky777/overnads.png",
+  //   value: SpinCategory.Overnads,
+  //   centerScale: 0.9,
+  //   centerY: 0,
+  // },
+  // [SpinCategory.Deadnads]: {
+  //   code: "12",
+  //   icon: "/images/lucky777/logo/1/deadnads.png",
+  //   value: SpinCategory.Deadnads,
+  //   centerScale: 0.9,
+  //   centerY: 0,
+  // },
+  [SpinCategory.Coronad]: {
+    code: "13",
+    icon: "/images/lucky777/logo/coronad.png",
+    value: SpinCategory.Coronad,
     centerScale: 1,
-    centerY: 0,
-  },
-  [SpinCategory.Overnads]: {
-    code: "11",
-    icon: "/images/lucky777/overnads.png",
-    value: SpinCategory.Overnads,
-    centerScale: 0.9,
-    centerY: 0,
-  },
-  [SpinCategory.Deadnads]: {
-    code: "12",
-    icon: "/images/lucky777/logo/1/deadnads.png",
-    value: SpinCategory.Deadnads,
-    centerScale: 0.9,
     centerY: 0,
   },
 
