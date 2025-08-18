@@ -429,7 +429,8 @@ const MainLayoutHeader = (props: Props) => {
                 pathname.includes("/arcade") ? mobileHoverCls : ""
               )}
               onClick={() => {
-                setGameEntryShow(true);
+                // setGameEntryShow(true);
+                router.push("/arcade");
               }}
             >
               <div
