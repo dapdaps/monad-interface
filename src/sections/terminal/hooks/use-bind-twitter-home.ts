@@ -43,9 +43,10 @@ export default function useBindTwitterHome() {
     });
     try {
       await checkAk();
+      const redirectUri = window.location.origin === 'https://nadsa.space' ? 'https://www.nadsa.space' : window.location.origin;
       const result = await post("/twitter/bind", {
         code,
-        redirect_uri: window.location.origin
+        redirect_uri: redirectUri
       });
       if (result.code === 10006) {
         const isAddress = address?.toLowerCase() !== result.data.address;
