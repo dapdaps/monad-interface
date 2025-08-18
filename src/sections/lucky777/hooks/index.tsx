@@ -9,7 +9,7 @@ import { usePrivyAuth } from '@/hooks/use-privy-auth';
 import { useAccount } from 'wagmi';
 
 
-const ALL_PRIZES = [1, 2, 3, 4, 5, 10, 11];
+const ALL_PRIZES = [1, 2, 3, 4, 5, 13];
 export function useLuckyBera() {
   const { fail } = useToast({ isGame: true });
   const { address } = useAccount();
@@ -21,6 +21,8 @@ export function useLuckyBera() {
   const [slmnd, setSlmnd] = useState<any>({});
   const [lamouch, setLaMouch] = useState<any>({});
   const [overnads, setOvernads] = useState<any>({});
+  const [deadnads, setDeadnads] = useState<any>({});
+  const [coronad, setCoronad] = useState<any>({});
   const prizes = useRef<any[]>(ALL_PRIZES);
   const [prizeStatus, setPrizeStatus] = useState(ALL_PRIZES)
   const [isOpenSwitch, setIsOpenSwitch] = useState(false);
@@ -108,6 +110,14 @@ export function useLuckyBera() {
       total: 50,
       remaining: 0,
     });
+    setDeadnads({
+      total: 50,
+      remaining: 0,
+    });
+    setCoronad({
+      total: 30,
+      remaining: 0,
+    });
 
     if (res.code !== 200) {
       // setChogStarrr({
@@ -128,6 +138,9 @@ export function useLuckyBera() {
       // });
       
     } else if (res.data && Array.isArray(res.data)) {
+
+      console.log('res.data', res.data);
+
       res.data.forEach((item: any) => {
         if (item.category.toLowerCase() === 'chogstarrr') {
           setChogStarrr(item);
@@ -146,6 +159,12 @@ export function useLuckyBera() {
         }
         if (item.category.toLowerCase() === 'overnads') {
           setOvernads(item);
+        }
+        if (item.category.toLowerCase() === 'deadnads') {
+          setDeadnads(item);
+        }
+        if (item.category.toLowerCase() === 'coronad') {
+          setCoronad(item);
         }
       });
     }
@@ -178,6 +197,13 @@ export function useLuckyBera() {
     if (overnads.remaining === 0) {
       newPrizes = newPrizes.filter((item: any) => item !== 11);
     }
+    if (deadnads.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 12);
+    }
+    if (coronad.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 13);
+    }
+
     prizes.current = newPrizes;
     setPrizeStatus(newPrizes);
   }, [chogStarrr, monadverse, monadoon, slmnd]);
@@ -200,6 +226,8 @@ export function useLuckyBera() {
     slmnd,
     lamouch,
     overnads,
+    deadnads,
+    coronad,
     prizes,
     prizeStatus,
     isOpenSwitch,

@@ -5,7 +5,6 @@ import { numberFormatter } from '@/utils/number-formatter';
 import { useRequestByToken } from '../hooks/use-request-by-token';
 import BuyTimesModal from './buyTimes';
 import useToast from '@/hooks/use-toast';
-import Big from 'big.js';
 import HistoryModal from './history';
 import { useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
@@ -17,7 +16,6 @@ import { useSoundStore } from '@/stores/sound';
 import Notice from './notice';
 import NftT from './nftT';
 import Switch from './switch';
-import { sleep } from '@/sections/bridge/lib/util';
 import Xp from './xp';
 import Redeem from './redeem';
 import useIsMobile from '@/hooks/use-isMobile';
@@ -74,6 +72,8 @@ export default memo(function Tiger(props: any) {
     slmnd,
     lamouch,
     overnads,
+    deadnads,
+    coronad,
     prizeStatus,
     isOpenSwitch,
     setIsOpenSwitch,
@@ -523,6 +523,24 @@ export default memo(function Tiger(props: any) {
         playSound(2)
         setTimeout(() => {
           if (Number(overnads?.remaining) === 0) {
+            startSlowScroll()
+          }
+        }, 3000);
+      } else if (res.draw_code === '121212') {
+        success({ title: `WON 1 Deadnads` }, 'bottom-right');
+        setTitle(('WON 1 Deadnads').repeat(2));
+        playSound(2)
+        setTimeout(() => {
+          if (Number(deadnads?.remaining) === 0) {
+            startSlowScroll()
+          }
+        }, 3000);
+      } else if (res.draw_code === '131313') {
+        success({ title: `WON 1 Coronads` }, 'bottom-right');
+        setTitle(('WON 1 Coronads').repeat(2));
+        playSound(2)
+        setTimeout(() => {
+          if (Number(coronad?.remaining) === 0) {
             startSlowScroll()
           }
         }, 3000);
@@ -994,7 +1012,7 @@ export default memo(function Tiger(props: any) {
           }
         }} />
 
-        <NftT monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} />
+        <NftT monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} coronad={coronad} />
 
       </div>
 
