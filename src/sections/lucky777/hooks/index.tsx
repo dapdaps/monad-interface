@@ -9,7 +9,7 @@ import { usePrivyAuth } from '@/hooks/use-privy-auth';
 import { useAccount } from 'wagmi';
 
 
-const ALL_PRIZES = [1, 2, 3, 4, 5, 13, 14];
+const ALL_PRIZES = [1, 2, 3, 4, 5, 6, 13, 14];
 export function useLuckyBera() {
   const { fail } = useToast({ isGame: true });
   const { address } = useAccount();
@@ -88,7 +88,7 @@ export function useLuckyBera() {
     const res = await get("/game/777/reward/whitelist");
 
     setChogStarrr({
-      total: 50,
+      total: 5,
       remaining: 0,
     });
     setMonadverse({
@@ -143,8 +143,6 @@ export function useLuckyBera() {
       // });
       
     } else if (res.data && Array.isArray(res.data)) {
-
-      console.log('res.data', res.data);
 
       res.data.forEach((item: any) => {
         if (item.category.toLowerCase() === 'chogstarrr') {
@@ -217,8 +215,7 @@ export function useLuckyBera() {
 
     prizes.current = newPrizes;
     setPrizeStatus(newPrizes);
-  }, [chogStarrr, monadverse, monadoon, slmnd]);
-
+  }, [chogStarrr, monadverse, monadoon, slmnd, monshape, coronad, deadnads, lamouch, overnads]);
 
 
   return {
