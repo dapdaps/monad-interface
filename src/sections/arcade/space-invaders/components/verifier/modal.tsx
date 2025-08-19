@@ -20,7 +20,7 @@ const VerifierModal = (props: any) => {
       closeIconClassName="!right-[25px]"
     >
       <MonadBaseCard
-        className="w-[506px]"
+        className="w-[506px] md:w-full"
         contentClassName="max-h-[75dvh] overflow-y-auto"
       >
         <Index {...props} />

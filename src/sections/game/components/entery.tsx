@@ -5,9 +5,158 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import HotGame from './hot';
+import useIsMobile from '@/hooks/use-isMobile';
+import AllInFire from '@/sections/arcade/space-invaders/components/all-in-fire';
+import clsx from 'clsx';
+
+const MobileCard = (props: any) => {
+  const { className, containerClassName, isAllInFire, children, title, onClick, button } = props;
+
+  return (
+    <div className={clsx("relative", containerClassName)}>
+      {
+        isAllInFire && (
+          <AllInFire className="right-0 top-[-28vw] z-[0]" />
+        )
+      }
+      <div className={clsx("relative z-[1] w-full rounded-[20px] bg-[linear-gradient(180deg,_#78FEFF_15.67%,_#489899_100%)] p-[5px]", className)}>
+        {children}
+        <div className="flex justify-between items-center pt-[12px] pl-[10px] pr-[5px]">
+          <div className="whitespace-nowrap font-[HackerNoonV2] [text-shadow:0_0_4px_rgba(255,_255,_255,_0.50)] text-[18px] font-[400] leading-[90%] text-white">
+            {title}
+          </div>
+          <motion.button
+            type="button"
+            className="h-[44px] w-[98px] bg-no-repeat bg-center bg-contain"
+            style={{
+              backgroundImage: `url(${button})`,
+            }}
+            onClick={onClick}
+            whileTap={{
+              scale: 0.95,
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const Entry: React.FC<any> = () => {
   const router = useRouter();
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return (
+      <div className="w-full h-[100dvh] bg-[#0E0F29]">
+        <div className="mt-[20px] text-[#BFFF60] text-[20px] leading-[90%] font-[Unbounded] font-[900] text-center">
+          Arcade
+        </div>
+        <div className="w-full pt-[46.41vw] flex flex-col gap-[38px] px-[15px]">
+          <MobileCard
+            isAllInFire={true}
+            title="Space Invaders"
+            onClick={() => {
+              router.push("/arcade/space-invaders");
+            }}
+            button="/images/game/2048-start.svg"
+          >
+            <div className="relative">
+              <img
+                src="/images/game/space-invaders-mobile.png"
+                alt=""
+                className="w-full h-[182px] rounded-[16px] object-top object-cover shrink-0"
+              />
+              <motion.img
+                src="/images/game/space-invaders-coins-mobile.png"
+                alt=""
+                className="pointer-events-none w-[98.72vw] min-w-[98.72vw] min-h-[54.36vw] h-[54.36vw] absolute left-[-4vw] top-[-2vw] rounded-[16px] object-top object-contain shrink-0"
+                animate={{
+                  y: [0, -20, 0]
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 0.5,
+                }}
+              />
+            </div>
+          </MobileCard>
+          <MobileCard
+            isAllInFire={true}
+            className="bg-[linear-gradient(180deg,_#836EF9_0%,_#4D4193_100%)]"
+            title="LUCKY 777"
+            onClick={() => {
+              router.push("/arcade/lucky777");
+            }}
+            button="/images/game/lucky-start.svg"
+          >
+            <div className="relative">
+              <div className="w-full h-[182px] [clip-path:polygon(0_100%,_100%_100%,_100%_-50%,_0_-50%)] rounded-[16px] relative bg-black bg-[radial-gradient(50%_50%_at_50%_50%,_#BFFF60_0%,_#000_100%)]">
+                <motion.img
+                  src="/images/game/lucky7777.svg"
+                  alt=""
+                  className="pointer-events-none w-[100vw] min-w-[100vwvw] min-h-[70vw] h-[70vw] absolute left-[-4vw] top-[-2vw] rounded-[16px] object-top object-contain shrink-0"
+                  animate={{
+                    y: [0, -20, 0]
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 1,
+                  }}
+                />
+              </div>
+              <motion.img
+                src="/images/game/lucky777-coins-mobile.png"
+                alt=""
+                className="pointer-events-none w-[95.72vw] min-w-[95.72vw] min-h-[52.36vw] h-[52.36vw] absolute left-[-6vw] top-[8vw] rounded-[16px] object-top object-contain shrink-0"
+                animate={{
+                  y: [0, -15, 0]
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 1.5,
+                }}
+              />
+            </div>
+          </MobileCard>
+          <MobileCard
+            isAllInFire={false}
+            className="bg-[linear-gradient(180deg,_#BFFF60_0%,_#739939_100%)]"
+            title="2048 on MONAD"
+            onClick={() => {
+              router.push("/arcade/2048");
+            }}
+            button="/images/game/2048-start.svg"
+          >
+            <div className="w-full h-[182px] [clip-path:polygon(0_100%,_100%_100%,_100%_-50%,_0_-50%)] rounded-[16px] relative bg-[url('/images/game/2048-banner-mobile.png')] bg-no-repeat bg-center bg-cover">
+              <motion.img
+                src="/images/game/2048.png"
+                alt=""
+                className="pointer-events-none w-[100vw] min-w-[100vwvw] min-h-[70vw] h-[70vw] absolute left-[-15vw] top-[-10vw] rounded-[16px] object-top object-contain shrink-0"
+                animate={{
+                  y: [0, -10, 0]
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 2,
+                }}
+              />
+            </div>
+          </MobileCard>
+        </div>
+        <div className="h-[40dvh] w-full pointer-events-none"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full h-full  bg-no-repeat bg-cover bg-top">
       <LoginContainer>
@@ -124,5 +273,4 @@ const Entry: React.FC<any> = () => {
 };
 
 export default Entry;
-
 

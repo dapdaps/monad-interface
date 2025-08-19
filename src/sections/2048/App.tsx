@@ -28,6 +28,7 @@ import { use2048Store } from "@/stores/use2048";
 import { toast } from "react-toastify";
 import Leaderboard from "./components/leaderboard";
 import useToast from "@/hooks/use-toast";
+import useIsMobile from "@/hooks/use-isMobile";
 
 // Types
 export enum Direction {
@@ -75,6 +76,9 @@ export default function Game2048() {
             resyncGame(activeGameId, gameUser?.score)
         }
     });
+    const isMobile = useIsMobile();
+
+    const toastLocation = isMobile ? 'top-center' : 'bottom-right';
 
     // =============================================================//
     //                         Game State                           //
@@ -220,7 +224,7 @@ export default function Game2048() {
                 fail({
                     title: 'Insufficient balance',
                     description: 'Please deposit more MON to continue playing.',
-                }, 'bottom-right')
+                }, toastLocation)
                 return;
             } else {
                 setNeedDeposit(false)
@@ -777,6 +781,7 @@ export default function Game2048() {
     }, [gameUser, isInited])
 
 
+
     return (
         <>
             <Container>
@@ -814,7 +819,10 @@ export default function Game2048() {
 
 
             </Container>
-            <Leaderboard />
+
+            {
+                !isMobile && <Leaderboard />
+            }
         </>
     );
 }

@@ -20,7 +20,7 @@ const RulesModal = (props: any) => {
       closeIconClassName="!right-[25px]"
     >
       <MonadBaseCard
-        className="w-[676px]"
+        className="w-[676px] md:w-full"
         contentClassName="max-h-[70dvh] overflow-y-auto"
       >
         <Index {...props} />

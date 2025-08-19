@@ -20,6 +20,7 @@ import reportGameRecord from "../utils/report";
 import { toast } from "react-toastify";
 import { usePrivyAuth } from "@/hooks/use-privy-auth";
 import { use2048Store } from "@/stores/use2048";
+import useIsMobile from "@/hooks/use-isMobile";
 
 interface PromiseQueueItem {
     fn: () => Promise<any>;
@@ -104,6 +105,8 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
     const userAddress = useRef("");
     const { address: privyUserAddress } = usePrivyAuth({ isBind: false });
     const { info, success, fail, dismiss } = useToast({ isGame: true });
+    const isMobile = useIsMobile();
+    const toastLocation = isMobile ? 'top-center' : 'bottom-right';
     const queue = useRef(new AdvancedPromiseQueue(1, (error: Error, moveCount: number) => {
         // fail({
         //     title: 'Transaction failed, resetting state',
@@ -223,7 +226,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                     title: 'Sent transaction.',
                     text: `${successText}`,
                     chainId: monadTestnet.id,
-                }, 'bottom-right')
+                }, toastLocation)
             }
 
             const tx = await provider.sendTransaction({
@@ -263,7 +266,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                     text: `${successText} Time: ${Date.now() - startTime} ms`,
                     tx: tx,
                     chainId: monadTestnet.id,
-                }, 'bottom-right')
+                }, toastLocation)
             }
 
         } catch (error) {
@@ -273,7 +276,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                 if (error === 'Create Game failed.') {
                     fail({
                         title: 'Failed to start game please start again.',
-                    }, 'bottom-right')
+                    }, toastLocation)
                     queue.current.clearQueue(true)
                     await resetNonceAndBalance()
                     errorCallBack(error as any)
@@ -282,7 +285,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
 
                 fail({
                     title: 'Failed to send transaction.',
-                }, 'bottom-right')
+                }, toastLocation)
 
                 await resetNonceAndBalance()
                 const [latestBoard, nextMoveNumber] = await getLatestGameBoard(gameUser.gameId as Hex)
@@ -391,7 +394,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
                 const nonce = userNonce.current;
                 userNonce.current = nonce + 1;
                 userBalance.current = balance - parseEther("0.0075");
-        
+
                 await sendRawTransactionAndConfirm({
                     nonce: nonce,
                     successText: "Started game!",
@@ -431,7 +434,7 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             }
         })
 
-        
+
     }
 
     async function playNewMoveTransaction(
@@ -531,10 +534,10 @@ export function useTransactions({ errorCallBack }: { errorCallBack: (error: Erro
             }).catch(async (error) => {
                 fail({
                     title: 'Transaction failed, resetting state',
-                }, 'bottom-right')
+                }, toastLocation)
                 await resetNonceAndBalance()
                 if (userBalance.current < parseEther("0.005")) {
-                    while(true) {
+                    while (true) {
                         await new Promise(resolve => setTimeout(resolve, 3000))
                         await resetNonceAndBalance()
                         if (userBalance.current > parseEther("0.005")) {

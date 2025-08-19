@@ -7,14 +7,16 @@ import { formatEnglishDate, getUTCDatetime } from "@/utils/date";
 import Empty from "@/components/empty";
 import dayjs from "dayjs";
 import useToast from "@/hooks/use-toast";
+import useIsMobile from "@/hooks/use-isMobile";
+import clsx from "clsx";
 
-const IconClose = () => (
-    <div className="mt-[15px] mr-[15px]">
+const IconClose = () => {
+    return <div className={`mt-[15px] mr-[15px]`}>
         <svg width="10" height="9" viewBox="0 0 10 9" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M5 3.375L8 0H10L6 4.5L10 9H8L5 5.625L2 9H0L4 4.5L0 0H2L5 3.375Z" fill="#A6A6DB" />
         </svg>
     </div>
-);
+};
 
 interface HistoryModalProps {
     open: boolean;
@@ -24,6 +26,7 @@ interface HistoryModalProps {
 const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
     const [activeTab, setActiveTab] = useState("payouts");
     const [winningOnly, setWinningOnly] = useState(false);
+    const isMobile = useIsMobile();
 
     return (
         <Modal
@@ -35,6 +38,11 @@ const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
         >
             <div className="relative">
                 <img src="/images/lucky777/modal-bg.png" alt="LUCKY 777" className="absolute z-1 top-0 left-0 w-full h-full" />
+                {
+                    isMobile && <div className="absolute top-[10px] right-[10px] z-[100]" onClick={onClose}>
+                        <IconClose />
+                    </div>
+                }
                 <div className="flex flex-col items-center w-[692px] pb-[30px] px-[20px] max-w-full z-10 relative text-[12px]">
                     <div className="text-center mt-[-16px]">
                         <img src="/images/lucky777/buy-777-title.svg" alt="LUCKY 777" className="w-[183px] mx-auto" />
@@ -54,7 +62,7 @@ const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
 
                     {
                         activeTab === "payouts" && (
-                            <div onClick={() => setWinningOnly(!winningOnly)} className="flex items-center gap-2 cursor-pointer absolute top-[60px] right-[35px]">
+                            <div onClick={() => setWinningOnly(!winningOnly)} className={clsx("flex items-center gap-2 cursor-pointer", isMobile ? 'absolute top-[95px] right-[10px] z-[100]' : 'absolute top-[60px] right-[35px]')}>
                                 <div
                                     className={`w-4 h-4 rounded-full border-2 border-[#8e90bd] cursor-pointer ${winningOnly ? "bg-[#BFFF60]" : "bg-[#00000080]"}`}
                                 />
@@ -91,6 +99,7 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
     const { address } = useAccount();
     const dataRef = useRef<any[]>([]);
     const { fail } = useToast({ isGame: true })
+    const isMobile = useIsMobile();
 
     useEffect(() => {
         if (!address) return;
@@ -129,8 +138,8 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
 
     return (
         <div className="w-full mt-[42px] min-h-[340px]">
-            <div className="flex px-6 py-3 gap-[30px] text-[#A6A6DB] font-bold-[300] border-b border-[#414266]">
-                <div className="w-[160px]">Time</div>
+            <div className={`flex  py-3 gap-[30px] text-[#A6A6DB] font-bold-[300] border-b border-[#414266] ${isMobile ? 'px-1' : 'px-6'}`}>
+                <div className={`${isMobile ? 'w-[90px]' : 'w-[160px]'}`}>Time</div>
                 {
                     type === "purchases" && (
                         <>
@@ -149,18 +158,18 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                     )
                 }
             </div>
-            <div className="max-h-[340px] overflow-y-auto">
+            <div className="max-h-[340px] overflow-y-auto ">
                 {data.map((item, idx) => (
-                    <div key={item.id} className={`flex px-6 py-3 gap-[30px] text-white text-[12px] items-center ${idx % 2 !== 0 ? '' : 'bg-[#0000001A]'}`}>
+                    <div key={item.id} className={`flex py-3 gap-[30px] text-white text-[12px] items-center ${idx % 2 !== 0 ? '' : 'bg-[#0000001A]'}  ${isMobile ? 'px-1' : 'px-6'}`}>
 
                         {
                             type === "purchases" && (
-                                <div className="w-[160px]">{dayjs(item.created_at).format('YYYY-MM-DD HH:mm:ss')}</div>
+                                <div className={` ${isMobile ? 'w-[90px] ' : 'w-[160px]'}`}>{dayjs(item.created_at).format('YYYY-MM-DD HH:mm:ss')}</div>
                             )
                         }
                         {
                             type === "payouts" && (
-                                <div className="w-[160px] whitespace-nowrap">{dayjs(item.created_at).format('YYYY-MM-DD HH:mm:ss')}</div>
+                                <div className={`${isMobile ? 'w-[90px] ' : 'w-[160px]'}`}>{dayjs(item.created_at).format('YYYY-MM-DD HH:mm:ss')}</div>
                             )
                         }
 
@@ -168,8 +177,8 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                         {
                             type === "purchases" && (
                                 <>
-                                    <div className="flex-1">{item.amount} MON</div>
-                                    <div className="flex-1 flex items-center gap-2 justify-end">
+                                    <div className="flex-1 whitespace-nowrap">{item.amount} MON</div>
+                                    <div className="flex-1 flex items-center gap-2 justify-end whitespace-nowrap">
                                         <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
                                         </svg>
@@ -186,7 +195,7 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                         {
                             type === "payouts" && (
                                 <>
-                                    <div className="flex-1 flex items-center gap-2">
+                                    <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
                                         X {item.spin}
                                     </div>
                                     {
@@ -319,7 +328,7 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                                                     <path d="M9.99996 4C8.26731 4 4 8.2672 4 9.99996C4 11.7327 8.26731 16 9.99996 16C11.7326 16 16 11.7326 16 9.99996C16 8.26727 11.7327 4 9.99996 4ZM9.06497 13.431C8.33432 13.2319 6.36993 9.79563 6.56906 9.06498C6.76819 8.33429 10.2044 6.36992 10.935 6.56905C11.6657 6.76815 13.6301 10.2043 13.431 10.935C13.2318 11.6657 9.79563 13.6301 9.06497 13.431Z" fill="white" />
                                                 </svg>
                                             </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end">
+                                            <div className="flex-1 flex items-center gap-2 justify-end whitespace-nowrap">
                                                 {
                                                     Number(item.amount) > 0 && item.tx_hash && <>
 

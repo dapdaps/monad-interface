@@ -4,9 +4,11 @@ import { useInterval } from "ahooks";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
+import useIsMobile from "@/hooks/use-isMobile";
 export default function Notice() {
     const [notice, setNotice] = useState<any>([]);
     const [index, setIndex] = useState(0);
+    const isMobile = useIsMobile();
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -46,7 +48,7 @@ export default function Notice() {
     // }
 
     return (
-        <div className="absolute top-[-90px] left-[50%] -translate-x-1/2 w-[446px] h-[74px] bg-[#1D1E22CC] rounded-[16px] overflow-hidden border-[1px] border-[#6750FF] shadow-[0_0_24px_4px_rgba(128,0,255,0.2)]">
+        <div className={`absolute left-[50%] -translate-x-1/2 w-[446px] h-[74px] bg-[#1D1E22CC] rounded-[16px] overflow-hidden border-[1px] border-[#6750FF] shadow-[0_0_24px_4px_rgba(128,0,255,0.2)] ${isMobile ? 'scale-[120%] top-[-170px]' : 'top-[-90px] w-[90vw]'}`}>
             <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                     key={index}
