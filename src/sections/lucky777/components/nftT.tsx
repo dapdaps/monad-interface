@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export default function NftT(props: any) {
-  const { monadverse, monadoon, slmnd, lamouch, overnads, deadnads, coronad } = props;
+  const { monadverse, monadoon, slmnd, lamouch, overnads, deadnads, coronad, monshape } = props;
   const nfts = [
     // { key: "monadverse", data: monadverse, img: "/images/lucky777/nft-monadverse-t.png", cls: 'rotate-[-2deg]' },
     // { key: "monadoon", data: monadoon, img: "/images/lucky777/nft-monadoon-t.png", cls: 'rotate-[2deg]' },
@@ -12,6 +12,7 @@ export default function NftT(props: any) {
     // { key: "overnads", data: overnads, img: "/images/lucky777/nft-overnads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]' },
     // { key: "deadnads", data: deadnads, img: "/images/lucky777/nft-deadnads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]' },
     { key: "coronad", data: coronad, img: "/images/lucky777/nft-coronads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]' },
+    { key: "monshape", data: monshape, img: "/images/lucky777/nft-monshape-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]' },
   ].filter(nft => Number(nft.data?.remaining) > 0);
 
   const [currentIndex, setCurrentIndex] = useState(0);

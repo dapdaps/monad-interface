@@ -74,6 +74,7 @@ export default memo(function Tiger(props: any) {
     overnads,
     deadnads,
     coronad,
+    monshape,
     prizeStatus,
     isOpenSwitch,
     setIsOpenSwitch,
@@ -541,6 +542,15 @@ export default memo(function Tiger(props: any) {
         playSound(2)
         setTimeout(() => {
           if (Number(coronad?.remaining) === 0) {
+            startSlowScroll()
+          }
+        }, 3000);
+      } else if (res.draw_code === '141414') {
+        success({ title: `WON 1 Monshape` }, 'bottom-right');
+        setTitle(('WON 1 Monshape').repeat(2));
+        playSound(2)
+        setTimeout(() => {
+          if (Number(monshape?.remaining) === 0) {
             startSlowScroll()
           }
         }, 3000);
@@ -1012,8 +1022,7 @@ export default memo(function Tiger(props: any) {
           }
         }} />
 
-        <NftT monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} coronad={coronad} />
-
+        <NftT monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} coronad={coronad} monshape={monshape} />
       </div>
 
       <BuyTimesModal open={openBuyTimes} spinUserData={spinUserData} onClose={() => setOpenBuyTimes(false)} refreshData={getSpinUserData} />
