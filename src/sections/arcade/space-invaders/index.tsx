@@ -19,6 +19,7 @@ import { useUserData } from "./hooks/use-user";
 import RulesModal from "./components/rules/modal";
 import useIsMobile from "@/hooks/use-isMobile";
 import AllInFire from "./components/all-in-fire";
+import LeaderBoard from "./components/leader-board";
 
 const SpaceInvadersView = (props: any) => {
   const spaceInvaders = useSpaceInvaders(props);
@@ -235,6 +236,11 @@ const SpaceInvadersView = (props: any) => {
       <SoundEffects />
       <RewardModal />
       <RulesModal />
+      {
+        !isMobile && (
+          <LeaderBoard />
+        )
+      }
     </SpaceInvadersContextProvider>
   );
 };

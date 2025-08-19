@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { AMOUNT_OPTIONS, LastGameStatus, NFT_INFORMATIONS } from "../config";
 import { useSpaceInvadersContext } from "../context";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { monad } from "@/configs/tokens/monad-testnet";
 import { numberFormatter } from "@/utils/number-formatter";
 import { addressFormated } from "@/utils/balance";
@@ -15,6 +15,7 @@ import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import { useScrollDirection } from "../hooks/use-scroll";
 import useIsMobile from "@/hooks/use-isMobile";
+import { PrivyContext } from "@/components/privy-provider";
 
 const Dashboard = (props: any) => {
   const { } = props;
@@ -43,6 +44,7 @@ const Dashboard = (props: any) => {
     setRulesVisible,
     containerRef,
   } = useSpaceInvadersContext();
+  const { setOpenDeposit } = useContext(PrivyContext);
 
   const amountIndex = useMemo(() => {
     return AMOUNT_OPTIONS.findIndex((option) => option.value === amount);
@@ -208,7 +210,7 @@ const Dashboard = (props: any) => {
                     </div>
                   )
                 }
-                <div className="md:pt-[18px] whitespace-nowrap flex justify-between items-center gap-[clamp(1px,_5.42vw,_calc(var(--nadsa-laptop-width)*0.0542))] pt-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))] pl-[clamp(1px,_2.22vw,_calc(var(--nadsa-laptop-width)*0.0222))] pr-[clamp(1px,_4.1vw,_calc(var(--nadsa-laptop-width)*0.041))]">
+                <div className="md:pt-[18px] md:px-[30px] whitespace-nowrap flex justify-between items-center gap-[clamp(1px,_5.42vw,_calc(var(--nadsa-laptop-width)*0.0542))] pt-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))] pl-[clamp(1px,_2.22vw,_calc(var(--nadsa-laptop-width)*0.0222))] pr-[clamp(1px,_2.6vw,_calc(var(--nadsa-laptop-width)*0.026))]">
                   <button
                     type="button"
                     className="md:text-[16px] md:gap-[7px] disabled:opacity-50 disabled:!cursor-not-allowed flex items-center gap-[clamp(1px,_0.49vw,_calc(var(--nadsa-laptop-width)*0.0049))] text-[#8A87AA] text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] font-[400] leading-[100%] font-[SpaceGrotesk]"
@@ -243,9 +245,12 @@ const Dashboard = (props: any) => {
                   <button
                     type="button"
                     className={clsx(
-                      "md:gap-[5px] flex items-center gap-[clamp(1px,_0.49vw,_calc(var(--nadsa-laptop-width)*0.0049))] text-[#12FFC0] text-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] font-[400] leading-[100%] font-[DelaGothicOne] !cursor-default",
+                      "md:gap-[5px] flex items-center gap-[clamp(1px,_0.49vw,_calc(var(--nadsa-laptop-width)*0.0049))] text-[#12FFC0] text-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] font-[400] leading-[100%] font-[DelaGothicOne]",
                       gameLost ? "md:hidden" : "md:text-[16px]"
                     )}
+                    onClick={() => {
+                      setOpenDeposit?.(true);
+                    }}
                   >
                     <img
                       src="/images/arcade/space-invaders/icon-wallet.png"
@@ -255,6 +260,11 @@ const Dashboard = (props: any) => {
                     <div className="">
                       {numberFormatter(userBalance, 2, true)} MON
                     </div>
+                    <img
+                      src="/images/arcade/space-invaders/add-button.png"
+                      alt=""
+                      className="md:w-[20px] md:h-[20px] w-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] h-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] flex-0 object-center object-contain"
+                    />
                   </button>
                 </div>
               </>
