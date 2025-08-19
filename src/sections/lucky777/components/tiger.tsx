@@ -85,14 +85,13 @@ export default memo(function Tiger(props: any) {
   const [xpBalance, setXpBalance] = useState(0);
   const [xpLevel, setXpLevel] = useState(0);
 
-
-  console.log('spinUserDataLoading:', spinUserDataLoading)
-
   const [WHEEL_SIZE, setWHEEL_SIZE] = useState(Number(chogStarrr?.remaining) > 0 ? 600 : 500);
   const [SpinCategories, setSpinCategories] = useState(Object.values(SPIN_CATEGORIES));
   const [SpinCategoryRotation, setSpinCategoryRotation] = useState(WHEEL_AREA / SpinCategories.length);
   const [maxXp, setMaxXp] = useState(0);
   const isMobile = useIsMobile();
+
+  console.log('prizeStatus', prizeStatus);
 
   useEffect(() => {
     if (!prizeStatus || prizeStatus.length === 0) {
@@ -1022,7 +1021,7 @@ export default memo(function Tiger(props: any) {
           }
         }} />
 
-        <NftT monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} coronad={coronad} monshape={monshape} />
+        <NftT chogstarrr={chogStarrr} monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} coronad={coronad} monshape={monshape} />
       </div>
 
       <BuyTimesModal open={openBuyTimes} spinUserData={spinUserData} onClose={() => setOpenBuyTimes(false)} refreshData={getSpinUserData} />
