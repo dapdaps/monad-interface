@@ -62,7 +62,7 @@ export default function Notice() {
                         <div className="mx-1 flex-shrink-0">
                             <img src="/images/lucky777/reward.svg" alt="" className="w-[42px] h-[42px]" />
                         </div>
-                        <div >
+                        <div>
                             <div className="flex items-center space-x-3">
                                 <span className="text-[#B6FF6C] font-HackerNoonV2 pt-1 font-bold text-2xl tracking-widest">ATTENTION!</span>
                             </div>
