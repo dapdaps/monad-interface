@@ -1,7 +1,7 @@
 import useToast from "@/hooks/use-toast";
 import { usePrivy } from "@privy-io/react-auth";
 import { useRequest, useDebounceFn } from "ahooks";
-import { cloneDeep } from "lodash";
+import { cloneDeep, random } from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { get, post } from '@/utils/http';
 import { EndGameRes, GAME_CONTRACT_ADDRESS, GHOST_AVATARS, LastGame, LastGameStatus, Layer, LayerRow, LayerStatus, NFTItem, OpenTileRes, RewardShowType, SoundEffectType, StartGameRes } from "../config";
@@ -281,22 +281,8 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         // auto change game map
         if (res.code === 10009) {
           // get new maps
-          const _allGameMaps = await getAllGameMaps();
-          const nextGame = _allGameMaps[0];
-          if (nextGame) {
-            setCurrentGame(nextGame);
-            setData(cloneDeep(nextGame?.rows || []));
-            setCurrentGameData((prev) => {
-              const _currentGameData = {
-                ...prev,
-                reward: void 0,
-              };
-              return _currentGameData;
-            });
-            toast.success({
-              title: "Gates updated",
-            }, "bottom-right");
-          }
+          await getAllGameMaps();
+          await getLastGame();
         }
         return;
       }
@@ -592,8 +578,9 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       return {};
     }
     const setDefaultCurrentGame = () => {
-      setCurrentGame(allGameMaps[0]);
-      setData(cloneDeep(allGameMaps[0]?.rows || []));
+      const randomGameIndex = random(0, allGameMaps.length - 1);
+      setCurrentGame(allGameMaps[randomGameIndex]);
+      setData(cloneDeep(allGameMaps[randomGameIndex]?.rows || []));
     };
     try {
       const res = await get("/game/deathfun/active");
@@ -715,8 +702,9 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     }
     if (!currentGame) {
       // set first map as current game
-      setCurrentGame(allGameMaps[0]);
-      setData(cloneDeep(allGameMaps[0]?.rows || []));
+      const randomGameIndex = random(0, allGameMaps.length - 1);
+      setCurrentGame(allGameMaps[randomGameIndex]);
+      setData(cloneDeep(allGameMaps[randomGameIndex]?.rows || []));
       return;
     }
     let nextGame: Layer;
