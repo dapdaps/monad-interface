@@ -86,8 +86,8 @@ const LeaderBoard = (props: any) => {
   }, [getData]);
 
   return (
-    <div className="fixed z-[3] flex flex-col top-0 right-0 bg-[#191B25] border border-black w-[20.29vw] max-w-[280px] h-[83dvh] font-[Montserrat] text-[12px] text-white font-[600] leading-[150%]">
-      <div className="shrink-0 w-full pt-[72px] text-center font-[HackerNoonV2] text-[24px] text-[#E7E2FF] [text-shadow:0_0_30px_#836EF9] leading-[90%] font-[400]">
+    <div className={clsx("fixed z-[3] flex flex-col top-0 right-0 bg-[#191B25] border border-black w-[20.29vw] max-w-[280px] h-[83dvh] font-[Montserrat] text-[12px] text-white font-[600] leading-[150%]", className)}>
+      <div className="shrink-0 w-full pt-[72px] md:pt-[20px] text-center font-[HackerNoonV2] text-[24px] text-[#E7E2FF] [text-shadow:0_0_30px_#836EF9] leading-[90%] font-[400]">
         LEADERBOARD
       </div>
       <div className="shrink-0 pt-[11px] text-center text-[12px] font-[500] leading-[100%]">
@@ -96,7 +96,7 @@ const LeaderBoard = (props: any) => {
       <div className="shrink-0 pt-[10px] text-[16px] ledading-[100%] text-center">
         {String(timeLeft.hours).padStart(2, '0')} : {String(timeLeft.minutes).padStart(2, '0')} : {String(timeLeft.seconds).padStart(2, '0')}
       </div>
-      <div className="h-0 flex-1 pt-[24px] overflow-y-auto flex flex-col gap-[15px]">
+      <div className="h-0 flex-1 pt-[24px] overflow-y-auto flex flex-col gap-[15px] pb-[100px]">
         {
           (!data && loading) ? [...new Array(10).fill(0)].map((_, i) => (
             <div className="w-full p-[0_10px] flex items-center gap-[10px] justify-between">

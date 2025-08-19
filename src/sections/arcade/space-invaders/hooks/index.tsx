@@ -61,6 +61,8 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   // Rules modal
   const [rulesVisible, setRulesVisible] = useState<boolean>(false);
 
+  const [tab, setTab] = useState("play");
+
   const [gameLost, gameWon, currentLayer, currentWinLayer] = useMemo<[boolean, boolean, LayerRow | undefined, LayerRow | undefined]>(() => {
     return [
       data?.some((_it: any) => _it.status === LayerStatus.Failed),
@@ -842,7 +844,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         cancelAnimationFrame(animationId);
       };
     }
-  }, [data, isMobile]);
+  }, [data, isMobile, tab]);
 
   return {
     gameLoading,
@@ -900,6 +902,8 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     rulesVisible,
     setRulesVisible,
     ghostAvatar: spaceInvadersStore.ghostAvatar,
+    tab,
+    setTab,
   };
 };
 
@@ -959,4 +963,6 @@ export interface SpaceInvaders {
   rulesVisible: boolean;
   setRulesVisible: (visible: boolean) => void;
   ghostAvatar: string;
+  tab: string;
+  setTab: (tab: string) => void;
 }

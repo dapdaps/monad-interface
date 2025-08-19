@@ -81,7 +81,7 @@ const Dashboard = (props: any) => {
         </button>
       </div>
       <div className={clsx(
-        "md:w-[96.15vw] md:h-[50vw] md:rounded-[12px] md:rounded-b-[0] md:text-[16px] md:z-[2] relative text-white font-[DelaGothicOne] font-[400] leading-[100%] text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] w-[clamp(1px,_41.67vw,_calc(var(--nadsa-laptop-width)*0.4167))] h-[clamp(1px,_17vw,_calc(var(--nadsa-laptop-width)*0.17))] rounded-t-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] border border-b-0 bg-[#191B25]",
+        "md:w-[96.15vw] md:h-[62.09vw] md:rounded-[12px] md:rounded-b-[0] md:text-[16px] md:z-[2] relative text-white font-[DelaGothicOne] font-[400] leading-[100%] text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] w-[clamp(1px,_41.67vw,_calc(var(--nadsa-laptop-width)*0.4167))] h-[clamp(1px,_17vw,_calc(var(--nadsa-laptop-width)*0.17))] rounded-t-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] border border-b-0 bg-[#191B25]",
         gameLost ? "border-[#FF3434] bg-[linear-gradient(0deg,_rgba(255,_52,_52,_0.06)_0%,_rgba(255,_52,_52,_0.06)_100%)]" : "border-[#3E347C]",
       )}>
         {
