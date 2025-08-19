@@ -1,7 +1,7 @@
 import useToast from "@/hooks/use-toast";
 import { usePrivy } from "@privy-io/react-auth";
 import { useRequest, useDebounceFn } from "ahooks";
-import { cloneDeep } from "lodash";
+import { cloneDeep, random } from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { get, post } from '@/utils/http';
 import { EndGameRes, GAME_CONTRACT_ADDRESS, GHOST_AVATARS, LastGame, LastGameStatus, Layer, LayerRow, LayerStatus, NFTItem, OpenTileRes, RewardShowType, SoundEffectType, StartGameRes } from "../config";
@@ -280,7 +280,9 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         }
         // auto change game map
         if (res.code === 10009) {
-          onMapChange();
+          // get new maps
+          await getAllGameMaps();
+          await getLastGame();
         }
         return;
       }
@@ -528,7 +530,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     await onGameEnd(LayerStatus.Succeed);
   }, { manual: true });
 
-  const { data: allGameMaps, loading: allGameMapsLoading } = useRequest<Layer[], any>(async () => {
+  const { data: allGameMaps, loading: allGameMapsLoading, runAsync: getAllGameMaps } = useRequest<Layer[], any>(async () => {
     try {
       const res = await get("/game/deathfun/all");
       if (res.code !== 200) {
@@ -542,7 +544,6 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         });
         _it.rows = _it.rows.sort((a, b) => Big(a.multiplier).minus(b.multiplier).lt(0) ? 1 : -1);
       });
-      console.log("all game maps: %o", _list);
       return _list;
     } catch (err: any) {
       console.log("get all game map failed: %o", err);
@@ -577,8 +578,9 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       return {};
     }
     const setDefaultCurrentGame = () => {
-      setCurrentGame(allGameMaps[0]);
-      setData(cloneDeep(allGameMaps[0]?.rows || []));
+      const randomGameIndex = random(0, allGameMaps.length - 1);
+      setCurrentGame(allGameMaps[randomGameIndex]);
+      setData(cloneDeep(allGameMaps[randomGameIndex]?.rows || []));
     };
     try {
       const res = await get("/game/deathfun/active");
@@ -594,30 +596,22 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       // show last game data
       else {
         const matchedGame = allGameMaps.find((game) => {
-          if (game.rows.length !== res.data.rows.length) {
-            return false;
-          }
-
-          const sortedGameRows = [...game.rows].sort((a, b) =>
-            Big(a.multiplier).minus(b.multiplier).toNumber()
-          );
-          const sortedDataRows = [...res.data.rows].sort((a, b) =>
-            Big(a.multiplier).minus(b.multiplier).toNumber()
-          );
-
-          return sortedGameRows.every((gameRow, index) => {
-            const dataRow = sortedDataRows[index];
-            return gameRow.multiplier === dataRow.multiplier &&
-              gameRow.tiles === dataRow.tiles;
-          });
+          return game.id === res.data.death_fun_id;
         });
 
+        const _rows: LayerRow[] = formatRows(res.data.rows, res.data.selected_tiles, res.data.death_fun_id);
+
+        // Map does not exist
         if (!matchedGame) {
-          setDefaultCurrentGame();
-          return;
+          // if status = 0, player can continue to complete this game
+          // if status = 1/2, auto switch to the first map of the latest game
+          if (res.data.status !== LastGameStatus.Ongoing) {
+            setDefaultCurrentGame();
+            return;
+          }
         }
 
-        const _rows: LayerRow[] = formatRows(res.data.rows, res.data.selected_tiles, matchedGame?.id);
+        // Map exists
         if (res.data.status === LastGameStatus.Ongoing) {
           for (let i = _rows.length - 1; i >= 0; i--) {
             if (_rows[i].status === LayerStatus.Failed) {
@@ -631,7 +625,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         }
 
         const _currentGame = {
-          id: matchedGame?.id || -1,
+          id: res.data.death_fun_id || -1,
           rows: _rows,
         };
         setCurrentGame(_currentGame);
@@ -708,8 +702,9 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     }
     if (!currentGame) {
       // set first map as current game
-      setCurrentGame(allGameMaps[0]);
-      setData(cloneDeep(allGameMaps[0]?.rows || []));
+      const randomGameIndex = random(0, allGameMaps.length - 1);
+      setCurrentGame(allGameMaps[randomGameIndex]);
+      setData(cloneDeep(allGameMaps[randomGameIndex]?.rows || []));
       return;
     }
     let nextGame: Layer;
