@@ -20,6 +20,7 @@ import RulesModal from "./components/rules/modal";
 import useIsMobile from "@/hooks/use-isMobile";
 import AllInFire from "./components/all-in-fire";
 import LeaderBoard from "./components/leader-board";
+import ShareModal from "./components/share/modal";
 
 const SpaceInvadersView = (props: any) => {
   const spaceInvaders = useSpaceInvaders(props);
@@ -115,6 +116,7 @@ const SpaceInvadersView = (props: any) => {
       <SoundEffects />
       <RewardModal />
       <RulesModal />
+      <ShareModal />
       {
         !isMobile && (
           <LeaderBoard />

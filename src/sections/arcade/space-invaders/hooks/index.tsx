@@ -60,6 +60,8 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
   const [rewardData, setRewardData] = useState<any>();
   // Rules modal
   const [rulesVisible, setRulesVisible] = useState<boolean>(false);
+  // Share modal
+  const [shareVisible, setShareVisible] = useState<boolean>(false);
 
   const [tab, setTab] = useState("play");
 
@@ -904,6 +906,8 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
     ghostAvatar: spaceInvadersStore.ghostAvatar,
     tab,
     setTab,
+    shareVisible,
+    setShareVisible,
   };
 };
 
@@ -965,4 +969,6 @@ export interface SpaceInvaders {
   ghostAvatar: string;
   tab: string;
   setTab: (tab: string) => void;
+  shareVisible: boolean;
+  setShareVisible: (visible: boolean) => void;
 }

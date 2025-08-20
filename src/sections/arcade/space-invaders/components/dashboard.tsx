@@ -43,6 +43,7 @@ const Dashboard = (props: any) => {
     setRecordsVisible,
     setRulesVisible,
     containerRef,
+    setShareVisible,
   } = useSpaceInvadersContext();
   const { setOpenDeposit } = useContext(PrivyContext);
 
@@ -78,6 +79,16 @@ const Dashboard = (props: any) => {
           }}
         >
           Stats
+        </button>
+        <div className="text-[#8A87AA] font-[SpaceGrotesk] text-[12px] font-[300] px-[10px]">|</div>
+        <button
+          type="button"
+          className="text-[#8A87AA] font-[SpaceGrotesk]"
+          onClick={() => {
+            setShareVisible?.(true);
+          }}
+        >
+          Share
         </button>
       </div>
       <div className={clsx(
@@ -348,7 +359,7 @@ const CurrentLayer = (props: any) => {
   const { className, multiple = 1, amount } = props;
 
   return (
-    <div className={clsx("md:pt-[30px] md:gap-[20px] flex justify-center items-center gap-[clamp(1px,_6.25vw,_calc(var(--nadsa-laptop-width)*0.0625))] pt-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))]", className)}>
+    <div className={clsx("md:pt-[40px] md:gap-[20px] flex justify-center items-center gap-[clamp(1px,_6.25vw,_calc(var(--nadsa-laptop-width)*0.0625))] pt-[clamp(1px,_4vw,_calc(var(--nadsa-laptop-width)*0.04))]", className)}>
       <div className="md:text-[16px] text-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))]">
         {numberFormatter(multiple, 2, true, { isZeroPrecision: true })}x
       </div>
