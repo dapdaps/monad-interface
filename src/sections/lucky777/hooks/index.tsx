@@ -9,7 +9,7 @@ import { usePrivyAuth } from '@/hooks/use-privy-auth';
 import { useAccount } from 'wagmi';
 
 
-const ALL_PRIZES = [1, 2, 3, 4, 5, 13];
+const ALL_PRIZES = [1, 2, 3, 4, 5, 13, 14];
 export function useLuckyBera() {
   const { fail } = useToast({ isGame: true });
   const { address } = useAccount();
@@ -23,6 +23,7 @@ export function useLuckyBera() {
   const [overnads, setOvernads] = useState<any>({});
   const [deadnads, setDeadnads] = useState<any>({});
   const [coronad, setCoronad] = useState<any>({});
+  const [monshape, setMonshape] = useState<any>({});
   const prizes = useRef<any[]>(ALL_PRIZES);
   const [prizeStatus, setPrizeStatus] = useState(ALL_PRIZES)
   const [isOpenSwitch, setIsOpenSwitch] = useState(false);
@@ -87,7 +88,7 @@ export function useLuckyBera() {
     const res = await get("/game/777/reward/whitelist");
 
     setChogStarrr({
-      total: 50,
+      total: 5,
       remaining: 0,
     });
     setMonadverse({
@@ -118,6 +119,10 @@ export function useLuckyBera() {
       total: 30,
       remaining: 0,
     });
+    setMonshape({
+      total: 10,
+      remaining: 0,
+    });
 
     if (res.code !== 200) {
       // setChogStarrr({
@@ -138,8 +143,6 @@ export function useLuckyBera() {
       // });
       
     } else if (res.data && Array.isArray(res.data)) {
-
-      console.log('res.data', res.data);
 
       res.data.forEach((item: any) => {
         if (item.category.toLowerCase() === 'chogstarrr') {
@@ -165,6 +168,9 @@ export function useLuckyBera() {
         }
         if (item.category.toLowerCase() === 'coronad') {
           setCoronad(item);
+        }
+        if (item.category.toLowerCase() === 'monshape') {
+          setMonshape(item);
         }
       });
     }
@@ -203,11 +209,13 @@ export function useLuckyBera() {
     if (coronad.remaining === 0) {
       newPrizes = newPrizes.filter((item: any) => item !== 13);
     }
+    if (monshape.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 14);
+    }
 
     prizes.current = newPrizes;
     setPrizeStatus(newPrizes);
-  }, [chogStarrr, monadverse, monadoon, slmnd]);
-
+  }, [chogStarrr, monadverse, monadoon, slmnd, monshape, coronad, deadnads, lamouch, overnads]);
 
 
   return {
@@ -228,6 +236,7 @@ export function useLuckyBera() {
     overnads,
     deadnads,
     coronad,
+    monshape,
     prizes,
     prizeStatus,
     isOpenSwitch,

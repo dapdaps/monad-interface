@@ -12,6 +12,7 @@ export enum SpinCategory {
   // Overnads = "overnads",
   // Deadnads = "deadnads",
   Coronad = "coronad",
+  Monshape = "monshape",
 }
 
 export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
@@ -106,7 +107,13 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     centerScale: 1,
     centerY: 0,
   },
-
+  [SpinCategory.Monshape]: {
+    code: "14",
+    icon: "/images/lucky777/logo/monshape.png",
+    value: SpinCategory.Monshape,
+    centerScale: 1,
+    centerY: 0,
+  },
 };
 
 export enum SpinMultiplier {

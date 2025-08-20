@@ -3,15 +3,17 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export default function NftT(props: any) {
-  const { monadverse, monadoon, slmnd, lamouch, overnads, deadnads, coronad } = props;
+  const { chogstarrr, monadverse, monadoon, slmnd, lamouch, overnads, deadnads, coronad, monshape } = props;
   const nfts = [
+    // { key: "chogstarrr", data: chogstarrr, img: "/images/lucky777/nft-chogstarrr-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '!bottom-[30px] !right-[50px]' },
     // { key: "monadverse", data: monadverse, img: "/images/lucky777/nft-monadverse-t.png", cls: 'rotate-[-2deg]' },
     // { key: "monadoon", data: monadoon, img: "/images/lucky777/nft-monadoon-t.png", cls: 'rotate-[2deg]' },
     // { key: "slmnd", data: slmnd, img: "/images/lucky777/nft-slmnd-t.png", cls: 'rotate-[0deg]' },
     // { key: "lamouch", data: lamouch, img: "/images/lucky777/nft-lamouch-t.png", cls: 'rotate-[0deg] w-[127px] h-[175px]' },
     // { key: "overnads", data: overnads, img: "/images/lucky777/nft-overnads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]' },
     // { key: "deadnads", data: deadnads, img: "/images/lucky777/nft-deadnads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]' },
-    { key: "coronad", data: coronad, img: "/images/lucky777/nft-coronads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]' },
+    { key: "coronad", data: coronad, img: "/images/lucky777/nft-coronads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '' },
+    { key: "monshape", data: monshape, img: "/images/lucky777/nft-monshape-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '' },
   ].filter(nft => Number(nft.data?.remaining) > 0);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -59,7 +61,7 @@ export default function NftT(props: any) {
             className='absolute w-full h-full left-0 top-0'
           >
             <img src={nfts[currentIndex].img} alt="" className={clsx('w-[127px] absolute top-0 left-0', nfts[currentIndex].cls, nfts[currentIndex].key === 'monadoon' ? 'h-[175px]' : 'h-[175px]')} />
-            <div className="absolute right-[20px] bottom-[75px] font-Montserrat text-[14px] font-bold italic text-white rotate-[-5deg] drop-shadow-[2px_2px_0_#000] [text-shadow:0_0_2px_#000,1px_1px_0_#000,-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000]">
+            <div className={clsx(nfts[currentIndex].textCls, "absolute right-[20px] bottom-[75px] font-Montserrat text-[14px] font-bold italic text-white rotate-[-5deg] drop-shadow-[2px_2px_0_#000] [text-shadow:0_0_2px_#000,1px_1px_0_#000,-1px_-1px_0_#000,1px_-1px_0_#000,-1px_1px_0_#000]")}>
               {nfts[currentIndex].data.remaining}/{nfts[currentIndex].data.total}
             </div>
           </motion.div>
