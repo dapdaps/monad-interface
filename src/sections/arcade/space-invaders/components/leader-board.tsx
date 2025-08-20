@@ -8,70 +8,42 @@ import { formatLongText } from "@/utils/utils";
 import { useRequest } from "ahooks";
 import Big from "big.js";
 import clsx from "clsx";
-import dayjs from "dayjs";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 
-// Custom hook to calculate remaining time today
-const useTodayCountdown = () => {
-  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
-
-  useEffect(() => {
-    const calculateTimeLeft = () => {
-      // Get local time
-      const now = dayjs();
-      // Get UTC time
-      const nowUTC = now.utc();
-      // Get end of today in UTC (tomorrow 00:00:00)
-      const endOfDayUTC = nowUTC.endOf('day');
-      // Calculate remaining time
-      const diff = endOfDayUTC.diff(nowUTC, 'second');
-
-      if (diff > 0) {
-        const hours = Math.floor(diff / 3600);
-        const minutes = Math.floor((diff % 3600) / 60);
-        const seconds = diff % 60;
-        setTimeLeft({ hours, minutes, seconds });
-      } else {
-        setTimeLeft({ hours: 0, minutes: 0, seconds: 0 });
-      }
-    };
-
-    // Calculate immediately
-    calculateTimeLeft();
-
-    // Update every second
-    const timer = setInterval(calculateTimeLeft, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  return timeLeft;
-};
+const tabs = [
+  { value: "daily", label: "Daily", api: "/game/deathfun/rank/daily" },
+  { value: "all", label: "All Time", api: "/game/deathfun/rank" },
+];
 
 const LeaderBoard = (props: any) => {
   const { className } = props;
-  const timeLeft = useTodayCountdown();
 
   const isMobile = useIsMobile();
   const { accountWithAk } = useCustomAccount();
   const { address } = usePrivyAuth({ isBind: false });
 
-  const { data, loading, runAsync: getData } = useRequest(async () => {
-    if (!accountWithAk) {
+  const [data, setData] = useState<any>();
+  const [tab, setTab] = useState(tabs[0]);
+
+  const { loading, runAsync: getData } = useRequest(async () => {
+    if (!accountWithAk || !tab) {
       return;
     }
     try {
-      const res = await get("/game/deathfun/rank");
+      const res = await get(tab.api);
       if (res.code !== 200) {
+        setData(void 0);
         return;
       }
+      setData(res.data);
       return res.data;
     } catch (error) {
+      setData(void 0);
       console.log("get leader board failed: %o", error);
     }
   }, {
-    refreshDeps: [accountWithAk]
+    refreshDeps: [accountWithAk, tab]
   });
 
   // Refresh data every minute
@@ -91,10 +63,27 @@ const LeaderBoard = (props: any) => {
         LEADERBOARD
       </div>
       <div className="shrink-0 pt-[11px] text-center text-[12px] font-[500] leading-[100%]">
-        <span className="text-[#BFFF60]">100 MON</span> daily for <span className="text-[#BFFF60]">top 50</span> by rank
+        Climb <span className="text-[#BFFF60]">higher</span>, rank<span className="text-[#BFFF60]">stronger</span>
       </div>
-      <div className="shrink-0 pt-[10px] text-[16px] ledading-[100%] text-center">
-        {String(timeLeft.hours).padStart(2, '0')} : {String(timeLeft.minutes).padStart(2, '0')} : {String(timeLeft.seconds).padStart(2, '0')}
+      <div className="shrink-0 pt-[10px] flex justify-center items-center gap-[10px]">
+        {
+          tabs.map((_tab, _idx) => (
+            <button
+              key={_idx}
+              type="button"
+              className={clsx(
+                "w-[100px] h-[26px] rounded-[6px] flex justify-center items-center border border-black font-[Unbounded] font-[400] text-[12px] text-black transition-all duration-150",
+                tab.value === _tab.value ? "bg-[#BFFF60] shadow-[0_4px_0_0_rgba(0,_0,_0,_0.50)_inset]" : "bg-[#A9ADB8] shadow-[0_-4px_0_0_rgba(0,_0,_0,_0.50)_inset]",
+              )}
+              onClick={() => {
+                setData(void 0);
+                setTab(_tab);
+              }}
+            >
+              {_tab.label}
+            </button>
+          ))
+        }
       </div>
       <div className="h-0 flex-1 pt-[24px] overflow-y-auto flex flex-col gap-[15px] pb-[100px]">
         {
@@ -106,7 +95,7 @@ const LeaderBoard = (props: any) => {
               </div>
               <Skeleton width={80} height={14} borderRadius={2} />
             </div>
-          )) : data?.tops?.map((item: any, i: number) => (
+          )) : data?.tops?.filter((item: any) => Big(item.profit || 0).gte(0))?.map((item: any, i: number) => (
             <div className="w-full p-[0_10px] flex items-center gap-[10px] justify-between" key={i}>
               <div className="flex items-center gap-[15px]">
                 <div className="text-[#CDC4FF] min-w-[21px] text-right">{item.rank}</div>
@@ -150,7 +139,7 @@ const LeaderBoard = (props: any) => {
             <div className="mt-[9px] flex justify-between items-center gap-[10px]">
               <div className="flex items-center gap-[11px]">
                 <div className="text-[#CDC4FF]">
-                  {data?.self?.rank}
+                  {data?.self?.rank ?? "-"}
                 </div>
                 <div className="">
                   {formatLongText(address, 5, 5)}
@@ -164,7 +153,7 @@ const LeaderBoard = (props: any) => {
                     true,
                     {
                       isLessPrecision: false,
-                      prefix: Big(data?.self?.profit || 0).gte(0) ? "+" : "",
+                      prefix: Big(data?.self?.profit || 0).gt(0) ? "+" : "",
                     }
                   )
                 } MON
