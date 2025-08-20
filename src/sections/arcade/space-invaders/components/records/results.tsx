@@ -68,13 +68,16 @@ const Results = (props: any) => {
     {
       title: "ID",
       dataIndex: "id",
-      width: 90,
+      width: 100,
       fixed: true,
+      ellipsis: true,
       render: (record: any, idx: number) => {
         return (
-          <div className="flex items-center gap-[5px]">
-            <div className="">{formatLongText(record.chain_game_id)}</div>
-            <button
+          <div className="flex items-center gap-[5px] w-full">
+            <div className="whitespace-nowrap overflow-hidden text-ellipsis w-full">
+              {record.chain_game_id}
+            </div>
+            {/* <button
               type="button"
               className="w-[12px] h-[12px] flex-0 bg-[url('/images/arcade/space-invaders/icon-copy.png')] bg-no-repeat bg-center bg-contain"
               onClick={async () => {
@@ -83,7 +86,7 @@ const Results = (props: any) => {
                   title: `Copied game id ${record.chain_game_id}`,
                 }, "bottom-right");
               }}
-            />
+            /> */}
           </div>
         );
       },
@@ -91,7 +94,7 @@ const Results = (props: any) => {
     {
       title: "Date",
       dataIndex: "date",
-      width: 110,
+      width: 100,
       render: (record: any, idx: number) => {
         return <TimeAgo date={record.created_at} />;
       },
@@ -135,7 +138,7 @@ const Results = (props: any) => {
       dataIndex: "multiplier",
       width: 90,
       render: (record: any, idx: number) => {
-        return numberFormatter(record.status === LastGameStatus.Lose ? 0 :record.final_multiplier, 2, true) + "x";
+        return numberFormatter(record.status === LastGameStatus.Lose ? 0 : record.final_multiplier, 2, true) + "x";
       },
     },
     {
