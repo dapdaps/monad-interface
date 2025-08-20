@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 export default function NftT(props: any) {
   const { chogstarrr, monadverse, monadoon, slmnd, lamouch, overnads, deadnads, coronad, monshape } = props;
   const nfts = [
-    { key: "chogstarrr", data: chogstarrr, img: "/images/lucky777/nft-chogstarrr-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '!bottom-[30px] !right-[50px]' },
+    // { key: "chogstarrr", data: chogstarrr, img: "/images/lucky777/nft-chogstarrr-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '!bottom-[30px] !right-[50px]' },
     // { key: "monadverse", data: monadverse, img: "/images/lucky777/nft-monadverse-t.png", cls: 'rotate-[-2deg]' },
     // { key: "monadoon", data: monadoon, img: "/images/lucky777/nft-monadoon-t.png", cls: 'rotate-[2deg]' },
     // { key: "slmnd", data: slmnd, img: "/images/lucky777/nft-slmnd-t.png", cls: 'rotate-[0deg]' },
