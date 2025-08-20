@@ -2,6 +2,7 @@ import CalendarBanner from "@/components/privy-wallet/calendar/banner";
 import useCustomAccount from "@/hooks/use-account";
 import useIsMobile from "@/hooks/use-isMobile";
 import { usePrivyAuth } from "@/hooks/use-privy-auth";
+import { useUserStore } from "@/stores/user";
 import { get } from "@/utils/http";
 import { numberFormatter } from "@/utils/number-formatter";
 import { formatLongText } from "@/utils/utils";
@@ -22,6 +23,7 @@ const LeaderBoard = (props: any) => {
   const isMobile = useIsMobile();
   const { accountWithAk } = useCustomAccount();
   const { address } = usePrivyAuth({ isBind: false });
+  const userInfo = useUserStore((store: any) => store.user);
 
   const [data, setData] = useState<any>();
   const [tab, setTab] = useState(tabs[0]);
@@ -100,7 +102,7 @@ const LeaderBoard = (props: any) => {
               <div className="flex items-center gap-[15px]">
                 <div className="text-[#CDC4FF] min-w-[21px] text-right">{item.rank}</div>
                 <div className="">
-                  {formatLongText(item.address, 5, 5)}
+                  {formatLongText(item.twitter_user_name || item.address, 5, 5)}
                 </div>
               </div>
               <div className={clsx(Big(item.profit || 0).gte(0) ? "text-[#BFFF60]" : "text-[#FF4A4A]")}>
@@ -142,7 +144,7 @@ const LeaderBoard = (props: any) => {
                   {data?.self?.rank ?? "-"}
                 </div>
                 <div className="">
-                  {formatLongText(address, 5, 5)}
+                  {formatLongText(userInfo?.twitter?.twitter_user_name || address, 5, 5)}
                 </div>
               </div>
               <div className={clsx(Big(data?.self?.profit || 0).gte(0) ? "text-[#BFFF60]" : "text-[#FF4A4A]")}>
