@@ -275,7 +275,7 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
           text: res.message || "Please try again later",
         }, "bottom-right");
         // created game failed
-        if (res.message === "You hava a Death Fun currently ongoing") {
+        if (res.code === 10010) {
           getLastGame();
         }
         // auto change game map
