@@ -423,7 +423,7 @@ const BalanceDisplay = ({ className = "", balanceShown }: any) => (
   </div>
 );
 
-const AvatarDisplay = ({ hasAvatar = false, userInfo }: any) => (
+export const AvatarDisplay = ({ hasAvatar = false, userInfo }: any) => (
   hasAvatar ? (
     <img
       src={userInfo?.twitter?.twitter_avatar}
