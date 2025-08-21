@@ -225,7 +225,17 @@ const GridTable = (props: Props, ref: any) => {
               </div>
             )) : (
               <div className={clsx("flex justify-center items-center min-h-[200px]", emptyClassName)}>
-                <Empty desc="No memes" />
+                <Empty
+                  icon={(
+                    <img
+                      src="/images/arcade/space-invaders/icon-empty.png"
+                      alt=""
+                      className="w-[122px] h-[166px] object-center object-contain"
+                    />
+                  )}
+                  desc="No data yet..."
+                  descClassName="translate-y-[-80px] font-[300]"
+                />
               </div>
             )
           )
