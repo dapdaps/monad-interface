@@ -4,7 +4,7 @@ export enum SpinCategory {
   Bear = "bear",
   Bee = "bee",
   Honey = "honey",
-  Chogstarrr = "chogstarrr",
+  // Chogstarrr = "chogstarrr",
   // Monadverse = "monadverse",
   // Monadoon = "monadoon",
   // Slmnd = "slmnd",
@@ -13,6 +13,7 @@ export enum SpinCategory {
   // Deadnads = "deadnads",
   Coronad = "coronad",
   Monshape = "monshape",
+  Llamao = "llamao",
 }
 
 export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
@@ -51,13 +52,13 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     centerScale: 0.85,
     centerY: 0,
   },
-  [SpinCategory.Chogstarrr]: {
-    code: "6",
-    icon: "/images/lucky777/logo/chogstarrr.png",
-    value: SpinCategory.Chogstarrr,
-    centerScale: 1,
-    centerY: 10,
-  },
+  // [SpinCategory.Chogstarrr]: {
+  //   code: "6",
+  //   icon: "/images/lucky777/logo/chogstarrr.png",
+  //   value: SpinCategory.Chogstarrr,
+  //   centerScale: 1,
+  //   centerY: 10,
+  // },
   // [SpinCategory.Monadverse]: {
   //   code: "7",
   //   icon: "/images/lucky777/logo/monadverse.png",
@@ -111,6 +112,13 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     code: "14",
     icon: "/images/lucky777/logo/monshape.png",
     value: SpinCategory.Monshape,
+    centerScale: 1,
+    centerY: 0,
+  },
+  [SpinCategory.Llamao]: {
+    code: "15",
+    icon: "/images/lucky777/logo/liamao.png",
+    value: SpinCategory.Llamao,
     centerScale: 1,
     centerY: 0,
   },
