@@ -54,7 +54,12 @@ const PrivyWallet = () => {
     update();
   }, 30000);
 
-  const { openDeposit, setOpenDeposit } = useContext(PrivyContext);
+  const {
+    openDeposit,
+    setOpenDeposit,
+    openDepositAndWithdraw,
+    setOpenDepositAndWithdraw,
+  } = useContext(PrivyContext);
 
   useEffect(() => {
     if (openDeposit) {
@@ -63,6 +68,13 @@ const PrivyWallet = () => {
       setIsJustDesposit(true)
     }
   }, [openDeposit]);
+
+  useEffect(() => {
+    if (openDepositAndWithdraw) {
+      setOpen(true);
+      setShowDeposit(true);
+    }
+  }, [openDepositAndWithdraw]);
 
   // if (!address) {
   //     return null;
@@ -117,8 +129,9 @@ const PrivyWallet = () => {
       <ActionModal
         open={open}
         onClose={() => {
-          setOpen(false)
-          setOpenDeposit(false)
+          setOpen(false);
+          setOpenDeposit(false);
+          setOpenDepositAndWithdraw(false);
         }}
         balance={Number(tokenBalance || 0)}
         nativeBalance={Number(nativeTokenBalance || 0)}

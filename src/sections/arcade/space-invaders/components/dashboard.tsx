@@ -45,7 +45,7 @@ const Dashboard = (props: any) => {
     containerRef,
     setShareVisible,
   } = useSpaceInvadersContext();
-  const { setOpenDeposit } = useContext(PrivyContext);
+  const { setOpenDepositAndWithdraw } = useContext(PrivyContext);
 
   const amountIndex = useMemo(() => {
     return AMOUNT_OPTIONS.findIndex((option) => option.value === amount);
@@ -260,7 +260,7 @@ const Dashboard = (props: any) => {
                       gameLost ? "md:hidden" : "md:text-[16px]"
                     )}
                     onClick={() => {
-                      setOpenDeposit?.(true);
+                      setOpenDepositAndWithdraw?.(true);
                     }}
                   >
                     <img
