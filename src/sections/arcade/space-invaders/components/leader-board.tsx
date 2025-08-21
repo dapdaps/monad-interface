@@ -63,7 +63,7 @@ const LeaderBoard = (props: any) => {
         LEADERBOARD
       </div>
       <div className="shrink-0 pt-[11px] text-center text-[12px] font-[500] leading-[100%]">
-        Climb <span className="text-[#BFFF60]">higher</span>, rank<span className="text-[#BFFF60]">stronger</span>
+        Climb <span className="text-[#BFFF60]">higher</span>, rank <span className="text-[#BFFF60]">stronger</span>
       </div>
       <div className="shrink-0 pt-[10px] flex justify-center items-center gap-[10px]">
         {
