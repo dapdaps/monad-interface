@@ -145,6 +145,7 @@ export interface StartGameRes {
   gameChainId?: string;
   selected_tiles?: number[];
   seed?: string;
+  bet_amount?: string;
 }
 
 export interface EndGameRes {
