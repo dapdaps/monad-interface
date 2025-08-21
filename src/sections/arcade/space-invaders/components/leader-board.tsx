@@ -47,15 +47,15 @@ const LeaderBoard = (props: any) => {
   });
 
   // Refresh data every minute
-  useEffect(() => {
-    if (!getData) return;
+  // useEffect(() => {
+  //   if (!getData) return;
 
-    const interval = setInterval(() => {
-      getData();
-    }, 60000); // 60000ms = 1 minute
+  //   const interval = setInterval(() => {
+  //     getData();
+  //   }, 60000); // 60000ms = 1 minute
 
-    return () => clearInterval(interval);
-  }, [getData]);
+  //   return () => clearInterval(interval);
+  // }, [getData]);
 
   return (
     <div className={clsx("fixed z-[3] flex flex-col top-0 right-0 bg-[#191B25] border border-black w-[20.29vw] max-w-[280px] h-[83dvh] font-[Montserrat] text-[12px] text-white font-[600] leading-[150%]", className)}>
