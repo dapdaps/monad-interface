@@ -160,7 +160,17 @@ const Nft = (props: any) => {
           )
         }) : (
           <div className="w-full py-[50px]">
-            <Empty desc="No data" />
+            <Empty
+              icon={(
+                <img
+                  src="/images/arcade/space-invaders/icon-empty.png"
+                  alt=""
+                  className="w-[122px] h-[166px] object-center object-contain"
+                />
+              )}
+              desc="No nft yet..."
+              descClassName="translate-y-[-80px] font-[300]"
+            />
           </div>
         )
       }
