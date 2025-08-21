@@ -75,6 +75,7 @@ export default memo(function Tiger(props: any) {
     deadnads,
     coronad,
     monshape,
+    llamao,
     prizeStatus,
     isOpenSwitch,
     setIsOpenSwitch,
@@ -90,8 +91,6 @@ export default memo(function Tiger(props: any) {
   const [SpinCategoryRotation, setSpinCategoryRotation] = useState(WHEEL_AREA / SpinCategories.length);
   const [maxXp, setMaxXp] = useState(0);
   const isMobile = useIsMobile();
-
-  console.log('prizeStatus', prizeStatus);
 
   useEffect(() => {
     if (!prizeStatus || prizeStatus.length === 0) {
@@ -550,6 +549,15 @@ export default memo(function Tiger(props: any) {
         playSound(2)
         setTimeout(() => {
           if (Number(monshape?.remaining) === 0) {
+            startSlowScroll()
+          }
+        }, 3000);
+      } else if (res.draw_code === '151515') {
+        success({ title: `WON 1 Llamao` }, 'bottom-right');
+        setTitle(('WON 1 Llamao').repeat(2));
+        playSound(2)
+        setTimeout(() => {
+          if (Number(llamao?.remaining) === 0) {
             startSlowScroll()
           }
         }, 3000);
@@ -1021,7 +1029,7 @@ export default memo(function Tiger(props: any) {
           }
         }} />
 
-        <NftT chogstarrr={chogStarrr} monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} coronad={coronad} monshape={monshape} />
+        <NftT chogstarrr={chogStarrr} monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} coronad={coronad} monshape={monshape} llamao={llamao} />
       </div>
 
       <BuyTimesModal open={openBuyTimes} spinUserData={spinUserData} onClose={() => setOpenBuyTimes(false)} refreshData={getSpinUserData} />

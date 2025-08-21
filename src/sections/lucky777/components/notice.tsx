@@ -98,7 +98,10 @@ export default function Notice() {
                                         item.draw_code === '141414' && <TypingText text={`Win 1 Monshape`} speed={50} />
                                     }
                                     {
-                                        item.draw_code !== '666' && item.draw_code !== '777' && item.draw_code !== '888' && item.draw_code !== '999' && item.draw_code !== '101010' && item.draw_code !== '111111' && item.draw_code !== '121212' && item.draw_code !== '131313' && item.draw_code !== '141414' && <TypingText text={`Win ${item.amount} MON`} speed={50} />
+                                        item.draw_code === '151515' && <TypingText text={`Win 1 Llamao`} speed={50} />
+                                    }
+                                    {
+                                        item.draw_code !== '666' && item.draw_code !== '777' && item.draw_code !== '888' && item.draw_code !== '999' && item.draw_code !== '101010' && item.draw_code !== '111111' && item.draw_code !== '121212' && item.draw_code !== '131313' && item.draw_code !== '141414' && item.draw_code !== '151515' && <TypingText text={`Win ${item.amount} MON`} speed={50} />
                                     }
                                     {/* {
                                         item.code !== '666' && (<a
