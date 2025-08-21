@@ -1,3 +1,4 @@
+import Empty from "@/components/empty";
 import CalendarBanner from "@/components/privy-wallet/calendar/banner";
 import useCustomAccount from "@/hooks/use-account";
 import useIsMobile from "@/hooks/use-isMobile";
@@ -95,31 +96,45 @@ const LeaderBoard = (props: any) => {
               </div>
               <Skeleton width={80} height={14} borderRadius={2} />
             </div>
-          )) : data?.tops?.filter((item: any) => Big(item.profit || 0).gte(0))?.map((item: any, i: number) => (
-            <div className="w-full p-[0_10px] flex items-center gap-[10px] justify-between" key={i}>
-              <div className="flex items-center gap-[15px]">
-                <div className="text-[#CDC4FF] min-w-[21px] text-right">{item.rank}</div>
-                <div className="">
-                  {formatLongText(item.address, 5, 5)}
+          )) : (
+            !!data?.tops?.length ? data?.tops?.filter((item: any) => Big(item.profit || 0).gte(0))?.map((item: any, i: number) => (
+              <div className="w-full p-[0_10px] flex items-center gap-[10px] justify-between" key={i}>
+                <div className="flex items-center gap-[15px]">
+                  <div className="text-[#CDC4FF] min-w-[21px] text-right">{item.rank}</div>
+                  <div className="">
+                    {formatLongText(item.address, 5, 5)}
+                  </div>
+                </div>
+                <div className={clsx(Big(item.profit || 0).gte(0) ? "text-[#BFFF60]" : "text-[#FF4A4A]")}>
+                  {
+                    numberFormatter(
+                      item.profit,
+                      2,
+                      true,
+                      {
+                        isLessPrecision: false,
+                        prefix: Big(item.profit || 0).gte(0) ? "+" : "",
+                        isShort: Big(item.profit || 0).gte(10000),
+                        isShortUppercase: true,
+                      }
+                    )
+                  } MON
                 </div>
               </div>
-              <div className={clsx(Big(item.profit || 0).gte(0) ? "text-[#BFFF60]" : "text-[#FF4A4A]")}>
-                {
-                  numberFormatter(
-                    item.profit,
-                    2,
-                    true,
-                    {
-                      isLessPrecision: false,
-                      prefix: Big(item.profit || 0).gte(0) ? "+" : "",
-                      isShort: Big(item.profit || 0).gte(10000),
-                      isShortUppercase: true,
-                    }
-                  )
-                } MON
-              </div>
-            </div>
-          ))
+            )) : (
+              <Empty
+                icon={(
+                  <img
+                    src="/images/arcade/space-invaders/icon-empty.png"
+                    alt=""
+                    className="w-[122px] h-[166px] object-center object-contain"
+                  />
+                )}
+                desc={`No winners ${tab?.value === tabs[0].value ? "today" : ""}... yet`}
+                descClassName="translate-y-[-80px] font-[300]"
+              />
+            )
+          )
         }
       </div>
       <div className="shrink-0 p-[7px_11px_11px_16px] w-full left-0 bottom-0 bg-[linear-gradient(180deg,_#28293D_0%,_#36375C_100%)] border-t border-black">
