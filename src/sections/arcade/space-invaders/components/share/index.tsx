@@ -42,13 +42,15 @@ const Share = (props: any) => {
     // Use dom-to-image to convert DOM element to image
     try {
       const dataUrl: string = await domtoimage.toPng(pictureRef.current, {
-        quality: 2.0,
+        quality: 1.0,
         bgcolor: 'transparent',
-        width: pictureRef.current.offsetWidth * 2,
-        height: pictureRef.current.offsetHeight * 2,
+        width: pictureRef.current.offsetWidth * 4,
+        height: pictureRef.current.offsetHeight * 4,
         style: {
-          transform: "scale(2)",
-          transformOrigin: "top left"
+          transform: "scale(4)",
+          transformOrigin: "top left",
+          width: pictureRef.current.offsetWidth * 2,
+          height: pictureRef.current.offsetHeight * 2,
         }
       });
       toast.dismiss(toastId);
