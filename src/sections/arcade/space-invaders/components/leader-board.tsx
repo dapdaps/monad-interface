@@ -77,6 +77,9 @@ const LeaderBoard = (props: any) => {
                 tab.value === _tab.value ? "bg-[#BFFF60] shadow-[0_4px_0_0_rgba(0,_0,_0,_0.50)_inset]" : "bg-[#A9ADB8] shadow-[0_-4px_0_0_rgba(0,_0,_0,_0.50)_inset]",
               )}
               onClick={() => {
+                if (_tab.value === tab?.value) {
+                  return;
+                }
                 setData(void 0);
                 setTab(_tab);
               }}
