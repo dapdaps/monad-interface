@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { AMOUNT_OPTIONS, LastGameStatus, NFT_INFORMATIONS } from "../config";
 import { useSpaceInvadersContext } from "../context";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { monad } from "@/configs/tokens/monad-testnet";
 import { numberFormatter } from "@/utils/number-formatter";
 import { addressFormated } from "@/utils/balance";
@@ -15,6 +15,7 @@ import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import { useScrollDirection } from "../hooks/use-scroll";
 import useIsMobile from "@/hooks/use-isMobile";
+import { PrivyContext } from "@/components/privy-provider";
 
 const Dashboard = (props: any) => {
   const { } = props;
@@ -42,7 +43,9 @@ const Dashboard = (props: any) => {
     setRecordsVisible,
     setRulesVisible,
     containerRef,
+    setShareVisible,
   } = useSpaceInvadersContext();
+  const { setOpenDepositAndWithdraw } = useContext(PrivyContext);
 
   const amountIndex = useMemo(() => {
     return AMOUNT_OPTIONS.findIndex((option) => option.value === amount);
@@ -77,9 +80,19 @@ const Dashboard = (props: any) => {
         >
           Stats
         </button>
+        <div className="text-[#8A87AA] font-[SpaceGrotesk] text-[12px] font-[300] px-[10px]">|</div>
+        <button
+          type="button"
+          className="text-[#8A87AA] font-[SpaceGrotesk]"
+          onClick={() => {
+            setShareVisible?.(true);
+          }}
+        >
+          Share
+        </button>
       </div>
       <div className={clsx(
-        "md:w-[96.15vw] md:h-[50vw] md:rounded-[12px] md:rounded-b-[0] md:text-[16px] md:z-[2] relative text-white font-[DelaGothicOne] font-[400] leading-[100%] text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] w-[clamp(1px,_41.67vw,_calc(var(--nadsa-laptop-width)*0.4167))] h-[clamp(1px,_17vw,_calc(var(--nadsa-laptop-width)*0.17))] rounded-t-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] border border-b-0 bg-[#191B25]",
+        "md:w-[96.15vw] md:h-[62.09vw] md:rounded-[12px] md:rounded-b-[0] md:text-[16px] md:z-[2] relative text-white font-[DelaGothicOne] font-[400] leading-[100%] text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] w-[clamp(1px,_41.67vw,_calc(var(--nadsa-laptop-width)*0.4167))] h-[clamp(1px,_17vw,_calc(var(--nadsa-laptop-width)*0.17))] rounded-t-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] border border-b-0 bg-[#191B25]",
         gameLost ? "border-[#FF3434] bg-[linear-gradient(0deg,_rgba(255,_52,_52,_0.06)_0%,_rgba(255,_52,_52,_0.06)_100%)]" : "border-[#3E347C]",
       )}>
         {
@@ -136,7 +149,7 @@ const Dashboard = (props: any) => {
                   ) : (
                     <CurrentLayer
                       multiple={currentWinLayer?.multiplier}
-                      amount={amount}
+                      amount={(currentGameData?.status && [LastGameStatus.Win].includes(currentGameData?.status)) ? (currentGameData?.bet_amount || amount) : amount}
                     />
                   )
                 }
@@ -208,7 +221,7 @@ const Dashboard = (props: any) => {
                     </div>
                   )
                 }
-                <div className="md:pt-[18px] whitespace-nowrap flex justify-between items-center gap-[clamp(1px,_5.42vw,_calc(var(--nadsa-laptop-width)*0.0542))] pt-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))] pl-[clamp(1px,_2.22vw,_calc(var(--nadsa-laptop-width)*0.0222))] pr-[clamp(1px,_4.1vw,_calc(var(--nadsa-laptop-width)*0.041))]">
+                <div className="md:pt-[18px] md:px-[30px] whitespace-nowrap flex justify-between items-center gap-[clamp(1px,_5.42vw,_calc(var(--nadsa-laptop-width)*0.0542))] pt-[clamp(1px,_2vw,_calc(var(--nadsa-laptop-width)*0.02))] pl-[clamp(1px,_2.22vw,_calc(var(--nadsa-laptop-width)*0.0222))] pr-[clamp(1px,_2.6vw,_calc(var(--nadsa-laptop-width)*0.026))]">
                   <button
                     type="button"
                     className="md:text-[16px] md:gap-[7px] disabled:opacity-50 disabled:!cursor-not-allowed flex items-center gap-[clamp(1px,_0.49vw,_calc(var(--nadsa-laptop-width)*0.0049))] text-[#8A87AA] text-[clamp(1px,_1.11vw,_calc(var(--nadsa-laptop-width)*0.0111))] font-[400] leading-[100%] font-[SpaceGrotesk]"
@@ -243,9 +256,12 @@ const Dashboard = (props: any) => {
                   <button
                     type="button"
                     className={clsx(
-                      "md:gap-[5px] flex items-center gap-[clamp(1px,_0.49vw,_calc(var(--nadsa-laptop-width)*0.0049))] text-[#12FFC0] text-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] font-[400] leading-[100%] font-[DelaGothicOne] !cursor-default",
+                      "md:gap-[5px] flex items-center gap-[clamp(1px,_0.49vw,_calc(var(--nadsa-laptop-width)*0.0049))] text-[#12FFC0] text-[clamp(1px,_0.83vw,_calc(var(--nadsa-laptop-width)*0.0083))] font-[400] leading-[100%] font-[DelaGothicOne]",
                       gameLost ? "md:hidden" : "md:text-[16px]"
                     )}
+                    onClick={() => {
+                      setOpenDepositAndWithdraw?.(true);
+                    }}
                   >
                     <img
                       src="/images/arcade/space-invaders/icon-wallet.png"
@@ -255,6 +271,11 @@ const Dashboard = (props: any) => {
                     <div className="">
                       {numberFormatter(userBalance, 2, true)} MON
                     </div>
+                    <img
+                      src="/images/arcade/space-invaders/add-button.png"
+                      alt=""
+                      className="md:w-[20px] md:h-[20px] w-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] h-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width)*0.0139))] flex-0 object-center object-contain"
+                    />
                   </button>
                 </div>
               </>
@@ -338,7 +359,7 @@ const CurrentLayer = (props: any) => {
   const { className, multiple = 1, amount } = props;
 
   return (
-    <div className={clsx("md:pt-[30px] md:gap-[20px] flex justify-center items-center gap-[clamp(1px,_6.25vw,_calc(var(--nadsa-laptop-width)*0.0625))] pt-[clamp(1px,_3vw,_calc(var(--nadsa-laptop-width)*0.03))]", className)}>
+    <div className={clsx("md:pt-[40px] md:gap-[20px] flex justify-center items-center gap-[clamp(1px,_6.25vw,_calc(var(--nadsa-laptop-width)*0.0625))] pt-[clamp(1px,_4vw,_calc(var(--nadsa-laptop-width)*0.04))]", className)}>
       <div className="md:text-[16px] text-[clamp(1px,_2.08vw,_calc(var(--nadsa-laptop-width)*0.0208))]">
         {numberFormatter(multiple, 2, true, { isZeroPrecision: true })}x
       </div>
