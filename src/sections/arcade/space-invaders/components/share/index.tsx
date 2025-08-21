@@ -80,35 +80,37 @@ const Share = (props: any) => {
       <div className="font-[DelaGothicOne] font-[400] text-white text-[20px] leading-[120%] px-[25px]">
         Share your PnL
       </div>
-      <div ref={pictureRef} className="py-[30px] px-[20px] md:px-[10px] font-[Pixelmix] font-[400] leading-[150%] text-white text-[14px]">
-        <div className="relative h-[292px] md:h-[48.52vw] w-full mx-auto bg-[url('/images/arcade/space-invaders/bg-share.png')] bg-no-repeat bg-center bg-contain">
-          <div className="absolute z-[1] w-full left-0 top-[65px] md:top-[40px]">
-            <div className="flex justify-center items-center gap-[10px]">
-              <AvatarDisplay
-                hasAvatar={account && !!userInfo?.twitter?.twitter_avatar}
-                userInfo={userInfo}
-              />
-              <div className="[text-shadow:0_0_6px_#836EF9]">
-                {addressShown}
+      <div className="py-[30px] px-[20px] md:px-[10px]">
+        <div ref={pictureRef} className="py-[0px] px-[0px] md:px-[0px] font-[Pixelmix] font-[400] leading-[150%] text-white text-[14px]">
+          <div className="relative h-[292px] md:h-[48.52vw] w-full mx-auto rounded-[12px] bg-[url('/images/arcade/space-invaders/bg-share.png')] bg-no-repeat bg-center bg-cover">
+            <div className="absolute z-[1] w-full left-0 top-[65px] md:top-[40px]">
+              <div className="flex justify-center items-center gap-[10px]">
+                <AvatarDisplay
+                  hasAvatar={account && !!userInfo?.twitter?.twitter_avatar}
+                  userInfo={userInfo}
+                />
+                <div className="[text-shadow:0_0_6px_#836EF9]">
+                  {addressShown}
+                </div>
               </div>
-            </div>
-            <div
-              className={clsx(
-                "mt-[10px] text-center text-[36px] md:text-[30px] [text-shadow:0_4px_0_#003D08,_0_0_6px_rgba(3,_226,_18,_0.60)] leading-[100%]",
-                Big(userStatistics?.profit || 0).gte(0) ? "text-[#03E212]" : "text-[#FF4A4A]"
-              )}
-            >
-              {
-                numberFormatter(
-                  userStatistics?.profit,
-                  2,
-                  true,
-                  {
-                    isLessPrecision: false,
-                    prefix: Big(userStatistics?.profit || 0).gt(0) ? "+" : "",
-                  }
-                )
-              } MON
+              <div
+                className={clsx(
+                  "mt-[10px] text-center text-[36px] md:text-[30px] leading-[100%]",
+                  Big(userStatistics?.profit || 0).gte(0) ? "text-[#03E212] [text-shadow:0_4px_0_#003D08,_0_0_6px_rgba(3,_226,_18,_0.60)]" : "text-[#FF4A4A] [text-shadow:0_4px_0_#510202,_0_0_6px_rgba(3,_226,_18,_0.60)]"
+                )}
+              >
+                {
+                  numberFormatter(
+                    userStatistics?.profit,
+                    2,
+                    true,
+                    {
+                      isLessPrecision: false,
+                      prefix: Big(userStatistics?.profit || 0).gt(0) ? "+" : "",
+                    }
+                  )
+                } MON
+              </div>
             </div>
           </div>
         </div>
