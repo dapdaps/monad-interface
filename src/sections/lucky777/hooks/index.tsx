@@ -9,7 +9,7 @@ import { usePrivyAuth } from '@/hooks/use-privy-auth';
 import { useAccount } from 'wagmi';
 
 
-const ALL_PRIZES = [1, 2, 3, 4, 5, 13, 14];
+const ALL_PRIZES = [1, 2, 3, 4, 5, 13, 14, 15];
 export function useLuckyBera() {
   const { fail } = useToast({ isGame: true });
   const { address } = useAccount();
@@ -24,6 +24,7 @@ export function useLuckyBera() {
   const [deadnads, setDeadnads] = useState<any>({});
   const [coronad, setCoronad] = useState<any>({});
   const [monshape, setMonshape] = useState<any>({});
+  const [llamao, setLlamao] = useState<any>({});
   const prizes = useRef<any[]>(ALL_PRIZES);
   const [prizeStatus, setPrizeStatus] = useState(ALL_PRIZES)
   const [isOpenSwitch, setIsOpenSwitch] = useState(false);
@@ -123,6 +124,10 @@ export function useLuckyBera() {
       total: 10,
       remaining: 0,
     });
+    setLlamao({
+      total: 40,
+      remaining: 0,
+    });
 
     if (res.code !== 200) {
       // setChogStarrr({
@@ -172,6 +177,10 @@ export function useLuckyBera() {
         if (item.category.toLowerCase() === 'monshape') {
           setMonshape(item);
         }
+        if (item.category.toLowerCase() === 'llamao') {
+          setLlamao(item);
+        }
+        
       });
     }
   }, [])
@@ -212,10 +221,13 @@ export function useLuckyBera() {
     if (monshape.remaining === 0) {
       newPrizes = newPrizes.filter((item: any) => item !== 14);
     }
+    if (llamao.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 15);
+    }
 
     prizes.current = newPrizes;
     setPrizeStatus(newPrizes);
-  }, [chogStarrr, monadverse, monadoon, slmnd, monshape, coronad, deadnads, lamouch, overnads]);
+  }, [chogStarrr, monadverse, monadoon, slmnd, monshape, coronad, deadnads, lamouch, overnads, llamao]);
 
 
   return {
@@ -237,6 +249,7 @@ export function useLuckyBera() {
     deadnads,
     coronad,
     monshape,
+    llamao,
     prizes,
     prizeStatus,
     isOpenSwitch,
