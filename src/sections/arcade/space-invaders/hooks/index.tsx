@@ -197,10 +197,14 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
       // report to server
       onReportServer("/game/deathfun/create/transaction", game_id, contractRes.transactionHash as string);
 
-      setCurrentGameData({
+      const _currentGameData = {
         ...params,
         create_hash: contractRes.transactionHash,
-      });
+      };
+      if (!_currentGameData.bet_amount) {
+        _currentGameData.bet_amount = amount;
+      }
+      setCurrentGameData(_currentGameData);
       setGameStarted(true);
       const _currentGame = allGameMaps?.find((_game) => _game.id === currentGame?.id) ?? allGameMaps?.[0];
       const _data = cloneDeep(_currentGame?.rows || []);

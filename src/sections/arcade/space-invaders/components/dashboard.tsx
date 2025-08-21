@@ -149,7 +149,7 @@ const Dashboard = (props: any) => {
                   ) : (
                     <CurrentLayer
                       multiple={currentWinLayer?.multiplier}
-                      amount={amount}
+                      amount={(currentGameData?.status && [LastGameStatus.Win].includes(currentGameData?.status)) ? (currentGameData?.bet_amount || amount) : amount}
                     />
                   )
                 }
