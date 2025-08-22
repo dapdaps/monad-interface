@@ -14,6 +14,7 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
     const [address, setAddress] = useState("");
     const { wallet, setActiveWallet } = useActiveWallet();
     const { fail } = useToast({ isGame: true });
+    const [isCreatingWallet, setIsCreatingWallet] = useState(false);
 
 
     useEffect(() => {
@@ -22,14 +23,17 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
 
     const { run: createWalletDebounce } = useDebounceFn(async () => {
         try {
-            if (user && !user.wallet) {
+            if (user && !user.wallet && ready && authenticated && !isCreatingWallet) {
                 const [privyUser] = user.linkedAccounts?.filter(
                     (account) =>
                         account.type === "wallet" &&
                         account.walletClientType === "privy"
                 );
                 if (!privyUser || !(privyUser as any).address) {
-                    createWallet();
+                    setIsCreatingWallet(true);
+                    await createWallet();
+                    await new Promise(resolve => setTimeout(resolve, 3000));
+                    setIsCreatingWallet(false);
                 }
             }
         } catch (e) {
@@ -38,7 +42,6 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
     }, {
         wait: 1000
     });
-
     const handleLogin = async () => {
         setLoginLoading(true);
 
