@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export default function NftT(props: any) {
-  const { chogstarrr, monadverse, monadoon, slmnd, lamouch, overnads, deadnads, coronad, monshape, llamao } = props;
+  const { chogstarrr, monadverse, monadoon, slmnd, lamouch, overnads, deadnads, coronad, monshape, llamao, skrumpeys } = props;
   const nfts = [
     // { key: "chogstarrr", data: chogstarrr, img: "/images/lucky777/nft-chogstarrr-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '!bottom-[30px] !right-[50px]' },
     // { key: "monadverse", data: monadverse, img: "/images/lucky777/nft-monadverse-t.png", cls: 'rotate-[-2deg]' },
@@ -12,9 +12,10 @@ export default function NftT(props: any) {
     // { key: "lamouch", data: lamouch, img: "/images/lucky777/nft-lamouch-t.png", cls: 'rotate-[0deg] w-[127px] h-[175px]' },
     // { key: "overnads", data: overnads, img: "/images/lucky777/nft-overnads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]' },
     // { key: "deadnads", data: deadnads, img: "/images/lucky777/nft-deadnads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]' },
-    { key: "coronad", data: coronad, img: "/images/lucky777/nft-coronads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '' },
-    { key: "monshape", data: monshape, img: "/images/lucky777/nft-monshape-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '' },
-    { key: "llamao", data: llamao, img: "/images/lucky777/nft-liamao-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '' },
+    // { key: "coronad", data: coronad, img: "/images/lucky777/nft-coronads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '' },
+    // { key: "monshape", data: monshape, img: "/images/lucky777/nft-monshape-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '' },
+    // { key: "llamao", data: llamao, img: "/images/lucky777/nft-liamao-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '' },
+    { key: "skrumpeys", data: skrumpeys, img: "/images/lucky777/nft-skrumpeys-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '' },
   ].filter(nft => Number(nft.data?.remaining) > 0);
 
   const [currentIndex, setCurrentIndex] = useState(0);

@@ -11,9 +11,10 @@ export enum SpinCategory {
   // LaMouch = "lamouch",
   // Overnads = "overnads",
   // Deadnads = "deadnads",
-  Coronad = "coronad",
-  Monshape = "monshape",
-  Llamao = "llamao",
+  // Coronad = "coronad",
+  // Monshape = "monshape",
+  // Llamao = "llamao",
+  Skrumpeys = "skrumpeys",
 }
 
 export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
@@ -101,24 +102,31 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
   //   centerScale: 0.9,
   //   centerY: 0,
   // },
-  [SpinCategory.Coronad]: {
-    code: "13",
-    icon: "/images/lucky777/logo/coronad.png",
-    value: SpinCategory.Coronad,
-    centerScale: 1,
-    centerY: 0,
-  },
-  [SpinCategory.Monshape]: {
-    code: "14",
-    icon: "/images/lucky777/logo/monshape.png",
-    value: SpinCategory.Monshape,
-    centerScale: 1,
-    centerY: 0,
-  },
-  [SpinCategory.Llamao]: {
-    code: "15",
-    icon: "/images/lucky777/logo/liamao.png",
-    value: SpinCategory.Llamao,
+  // [SpinCategory.Coronad]: {
+  //   code: "13",
+  //   icon: "/images/lucky777/logo/coronad.png",
+  //   value: SpinCategory.Coronad,
+  //   centerScale: 1,
+  //   centerY: 0,
+  // },
+  // [SpinCategory.Monshape]: {
+  //   code: "14",
+  //   icon: "/images/lucky777/logo/monshape.png",
+  //   value: SpinCategory.Monshape,
+  //   centerScale: 1,
+  //   centerY: 0,
+  // },
+  // [SpinCategory.Llamao]: {
+  //   code: "15",
+  //   icon: "/images/lucky777/logo/liamao.png",
+  //   value: SpinCategory.Llamao,
+  //   centerScale: 1,
+  //   centerY: 0,
+  // },
+  [SpinCategory.Skrumpeys]: {
+    code: "16",
+    icon: "/images/lucky777/logo/skrumpeys.png",
+    value: SpinCategory.Skrumpeys,
     centerScale: 1,
     centerY: 0,
   },

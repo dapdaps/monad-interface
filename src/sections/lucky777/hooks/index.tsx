@@ -9,7 +9,7 @@ import { usePrivyAuth } from '@/hooks/use-privy-auth';
 import { useAccount } from 'wagmi';
 
 
-const ALL_PRIZES = [1, 2, 3, 4, 5, 13, 14, 15];
+const ALL_PRIZES = [1, 2, 3, 4, 5, 16];
 export function useLuckyBera() {
   const { fail } = useToast({ isGame: true });
   const { address } = useAccount();
@@ -25,6 +25,7 @@ export function useLuckyBera() {
   const [coronad, setCoronad] = useState<any>({});
   const [monshape, setMonshape] = useState<any>({});
   const [llamao, setLlamao] = useState<any>({});
+  const [skrumpeys, setSkrumpeys] = useState<any>({});
   const prizes = useRef<any[]>(ALL_PRIZES);
   const [prizeStatus, setPrizeStatus] = useState(ALL_PRIZES)
   const [isOpenSwitch, setIsOpenSwitch] = useState(false);
@@ -128,25 +129,12 @@ export function useLuckyBera() {
       total: 40,
       remaining: 0,
     });
+    setSkrumpeys({
+      total: 50,
+      remaining: 0,
+    });
 
     if (res.code !== 200) {
-      // setChogStarrr({
-      //   total: 50,
-      //   remaining: 0,
-      // });
-      // setMonadverse({
-      //   total: 69,
-      //   remaining: 0,
-      // });
-      // setMonadoon({
-      //   total: 200,
-      //   remaining: 0,
-      // });
-      // setSlmnd({
-      //   total: 30,
-      //   remaining: 0,
-      // });
-      
     } else if (res.data && Array.isArray(res.data)) {
 
       res.data.forEach((item: any) => {
@@ -180,7 +168,9 @@ export function useLuckyBera() {
         if (item.category.toLowerCase() === 'llamao') {
           setLlamao(item);
         }
-
+        if (item.category.toLowerCase() === 'skrumpeys') {
+          setSkrumpeys(item);
+        }
       });
     }
   }, [])
@@ -224,6 +214,9 @@ export function useLuckyBera() {
     if (llamao.remaining === 0) {
       newPrizes = newPrizes.filter((item: any) => item !== 15);
     }
+    if (skrumpeys.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 16);
+    }
 
     prizes.current = newPrizes;
     setPrizeStatus(newPrizes);
@@ -250,6 +243,7 @@ export function useLuckyBera() {
     coronad,
     monshape,
     llamao,
+    skrumpeys,
     prizes,
     prizeStatus,
     isOpenSwitch,

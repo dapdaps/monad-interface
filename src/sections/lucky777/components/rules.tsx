@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "@/components/modal";
 import useIsMobile from "@/hooks/use-isMobile";
 import clsx from "clsx";
-
+    
 export const IconClose = () => (
     <div className="mt-[15px] mr-[15px]">
         <svg width="10" height="9" viewBox="0 0 10 9" fill="none" xmlns="http://www.w3.org/2000/svg">
