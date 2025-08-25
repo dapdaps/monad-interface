@@ -76,6 +76,7 @@ export default memo(function Tiger(props: any) {
     coronad,
     monshape,
     llamao,
+    skrumpeys,
     prizeStatus,
     isOpenSwitch,
     setIsOpenSwitch,
@@ -561,6 +562,15 @@ export default memo(function Tiger(props: any) {
             startSlowScroll()
           }
         }, 3000);
+      } else if (res.draw_code === '161616') {
+        success({ title: `WON 1 Skrumpeys` }, 'bottom-right');
+        setTitle(('WON 1 Skrumpeys').repeat(2));
+        playSound(2)
+        setTimeout(() => {
+          if (Number(skrumpeys?.remaining) === 0) {
+            startSlowScroll()
+          }
+        }, 3000);
       } else {
         setTitle(DEFAULT_UNLUCKY_TITLE);
       }
@@ -1029,7 +1039,7 @@ export default memo(function Tiger(props: any) {
           }
         }} />
 
-        <NftT chogstarrr={chogStarrr} monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} coronad={coronad} monshape={monshape} llamao={llamao} />
+        <NftT chogstarrr={chogStarrr} monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} coronad={coronad} monshape={monshape} llamao={llamao} skrumpeys={skrumpeys} />
       </div>
 
       <BuyTimesModal open={openBuyTimes} spinUserData={spinUserData} onClose={() => setOpenBuyTimes(false)} refreshData={getSpinUserData} />
