@@ -13,5 +13,5 @@ export default {
   OpenOcean,
   Uniswap,
   Kuru,
-  OneClick,
+  SuperSwap: OneClick,
 } as { [key: string]: any };

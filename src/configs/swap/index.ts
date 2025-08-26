@@ -13,5 +13,5 @@ export default {
   openocean,
   uniswap,
   kuru,
-  oneclick,
+  superswap: oneclick,
 } as Record<string, any>;

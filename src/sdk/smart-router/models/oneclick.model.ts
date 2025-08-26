@@ -30,14 +30,14 @@ export class OneClick {
     const _inputAmount = BigNumber(inputAmount)
       .multipliedBy(10 ** (inputCurrency.decimals || 18))
       .toFixed(0);
-    inputCurrency.address = inputCurrency.address.toLowerCase();
-    outputCurrency.address = outputCurrency.address.toLowerCase();
+    const inputCurrencyAddress = inputCurrency.address.toLowerCase();
+    const outputCurrencyAddress = outputCurrency.address.toLowerCase();
 
     const candidatesParams = new URLSearchParams();
     candidatesParams.set("chainId", this.chainId + "");
     candidatesParams.set("amountIn", _inputAmount);
-    candidatesParams.set("tokenIn", inputCurrency.isNative ? nativeAddress : inputCurrency.address);
-    candidatesParams.set("tokenOut", outputCurrency.isNative ? nativeAddress : outputCurrency.address);
+    candidatesParams.set("tokenIn", inputCurrency.isNative ? nativeAddress : inputCurrencyAddress);
+    candidatesParams.set("tokenOut", outputCurrency.isNative ? nativeAddress : outputCurrencyAddress);
     candidatesParams.set("pathDeep", "3");
     candidatesParams.set("slippage", slippage);
     candidatesParams.set("poolSafeMode", "true");
@@ -66,7 +66,6 @@ export class OneClick {
       oneclickAbi,
       provider.getSigner(account)
     );
-
     const _amountOut = BigNumber(bestTrade.amount_out)
       .multipliedBy(1 - slippage)
       .toFixed(0);
