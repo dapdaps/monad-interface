@@ -4,6 +4,7 @@ import { PancakeSwap, PancakeSwapUniversal } from "./pancake-swap.model";
 import { OpenOcean } from "./openocean.model";
 import { Uniswap } from "./uniswap.model";
 import { Kuru } from "./kuru.model";
+import { OneClick } from "./oneclick.model";
 
 export default {
   iZumi: iZiSwap,
@@ -11,5 +12,6 @@ export default {
   Pancake: PancakeSwapUniversal,
   OpenOcean,
   Uniswap,
-  Kuru
+  Kuru,
+  OneClick,
 } as { [key: string]: any };

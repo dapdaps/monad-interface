@@ -68,7 +68,7 @@ const formatTrade = ({
 
   let routerStr = '';
 
-  if (market.routes?.length) {
+  if (market.routes?.length && market.template !== "OneClick") {
     market.routes[0].routes.forEach((route: any, i: number) => {
       if (i === 0) {
         routerStr += route.token0.symbol + ' > ' + route.token1.symbol;
