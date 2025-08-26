@@ -453,7 +453,7 @@ const BindBtn = (props: any) => {
                     src="/images/arcade/space-invaders/icon-discord.png"
                     className="w-[20px] h-[16px] object-contain object-center shrink-0"
                 />
-                <div className="text-white w-[80px] truncate">{nft.discord}</div>
+                <div className="text-white max-w-[80px] truncate">{nft.discord}</div>
             </div>
         )
     }
