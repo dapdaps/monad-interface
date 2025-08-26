@@ -433,7 +433,7 @@ const BindBtn = (props: any) => {
 
     if (nft.discord) {
         return (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 justify-end">
                 <img
                     src="/images/arcade/space-invaders/icon-discord.png"
                     className="w-[20px] h-[16px] object-contain object-center shrink-0"
