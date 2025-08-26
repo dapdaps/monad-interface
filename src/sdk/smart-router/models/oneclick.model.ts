@@ -8,9 +8,9 @@ export class OneClick {
   private chainId: number;
   private wrappedNativeAddress: string;
   private ROUTER: { [key: number]: string } = {
-    10143: "0x326B7B004a023598A2eaFF7C47C37389bC677d03"
+    10143: "0xB542376ec17d7D22f384fF10150713ABe72c14AF"
   };
-  private HOST = "https://smart.oneclick.run";
+  private HOST = "https://api-trade.nadsa.space";
 
   constructor(chainId: number) {
     this.chainId = chainId;
@@ -70,15 +70,18 @@ export class OneClick {
     const _amountOut = BigNumber(bestTrade.amount_out)
       .multipliedBy(1 - slippage)
       .toFixed(0);
+    const _minAmountOut = bestTrade.routes.reduce((acc: any, route: any) => {
+      return acc.plus(route.min_amount_out);
+    }, BigNumber(0));
 
     // 2mins
     const deadline = Date.now() + 120 * 1000;
 
     const swapPathParams = {
-      chain_id: this.chainId,
       deadline: deadline,
-      min_amount_out: _amountOut,
+      min_amount_out: _minAmountOut,
       ...bestTrade,
+      chain_id: this.chainId,
       referral: "0x760AfE86e5de5fa0Ee542fc7B7B713e1c5425701",
       in_eth: inputCurrency.isNative ? 1 : 0,
       out_eth: outputCurrency.isNative ? 1 : 0,
@@ -126,7 +129,7 @@ export class OneClick {
 
     const txn = await RouterContract.populateTransaction.swap(...contractParams, {
       ...contractOptions,
-      gasLimit: swapPathGasLimit
+      gasLimit: estimateGas
     });
 
     return {
