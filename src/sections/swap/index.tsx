@@ -17,7 +17,7 @@ export default function Swap({ dapp }: any) {
         !isMobile && (
           <>
             {
-              !["OneClick"].includes(dapp.name) && (
+              !["SuperSwap"].includes(dapp.name) && (
                 <DappIcon dapp={dapp} />
               )
             }

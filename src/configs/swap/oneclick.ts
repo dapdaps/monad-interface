@@ -1,9 +1,9 @@
 import { monad } from "../tokens/monad-testnet";
 
 export default {
-  name: "OneClick",
+  name: "SuperSwap",
   logo: "",
-  path: "/dex",
+  path: "/dex?dapp=superswap",
   defaultInputCurrency: monad["mon"],
   defaultOutputCurrency: monad["usdt"],
   tokens: {
