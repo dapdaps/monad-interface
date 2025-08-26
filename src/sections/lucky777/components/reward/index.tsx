@@ -8,7 +8,7 @@ import { post } from "@/utils/http";
 import useToast from "@/hooks/use-toast";
 
 const Reward = (props: any) => {
-  const { className, setRewardVisible, nft } = props;
+  const { className, setRewardVisible, nft, onSuccess } = props;
 
   // const {
   //   rewardData,
@@ -55,6 +55,7 @@ const Reward = (props: any) => {
         }, "bottom-right");
         return;
       }
+      onSuccess?.({ discord: trim(discord || "") });
       toast.success({
         title: "Bind success",
       }, "bottom-right");

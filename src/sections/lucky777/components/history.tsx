@@ -30,6 +30,7 @@ const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
     const isMobile = useIsMobile();
     const [rewardVisible, setRewardVisible] = useState(false);
     const [currentNft, setCurrentNft] = useState<any>(null);
+    const [reloadKey, setReloadKey] = useState(0);
 
     return (
         <>
@@ -78,7 +79,7 @@ const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
                         <div className="w-full" style={{
                             display: activeTab === "purchases" ? 'block' : 'none',
                         }}>
-                            <List type="purchases" winningOnly={false} setRewardVisible={setRewardVisible} setCurrentNft={setCurrentNft} />
+                            <List type="purchases" key={reloadKey} winningOnly={false} setRewardVisible={setRewardVisible} setCurrentNft={setCurrentNft} />
                         </div>
 
                         <div className="w-full" style={{
@@ -89,7 +90,12 @@ const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
                     </div>
                 </div>
             </Modal>
-            <DiscordRewardModal rewardVisible={rewardVisible} setRewardVisible={setRewardVisible} nft={currentNft} />
+            <DiscordRewardModal rewardVisible={rewardVisible} setRewardVisible={setRewardVisible} nft={currentNft} onSuccess={({ discord }: any) => {
+                if (currentNft?.discord !== discord) {
+                    currentNft.discord = discord
+                    setReloadKey(reloadKey + 1);
+                }
+            }} />
         </>
     );
 };
@@ -244,7 +250,7 @@ function List({ type, winningOnly, setRewardVisible, setCurrentNft }: { type: st
                                             </div>
                                             <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
                                                 <BindBtn handleBindDiscord={() => {
-                                                    setRewardVisible(true); 
+                                                    setRewardVisible(true);
                                                     setCurrentNft(item);
                                                 }} nft={item} />
                                             </div>
@@ -424,6 +430,19 @@ function List({ type, winningOnly, setRewardVisible, setCurrentNft }: { type: st
 
 const BindBtn = (props: any) => {
     const { handleBindDiscord, nft } = props;
+
+    if (nft.discord) {
+        return (
+            <div className="flex items-center gap-2">
+                <img
+                    src="/images/arcade/space-invaders/icon-discord.png"
+                    className="w-[20px] h-[16px] object-contain object-center shrink-0"
+                />
+                <div className="text-white w-[80px] truncate">{nft.discord}</div>
+            </div>
+        )
+    }
+
     return (
         <button
             type="button"
