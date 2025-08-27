@@ -77,6 +77,7 @@ export default memo(function Tiger(props: any) {
     monshape,
     llamao,
     skrumpeys,
+    moana,
     prizeStatus,
     isOpenSwitch,
     setIsOpenSwitch,
@@ -571,6 +572,15 @@ export default memo(function Tiger(props: any) {
             startSlowScroll()
           }
         }, 3000);
+      } else if (res.draw_code === '171717') {
+        success({ title: `WON 1 Moana` }, 'bottom-right');
+        setTitle(('WON 1 Moana').repeat(2));
+        playSound(2)
+        setTimeout(() => {
+          if (Number(moana?.remaining) === 0) {
+            startSlowScroll()
+          }
+        }, 3000);
       } else {
         setTitle(DEFAULT_UNLUCKY_TITLE);
       }
@@ -1039,7 +1049,7 @@ export default memo(function Tiger(props: any) {
           }
         }} />
 
-        <NftT chogstarrr={chogStarrr} monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} coronad={coronad} monshape={monshape} llamao={llamao} skrumpeys={skrumpeys} />
+        <NftT chogstarrr={chogStarrr} monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} coronad={coronad} monshape={monshape} llamao={llamao} skrumpeys={skrumpeys} moana={moana} />
       </div>
 
       <BuyTimesModal open={openBuyTimes} spinUserData={spinUserData} onClose={() => setOpenBuyTimes(false)} refreshData={getSpinUserData} />

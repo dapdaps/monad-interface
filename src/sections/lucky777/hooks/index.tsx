@@ -9,7 +9,7 @@ import { usePrivyAuth } from '@/hooks/use-privy-auth';
 import { useAccount } from 'wagmi';
 
 
-const ALL_PRIZES = [1, 2, 3, 4, 5, 16];
+const ALL_PRIZES = [1, 2, 3, 4, 5, 17];
 export function useLuckyBera() {
   const { fail } = useToast({ isGame: true });
   const { address } = useAccount();
@@ -26,6 +26,7 @@ export function useLuckyBera() {
   const [monshape, setMonshape] = useState<any>({});
   const [llamao, setLlamao] = useState<any>({});
   const [skrumpeys, setSkrumpeys] = useState<any>({});
+  const [moana, setMoana] = useState<any>({});
   const prizes = useRef<any[]>(ALL_PRIZES);
   const [prizeStatus, setPrizeStatus] = useState(ALL_PRIZES)
   const [isOpenSwitch, setIsOpenSwitch] = useState(false);
@@ -133,7 +134,10 @@ export function useLuckyBera() {
       total: 50,
       remaining: 0,
     });
-
+    setMoana({
+      total: 30,
+      remaining: 0,
+    });
     if (res.code !== 200) {
     } else if (res.data && Array.isArray(res.data)) {
 
@@ -170,6 +174,9 @@ export function useLuckyBera() {
         }
         if (item.category.toLowerCase() === 'skrumpeys') {
           setSkrumpeys(item);
+        }
+        if (item.category.toLowerCase() === 'moana') {
+          setMoana(item);
         }
       });
     }
@@ -217,10 +224,13 @@ export function useLuckyBera() {
     if (skrumpeys.remaining === 0) {
       newPrizes = newPrizes.filter((item: any) => item !== 16);
     }
+    if (moana.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 17);
+    }
 
     prizes.current = newPrizes;
     setPrizeStatus(newPrizes);
-  }, [chogStarrr, monadverse, monadoon, slmnd, monshape, coronad, deadnads, lamouch, overnads, llamao]);
+  }, [chogStarrr, monadverse, monadoon, slmnd, monshape, coronad, deadnads, lamouch, overnads, llamao, skrumpeys, moana]);
 
 
   return {
@@ -244,6 +254,7 @@ export function useLuckyBera() {
     monshape,
     llamao,
     skrumpeys,
+    moana,
     prizes,
     prizeStatus,
     isOpenSwitch,
