@@ -100,7 +100,7 @@ const Calendar = (props: any) => {
                           }
                           {
                             date.timestamp === dayjs("2025-09-19").startOf("day").valueOf() && (
-                              <ActivityCard className="ml-[250px] w-[280px] !font-[700] !h-[45px] !bottom-[unset] top-[30px] items-center flex justify-center !text-[#A6A6DB]">
+                              <ActivityCard className="ml-[210px] w-[100px] !border-[0] !font-[700] !h-[45px] !bottom-[unset] top-[30px] items-center flex justify-center !text-[#A6A6DB]">
                                 TBD...
                               </ActivityCard>
                             )
@@ -293,11 +293,21 @@ const activities: IActivity[] = [
   {
     timestamp: dayjs("2025-09-18").startOf("day").valueOf(),
     content: (
-      <ActivityCard className="w-[118px] flex justify-center ml-[0px]">
+      <ActivityCard className="w-[267px] flex justify-center ml-[0px]">
+        <img
+          src="/images/game/calendar/nft-the10k.png"
+          alt=""
+          className="w-[102px] h-[92px] object-center object-contain translate-x-[-5px] translate-y-[15px]"
+        />
         <img
           src="/images/game/calendar/nft-monzilla.png"
           alt=""
           className="w-[78px] h-[87px] object-center object-contain translate-x-[-5px] translate-y-[15px]"
+        />
+        <img
+          src="/images/game/calendar/nft-bober.png"
+          alt=""
+          className="w-[87px] h-[91px] object-center object-contain translate-x-[-5px] translate-y-[15px]"
         />
       </ActivityCard>
     )
