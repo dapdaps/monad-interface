@@ -144,14 +144,14 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     code: "18",
     icon: "/images/lucky777/logo/spikynads.png",
     value: SpinCategory.Spikynads,
-    centerScale: 1,
+    centerScale: 0.65,
     centerY: 0,
   },
   [SpinCategory.Mop]: {
     code: "19",
     icon: "/images/lucky777/logo/mop.png",
     value: SpinCategory.Mop,
-    centerScale: 1,
+    centerScale: 0.8,
     centerY: 0,
   },
 };
