@@ -9,7 +9,7 @@ import { usePrivyAuth } from '@/hooks/use-privy-auth';
 import { useAccount } from 'wagmi';
 
 
-const ALL_PRIZES = [1, 2, 3, 4, 5, 17];
+const ALL_PRIZES = [1, 2, 3, 4, 5, 17, 18, 19];
 export function useLuckyBera() {
   const { fail } = useToast({ isGame: true });
   const { address } = useAccount();
@@ -27,6 +27,8 @@ export function useLuckyBera() {
   const [llamao, setLlamao] = useState<any>({});
   const [skrumpeys, setSkrumpeys] = useState<any>({});
   const [moana, setMoana] = useState<any>({});
+  const [spikynads, setSpikynads] = useState<any>({});
+  const [mop, setMop] = useState<any>({});
   const prizes = useRef<any[]>(ALL_PRIZES);
   const [prizeStatus, setPrizeStatus] = useState(ALL_PRIZES)
   const [isOpenSwitch, setIsOpenSwitch] = useState(false);
@@ -138,6 +140,14 @@ export function useLuckyBera() {
       total: 30,
       remaining: 0,
     });
+    setSpikynads({
+      total: 5,
+      remaining: 0,
+    });
+    setMop({
+      total: 50,
+      remaining: 0,
+    });
     if (res.code !== 200) {
     } else if (res.data && Array.isArray(res.data)) {
 
@@ -177,6 +187,12 @@ export function useLuckyBera() {
         }
         if (item.category.toLowerCase() === 'moana') {
           setMoana(item);
+        }
+        if (item.category.toLowerCase() === 'spikynads') {
+          setSpikynads(item);
+        } 
+        if (item.category.toLowerCase() === 'mop') {
+          setMop(item);
         }
       });
     }
@@ -255,6 +271,8 @@ export function useLuckyBera() {
     llamao,
     skrumpeys,
     moana,
+    spikynads,
+    mop,
     prizes,
     prizeStatus,
     isOpenSwitch,
