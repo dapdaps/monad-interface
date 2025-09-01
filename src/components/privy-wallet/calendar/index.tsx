@@ -85,7 +85,7 @@ const Calendar = (props: any) => {
                             isActivity ? "text-[32px]" : "text-[16px]"
                           )}
                         >
-                          <div className="">{date.date}</div>
+                          <div className={clsx("", isActivity ? "text-[#FFF]" : "text-[#A6A6DB]")}>{date.date}</div>
                           {
                             isActivity && (
                               <>
