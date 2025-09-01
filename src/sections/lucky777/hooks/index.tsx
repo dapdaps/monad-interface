@@ -244,9 +244,17 @@ export function useLuckyBera() {
       newPrizes = newPrizes.filter((item: any) => item !== 17);
     }
 
+    if (spikynads.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 18);
+    }
+    
+    if (mop.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 19);
+    }
+
     prizes.current = newPrizes;
     setPrizeStatus(newPrizes);
-  }, [chogStarrr, monadverse, monadoon, slmnd, monshape, coronad, deadnads, lamouch, overnads, llamao, skrumpeys, moana]);
+  }, [chogStarrr, monadverse, monadoon, slmnd, monshape, coronad, deadnads, lamouch, overnads, llamao, skrumpeys, moana, spikynads, mop]);
 
 
   return {
