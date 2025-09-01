@@ -613,7 +613,11 @@ export function useSpaceInvaders(props?: any): SpaceInvaders {
         if (!matchedGame) {
           // if status = 0, player can continue to complete this game
           // if status = 1/2, auto switch to the first map of the latest game
-          if (res.data.status !== LastGameStatus.Ongoing) {
+          if (res.data.status === LastGameStatus.Lose) {
+            setDefaultCurrentGame();
+            return;
+          }
+          if (res.data.status === LastGameStatus.Win && !!res.data.end_hash) {
             setDefaultCurrentGame();
             return;
           }
