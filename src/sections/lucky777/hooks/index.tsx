@@ -9,7 +9,7 @@ import { usePrivyAuth } from '@/hooks/use-privy-auth';
 import { useAccount } from 'wagmi';
 
 
-const ALL_PRIZES = [1, 2, 3, 4, 5, 17, 18, 19];
+const ALL_PRIZES = [1, 2, 3, 4, 5, 20];
 export function useLuckyBera() {
   const { fail } = useToast({ isGame: true });
   const { address } = useAccount();
@@ -29,6 +29,7 @@ export function useLuckyBera() {
   const [moana, setMoana] = useState<any>({});
   const [spikynads, setSpikynads] = useState<any>({});
   const [mop, setMop] = useState<any>({});
+  const [mondies, setMondies] = useState<any>({});
   const prizes = useRef<any[]>(ALL_PRIZES);
   const [prizeStatus, setPrizeStatus] = useState(ALL_PRIZES)
   const [isOpenSwitch, setIsOpenSwitch] = useState(false);
@@ -148,6 +149,10 @@ export function useLuckyBera() {
       total: 50,
       remaining: 0,
     });
+    setMondies({
+      total: 100,
+      remaining: 0,
+    });
     if (res.code !== 200) {
     } else if (res.data && Array.isArray(res.data)) {
 
@@ -193,6 +198,9 @@ export function useLuckyBera() {
         } 
         if (item.category.toLowerCase() === 'mop') {
           setMop(item);
+        }
+        if (item.category.toLowerCase() === 'mondies') {
+          setMondies(item);
         }
       });
     }
@@ -251,10 +259,13 @@ export function useLuckyBera() {
     if (mop.remaining === 0) {
       newPrizes = newPrizes.filter((item: any) => item !== 19);
     }
+    if (mondies.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 20);
+    }
 
     prizes.current = newPrizes;
     setPrizeStatus(newPrizes);
-  }, [chogStarrr, monadverse, monadoon, slmnd, monshape, coronad, deadnads, lamouch, overnads, llamao, skrumpeys, moana, spikynads, mop]);
+  }, [chogStarrr, monadverse, monadoon, slmnd, monshape, coronad, deadnads, lamouch, overnads, llamao, skrumpeys, moana, spikynads, mop, mondies]);
 
 
   return {
@@ -281,6 +292,7 @@ export function useLuckyBera() {
     moana,
     spikynads,
     mop,
+    mondies,
     prizes,
     prizeStatus,
     isOpenSwitch,
