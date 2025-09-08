@@ -18,7 +18,9 @@ export enum SpinCategory {
   // Moana = "moana",
   // Spikynads = "spikynads",
   // Mop = 'mop',
-  Mondies = 'mondies',
+  // Mondies = 'mondies',
+  Nns = 'nns',
+  Baldnads = 'baldnads',
 }
 
 export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
@@ -155,12 +157,26 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
   //   centerScale: 0.8,
   //   centerY: 0,
   // },
-  [SpinCategory.Mondies]: {
-    code: "20",
-    icon: "/images/lucky777/logo/mondies.png",
-    value: SpinCategory.Mondies,
+  // [SpinCategory.Mondies]: {
+  //   code: "20",
+  //   icon: "/images/lucky777/logo/mondies.png",
+  //   value: SpinCategory.Mondies,
+  //   centerScale: 0.8,
+  //   centerY: 0,
+  // },
+  [SpinCategory.Nns]: {
+    code: "21",
+    icon: "/images/lucky777/logo/nns.png",
+    value: SpinCategory.Nns,
     centerScale: 0.8,
-    centerY: 0,
+    centerY: 5,
+  },
+  [SpinCategory.Baldnads]: {
+    code: "22",
+    icon: "/images/lucky777/logo/baldnads.png",
+    value: SpinCategory.Baldnads,
+    centerScale: 0.8,
+    centerY: -4,
   },
 };
 

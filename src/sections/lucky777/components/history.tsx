@@ -10,6 +10,7 @@ import useToast from "@/hooks/use-toast";
 import useIsMobile from "@/hooks/use-isMobile";
 import clsx from "clsx";
 import DiscordRewardModal from "./reward/modal";
+import { getRewardConfigByCode, getAllRewardCodes } from "../reward-config";
 
 const IconClose = () => {
     return <div className={`mt-[15px] mr-[15px]`}>
@@ -211,239 +212,30 @@ function List({ type, winningOnly, setRewardVisible, setCurrentNft }: { type: st
                                         X {item.spin}
                                     </div>
                                     {
-                                        item.code === '666' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 WL
-                                                <img src="/images/lucky777/chogstarrr-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <BindBtn handleBindDiscord={() => {
-                                                    setRewardVisible(true);
-                                                    setCurrentNft(item);
-                                                }} nft={item} />
-                                            </div>
-                                        </>
-                                        )
+                                        (() => {
+                                            const rewardConfig = getRewardConfigByCode(item.code);
+                                            if (rewardConfig) {
+                                                return (
+                                                    <>
+                                                        <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
+                                                            1 {rewardConfig.displayName}
+                                                            <img src={rewardConfig.icon} alt={rewardConfig.alt} className="w-[20px] h-[20px]" />
+                                                        </div>
+                                                        <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
+                                                            <BindBtn handleBindDiscord={() => {
+                                                                setRewardVisible(true);
+                                                                setCurrentNft(item);
+                                                            }} nft={item} />
+                                                        </div>
+                                                    </>
+                                                );
+                                            }
+                                            return null;
+                                        })()
                                     }
 
                                     {
-                                        item.code === '777' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 GTD
-                                                <img src="/images/lucky777/monadverse-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <BindBtn handleBindDiscord={() => {
-                                                    setRewardVisible(true);
-                                                    setCurrentNft(item);
-                                                }} nft={item} />
-                                            </div>
-                                        </>
-                                        )
-                                    }
-
-                                    {
-                                        item.code === '888' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Monadoon
-                                                <img src="/images/lucky777/monadoon-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <BindBtn handleBindDiscord={() => {
-                                                    setRewardVisible(true);
-                                                    setCurrentNft(item);
-                                                }} nft={item} />
-                                            </div>
-                                        </>
-                                        )
-                                    }
-
-                                    {
-                                        item.code === '999' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 SLMND
-                                                <img src="/images/lucky777/smlmonad-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <BindBtn handleBindDiscord={() => {
-                                                    setRewardVisible(true);
-                                                    setCurrentNft(item);
-                                                }} nft={item} />
-                                            </div>
-                                        </>
-                                        )
-                                    }
-                                    {
-                                        item.code === '101010' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 LaMouch
-                                                <img src="/images/lucky777/lamouch.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <BindBtn handleBindDiscord={() => {
-                                                    setRewardVisible(true);
-                                                    setCurrentNft(item);
-                                                }} nft={item} />
-                                            </div>
-                                        </>
-                                        )
-                                    }
-
-                                    {
-                                        item.code === '111111' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Overnads
-                                                <img src="/images/lucky777/overnads.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <BindBtn handleBindDiscord={() => {
-                                                    setRewardVisible(true);
-                                                    setCurrentNft(item);
-                                                }} nft={item} />
-                                            </div>
-                                        </>
-                                        )
-                                    }
-
-                                    {
-                                        item.code === '121212' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Deadnads
-                                                <img src="/images/lucky777/deadnads-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <BindBtn handleBindDiscord={() => {
-                                                    setRewardVisible(true);
-                                                    setCurrentNft(item);
-                                                }} nft={item} />
-                                            </div>
-                                        </>
-                                        )
-                                    }
-
-                                    {
-                                        item.code === '131313' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Coronads
-                                                <img src="/images/lucky777/logo/coronad-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <BindBtn handleBindDiscord={() => {
-                                                    setRewardVisible(true);
-                                                    setCurrentNft(item);
-                                                }} nft={item} />
-                                            </div>
-                                        </>
-                                        )
-                                    }
-
-                                    {
-                                        item.code === '141414' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Monshape
-                                                <img src="/images/lucky777/logo/monshape-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <BindBtn handleBindDiscord={() => {
-                                                    setRewardVisible(true);
-                                                    setCurrentNft(item);
-                                                }} nft={item} />
-                                            </div>
-                                        </>
-                                        )
-                                    }
-
-                                    {
-                                        item.code === '151515' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Llamao
-                                                <img src="/images/lucky777/logo/liamao-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <BindBtn handleBindDiscord={() => {
-                                                    setRewardVisible(true);
-                                                    setCurrentNft(item);
-                                                }} nft={item} />
-                                            </div>
-                                        </>
-                                        )
-                                    }
-
-                                    {
-                                        item.code === '161616' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Skrumpeys
-                                                <img src="/images/lucky777/logo/skrumpeys-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <BindBtn handleBindDiscord={() => {
-                                                    setRewardVisible(true);
-                                                    setCurrentNft(item);
-                                                }} nft={item} />
-                                            </div>
-                                        </>)
-                                    }
-
-                                    {
-                                        item.code === '171717' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Moana
-                                                <img src="/images/lucky777/logo/moana-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <BindBtn handleBindDiscord={() => {
-                                                    setRewardVisible(true);
-                                                    setCurrentNft(item);
-                                                }} nft={item} />
-                                            </div>
-                                        </>)
-                                    }
-
-                                    {
-                                        item.code === '181818' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Spikynads
-                                                <img src="/images/lucky777/logo/spikynads-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <BindBtn handleBindDiscord={() => {
-                                                    setRewardVisible(true);
-                                                    setCurrentNft(item);
-                                                }} nft={item} />
-                                            </div>
-                                        </>)
-                                    }
-                                    {
-                                        item.code === '191919' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Mop
-                                                <img src="/images/lucky777/logo/mop-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <BindBtn handleBindDiscord={() => {
-                                                    setRewardVisible(true);
-                                                    setCurrentNft(item);
-                                                }} nft={item} />
-                                            </div>
-                                        </>)
-                                    }
-                                    {
-                                        item.code === '202020' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Mondies
-                                                <img src="/images/lucky777/logo/mondies-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <BindBtn handleBindDiscord={() => {
-                                                    setRewardVisible(true);
-                                                    setCurrentNft(item);
-                                                }} nft={item} />
-                                            </div>
-                                        </>)
-                                    }
-
-                                    {
-                                        item.code !== '666' && item.code !== '777' && item.code !== '888' && item.code !== '999' && item.code !== '101010' && item.code !== '111111' && item.code !== '121212' && item.code !== '131313' && item.code !== '141414' && item.code !== '151515' && item.code !== '161616' && item.code !== '171717' && item.code !== '181818' && item.code !== '191919' && item.code !== '202020' && (<>
+                                        !getAllRewardCodes().includes(item.code) && (<>
                                             <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
                                                 {item.amount} MON
                                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

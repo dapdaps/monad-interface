@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import useIsMobile from "@/hooks/use-isMobile";
+import { getRewardConfigByCode, getAllRewardCodes } from "../reward-config";
 export default function Notice() {
     const [notice, setNotice] = useState<any>([]);
     const [index, setIndex] = useState(0);
@@ -71,63 +72,17 @@ export default function Notice() {
                                     <span>[{dayjs(item.timestamp * 1000).format('HH:mm:ss')}]</span>
                                     <span className="text-[#C7C7D9]">[{item.name ? addressFormated(item.name) : addressFormated(item.address)}]</span>
                                     {
-                                        item.draw_code === '666' && <TypingText text={`Win 1 chogstarrr WL`} speed={50} />
+                                        (() => {
+                                            const rewardConfig = getRewardConfigByCode(item.draw_code);
+                                            if (rewardConfig) {
+                                                return <TypingText text={'Win 1 ' + rewardConfig.displayName} speed={50} />;
+                                            } else if (!getAllRewardCodes().includes(item.draw_code)) {
+                                                return <TypingText text={`Win ${item.amount} MON`} speed={50} />;
+                                            }
+                                            return null;
+                                        })()
                                     }
-                                    {
-                                        item.draw_code === '777' && <TypingText text={`Win 1 GTD WL`} speed={50} />
-                                    }
-                                    {
-                                        item.draw_code === '888' && <TypingText text={`Win 1 Monadoon`} speed={50} />
-                                    }
-                                    {
-                                        item.draw_code === '999' && <TypingText text={`Win 1 SLMND WL`} speed={50} />
-                                    }
-                                    {
-                                        item.draw_code === '101010' && <TypingText text={`Win 1 LaMouch`} speed={50} />
-                                    }
-                                    {
-                                        item.draw_code === '111111' && <TypingText text={`Win 1 Overnads`} speed={50} />
-                                    }
-                                    {
-                                        item.draw_code === '121212' && <TypingText text={`Win 1 Deadnads`} speed={50} />
-                                    }
-                                    {
-                                        item.draw_code === '131313' && <TypingText text={`Win 1 Coronads`} speed={50} />
-                                    }
-                                    {
-                                        item.draw_code === '141414' && <TypingText text={`Win 1 Monshape`} speed={50} />
-                                    }
-                                    {
-                                        item.draw_code === '151515' && <TypingText text={`Win 1 Llamao`} speed={50} />
-                                    }
-                                    {
-                                        item.draw_code === '161616' && <TypingText text={`Win 1 Skrumpeys`} speed={50} />
-                                    }
-                                    {
-                                        item.draw_code === '171717' && <TypingText text={`Win 1 Moana`} speed={50} />
-                                    }
-                                    {
-                                        item.draw_code === '181818' && <TypingText text={`Win 1 Spikynads`} speed={50} />
-                                    }
-                                    {
-                                        item.draw_code === '191919' && <TypingText text={`Win 1 Mop`} speed={50} />
-                                    }
-                                    {
-                                        item.draw_code === '202020' && <TypingText text={`Win 1 Mondies`} speed={50} />
-                                    }
-                                    {
-                                        item.draw_code !== '666' && item.draw_code !== '777' && item.draw_code !== '888' && item.draw_code !== '999' && item.draw_code !== '101010' && item.draw_code !== '111111' && item.draw_code !== '121212' && item.draw_code !== '131313' && item.draw_code !== '141414' && item.draw_code !== '151515' && item.draw_code !== '161616' && item.draw_code !== '171717' && item.draw_code !== '181818' && item.draw_code !== '191919' && item.draw_code !== '202020' && <TypingText text={`Win ${item.amount} MON`} speed={50} />
-                                    }
-                                    {/* {
-                                        item.code !== '666' && (<a
-                                            href={`https://testnet.monvision.io/tx/${item.tx_hash}`}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            className="text-[#8B8BFF] underline hover:text-[#B6FF6C] transition"
-                                        >
-                                            TX
-                                        </a>)
-                                    } */}
+                              
                                 </div>
                             }
 

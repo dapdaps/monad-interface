@@ -20,6 +20,7 @@ import Xp from './xp';
 import Redeem from './redeem';
 import useIsMobile from '@/hooks/use-isMobile';
 import AllInFire from '@/sections/arcade/space-invaders/components/all-in-fire';
+import { getRewardConfigByCode } from '../reward-config';
 dayjs.extend(duration);
 
 function getTimeLeftToUTC24() {
@@ -81,6 +82,8 @@ export default memo(function Tiger(props: any) {
     spikynads,
     mop,
     mondies,
+    nns,
+    baldnads,
     prizeStatus,
     isOpenSwitch,
     setIsOpenSwitch,
@@ -407,7 +410,7 @@ export default memo(function Tiger(props: any) {
       setIsOpenSwitch(false);
       isOpenSwitchRef.current = false
       setDisabledBtnSpin(false);
-     
+
       return;
     }
 
@@ -469,146 +472,22 @@ export default memo(function Tiger(props: any) {
       machineSoundAudio.currentTime = 0;
     }
 
-    if (Number(res.draw_amount) > 0) {
+    const rewardConfig = getRewardConfigByCode(res.draw_code);
+    if (Number(res.draw_amount) > 0 && !rewardConfig) {
       success({ title: `WON ${res.draw_amount} MON` }, 'bottom-right');
       setTitle(('WON ' + res.draw_amount + ' MON!').repeat(2));
       // setTitle(DEFAULT_UNLUCKY_TITLE);
       playSound(2)
       startCoinExplosion(res);
     } else {
-      if (res.draw_code === '666') {
-        success({ title: `WON 1 ChogStarrr` }, 'bottom-right');
-        setTitle(('WON 1 ChogStarrr').repeat(2));
-        playSound(2)
+      if (rewardConfig) {
+        const stateValue = props[rewardConfig.stateKey];
+        success({ title: `WON 1 ${rewardConfig.displayName}` }, 'bottom-right');
+        setTitle(('WON 1 ' + rewardConfig.displayName).repeat(2));
+        playSound(2);
         setTimeout(() => {
-          if (Number(chogStarrr?.remaining) === 0) {
-            startSlowScroll()
-          }
-        }, 3000);
-      } else if (res.draw_code === '777') {
-        success({ title: `WON 1 GTD` }, 'bottom-right');
-        setTitle(('WON 1 GTD').repeat(2));
-        playSound(2)
-        setTimeout(() => {
-          if (Number(monadverse?.remaining) === 0) {
-            startSlowScroll()
-          }
-        }, 3000);
-      } else if (res.draw_code === '888') {
-        success({ title: `WON 1 Monadoon` }, 'bottom-right');
-        setTitle(('WON 1 Monadoon').repeat(2));
-        playSound(2)
-        setTimeout(() => {
-          if (Number(monadoon?.remaining) === 0) {
-            startSlowScroll()
-          }
-        }, 3000);
-      } else if (res.draw_code === '999') {
-        success({ title: `WON 1 SLMND WL` }, 'bottom-right');
-        setTitle(('WON 1 SLMND').repeat(2));
-        playSound(2)
-        setTimeout(() => {
-          if (Number(slmnd?.remaining) === 0) {
-            startSlowScroll()
-          }
-        }, 3000);
-      } else if (res.draw_code === '101010') {
-        success({ title: `WON 1 LaMouch` }, 'bottom-right');
-        setTitle(('WON 1 LaMouch').repeat(2));
-        playSound(2)
-        setTimeout(() => {
-          if (Number(lamouch?.remaining) === 0) {
-            startSlowScroll()
-          }
-        }, 3000);
-      } else if (res.draw_code === '111111') {
-        success({ title: `WON 1 Overnads` }, 'bottom-right');
-        setTitle(('WON 1 Overnads').repeat(2));
-        playSound(2)
-        setTimeout(() => {
-          if (Number(overnads?.remaining) === 0) {
-            startSlowScroll()
-          }
-        }, 3000);
-      } else if (res.draw_code === '121212') {
-        success({ title: `WON 1 Deadnads` }, 'bottom-right');
-        setTitle(('WON 1 Deadnads').repeat(2));
-        playSound(2)
-        setTimeout(() => {
-          if (Number(deadnads?.remaining) === 0) {
-            startSlowScroll()
-          }
-        }, 3000);
-      } else if (res.draw_code === '131313') {
-        success({ title: `WON 1 Coronads` }, 'bottom-right');
-        setTitle(('WON 1 Coronads').repeat(2));
-        playSound(2)
-        setTimeout(() => {
-          if (Number(coronad?.remaining) === 0) {
-            startSlowScroll()
-          }
-        }, 3000);
-      } else if (res.draw_code === '141414') {
-        success({ title: `WON 1 Monshape` }, 'bottom-right');
-        setTitle(('WON 1 Monshape').repeat(2));
-        playSound(2)
-        setTimeout(() => {
-          if (Number(monshape?.remaining) === 0) {
-            startSlowScroll()
-          }
-        }, 3000);
-      } else if (res.draw_code === '151515') {
-        success({ title: `WON 1 Llamao` }, 'bottom-right');
-        setTitle(('WON 1 Llamao').repeat(2));
-        playSound(2)
-        setTimeout(() => {
-          if (Number(llamao?.remaining) === 0) {
-            startSlowScroll()
-          }
-        }, 3000);
-      } else if (res.draw_code === '161616') {
-        success({ title: `WON 1 Skrumpeys` }, 'bottom-right');
-        setTitle(('WON 1 Skrumpeys').repeat(2));
-        playSound(2)
-        setTimeout(() => {
-          if (Number(skrumpeys?.remaining) === 0) {
-            startSlowScroll()
-          }
-        }, 3000);
-      } else if (res.draw_code === '171717') {
-        success({ title: `WON 1 Moana` }, 'bottom-right');
-        setTitle(('WON 1 Moana').repeat(2));
-        playSound(2)
-        setTimeout(() => {
-          if (Number(moana?.remaining) === 0) {
-            startSlowScroll()
-          }
-        }, 3000);
-      } else if (res.draw_code === '181818') {
-        success({ title: `WON 1 Spikynads` }, 'bottom-right');
-        setTitle(('WON 1 Spikynads').repeat(2));
-        playSound(2)
-        setTimeout(() => {
-          if (Number(spikynads?.remaining) === 0) {
-            startSlowScroll()
-          }
-        }, 3000);
-      } else if (res.draw_code === '191919') {
-        success({ title: `WON 1 Mop` }, 'bottom-right');
-        setTitle(('WON 1 Mop').repeat(2));
-        playSound(2)
-        setTimeout(() => {
-          if (Number(mop?.remaining) === 0) {
-            startSlowScroll()
-          }
-        }, 3000);
-      } else if (res.draw_code === '202020') {
-        success({ title: `WON 1 Mondies` }, 'bottom-right');
-        setTitle(('WON 1 Mondies').repeat(2));
-        playSound(2)
-        setTimeout(() => {
-          if (Number(mondies?.remaining) === 0) {
-            startSlowScroll()
+          if (Number(stateValue?.remaining) === 0) {
+            startSlowScroll();
           }
         }, 3000);
       } else {
@@ -711,11 +590,11 @@ export default memo(function Tiger(props: any) {
         {
           isMobile && <div className="absolute top-[-30vw] right-[40vw] w-[20vw] h-[20vw]"><AllInFire /></div>
         }
-        
+
         <div className="absolute top-0 left-0 w-full h-full">
           <img src="/images/lucky777/xp/bg.png" alt="" className="w-full" />
         </div>
-        
+
         <Xp data={spinUserData} xpBalance={xpBalance} xpLevel={xpLevel} maxXp={maxXp} />
 
         <div className={'ml-[10px] overflow-hidden absolute font-HackerNoonV2 text-[60px] leading-[110%] text-[#000] top-[20px] left-1/2 -translate-x-1/2 z-[2] w-[490px] h-[70px] flex flex-col items-center '}>
@@ -1079,7 +958,7 @@ export default memo(function Tiger(props: any) {
           }
         }} />
 
-        <NftT chogstarrr={chogStarrr} monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} coronad={coronad} monshape={monshape} llamao={llamao} skrumpeys={skrumpeys} moana={moana} spikynads={spikynads} mop={mop} mondies={mondies} />
+        <NftT chogstarrr={chogStarrr} monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} coronad={coronad} monshape={monshape} llamao={llamao} skrumpeys={skrumpeys} moana={moana} spikynads={spikynads} mop={mop} mondies={mondies} nns={nns} baldnads={baldnads} />
       </div>
 
       <BuyTimesModal open={openBuyTimes} spinUserData={spinUserData} onClose={() => setOpenBuyTimes(false)} refreshData={getSpinUserData} />
