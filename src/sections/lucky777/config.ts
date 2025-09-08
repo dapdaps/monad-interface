@@ -169,14 +169,14 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     icon: "/images/lucky777/logo/nns.png",
     value: SpinCategory.Nns,
     centerScale: 0.8,
-    centerY: 0,
+    centerY: 5,
   },
   [SpinCategory.Baldnads]: {
     code: "22",
     icon: "/images/lucky777/logo/baldnads.png",
     value: SpinCategory.Baldnads,
     centerScale: 0.8,
-    centerY: 0,
+    centerY: -4,
   },
 };
 
