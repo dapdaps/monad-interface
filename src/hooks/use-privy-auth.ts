@@ -18,7 +18,7 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
 
 
     useEffect(() => {
-        createWalletDebounce();
+        // createWalletDebounce();
     }, [user]);
 
     const { run: createWalletDebounce } = useDebounceFn(async () => {

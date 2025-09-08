@@ -57,7 +57,7 @@ export const NFT_INFORMATIONS: any = {
     avatar: "/images/arcade/space-invaders/nfts/Mop.png",
   },
   "NNS": {
-    category: "Free mint",
+    category: "Starlist",
     avatar: "/images/arcade/space-invaders/nfts/NNS.png",
   },
   "Owlsmonad": {
