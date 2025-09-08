@@ -117,7 +117,7 @@ export const REWARD_CONFIGS: RewardConfig[] = [
     icon: '/images/lucky777/logo/nns-icon.png',
     alt: 'ML',
     stateKey: 'nns',
-    displayName: 'Nns',
+    displayName: 'NNS',
   },
   {
     code: '222222',
