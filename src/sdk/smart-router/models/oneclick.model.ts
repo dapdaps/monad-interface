@@ -129,11 +129,12 @@ export class OneClick {
       gasLimit: estimateGas
     });
 
+
     return {
       outputCurrencyAmount: BigNumber(bestTrade.amount_out || 0).div(10 ** outputCurrency.decimals).toFixed(outputCurrency.decimals).replace(/\.?0+$/, ""),
       noPair: false,
       routerAddress: this.ROUTER[inputCurrency.chainId],
-      routes: bestTrade.routes,
+      routes: null,
       txn,
     };
   }
