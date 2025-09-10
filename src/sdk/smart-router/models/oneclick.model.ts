@@ -2,7 +2,6 @@ import { Contract, providers } from "ethers";
 import weth from "../config/weth";
 import BigNumber from "bignumber.js";
 import chains from "../config/chains";
-import oneclickAbi from "../config/abi/oneclick";
 
 export class OneClick {
   private chainId: number;
@@ -16,7 +15,6 @@ export class OneClick {
     this.chainId = chainId;
     this.wrappedNativeAddress = weth[chainId];
   }
-
   public async quoter(params: any) {
     let {
       inputCurrency,
@@ -63,7 +61,7 @@ export class OneClick {
     );
     const RouterContract = new Contract(
       this.ROUTER[inputCurrency.chainId],
-      oneclickAbi,
+      abi,
       provider.getSigner(account)
     );
     const _amountOut = BigNumber(bestTrade.amount_out)
@@ -140,3 +138,20 @@ export class OneClick {
     };
   }
 }
+
+
+const abi = [
+  {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "data",
+        "type": "bytes"
+      }
+    ],
+    "name": "swap",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  }
+];
