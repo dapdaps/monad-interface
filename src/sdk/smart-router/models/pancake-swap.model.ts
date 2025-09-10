@@ -22,11 +22,11 @@ class UniversalV2 extends V2 {
       const isReserved = pool.reserve0.currency.address.toLowerCase() > pool.reserve1.currency.address.toLowerCase();
       const tokenA = {
         ...pool.reserve0.currency,
-        address: pool.reserve0.currency.address.toLocaleLowerCase(),
+        address: pool.reserve0.currency.address.toLowerCase(),
       };
       const tokenB = {
         ...pool.reserve1.currency,
-        address: pool.reserve1.currency.address.toLocaleLowerCase(),
+        address: pool.reserve1.currency.address.toLowerCase(),
       };
       return {
         ...pool,
@@ -54,11 +54,11 @@ class UniversalV3 extends V3 {
       const isReserved = pool.reserve0.currency.address.toLowerCase() > pool.reserve1.currency.address.toLowerCase();
       const tokenA = {
         ...pool.reserve0.currency,
-        address: pool.reserve0.currency.address.toLocaleLowerCase(),
+        address: pool.reserve0.currency.address.toLowerCase(),
       };
       const tokenB = {
         ...pool.reserve1.currency,
-        address: pool.reserve1.currency.address.toLocaleLowerCase(),
+        address: pool.reserve1.currency.address.toLowerCase(),
       };
       return {
         ...pool,
@@ -469,15 +469,13 @@ export class PancakeSwapUniversal extends PancakeSwap {
         inputCurrency,
         outputCurrency,
         inputAmount,
-        // FIXME
-        isDirectPath: true
+        isDirectPath: false
       }),
       universalV3.bestTrade({
         inputCurrency,
         outputCurrency,
         inputAmount,
-        // FIXME
-        isDirectPath: true
+        isDirectPath: false
       })
     ]);
 
@@ -485,7 +483,7 @@ export class PancakeSwapUniversal extends PancakeSwap {
     const routerAddress = "0x94D220C58A23AE0c2eE29344b00A30D1c2d9F1bc";
     let type = "v3";
 
-    if (!bestTrade || BigNumber(bestTrade?.amountOut || 0).lt(v2Route?.amountOut || 0)) {
+    if (!bestTrade || BigNumber(bestTrade?.amountOut || 0).lt(v2Route?.amountOut?.toString?.() || 0)) {
       bestTrade = v2Route;
       type = "v2";
     }
