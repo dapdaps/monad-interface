@@ -1,5 +1,6 @@
 import { usePrivyAuth } from "@/hooks/use-privy-auth";
 import React, { useEffect, useState } from "react";
+import { Captcha } from '@privy-io/react-auth';
 import { createPortal } from "react-dom";
 
 export default function PrivyLogin() {
@@ -25,6 +26,7 @@ export default function PrivyLogin() {
           You'll need to generate a new game account - your personal vault for rewards, scores, and progress. Let's gear up and dive in.
         </p>
         <img data-bp="1009-001" src="/images/game/create-btn.svg" onClick={handleLogin} className="w-[260px] h-[50px] m-auto mt-[60px] cursor-pointer hover:scale-110 transition-transform duration-200" />
+        <Captcha />
       </div>
     </div>
   );
