@@ -21,7 +21,7 @@ export enum SpinCategory {
   // Mondies = 'mondies',
   Nns = 'nns',
   Baldnads = 'baldnads',
-  Olwsmonad = 'olwsmonad',
+  Owlsmonad = 'owlsmonad',
 }
 
 export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
@@ -179,10 +179,10 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
     centerScale: 0.8,
     centerY: -4,
   },
-  [SpinCategory.Olwsmonad]: {
+  [SpinCategory.Owlsmonad]: {
     code: "23",
-    icon: "/images/lucky777/logo/olwsmonad.png",
-    value: SpinCategory.Olwsmonad,
+    icon: "/images/lucky777/logo/owlsmonad.png",
+    value: SpinCategory.Owlsmonad,
     centerScale: 0.8,
     centerY: 0,
   },
