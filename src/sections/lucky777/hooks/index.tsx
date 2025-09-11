@@ -32,7 +32,7 @@ export function useLuckyBera() {
   const [mondies, setMondies] = useState<any>({});
   const [nns, setNns] = useState<any>({});
   const [baldnads, setBaldnads] = useState<any>({});
-  const [olwsmonad, setOlwsmonad] = useState<any>({});
+  const [owlsmonad, setOwlsmonad] = useState<any>({});
   const prizes = useRef<any[]>(ALL_PRIZES);
   const [prizeStatus, setPrizeStatus] = useState(ALL_PRIZES)
   const [isOpenSwitch, setIsOpenSwitch] = useState(false);
@@ -164,7 +164,7 @@ export function useLuckyBera() {
       total: 50,
       remaining: 0,
     });
-    setOlwsmonad({
+    setOwlsmonad({
       total: 15,
       remaining: 0,
     });
@@ -223,12 +223,14 @@ export function useLuckyBera() {
         if (item.category.toLowerCase() === 'baldnads') {
           setBaldnads(item);
         }
-        if (item.category.toLowerCase() === 'olwsmonad') {
-          setOlwsmonad(item);
+        if (item.category.toLowerCase() === 'owlsmonad') {
+          setOwlsmonad(item);
         }
       });
     }
   }, [])
+
+  console.log('owlsmonad', owlsmonad);
 
   useEffect(() => {
     if (!address) return;
@@ -292,13 +294,13 @@ export function useLuckyBera() {
     if (baldnads.remaining === 0) {
       newPrizes = newPrizes.filter((item: any) => item !== 22);
     }
-    if (olwsmonad.remaining === 0) {
+    if (owlsmonad.remaining === 0) {
       newPrizes = newPrizes.filter((item: any) => item !== 23);
     }
 
     prizes.current = newPrizes;
     setPrizeStatus(newPrizes);
-  }, [chogStarrr, monadverse, monadoon, slmnd, monshape, coronad, deadnads, lamouch, overnads, llamao, skrumpeys, moana, spikynads, mop, mondies, nns, baldnads, olwsmonad]);
+  }, [chogStarrr, monadverse, monadoon, slmnd, monshape, coronad, deadnads, lamouch, overnads, llamao, skrumpeys, moana, spikynads, mop, mondies, nns, baldnads, owlsmonad]);
 
 
   return {
@@ -328,7 +330,7 @@ export function useLuckyBera() {
     mondies,
     nns,
     baldnads,
-    olwsmonad,
+    owlsmonad,
     prizes,
     prizeStatus,
     isOpenSwitch,

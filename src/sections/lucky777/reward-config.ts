@@ -128,10 +128,10 @@ export const REWARD_CONFIGS: RewardConfig[] = [
   },
   {
     code: '232323',
-    icon: '/images/lucky777/logo/olwsmonad-icon.png',
+    icon: '/images/lucky777/logo/owlsmonad-icon.png',
     alt: 'ML',
-    stateKey: 'olwsmonad',
-    displayName: 'OlwsMonad',
+    stateKey: 'owlsmonad',
+    displayName: 'OwlsMonad',
   }
 ];
 
