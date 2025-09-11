@@ -230,8 +230,6 @@ export function useLuckyBera() {
     }
   }, [])
 
-  console.log('owlsmonad', owlsmonad);
-
   useEffect(() => {
     if (!address) return;
     getSpinUserData();
