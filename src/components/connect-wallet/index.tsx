@@ -50,8 +50,8 @@ const ConnectWallet = ({ className }: { className?: string }) => {
     address,
     chainId: DEFAULT_CHAIN_ID
   });
-  const { refetch } = balance;
-  const { data: blockNumber } = useBlockNumber({ watch: true });
+  // const { refetch } = balance;
+  // const { data: blockNumber } = useBlockNumber({ watch: true });
   const { userInfo } = useUser();
   const walletInfo = useWalletName();
   const config = useConfig();
@@ -158,9 +158,9 @@ const ConnectWallet = ({ className }: { className?: string }) => {
     closeConnecting();
   }, [isConnecting]);
 
-  useEffect(() => {
-    refetch();
-  }, [blockNumber, refetch]);
+  // useEffect(() => {
+  //   refetch();
+  // }, [blockNumber, refetch]);
 
   return (
     <>
