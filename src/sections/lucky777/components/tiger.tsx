@@ -84,6 +84,7 @@ export default memo(function Tiger(props: any) {
     mondies,
     nns,
     baldnads,
+    olwsmonad,
     prizeStatus,
     isOpenSwitch,
     setIsOpenSwitch,
@@ -958,7 +959,7 @@ export default memo(function Tiger(props: any) {
           }
         }} />
 
-        <NftT chogstarrr={chogStarrr} monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} coronad={coronad} monshape={monshape} llamao={llamao} skrumpeys={skrumpeys} moana={moana} spikynads={spikynads} mop={mop} mondies={mondies} nns={nns} baldnads={baldnads} />
+        <NftT chogstarrr={chogStarrr} monadverse={monadverse} monadoon={monadoon} slmnd={slmnd} lamouch={lamouch} overnads={overnads} deadnads={deadnads} coronad={coronad} monshape={monshape} llamao={llamao} skrumpeys={skrumpeys} moana={moana} spikynads={spikynads} mop={mop} mondies={mondies} nns={nns} baldnads={baldnads} olwsmonad={olwsmonad} />
       </div>
 
       <BuyTimesModal open={openBuyTimes} spinUserData={spinUserData} onClose={() => setOpenBuyTimes(false)} refreshData={getSpinUserData} />
