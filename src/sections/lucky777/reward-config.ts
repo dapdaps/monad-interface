@@ -132,6 +132,13 @@ export const REWARD_CONFIGS: RewardConfig[] = [
     alt: 'ML',
     stateKey: 'owlsmonad',
     displayName: 'OwlsMonad',
+  },
+  {
+    code: '242424',
+    icon: '/images/lucky777/logo/octonads-icon.png',
+    alt: 'ML',
+    stateKey: 'octonads',
+    displayName: 'OctoNads',
   }
 ];
 
