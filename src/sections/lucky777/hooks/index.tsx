@@ -9,7 +9,7 @@ import { usePrivyAuth } from '@/hooks/use-privy-auth';
 import { useAccount } from 'wagmi';
 
 
-const ALL_PRIZES = [1, 2, 3, 4, 5, 21, 22, 23];
+const ALL_PRIZES = [1, 2, 3, 4, 5, 24];
 export function useLuckyBera() {
   const { fail } = useToast({ isGame: true });
   const { address } = useAccount();
@@ -33,6 +33,7 @@ export function useLuckyBera() {
   const [nns, setNns] = useState<any>({});
   const [baldnads, setBaldnads] = useState<any>({});
   const [owlsmonad, setOwlsmonad] = useState<any>({});
+  const [octonads, setOctonads] = useState<any>({});
   const prizes = useRef<any[]>(ALL_PRIZES);
   const [prizeStatus, setPrizeStatus] = useState(ALL_PRIZES)
   const [isOpenSwitch, setIsOpenSwitch] = useState(false);
@@ -168,6 +169,10 @@ export function useLuckyBera() {
       total: 15,
       remaining: 0,
     });
+    setOctonads({
+      total: 5,
+      remaining: 0,
+    });
     if (res.code !== 200) {
     } else if (res.data && Array.isArray(res.data)) {
 
@@ -225,6 +230,9 @@ export function useLuckyBera() {
         }
         if (item.category.toLowerCase() === 'owlsmonad') {
           setOwlsmonad(item);
+        }
+        if (item.category.toLowerCase() === 'octonads') {
+          setOctonads(item);
         }
       });
     }
@@ -295,10 +303,13 @@ export function useLuckyBera() {
     if (owlsmonad.remaining === 0) {
       newPrizes = newPrizes.filter((item: any) => item !== 23);
     }
+    if (octonads.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 24);
+    }
 
     prizes.current = newPrizes;
     setPrizeStatus(newPrizes);
-  }, [chogStarrr, monadverse, monadoon, slmnd, monshape, coronad, deadnads, lamouch, overnads, llamao, skrumpeys, moana, spikynads, mop, mondies, nns, baldnads, owlsmonad]);
+  }, [chogStarrr, monadverse, monadoon, slmnd, monshape, coronad, deadnads, lamouch, overnads, llamao, skrumpeys, moana, spikynads, mop, mondies, nns, baldnads, owlsmonad, octonads]);
 
 
   return {
@@ -329,6 +340,7 @@ export function useLuckyBera() {
     nns,
     baldnads,
     owlsmonad,
+    octonads,
     prizes,
     prizeStatus,
     isOpenSwitch,

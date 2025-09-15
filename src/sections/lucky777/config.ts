@@ -19,9 +19,10 @@ export enum SpinCategory {
   // Spikynads = "spikynads",
   // Mop = 'mop',
   // Mondies = 'mondies',
-  Nns = 'nns',
-  Baldnads = 'baldnads',
-  Owlsmonad = 'owlsmonad',
+  // Nns = 'nns',
+  // Baldnads = 'baldnads',
+  // Owlsmonad = 'owlsmonad',
+  OctoNads = 'octonads',
 }
 
 export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
@@ -165,25 +166,32 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
   //   centerScale: 0.8,
   //   centerY: 0,
   // },
-  [SpinCategory.Nns]: {
-    code: "21",
-    icon: "/images/lucky777/logo/nns.png",
-    value: SpinCategory.Nns,
-    centerScale: 0.8,
-    centerY: 5,
-  },
-  [SpinCategory.Baldnads]: {
-    code: "22",
-    icon: "/images/lucky777/logo/baldnads.png",
-    value: SpinCategory.Baldnads,
-    centerScale: 0.8,
-    centerY: -4,
-  },
-  [SpinCategory.Owlsmonad]: {
-    code: "23",
-    icon: "/images/lucky777/logo/owlsmonad.png",
-    value: SpinCategory.Owlsmonad,
-    centerScale: 0.8,
+  // [SpinCategory.Nns]: {
+  //   code: "21",
+  //   icon: "/images/lucky777/logo/nns.png",
+  //   value: SpinCategory.Nns,
+  //   centerScale: 0.8,
+  //   centerY: 5,
+  // },
+  // [SpinCategory.Baldnads]: {
+  //   code: "22",
+  //   icon: "/images/lucky777/logo/baldnads.png",
+  //   value: SpinCategory.Baldnads,
+  //   centerScale: 0.8,
+  //   centerY: -4,
+  // },
+  // [SpinCategory.Owlsmonad]: {
+  //   code: "23",
+  //   icon: "/images/lucky777/logo/owlsmonad.png",
+  //   value: SpinCategory.Owlsmonad,
+  //   centerScale: 0.8,
+  //   centerY: 0,
+  // },
+  [SpinCategory.OctoNads]: {
+    code: "24",
+    icon: "/images/lucky777/logo/octonads.png",
+    value: SpinCategory.OctoNads,
+    centerScale: 0.9,
     centerY: 0,
   },
 };
