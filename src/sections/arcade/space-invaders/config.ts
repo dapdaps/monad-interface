@@ -69,8 +69,8 @@ export const NFT_INFORMATIONS: any = {
     avatar: "/images/arcade/space-invaders/nfts/Octonads.png",
   },
   // 2025-09-18
-  "The10kSquad": {
-    category: "The10kSquad",
+  "10ksquad": {
+    category: "10ksquad",
     avatar: "/images/arcade/space-invaders/nfts/The10kSquad.png",
   }
 };
