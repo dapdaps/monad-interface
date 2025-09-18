@@ -9,7 +9,7 @@ import { usePrivyAuth } from '@/hooks/use-privy-auth';
 import { useAccount } from 'wagmi';
 
 
-const ALL_PRIZES = [1, 2, 3, 4, 5, 24];
+const ALL_PRIZES = [1, 2, 3, 4, 5, 25, 26];
 export function useLuckyBera() {
   const { fail } = useToast({ isGame: true });
   const { address } = useAccount();
@@ -34,6 +34,8 @@ export function useLuckyBera() {
   const [baldnads, setBaldnads] = useState<any>({});
   const [owlsmonad, setOwlsmonad] = useState<any>({});
   const [octonads, setOctonads] = useState<any>({});
+  const [monzilla, setMonzilla] = useState<any>({});
+  const [bober, setBober] = useState<any>({});
   const prizes = useRef<any[]>(ALL_PRIZES);
   const [prizeStatus, setPrizeStatus] = useState(ALL_PRIZES)
   const [isOpenSwitch, setIsOpenSwitch] = useState(false);
@@ -173,6 +175,14 @@ export function useLuckyBera() {
       total: 5,
       remaining: 0,
     });
+    setMonzilla({
+      total: 30,
+      remaining: 0,
+    });
+    setBober({
+      total: 20,
+      remaining: 0,
+    });
     if (res.code !== 200) {
     } else if (res.data && Array.isArray(res.data)) {
 
@@ -233,6 +243,12 @@ export function useLuckyBera() {
         }
         if (item.category.toLowerCase() === 'octonads') {
           setOctonads(item);
+        }
+        if (item.category.toLowerCase() === 'monzilla') {
+          setMonzilla(item);
+        }
+        if (item.category.toLowerCase() === 'bober') {
+          setBober(item);
         }
       });
     }
@@ -306,10 +322,16 @@ export function useLuckyBera() {
     if (octonads.remaining === 0) {
       newPrizes = newPrizes.filter((item: any) => item !== 24);
     }
+    if (monzilla.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 25);
+    }
+    if (bober.remaining === 0) {
+      newPrizes = newPrizes.filter((item: any) => item !== 26);
+    }
 
     prizes.current = newPrizes;
     setPrizeStatus(newPrizes);
-  }, [chogStarrr, monadverse, monadoon, slmnd, monshape, coronad, deadnads, lamouch, overnads, llamao, skrumpeys, moana, spikynads, mop, mondies, nns, baldnads, owlsmonad, octonads]);
+  }, [chogStarrr, monadverse, monadoon, slmnd, monshape, coronad, deadnads, lamouch, overnads, llamao, skrumpeys, moana, spikynads, mop, mondies, nns, baldnads, owlsmonad, octonads, monzilla, bober]);
 
 
   return {
@@ -341,6 +363,8 @@ export function useLuckyBera() {
     baldnads,
     owlsmonad,
     octonads,
+    monzilla,
+    bober,
     prizes,
     prizeStatus,
     isOpenSwitch,
