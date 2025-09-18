@@ -35,7 +35,6 @@ export default function GamePrivyProvider({ children }: { children: React.ReactN
                     embeddedWallets: {
                         ethereum: { createOnLogin: "all-users" },
                     },
-
                 }}
             >
                 {children}
