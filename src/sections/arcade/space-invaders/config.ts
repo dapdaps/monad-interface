@@ -70,7 +70,7 @@ export const NFT_INFORMATIONS: any = {
   },
   // 2025-09-18
   "10ksquad": {
-    category: "10ksquad",
+    category: "GTD",
     avatar: "/images/arcade/space-invaders/nfts/The10kSquad.png",
   }
 };
