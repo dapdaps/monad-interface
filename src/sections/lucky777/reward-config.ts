@@ -139,7 +139,21 @@ export const REWARD_CONFIGS: RewardConfig[] = [
     alt: 'ML',
     stateKey: 'octonads',
     displayName: 'OctoNads',
-  }
+  },
+  {
+    code: '252525',
+    icon: '/images/lucky777/logo/monzilla-icon.png',
+    alt: 'ML',
+    stateKey: 'monzilla',
+    displayName: 'Monzilla',
+  },
+  {
+    code: '262626',
+    icon: '/images/lucky777/logo/bober-icon.png',
+    alt: 'ML',
+    stateKey: 'bober',
+    displayName: 'Bober',
+  },
 ];
 
 export const getRewardConfigByCode = (code: string): RewardConfig | undefined => {

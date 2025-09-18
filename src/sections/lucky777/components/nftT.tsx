@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 export default function NftT(props: any) {
-  const { chogstarrr, monadverse, monadoon, slmnd, lamouch, overnads, deadnads, coronad, monshape, llamao, skrumpeys, moana, spikynads, mop, mondies, nns, baldnads, owlsmonad, octonads } = props;
+  const { chogstarrr, monadverse, monadoon, slmnd, lamouch, overnads, deadnads, coronad, monshape, llamao, skrumpeys, moana, spikynads, mop, mondies, nns, baldnads, owlsmonad, octonads, monzilla, bober } = props;
   const nfts = [
     // { key: "chogstarrr", data: chogstarrr, img: "/images/lucky777/nft-chogstarrr-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '!bottom-[30px] !right-[50px]' },
     // { key: "monadverse", data: monadverse, img: "/images/lucky777/nft-monadverse-t.png", cls: 'rotate-[-2deg]' },
@@ -23,7 +23,9 @@ export default function NftT(props: any) {
     // { key: "nns", data: nns, img: "/images/lucky777/nft-nns-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '' },
     // { key: "baldnads", data: baldnads, img: "/images/lucky777/nft-baldnads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '' },
     // { key: "owlsmonad", data: owlsmonad, img: "/images/lucky777/nft-owlsmonad-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '' },
-    { key: "octonads", data: octonads, img: "/images/lucky777/nft-octonads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '' },
+    // { key: "octonads", data: octonads, img: "/images/lucky777/nft-octonads-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '' },
+    { key: "monzilla", data: monzilla, img: "/images/lucky777/nft-monzilla-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '' },
+    { key: "bober", data: bober, img: "/images/lucky777/nft-bober-t.png", cls: 'rotate-[0deg] w-[157px] h-[175px]', textCls: '' },
   ].filter(nft => Number(nft.data?.remaining) > 0);
 
   const [currentIndex, setCurrentIndex] = useState(0);

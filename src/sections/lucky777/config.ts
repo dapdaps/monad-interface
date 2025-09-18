@@ -22,7 +22,9 @@ export enum SpinCategory {
   // Nns = 'nns',
   // Baldnads = 'baldnads',
   // Owlsmonad = 'owlsmonad',
-  OctoNads = 'octonads',
+  // OctoNads = 'octonads',
+  Monzilla = 'monzilla',
+  Bober = 'bober',
 }
 
 export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
@@ -187,10 +189,24 @@ export const SPIN_CATEGORIES: Record<SpinCategory, any> = {
   //   centerScale: 0.8,
   //   centerY: 0,
   // },
-  [SpinCategory.OctoNads]: {
-    code: "24",
-    icon: "/images/lucky777/logo/octonads.png",
-    value: SpinCategory.OctoNads,
+  // [SpinCategory.OctoNads]: {
+  //   code: "24",
+  //   icon: "/images/lucky777/logo/octonads.png",
+  //   value: SpinCategory.OctoNads,
+  //   centerScale: 0.9,
+  //   centerY: 0,
+  // },
+  [SpinCategory.Monzilla]: {
+    code: "25",
+    icon: "/images/lucky777/logo/monzilla.png",
+    value: SpinCategory.Monzilla,
+    centerScale: 0.9,
+    centerY: 0,
+  },
+  [SpinCategory.Bober]: {
+    code: "26",
+    icon: "/images/lucky777/logo/bober.png",
+    value: SpinCategory.Bober,
     centerScale: 0.9,
     centerY: 0,
   },
