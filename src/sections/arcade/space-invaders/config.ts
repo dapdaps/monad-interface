@@ -68,6 +68,11 @@ export const NFT_INFORMATIONS: any = {
     category: "FCFS",
     avatar: "/images/arcade/space-invaders/nfts/Octonads.png",
   },
+  // 2025-09-18
+  "The10kSquad": {
+    category: "GTD",
+    avatar: "/images/arcade/space-invaders/nfts/The10kSquad.png",
+  }
 };
 
 export const AMOUNT_OPTIONS = [
