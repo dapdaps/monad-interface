@@ -1,0 +1,18 @@
+import LaptopHeader from "./header";
+import LaptopSidebar from "./sidebar";
+
+const LaptopLayout = (props: any) => {
+  const { children } = props;
+
+  return (
+    <div className="w-full h-full relative">
+      <LaptopSidebar />
+      <LaptopHeader />
+      <div className="flex-1 h-full w-full pl-[226px] pt-[65px]">
+        {children}
+      </div>
+    </div>
+  );
+};
+
+export default LaptopLayout;

@@ -11,6 +11,8 @@ const config: Config = {
   ],
   theme: {
     fontFamily: {
+      Oxanium: ["Oxanium"],
+
       Montserrat: ["Montserrat"],
       CherryBomb: ["Cherry Bomb"],
       Fuzzy: ["Fuzzy"],

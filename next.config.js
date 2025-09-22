@@ -28,6 +28,10 @@ const nextConfig = {
       destination: "https://assets.nadsa.space/audios/:path*"
     },
     {
+      source: "/fonts/:path*",
+      destination: "https://assets.nadsa.space/fonts/:path*"
+    },
+    {
       source: "/assets/:path*",
       destination: "https://asset.dapdap.net/:path*"
     },

@@ -1,6 +1,5 @@
-"use client";
-import Home from "@/sections/home";
+import Discover from "@/mainnet/discover";
 
 export default function Index() {
-  return <Home />;
+  return <Discover />;
 }

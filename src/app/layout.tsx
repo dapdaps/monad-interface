@@ -2,7 +2,7 @@
 
 import SceneContextProvider from "@/context/scene";
 import WagmiProvider from "@/context/wagmi";
-import MainLayout from "@/layouts";
+import MainnetLayout from "@/layouts/mainnet";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="md:overflow-hidden">
+    <html lang="en" className="w-full h-full md:overflow-hidden">
       <head>
         <title>NADSA</title>
         <meta
@@ -33,13 +33,13 @@ export default function RootLayout({
         <link rel="icon" href="/images/favicon.ico" />
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className="md:overflow-hidden">
+      <body className="w-full h-full md:overflow-hidden">
         <WagmiProvider>
           <SkeletonTheme baseColor="#7990F4" highlightColor="#8B87FF">
             <SceneContextProvider>
               <InvitationContextProvider>
                 <Suspense>
-                  <MainLayout>{children}</MainLayout>
+                  <MainnetLayout>{children}</MainnetLayout>
                 </Suspense>
               </InvitationContextProvider>
             </SceneContextProvider>
