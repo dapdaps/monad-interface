@@ -85,8 +85,8 @@ const LaptopSidebar = (props: any) => {
           )}
         />
       ),
-      path: "/my-wallet",
-      isActive: pathname === "/my-wallet",
+      path: "/wallet",
+      isActive: pathname === "/wallet",
     },
   ]);
 

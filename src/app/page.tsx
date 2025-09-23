@@ -1,4 +1,4 @@
-import Discover from "@/mainnet/discover";
+import Discover from "@/sections/discover";
 
 export default function Index() {
   return <Discover />;
