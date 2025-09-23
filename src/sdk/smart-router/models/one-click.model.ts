@@ -1,196 +1,146 @@
-import { utils, providers, ethers } from "ethers";
-import { PoolFetcher, PathFinder, TokenSwap } from "@kuru-labs/kuru-sdk";
+import { Contract, providers } from "ethers";
+import weth from "../config/weth";
 import BigNumber from "bignumber.js";
 import chains from "../config/chains";
-import axios from "axios";
-import Big from "big.js";
+import oneclickAbi from "../config/abi/oneclick";
 
-export class Oneclick {
-    private Api = "https://api-trade.nadsa.space";
-    // private Api = "https://smart.oneclick.run";
-    private RouterAddress: Record<string, string> = {
-        // 10143: "0x326B7B004a023598A2eaFF7C47C37389bC677d03",
-        10143: "0x503be6074f7C48355aA18eAb62Ca135e3d84443f"
+export class OneClick {
+    private chainId: number;
+    private wrappedNativeAddress: string;
+    private ROUTER: { [key: number]: string } = {
+        10143: "0xe0ab727AdbbCdA72EfB3A516203a61764813dd74"
     };
-    private MID_TOKENS: { [key: number]: any } = {
-        10143: []
-    };
-    private log(str: string, ...restParams: any) {
-        console.log(`%cone click ${str}`, "background: #bcf886;", ...restParams);
-    }
-    constructor(chainId: number) { }
-    private getTokenAddress(token: any) {
-        return token.isNative
-            ? "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
-            : token.address;
+    private HOST = "https://api-trade.nadsa.space";
+
+    constructor(chainId: number) {
+        this.chainId = chainId;
+        this.wrappedNativeAddress = weth[chainId];
     }
 
-    private async getPath({
-        inputCurrency,
-        outputCurrency,
-        inputAmount,
-        slippage,
-    }: any) {
-        const chainId = inputCurrency.chainId;
-        const _inputCurrencyAddress = this.getTokenAddress(inputCurrency);
-        const _outputCurrencyAddress = this.getTokenAddress(outputCurrency);
-
-        const res: any = await axios.get(`${this.Api}/findPath`, {
-            params: {
-                chainId,
-                amountIn: new Big(inputAmount).mul(10 ** inputCurrency.decimals).toFixed(0),
-                tokenIn: _inputCurrencyAddress,
-                tokenOut: _outputCurrencyAddress,
-                pathDeep: 3,
-                poolSafeMode: true,
-                slippage
-            }
-        });
-
-        console.log('res: %o', res);
-        if (res.data.result_code !== 0) {
-            return null;
-        }
-
-        return res.data.result_data;
-    }
-
-    private async getTxn({
-        inputCurrency,
-        outputCurrency,
-        routes,
-        chainId,
-        account,
-        inputAmount,
-        outputAmount,
-    }: any) {
-        const _inputCurrencyAddress = this.getTokenAddress(inputCurrency);
-        const _outputCurrencyAddress = this.getTokenAddress(outputCurrency);
-
-
-        const res: any = await axios.post(`${this.Api}/swapPath`, {
-            routes,
-            chain_id: chainId,
-            contract_in: _inputCurrencyAddress,
-            contract_out: _outputCurrencyAddress,
-            in_eth: inputCurrency.isNative ? 1 : 0,
-            out_eth: outputCurrency.isNative ? 1 : 0,
-            amount_in: inputAmount,
-            amount_out: outputAmount,
-            deadline: Math.floor((Date.now() + 20 * 60 * 1000) / 1000)
-        })
-
-        console.log('getTxn: %o', res);
-
-
-        if (!res.data?.data) {
-            return null;
-        }
-
-        const provider = new providers.JsonRpcProvider(chains[chainId].rpcUrls[0]);
-
-        const contract = new ethers.Contract(this.RouterAddress[chainId], ABI, provider.getSigner(account));
-
-        const txn = await contract.populateTransaction.swap('0x' + res.data.data);
-        const value = inputCurrency.isNative ? inputAmount : '0'
-        try {
-            const gasLimit = await contract.estimateGas.swap('0x' + res.data.data, { value });
-            txn.gasLimit = gasLimit;
-            console.log('gasLimit: %o', Number(gasLimit));
-        } catch (error) {
-        }
-        
-        txn.value = value;
-        return txn;
-    }
-    public async quoter({
-        inputCurrency,
-        outputCurrency,
-        inputAmount,
-        slippage,
-        account
-    }: any) {
-        const chainId = inputCurrency.chainId;
-
-        const result: any = {
-            txn: null,
-            outputCurrencyAmount: '0',
-            noPair: true,
-            routerAddress: this.RouterAddress[chainId],
-            routes: null,
-            gas: '0'
-        };
-
-        const path = await this.getPath({
+    public async quoter(params: any) {
+        let {
             inputCurrency,
             outputCurrency,
             inputAmount,
-            slippage
+            slippage,
+            account
+        } = params;
+
+        // 5%
+        // const slippage: any = 0.05;
+
+        const nativeAddress = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
+        const _inputAmount = BigNumber(inputAmount)
+          .multipliedBy(10 ** (inputCurrency.decimals || 18))
+          .toFixed(0);
+        const inputCurrencyAddress = inputCurrency.address.toLowerCase();
+        const outputCurrencyAddress = outputCurrency.address.toLowerCase();
+
+        const candidatesParams = new URLSearchParams();
+        candidatesParams.set("chainId", this.chainId + "");
+        candidatesParams.set("amountIn", _inputAmount);
+        candidatesParams.set("tokenIn", inputCurrency.isNative ? nativeAddress : inputCurrencyAddress);
+        candidatesParams.set("tokenOut", outputCurrency.isNative ? nativeAddress : outputCurrencyAddress);
+        candidatesParams.set("pathDeep", "3");
+        candidatesParams.set("slippage", slippage);
+        candidatesParams.set("poolSafeMode", "true");
+        candidatesParams.set("maxTickCount", "10");
+
+        let bestTrade: any;
+        try {
+            const candidatesRes = await fetch(`${this.HOST}/findPath?` + candidatesParams.toString());
+            const candidatesResJson = await candidatesRes.json();
+            bestTrade = candidatesResJson.result_data;
+        } catch (err: any) {
+            console.log('get bestTrade failed: %o', err);
+        }
+
+        if (!bestTrade) {
+            return {
+                outputCurrencyAmount: "",
+                noPair: true
+            };
+        }
+
+        const provider = new providers.JsonRpcProvider(
+          chains[inputCurrency.chainId].rpcUrls[0]
+        );
+        const RouterContract = new Contract(
+          this.ROUTER[inputCurrency.chainId],
+          oneclickAbi,
+          provider.getSigner(account)
+        );
+        const _amountOut = BigNumber(bestTrade.amount_out)
+          .multipliedBy(1 - slippage)
+          .toFixed(0);
+        const _minAmountOut = bestTrade.routes.reduce((acc: any, route: any) => {
+            return acc.plus(route.min_amount_out);
+        }, BigNumber(0));
+
+        // 2mins
+        const deadline = Date.now() + 120 * 1000;
+
+        const swapPathParams = {
+            deadline: deadline,
+            min_amount_out: _minAmountOut,
+            ...bestTrade,
+            chain_id: this.chainId,
+            referral: "0x760AfE86e5de5fa0Ee542fc7B7B713e1c5425701",
+            in_eth: inputCurrency.isNative ? 1 : 0,
+            out_eth: outputCurrency.isNative ? 1 : 0,
+        };
+
+        let tx: any;
+        let swapPathGasLimit: any;
+        try {
+            const swapPathRes = await fetch(`${this.HOST}/swapPath`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(swapPathParams),
+            });
+            const swapPathResJson = await swapPathRes.json();
+            tx = swapPathResJson.data;
+            swapPathGasLimit = swapPathResJson.gas_limit;
+        } catch (err: any) {
+            console.log('get swap path failed: %o', err);
+        }
+
+        if (!tx) {
+            return {
+                outputCurrencyAmount: "",
+                noPair: true
+            };
+        }
+
+        const contractOptions: any = {};
+        const contractParams = ["0x" + tx];
+        if (inputCurrency.isNative) {
+            contractOptions.value = _inputAmount;
+        }
+
+        let estimateGas;
+        try {
+            estimateGas = await RouterContract.estimateGas.swap(
+              ...contractParams,
+              contractOptions
+            );
+        } catch (err) {
+            console.log('estimate gas failed: %o', err);
+        }
+
+        const txn = await RouterContract.populateTransaction.swap(...contractParams, {
+            ...contractOptions,
+            gasLimit: estimateGas
         });
 
-        if (!path || !path.amount_out) {
-            return result;
-        }
-
-        try {
-            const inputValue = new Big(inputAmount).mul(10 ** inputCurrency.decimals).toFixed(0)
-
-            const txn = await this.getTxn({
-                inputCurrency,
-                outputCurrency,
-                routes: path.routes,
-                chainId,
-                account,
-                inputAmount: inputValue,
-                outputAmount: path.amount_out
-            });
-
-            if (!txn) {
-                return result;
-            }
-
-            result.outputCurrencyAmount = new Big(path.amount_out).div(10 ** outputCurrency.decimals).toFixed(outputCurrency.decimals);
-            result.noPair = false;
-            result.gas = txn.gasLimit;
-            // result.routes = path.routes;
-            result.txn = {
-                ...txn,
-                // gasLimit: '3218793'
-            };
-
-            console.log('txn: %o', txn);
-
-            // if (txRequest.gasLimit) {
-            //     txRequest.gasLimit = BigNumber(txRequest.gasLimit.toString())
-            //         .multipliedBy(1.2)
-            //         .toFixed(0);
-            // }
-
-            // result.txn = txRequest;
-            result.noPair = false;
-
-            return result;
-        } catch (error) {
-            this.log("quoter error: %o", error);
-        }
-
-        return result;
+        return {
+            outputCurrencyAmount: BigNumber(bestTrade.amount_out || 0).div(10 ** outputCurrency.decimals).toFixed(outputCurrency.decimals).replace(/\.?0+$/, ""),
+            noPair: false,
+            routerAddress: this.ROUTER[inputCurrency.chainId],
+            routes: bestTrade.routes,
+            txn,
+        };
     }
 }
-
-
-const ABI = [
-    {
-        "inputs": [
-            {
-                "internalType": "bytes",
-                "name": "data",
-                "type": "bytes"
-            }
-        ],
-        "name": "swap",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function"
-    }
-]
