@@ -11,6 +11,8 @@ const NormalTabs = (props: any) => {
     currentTab,
     className,
     headerClassName,
+    headerItemClassName = '',
+    headerItemActiveClassName = '',
     bodyClassName
   } = props;
   const isMobile = useIsMobile();
@@ -33,7 +35,11 @@ const NormalTabs = (props: any) => {
           tabs.map((tab: Tab) => (
             <div
               key={tab.value}
-              className="w-[260px] py-[10px] cursor-pointer shrink-0 justify-center flex items-center text-center text-[#FFF] font-Unbounded text-[16px] font-normal leading-normal"
+              className={clsx(
+                "w-[260px] py-[10px] cursor-pointer shrink-0 justify-center flex items-center text-center text-[#FFF] font-Oxanium text-[16px] font-normal leading-normal", 
+                headerItemClassName, 
+                tab.value === currentTab.value && headerItemActiveClassName
+            )}
               style={{
                 width: isMobile ? `${100 / tabs.length}%` : tabWidth,
               }}
