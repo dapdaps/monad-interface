@@ -1,4 +1,4 @@
-import { useAccount, useBalance, useDisconnect } from 'wagmi';
+import { useAccount, useBalance, useDisconnect, useSwitchChain } from 'wagmi';
 import { useEffect, useMemo, useState } from 'react';
 import { useDebounceFn } from 'ahooks';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
@@ -13,6 +13,7 @@ export function useConnectWallet() {
   const connectModal = useConnectModal();
   const { disconnect } = useDisconnect();
   const { address, isConnected, chainId, chain, isConnecting } = useAccount();
+  const { switchChain, isPending: switching } = useSwitchChain();
   const userInfo = useUserStore((store: any) => store.user);
 
   const balanceData = useBalance({
@@ -76,6 +77,8 @@ export function useConnectWallet() {
   return {
     onConnect,
     onDisconnect: disconnect,
+    onSwitchChain: switchChain,
+    switching,
     chainId,
     chain,
     connecting,

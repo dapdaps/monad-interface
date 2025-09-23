@@ -1,5 +1,8 @@
 import useCustomAccount from "@/hooks/use-account";
+import { post } from "@/utils/http";
 import { useRequest } from "ahooks";
+import { RPSMove } from "../config";
+import { useState } from "react";
 
 export function useRPS(props?: any) {
   const { } = props ?? {};
@@ -14,5 +17,9 @@ export function useRPS(props?: any) {
     refreshDeps: [accountWithAk],
   });
 
-  return {};
+
+
+  return {
+
+  };
 }

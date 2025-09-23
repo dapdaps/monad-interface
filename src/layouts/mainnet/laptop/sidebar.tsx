@@ -6,6 +6,7 @@ import { IconLogOut, IconDiscover, IconArcade, IconMyWallet, IconBridge, IconSwa
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import clsx from "clsx";
+import Rpc from "@/components/rpc";
 
 const LaptopSidebar = (props: any) => {
   const { className } = props;
@@ -166,6 +167,7 @@ const LaptopSidebar = (props: any) => {
           </button>
         )
       }
+      <Rpc className="absolute right-[10px] bottom-[25px]" />
     </div>
   );
 };
