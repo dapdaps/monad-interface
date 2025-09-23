@@ -8,7 +8,7 @@ export class OneClick {
   private chainId: number;
   private wrappedNativeAddress: string;
   private ROUTER: { [key: number]: string } = {
-    10143: "0xB542376ec17d7D22f384fF10150713ABe72c14AF"
+    10143: "0xe0ab727AdbbCdA72EfB3A516203a61764813dd74"
   };
   private HOST = "https://api-trade.nadsa.space";
 
@@ -26,6 +26,9 @@ export class OneClick {
       account
     } = params;
 
+    // 5%
+    // const slippage: any = 0.05;
+
     const nativeAddress = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
     const _inputAmount = BigNumber(inputAmount)
       .multipliedBy(10 ** (inputCurrency.decimals || 18))
@@ -41,6 +44,7 @@ export class OneClick {
     candidatesParams.set("pathDeep", "3");
     candidatesParams.set("slippage", slippage);
     candidatesParams.set("poolSafeMode", "true");
+    candidatesParams.set("maxTickCount", "10");
 
     let bestTrade: any;
     try {
