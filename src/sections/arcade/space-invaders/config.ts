@@ -47,6 +47,32 @@ export const NFT_INFORMATIONS: any = {
     category: "GTD",
     avatar: "/images/arcade/space-invaders/nfts/Realnads.png",
   },
+  // 2025-08-30
+  "Spikynads": {
+    category: "FCFS",
+    avatar: "/images/arcade/space-invaders/nfts/Spikynads.png",
+  },
+  "Mop": {
+    category: "FCFS",
+    avatar: "/images/arcade/space-invaders/nfts/Mop.png",
+  },
+  "NNS": {
+    category: "Starlist",
+    avatar: "/images/arcade/space-invaders/nfts/NNS.png",
+  },
+  "Owlsmonad": {
+    category: "FCFS",
+    avatar: "/images/arcade/space-invaders/nfts/Owlsmonad.png",
+  },
+  "OctoNads": {
+    category: "FCFS",
+    avatar: "/images/arcade/space-invaders/nfts/Octonads.png",
+  },
+  // 2025-09-18
+  "The10kSquad": {
+    category: "GTD",
+    avatar: "/images/arcade/space-invaders/nfts/The10kSquad.png",
+  }
 };
 
 export const AMOUNT_OPTIONS = [

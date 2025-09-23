@@ -42,7 +42,7 @@ const Calendar = (props: any) => {
       <div className="px-[17px]">
         <div className="bg-black/50 rounded-[12px] mt-[27px] relative pt-[23px]">
           <div className="text-[#BFFF60] text-[20px] rotate-[-24deg] absolute left-[0px] top-[10px]">
-            August
+            September
           </div>
           <div className="grid grid-cols-7 gap-[6px] pl-[32px] pr-[19px]">
             {
@@ -85,7 +85,7 @@ const Calendar = (props: any) => {
                             isActivity ? "text-[32px]" : "text-[16px]"
                           )}
                         >
-                          <div className="">{date.date}</div>
+                          <div className={clsx("", isActivity ? "text-[#FFF]" : "text-[#A6A6DB]")}>{date.date}</div>
                           {
                             isActivity && (
                               <>
@@ -99,8 +99,8 @@ const Calendar = (props: any) => {
                             )
                           }
                           {
-                            date.timestamp === dayjs("2025-08-30").startOf("day").valueOf() && (
-                              <ActivityCard className="ml-[-28px] w-[351px] !font-[700] !h-[45px] !bottom-[unset] top-[30px] items-center flex justify-center !text-[#A6A6DB]">
+                            date.timestamp === dayjs("2025-09-19").startOf("day").valueOf() && (
+                              <ActivityCard className="ml-[210px] w-[100px] !border-[0] !font-[700] !h-[45px] !bottom-[unset] top-[30px] items-center flex justify-center !text-[#A6A6DB]">
                                 TBD...
                               </ActivityCard>
                             )
@@ -176,8 +176,8 @@ const Weeks: Record<EWeek, IWeek> = {
 };
 
 // Date array for August
-const startDate = dayjs("2025-08-11");
-const endDate = dayjs("2025-08-31");
+const startDate = dayjs("2025-09-01");
+const endDate = dayjs("2025-09-21");
 const generateAugustDates = () => {
   const dates = [];
 
@@ -221,120 +221,93 @@ const ActivityCard = (props: any) => {
 
 const activities: IActivity[] = [
   {
-    timestamp: dayjs("2025-08-13").startOf("day").valueOf(),
+    timestamp: dayjs("2025-09-01").startOf("day").valueOf(),
     content: (
-      <ActivityCard className="w-[202px] flex justify-center ml-[-10px]">
+      <ActivityCard className="w-[202px] flex justify-center ml-[30px]">
         <img
-          src="/images/game/calendar/nft-la-mouch3.png"
+          src="/images/game/calendar/nft-spiky-nads.png"
           alt=""
-          className="w-[97px] h-[95px] object-center object-contain translate-x-[30px] translate-y-[-20px]"
+          className="w-[102px] h-[120px] object-center object-contain translate-x-[30px] translate-y-[-20px]"
         />
         <img
-          src="/images/game/calendar/nft-overnads3.png"
+          src="/images/game/calendar/nft-mop.png"
           alt=""
-          className="w-[137px] h-[137px] object-center object-contain translate-x-[0px] translate-y-[-10px]"
+          className="w-[134px] h-[143px] object-center object-contain translate-x-[0px] translate-y-[-10px]"
         />
       </ActivityCard>
     )
   },
   {
-    timestamp: dayjs("2025-08-15").startOf("day").valueOf(),
+    timestamp: dayjs("2025-09-04").startOf("day").valueOf(),
     content: (
-      <ActivityCard className="w-[202px] flex justify-center ml-[18px]">
+      <ActivityCard className="w-[118px] flex justify-center ml-[0px]">
         <img
-          src="/images/game/calendar/nft-deadnads3.png"
+          src="/images/game/calendar/nft-mondies.png"
           alt=""
-          className="w-[108px] h-[110px] object-center object-contain translate-x-[40px] translate-y-[5px]"
-        />
-        <img
-          src="/images/game/calendar/nft-blocknads3.png"
-          alt=""
-          className="w-[161px] h-[161px] object-center object-contain translate-x-[-10px] translate-y-[-60px]"
+          className="w-[80px] h-[92px] object-center object-contain translate-x-[0px] translate-y-[10px]"
         />
       </ActivityCard>
     )
   },
   {
-    timestamp: dayjs("2025-08-18").startOf("day").valueOf(),
+    timestamp: dayjs("2025-09-08").startOf("day").valueOf(),
     content: (
-      <ActivityCard className="w-[164px] flex justify-center ml-[0px]">
+      <ActivityCard className="w-[202px] flex justify-center ml-[30px]">
         <img
-          src="/images/game/calendar/nft-coronad3.png"
+          src="/images/game/calendar/nft-nns-startlist.png"
           alt=""
-          className="w-[101px] h-[108px] object-center object-contain translate-x-[0px] translate-y-[-10px]"
+          className="w-[101px] h-[98px] object-center object-contain translate-x-[0px] translate-y-[10px]"
         />
         <img
-          src="/images/game/calendar/nft-dripster3.png"
+          src="/images/game/calendar/nft-baldnads.png"
           alt=""
-          className="w-[99px] h-[101px] object-center object-contain translate-x-[-20px] translate-y-[15px]"
+          className="w-[95px] h-[104px] object-center object-contain translate-x-[0px] translate-y-[15px]"
         />
       </ActivityCard>
     )
   },
   {
-    timestamp: dayjs("2025-08-20").startOf("day").valueOf(),
+    timestamp: dayjs("2025-09-11").startOf("day").valueOf(),
     content: (
-      <ActivityCard className="w-[202px] flex justify-center ml-[-10px]">
+      <ActivityCard className="w-[118px] flex justify-center ml-[0px]">
         <img
-          src="/images/game/calendar/nft-monshape3.png"
+          src="/images/game/calendar/nft-owls-monad.png"
           alt=""
-          className="w-[95px] h-[94px] object-center object-contain translate-x-[0px] translate-y-[-10px]"
-        />
-        <img
-          src="/images/game/calendar/nft-chogstar3.png"
-          alt=""
-          className="w-[107px] h-[101px] object-center object-contain translate-x-[0px] translate-y-[5px]"
+          className="w-[133px] h-[113px] object-center object-contain translate-x-[0px] translate-y-[0px]"
         />
       </ActivityCard>
     )
   },
   {
-    timestamp: dayjs("2025-08-22").startOf("day").valueOf(),
+    timestamp: dayjs("2025-09-15").startOf("day").valueOf(),
     content: (
-      <ActivityCard className="w-[202px] flex justify-center ml-[18px]">
+      <ActivityCard className="w-[164px] flex justify-center ml-[-10px]">
         <img
-          src="/images/game/calendar/nft-llamao3.png"
+          src="/images/game/calendar/nft-octonads.png"
           alt=""
-          className="w-[120px] h-[124px] object-center object-contain translate-x-[0px] translate-y-[-10px]"
-        />
-        <img
-          src="/images/game/calendar/nft-molandaks3.png"
-          alt=""
-          className="w-[103px] h-[87px] object-center object-contain translate-x-[-10px] translate-y-[35px]"
+          className="w-[98px] h-[94px] object-center object-contain translate-x-[0px] translate-y-[10px]"
         />
       </ActivityCard>
     )
   },
   {
-    timestamp: dayjs("2025-08-25").startOf("day").valueOf(),
+    timestamp: dayjs("2025-09-18").startOf("day").valueOf(),
     content: (
-      <ActivityCard className="w-[164px] flex justify-center ml-[0px]">
+      <ActivityCard className="w-[267px] flex justify-center ml-[0px]">
         <img
-          src="/images/game/calendar/nft-chog3.png"
+          src="/images/game/calendar/nft-the10k.png"
           alt=""
-          className="w-[105px] h-[99px] object-center object-contain translate-x-[-5px] translate-y-[-15px]"
-        />
-         <img
-          src="/images/game/calendar/nft-skrumpeys4.png"
-          alt=""
-          className="w-[97px] h-[81px] object-center object-contain translate-x-[-10px] translate-y-[30px]"
-        />
-      </ActivityCard>
-    )
-  },
-  {
-    timestamp: dayjs("2025-08-27").startOf("day").valueOf(),
-    content: (
-      <ActivityCard className="w-[202px] flex justify-center ml-[-10px]">
-        <img
-          src="/images/game/calendar/nft-moana3.png"
-          alt=""
-          className="w-[143px] h-[143px] object-center object-contain translate-x-[0px] translate-y-[-45px]"
+          className="w-[102px] h-[92px] object-center object-contain translate-x-[-5px] translate-y-[15px]"
         />
         <img
-          src="/images/game/calendar/nft-realnads3.png"
+          src="/images/game/calendar/nft-monzilla.png"
           alt=""
-          className="w-[86px] h-[80px] object-center object-contain translate-x-[-15px] translate-y-[25px]"
+          className="w-[78px] h-[87px] object-center object-contain translate-x-[-5px] translate-y-[15px]"
+        />
+        <img
+          src="/images/game/calendar/nft-bober.png"
+          alt=""
+          className="w-[87px] h-[91px] object-center object-contain translate-x-[-5px] translate-y-[15px]"
         />
       </ActivityCard>
     )

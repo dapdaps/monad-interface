@@ -9,6 +9,8 @@ import dayjs from "dayjs";
 import useToast from "@/hooks/use-toast";
 import useIsMobile from "@/hooks/use-isMobile";
 import clsx from "clsx";
+import DiscordRewardModal from "./reward/modal";
+import { getRewardConfigByCode, getAllRewardCodes } from "../reward-config";
 
 const IconClose = () => {
     return <div className={`mt-[15px] mr-[15px]`}>
@@ -27,64 +29,75 @@ const HistoryModal = ({ open, onClose }: HistoryModalProps) => {
     const [activeTab, setActiveTab] = useState("payouts");
     const [winningOnly, setWinningOnly] = useState(false);
     const isMobile = useIsMobile();
+    const [rewardVisible, setRewardVisible] = useState(false);
+    const [currentNft, setCurrentNft] = useState<any>(null);
+    const [reloadKey, setReloadKey] = useState(0);
 
     return (
-        <Modal
-            open={open}
-            onClose={onClose}
-            className=""
-            closeIcon={<IconClose />}
-            innerClassName="font-Unbounded"
-        >
-            <div className="relative">
-                <img src="/images/lucky777/modal-bg.png" alt="LUCKY 777" className="absolute z-1 top-0 left-0 w-full h-full" />
-                {
-                    isMobile && <div className="absolute top-[10px] right-[10px] z-[100]" onClick={onClose}>
-                        <IconClose />
-                    </div>
-                }
-                <div className="flex flex-col items-center w-[692px] pb-[30px] px-[20px] max-w-full z-10 relative text-[12px]">
-                    <div className="text-center mt-[-16px]">
-                        <img src="/images/lucky777/buy-777-title.svg" alt="LUCKY 777" className="w-[183px] mx-auto" />
-                    </div>
+        <>
+            <Modal
+                open={open}
+                onClose={onClose}
+                className=""
+                closeIcon={<IconClose />}
+                innerClassName="font-Unbounded"
+            >
+                <div className="relative">
+                    <img src="/images/lucky777/modal-bg.png" alt="LUCKY 777" className="absolute z-1 top-0 left-0 w-full h-full" />
+                    {
+                        isMobile && <div className="absolute top-[10px] right-[10px] z-[100]" onClick={onClose}>
+                            <IconClose />
+                        </div>
+                    }
+                    <div className="flex flex-col items-center w-[692px] pb-[30px] px-[20px] max-w-full z-10 relative text-[12px]">
+                        <div className="text-center mt-[-16px]">
+                            <img src="/images/lucky777/buy-777-title.svg" alt="LUCKY 777" className="w-[183px] mx-auto" />
+                        </div>
 
-                    <div className="flex mt-[20px] cursor-pointer">
-                        {/* <button className={"w-[120px] h-[30px] text-black font-bold rounded-l-[4px] " + (activeTab === "winning" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("winning")}>
+                        <div className="flex mt-[20px] cursor-pointer">
+                            {/* <button className={"w-[120px] h-[30px] text-black font-bold rounded-l-[4px] " + (activeTab === "winning" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("winning")}>
                             Records
                         </button> */}
-                        <button className={"w-[120px] h-[30px] text-black font-bold rounded-[4px] " + (activeTab === "payouts" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("payouts")}>
-                            Result
-                        </button>
-                        <button className={"w-[120px] ml-2 h-[30px] text-black font-bold rounded-[4px] " + (activeTab === "purchases" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("purchases")}>
-                            Recharge
-                        </button>
-                    </div>
+                            <button className={"w-[120px] h-[30px] text-black font-bold rounded-[4px] " + (activeTab === "payouts" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("payouts")}>
+                                Result
+                            </button>
+                            <button className={"w-[120px] ml-2 h-[30px] text-black font-bold rounded-[4px] " + (activeTab === "purchases" ? "bg-[#BFFF60]" : "bg-[#8e90bd]")} onClick={() => setActiveTab("purchases")}>
+                                Recharge
+                            </button>
+                        </div>
 
-                    {
-                        activeTab === "payouts" && (
-                            <div onClick={() => setWinningOnly(!winningOnly)} className={clsx("flex items-center gap-2 cursor-pointer", isMobile ? 'absolute top-[95px] right-[10px] z-[100]' : 'absolute top-[60px] right-[35px]')}>
-                                <div
-                                    className={`w-4 h-4 rounded-full border-2 border-[#8e90bd] cursor-pointer ${winningOnly ? "bg-[#BFFF60]" : "bg-[#00000080]"}`}
-                                />
-                                <span className="text-[#8e90bd]">Winning Only</span>
-                            </div>
-                        )
-                    }
+                        {
+                            activeTab === "payouts" && (
+                                <div onClick={() => setWinningOnly(!winningOnly)} className={clsx("flex items-center gap-2 cursor-pointer", isMobile ? 'absolute top-[95px] right-[10px] z-[100]' : 'absolute top-[60px] right-[35px]')}>
+                                    <div
+                                        className={`w-4 h-4 rounded-full border-2 border-[#8e90bd] cursor-pointer ${winningOnly ? "bg-[#BFFF60]" : "bg-[#00000080]"}`}
+                                    />
+                                    <span className="text-[#8e90bd]">Winning Only</span>
+                                </div>
+                            )
+                        }
 
-                    <div className="w-full" style={{
-                        display: activeTab === "purchases" ? 'block' : 'none',
-                    }}>
-                        <List type="purchases" winningOnly={false} />
-                    </div>
+                        <div className="w-full" style={{
+                            display: activeTab === "purchases" ? 'block' : 'none',
+                        }}>
+                            <List type="purchases" key={reloadKey} winningOnly={false} setRewardVisible={setRewardVisible} setCurrentNft={setCurrentNft} />
+                        </div>
 
-                    <div className="w-full" style={{
-                        display: activeTab === "payouts" ? 'block' : 'none',
-                    }}>
-                        <List type="payouts" winningOnly={winningOnly} />
+                        <div className="w-full" style={{
+                            display: activeTab === "payouts" ? 'block' : 'none',
+                        }}>
+                            <List type="payouts" winningOnly={winningOnly} setRewardVisible={setRewardVisible} setCurrentNft={setCurrentNft} />
+                        </div>
                     </div>
                 </div>
-            </div>
-        </Modal>
+            </Modal>
+            <DiscordRewardModal rewardVisible={rewardVisible} setRewardVisible={setRewardVisible} nft={currentNft} onSuccess={({ discord }: any) => {
+                if (currentNft?.discord !== discord) {
+                    currentNft.discord = discord
+                    setReloadKey(reloadKey + 1);
+                }
+            }} />
+        </>
     );
 };
 
@@ -93,7 +106,7 @@ const urlMap: any = {
     payouts: "/game/draw/records",
 }
 
-function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
+function List({ type, winningOnly, setRewardVisible, setCurrentNft }: { type: string, winningOnly: boolean, setRewardVisible: (visible: boolean) => void, setCurrentNft: (nft: any) => void }) {
     const [data, setData] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const { address } = useAccount();
@@ -199,175 +212,30 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                                         X {item.spin}
                                     </div>
                                     {
-                                        item.code === '666' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 WL
-                                                <img src="/images/lucky777/chogstarrr-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                {/* <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
-                                                </svg> */}
-                                                <span className="text-[#78FEFF]">Pending</span>
-                                            </div>
-                                        </>
-                                        )
+                                        (() => {
+                                            const rewardConfig = getRewardConfigByCode(item.code);
+                                            if (rewardConfig) {
+                                                return (
+                                                    <>
+                                                        <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
+                                                            1 {rewardConfig.displayName}
+                                                            <img src={rewardConfig.icon} alt={rewardConfig.alt} className="w-[20px] h-[20px]" />
+                                                        </div>
+                                                        <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
+                                                            <BindBtn handleBindDiscord={() => {
+                                                                setRewardVisible(true);
+                                                                setCurrentNft(item);
+                                                            }} nft={item} />
+                                                        </div>
+                                                    </>
+                                                );
+                                            }
+                                            return null;
+                                        })()
                                     }
 
                                     {
-                                        item.code === '777' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 GTD
-                                                <img src="/images/lucky777/monadverse-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
-                                                </svg>
-                                            </div>
-                                        </>
-                                        )
-                                    }
-
-                                    {
-                                        item.code === '888' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Monadoon
-                                                <img src="/images/lucky777/monadoon-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
-                                                </svg>
-                                            </div>
-                                        </>
-                                        )
-                                    }
-
-                                    {
-                                        item.code === '999' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 SLMND
-                                                <img src="/images/lucky777/smlmonad-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
-                                                </svg>
-                                            </div>
-                                        </>
-                                        )
-                                    }
-                                    {
-                                        item.code === '101010' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 LaMouch
-                                                <img src="/images/lucky777/lamouch.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
-                                                </svg>
-                                            </div>
-                                        </>
-                                        )
-                                    }
-
-                                    {
-                                        item.code === '111111' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Overnads
-                                                <img src="/images/lucky777/overnads.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
-                                                </svg>
-                                            </div>
-                                        </>
-                                        )
-                                    }
-
-                                    {
-                                        item.code === '121212' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Deadnads
-                                                <img src="/images/lucky777/deadnads-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
-                                                </svg>
-                                                {/* <span className="text-[#78FEFF]">Pending</span> */}
-                                            </div>
-                                        </>
-                                        )
-                                    }
-
-                                    {
-                                        item.code === '131313' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Coronads
-                                                <img src="/images/lucky777/logo/coronad-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                {/* <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
-                                                </svg> */}
-                                                <span className="text-[#78FEFF]">Pending</span>
-                                            </div>
-                                        </>
-                                        )
-                                    }
-
-                                    {
-                                        item.code === '141414' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Monshape
-                                                <img src="/images/lucky777/logo/monshape-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
-                                                </svg>
-                                            </div>
-                                        </>
-                                        )
-                                    }
-
-                                    {
-                                        item.code === '151515' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Llamao
-                                                <img src="/images/lucky777/logo/liamao-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
-                                                </svg>
-                                                {/* <span className="text-[#78FEFF]">Pending</span> */}
-                                            </div>
-                                        </>
-                                        )
-                                    }
-
-                                    {
-                                        item.code === '161616' && (<>
-                                            <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
-                                                1 Skrumpeys
-                                                <img src="/images/lucky777/logo/skrumpeys-icon.png" alt="ML" className="w-[20px] h-[20px]" />
-                                            </div>
-                                            <div className="flex-1 flex items-center gap-2 justify-end text-[#78FEFF]">
-                                                {/* <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
-                                                </svg> */}
-                                                <span className="text-[#78FEFF]">Pending</span>
-                                            </div>
-                                        </>)
-                                    }
-
-                                    {
-                                        item.code !== '666' && item.code !== '777' && item.code !== '888' && item.code !== '999' && item.code !== '101010' && item.code !== '111111' && item.code !== '121212' && item.code !== '131313' && item.code !== '141414' && item.code !== '151515' && item.code !== '161616' && (<>
+                                        !getAllRewardCodes().includes(item.code) && (<>
                                             <div className="flex-1 flex items-center gap-2 whitespace-nowrap">
                                                 {item.amount} MON
                                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -407,6 +275,38 @@ function List({ type, winningOnly }: { type: string, winningOnly: boolean }) {
                 ))}
             </div>
         </div>
+    )
+}
+
+const BindBtn = (props: any) => {
+    const { handleBindDiscord, nft } = props;
+
+    if (nft.discord) {
+        return (
+            <div className="flex items-center gap-2 justify-end">
+                <img
+                    src="/images/arcade/space-invaders/icon-discord.png"
+                    className="w-[20px] h-[16px] object-contain object-center shrink-0"
+                />
+                <div className="text-white max-w-[80px] truncate">{nft.discord}</div>
+            </div>
+        )
+    }
+
+    return (
+        <button
+            type="button"
+            className="h-[24px] flex justify-center items-center gap-[6px] px-[9px] flex-shrink-0 rounded-[6px] border border-[#A6A6DB] bg-[#2B294A] text-white font-montserrat text-[14px] font-medium leading-[14px]"
+            onClick={() => handleBindDiscord?.(nft)}
+        >
+            <img
+                src="/images/arcade/space-invaders/icon-discord.png"
+                className="w-[20px] h-[16px] object-contain object-center shrink-0"
+            />
+            <div className="">
+                Bind
+            </div>
+        </button>
     )
 }
 
