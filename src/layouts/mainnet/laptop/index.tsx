@@ -8,7 +8,7 @@ const LaptopLayout = (props: any) => {
     <div className="w-full h-full relative">
       <LaptopSidebar />
       <LaptopHeader />
-      <div className="flex-1 h-full w-full">
+      <div className="relative h-full w-full">
         {children}
       </div>
     </div>
