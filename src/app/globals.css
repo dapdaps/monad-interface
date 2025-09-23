@@ -82,7 +82,7 @@
 /*#endregion 👆 Mainnet font 👆 */
 
 /*#region 👇 Mainnet styles 👇 */
-div[data-rk] {
+body > div[data-rk] {
   width: 100%;
   height: 100%;
 }
