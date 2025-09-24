@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useMemo } from "react";
 
 const Pagination = (props: any) => {
-  const { className, totalPage, page, pageSize, onPageChange } = props;
+  const { className, totalPage, page, pageSize, onPageChange, showPage = true, canJump = true } = props;
 
   const [firstValid, prevValid, nextValid, lastValid] = useMemo(() => {
     return [
@@ -18,16 +18,19 @@ const Pagination = (props: any) => {
       "flex items-center gap-[10px] text-white font-unbounded text-[12px] font-light leading-[18px]",
       className
     )}>
-      <PageButton
-        onClick={() => {
-          onPageChange(1);
-        }}
-        disabled={!firstValid}
-      >
-        <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path opacity={firstValid ? "1" : "0.3"} d="M9 1L4.2 6L9 11M1 1V11" stroke="#A9ADB8" />
-        </svg>
-      </PageButton>
+      {
+        canJump && <PageButton
+          onClick={() => {
+            onPageChange(1);
+          }}
+          disabled={!firstValid}
+        >
+          <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path opacity={firstValid ? "1" : "0.3"} d="M9 1L4.2 6L9 11M1 1V11" stroke="#A9ADB8" />
+          </svg>
+        </PageButton>
+      }
+
       <PageButton
         onClick={() => {
           onPageChange(page - 1);
@@ -38,9 +41,11 @@ const Pagination = (props: any) => {
           <path opacity={prevValid ? "1" : "0.3"} d="M6 1L1 6L6 11" stroke="#A9ADB8" />
         </svg>
       </PageButton>
-      <div className="flex items-center">
-        {page}/{totalPage}
-      </div>
+      {
+        showPage && <div className="flex items-center">
+          {page}/{totalPage}
+        </div>
+      }
       <PageButton
         onClick={() => {
           onPageChange(page + 1);
@@ -51,16 +56,18 @@ const Pagination = (props: any) => {
           <path opacity={nextValid ? "1" : "0.3"} d="M1 1L6 6L1 11" stroke="#A9ADB8" />
         </svg>
       </PageButton>
-      <PageButton
-        onClick={() => {
-          onPageChange(totalPage);
-        }}
-        disabled={!lastValid}
-      >
-        <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path opacity={lastValid ? "1" : "0.3"} d="M1 1L5.8 6L1 11M9 1V11" stroke="#A9ADB8" />
-        </svg>
-      </PageButton>
+      {
+        canJump && <PageButton
+          onClick={() => {
+            onPageChange(totalPage);
+          }}
+          disabled={!lastValid}
+        >
+          <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path opacity={lastValid ? "1" : "0.3"} d="M1 1L5.8 6L1 11M9 1V11" stroke="#A9ADB8" />
+          </svg>
+        </PageButton>
+      }
     </div>
   );
 };

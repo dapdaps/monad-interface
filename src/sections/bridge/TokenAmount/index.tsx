@@ -14,6 +14,7 @@ import type { Chain, Token } from '@/types';
 import ChainAndTokenSelector from '../ChainAndTokenSelector';
 import { motion } from 'framer-motion';
 import Big from 'big.js';
+import HexagonButton from '@/components/button/hexagon';
 
 const BalancePercentList = [
   { value: 25, label: "25%" },
@@ -75,7 +76,7 @@ export default function TokenAmout({
   };
 
   return (
-    <div className=' rounded-[6px] p-[14px] bg-[#FFFFFF0D] font-white'>
+    <div className=' rounded-[6px] p-[14px] bg-[#201D31] font-white border border-[#34304B]'>
       <div className='text-[14px] font-[400] text-[#A6A6DB]'>{isDest ? 'To' : 'Send'}</div>
 
       <div className='flex items-center justify-between gap-[10px]'>
@@ -85,55 +86,58 @@ export default function TokenAmout({
           }} disabled={disabledInput} />
         </div>
 
-        <div
-          onClick={() => {
-            if (comingSoon) return;
 
-            if (isDest && limitBera) {
-              return;
-            }
-            setTokenSelectorShow(true);
-          }}
-          className='border cursor-pointer flex items-center justify-between border-[#ACACE2] rounded-[6px] bg-[#4D4D73] w-[176px] h-[46px] px-[7px]'
-        >
-          <div className='flex items-center gap-[10px] text-[#fff]'>
-            <div className='relative w-[26px]'>
-              {
-                token?.icon ? <img
-                  key={token?.address}
-                  className='w-[26px] h-[26px]'
-                  src={token?.icon}
-                /> : <div className='w-[26px] h-[26px] rounded-[50%] bg-[#000]' />
-              }
-              <img
-                className='w-[10px] h-[10px] absolute right-0 bottom-0 md:rounded-sm'
-                src={chain.icon}
-              />
-            </div>
-            <div>
-              <div className='text-[16px] font-[600] whitespace-nowrap overflow-hidden text-ellipsis'>{token?.symbol}</div>
-              <div className='text-[12px] whitespace-nowrap overflow-hidden text-ellipsis'>{chain?.chainName}</div>
-            </div>
-          </div>
-          {
-            !comingSoon && (
-              <svg
-                width="12"
-                height="7"
-                viewBox="0 0 12 7"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M1 1L6 5L11 1"
-                  stroke="#fff"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            )
+        <HexagonButton onClick={() => {
+          if (comingSoon) return;
+
+          if (isDest && limitBera) {
+            return;
           }
-        </div>
+          setTokenSelectorShow(true);
+        }}>
+          <div
+
+            className=' flex items-center text-left justify-between w-[150px] h-full px-[7px]'
+          >
+            <div className='flex items-center gap-[10px] text-[#fff]'>
+              <div className='relative w-[26px]'>
+                {
+                  token?.icon ? <img
+                    key={token?.address}
+                    className='w-[26px] h-[26px]'
+                    src={token?.icon}
+                  /> : <div className='w-[26px] h-[26px] rounded-[50%] bg-[#000]' />
+                }
+                <img
+                  className='w-[10px] h-[10px] absolute right-0 bottom-0 md:rounded-sm'
+                  src={chain.icon}
+                />
+              </div>
+              <div>
+                <div className='text-[16px] w-[80px] font-[600] whitespace-nowrap overflow-hidden text-ellipsis'>{token?.symbol}</div>
+                <div className='text-[12px] w-[80px] whitespace-nowrap overflow-hidden text-ellipsis'>{chain?.chainName}</div>
+              </div>
+            </div>
+            {
+              !comingSoon && (
+                <svg
+                  width="12"
+                  height="7"
+                  viewBox="0 0 12 7"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1 1L6 5L11 1"
+                    stroke="#fff"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              )
+            }
+          </div>
+        </HexagonButton>
       </div>
 
       <div className="flex items-center justify-between text-[#A6A6DB] mt-[10px] text-[12px]">

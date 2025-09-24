@@ -35,8 +35,6 @@ interface UseNFTReturn {
     checkAllowlistLoading: boolean;
 }
 
-
-
 export const useNFT = ({ nftAddress, autoChecking = true }: { nftAddress: string, autoChecking?: boolean }): UseNFTReturn => {
     const [isLoading, setIsLoading] = useState(false);
     const [checking, setChecking] = useState(false);
@@ -114,22 +112,21 @@ export const useNFT = ({ nftAddress, autoChecking = true }: { nftAddress: string
             );
 
             const balance = await nftContract.balanceOf(address);
-            console.log('balance:', balance);
 
-            const tokenIds = await nftContract.tokensOfOwner(address);
-            const _tokenIds = tokenIds.map((tokenId: any) => Number(tokenId.toString())).sort((a: number, b: number) => a - b);
-
-            if (balance.toString() === '0') {
+            if (balance.toNumber() === 0) {
                 setHasNFT(false);
                 setTokenIds([]);
             } else {
                 setHasNFT(true);
+                const tokenIds = await nftContract.tokensOfOwner(address);
+                const _tokenIds = tokenIds.map((tokenId: any) => Number(tokenId.toString())).sort((a: number, b: number) => a - b);
+                console.log('tokenIds:', nftAddress, _tokenIds);
                 setTokenIds(_tokenIds || []);
             }
 
 
         } catch (error) {
-            console.error("Error checking NFT ownership:", error);
+            console.error("Error checking NFT ownership:", nftAddress);
             setHasNFT(false);
             setTokenIds([]);
         } finally {
@@ -263,6 +260,8 @@ export const useNFT = ({ nftAddress, autoChecking = true }: { nftAddress: string
     }, [refresh]);
 
     useEffect(() => {
+
+        console.log('checkNFT', address);
         if (address) {
             checkNFT();
         }

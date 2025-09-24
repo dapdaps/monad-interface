@@ -62,7 +62,7 @@ export default function Detail() {
                     bodyClassName={clsx("overflow-hidden", tabsBodyClassName)}
                 />
                 <div
-                    className="absolute top-[30px] right-[50px] cursor-pointer"
+                    className="absolute top-0 right-0 cursor-pointer h-[68px] w-[70px] flex items-center justify-center border-l border-l-[#34304B]"
                     onClick={() => {
                         setIsRotating(isRotating + 1);
                     }}

@@ -309,15 +309,18 @@ input[type="number"]::-webkit-inner-spin-button {
 .bridge-title {
   position: relative;
   border-radius: 6px;
+  background: url("/images/mainnet/bridge/dapp-header.svg") no-repeat center center;
+  background-size: 100% 100%;
 
-  &::before {
+
+  /* &::before {
     content: "";
     position: absolute;
     top: 8px;
     left: -15px;
     width: 35.36px;
     height: 35.36px;
-    background: #a6a6db;
+    background: inherit;
     transform: rotate(45deg);
     border-radius: 6px;
   }
@@ -329,10 +332,10 @@ input[type="number"]::-webkit-inner-spin-button {
     right: -15px;
     width: 35.36px;
     height: 35.36px;
-    background: #a6a6db;
+    background: #836EF9;
     transform: rotate(45deg);
     border-radius: 6px;
-  }
+  } */
 }
 
 .bridge-history-tab-active {

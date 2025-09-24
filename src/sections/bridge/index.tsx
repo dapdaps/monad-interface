@@ -34,7 +34,7 @@ const DappHeader: React.FC = () => {
 
   if (dappName) {
     return (
-      <div className="text-xl bridge-title flex justify-center items-center font-medium mx-auto text-center h-[50px] w-[205px] bg-[#A6A6DB]">
+      <div className="text-xl bridge-title text-white flex justify-center items-center font-medium mx-auto text-center h-[42px] w-[227px]">
         <img
           src={bridgeType.icon}
           alt={bridgeType.name}
@@ -53,7 +53,7 @@ const DappHeader: React.FC = () => {
           {/* <MenuButton className="w-[51.282vw]">Bridge</MenuButton> */}
         </div>
       ) : (
-        <div className="text-xl bridge-title flex justify-center items-center font-medium mx-auto text-center h-[50px] w-[205px] bg-[#A6A6DB]">
+        <div className="text-[22px] bridge-title text-white flex justify-center items-center font-medium mx-auto text-center h-[42px] w-[227px]">
           Bridge
         </div>
       )}
@@ -176,7 +176,7 @@ export default function Bridge() {
     <>
       <div
         style={{ backgroundSize: "100% auto" }}
-        className='h-[100vh] overflow-hidden relative mt-[-60px] pt-[110px] bg-[url("/images/bridge/full-bg.png")] bg-cover bg-right-bottom bg-no-repeat'
+        className='h-full overflow-hidden font-Oxanium relative pt-[110px] bg-[url("/images/bridge/full-bg.png")] bg-cover bg-black bg-right-bottom bg-no-repeat'
       >
         {isMobile ? null : (
           <div className="absolute left-[36px] md:left-[15px] top-[31px] md:top-[14px] z-[12]" />
@@ -214,118 +214,15 @@ export default function Bridge() {
 
         <div className="lg:w-[520px] md:w-[92.307vw] m-auto relative z-10">
           <DappHeader />
-          <Card className="mt-[-35px]">
-            <Tab
+          <Card className="mt-[-28px] pt-[80px]">
+            {/* <Tab
               defaultActiveKey="1"
               onChange={(key) => {
                 handleReport(key === "1" ? "1005-002" : "1005-001");
               }}
             >
               <TabItem tab="Token" tabKey="1">
-                <div>
-                  <TokenAmout
-                    isDest={false}
-                    allTokens={allTokens}
-                    limitBera={limitBera === 1}
-                    chain={fromChain}
-                    token={fromToken ?? null}
-                    amount={sendAmount}
-                    onAmountChange={(v: string) => {
-                      onSendAmountChange(v);
-                    }}
-                    chainList={chainList}
-                    onChainChange={(chain: Chain) => {
-                      setFromChain(chain);
-                    }}
-                    onTokenChange={(token: Token) => {
-                      setFromToken(token);
-                    }}
-                    comingSoon={ComingSoon}
-                  />
-                  <div
-                    className="h-[8px] md:h-4 flex justify-center items-center"
-                    onClick={() => {
-                      const [_fromChain, _toChain] = [toChain, fromChain];
-                      const [_fromToken, _toToken] = [toToken, fromToken];
-                      setFromChain(_fromChain);
-                      setToChain(_toChain);
-                      setFromToken(_fromToken);
-                      setToToken(_toToken);
-                      setLimitBera(limitBera === 0 ? 1 : 0);
-                    }}
-                  >
-                    <svg
-                      width="38"
-                      height="38"
-                      viewBox="0 0 38 38"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <rect
-                        x="1"
-                        y="1"
-                        width="36"
-                        height="36"
-                        rx="7"
-                        fill="#75759D"
-                        stroke="#2B294A"
-                        stroke-width="2"
-                      />
-                      <path
-                        d="M19.4999 14V24.5M19.4999 24.5L14 19M19.4999 24.5L25 19"
-                        stroke="white"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                      />
-                    </svg>
-                  </div>
-                  <TokenAmout
-                    allTokens={_allTokens}
-                    isDest={true}
-                    limitBera={limitBera === 0}
-                    amount={reciveAmount ?? ""}
-                    chainList={chainList}
-                    chain={toChain}
-                    token={toToken ?? null}
-                    disabledInput={true}
-                    onChainChange={(chain: Chain) => {
-                      setToChain(chain);
-                    }}
-                    onTokenChange={(token: Token) => {
-                      setToToken(token);
-                    }}
-                    comingSoon={ComingSoon}
-                  />
-                  <div className="flex items-center justify-between pt-[17px] text-[12px] text-[#A6A6DB]">
-                    <div>Receive address</div>
-                    <div className="flex items-center gap-2 text-[#fff]">
-                      <div>{formatLongText(address, 6, 6)}</div>
-                    </div>
-                  </div>
-
-                  {routes && routes.length > 0 && toToken && (
-                    <Routes
-                      fromChain={fromChain}
-                      selectedRoute={selectedRoute}
-                      setSelectedRoute={setSelectedRoute}
-                      toToken={toToken as Token}
-                      routes={routes}
-                    />
-                  )}
-
-                  <SubmitBtn
-                    fromChainId={fromChain.chainId}
-                    isLoading={quoteLoading || sendLoading}
-                    disabled={sendDisabled || !selectedRoute}
-                    onClick={async () => {
-                      const isSuccess = await executeRoute();
-                      if (isSuccess) {
-                        setConfirmShow(true);
-                      }
-                    }}
-                    comingSoon={ComingSoon}
-                  />
-                </div>
+                
               </TabItem>
               <TabItem
                 tab={
@@ -340,7 +237,112 @@ export default function Bridge() {
               >
                 <Nft />
               </TabItem>
-            </Tab>
+            </Tab> */}
+
+            <div>
+              <TokenAmout
+                isDest={false}
+                allTokens={allTokens}
+                limitBera={limitBera === 1}
+                chain={fromChain}
+                token={fromToken ?? null}
+                amount={sendAmount}
+                onAmountChange={(v: string) => {
+                  onSendAmountChange(v);
+                }}
+                chainList={chainList}
+                onChainChange={(chain: Chain) => {
+                  setFromChain(chain);
+                }}
+                onTokenChange={(token: Token) => {
+                  setFromToken(token);
+                }}
+                comingSoon={ComingSoon}
+              />
+              <div
+                className="h-[8px] md:h-4 flex justify-center items-center"
+                onClick={() => {
+                  const [_fromChain, _toChain] = [toChain, fromChain];
+                  const [_fromToken, _toToken] = [toToken, fromToken];
+                  setFromChain(_fromChain);
+                  setToChain(_toChain);
+                  setFromToken(_fromToken);
+                  setToToken(_toToken);
+                  setLimitBera(limitBera === 0 ? 1 : 0);
+                }}
+              >
+                <svg
+                  width="38"
+                  height="38"
+                  viewBox="0 0 38 38"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect
+                    x="1"
+                    y="1"
+                    width="36"
+                    height="36"
+                    rx="7"
+                    fill="#75759D"
+                    stroke="#2B294A"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="M19.4999 14V24.5M19.4999 24.5L14 19M19.4999 24.5L25 19"
+                    stroke="white"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </div>
+              <TokenAmout
+                allTokens={_allTokens}
+                isDest={true}
+                limitBera={limitBera === 0}
+                amount={reciveAmount ?? ""}
+                chainList={chainList}
+                chain={toChain}
+                token={toToken ?? null}
+                disabledInput={true}
+                onChainChange={(chain: Chain) => {
+                  setToChain(chain);
+                }}
+                onTokenChange={(token: Token) => {
+                  setToToken(token);
+                }}
+                comingSoon={ComingSoon}
+              />
+              <div className="flex items-center justify-between pt-[17px] text-[12px] text-[#A6A6DB]">
+                <div>Receive address</div>
+                <div className="flex items-center gap-2 text-[#fff]">
+                  <div>{formatLongText(address, 6, 6)}</div>
+                </div>
+              </div>
+
+              {routes && routes.length > 0 && toToken && (
+                <Routes
+                  fromChain={fromChain}
+                  selectedRoute={selectedRoute}
+                  setSelectedRoute={setSelectedRoute}
+                  toToken={toToken as Token}
+                  routes={routes}
+                />
+              )}
+
+              <SubmitBtn
+                fromChainId={fromChain.chainId}
+                isLoading={quoteLoading || sendLoading}
+                disabled={sendDisabled || !selectedRoute}
+                onClick={async () => {
+                  const isSuccess = await executeRoute();
+                  if (isSuccess) {
+                    setConfirmShow(true);
+                  }
+                }}
+                comingSoon={ComingSoon}
+              />
+            </div>
           </Card>
 
           <Confirm
