@@ -16,6 +16,7 @@ export function useJoin(props?: any) {
     betTokenBalance,
     getBetTokenBalance,
     onRoomLoading,
+    getList,
   } = props ?? {};
 
   const { accountWithAk, account, chainId, provider } = useCustomAccount();
@@ -100,6 +101,7 @@ export function useJoin(props?: any) {
       });
 
       // reload list
+      getList();
       getBetTokenBalance();
       onClose();
     } catch (error: any) {

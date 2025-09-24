@@ -17,6 +17,7 @@ export const useUserStore = create(
         quest_round_time: 0,
         quest_start_time: 0,
       },
+      nativeBalance: "0",
       set: (params: any) => set(() => ({ ...params }))
     }),
     {

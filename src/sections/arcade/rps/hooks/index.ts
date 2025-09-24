@@ -4,6 +4,7 @@ import { useRequest } from "ahooks";
 import { useState } from "react";
 import useTokenBalance from "@/hooks/use-token-balance";
 import { monad } from "@/configs/tokens/monad-testnet";
+import { useLayoutContext } from "@/context/layout";
 
 export function useRPS(props?: any) {
   const { } = props ?? {};
@@ -11,11 +12,7 @@ export function useRPS(props?: any) {
   const [betToken] = useState(monad["mon"]);
 
   const { accountWithAk, account } = useCustomAccount();
-  const {
-    tokenBalance: betTokenBalance,
-    isLoading: betTokenBalanceLoading,
-    getTokenBalance: getBetTokenBalance,
-  } = useTokenBalance(betToken.address, betToken.decimals, betToken.chainId);
+  const { nativeBalance, nativeBalanceLoading, getNativeBalance } = useLayoutContext();
 
   const [list, setList] = useState({
     data: [],
@@ -107,9 +104,9 @@ export function useRPS(props?: any) {
     getList,
     loading,
     betToken,
-    betTokenBalance,
-    betTokenBalanceLoading,
-    getBetTokenBalance,
+    betTokenBalance: nativeBalance,
+    betTokenBalanceLoading: nativeBalanceLoading,
+    getBetTokenBalance: getNativeBalance,
     onPageChange,
     onSortChange,
     onOrderChange,

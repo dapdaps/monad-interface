@@ -1,11 +1,9 @@
-import { useAccount, useBalance, useDisconnect, useSwitchChain } from 'wagmi';
+import { useAccount, useDisconnect, useSwitchChain } from 'wagmi';
 import { useEffect, useMemo, useState } from 'react';
 import { useDebounceFn } from 'ahooks';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useUserStore } from '@/stores/user';
 import { formatLongText } from '@/utils/utils';
-import { DEFAULT_CHAIN_ID } from '@/configs';
-import { utils } from 'ethers';
 
 export function useConnectWallet() {
   const connectModal = useConnectModal();
@@ -13,11 +11,7 @@ export function useConnectWallet() {
   const { address, isConnected, chainId, chain, isConnecting } = useAccount();
   const { switchChain, isPending: switching } = useSwitchChain();
   const userInfo = useUserStore((store: any) => store.user);
-
-  const balanceData = useBalance({
-    address,
-    chainId: DEFAULT_CHAIN_ID
-  });
+  const userNativeBalance = useUserStore((store: any) => store.nativeBalance);
 
   const [connecting, setConnecting] = useState<boolean>(isConnecting);
 
@@ -44,12 +38,12 @@ export function useConnectWallet() {
 
   const [name, avatar, balance] = useMemo(() => {
     const defaultAvatar = "conic-gradient(from 180deg at 50% 50%, #00D1FF 0deg, #FF008A 360deg)";
-    let _balance = "0.00";
+    let _balance = "0";
 
     if (!address) return ["", defaultAvatar, _balance];
 
-    if (balanceData?.data?.value) {
-      _balance = utils.formatUnits(balanceData.data.value.toString(), balanceData.data.decimals);
+    if (userNativeBalance) {
+      _balance = userNativeBalance;
     }
 
     if (userInfo?.twitter) {
@@ -65,7 +59,7 @@ export function useConnectWallet() {
       defaultAvatar,
       _balance
     ];
-  }, [userInfo, address, balanceData]);
+  }, [userInfo, address, userNativeBalance]);
 
   return {
     onConnect,

@@ -1,4 +1,3 @@
-import HexagonButton from "@/components/button/hexagon";
 import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover";
 import { useConnectWallet } from "@/hooks/use-connect-wallet";
 import { numberFormatter } from "@/utils/number-formatter";
@@ -70,33 +69,11 @@ const Account = (props: any) => {
                 />
               )}
             >
-              <div className="h-[64px] backdrop-blur-[10px] [clip-path:polygon(0_0,100%_0,100%_100%,15%_100%,0_0)] flex justify-center items-center gap-[8px] pl-[29px] pr-[12px] shrink-0 text-[18px] leading-[100%] text-white bg-[url('/images/mainnet/layout/corner-connected.svg')] bg-no-repeat bg-left-bottom bg-cover">
-                <div className="flex flex-col items-end justify-center gap-[6px]">
-                  <div className="text-[#8E97AD] text-[14px]">
-                    {name}
-                  </div>
-                  <div className="flex justify-end items-center gap-[6px]">
-                    <img
-                      src="/images/monad.svg"
-                      alt=""
-                      className="w-[18px] h-[18px] object-contain object-center shrink-0"
-                    />
-                    <div className="">
-                      {numberFormatter(balance, 2, true, {
-                        isShort: true,
-                        isShortUppercase: true,
-                        isZeroPrecision: true,
-                      })}
-                    </div>
-                  </div>
-                </div>
-                <div
-                  className="w-[40px] h-[40px] rounded-[4px] border border-[#727D97] shrink-0"
-                  style={{
-                    backgroundImage: avatar,
-                  }}
-                />
-              </div>
+              <ConnectedAccount
+                name={name}
+                avatar={avatar}
+                balance={balance}
+              />
             </Popover>
           ) : (
             <button
@@ -186,6 +163,44 @@ const AccountMenu = (props: any) => {
           </button>
         </div>
       </div>
+    </div>
+  );
+};
+
+const ConnectedAccount = (props: any) => {
+  const {
+    name,
+    avatar,
+    balance,
+  } = props;
+
+  return (
+    <div className="h-[64px] backdrop-blur-[10px] [clip-path:polygon(0_0,100%_0,100%_100%,15%_100%,0_0)] flex justify-center items-center gap-[8px] pl-[29px] pr-[12px] shrink-0 text-[18px] leading-[100%] text-white bg-[url('/images/mainnet/layout/corner-connected.svg')] bg-no-repeat bg-left-bottom bg-cover">
+      <div className="flex flex-col items-end justify-center gap-[6px]">
+        <div className="text-[#8E97AD] text-[14px]">
+          {name}
+        </div>
+        <div className="flex justify-end items-center gap-[6px]">
+          <img
+            src="/images/monad.svg"
+            alt=""
+            className="w-[18px] h-[18px] object-contain object-center shrink-0"
+          />
+          <div className="">
+            {numberFormatter(balance, 2, true, {
+              isShort: true,
+              isShortUppercase: true,
+              isZeroPrecision: true,
+            })}
+          </div>
+        </div>
+      </div>
+      <div
+        className="w-[40px] h-[40px] rounded-[4px] border border-[#727D97] shrink-0"
+        style={{
+          backgroundImage: avatar,
+        }}
+      />
     </div>
   );
 };

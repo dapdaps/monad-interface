@@ -29,8 +29,8 @@ const LaptopSidebar = (props: any) => {
       icon: (isActive?: boolean) => (
         <IconDiscover
           className={clsx(
-            "group-hover:text-[#BFFF60] group-hover:drop-shadow-[0_0_10px_rgba(191,255,96,0.60)] transition-all duration-150",
-            isActive ? "text-[#BFFF60] drop-shadow-[0_0_10px_rgba(191,255,96,0.60)]" : "text-white",
+            "w-[26px] h-[26px] group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.60)] transition-all duration-150",
+            isActive ? "text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.60)]" : "text-[#A1AECB]",
           )}
         />
       ),
@@ -42,8 +42,8 @@ const LaptopSidebar = (props: any) => {
       icon: (isActive?: boolean) => (
         <IconArcade
           className={clsx(
-            "group-hover:text-[#BFFF60] group-hover:drop-shadow-[0_0_10px_rgba(191,255,96,0.60)] transition-all duration-150",
-            isActive ? "text-[#BFFF60] drop-shadow-[0_0_10px_rgba(191,255,96,0.60)]" : "text-white",
+            "group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.60)] transition-all duration-150",
+            isActive ? "text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.60)]" : "text-[#A1AECB]",
           )}
         />
       ),
@@ -55,8 +55,8 @@ const LaptopSidebar = (props: any) => {
       icon: (isActive?: boolean) => (
         <IconSwap
           className={clsx(
-            "group-hover:text-[#BFFF60] group-hover:drop-shadow-[0_0_10px_rgba(191,255,96,0.60)] transition-all duration-150",
-            isActive ? "text-[#BFFF60] drop-shadow-[0_0_10px_rgba(191,255,96,0.60)]" : "text-white",
+            "group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.60)] transition-all duration-150",
+            isActive ? "text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.60)]" : "text-[#A1AECB]",
           )}
         />
       ),
@@ -68,8 +68,8 @@ const LaptopSidebar = (props: any) => {
       icon: (isActive?: boolean) => (
         <IconBridge
           className={clsx(
-            "group-hover:text-[#BFFF60] group-hover:drop-shadow-[0_0_10px_rgba(191,255,96,0.60)] transition-all duration-150",
-            isActive ? "text-[#BFFF60] drop-shadow-[0_0_10px_rgba(191,255,96,0.60)]" : "text-white",
+            "group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.60)] transition-all duration-150",
+            isActive ? "text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.60)]" : "text-[#A1AECB]",
           )}
         />
       ),
@@ -77,12 +77,12 @@ const LaptopSidebar = (props: any) => {
       isActive: pathname === "/bridge",
     },
     {
-      name: "My Wallet",
+      name: "Wallet",
       icon: (isActive?: boolean) => (
         <IconMyWallet
           className={clsx(
-            "group-hover:text-[#BFFF60] group-hover:drop-shadow-[0_0_10px_rgba(191,255,96,0.60)] transition-all duration-150",
-            isActive ? "text-[#BFFF60] drop-shadow-[0_0_10px_rgba(191,255,96,0.60)]" : "text-white",
+            "group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.60)] transition-all duration-150",
+            isActive ? "text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.60)]" : "text-[#A1AECB]",
           )}
         />
       ),
@@ -131,24 +131,19 @@ const LaptopSidebar = (props: any) => {
           menuList.map((menu, index) => (
             <li
               key={index}
-              className="group relative cursor-pointer py-[15px] text-white text-[16px] pl-[5px] flex items-center justify-between gap-[10px]"
+              className="group relative cursor-pointer w-[100px] h-[74px] rounded-[2px] border border-[#383E4E] bg-balck/50 backdrop-blur-[10px] text-[#A1AECB] text-[15px] pl-[5px] flex flex-col items-center justify-center gap-[8px]"
               onClick={() => onMenu(menu)}
               onMouseEnter={() => onMenuPrefetch(menu)}
             >
-              <div className="flex items-center gap-[14px]">
-                {menu.icon(menu.isActive)}
-                <div
-                  className={clsx(
-                    "group-hover:text-[#BFFF60] group-hover:[text-shadow:_0_0_10px_rgba(191,255,96,0.60)] transition-all duration-150",
-                    menu.isActive ? "text-[#BFFF60] [text-shadow:_0_0_10px_rgba(191,255,96,0.60)]" : "",
-                  )}
-                >
-                  {menu.name}
-                </div>
+              <div
+                className={clsx(
+                  "group-hover:text-[#BFFF60] group-hover:[text-shadow:_0_0_10px_rgba(191,255,96,0.60)] transition-all duration-150",
+                  menu.isActive ? "text-[#BFFF60] [text-shadow:_0_0_10px_rgba(191,255,96,0.60)]" : "",
+                )}
+              >
+                {menu.name}
               </div>
-              <IconMenuArrow className="opacity-0 translate-x-[30px] group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-150" />
-              <div className="absolute left-0 top-0 w-full h-[1px] bg-[#BFFF60] transition-all duration-300 opacity-0 translate-x-[-50%] group-hover:opacity-100 group-hover:translate-x-0" />
-              <div className="absolute left-0 bottom-0 w-full h-[1px] bg-[#BFFF60] transition-all duration-300 opacity-0 translate-x-[-50%] group-hover:opacity-100 group-hover:translate-x-0" />
+              {menu.icon(menu.isActive)}
             </li>
           ))
         }

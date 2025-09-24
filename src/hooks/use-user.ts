@@ -1,5 +1,5 @@
 import { useUserStore } from '@/stores/user';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { get, post } from '@/utils/http';
 import { useAccount } from 'wagmi';
 import useToast from '@/hooks/use-toast';
