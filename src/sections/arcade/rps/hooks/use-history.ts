@@ -2,6 +2,8 @@ import useCustomAccount from "@/hooks/use-account";
 import { get } from "@/utils/http";
 import { useRequest } from "ahooks";
 import { useState } from "react";
+import { RPS_TIMEOUT_DURATION, RPSStatus, RPSWinner } from "../config";
+import Big from "big.js";
 
 export function useHistory(props?: any) {
   const { } = props ?? {};
@@ -39,6 +41,9 @@ export function useHistory(props?: any) {
         _list.data.forEach((item: any) => {
           item.isCreatorOwn = item.address.toLowerCase() === account.toLowerCase();
           item.isPlayerOwn = item.player_address.toLowerCase() === account.toLowerCase();
+          item.isWinner = item.winner_address.toLowerCase() === account.toLowerCase();
+          item.isDraw = item.winner === RPSWinner.Draw;
+          item.isClaimable = item.status === RPSStatus.Canceled && Big(Math.floor(Date.now() / 1000)).minus(item.create_time).gt(RPS_TIMEOUT_DURATION);
         });
         _list.pageTotal = res.data.total_page;
         return _list;

@@ -1,6 +1,6 @@
 import InputNumber from "@/components/input-number";
 import { useCreate } from "./hooks/use-create";
-import { RPS_MOVES_ROUND, RPSMoves } from "./config";
+import { MONAD_EXPLORER_URL, RPS_MOVES_ROUND, RPSMoves, RPSStatus } from "./config";
 import clsx from "clsx";
 import HexagonButton from "@/components/button/hexagon";
 import { useRPS } from "./hooks";
@@ -26,7 +26,7 @@ const RPS = (props: any) => {
     <div className="mainnet-content text-white flex flex-col gap-[10px] overflow-y-auto pr-2 pb-[100px]">
       <div className="border border-white p-1">
         <h3 className="flex items-center gap-2">
-          <div className="">List</div>
+          <div className="">Active List</div>
           <HexagonButton
             onClick={() => {
               rps.getList();
@@ -190,11 +190,19 @@ const RPS = (props: any) => {
                 },
               },
               {
+                dataIndex: "create_time",
+                title: "Create Time",
+                width: 200,
+                render: (record: any) => {
+                  return dayjs.utc(record.create_time * 1000).format("M/D/YYYY, HH:mm:ss UTC");
+                },
+              },
+              {
                 dataIndex: "player_address",
                 title: "Player",
                 width: 100,
                 render: (record: any) => {
-                  return `${formatLongText(record.player_address, 5, 4)}${record.isPlayerOwn ? " (Your Own)" : ""}`;
+                  return record.player_address ? `${formatLongText(record.player_address, 5, 4)}${record.isPlayerOwn ? " (Your Own)" : ""}` : "-";
                 },
               },
               {
@@ -210,26 +218,57 @@ const RPS = (props: any) => {
                 title: "Result",
                 width: 100,
                 render: (record: any) => {
-                  return numberFormatter(record.bet_amount, 2, true);
+                  if (record.status === RPSStatus.Ongoing) {
+                    return "active";
+                  }
+                  if (record.status === RPSStatus.Joined) {
+                    return "confirming";
+                  }
+                  if (record.isDraw) {
+                    return "drew";
+                  }
+                  if (record.status === RPSStatus.Won) {
+                    return record.isWinner ? "won" : "lost";
+                  }
+                  return "cancelled";
                 },
               },
               {
                 dataIndex: "verify",
                 title: "Verification",
-                width: 100,
+                width: 200,
                 render: (record: any) => {
                   return (
-                    <HexagonButton
-                      onClick={() => {
-                        window?.open(`https://testnet.monadexplorer.com/tx/${record.end_tx_hash}`, "_blank");
-                      }}
-                      loading={false}
-                      disabled={false}
-                      height={24}
-                      className="!text-[16px]"
-                    >
-                      Verification
-                    </HexagonButton>
+                    <div className="flex items-center gap-[5px]">
+                      <HexagonButton
+                        onClick={() => {
+                          // end | join | create
+                          const txHash = record.end_tx_hash || record.join_tx_hash || record.create_tx_hash;
+                          window?.open(`${MONAD_EXPLORER_URL}/tx/${txHash}`, "_blank");
+                        }}
+                        loading={false}
+                        disabled={false}
+                        height={24}
+                        className="!text-[16px]"
+                      >
+                        Verification
+                      </HexagonButton>
+                      {
+                        record.isClaimable && (
+                          <HexagonButton
+                            onClick={() => {
+                              claim.onClaim(record);
+                            }}
+                            loading={record.loading}
+                            disabled={record.loading}
+                            height={24}
+                            className="!text-[16px]"
+                          >
+                            Claim
+                          </HexagonButton>
+                        )
+                      }
+                    </div>
                   );
                 },
               },

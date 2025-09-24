@@ -1,3 +1,8 @@
+import { DEFAULT_CHAIN_ID } from "@/configs";
+import { monadTestnet } from "viem/chains";
+
+export const MONAD_EXPLORER_URL = DEFAULT_CHAIN_ID === monadTestnet.id ? monadTestnet.blockExplorers.default.url : monadTestnet.blockExplorers.default.url;
+
 export enum RPSMove {
   Rock = 1,
   Scissors = 2,
@@ -37,6 +42,12 @@ export enum RPSStatus {
   Joined = 2,
   Won = 3,
   Canceled = 4,
+}
+
+export enum RPSWinner {
+  Creator = 1,
+  Palyer = 2,
+  Draw = 3,
 }
 
 export interface Room {
