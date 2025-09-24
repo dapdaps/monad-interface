@@ -2,8 +2,7 @@ import useCustomAccount from "@/hooks/use-account";
 import { post } from "@/utils/http";
 import { useRequest } from "ahooks";
 import { useMemo, useState } from "react";
-import { RPSMove } from "../config";
-import { monad } from "@/configs/tokens/monad-testnet";
+import { RPS_MIN_BET_AMOUNT, RPS_MOVES_ROUND, RPSMove } from "../config";
 import { useBalance } from "wagmi";
 import { DEFAULT_CHAIN_ID } from "@/configs";
 import { Contract, utils } from "ethers";
@@ -12,26 +11,19 @@ import { useConnectWallet } from "@/hooks/use-connect-wallet";
 import useToast from "@/hooks/use-toast";
 import { RPS_CONTRACT_ADDRESS, RPS_CONTRACT_ADDRESS_ABI } from "../contract";
 
-export function useCreate() {
+export function useCreate(props?: any) {
+  const {
+    betToken,
+    betTokenBalance,
+    getBetTokenBalance,
+  } = props ?? {};
+
+  const { accountWithAk, account, chainId, provider } = useCustomAccount();
   const { onConnect, onSwitchChain } = useConnectWallet();
   const toast = useToast();
 
-  const { accountWithAk, account, chainId, provider } = useCustomAccount();
   const [moves, setMoves] = useState<RPSMove[]>([]);
   const [amount, setAmount] = useState<string>();
-  const [token] = useState(monad["mon"]);
-
-  const balanceData = useBalance({
-    address: account as any,
-    chainId: DEFAULT_CHAIN_ID,
-  });
-
-  const balance = useMemo(() => {
-    if (!balanceData.data) {
-      return "0";
-    }
-    return utils.formatUnits(balanceData.data.value.toString(), balanceData.data.decimals);
-  }, [balanceData]);
 
   const { runAsync: onCreate, loading: creating } = useRequest(async () => {
     if (!account) {
@@ -57,7 +49,7 @@ export function useCreate() {
         });
         return;
       }
-      const parsedAmount = utils.parseUnits(amount || "0", token.decimals);
+      const parsedAmount = utils.parseUnits(amount || "0", betToken.decimals);
       const params = [
         parsedAmount,
         res.data.hidden_moves_hash
@@ -105,6 +97,7 @@ export function useCreate() {
       });
 
       // TODO reload list
+      getBetTokenBalance();
     } catch (error: any) {
       console.log("create rps failed: %o", error);
       toast.dismiss(toastId);
@@ -142,17 +135,21 @@ export function useCreate() {
       _result.text = "Enter an amount";
       return _result;
     }
-    if (Big(amount || 0).gt(Big(balance || 0))) {
+    if (Big(amount || 0).gt(Big(betTokenBalance || 0))) {
       _result.text = "Insufficient balance";
       return _result;
     }
-    if (moves.length !== 3) {
+    if (Big(amount || 0).lt(RPS_MIN_BET_AMOUNT)) {
+      _result.text = `Minimum amount is ${RPS_MIN_BET_AMOUNT}`;
+      return _result;
+    }
+    if (moves.length !== RPS_MOVES_ROUND) {
       _result.text = "Select all moves";
       return _result;
     }
     _result.disabled = false;
     return _result;
-  }, [amount, moves, creating, account, chainId]);
+  }, [amount, moves, creating, account, chainId, betTokenBalance]);
 
   return {
     moves,
@@ -161,8 +158,6 @@ export function useCreate() {
     creating,
     amount,
     setAmount,
-    token,
-    balance,
     onSelectMove,
     buttonValid,
   };

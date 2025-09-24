@@ -43,7 +43,7 @@ const MainLayout = (props: Props) => {
   const { getAccessToken } = useUser();
 
   useEffect(() => {
-    getAccessToken();
+    getAccessToken("main layout");
   }, [address]);
 
   return (

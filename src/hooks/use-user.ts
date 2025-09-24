@@ -40,8 +40,15 @@ export function useUser() {
     }
   }, []);
 
-  const getAccessToken = async () => {
-    setUserInfo({ accessTokenLoading: true });
+  const getAccessToken = async (from?: string) => {
+    setUserInfo({
+      accessTokenLoading: true,
+      accessToken: {
+        access_token: "",
+        refresh_access_token: "",
+        token_type: "bearer",
+      },
+    });
     const currentAddress = isNearPage && near_current_wallet
       ? near_current_wallet.address
       : address;
@@ -86,6 +93,7 @@ export function useUser() {
     //   }
     // }
 
+    console.log("%creload access token from: %s", "background:#f00;color:#fff;", from);
     const res = await post('/login', {
       address: currentAddress,
       wallet: _walletName.toLowerCase(),
@@ -124,7 +132,7 @@ export function useUser() {
   useInterval(() => {
     const tokens = JSON.parse(window.sessionStorage.getItem('_user') || "{}");
     if (!tokens.state?.accessToken?.access_token) {
-      getAccessToken();
+      getAccessToken("interval");
     }
   }, 1000 * 20)
 
