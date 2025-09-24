@@ -5,7 +5,7 @@ import Detail from "./detail";
 export default function WalletView() {
 
     return (
-        <div className="px-[28px] font-Oxanium pt-[120px] pl-[260px] w-full h-full overflow-y-auto bg-[url('/images/faucet/bg.png')] bg-black bg-no-repeat bg-top bg-cover">
+        <div className="px-[120px] font-Oxanium mainnet-content overflow-y-auto bg-[url('/images/faucet/bg.png')] bg-black bg-no-repeat bg-top bg-cover">
             <Summary />
             <Detail />
         </div>

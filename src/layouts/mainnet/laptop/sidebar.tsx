@@ -1,27 +1,16 @@
 import HexagonButton from "@/components/button/hexagon";
-import { useConnectWallet } from "@/hooks/use-connect-wallet";
 import Skeleton from "react-loading-skeleton";
-
-import { IconLogOut, IconDiscover, IconArcade, IconMyWallet, IconBridge, IconSwap, IconMenuArrow } from "./icons";
-import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
 import clsx from "clsx";
-import Rpc from "@/components/rpc";
+import { useProgressRouter } from "@/hooks/use-progress-router";
+import { IconDiscover, IconArcade, IconMyWallet, IconBridge, IconSwap } from "./icons";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 const LaptopSidebar = (props: any) => {
-  const { className } = props;
+  const { } = props;
 
-  const {
-    connecting,
-    connected,
-    name,
-    avatar,
-    onConnect,
-    onDisconnect,
-    balance,
-  } = useConnectWallet();
   const pathname = usePathname();
-  const router = useRouter();
+  const router = useProgressRouter();
 
   const [menuList, setMenuList] = useState([
     {
@@ -35,59 +24,64 @@ const LaptopSidebar = (props: any) => {
         />
       ),
       path: "/",
-      isActive: pathname === "/",
+      reg: /^\/$/,
+      isActive: false,
     },
     {
       name: "Arcade",
       icon: (isActive?: boolean) => (
         <IconArcade
           className={clsx(
-            "group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.60)] transition-all duration-150",
+            "w-[30px] h-[26px] group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.60)] transition-all duration-150",
             isActive ? "text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.60)]" : "text-[#A1AECB]",
           )}
         />
       ),
       path: "/arcade",
-      isActive: pathname === "/arcade",
+      reg: /^\/arcade/,
+      isActive: false,
     },
     {
       name: "Swap",
       icon: (isActive?: boolean) => (
         <IconSwap
           className={clsx(
-            "group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.60)] transition-all duration-150",
+            "w-[28px] h-[28px] group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.60)] transition-all duration-150",
             isActive ? "text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.60)]" : "text-[#A1AECB]",
           )}
         />
       ),
       path: "/swap",
-      isActive: pathname === "/swap",
+      reg: /^\/swap/,
+      isActive: false,
     },
     {
       name: "Bridge",
       icon: (isActive?: boolean) => (
         <IconBridge
           className={clsx(
-            "group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.60)] transition-all duration-150",
+            "w-[28px] h-[19px] group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.60)] transition-all duration-150",
             isActive ? "text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.60)]" : "text-[#A1AECB]",
           )}
         />
       ),
       path: "/bridge",
-      isActive: pathname === "/bridge",
+      reg: /^\/bridge/,
+      isActive: false,
     },
     {
       name: "Wallet",
       icon: (isActive?: boolean) => (
         <IconMyWallet
           className={clsx(
-            "group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.60)] transition-all duration-150",
+            "w-[28px] h-[21px] group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.60)] transition-all duration-150",
             isActive ? "text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.60)]" : "text-[#A1AECB]",
           )}
         />
       ),
       path: "/wallet",
-      isActive: pathname === "/wallet",
+      reg: /^\/wallet/,
+      isActive: false,
     },
   ]);
 
@@ -95,7 +89,7 @@ const LaptopSidebar = (props: any) => {
     const _menuList = menuList.slice();
     for (const menu of _menuList) {
       menu.isActive = false;
-      if (menu.path === pathname) {
+      if (menu.reg.test(pathname)) {
         menu.isActive = true;
       }
     }
@@ -117,52 +111,38 @@ const LaptopSidebar = (props: any) => {
   };
 
   return (
-    <div className="fixed z-[9] left-0 top-0 w-[226px] h-full bg-black/30 backdrop-blur-[10px] shrink-0 pt-[138px]">
-      <User
-        connecting={connecting}
-        connected={connected}
-        name={name}
-        avatar={avatar}
-        onConnect={onConnect}
-        balance={balance}
-      />
-      <ul className="relative w-full mt-[28px] px-[25px] flex flex-col gap-[0px]">
+    <div className="fixed z-[9] right-0 top-1/2 -translate-y-1/2 shrink-0 flex items-center justify-end">
+      <ul className="relative w-full pl-[5px] flex flex-col gap-[4px]">
         {
           menuList.map((menu, index) => (
             <li
               key={index}
-              className="group relative cursor-pointer w-[100px] h-[74px] rounded-[2px] border border-[#383E4E] bg-balck/50 backdrop-blur-[10px] text-[#A1AECB] text-[15px] pl-[5px] flex flex-col items-center justify-center gap-[8px]"
+              className={clsx(
+                "group relative overflow-hidden uppercase cursor-pointer w-[100px] h-[74px] hover:border-[#836EF9] hover:bg-[radial-gradient(50%_66%_at_46%_50%,_#553BE4_0%,_#221662_100%)] hover:backdrop-blur-[2px] rounded-[2px] border text-[#A1AECB] text-[15px] pl-[5px] flex flex-col items-center justify-center gap-[5px] transition-all duration-150",
+                menu.isActive ? "border-[#836EF9] bg-[radial-gradient(50%_66%_at_46%_50%,_#553BE4_0%,_#221662_100%)] backdrop-blur-[2px]" : "border-[#383E4E] bg-balck/50 backdrop-blur-[10px]",
+              )}
               onClick={() => onMenu(menu)}
               onMouseEnter={() => onMenuPrefetch(menu)}
             >
               <div
                 className={clsx(
-                  "group-hover:text-[#BFFF60] group-hover:[text-shadow:_0_0_10px_rgba(191,255,96,0.60)] transition-all duration-150",
-                  menu.isActive ? "text-[#BFFF60] [text-shadow:_0_0_10px_rgba(191,255,96,0.60)]" : "",
+                  "group-hover:text-white group-hover:[text-shadow:_0_0_10px_rgba(191,255,96,0.60)] transition-all duration-150",
+                  menu.isActive ? "text-white [text-shadow:_0_0_10px_rgba(191,255,96,0.60)]" : "",
                 )}
               >
                 {menu.name}
               </div>
               {menu.icon(menu.isActive)}
+              <div
+                className={clsx(
+                  "absolute right-0 group-hover:opacity-[0.95] group-hover:translate-x-[0] top-1/2 -translate-y-1/2 w-[6px] h-[54px] bg-[#BFFF60] [clip-path:polygon(3px_0,100%_0,100%_100%,3px_100%,0_calc(100%_-_4px),0_4px)] transition-all duration-300",
+                  menu.isActive ? "opacity-[0.95] translate-x-[0]" : "opacity-[0] translate-x-[100%]",
+                )}
+              />
             </li>
           ))
         }
       </ul>
-      {
-        connected && (
-          <button
-            type="button"
-            className="group hover:text-[#BFFF60] hover:[text-shadow:0_0_10px_rgba(191,_255,_96,_0.60)] transition-all duration-150 absolute left-[30px] bottom-[25px] flex items-center gap-[15px] text-[16px] font-[400] text-white"
-            onClick={() => onDisconnect()}
-          >
-            <IconLogOut
-              className="w-[15px] h-[15px] object-contain object-center shrink-0 group-hover:drop-shadow-[0_0_10px_rgba(191,255,96,0.60)] transition-all duration-150"
-            />
-            <div className="">Log out</div>
-          </button>
-        )
-      }
-      <Rpc className="absolute right-[10px] bottom-[25px]" />
     </div>
   );
 };
