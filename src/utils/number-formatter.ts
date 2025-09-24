@@ -91,10 +91,12 @@ export const numberFormatter = (
   if (isSimple) {
     if (isShort) {
       const formatter = (split: number, unit: string): string => {
-        const _num = Big(value)
+        let _num = Big(value)
           .div(split)
-          .toFixed(precision, 0)
-          .replace(/(?:\.0*|(\.\d+?)0+)$/, '$1');
+          .toFixed(precision, 0);
+        if (!isZeroPrecision) {
+          _num = _num.replace(/(?:\.0*|(\.\d+?)0+)$/, '$1');
+        }
         const inter = _num.split('.')?.[0]?.replace(/\d(?=(\d{3})+\b)/g, '$&,');
         const decimal = _num.split('.')?.[1] ?? '';
         return `${prefix}${inter}${decimal ? '.' + decimal : ''}${unit}`;

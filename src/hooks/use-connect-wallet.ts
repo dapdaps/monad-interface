@@ -5,9 +5,7 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useUserStore } from '@/stores/user';
 import { formatLongText } from '@/utils/utils';
 import { DEFAULT_CHAIN_ID } from '@/configs';
-import { numberFormatter } from '@/utils/number-formatter';
 import { utils } from 'ethers';
-import Big from 'big.js';
 
 export function useConnectWallet() {
   const connectModal = useConnectModal();
@@ -51,17 +49,12 @@ export function useConnectWallet() {
     if (!address) return ["", defaultAvatar, _balance];
 
     if (balanceData?.data?.value) {
-      const _balanceValue = utils.formatUnits(balanceData.data.value.toString(), balanceData.data.decimals);
-      _balance = numberFormatter(_balanceValue, 2, true, {
-        isShort: Big(_balanceValue || 0).gt(1000000),
-        isShortUppercase: true,
-        isZeroPrecision: true,
-      });
+      _balance = utils.formatUnits(balanceData.data.value.toString(), balanceData.data.decimals);
     }
 
     if (userInfo?.twitter) {
       return [
-        formatLongText(userInfo?.twitter?.twitter_user_name, 10, 4),
+        formatLongText(userInfo?.twitter?.twitter_user_name, 5, 4),
         `url("${userInfo?.twitter?.twitter_avatar}")`,
         _balance
       ];
