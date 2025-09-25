@@ -118,7 +118,7 @@ const ExploreAllApps = (props: any) => {
           setTabs={setTabs}
           className="absolute left-1/2 -translate-x-1/2 top-[clamp(1px,_5.42vw,_calc(var(--pc-1512)*0.0542))]"
         />
-        <div className="explore-all-apps-content h-[calc(100dvh_-_253px_-_clamp(1px,_7.94vw,_calc(var(--pc-1512)*0.0794)))] overflow-y-auto w-full flex flex-col gap-[clamp(1px,_0.1vw,_calc(var(--pc-1512)*0.001))]">
+        <div className="explore-all-apps-content h-[clamp(1px,_calc(100dvh_-_253px_-_clamp(1px,_7.94vw,_calc(var(--pc-1512)*0.0794))),_clamp(1px,_37.00vw,_calc(var(--pc-1512)*0.3700)))] overflow-y-auto w-full flex flex-col gap-[clamp(1px,_0.1vw,_calc(var(--pc-1512)*0.001))]">
           {
             apps.map((app, index) => (
               <AppItem
