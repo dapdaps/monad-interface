@@ -45,10 +45,10 @@ export default memo(function RuleModal() {
           </div>
           <div className="md:m-[28px_0_50px] m-[16px_0_48px] md:text-[12px] text-[14px] leading-[180%]">
             <div className="flex before:min-w-[8px] before:h-[8px] before:m-[8px_4px_0_0] before:rounded-full before:bg-[#A5FFFD]">
-              Check-in daily to earn 0.05 MON
+              Check-in daily to earn 0.01 MON
             </div>
             <div className="flex before:min-w-[8px] before:h-[8px] before:m-[8px_4px_0_0] before:rounded-full before:bg-[#A5FFFD]">
-              Check-in 7 days in a row to get an extra 0.2 MON Miss a day?
+              Check-in 7 days in a row to get an extra 0.1 MON Miss a day?
               Streak resets and starts over
             </div>
           </div>
