@@ -18,6 +18,7 @@ import CodesMission from "./components/codes-mission";
 import LeaderBoard from "./components/leader-board";
 import Link from "next/link";
 import Face from "./components/face";
+import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover";
 
 const itemWidth = 51;
 const itemGap = 6;
@@ -107,11 +108,10 @@ const Home = () => {
 
   return (
     <div
-      className={`w-full ${
-        window.innerHeight < 900
-          ? "min-h-[900px] overflow-y-auto"
-          : "h-[100dvh]"
-      } relative overflow-hidden`}
+      className={`w-full ${window.innerHeight < 900
+        ? "min-h-[900px] overflow-y-auto"
+        : "h-[100dvh]"
+        } relative overflow-hidden`}
     >
       <Starfield className="bg-[#000]" />
       <Face />
@@ -204,8 +204,8 @@ const Home = () => {
               windowWidth >= 2560
                 ? "-top-[30px] left-[calc(710/14.4*var(--rem))] scale-[1.3] hover:scale-[1.4]"
                 : windowWidth < 1360
-                ? "left-[529px]"
-                : "",
+                  ? "left-[529px]"
+                  : "",
               windowWidth < 1440 ? "scale-[0.86] hover:scale-[0.92]" : "",
               windowWidth >= 1440 && windowWidth < 1920
                 ? "hover:scale-[1.03]"
@@ -247,11 +247,12 @@ const Home = () => {
           <div
             data-bp="1001-015"
             data-hover-sound
-            onClick={() => router.push("/codes")}
+            // onClick={() => router.push("/codes")}
             className={clsx(
               "group",
               "z-[4] w-[378px] h-[290px] absolute -top-[calc(40/14.4*var(--rem))] right-[calc(260/14.4*var(--rem))]",
-              "bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper.svg)] hover:bg-[url(/images/monad/entry/yapper-hover.svg)]",
+              // "bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper.svg)] hover:bg-[url(/images/monad/entry/yapper-hover.svg)]",
+              "bg-[url(/images/monad/entry/codes-locked.png)] bg-no-repeat bg-center bg-contain",
               "transition-all duration-200 ease-in-out cursor-pointer",
               windowWidth < 1440 ? "scale-[0.86] hover:scale-[0.92]" : "",
               windowWidth >= 1440 && windowWidth < 1920
@@ -265,37 +266,52 @@ const Home = () => {
                 : ""
             )}
           >
-            <div className="relative w-full h-full">
-              <div className="absolute left-1/2 -translate-x-1/2 top-[-50px]">
-                <div className="w-full flex flex-col gap-[2px] items-center justify-center">
-                  <div className="w-full flex items-center justify-center gap-2">
-                    <img
-                      src="/images/monad/icon/codes.svg"
-                      alt=""
-                      className="shrink-0 w-[67px]"
-                    />
-                    {unUsedInviteCodes?.length > 0 && (
+            <Popover
+              content={(
+                <div className="text-white text-[10px] p-[10px_15px] bg-[rgba(26,24,67,0.80)] border border-[#3E347C] rounded-[8px] backdrop-blur-[10px]">
+                  Under maintenance
+                </div>
+              )}
+              placement={PopoverPlacement.Top}
+              trigger={PopoverTrigger.Hover}
+              // closeDelayDuration={0}
+              offset={70}
+              triggerContainerClassName="w-full h-full"
+            >
+              <div className="relative w-full h-full">
+                <div className="absolute left-1/2 -translate-x-1/2 top-[-50px]">
+                  <div className="w-full flex flex-col gap-[2px] items-center justify-center">
+                    <div className="w-full flex items-center justify-center gap-2">
+                      <img
+                        src="/images/monad/icon/codes-lock.svg"
+                        alt=""
+                        className="shrink-0 w-[67px]"
+                      />
+                      <div className="text-[12px] font-Unbounded font-[500] leading-[90%] text-[#6D7EA5]">
+                        soon
+                      </div>
+                      {/* {unUsedInviteCodes?.length > 0 && (
                       <div className="shrink-0 px-[8px] h-[18px] text-[12px] font-[900] leading-[90%] flex items-center justify-center font-Unbounded rounded-[21px] border border-black bg-[#BFFF60] shadow-[0px_2px_0px_0px_rgba(0,_0,_0,_0.50)]">
                         {unUsedInviteCodes?.length}
                       </div>
-                    )}
+                    )} */}
+                    </div>
+                    <motion.img
+                      // animate={{
+                      //   transform: "rotateY(360deg)"
+                      // }}
+                      // transition={{
+                      //   duration: 6,
+                      //   repeat: Infinity,
+                      //   ease: "linear"
+                      // }}
+                      src="/images/monad/icon/point-lock.svg"
+                      className="w-[26px] h-[26px]"
+                      alt=""
+                    />
                   </div>
-                  <motion.img
-                    animate={{
-                      transform: "rotateY(360deg)"
-                    }}
-                    transition={{
-                      duration: 6,
-                      repeat: Infinity,
-                      ease: "linear"
-                    }}
-                    src="/images/monad/icon/point.svg"
-                    className="w-[26px] h-[26px]"
-                    alt=""
-                  />
                 </div>
-              </div>
-              <div className="group-hover:hidden absolute w-[244px] h-[223px] left-1/2 -translate-x-1/2 top-[-24px] ml-[20px]">
+                {/* <div className="group-hover:hidden absolute w-[244px] h-[223px] left-1/2 -translate-x-1/2 top-[-24px] ml-[20px]">
                 <motion.div
                   animate={{
                     transform: ["rotate(-10deg)", "rotate(10deg)"]
@@ -309,8 +325,9 @@ const Home = () => {
                   }}
                   className="relative w-full h-full bg-no-repeat bg-contain bg-[url(/images/monad/entry/radar.svg)]"
                 ></motion.div>
+              </div> */}
               </div>
-            </div>
+            </Popover>
           </div>
           {/* Faucet */}
           <div
