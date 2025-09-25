@@ -90,7 +90,7 @@ const CodesMission = (props: any) => {
               disabled ? "NADSA Two Station" : "Next code drop in"
             }
           </div>
-          <div className="text-[18px]">
+          <div className="text-[18px] md:text-[16px]">
             {disabled ? "IN PROGRESS" : lastTime}
           </div>
         </MissionScreen>

@@ -9,11 +9,12 @@ import CodesMission from "../components/codes-mission";
 import { GuideEntry } from "@/sections/invitation/guide";
 import useInviteCodes from "@/sections/codes/hooks/use-invite-codes";
 import dynamic from 'next/dynamic';
+import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover";
 
 const itemWidth = 51;
 const itemGap = 6;
 const GameEntry = dynamic(() => import('@/components/game-entry'), {
-  ssr: false, 
+  ssr: false,
   loading: () => null
 });
 
@@ -88,23 +89,23 @@ const Mobile = () => {
             }}
           >
             <div className="absolute left-1/2 translate-x-[calc(-50%_+_30px)] top-[-50px] cursor-pointer scale-[0.7]">
-                <div className="w-full flex flex-col gap-[2px] items-center justify-center">
-                  <img src="/images/monad/icon/arcade.svg" alt="" />
-                  <motion.img
-                    animate={{
-                      rotateY: 180,
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
-                    src="/images/monad/icon/point.svg"
-                    className="w-[38px] h-[38px]"
-                    alt=""
-                  />
-                </div>
+              <div className="w-full flex flex-col gap-[2px] items-center justify-center">
+                <img src="/images/monad/icon/arcade.svg" alt="" />
+                <motion.img
+                  animate={{
+                    rotateY: 180,
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                  src="/images/monad/icon/point.svg"
+                  className="w-[38px] h-[38px]"
+                  alt=""
+                />
               </div>
+            </div>
             <img
               src="/images/mobile/entry/game.svg"
               className="w-full h-full"
@@ -283,33 +284,49 @@ const Mobile = () => {
           <div
             data-bp="1001-015"
             data-hover-sound
-            onClick={() => router.push("/codes")}
+            // onClick={() => router.push("/codes")}
             className={clsx(
               "z-[4] w-[378px] h-[290px] absolute bottom-[18%] left-[-36%] scale-[0.68]",
-              "bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper.svg)]",
+              // "bg-no-repeat bg-contain bg-[url(/images/monad/entry/yapper.svg)]",
+              "bg-[url(/images/monad/entry/codes-locked.png)] bg-no-repeat bg-center bg-contain",
             )}
           >
-            <div className="relative w-full h-full">
-              <div className="absolute left-1/2 translate-x-[calc(-50%_+_15px)] top-[-30px]">
-                <div className="w-full flex flex-col gap-[2px] items-center justify-center">
-                  <div className="w-full flex items-center justify-center gap-2">
-                    <img src="/images/monad/icon/codes.svg" alt="" className="shrink-0" />
-                    {
+            <Popover
+              content={(
+                <div className="text-white text-[10px] p-[5px_10px] bg-[rgba(26,24,67,0.80)] border border-[#3E347C] rounded-[8px] backdrop-blur-[10px]">
+                  Under maintenance
+                </div>
+              )}
+              placement={PopoverPlacement.Top}
+              trigger={PopoverTrigger.Click}
+              // closeDelayDuration={0}
+              offset={20}
+              triggerContainerClassName="w-full h-full"
+            >
+              <div className="relative w-full h-full">
+                <div className="absolute left-1/2 translate-x-[calc(-50%_+_15px)] top-[-30px]">
+                  <div className="w-full flex flex-col gap-[2px] items-center justify-center">
+                    <div className="w-full flex items-center justify-center gap-2">
+                      <img src="/images/monad/icon/codes-lock.svg" alt="" className="shrink-0" />
+                      <div className="text-[12px] font-Unbounded font-[500] leading-[90%] text-[#6D7EA5]">
+                        soon
+                      </div>
+                      {/* {
                       unUsedInviteCodes?.length > 0 && (
                         <div className="shrink-0 px-[8px] h-[18px] text-[12px] font-[900] leading-[90%] flex items-center justify-center font-Unbounded rounded-[21px] border border-black bg-[#BFFF60] shadow-[0px_2px_0px_0px_rgba(0,_0,_0,_0.50)]">
                           {unUsedInviteCodes?.length}
                         </div>
                       )
-                    }
+                    } */}
+                    </div>
+                    <img
+                      src="/images/monad/icon/point-lock.svg"
+                      className="w-[38px] h-[38px]"
+                      alt=""
+                    />
                   </div>
-                  <img
-                    src="/images/monad/icon/point.svg"
-                    className="w-[38px] h-[38px]"
-                    alt=""
-                  />
                 </div>
-              </div>
-              <div className="absolute w-[200px] h-[183px] left-1/2 -translate-x-1/2 top-[10px] ml-[20px]">
+                {/* <div className="absolute w-[200px] h-[183px] left-1/2 -translate-x-1/2 top-[10px] ml-[20px]">
                 <motion.div
                   animate={{ rotate: [-10, 10] }}
                   transition={{
@@ -321,8 +338,9 @@ const Mobile = () => {
                   }}
                   className="relative w-full h-full bg-no-repeat bg-contain bg-[url(/images/monad/entry/radar.svg)]"
                 ></motion.div>
+              </div> */}
               </div>
-            </div>
+            </Popover>
           </div>
         </div>
         <motion.div
@@ -335,7 +353,7 @@ const Mobile = () => {
         </motion.div>
       </div>
       <CodesMission className="!fixed z-[10] !top-[unset] !right-[unset] bottom-[46px] left-1/2 -translate-x-1/2" />
-      { isGameOpen && <GameEntry onClose={() => setIsGameOpen(false)} /> }
+      {isGameOpen && <GameEntry onClose={() => setIsGameOpen(false)} />}
     </div>
   );
 };
