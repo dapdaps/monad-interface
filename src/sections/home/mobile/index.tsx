@@ -308,9 +308,6 @@ const Mobile = () => {
                   <div className="w-full flex flex-col gap-[2px] items-center justify-center">
                     <div className="w-full flex items-center justify-center gap-2">
                       <img src="/images/monad/icon/codes-lock.svg" alt="" className="shrink-0" />
-                      <div className="text-[12px] font-Unbounded font-[500] leading-[90%] text-[#6D7EA5]">
-                        soon
-                      </div>
                       {/* {
                       unUsedInviteCodes?.length > 0 && (
                         <div className="shrink-0 px-[8px] h-[18px] text-[12px] font-[900] leading-[90%] flex items-center justify-center font-Unbounded rounded-[21px] border border-black bg-[#BFFF60] shadow-[0px_2px_0px_0px_rgba(0,_0,_0,_0.50)]">
