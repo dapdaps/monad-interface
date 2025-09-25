@@ -9,14 +9,6 @@ const Bottom = (props: any) => {
         src="/images/mainnet/discover/bottom-circle-1.png"
         alt=""
         className="w-full h-full absolute z-[1] translate-y-[2px]"
-        animate={{
-          transform: ["translateY(2px)", "translateY(-5px)", "translateY(2px)"],
-        }}
-        transition={{
-          repeat: Infinity,
-          duration: 10,
-          delay: 2,
-        }}
       />
       <motion.img
         src="/images/mainnet/discover/bottom-circle-2.png"
