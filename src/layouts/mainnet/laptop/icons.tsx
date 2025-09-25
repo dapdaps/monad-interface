@@ -87,3 +87,32 @@ export const IconMenuArrow = (props: any) => {
 
   );
 };
+
+export const SocialList = [
+  {
+    name: "X",
+    link: "https://x.com/0xNADSA",
+    icon: "/images/mainnet/layout/icon-x.svg",
+    iconSize: [12, 12],
+    bp: "1001-010",
+  },
+  {
+    name: "Discord",
+    link: "https://www.discord.gg/dapdap",
+    icon: "/images/mainnet/layout/icon-discord.svg",
+    iconSize: [15, 9],
+  },
+  {
+    name: "Mirror",
+    link: "https://mirror.xyz/0xBd6E844F7DaCAF6339C26D5114F83986914803ef",
+    icon: "/images/mainnet/layout/icon-mirror.svg",
+    iconSize: [11, 14],
+    bp: "1001-011",
+  },
+  {
+    name: "Dapdap",
+    link: "https://www.dapdap.net/",
+    icon: "/images/mainnet/layout/icon-dapdap.svg",
+    iconSize: [13, 14],
+  },
+];

@@ -90,6 +90,7 @@ body > div[data-rk] {
   width: 100%;
   height: 100%;
   padding-top: 65px;
+  padding-bottom: 100px;
 }
 /*#endregion 👆 Mainnet styles 👆 */
 
@@ -105,11 +106,11 @@ body {
   --background: #0e0f29;
   --foreground: #000000;
   --primary: #836ef9;
-  /* 设计标准是 1440px， 分成 100 份 */
   --rem: calc(1440 / 100) * 1px;
   --wcm-z-index: 999;
   --nadsa-laptop-width: 1008px;
   --nadsa-laptop-width-base: 1440px;
+  --pc-1512: 1512px;
   --nadsa-laptop-width-mobile: 780px;
 }
 
