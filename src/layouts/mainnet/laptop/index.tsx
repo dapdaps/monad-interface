@@ -1,3 +1,4 @@
+import LaptopFooter from "./footer";
 import LaptopHeader from "./header";
 import LaptopSidebar from "./sidebar";
 
@@ -8,6 +9,7 @@ const LaptopLayout = (props: any) => {
     <div className="w-full h-full relative">
       <LaptopSidebar />
       <LaptopHeader />
+      <LaptopFooter />
       <div className="relative h-full w-full">
         {children}
       </div>
