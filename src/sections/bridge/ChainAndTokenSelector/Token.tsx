@@ -16,9 +16,13 @@ const Container = styled.div`
   justify-content: space-between;
   padding: 0 20px;
   cursor: pointer;
+  background-color: #151822;
+  border-radius: 4px;
+  border: 1px solid #34304B;
+  margin-bottom: 6px;
   &:hover,
   &.active {
-    background-color: rgba(151, 154, 190, 0.1);
+    border: 1px solid #836EF9;
   }
   .left {
     display: flex;

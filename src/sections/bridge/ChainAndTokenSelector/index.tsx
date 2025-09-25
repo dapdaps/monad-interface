@@ -18,15 +18,15 @@ import TokenRow from './Token';
 const Container = styled.div`
   display: flex;
   height: 500px;
- 
+  flex-direction: column;
 `;
 
 const ChainWapper = styled.div`
-  width: 85px;
-  border-right: 1px solid rgba(55, 58, 83, 1);
-  padding: 20px 0 20px 0;
-  max-height: 100%;
-  min-height: 100px;
+  /* width: 85px; */
+  /* border-right: 1px solid rgba(55, 58, 83, 1); */
+  /* padding: 10px 0 10px 0; */
+  /* max-height: 100%;
+  min-height: 100px; */
   .chain-tip {
     position: absolute;
     left: 0;
@@ -46,27 +46,35 @@ const ChainWapper = styled.div`
   }
 
   .chain-list {
-    height: calc(100% - 20px);
+    /* height: calc(100% - 20px); */
     overflow-y: auto;
     padding-left: 20px;
     /* overflow-x: hidden; */
     margin-top: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
     .chain {
-      width: 50px;
-      height: 50px;
-      border-radius: 12px;
-      border: 1px solid rgba(55, 58, 83, 1);
+      width: 108px;
+      height: 108px;
+      border-radius: 4px;
+      border: 1px solid #34304B;
       cursor: pointer;
       margin-top: 8px;
       position: relative;
+      background-color: #151822;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: #727D97;
       .img {
-        width: 32px;
-        height: 32px;
-        margin: 9px 0 0 9px;
+        width: 50px;
+        height: 50px;
       }
       &.active {
-        border: 1px solid rgba(252, 196, 44, 1);
-        background-color: rgba(252, 196, 44, 0.1);
+        border: 1px solid #836EF9;
+        color: #fff !important;
       }
       .detail {
         display: none;
@@ -137,6 +145,9 @@ const TokenTop = styled.div`
 const TokenList = styled.div`
   /* height: calc(100% - 120px);
     overflow: auto; */
+    margin-top: 20px;
+    height: 200px;
+    overflow-y: auto;
 `;
 
 const ChainGroup = styled.div`
@@ -293,7 +304,7 @@ const TokenListComp = forwardRef(function TokenListComp(
 
   return (
     <ChainGroup>
-      {showSelectChain && (
+      {/* {showSelectChain && (
         <>
           <div className="ct-title" id={`${groupId}-${chain.chainId}`}>
             Chain
@@ -332,7 +343,9 @@ const TokenListComp = forwardRef(function TokenListComp(
             Token
           </div>
         </>
-      )}
+      )} */}
+
+      <div className="text-[18px] font-[400] leading-[16.8px] mt-[20px] text-white text-center">Select Token</div>
 
       <TokenList>
         {chainToken[displayChainId] &&
@@ -471,21 +484,32 @@ export default function ChainAndTokenSelector({
   }, [idSuffix, currentChain]);
 
   return (
-    <Modal open={true} onClose={onClose} closeIconClassName="mt-[-10px]" >
-      <Container ref={wapperRef} className='border lg:w-[520px] font-[#000000] border-[#000000] text-[#fff] rounded-[30px] bg-[#2B294A] lg:shadow-[10px_10px_0px_0px_#00000040]'>
+
+    <div className="absolute top-[50px] left-[15px] right-[15px] h-[calc(100%-80px)] z-[1000] font-Oxanium px-[20px] bg-black text-white">
+      <div className="relative flex items-center justify-center text-[18px] font-[400] h-[50px]">
+        <div onClick={() => {
+          onClose?.();
+        }} className='absolute left-[20px] top-[10px] w-[35px] h-[35px] border border-[#727D974D] rounded-[6px] flex items-center justify-center cursor-pointer'>
+          <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.5 6.79427C-0.166667 6.40937 -0.166666 5.44712 0.5 5.06222L7.76795 0.866064C8.65398 0.354512 9.64553 1.34606 9.13398 2.23209L7.28867 5.42824C7.11004 5.73764 7.11004 6.11884 7.28868 6.42824L9.13398 9.62439C9.64553 10.5104 8.65398 11.502 7.76795 10.9904L0.5 6.79427Z" fill="#8E97AD" />
+          </svg>
+        </div>
+        Select Chain
+      </div>
+      <Container ref={wapperRef}>
         <ChainWapper>
-          <Title style={{ paddingLeft: 20 }}>Chain</Title>
-          {hoverChain && (
+          {/* <Title style={{ paddingLeft: 20 }}>Chain</Title> */}
+          {/* {hoverChain && (
             <div style={{ top: tipTop }} className="chain-tip">
               <div>{hoverChain.chainName}</div>
             </div>
-          )}
-          
+          )} */}
+
           <div
             className="chain-list"
-            onScroll={() => {
-              setHoverChain(null);
-            }}
+          // onScroll={() => {
+          //   setHoverChain(null);
+          // }}
           >
             {sortedChainList?.filter((chain) => limitBera ? chain.chainId === 10143 : chain.chainId !== 10143).map((chain) => {
               return (
@@ -497,39 +521,40 @@ export default function ChainAndTokenSelector({
                       return;
                     }
                     setTempChain(chain);
-                    const ele = document.getElementById(`${idSuffix}-${chain.chainId}`);
-                    if (ele) {
-                      ele.scrollIntoView();
-                    }
+                    // const ele = document.getElementById(`${idSuffix}-${chain.chainId}`);
+                    // if (ele) {
+                    //   ele.scrollIntoView();
+                    // }
                     setSearchVal('');
                   }}
-                  onMouseEnter={(e) => {
-                    if (disabledChainSelector && currentChain?.chainId !== chain.chainId) {
-                      return;
-                    }
-                    setHoverChain(chain);
-                    let ele: any = e.target;
-                    if (ele.tagName.toUpperCase() !== 'DIV') {
-                      ele = ele.parentNode;
-                    }
-                    const wapperSize = wapperRef.current.getBoundingClientRect();
-                    const chainSize = ele.getBoundingClientRect();
-                    const top = chainSize.top - wapperSize.top;
-                    setTipTop(top);
-                  }}
-                  onMouseLeave={() => {
-                    setHoverChain(null);
-                  }}
+                  // onMouseEnter={(e) => {
+                  //   if (disabledChainSelector && currentChain?.chainId !== chain.chainId) {
+                  //     return;
+                  //   }
+                  //   setHoverChain(chain);
+                  //   let ele: any = e.target;
+                  //   if (ele.tagName.toUpperCase() !== 'DIV') {
+                  //     ele = ele.parentNode;
+                  //   }
+                  //   const wapperSize = wapperRef.current.getBoundingClientRect();
+                  //   const chainSize = ele.getBoundingClientRect();
+                  //   const top = chainSize.top - wapperSize.top;
+                  //   setTipTop(top);
+                  // }}
+                  // onMouseLeave={() => {
+                  //   setHoverChain(null);
+                  // }}
                   className={`chain ${tempChain?.chainId === chain.chainId ? 'active' : ''} ${disabledChainSelector && currentChain?.chainId !== chain.chainId ? 'disabeld' : ''}`}
                 >
                   <Image cls="img" src={chain.icon} />
+                  <div className="text-[14px] font-[400] leading-[16.8px] mt-[10px]">{chain.chainName}</div>
                 </div>
               );
             })}
           </div>
         </ChainWapper>
         <TokenWapper>
-          <TokenTop>
+          {/* <TokenTop>
             <Title>Select token</Title>
             <div className="input-wapper">
               <div className="icon">
@@ -555,7 +580,7 @@ export default function ChainAndTokenSelector({
                 placeholder="e.g. ethereum:eth"
               />
             </div>
-          </TokenTop>
+          </TokenTop> */}
           <div className="ctg-wapper">
             {sortedChainList.map((chain) => {
               if (chain.chainId !== tempChain?.chainId) {
@@ -595,7 +620,7 @@ export default function ChainAndTokenSelector({
           </div>
         </TokenWapper>
       </Container>
-    </Modal>
+    </div>
   );
 }
 

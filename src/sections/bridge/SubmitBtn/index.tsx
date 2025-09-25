@@ -13,18 +13,18 @@ export default function SubmitBtn(props: any) {
   const { openConnectModal } = useConnectModal();
 
   if (!address) {
-    return <button
-    type="button"
-    className={cls}
-    onClick={() => {
-      openConnectModal?.()
-    }}  
+    return <HexagonButton
+      type="button"
+      className={cls}
+      onClick={() => {
+        openConnectModal?.()
+      }}
     >
       Connect Wallet
-    </button>
+    </HexagonButton>
   }
 
-  
+
   return (
     <HexagonButton
       data-click-sound
@@ -35,7 +35,7 @@ export default function SubmitBtn(props: any) {
         if (chainId !== fromChainId) {
           switchChain({ chainId: fromChainId })
           return
-        } 
+        }
 
         if (disabled) {
           return
@@ -45,12 +45,12 @@ export default function SubmitBtn(props: any) {
           return
         }
 
-        
+
 
         onClick()
       }}
     >
-        {comingSoon ? 'Coming soon...' : isLoading ? <Loading size={20}/> : chainId !== fromChainId ? 'Switch Chain' : 'Send'}
+      {comingSoon ? 'Coming soon...' : isLoading ? <Loading size={20} /> : chainId !== fromChainId ? 'Switch Chain' : 'Send'}
     </HexagonButton>
   );
 }

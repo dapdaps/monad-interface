@@ -1,7 +1,7 @@
 import { get } from "@/utils/http";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 12;
 export default function useNft() {
     const [nfts, setNfts] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);

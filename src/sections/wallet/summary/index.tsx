@@ -14,32 +14,33 @@ export default function Summary() {
         autoChecking: false,
     })
 
-    console.log(hasNFT, tokenIds);
-
     return (
-        <CustomerBox>
-            <div className="pb-[10px] text-white flex pr-[30px]">
-                <div className="w-[302px] relative">
-                    <img src="/images/mainnet/wallet/main-nft.png" className="w-full h-auto" />
+        <div className="flex flex-col gap-[10px] w-[405px]">
+            <div className="w-full h-[71px] bg-[url('/images/mainnet/wallet/wallet-header.png')] bg-[length:100%_100%] bg-no-repeat bg-center flex items-center text-white text-[26px] font-[500] pl-[25px] uppercase [text-shadow:0_0_10px_#FFFFFF80]">
+                Wallet
+            </div>
+            <div className="pb-[10px] text-white flex-1 border border-[#383E4E] bg-[#00000080] pt-[36px]">
+                <div className="h-[30dvh] relative">
+                    <img src="/images/mainnet/wallet/main-nft.png" className="w-full h-full object-cover" />
                     {
                         hasNFT && (
-                            <div className="absolute top-[115px] left-1/2 -translate-x-1/2 text-black font-bold">
+                            <div className="absolute top-[7.3dvh] left-1/2 -translate-x-1/2 text-black font-bold">
                                 NO.{tokenIds[0]}
                             </div>
                         )
                     }
                 </div>
-                <div className="pt-[60px]">
-                    <div className="font-[600] text-[20px] flex items-center gap-[10px]">
+                <div className="mt-[30px]">
+                    <div className="font-[600] text-[20px] flex justify-center items-center gap-[10px]">
                         <div>
-                            {userInfo?.address.slice(0, 5)}...{userInfo?.address.slice(-4)}
+                            {userInfo?.address?.slice(0, 5)}...{userInfo?.address?.slice(-4)}
                         </div>
                         <Copyed value={userInfo?.address} />
                     </div>
 
-                    <div className="text-[36px] font-[600] leading-[1] mt-[30px]">$2744.71</div>
+                    <div className="text-[36px] font-[600] leading-[1] mt-[30px] text-center">$2744.71</div>
 
-                    <div className="flex gap-[20px] mt-[100px]">
+                    <div className="flex gap-[20px] mt-[50px] justify-center">
                         <HexagonButton onClick={() => {
                             router.push('/bridge');
                         }}>
@@ -57,7 +58,7 @@ export default function Summary() {
                     </div>
                 </div>
             </div>
-        </CustomerBox>
+        </div>
     )
 }
 

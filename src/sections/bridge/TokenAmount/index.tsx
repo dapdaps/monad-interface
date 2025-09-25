@@ -87,7 +87,7 @@ export default function TokenAmout({
         </div>
 
 
-        <HexagonButton onClick={() => {
+        <div className='cursor-pointer border border-[#34304B] py-[5px] rounded-[4px] px-[7px] bg-[#151822]' onClick={() => {
           if (comingSoon) return;
 
           if (isDest && limitBera) {
@@ -137,7 +137,8 @@ export default function TokenAmout({
               )
             }
           </div>
-        </HexagonButton>
+        </div>
+
       </div>
 
       <div className="flex items-center justify-between text-[#A6A6DB] mt-[10px] text-[12px]">
