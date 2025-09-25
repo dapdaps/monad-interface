@@ -44,7 +44,7 @@ const Discover = (props: any) => {
   }, []);
 
   return (
-    <div className="relative mainnet-content overflow-y-auto bg-no-repeat bg-top bg-cover text-white bg-[#000000] bg-[url(/images/mainnet/discover/bg.png)]">
+    <div className="relative mainnet-content !pb-0 !pt-0 overflow-y-auto bg-no-repeat bg-top bg-cover text-white bg-[#000000] bg-[url(/images/mainnet/discover/bg.png)]">
       <div className="relative w-full h-full flex flex-col items-center">
         <div className="w-full h-full relative z-[2]">
           <Swiper
@@ -59,6 +59,8 @@ const Discover = (props: any) => {
               enabled: true,
               sensitivity: 1,
               releaseOnEdges: true,
+              thresholdDelta: 25,
+              thresholdTime: 150,
             }}
             allowTouchMove={false}
           >

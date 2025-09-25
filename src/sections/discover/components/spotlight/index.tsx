@@ -2,9 +2,12 @@ import { motion } from "framer-motion";
 import Badge from "./badge";
 import Trend from "./trend";
 import clsx from "clsx";
+import { useProgressRouter } from "@/hooks/use-progress-router";
 
 export const Spotlight = (props: any) => {
   const { data, type = "left", className } = props;
+
+  const router = useProgressRouter();
 
   const isLeft = type === "left";
 
@@ -19,13 +22,16 @@ export const Spotlight = (props: any) => {
       }}
     >
       <motion.div
-        className="relative w-full h-full rounded-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] overflow-hidden bg-no-repeat bg-center bg-cover"
+        className="relative cursor-pointer w-full h-full rounded-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] overflow-hidden bg-no-repeat bg-center bg-cover"
         style={{
           backgroundImage: `url(${data.banner})`,
         }}
         whileHover={{
           x: isLeft ? -5 : 5,
           y: 5,
+        }}
+        onClick={() => {
+          router.push(data.link);
         }}
       >
         <Badge className="absolute left-[clamp(1px,_0.53vw,_calc(var(--pc-1512)*0.0053))] top-[clamp(1px,_0.53vw,_calc(var(--pc-1512)*0.0053))]" />

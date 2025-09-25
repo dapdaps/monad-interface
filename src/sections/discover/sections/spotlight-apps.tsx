@@ -3,20 +3,24 @@ import { SpotlightList } from "../config";
 import Spotlight from "../components/spotlight";
 import Mouse from "../components/mouse";
 import clsx from "clsx";
+import { useProgressRouter } from "@/hooks/use-progress-router";
 
 const SpotlightApps = (props: any) => {
   const { } = props;
 
+  const router = useProgressRouter();
+
   return (
-    <>
+    <div className="pt-[clamp(1px,_6.65vw,_calc(var(--pc-1512)*0.0665))]">
       <Card
         title="Spotlight Apps"
-        className="mx-auto mt-[clamp(1px,_2.65vw,_calc(var(--pc-1512)*0.0265))]"
-        contentClassName="h-[clamp(1px,_17.26vw,_calc(var(--pc-1512)*0.1726))] flex justify-center"
+        className="mx-auto"
         backdropClassName="!block [clip-path:polygon(0.9%_15%,99%_15%,99%_92.8%,96.7%_97.8%,78%_93.5%,76.5%_89.2%,70%_88.5%,60%_88%,50%_87.6%,35%_88%,23.4%_88.5%,21%_93%,2.7%_96.4%,2.7%_82%,0.9%_74.9%)]"
-        onExploreAll={() => { }}
+        onExploreAll={() => {
+          router.push("/dapps");
+        }}
       >
-        <div className="absolute top-[clamp(1px,_7.94vw,_calc(var(--pc-1512)*0.0794))] w-full flex justify-center gap-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))]">
+        <div className="w-full flex justify-center gap-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))]">
           {
             SpotlightList.map((item, index) => (
               <Spotlight
@@ -51,7 +55,7 @@ const SpotlightApps = (props: any) => {
           Explore All Apps
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

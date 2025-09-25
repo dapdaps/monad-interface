@@ -1,23 +1,20 @@
 import clsx from "clsx";
 
 const Card = (props: any) => {
-  const { children, className, contentClassName, title, onExploreAll, backdropClassName } = props;
+  const { type = "1", children, className, contentClassName, title, onExploreAll, backdropClassName } = props;
 
   return (
-    <div className={clsx("relative w-[clamp(1px,_93.92vw,_calc(var(--pc-1512)*0.9392))] flex flex-col gap-[0px] items-stretch text-white", className)}>
-      <div className="absolute z-[2] left-0 top-0 w-full h-[clamp(1px,_11.77vw,_calc(var(--pc-1512)*0.1177))] bg-[length:100%_clamp(1px,_11.77vw,_calc(var(--pc-1512)*0.1177))] translate-y-[0px] bg-[url('/images/mainnet/discover/carousel-card-top.png')] bg-no-repeat bg-bottom shrink-0">
-        <div className="absolute left-1/2 -translate-x-1/2 top-[clamp(1px,_2.2vw,_calc(var(--pc-1512)*0.022))] uppercase text-[clamp(1px,_1.72vw,_calc(var(--pc-1512)*0.0172))] leading-[normal] [text-shadow:0_0_6px_rgba(255,255,255,0.50)] font-[500]">
-          {title}
-        </div>
+    <div
+      className={clsx(
+        "relative w-[clamp(1px,_93.78vw,_calc(var(--pc-1512)*0.9378))] pt-[clamp(1px,_7.94vw,_calc(var(--pc-1512)*0.0794))] text-white bg-no-repeat bg-center bg-contain",
+        type === "2" ? "h-[clamp(1px,_50.60vw,_calc(var(--pc-1512)*0.5060))] bg-[url('/images/mainnet/discover/bg-discover-card2.png')]" : "h-[clamp(1px,_39.35vw,_calc(var(--pc-1512)*0.3935))] bg-[url('/images/mainnet/discover/bg-discover-card.png')]",
+        className
+      )}
+    >
+      <div className="absolute left-1/2 -translate-x-1/2 top-[clamp(1px,_2.2vw,_calc(var(--pc-1512)*0.022))] uppercase text-[clamp(1px,_1.72vw,_calc(var(--pc-1512)*0.0172))] leading-[normal] [text-shadow:0_0_6px_rgba(255,255,255,0.50)] font-[500]">
+        {title}
       </div>
-      <div className="relative z-[3] pt-[clamp(1px,_11.77vw,_calc(var(--pc-1512)*0.1177))] pb-[clamp(1px,_10.58vw,_calc(var(--pc-1512)*0.1058))] w-full flex-1">
-        <div className={clsx("w-full bg-[length:100%_1px] pl-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] pr-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] bg-[url('/images/mainnet/discover/carousel-card-middle.png')] bg-repeat-y bg-center", contentClassName)}>
-          {children}
-        </div>
-      </div>
-      <div className="absolute z-[2] left-0 bottom-0 w-full h-[clamp(1px,_10.58vw,_calc(var(--pc-1512)*0.1058))] bg-[length:100%_clamp(1px,_10.58vw,_calc(var(--pc-1512)*0.1058))] translate-y-[0px] bg-[url('/images/mainnet/discover/carousel-card-bottom.png')] bg-no-repeat bg-top shrink-0" />
-      <div className={clsx("absolute z-[1] w-full h-full backdrop-blur-[15px] hidden", backdropClassName)}>
-      </div>
+      {children}
       {
         onExploreAll && (
           <button
