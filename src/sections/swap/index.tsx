@@ -10,14 +10,21 @@ export default function Swap({ dapp }: any) {
   return (
     <div className="relative lg:w-[548px] mt-[88px]">
       <div className="relative z-[2] lg:w-[446px] md:w-[370px] lg:ml-[49px] lg:py-[40px]">
-        <Content dapp={dapp} />
-        
+        <Content
+          dapp={dapp}
+          // showSetting={!["SuperSwap"].includes(dapp.name)}
+        />
+
       </div>
       {
         !isMobile && (
           <>
-            <DappIcon dapp={dapp} />
-             <Bg />
+            {
+              !["SuperSwap"].includes(dapp.name) && (
+                <DappIcon dapp={dapp} />
+              )
+            }
+            <Bg />
           </>
         )
       }

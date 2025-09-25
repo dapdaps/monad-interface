@@ -352,12 +352,15 @@ export class PancakeSwapUniversal extends PancakeSwap {
 
   public async quoter(params: any) {
     let {
-      inputCurrency,
-      outputCurrency,
+      inputCurrency: _inputCurrency,
+      outputCurrency: _outputCurrency,
       inputAmount,
       slippage,
       account
     } = params;
+
+    const inputCurrency = { ..._inputCurrency };
+    const outputCurrency = { ..._outputCurrency };
 
     const _inputAmount = BigNumber(inputAmount)
       .multipliedBy(10 ** (inputCurrency.decimals || 18))
