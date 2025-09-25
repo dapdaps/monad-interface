@@ -37,7 +37,7 @@ export const Spotlight = (props: any) => {
             <img
               src={data.icon}
               alt=""
-              className="w-[clamp(1px,_3.04vw,_calc(var(--pc-1512)*0.0304))] h-[clamp(1px,_3.04vw,_calc(var(--pc-1512)*0.0304))] object-center object-contain shrink-0"
+              className="border border-[#2F3543] rounded-[8px] w-[clamp(1px,_3.04vw,_calc(var(--pc-1512)*0.0304))] h-[clamp(1px,_3.04vw,_calc(var(--pc-1512)*0.0304))] object-center object-contain shrink-0"
             />
             <div className="flex flex-col justify-center gap-[4px]">
               <div className="text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] font-[500]">{data.name}</div>
