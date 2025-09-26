@@ -8,9 +8,13 @@ export default function useGameRecord() {
     const [gameRecord, setGameRecord] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [page, setPage] = useState<number>(1);
-    const [pageTotal, setPageTotal] = useState<number>(1);
+    const [pageTotal, setPageTotal] = useState<number>(0);
 
     const fetchGameRecord = useCallback(async () => {
+        if (isLoading) {
+            return;
+        }
+
         setIsLoading(true);
         const res = await get("/game/records", {
             page: page,
@@ -22,8 +26,11 @@ export default function useGameRecord() {
     }, [page]); 
 
     useEffect(() => {
+        if (!userInfo.address) {
+            return;
+        }
         fetchGameRecord();
-    }, [page]);
+    }, [page, userInfo]);
 
     return {
         gameRecord,

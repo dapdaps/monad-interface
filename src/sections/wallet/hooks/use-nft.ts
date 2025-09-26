@@ -1,8 +1,10 @@
+import useUser from "@/hooks/use-user";
 import { get } from "@/utils/http";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const PAGE_SIZE = 12;
 export default function useNft() {
+    const { userInfo } = useUser(); 
     const [nfts, setNfts] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const pagedNfts = useRef<any[]>([]);
@@ -52,8 +54,11 @@ export default function useNft() {
 
 
     useEffect(() => {
+        if (!userInfo.address) {
+            return;
+        }
         getNfts(1);
-    }, []);
+    }, [userInfo]);
 
     return {
         nfts,

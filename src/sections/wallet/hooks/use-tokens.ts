@@ -123,7 +123,7 @@ export default function useTokens() {
 
 
     useEffect(() => {
-        if (!price || Object.keys(price).length === 0 || !tokenBalance) {
+        if (!userInfo.address || !price || Object.keys(price).length === 0 || !tokenBalance) {
             return;
         }
         fetchTokens();

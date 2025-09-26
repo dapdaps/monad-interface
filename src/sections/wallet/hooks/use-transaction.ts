@@ -1,8 +1,10 @@
+import useUser from "@/hooks/use-user";
 import { get } from "@/utils/http";
 import { useCallback, useEffect, useState } from "react";
 
 const PAGE_SIZE = 10;
 export default function useTransaction({ type }: { type?: string }) {
+    const { userInfo } = useUser();
     const [transaction, setTransaction] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [page, setPage] = useState<number>(1);
@@ -43,8 +45,11 @@ export default function useTransaction({ type }: { type?: string }) {
     }, [page, isLoading, type]);
 
     useEffect(() => {
+        if (!userInfo.address) {
+            return;
+        }
         fetchTransaction();
-    }, [page]);
+    }, [page, userInfo]);
 
     return {
         transaction,
