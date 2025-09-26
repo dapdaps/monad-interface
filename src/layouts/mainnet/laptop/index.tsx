@@ -4,6 +4,11 @@ import LaptopHeader from "./header";
 import LaptopSidebar from "./sidebar";
 import { useMemo } from "react";
 
+const EXCLUDE_FOOTER_PATHS = [
+  /^\/arcade/,
+  /^\/marketplace/,
+];
+
 const LaptopLayout = (props: any) => {
   const { children } = props;
 
@@ -11,7 +16,7 @@ const LaptopLayout = (props: any) => {
 
   const [isFooter] = useMemo(() => {
     const result = [true];
-    if (/^\/arcade/.test(pathname)) {
+    if (EXCLUDE_FOOTER_PATHS.some((reg) => reg.test(pathname))) {
       result[0] = false;
     }
     return result;
