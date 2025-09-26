@@ -8,7 +8,7 @@ const Eyes = (props: any) => {
   const clipOffset = 1;
 
   return (
-    <div className={clsx("flex items-center gap-[0px] p-10 bg-white", className)}>
+    <div className={clsx("flex items-center gap-[0px]", className)}>
       <Eye
         size={size}
         border={border}
