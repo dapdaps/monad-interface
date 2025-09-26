@@ -175,6 +175,7 @@ export default function usePage() {
     // native,
     // bridged,
     // meme,
+    loading,
     tokensArray,
     activeType,
     setActiveType

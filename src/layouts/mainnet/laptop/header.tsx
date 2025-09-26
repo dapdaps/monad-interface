@@ -99,7 +99,7 @@ const AccountMenu = (props: any) => {
   } = props;
 
   return (
-    <div className="w-[200px] h-[205px] text-white leading-[100%] p-[1px] backdrop-blur-[10px] [clip-path:polygon(0_0,100%_0,100%_100%,10%_100%,0_90%,0_0)] bg-[linear-gradient(230deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_100%)]">
+    <div className="w-[200px] h-[185px] text-white leading-[100%] p-[1px] backdrop-blur-[10px] [clip-path:polygon(0_0,100%_0,100%_100%,10%_100%,0_90%,0_0)] bg-[linear-gradient(230deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_100%)]">
       <div className="w-full h-full bg-[radial-gradient(51.76%_59.52%_at_50.44%_40.48%,_rgba(77,_65,_147,_0.00)_0%,_rgba(131,_110,_249,_0.10)_100%)] bg-[rgba(0,0,0,1)] [clip-path:polygon(0_0,100%_0,100%_100%,10%_100%,0_90%,0_0)]">
         <div className="flex items-center gap-[5px] px-[10px] pt-[20px]">
           <div
@@ -133,20 +133,6 @@ const AccountMenu = (props: any) => {
             </div>
           </div>
         </div>
-        <Link
-          href="/faucet"
-          prefetch
-          className="mt-[10px] px-[10px] flex items-center gap-[5px]"
-        >
-          <img
-            src="/images/icon-faucet.svg"
-            alt=""
-            className="w-[11px] h-[11px] object-contain object-center shrink-0"
-          />
-          <div className="text-[#8E97AD] text-[14px] underline underline-offset-1 translate-y-[1px]">
-            Faucet
-          </div>
-        </Link>
         <div className="w-full h-[1px] my-[10px] bg-[rgba(255,255,255,0.1)]"></div>
         <div className="w-full px-[10px]">
           <button

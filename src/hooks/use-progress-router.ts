@@ -3,6 +3,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useDebounceFn } from 'ahooks';
 
+NProgress.configure({ showSpinner: false });
+
 export const useProgressRouter = () => {
   const router = useRouter();
   const pathname = usePathname();
