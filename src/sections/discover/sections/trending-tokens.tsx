@@ -2,22 +2,44 @@ import { useProgressRouter } from "@/hooks/use-progress-router";
 import Card from "../components/card";
 import Mouse from "../components/mouse";
 import { formatLongText } from "@/utils/utils";
-import usePage from "@/sections/marketplace/hooks/use-page";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { numberFormatter } from "@/utils/number-formatter";
 import Big from "big.js";
 import Skeleton from "react-loading-skeleton";
 import SwapModal from "@/sections/swap/SwapModal";
+import { LineChart, Line, ResponsiveContainer, Tooltip, YAxis } from "recharts";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import { useRequest } from "ahooks";
+import { get } from "@/utils/http";
+import { monad } from "@/configs/tokens/monad-testnet";
+
+// Initialize dayjs UTC plugin
+dayjs.extend(utc);
 
 const TrendingTokens = (props: any) => {
   const { } = props;
 
   const router = useProgressRouter();
-  const { tokensArray, loading } = usePage();
 
-  const tokens = useMemo(() => {
-    return tokensArray.flat();
-  }, [tokensArray]);
+  const { runAsync: getTokens, loading, data: tokens } = useRequest(async () => {
+    try {
+      const res = await get("/token/recommend");
+      if (res.code !== 200) {
+        return;
+      }
+      const _tokens = res.data || [];
+      _tokens.forEach((token: any) => {
+        const curr = Object.values(monad).find((_token: any) => _token.address.toLowerCase() === token.address.toLowerCase());
+        token.icon = curr?.icon || "/assets/tokens/default_icon.png";
+      });
+      return _tokens;
+    } catch (error) {
+      console.log("get trending tokens failed: %o", error);
+    }
+  }, {
+    refreshDeps: [],
+  });
 
   const [showSwapModal, setShowSwapModal] = useState(false);
   const [clickedToken, setClickedToken] = useState<any>(null);
@@ -86,6 +108,86 @@ const TrendingTokens = (props: any) => {
 };
 
 export default TrendingTokens;
+
+const PriceChart = ({ data }: { data: { price: string; symbol: string; timestamp: number; }[] }) => {
+  if (!data || data.length === 0) {
+    return <div className="w-[105px] h-[25px] bg-gray-800 rounded"></div>;
+  }
+
+  // Process data format, convert price to number and include timestamp
+  const chartData = data.map((item, index) => ({
+    value: parseFloat(item.price),
+    timestamp: item.timestamp,
+    index: index
+  }));
+
+  // Calculate price trend to determine line color
+  const firstPrice = chartData[0]?.value || 0;
+  const lastPrice = chartData[chartData.length - 1]?.value || 0;
+  const isPositive = lastPrice >= firstPrice;
+
+  // Calculate dynamic Y-axis range for better visualization
+  const values = chartData.map(item => item.value);
+  const minValue = Math.min(...values);
+  const maxValue = Math.max(...values);
+  const range = maxValue - minValue;
+
+  // Add padding to make fluctuations more visible
+  const padding = range > 0 ? range * 0.1 : Math.max(minValue * 0.1, 0.01);
+  const yAxisMin = Math.max(0, minValue - padding);
+  const yAxisMax = maxValue + padding;
+
+  return (
+    <div className="w-[105px] h-[25px]">
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={chartData} margin={{ top: 2, right: 2, bottom: 2, left: 2 }}>
+          <YAxis
+            domain={[yAxisMin, yAxisMax]}
+            hide={true}
+          />
+          <Tooltip
+            content={({ active, payload, label }) => {
+              if (active && payload && payload.length) {
+                const data = payload[0].payload;
+                const timestamp = data?.timestamp;
+                const utcTime = timestamp ? dayjs.utc(timestamp * 1000).format('YYYY-MM-DD HH:mm') : 'N/A';
+
+                return (
+                  <div className="whitespace-nowrap bg-black border border-gray-600 rounded px-2 py-1 text-xs shadow-lg z-10">
+                    <p className="text-white">
+                      Price: {numberFormatter(payload[0].value, 4, true, { prefix: "$", isZeroPrecision: true })}
+                    </p>
+                    <p className="text-gray-300">
+                      Time: {utcTime}
+                    </p>
+                  </div>
+                );
+              }
+              return null;
+            }}
+            cursor={{ stroke: '#666', strokeWidth: 1 }}
+            position={{ x: 0, y: -50 }}
+            allowEscapeViewBox={{ x: true, y: true }}
+            wrapperStyle={{ zIndex: 1000 }}
+          />
+          <Line
+            type="monotone"
+            dataKey="value"
+            stroke={isPositive ? "#BFFF60" : "#FF008A"}
+            strokeWidth={2}
+            dot={false}
+            activeDot={{
+              r: 3,
+              fill: isPositive ? "#BFFF60" : "#FF008A",
+              strokeWidth: 0
+            }}
+            connectNulls={false}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
 
 const TokenItem = (props: any) => {
   const { token, onClick } = props;
@@ -166,7 +268,7 @@ const TokenItem = (props: any) => {
           </div>
         </div>
         <div className="shrink-0">
-
+          <PriceChart data={token.price_7day || []} />
         </div>
       </div>
     </div>

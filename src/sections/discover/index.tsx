@@ -69,6 +69,7 @@ const Discover = (props: any) => {
             <SwiperSlide>
               <SpotlightApps
                 getVisits={getVisits}
+                swiperRef={swiperRef}
               />
             </SwiperSlide>
             <SwiperSlide>

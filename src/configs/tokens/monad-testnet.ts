@@ -275,5 +275,13 @@ export const monad: { [key: string]: Token } = {
     decimals: 8,
     name: "Fiamma BTC",
     icon: "/assets/tokens/fiabtc.webp"
-  }
+  },
+  gmon: {
+    address: "0xaEef2f6B429Cb59C9B2D7bB2141ADa993E8571c3",
+    chainId: monadTestnet.id,
+    symbol: "gMON",
+    decimals: 18,
+    name: "gMON",
+    icon: "/assets/tokens/gmon.png"
+  },
 };

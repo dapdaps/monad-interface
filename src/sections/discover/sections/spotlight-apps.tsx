@@ -8,7 +8,7 @@ import useClickTracking from "@/hooks/use-click-tracking";
 import { useMemo } from "react";
 
 const SpotlightApps = (props: any) => {
-  const { getVisits } = props;
+  const { getVisits, swiperRef } = props;
 
   const router = useProgressRouter();
   const { handleReportWithoutDebounce } = useClickTracking();
@@ -24,7 +24,7 @@ const SpotlightApps = (props: any) => {
         className="mx-auto"
         backdropClassName="!block [clip-path:polygon(0.9%_15%,99%_15%,99%_92.8%,96.7%_97.8%,78%_93.5%,76.5%_89.2%,70%_88.5%,60%_88%,50%_87.6%,35%_88%,23.4%_88.5%,21%_93%,2.7%_96.4%,2.7%_82%,0.9%_74.9%)]"
         onExploreAll={() => {
-          router.push("/dapps");
+          swiperRef?.current?.swiper?.slideTo(2);
         }}
       >
         <div className="w-full flex justify-center gap-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))]">
