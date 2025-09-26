@@ -51,8 +51,8 @@ const LaptopSidebar = (props: any) => {
           )}
         />
       ),
-      path: "/swap",
-      reg: /^\/swap/,
+      path: "/superswap",
+      reg: /^\/superswap/,
       isActive: false,
     },
     {
