@@ -128,9 +128,9 @@ const Entry: React.FC<any> = () => {
           <MobileCard
             isAllInFire={false}
             className="bg-[linear-gradient(180deg,_#BFFF60_0%,_#739939_100%)]"
-            title="2048 on MONAD"
+            title="RPS"
             onClick={() => {
-              router.push("/arcade/2048");
+              router.push("/arcade/rps");
             }}
             button="/images/game/2048-start.svg"
           >
@@ -252,12 +252,12 @@ const Entry: React.FC<any> = () => {
               />
               <div className="w-[clamp(1px,_10.97vw,_calc(var(--nadsa-laptop-width-base)*0.1097))] h-[clamp(1px,_33.54vw,_calc(var(--nadsa-laptop-width-base)*0.3354))] absolute top-[clamp(calc(var(--nadsa-laptop-width-base)*-0.0278),_-2.78vw,_1px)] right-[clamp(calc(var(--nadsa-laptop-width-base)*-0.04),_-4vw,_1px)] bg-[url('/images/game/2048-coins.png')] bg-no-repeat bg-contain bg-center" />
               <div className="text-[clamp(1px,_1.53vw,_calc(var(--nadsa-laptop-width-base)*0.0153))] font-HackerNoonV2 text-[#E7E2FF] relative drop-shadow-[0px_0px_10px_#E7E2FF80]">
-                2048 on MONAD
+                RPS
               </div>
               <img
                 data-bp="1009-003"
                 onClick={() => {
-                  router.push("/arcade/2048");
+                  router.push("/arcade/rps");
                 }}
                 src="/images/game/2048-start.svg"
                 className='w-[clamp(1px,_9.44vw,_calc(var(--nadsa-laptop-width-base)*0.0944))] relative my-[clamp(1px,_1.39vw,_calc(var(--nadsa-laptop-width-base)*0.0139))] cursor-pointer hover:scale-110 transition-transform duration-200'

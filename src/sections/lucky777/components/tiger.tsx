@@ -1,14 +1,13 @@
-import { AnimatePresence, motion, useAnimate, useMotionValue } from 'framer-motion';
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { SPIN_CATEGORIES, SpinCategory } from '@/sections/lucky777/config';
-import { numberFormatter } from '@/utils/number-formatter';
+import { motion, useAnimate, useMotionValue } from 'framer-motion';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { SPIN_CATEGORIES } from '@/sections/lucky777/config';
 import { useRequestByToken } from '../hooks/use-request-by-token';
 import BuyTimesModal from './buyTimes';
 import useToast from '@/hooks/use-toast';
 import HistoryModal from './history';
 import { useAccount } from 'wagmi';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
-import { useCountDown, useInterval } from 'ahooks';
+import { useInterval } from 'ahooks';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import RulesModal from './rules';

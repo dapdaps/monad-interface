@@ -1,5 +1,4 @@
 import Empty from "@/components/empty";
-import CalendarBanner from "@/components/privy-wallet/calendar/banner";
 import useCustomAccount from "@/hooks/use-account";
 import useIsMobile from "@/hooks/use-isMobile";
 import { get } from "@/utils/http";
@@ -178,11 +177,6 @@ const LeaderBoard = (props: any) => {
           )
         }
       </div>
-      {
-        !isMobile && (
-          <CalendarBanner className="!left-[clamp(1px_,2vw,_calc(var(--nadsa-laptop-width-base)*0.02))] !bottom-[clamp(calc(var(--nadsa-laptop-width-base)*-0.11),_-11vw,_1px)]" />
-        )
-      }
     </div>
   );
 };
