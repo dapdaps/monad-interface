@@ -2,14 +2,13 @@ import Empty from "@/components/empty";
 import CalendarBanner from "@/components/privy-wallet/calendar/banner";
 import useCustomAccount from "@/hooks/use-account";
 import useIsMobile from "@/hooks/use-isMobile";
-import { usePrivyAuth } from "@/hooks/use-privy-auth";
 import { get } from "@/utils/http";
 import { numberFormatter } from "@/utils/number-formatter";
 import { formatLongText } from "@/utils/utils";
 import { useRequest } from "ahooks";
 import Big from "big.js";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Skeleton from "react-loading-skeleton";
 
 const tabs = [
@@ -21,8 +20,7 @@ const LeaderBoard = (props: any) => {
   const { className } = props;
 
   const isMobile = useIsMobile();
-  const { accountWithAk } = useCustomAccount();
-  const { address } = usePrivyAuth({ isBind: false });
+  const { accountWithAk, account: address } = useCustomAccount();
 
   const [data, setData] = useState<any>();
   const [tab, setTab] = useState(tabs[0]);

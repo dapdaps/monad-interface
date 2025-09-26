@@ -2,6 +2,52 @@ export const GAME_ABI = [
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "newManager",
+        "type": "address"
+      }
+    ],
+    "name": "addManager",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "chainGameIds",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "string[]",
+        "name": "gameStates",
+        "type": "string[]"
+      },
+      {
+        "internalType": "string[]",
+        "name": "gameSeeds",
+        "type": "string[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes[]",
+        "name": "managerSignatures",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "batchMarkGameAsFailed",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "string",
         "name": "_prefixMessage",
         "type": "string"
@@ -9,6 +55,71 @@ export const GAME_ABI = [
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
+  },
+  {
+    "inputs": [],
+    "name": "ECDSAInvalidSignature",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "length",
+        "type": "uint256"
+      }
+    ],
+    "name": "ECDSAInvalidSignatureLength",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "s",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ECDSAInvalidSignatureS",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "chainGameId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "rewardAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "gameState",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "gameSeed",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "managerSignature",
+        "type": "bytes"
+      }
+    ],
+    "name": "endGame",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
     "inputs": [
@@ -56,6 +167,39 @@ export const GAME_ABI = [
         "type": "uint256"
       },
       {
+        "internalType": "string",
+        "name": "gameState",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "gameSeed",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "managerSignature",
+        "type": "bytes"
+      }
+    ],
+    "name": "markGameAsFailed",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "chainGameId",
+        "type": "uint256"
+      },
+      {
         "internalType": "address",
         "name": "caller",
         "type": "address"
@@ -85,6 +229,37 @@ export const GAME_ABI = [
     ],
     "name": "OwnableUnauthorizedAccount",
     "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address payable",
+        "name": "receiver",
+        "type": "address"
+      }
+    ],
+    "name": "payAffiliate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "managerToRemove",
+        "type": "address"
+      }
+    ],
+    "name": "removeManager",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
     "inputs": [
@@ -248,6 +423,13 @@ export const GAME_ABI = [
     "type": "event"
   },
   {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "anonymous": false,
     "inputs": [
       {
@@ -275,12 +457,12 @@ export const GAME_ABI = [
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "newManager",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "newCounter",
+        "type": "uint256"
       }
     ],
-    "name": "addManager",
+    "name": "setGameCounter",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -288,23 +470,23 @@ export const GAME_ABI = [
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "chainGameId",
-        "type": "uint256"
+        "internalType": "string",
+        "name": "tempGameId",
+        "type": "string"
       },
       {
-        "internalType": "uint256",
-        "name": "rewardAmount",
-        "type": "uint256"
+        "internalType": "bytes32",
+        "name": "gameSeedHash",
+        "type": "bytes32"
       },
       {
         "internalType": "string",
-        "name": "gameState",
+        "name": "algoVariant",
         "type": "string"
       },
       {
         "internalType": "string",
-        "name": "gameSeed",
+        "name": "gameConfig",
         "type": "string"
       },
       {
@@ -318,10 +500,45 @@ export const GAME_ABI = [
         "type": "bytes"
       }
     ],
-    "name": "endGame",
+    "name": "startGame",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address payable",
+        "name": "receiver",
+        "type": "address"
+      }
+    ],
+    "name": "withdrawBalance",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "receive"
   },
   {
     "inputs": [],
@@ -510,39 +727,6 @@ export const GAME_ABI = [
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "chainGameId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "gameState",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "gameSeed",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "deadline",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes",
-        "name": "managerSignature",
-        "type": "bytes"
-      }
-    ],
-    "name": "markGameAsFailed",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -556,24 +740,6 @@ export const GAME_ABI = [
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address payable",
-        "name": "receiver",
-        "type": "address"
-      }
-    ],
-    "name": "payAffiliate",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "prefixMessage",
     "outputs": [
@@ -584,77 +750,6 @@ export const GAME_ABI = [
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "managerToRemove",
-        "type": "address"
-      }
-    ],
-    "name": "removeManager",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "renounceOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "newCounter",
-        "type": "uint256"
-      }
-    ],
-    "name": "setGameCounter",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "tempGameId",
-        "type": "string"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "gameSeedHash",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "string",
-        "name": "algoVariant",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "gameConfig",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "deadline",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes",
-        "name": "managerSignature",
-        "type": "bytes"
-      }
-    ],
-    "name": "startGame",
-    "outputs": [],
-    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -675,40 +770,5 @@ export const GAME_ABI = [
     ],
     "stateMutability": "view",
     "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "transferOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address payable",
-        "name": "receiver",
-        "type": "address"
-      }
-    ],
-    "name": "withdrawBalance",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "stateMutability": "payable",
-    "type": "receive"
   }
 ]
