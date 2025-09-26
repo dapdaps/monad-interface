@@ -3,6 +3,8 @@ import MarketPlaceView from '@/sections/marketplace';
 
 export default function MarketPlacePage() {
   return (
-    <MarketPlaceView />
+    <div className="w-full h-full bg-black">
+      <MarketPlaceView />
+    </div>
   );
 }
