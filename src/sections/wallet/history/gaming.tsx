@@ -35,7 +35,7 @@ export default function Gaming() {
                     }
 
                     {
-                        !isLoading && gameRecord.length === 0 && (
+                        !isLoading && (!gameRecord || gameRecord?.length === 0) && (
                             <tr>
                                 <td colSpan={6} className="pt-[50px]">
                                     <div className="flex justify-center items-center">
@@ -47,7 +47,7 @@ export default function Gaming() {
                     }
 
                     {
-                        !isLoading && gameRecord.length > 0 && gameRecord.map((item: any) => {
+                        !isLoading && gameRecord?.length > 0 && gameRecord.map((item: any) => {
                             return <tr className=" hover:bg-[#23263B] transition" key={item.id}>
                                 <td className="py-4 pl-[30px]" >
                                     <div className="flex items-center gap-2">
