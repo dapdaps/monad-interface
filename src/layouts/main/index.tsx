@@ -21,7 +21,7 @@ const MainLayout = (props: Props) => {
   const { handleTrack } = useClickTracking();
   const { initializePrice } = useTokenPrice();
   const { handleReportNoCode } = useClickTracking();
-  const { validUser } = useInvitationContext();
+  // const { validUser } = useInvitationContext();
   const isMobile = useIsMobile();
   const pathname = usePathname();
 
@@ -57,14 +57,15 @@ const MainLayout = (props: Props) => {
         ...style
       }}
     >
-      {
+      {/* {
         validUser && (
           <MainLayoutHeader />
         )
-      }
+      } */}
+      <MainLayoutHeader />
       <div className="relative grow">{children}</div>
       {
-        (validUser && isFooter) && (
+        (isFooter) && (
           <MainLayoutFooter />
         )
       }

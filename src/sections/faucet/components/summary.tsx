@@ -21,7 +21,7 @@ export default memo(function Summary() {
                 <div className="w-[14px]">
                   <img src="/images/faucet/icon_lightning.svg" alt="icon_lightning" />
                 </div>
-                <span className="text-[#A6A6DB] font-Unbounded text-[12px] leading-[150%]">1 Check-in  = 0.05 MON</span>
+                <span className="text-[#A6A6DB] font-Unbounded text-[12px] leading-[150%]">1 Check-in  = 0.01 MON</span>
               </div>
             )}
           >
@@ -47,7 +47,7 @@ export default memo(function Summary() {
                 </div>
                 <div className="flex flex-col gap-[9px] text-[#A6A6DB] font-Unbounded text-[12px] leading-[150%]">
                   <span>7 Days in a row = 1 Energy Bar</span>
-                  <span>1 Energy Bar = 0.2 MON</span>
+                  <span>1 Energy Bar = 0.1 MON</span>
                 </div>
               </div>
             )}

@@ -8,6 +8,8 @@ import { useInterval } from "ahooks";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 
+const disabled = true;
+
 const CodesMission = (props: any) => {
   const { className } = props;
 
@@ -48,7 +50,7 @@ const CodesMission = (props: any) => {
       )}
     >
       <Popover
-        content={(
+        content={disabled ? null : (
           <div className="relative w-[272px] h-[120px] p-[16px_0_0_16px] bg-[rgba(26,24,67,0.80)] border border-[#3E347C] rounded-[6px] filter-[drop-shadow(0px_0px_10px_rgba(0,_0,_0,_0.25))] backdrop-blur-[10px] text-white font-Unbounded text-[12px] font-[300] leading-[150%]">
             <img
               src="/images/codes/icon-card-triaggle.svg"
@@ -77,13 +79,20 @@ const CodesMission = (props: any) => {
             isMobile ? "!h-[53px]" : "!h-[75px]"
           )}
           onClick={() => {
+            if (disabled) {
+              return;
+            }
             router.push("/codes");
           }}
         >
           <div className="text-[#A6A6DB] text-center font-Unbounded text-[10px] font-[300] leading-normal">
-            Next code drop in
+            {
+              disabled ? "NADSA Two Station" : "Next code drop in"
+            }
           </div>
-          <div className="text-[18px]">{lastTime}</div>
+          <div className="text-[18px] md:text-[16px]">
+            {disabled ? "IN PROGRESS" : lastTime}
+          </div>
         </MissionScreen>
       </Popover>
     </div>
