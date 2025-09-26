@@ -2,10 +2,12 @@ import Pagination from "@/components/pagination";
 import useTransaction from "../hooks/use-transaction";
 import { usePriceStore } from "@/stores/usePriceStore";
 import dayjs from "dayjs";
+import Empty from "@/components/empty";
+import Loading from "@/components/loading";
 
 export default function Transaction() {
     const { transaction, isLoading, page, pageTotal, PAGE_SIZE, setPage } = useTransaction({ type: "" });
-    const { price }: any  = usePriceStore()
+    const { price }: any = usePriceStore()
 
     return (
         <div>
@@ -26,13 +28,13 @@ export default function Transaction() {
                             return <tr className=" hover:bg-[#23263B] transition" key={item.id}>
                                 <td className="py-4 pl-[10px]" >
                                     <div className="flex items-center gap-2">
-                                        { Icons[item.action_type.toLowerCase()] }
-                                        <span>{ item.action_type }</span>
+                                        {Icons[item.action_type.toLowerCase()]}
+                                        <span>{item.action_type}</span>
                                     </div>
                                 </td>
-                                <td className="">{ item.assets ? item.assets.join(' to ') : '' }</td>
-                                <td className="">{ item.action_amount } <span className="text-[#727D97]">{ item.assets && item.assets[0] }</span></td>
-                                <td className="">${ item.trading_value || '-' }</td>
+                                <td className="">{item.assets ? item.assets.join(' to ') : ''}</td>
+                                <td className="">{item.action_amount} <span className="text-[#727D97]">{item.assets && item.assets[0]}</span></td>
+                                <td className="">${item.trading_value || '-'}</td>
                                 <td className=" text-[#727D97]">
                                     {dayjs.unix(item.timestamp).utc().format('YYYY/MM/DD HH:mm')}
                                 </td>
@@ -50,6 +52,34 @@ export default function Transaction() {
                             </tr>
                         })
                     }
+
+
+                    {
+                        !isLoading && transaction.length === 0 && (
+                            <tr>
+                                <td colSpan={6} className="pt-[50px]">
+                                    <div className="flex justify-center items-center">
+                                        <Empty />
+                                    </div>
+                                </td>
+                            </tr>
+
+                        )
+                    }
+
+                    {
+                        isLoading && (
+                            <tr>
+                                <td colSpan={6} className="pt-[50px]">
+                                    <div className="flex justify-center items-center">
+                                        <Loading />
+                                    </div>
+                                </td>
+                            </tr>
+
+                        )
+                    }
+
                 </tbody>
             </table >
 

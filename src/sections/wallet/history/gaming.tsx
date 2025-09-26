@@ -7,7 +7,7 @@ export default function Gaming() {
     return (
         <div>
             <table className="min-w-[600px] w-full text-[18px] max-h-[180px] overflow-y-auto">
-                <thead className="sticky top-0 z-10">
+                <thead className="sticky top-0 z-10 text-[18px]">
                     <tr className=" text-left font-[400] text-[#727D97]">
                         <th className="py-4 pl-[30px]">Type</th>
                         <th className="py-4 pl-[30px]">Assets</th>
@@ -17,7 +17,7 @@ export default function Gaming() {
                         <th className="py-4 pl-[30px]">Wallet</th>
                     </tr>
                 </thead>
-                <tbody className="" >
+                <tbody className="text-[16px]" >
                     <tr className=" hover:bg-[#23263B] transition" >
                         <td className="py-4 pl-[30px]" >
                             <div className="flex items-center gap-2">

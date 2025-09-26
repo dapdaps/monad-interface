@@ -21,7 +21,7 @@ export default function Tokens(props: any) {
                         {
                             isLoading && (
                                 <tr>
-                                    <td colSpan={4} className="py-4">
+                                    <td colSpan={4} className="pt-[50px]">
                                         <div className="flex justify-center items-center">
                                             <Loading />
                                         </div>
@@ -52,7 +52,7 @@ export default function Tokens(props: any) {
                         {
                             !isLoading && tokens.length === 0 && (
                                 <tr>
-                                    <td colSpan={4} className="py-[40px]">
+                                    <td colSpan={4} className="pt-[50px]">
                                         <div className="flex justify-center items-center">
                                             <Empty />
                                         </div>

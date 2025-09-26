@@ -12,7 +12,7 @@ export default function Nfts() {
     return (
         <div className="px-[30px] py-[20px] overflow-y-auto">
             {
-                isLoading && <div className="flex justify-center items-center h-full py-[30px]">
+                isLoading && <div className="flex justify-center items-center h-full pt-[30px]">
                     <Loading />
                 </div>
             }
@@ -31,7 +31,7 @@ export default function Nfts() {
 
             {
                 !isLoading && nfts.length === 0 && (
-                    <div className="flex justify-center items-center h-full py-[30px]">
+                    <div className="flex justify-center items-center h-full pt-[50px]">
                         <Empty desc="No NFTs" />
                     </div>
                 )
