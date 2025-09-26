@@ -4,7 +4,6 @@ import Tiger from './components/tiger'
 import { useLuckyBera } from '@/sections/lucky777/hooks';
 import { useBuyHoney } from '@/sections/lucky777/hooks/buy-honey';
 import { LoginContainer } from '@/sections/terminal/login';
-import GamePrivyProvider from '@/components/privy-provider';
 import useIsMobile from '@/hooks/use-isMobile';
 
 
@@ -13,9 +12,7 @@ const LuckyBeraView: React.FC<any> = () => {
   return (
     <div className="w-full h-full  bg-no-repeat bg-cover bg-top">
       <LoginContainer>
-        <GamePrivyProvider>
-          <TigerView />
-        </GamePrivyProvider>
+        <TigerView />
       </LoginContainer>
     </div>
   );
@@ -44,7 +41,7 @@ const TigerView: React.FC<any> = () => {
     spikynads,
     mop,
     mondies,
-    nns,  
+    nns,
     baldnads,
     owlsmonad,
     octonads,
@@ -57,7 +54,7 @@ const TigerView: React.FC<any> = () => {
     spinUserDataLoading,
   } = useLuckyBera();
   const { visible, toggleVisible } = useBuyHoney();
-  const [update, setUpdate] = useState<any>(1); 
+  const [update, setUpdate] = useState<any>(1);
   const isMobile = useIsMobile();
 
   return (

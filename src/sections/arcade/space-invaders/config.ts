@@ -1,7 +1,9 @@
+import { IS_PRODUCTION } from "@/configs";
+
 export const GAME_CONTRACT_ADDRESS_TEST = "0xf5f1ec09b3ec88F6Cf23ADEEDd792E4642c5B7f1";
 export const GAME_CONTRACT_ADDRESS_PROD = "0x757163592151B66057050A3224EfC12663855612";
 
-export const GAME_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_API === "https://testnet-api-monad.dapdap.net" ? GAME_CONTRACT_ADDRESS_PROD : GAME_CONTRACT_ADDRESS_TEST;
+export const GAME_CONTRACT_ADDRESS = IS_PRODUCTION ? GAME_CONTRACT_ADDRESS_PROD : GAME_CONTRACT_ADDRESS_TEST;
 
 export const GHOST_AVATARS = [
   "/images/arcade/space-invaders/ghost.png",

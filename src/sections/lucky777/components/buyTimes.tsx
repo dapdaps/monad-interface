@@ -1,18 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Modal from "@/components/modal";
-import { post } from "@/utils/http";
-import { getSignature } from "@/utils/signature";
-import { useSendTransaction, usePrivy } from "@privy-io/react-auth";
-
 import { numberFormatter } from "@/utils/number-formatter";
-import { useBalance } from "wagmi";
 import useTokenAccountBalance from "@/hooks/use-token-account-balance";
 import { monadTestnet } from "viem/chains";
 import { useInterval } from "ahooks";
 import useToast from "@/hooks/use-toast";
-import { usePrivyAuth } from "@/hooks/use-privy-auth";
 import CircleLoading from "@/components/circle-loading";
 import MonadBaseCard from "@/components/card/monad-base-card";
+import useCustomAccount from "@/hooks/use-account";
+import { DEFAULT_CHAIN_ID, IS_PRODUCTION } from "@/configs";
 
 interface BuyTimesModalProps {
     open: boolean;
@@ -21,7 +17,9 @@ interface BuyTimesModalProps {
     spinUserData: any
 }
 
-const destAddress: any = process.env.NEXT_PUBLIC_DEPOSIT_ADDRESS || '0x74D00ee5dF8AC41EB1e5879ed3A371D55ada6102';
+export const GAME_CONTRACT_ADDRESS_TEST = "0xC5CFB30A2840fC03a933894A733A163f557F2ae4";
+export const GAME_CONTRACT_ADDRESS_PROD = "0xC5CFB30A2840fC03a933894A733A163f557F2ae4";
+export const GAME_CONTRACT_ADDRESS = IS_PRODUCTION ? GAME_CONTRACT_ADDRESS_PROD : GAME_CONTRACT_ADDRESS_TEST;
 const amount = 0.1;
 
 const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesModalProps) => {
@@ -30,18 +28,9 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
     const inputRef = useRef<HTMLInputElement>(null);
     const spinBalance = useRef(spinUserData?.spin_balance || 0);
     const startSpinBalance = useRef(false);
-    const { address } = usePrivyAuth({ isBind: false });
+    const { account: address, provider } = useCustomAccount();
     const { success, fail } = useToast({
         isGame: true
-    })
-
-    const { sendTransaction } = useSendTransaction({
-        onSuccess: (params) => {
-            setIsPending(false);
-        },
-        onError: (error) => {
-            setIsPending(false);
-        }
     });
 
     const { tokenBalance, update } = useTokenAccountBalance(
@@ -66,24 +55,25 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
         try {
             setIsPending(true);
             spinBalance.current = spinUserData.spin_balance;
-            const { hash } = await sendTransaction({
-                to: destAddress,
+
+            const signer = provider?.getSigner(address);
+            const tx = {
+                to: GAME_CONTRACT_ADDRESS,
                 value: BigInt(amount * selectedTimes * 1e18),
-            }, {
-                uiOptions: {
-                    showWalletUIs: true,
-                    isCancellable: true,
-                    successHeader: 'Buy times success',
-                    successDescription: 'You\'re all set.',
-                    buttonText: 'Buy Times',
-                },
-                address
+            };
+            let gasLimit = 1000000;
+            try {
+                const estimatedGas = await provider.estimateGas(tx);
+                gasLimit = estimatedGas.mul(120).div(100);
+            } catch (err: any) {
+                console.log('estimateGas err: %o', err);
+            }
+            const txResponse = await signer.sendTransaction({
+                ...tx,
+                gasLimit: gasLimit,
             });
-            // const hash = await sendTransaction({
-            //     to: destAddress,
-            //     value: BigInt(amount * selectedTimes * 1e18)
-            // });
-            console.log('hash:', hash);
+            const { status, transactionHash } = await txResponse.wait();
+
             startSpinBalance.current = true;
             // const res = await post("/game/purchase", {
             //     tx_id: hash,
@@ -103,8 +93,8 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
             setIsPending(false);
             success({
                 title: 'Recharge Successfully!',
-                tx: hash,
-                chainId: monadTestnet.id,
+                tx: transactionHash,
+                chainId: DEFAULT_CHAIN_ID,
             }, 'bottom-right');
         } catch (e) {
             console.log('e:', e);
@@ -114,7 +104,7 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
             startSpinBalance.current = false;
             setIsPending(false);
         }
-    }, [address, refreshData, sendTransaction, tokenBalance, spinUserData]);
+    }, [address, refreshData, tokenBalance, spinUserData]);
 
     useInterval(async () => {
         if (spinUserData && spinBalance.current === spinUserData.spin_balance && startSpinBalance.current) {
@@ -134,25 +124,6 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
             update();
         }
     }, [open]);
-
-    // useEffect(() => {
-    //     if (!user) {
-    //         setAddress("");
-    //         return;
-    //     }
-
-    //     const [privyUser] = user.linkedAccounts.filter(
-    //         (account) =>
-    //             account.type === "wallet" &&
-    //             account.walletClientType === "privy"
-    //     );
-    //     if (!privyUser || !(privyUser as any).address) {
-    //         setAddress("");
-    //         return;
-    //     }
-
-    //     setAddress((privyUser as any).address);
-    // }, [user]);
 
     return (
         <Modal
