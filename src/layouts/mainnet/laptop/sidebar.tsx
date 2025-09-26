@@ -51,7 +51,7 @@ const LaptopSidebar = (props: any) => {
           )}
         />
       ),
-      path: "/swap",
+      path: "/dex?dapp=uniswap",
       reg: /^\/swap/,
       isActive: false,
     },

@@ -6,6 +6,7 @@ import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useEffect } from "react";
 import clsx from 'clsx';
 import Big from 'big.js';
+import HexagonButton from "@/components/button/hexagon";
 
 export const BaseButton = ({ loading, onClick, children, disabled = false, className }: any) => {
   return (
@@ -58,20 +59,20 @@ export default function SubmitBtn({
 
   if (!account || !chainId) {
     return (
-      <BaseButton
+      <HexagonButton
         onClick={() => {
           openConnectModal?.();
         }}
         className={className}
       >
         Connect wallet
-      </BaseButton>
+      </HexagonButton>
     );
   }
 
   if (chainId !== chain.chainId) {
     return (
-      <BaseButton
+      <HexagonButton
         onClick={() => {
           switchChain({
             chainId: chain.chainId
@@ -81,35 +82,35 @@ export default function SubmitBtn({
         className={className}
       >
         Switch Network
-      </BaseButton>
+      </HexagonButton>
     );
   }
 
   if (checking || approving || loading) {
-    return <BaseButton loading={true} disabled className={className} />;
+    return <HexagonButton loading={true} disabled className={className} />;
   }
 
   if (!amount || Big(amount || 0).lte(0)) {
     return (
-      <BaseButton className={className} disabled>
+      <HexagonButton className={className} disabled>
         {text}
-      </BaseButton>
+      </HexagonButton>
     );
   }
 
   if (errorTips) {
-    return <BaseButton className={className} disabled>{errorTips}</BaseButton>;
+    return <HexagonButton className={className} disabled>{errorTips}</HexagonButton>;
   }
 
-  if (!spender) return <BaseButton className={className} disabled>Insufficient Liquidity</BaseButton>;
+  if (!spender) return <HexagonButton className={className} disabled>Insufficient Liquidity</HexagonButton>;
 
   if (!approved) {
-    return <BaseButton className={className} onClick={approve}>Approve {token?.symbol}</BaseButton>;
+    return <HexagonButton className={className} onClick={approve}>Approve {token?.symbol}</HexagonButton>;
   }
 
   return (
-    <BaseButton className={className} onClick={onClick} disabled={disabled}>
+    <HexagonButton className={className} onClick={onClick} disabled={disabled}>
       {text}
-    </BaseButton>
+    </HexagonButton>
   );
 }

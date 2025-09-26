@@ -67,10 +67,10 @@ export default function TokenAmout({
   return (
     <div
       className={clsx(
-        "border rounded-[6px] p-[14px] md:bg-[#2D304F]/60 backdrop-blur-[10px]",
-        focus
-          ? "lg:border-[#fff] lg:bg-[#4D4D73] md:border-[#D7D7F6]"
-          : "border-[transparent] lg:bg-white/5"
+        "border border-[#34304B] rounded-[4px] p-[14px] bg-[#151822] backdrop-blur-[10px]",
+        // focus
+        //   ? "lg:border-[#fff] lg:bg-[#4D4D73] md:border-[#D7D7F6]"
+        //   : "border-[transparent] lg:bg-white/5"
       )}
       onFocus={() => {
         if (type === "out") return;
@@ -80,7 +80,7 @@ export default function TokenAmout({
         setFocus(false);
       }}
     >
-      <div className="text-[#A6A6DB] font-Unbounded text-[14px]">
+      <div className="text-[#A6A6DB] text-[16px]">
         {type === "in" ? "You Pay" : "You Receive"}
       </div>
       <div className="flex items-center justify-between gap-[10px] text-white">
@@ -102,8 +102,8 @@ export default function TokenAmout({
           className={`${
             outputCurrencyReadonly
               ? ""
-              : "border lg:bg-[#4D4D73] md:bg-[#393959]"
-          } flex items-center justify-between lg:border-[#ACACE2] md:border-[#454556] rounded-[8px]  min-w-[102px] h-[46px] px-[7px] cursor-pointer`}
+              : "border bg-[#151822]"
+          } flex items-center justify-between border-[#34304B] rounded-[4px] text-[18px] min-w-[102px] px-[10px] h-[36px] cursor-pointer`}
           onClick={() => {
             onCurrencySelectOpen();
           }}
