@@ -10,18 +10,18 @@ import DeFiPosition from "../defi-position";
 import History from "../history";
 
 const transactionTabStyle = {
- background: "linear-gradient(135deg, #3E3284 0%, #1F1A3D 100%)",
-                                color: "#fff"
+    background: "linear-gradient(135deg, #3E3284 0%, #1F1A3D 100%)",
+    color: "#fff"
 }
-export default function Detail() {
-
+export default function Detail(props: any) {
+    const { tokens, isLoading: tokensLoading } = props;
     const [transactionTab, setTransactionTab] = useState<any>(1);
 
     const tabs: any = [
         {
             label: "Tokens",
             value: "Tokens",
-            content: <TabContent><Tokens /></TabContent>,
+            content: <TabContent><Tokens tokens={tokens} isLoading={tokensLoading} /></TabContent>,
         },
         {
             label: "NFTs",
@@ -50,7 +50,7 @@ export default function Detail() {
 
     const tabsClassName = "pr-[10px] flex-1 h-full";
     const tabsHeaderClassName = "!justify-start h-[39px] overflow-hidden rounded-tl-[6px]";
-    const tabsHeaderItemClassName = " py-[20px] text-[18px] relative !text-[#A1AECB] font-[400] h-full bg-[url('/images/mainnet/wallet/wallet-tab-bg.png')] bg-no-repeat bg-center bg-[length:100%_100%] !px-[50px] uppercase first:!pl-[100px] ml-[-15px] first:ml-[-50px] z-1";
+    const tabsHeaderItemClassName = " py-[20px] text-[18px] relative !text-[#A1AECB] font-[400] h-full bg-[url('/images/mainnet/wallet/wallet-tab-bg.png')] bg-no-repeat bg-center bg-[length:100%_100%] !px-[50px] uppercase first:!pl-[100px] ml-[-15px] first:ml-[-50px] z-1 leading-[1]";
     const tabsHeaderItemActiveClassName = "!text-[#fff] font-[600] !bg-[url('/images/mainnet/wallet/wallet-tab-bg-active.png')] bg-no-repeat bg-center bg-[length:100%_100%] [text-shadow:0_0_10px_#FFFFFF99] !z-10";
     const tabsBodyClassName = "border border-[#383E4E] h-full bg-[#00000080] mt-[4px]";
 

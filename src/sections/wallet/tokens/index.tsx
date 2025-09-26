@@ -1,9 +1,8 @@
 import Loading from "@/components/loading";
-import useTokens from "../hooks/use-tokens";
 import Empty from "@/components/empty";
 
-export default function Tokens() {
-    const { tokens, isLoading } = useTokens();
+export default function Tokens(props: any) {
+    const { tokens, isLoading } = props;
 
     return (
         <div className="pb-[20px]">
@@ -31,7 +30,7 @@ export default function Tokens() {
                             )
                         }
                         {
-                            !isLoading && tokens.map((token) => (
+                            !isLoading && tokens.map((token: any) => (
                                 <tr className="hover:bg-[#23263B] transition" key={token.symbol}>
                                     <td className="py-4 pl-[30px]" >
                                         <div className="flex items-center gap-2">
@@ -43,9 +42,9 @@ export default function Tokens() {
                                             <span>{ token.name }</span>
                                         </div>
                                     </td>
-                                    <td className="pl-[30px]">${ token.price }</td>
+                                    <td className="pl-[30px]">${ token.price || '-' }</td>
                                     <td className="pl-[30px]">{ token.balance || '-' }</td>
-                                    <td className="pl-[30px]">${ token.value }</td>
+                                    <td className="pl-[30px]">${ token.value || '-' }</td>
 
                                 </tr>
                             ))

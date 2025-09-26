@@ -29,7 +29,7 @@ export default function Nft({ data }: { data: any }) {
 
             <div className="text-[14px] font-[400] text-[#727D97] w-full truncate flex items-center justify-between px-[10px] mt-[10px]">
                 <div className="truncate w-[70%] overflow-hidden text-ellipsis">Floor Price</div>
-                <div className="">2.35k MON</div>
+                <div className="">{data.collection.floorAskPrice?.amount?.native || '-'} MON</div>
             </div>
         </div>
     )

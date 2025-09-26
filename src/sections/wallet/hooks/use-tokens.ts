@@ -10,6 +10,7 @@ import useUser from "@/hooks/use-user";
 import { erc20Abi } from "viem";
 import Big from "big.js";
 import { usePriceStore } from "@/stores/usePriceStore";
+import useTokenBalance from "@/hooks/use-token-balance";
 
 export default function useTokens() {
     const [tokens, setTokens] = useState<any[]>([]);
@@ -18,17 +19,13 @@ export default function useTokens() {
     const { userInfo } = useUser()
     const rpc = useMemo(() => RPC_LIST[rpcStore.selected], [rpcStore.selected]);
     const { price } = usePriceStore();
-
-    // const lowTokensPrice = useMemo(() => {
-    //     return tokens.filter((token) => {
-    //         return price[token.symbol] && price[token.symbol] < 1;
-    //     });
-    // }, [tokens, price]);
-    
-    
+    const [ sumValue, setSumValue ] = useState<string>('');
+    const { tokenBalance, isLoading: tokenBalanceLoading } = useTokenBalance('native', 18, monadTestnet.id)
 
 
     const fetchTokens = useCallback(async () => {
+        if (isLoading || !price || !userInfo?.address) return;
+
         setIsLoading(true);
         try {
             const res = await get('/token/all');
@@ -39,8 +36,10 @@ export default function useTokens() {
                         address: item.address,
                         symbol: item.symbol,
                         decimals: item.decimals,
+                        icon: item.icon,
                     };
                 });
+
     
                 const [balanceOfs, names, decimalses] = await Promise.all([
                     fetchTokenInfo(_tokens, 'balanceOf', [userInfo?.address]),
@@ -49,15 +48,16 @@ export default function useTokens() {
                 ]);
     
                 _tokens.forEach((token: any, index: number) => {
-                    if (decimalses[index]?.length > 0 && balanceOfs[index]?.length > 0) {
+                    if (balanceOfs && names && decimalses && decimalses[index] && decimalses[index]?.length > 0 && balanceOfs[index]?.length > 0) {
                         token.balance = new Big(balanceOfs[index][0]).div(10 ** decimalses[index][0]).toFixed(4);
-                        token.originalBalance = balanceOfs[index][0].toNumber();
+                        token.originalBalance = balanceOfs[index][0].toString();
                         token.name = names[index][0];
                         token.decimals = decimalses[index][0];
                         if (price[token.symbol]) {
                             token.value = new Big(token.balance).mul(price[token.symbol]).toFixed(2);
                         }
                     }
+
                     token.name = names[index]?.length > 0 ? names[index][0] : '';
                     token.price = price[token.symbol] ? new Big(price[token.symbol]).toFixed(2) : 0;
                 });
@@ -65,7 +65,24 @@ export default function useTokens() {
                 const valuedTokens = _tokens.filter((token: any) => {
                     return token.originalBalance && Number(token.originalBalance) > 0;
                 });
-    
+
+
+                valuedTokens.unshift({
+                    address: 'native',
+                    symbol: 'MON',
+                    decimals: 18,
+                    name: 'MON',
+                    icon: '/images/monad.svg',
+                    balance: tokenBalance ? new Big(tokenBalance).toFixed(4) : 0,
+                    price: price['MON'] ? new Big(price['MON']).toFixed(2) : 0,
+                    value: price['MON'] && tokenBalance ? new Big(tokenBalance).mul(price['MON']).toFixed(2) : 0,
+                });
+
+                const sumValue = valuedTokens.reduce((acc: any, token: any) => {
+                    return acc.add(new Big(token.value));
+                }, new Big(0));
+                setSumValue(sumValue.toFixed(2));
+
                 setTokens(valuedTokens)
     
             } else {
@@ -73,11 +90,12 @@ export default function useTokens() {
             }
             setIsLoading(false);
         } catch (err) {
+            console.log(err);
             setTokens([]);
             setIsLoading(false);
         }
         
-    }, []);
+    }, [isLoading, price, userInfo, tokenBalance]);
 
     const fetchTokenInfo = useCallback(async (_tokens: any[], method: string = 'balanceOf', params: any[] = []) => {
         if (!userInfo?.address || !rpc) return;
@@ -105,13 +123,17 @@ export default function useTokens() {
 
 
     useEffect(() => {
+        if (!price || Object.keys(price).length === 0 || !tokenBalance) {
+            return;
+        }
         fetchTokens();
-    }, []);
+    }, [price, userInfo, tokenBalance]);
 
 
     return {
         tokens,
         isLoading,
         price,
+        sumValue,
     }
 }

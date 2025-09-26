@@ -5,7 +5,8 @@ import HexagonButton from "@/components/button/hexagon";
 import { useRouter } from "next/navigation";
 import { useSoulboundNFT } from "@/hooks/use-soulbound-nft";
 
-export default function Summary() {
+export default function Summary(props: any) {
+    const { sumValue, isLoading } = props;
     const { userInfo } = useUser()
     const router = useRouter();
 
@@ -38,7 +39,7 @@ export default function Summary() {
                         <Copyed value={userInfo?.address} />
                     </div>
 
-                    <div className="text-[36px] font-[600] leading-[1] mt-[30px] text-center">$2744.71</div>
+                    <div className="text-[36px] font-[600] leading-[1] mt-[30px] text-center">${sumValue || '0.00'}</div>
 
                     <div className="flex gap-[20px] mt-[50px] justify-center">
                         <HexagonButton onClick={() => {

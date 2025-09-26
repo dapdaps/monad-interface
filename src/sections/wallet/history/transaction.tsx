@@ -1,62 +1,111 @@
+import Pagination from "@/components/pagination";
+import useTransaction from "../hooks/use-transaction";
+import { usePriceStore } from "@/stores/usePriceStore";
+import dayjs from "dayjs";
+
 export default function Transaction() {
+    const { transaction, isLoading, page, pageTotal, PAGE_SIZE, setPage } = useTransaction({ type: "" });
+    const { price }: any  = usePriceStore()
+
     return (
-        <table className="min-w-[600px] w-full text-[18px] max-h-[180px] overflow-y-auto">
-            <thead className="sticky top-0 z-10">
-                <tr className=" text-left font-[400] text-[#727D97]">
-                    <th className="py-4 pl-[30px]">Type</th>
-                    <th className="py-4 pl-[30px]">Assets</th>
-                    <th className="py-4 pl-[30px]">Amount</th>
-                    <th className="py-4 pl-[30px]">Value</th>
-                    <th className="py-4 pl-[30px]">Time</th>
-                    <th className="py-4 pl-[30px]">Wallet</th>
-                </tr>
-            </thead>
-            <tbody className="" >
-                <tr className=" hover:bg-[#23263B] transition" >
+        <div>
+            <table className="min-w-[600px] w-full text-[18px] max-h-[180px] overflow-y-auto ">
+                <thead className="sticky top-0 z-10">
+                    <tr className=" text-left font-[400] text-[#727D97] text-[18px]">
+                        <th className="py-4 pl-[10px]">Type</th>
+                        <th className="py-4 ">Assets</th>
+                        <th className="py-4 ">Amount</th>
+                        <th className="py-4">Value</th>
+                        <th className="py-4 ">Time</th>
+                        <th className="py-4 ">Wallet</th>
+                    </tr>
+                </thead>
+                <tbody className="text-[16px]">
+                    {
+                        transaction && transaction.map((item: any) => {
+                            return <tr className=" hover:bg-[#23263B] transition" key={item.id}>
+                                <td className="py-4 pl-[10px]" >
+                                    <div className="flex items-center gap-2">
+                                        { Icons[item.action_type.toLowerCase()] }
+                                        <span>{ item.action_type }</span>
+                                    </div>
+                                </td>
+                                <td className="">{ item.assets ? item.assets.join(' to ') : '' }</td>
+                                <td className="">{ item.action_amount } <span className="text-[#727D97]">{ item.assets && item.assets[0] }</span></td>
+                                <td className="">${ item.trading_value || '-' }</td>
+                                <td className=" text-[#727D97]">
+                                    {dayjs.unix(item.timestamp).utc().format('YYYY/MM/DD HH:mm')}
+                                </td>
+                                <td className="">
+                                    <div className="flex items-center gap-2 whitespace-nowrap">
+                                        <span className="text-[#727D97]">From</span>
+                                        <span>{item.account_id ? item.account_id.slice(0, 6) + '...' + item.account_id.slice(-4) : ''}</span>
+                                        <svg onClick={() => {
+                                            window.open('https://testnet.monadexplorer.com/tx/' + item.tx_id)
+                                        }} className="cursor-pointer" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M4.65217 9L13 1M13 1H6.46692M13 1V7.26087M3.6087 1H1V13H13V10.5" stroke="#727D97" stroke-width="1.5" />
+                                        </svg>
+                                    </div>
+                                </td>
+                            </tr>
+                        })
+                    }
+                </tbody>
+            </table >
 
-                    <td className="py-4 pl-[30px]" >
-                        <div className="flex items-center gap-2">
-                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <g filter="url(#filter0_d_40235_1981)">
-                                    <rect x="11" y="11" width="26" height="26" rx="4" fill="#101113" />
-                                    <rect x="10.5" y="10.5" width="27" height="27" rx="4.5" stroke="#34304B" />
-                                </g>
-                                <path d="M31 30.4746V32H17V30.4746H31ZM24.4912 17V26.5389L27.8965 23.3152L28.9189 24.4315L23.7412 29.3335L18.5635 24.4315L19.585 23.3152L22.9912 26.5399V17H24.4912Z" fill="#727D97" />
-                                <defs>
-                                    <filter id="filter0_d_40235_1981" x="0" y="0" width="48" height="48" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                                        <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                                        <feOffset />
-                                        <feGaussianBlur stdDeviation="5" />
-                                        <feComposite in2="hardAlpha" operator="out" />
-                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0" />
-                                        <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_40235_1981" />
-                                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_40235_1981" result="shape" />
-                                    </filter>
-                                </defs>
-                            </svg>
-                            <span>Sent</span>
-                        </div>
-                    </td>
-                    <td className="pl-[30px]">Mon</td>
-                    <td className="pl-[30px]">230.56</td>
-                    <td className="pl-[30px]">$744.71</td>
-                    <td className="pl-[30px] text-[#727D97]">
-                        2025/10/03 20:39
-                    </td>
-                    <td className="pl-[30px]">
-                        <div className="flex items-center gap-2">
-                            <span className="text-[#727D97]">From</span>
-                            <span>0x...2b35</span>
-                            <svg className="cursor-pointer" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.65217 9L13 1M13 1H6.46692M13 1V7.26087M3.6087 1H1V13H13V10.5" stroke="#727D97" stroke-width="1.5" />
-                            </svg>
-                        </div>
-                    </td>
-                </tr>
+            <div className="flex justify-end">
+                <Pagination
+                    page={page}
+                    totalPage={pageTotal}
+                    pageSize={PAGE_SIZE}
+                    onPageChange={(_page: number) => {
+                        setPage(_page);
+                    }}
+                />
+            </div>
 
-
-            </tbody>
-        </table >
+        </div>
     )
+}
+
+const Icons: any = {
+    'swap': <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g filter="url(#filter0_d_40235_2001)">
+            <rect x="11" y="11" width="26" height="26" rx="4" fill="#101113" />
+            <rect x="10.5" y="10.5" width="27" height="27" rx="4.5" stroke="#34304B" />
+        </g>
+        <path d="M17.0383 22.3132C17.0358 22.309 17.0358 22.3023 17.033 22.2975L17.026 22.2709C17.026 22.2658 17.0235 22.2616 17.0235 22.2576L17.0165 22.2283C17.0165 22.2217 17.0139 22.2175 17.0139 22.2133C17.0121 22.204 17.0121 22.1925 17.0095 22.184C17.0095 22.1774 17.0067 22.1723 17.0067 22.1657C17.0067 22.1575 17.0042 22.1482 17.0042 22.1391C17.0026 22.1333 17.0026 22.124 17.0026 22.1167C17.0026 22.1101 17 22.1043 17.0026 22.0926C17 22.0793 17 22.0633 17 22.0483C17 22.0325 17.0026 22.019 17.0026 22.0033L17.0042 21.9816L17.0067 21.959C17.0067 21.9499 17.0067 21.9406 17.0095 21.9324C17.0095 21.9258 17.0121 21.9207 17.0121 21.914C17.0123 21.9045 17.0139 21.895 17.0165 21.8857C17.0165 21.8782 17.0191 21.874 17.0191 21.87L17.026 21.8409C17.026 21.8359 17.026 21.8316 17.0286 21.8277L17.0355 21.8011C17.0381 21.7969 17.0381 21.7902 17.0407 21.786C17.0423 21.7785 17.0476 21.7694 17.0502 21.761L17.0572 21.7426C17.0597 21.736 17.0641 21.7275 17.066 21.7209L17.0748 21.701C17.0764 21.6943 17.0809 21.6877 17.0834 21.6808C17.0853 21.6742 17.0888 21.6651 17.0939 21.6582C17.0983 21.6533 17.0999 21.6465 17.1027 21.6432C17.1052 21.6332 17.1097 21.6265 17.115 21.6181C17.119 21.6144 17.1222 21.6097 17.1245 21.6048C17.1289 21.5955 17.1343 21.5891 17.1394 21.5798C17.1431 21.576 17.1459 21.5718 17.1482 21.5674C17.1533 21.5581 17.1605 21.5508 17.1657 21.5424C17.1675 21.5375 17.1726 21.5331 17.1754 21.5291L17.1947 21.5041L17.2061 21.4908C17.2114 21.4841 17.2156 21.4775 17.2228 21.4708C17.2279 21.4642 17.2351 21.46 17.2402 21.4533C17.2453 21.4491 17.25 21.4416 17.2542 21.4376L17.2883 21.4042L19.594 19.2676C19.9827 18.9108 20.5983 18.9108 20.987 19.2676C21.372 19.6242 21.372 20.201 20.987 20.5576L20.3614 21.1368H29.9587C30.5047 21.1368 30.9447 21.5468 30.9447 22.05C30.9447 22.5559 30.5019 22.9642 29.9587 22.9642H17.9807C17.9667 22.9642 17.95 22.9615 17.9326 22.9615L17.9117 22.9591L17.887 22.9575C17.8773 22.9577 17.8675 22.9571 17.8582 22.9551C17.8513 22.9551 17.8459 22.9526 17.8389 22.9526C17.8287 22.9522 17.8183 22.9509 17.8083 22.9484C17.8004 22.9484 17.796 22.946 17.7906 22.946L17.76 22.9393C17.7521 22.9376 17.7476 22.9376 17.7425 22.9351L17.7146 22.9285C17.7093 22.9261 17.7016 22.9261 17.697 22.9234L17.6707 22.9152L17.6515 22.9077L17.6268 22.8993L17.6059 22.8926L17.5841 22.8833C17.5771 22.8815 17.5676 22.8791 17.5604 22.874C17.5553 22.8698 17.5481 22.8682 17.543 22.8658C17.5341 22.8634 17.5253 22.8592 17.5167 22.8541C17.5123 22.8505 17.5072 22.8476 17.5018 22.8457L17.4756 22.8324C17.4712 22.8288 17.4661 22.8259 17.4607 22.8242C17.4519 22.8191 17.444 22.8124 17.4345 22.8073C17.4291 22.8056 17.4249 22.8007 17.4205 22.7991L17.3943 22.7808L17.3794 22.7708L17.3576 22.7542C17.3506 22.75 17.3462 22.7433 17.3392 22.7391L17.3218 22.7258C17.3104 22.7141 17.2981 22.7057 17.2858 22.6941C17.2735 22.6833 17.2639 22.6716 17.2525 22.6609C17.2474 22.6567 17.2428 22.6501 17.2386 22.645C17.2333 22.6383 17.2254 22.6341 17.2212 22.6275C17.2158 22.6208 17.2089 22.6142 17.2045 22.6073L17.1921 22.594C17.1852 22.5858 17.1773 22.5783 17.1722 22.569C17.1705 22.5648 17.1659 22.5608 17.1633 22.5566C17.1582 22.5475 17.151 22.54 17.1459 22.5316C17.1415 22.5267 17.1389 22.5225 17.1371 22.5183L17.1222 22.4941L17.1127 22.48C17.1101 22.4718 17.1057 22.4649 17.1004 22.4567C17.096 22.4518 17.0934 22.4452 17.0908 22.4401C17.0892 22.4334 17.0839 22.425 17.0813 22.4184C17.0795 22.4117 17.0743 22.4051 17.0716 22.3985L17.0646 22.3776L17.0548 22.355L17.0479 22.3384C17.0427 22.3307 17.0409 22.3216 17.0383 22.3132ZM30.9974 25.994L30.9958 26.0166L30.9932 26.0392C30.9932 26.0476 30.9932 26.0567 30.9907 26.0657C30.9907 26.0724 30.9879 26.0766 30.9879 26.0832C30.9877 26.093 30.986 26.103 30.9835 26.1125C30.9835 26.1191 30.9809 26.1233 30.9809 26.1275L30.974 26.1568C30.974 26.1619 30.974 26.1659 30.9714 26.1701L30.9644 26.1966C30.9617 26.2017 30.9617 26.2084 30.9591 26.2126C30.9572 26.2201 30.9521 26.2283 30.9496 26.2367C30.9477 26.2443 30.9452 26.2485 30.9426 26.2551L30.9338 26.2777L30.9252 26.2977C30.9235 26.3043 30.9189 26.3112 30.9163 26.3178C30.9145 26.3245 30.9112 26.3329 30.9059 26.3395C30.9015 26.3444 30.8999 26.3513 30.8973 26.3552C30.8945 26.3637 30.8903 26.371 30.885 26.3803C30.8806 26.3845 30.878 26.3887 30.8752 26.3927C30.8708 26.4018 30.8657 26.4093 30.8604 26.4177C30.8559 26.4226 30.8534 26.427 30.8515 26.431C30.8464 26.4394 30.8392 26.4467 30.8341 26.456C30.8322 26.4602 30.8271 26.4644 30.8243 26.4684C30.8174 26.4775 30.813 26.485 30.8051 26.4935L30.7937 26.5067C30.7883 26.5134 30.7839 26.52 30.776 26.5269C30.769 26.5335 30.7646 26.5402 30.7567 26.5468C30.7516 26.551 30.7472 26.5586 30.7428 26.5626L30.7086 26.596L28.4021 28.7325C28.018 29.0892 27.3958 29.0892 27.0109 28.7325C26.6259 28.3759 26.6259 27.7992 27.0109 27.4426L27.6356 26.8633H18.0357C17.4907 26.8633 17.0504 26.4534 17.0504 25.9501C17.0504 25.4442 17.4932 25.036 18.0357 25.036H30.0165C30.0305 25.036 30.0472 25.0385 30.0646 25.0385C30.0716 25.0385 30.0786 25.0409 30.0865 25.0409L30.1102 25.0427C30.1199 25.0427 30.1304 25.0427 30.139 25.0451C30.1459 25.0451 30.1513 25.0478 30.1583 25.0478C30.1685 25.048 30.1789 25.0495 30.1889 25.052C30.1977 25.052 30.2022 25.0544 30.2066 25.0544L30.2372 25.061C30.2458 25.0626 30.2503 25.0626 30.2547 25.0653L30.2835 25.0719C30.2888 25.0746 30.2958 25.0746 30.3011 25.077L30.3274 25.0852L30.3457 25.0927L30.3704 25.1011L30.3922 25.1078L30.4131 25.1169C30.421 25.1186 30.4305 25.1211 30.4368 25.1262C30.4419 25.1304 30.4501 25.1319 30.4542 25.1344C30.464 25.137 30.4719 25.141 30.4805 25.1461C30.4849 25.1496 30.49 25.1525 30.4954 25.1545L30.5216 25.1678C30.527 25.172 30.5311 25.1744 30.5365 25.1762C30.5453 25.1811 30.5532 25.188 30.5627 25.1928C30.5672 25.1946 30.5725 25.1995 30.5776 25.2013L30.6039 25.2196L30.618 25.2296C30.625 25.2345 30.6329 25.2396 30.6399 25.2462C30.6468 25.2504 30.6522 25.2571 30.6582 25.2613L30.6757 25.2746L30.7117 25.3062L30.7458 25.3397C30.7512 25.3439 30.7556 25.3505 30.7598 25.3554C30.7651 25.3621 30.7721 25.3663 30.7763 25.3729L30.7939 25.3931L30.8053 25.4064C30.8132 25.4148 30.8202 25.4221 30.8253 25.4314C30.8271 25.4356 30.8322 25.4398 30.8341 25.4438C30.8392 25.4531 30.8464 25.4604 30.8515 25.4688C30.8555 25.4726 30.8587 25.4772 30.8611 25.4821C30.8655 25.4914 30.8708 25.4978 30.8759 25.5062C30.8803 25.5111 30.882 25.5156 30.8847 25.5204C30.8873 25.5288 30.8917 25.5355 30.8971 25.5437C30.9015 25.5486 30.904 25.5554 30.9066 25.5603L30.9163 25.582C30.9189 25.5886 30.9233 25.5953 30.9252 25.6019L30.9338 25.6228L30.9426 25.6453L30.9505 25.662C30.9549 25.6697 30.9577 25.6781 30.9591 25.687C30.9617 25.6912 30.9617 25.6978 30.9644 25.7027L30.9714 25.7293C30.9714 25.7344 30.9714 25.7384 30.974 25.7428L30.9809 25.772C30.9809 25.7787 30.9835 25.7829 30.9835 25.7871C30.986 25.7964 30.986 25.8079 30.9879 25.8163C30.9879 25.823 30.9907 25.8281 30.9907 25.8347C30.9907 25.8429 30.9932 25.8522 30.9932 25.8613C30.9958 25.868 30.9958 25.8764 30.9958 25.883C30.9974 25.8921 30.9974 25.8987 30.9974 25.9054C31 25.9187 31 25.9337 31 25.9503C31.0002 25.965 30.9974 25.9783 30.9974 25.994Z" fill="#727D97" />
+        <defs>
+            <filter id="filter0_d_40235_2001" x="0" y="0" width="48" height="48" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                <feOffset />
+                <feGaussianBlur stdDeviation="5" />
+                <feComposite in2="hardAlpha" operator="out" />
+                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0" />
+                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_40235_2001" />
+                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_40235_2001" result="shape" />
+            </filter>
+        </defs>
+    </svg>,
+    bridge: <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g filter="url(#filter0_d_40235_1895)">
+            <path d="M11 15C11 12.7909 12.7909 11 15 11H33C35.2091 11 37 12.7909 37 15V33C37 35.2091 35.2091 37 33 37H15C12.7909 37 11 35.2091 11 33V15Z" fill="#101113" />
+            <path d="M33 10.5C35.4853 10.5 37.5 12.5147 37.5 15V33C37.5 35.4853 35.4853 37.5 33 37.5H15C12.5147 37.5 10.5 35.4853 10.5 33V15C10.5 12.5147 12.5147 10.5 15 10.5H33Z" stroke="#34304B" />
+        </g>
+        <defs>
+            <filter id="filter0_d_40235_1895" x="0" y="0" width="48" height="48" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                <feOffset />
+                <feGaussianBlur stdDeviation="5" />
+                <feComposite in2="hardAlpha" operator="out" />
+                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0" />
+                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_40235_1895" />
+                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_40235_1895" result="shape" />
+            </filter>
+        </defs>
+    </svg>
+
+
 }
