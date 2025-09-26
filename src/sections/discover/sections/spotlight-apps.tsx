@@ -1,14 +1,21 @@
 import Card from "../components/card";
-import { SpotlightList } from "../config";
+import { AppList } from "../config";
 import Spotlight from "../components/spotlight";
 import Mouse from "../components/mouse";
 import clsx from "clsx";
 import { useProgressRouter } from "@/hooks/use-progress-router";
+import useClickTracking from "@/hooks/use-click-tracking";
+import { useMemo } from "react";
 
 const SpotlightApps = (props: any) => {
-  const { } = props;
+  const { getVisits } = props;
 
   const router = useProgressRouter();
+  const { handleReportWithoutDebounce } = useClickTracking();
+
+  const SpotlightList = useMemo(() => {
+    return AppList.filter((item) => item.isSpotlight).slice(0, 4);
+  }, [AppList]);
 
   return (
     <div className="pt-[clamp(1px,_6.65vw,_calc(var(--pc-1512)*0.0665))]">
@@ -22,17 +29,32 @@ const SpotlightApps = (props: any) => {
       >
         <div className="w-full flex justify-center gap-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))]">
           {
-            SpotlightList.map((item, index) => (
-              <Spotlight
-                key={index}
-                type={index <= 1 ? "left" : "right"}
-                data={item}
-                className={clsx(
-                  index === 0 ? "[transform:perspective(clamp(1px,_66.14vw,_calc(var(--pc-1512)*0.6614)))_rotateY(24deg)_scale(1.05)] origin-[center_center_clamp(calc(var(--pc-1512)*-0.0265),_-2.65vw,_1px)] backface-hidden" : "",
-                  index === SpotlightList.length - 1 ? "[transform:perspective(clamp(1px,_66.14vw,_calc(var(--pc-1512)*0.6614)))_rotateY(-24deg)_scale(1.05)] origin-[center_center_clamp(calc(var(--pc-1512)*-0.0265),_-2.65vw,_1px)] backface-hidden" : "",
-                )}
-              />
-            ))
+            SpotlightList.map((item, index) => {
+              const visits = getVisits(item.bpContent);
+
+              return (
+                <Spotlight
+                  key={index}
+                  type={index <= 1 ? "left" : "right"}
+                  data={item}
+                  className={clsx(
+                    index === 0 ? "[transform:perspective(clamp(1px,_66.14vw,_calc(var(--pc-1512)*0.6614)))_rotateY(24deg)_scale(1.05)] origin-[center_center_clamp(calc(var(--pc-1512)*-0.0265),_-2.65vw,_1px)] backface-hidden" : "",
+                    index === SpotlightList.length - 1 ? "[transform:perspective(clamp(1px,_66.14vw,_calc(var(--pc-1512)*0.6614)))_rotateY(-24deg)_scale(1.05)] origin-[center_center_clamp(calc(var(--pc-1512)*-0.0265),_-2.65vw,_1px)] backface-hidden" : "",
+                  )}
+                  onClick={() => {
+                    handleReportWithoutDebounce(item.bp, item.bpContent);
+  
+                    if (/^https?:\/\//.test(item.link)) {
+                      window.open(item.link, "_blank");
+                      return;
+                    }
+  
+                    router.push(item.link);
+                  }}
+                  visits={visits}
+                />
+              );
+            })
           }
         </div>
       </Card>

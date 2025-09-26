@@ -2,12 +2,10 @@ import { motion } from "framer-motion";
 import Badge from "./badge";
 import Trend from "./trend";
 import clsx from "clsx";
-import { useProgressRouter } from "@/hooks/use-progress-router";
+import { numberFormatter } from "@/utils/number-formatter";
 
 export const Spotlight = (props: any) => {
-  const { data, type = "left", className } = props;
-
-  const router = useProgressRouter();
+  const { data, type = "left", className, onClick, visits } = props;
 
   const isLeft = type === "left";
 
@@ -30,13 +28,11 @@ export const Spotlight = (props: any) => {
           x: isLeft ? -5 : 5,
           y: 5,
         }}
-        onClick={() => {
-          router.push(data.link);
-        }}
+        onClick={onClick}
       >
         <Badge className="absolute left-[clamp(1px,_0.53vw,_calc(var(--pc-1512)*0.0053))] top-[clamp(1px,_0.53vw,_calc(var(--pc-1512)*0.0053))]" />
         <Trend className="absolute right-[clamp(1px,_0.53vw,_calc(var(--pc-1512)*0.0053))] top-[clamp(1px,_0.53vw,_calc(var(--pc-1512)*0.0053))]">
-          3255
+          {numberFormatter(visits, 0, true)}
         </Trend>
         <div className="absolute rounded-b-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] pl-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] pr-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] left-0 bottom-0 flex justify-between items-center gap-[10px] w-full h-[clamp(1px,_4.37vw,_calc(var(--pc-1512)*0.0437))] bg-[rgba(92,90,101,0.30)] backdrop-blur-[20px]">
           <div className="flex items-center gap-[10px]">

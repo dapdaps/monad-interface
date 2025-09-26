@@ -2,15 +2,10 @@ import { useMemo, useState } from "react";
 import Card from "../components/card";
 import clsx from "clsx";
 import { motion } from "framer-motion";
-import DexApps from "@/configs/swap";
-import StakeApps from "@/configs/stake";
 import { useProgressRouter } from "@/hooks/use-progress-router";
-
-enum AppCategory {
-  Gaming = "Gaming",
-  Dex = "Dex",
-  Staking = "Staking",
-};
+import { AppCategory, AppList } from "../config";
+import useClickTracking from "@/hooks/use-click-tracking";
+import { numberFormatter } from "@/utils/number-formatter";
 
 const TABS = [
   {
@@ -35,43 +30,8 @@ const TABS = [
   },
 ];
 
-const APPS = [
-  {
-    name: "Space Invaders",
-    category: AppCategory.Gaming,
-    icon: "/images/mainnet/discover/avatar-space-invaders.png",
-    description: "Attacked or Escape! Bet MON. Cash out. Repeat.",
-    visits: "32356",
-    link: "/arcade/space-invaders",
-  },
-  {
-    name: "Lucky 777",
-    category: AppCategory.Gaming,
-    icon: "/images/mainnet/discover/avatar-lucky-777.png",
-    description: "Spin! Spin! Spin! Earn MON or NFTs by the easiest way",
-    visits: "3235",
-    link: "/arcade/lucky777",
-  },
-  ...Object.values(DexApps).filter((app) => app.name !== "SuperSwap").map((app) => ({
-    name: app.name,
-    category: AppCategory.Dex,
-    icon: app.logo,
-    description: "The Smart Aggregator for Monad",
-    visits: "1234",
-    link: app.path,
-  })),
-  ...Object.values(StakeApps).map((app) => ({
-    name: app.basic.name,
-    category: AppCategory.Staking,
-    icon: app.basic.icon,
-    description: "Liquid Staking on Monad. Featuring MEV-boosted yield powered by the fastest Block Engine in crypto.",
-    visits: "1234",
-    link: app.basic.path,
-  })),
-];
-
 const ExploreAllApps = (props: any) => {
-  const { } = props;
+  const { getVisits } = props;
 
   const [tabs, setTabs] = useState(TABS);
   const activeTab = useMemo(() => {
@@ -79,13 +39,13 @@ const ExploreAllApps = (props: any) => {
   }, [tabs]);
 
   const apps = useMemo(() => {
-    return APPS.filter((app) => {
+    return AppList.filter((app) => {
       if (!activeTab || activeTab?.value === "") {
         return true;
       }
       return app.category === activeTab.value;
     });
-  }, [activeTab, APPS]);
+  }, [activeTab, AppList]);
 
   return (
     <div className="pt-[clamp(1px,_2.38vw,_calc(var(--pc-1512)*0.0238))]">
@@ -124,6 +84,7 @@ const ExploreAllApps = (props: any) => {
               <AppItem
                 app={app}
                 key={index}
+                getVisits={getVisits}
               />
             ))
           }
@@ -201,16 +162,17 @@ const ButtonVisit = (props: any) => {
         >
           <path d="M9.5 5.06218C10.1667 5.44708 10.1667 6.40933 9.5 6.79423L2.23205 10.9904C1.34602 11.5019 0.354474 10.5104 0.866025 9.62436L2.71133 6.4282C2.88996 6.1188 2.88996 5.7376 2.71132 5.4282L0.866025 2.23205C0.354474 1.34602 1.34602 0.354474 2.23205 0.866025L9.5 5.06218Z" fill="currentColor" />
         </svg>
-
       </div>
     </button>
   );
 };
 
 const AppItem = (props: any) => {
-  const { app } = props;
+  const { app, getVisits } = props;
 
   const router = useProgressRouter();
+  const { handleReportWithoutDebounce } = useClickTracking();
+  const visits = getVisits(app.bpContent);
 
   return (
     <div className="flex justify-between items-center shrink-0 pl-[clamp(1px,_1.98vw,_calc(var(--pc-1512)*0.0198))] pr-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] gap-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] w-[clamp(1px,_78.04vw,_calc(var(--pc-1512)*0.7804))] h-[clamp(1px,_6.68vw,_calc(var(--pc-1512)*0.0668))] mx-auto bg-[url('/images/mainnet/discover/bg-explore-app2.png')] bg-no-repeat bg-center bg-contain">
@@ -226,7 +188,7 @@ const AppItem = (props: any) => {
           </div>
         </div>
         <div className="flex items-center gap-[clamp(1px,_1.98vw,_calc(var(--pc-1512)*0.0198))] flex-1">
-          <div className="rounded-[4px] shrink-0 flex justify-center items-center text-[#FFF] w-[clamp(1px,_5.95vw,_calc(var(--pc-1512)*0.0595))] text-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] h-[clamp(1px,_2.78vw,_calc(var(--pc-1512)*0.0278))] backdrop-blur-[2px] bg-[rgba(131,110,249,0.20)]">
+          <div className="rounded-[4px] whitespace-nowrap shrink-0 flex justify-center items-center text-[#FFF] w-[clamp(1px,_5.95vw,_calc(var(--pc-1512)*0.0595))] text-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] h-[clamp(1px,_2.78vw,_calc(var(--pc-1512)*0.0278))] backdrop-blur-[2px] bg-[rgba(131,110,249,0.20)]">
             {app.category}
           </div>
           <div className="text-[#A1AECB] w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(1px,_1.06vw,_calc(var(--pc-1512)*0.0106))]">
@@ -241,11 +203,16 @@ const AppItem = (props: any) => {
             alt=""
             className="w-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] h-[clamp(1px,_0.53vw,_calc(var(--pc-1512)*0.0053))] object-center object-contain shrink-0"
           />
-          <div>{app.visits}</div>
+          <div>{numberFormatter(visits, 0, true)}</div>
         </div>
         <ButtonVisit
           className=""
           onClick={() => {
+            handleReportWithoutDebounce(app.bp, app.bpContent);
+            if (/^https?:\/\//.test(app.link)) {
+              window.open(app.link, "_blank");
+              return;
+            }
             router.push(app.link);
           }}
         />

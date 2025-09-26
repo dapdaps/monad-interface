@@ -7,17 +7,19 @@ import SpotlightApps from "./sections/spotlight-apps";
 import TrendingTokens from "./sections/trending-tokens";
 import ExploreAllApps from "./sections/explore-all-apps";
 import { useRef, useEffect } from "react";
+import { useClick } from "./hooks/use-click";
 
 const Discover = (props: any) => {
   const { } = props;
 
   const swiperRef = useRef<any>(null);
+  const { getVisits } = useClick();
 
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       const target = e.target as HTMLElement;
       const scrollableContent = target.closest('.explore-all-apps-content') as HTMLElement;
-      
+
       if (scrollableContent) {
         const { scrollTop, scrollHeight, clientHeight } = scrollableContent;
         const isAtTop = scrollTop === 0;
@@ -65,13 +67,17 @@ const Discover = (props: any) => {
             allowTouchMove={false}
           >
             <SwiperSlide>
-              <SpotlightApps />
+              <SpotlightApps
+                getVisits={getVisits}
+              />
             </SwiperSlide>
             <SwiperSlide>
               <TrendingTokens />
             </SwiperSlide>
             <SwiperSlide>
-              <ExploreAllApps />
+              <ExploreAllApps
+                getVisits={getVisits}
+              />
             </SwiperSlide>
           </Swiper>
         </div>
