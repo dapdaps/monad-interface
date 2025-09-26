@@ -21,9 +21,10 @@ export default function Swap({ dapp }: any) {
           !isMobile && (
             <>
               {
-                !["SuperSwap"].includes(dapp.name) && (
-                  <DappIcon dapp={dapp} />
-                )
+                // !["SuperSwap"].includes(dapp.name) && (
+                //   <DappIcon dapp={dapp} />
+                // )
+                <DappIcon dapp={dapp} />
               }
               <Bg />
             </>
