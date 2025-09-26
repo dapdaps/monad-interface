@@ -15,7 +15,7 @@ import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import { useScrollDirection } from "../hooks/use-scroll";
 import useIsMobile from "@/hooks/use-isMobile";
-import { PrivyContext } from "@/components/privy-provider";
+import { useArcadeContext } from "@/context/arcade";
 
 const Dashboard = (props: any) => {
   const { } = props;
@@ -45,7 +45,7 @@ const Dashboard = (props: any) => {
     containerRef,
     setShareVisible,
   } = useSpaceInvadersContext();
-  const { setOpenDepositAndWithdraw } = useContext(PrivyContext);
+  const { setShowSwapModal } = useArcadeContext();
 
   const amountIndex = useMemo(() => {
     return AMOUNT_OPTIONS.findIndex((option) => option.value === amount);
@@ -260,7 +260,7 @@ const Dashboard = (props: any) => {
                       gameLost ? "md:hidden" : "md:text-[16px]"
                     )}
                     onClick={() => {
-                      setOpenDepositAndWithdraw?.(true);
+                      setShowSwapModal?.(true);
                     }}
                   >
                     <img

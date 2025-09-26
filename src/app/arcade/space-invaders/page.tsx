@@ -1,7 +1,7 @@
 "use client";
 
+import { ArcadeContextProvider } from "@/context/arcade";
 import SpaceInvadersView from "@/sections/arcade/space-invaders";
-import GamePrivyProvider from "@/components/privy-provider";
 import { useRef } from "react";
 
 const SpaceInvadersPage = () => {
@@ -9,9 +9,9 @@ const SpaceInvadersPage = () => {
 
   return (
     <div ref={containerRef} className="w-full h-[100dvh] overflow-y-auto bg-[#010101] relative scrollbar-hide">
-      <GamePrivyProvider>
+      <ArcadeContextProvider>
         <SpaceInvadersView containerRef={containerRef} />
-      </GamePrivyProvider>
+      </ArcadeContextProvider>
     </div>
   );
 };

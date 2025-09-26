@@ -1,5 +1,4 @@
 import useToast from "@/hooks/use-toast";
-import { usePrivy } from "@privy-io/react-auth";
 import { useRequest, useDebounceFn } from "ahooks";
 import { cloneDeep, random } from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -9,20 +8,19 @@ import Big from "big.js";
 import { requestContract } from "../utils";
 import { GAME_ABI } from "../abi";
 import { getSignature } from "@/utils/signature";
-import { usePrivyAccount } from "./use-account";
 import { Contract, utils } from "ethers";
 import { useBlockNumber } from "wagmi";
 import { useSoundStore } from "@/stores/sound";
 import { DEFAULT_CHAIN_ID } from "@/configs";
 import { useSpaceInvadersStore } from "../store";
 import useIsMobile from "@/hooks/use-isMobile";
+import useCustomAccount from "@/hooks/use-account";
 
 export function useSpaceInvaders(props?: any): SpaceInvaders {
   const { containerRef } = props ?? {};
 
   const toast = useToast({ isGame: true });
-  const { user } = usePrivy();
-  const { accountWithAk, provider, account } = usePrivyAccount();
+  const { accountWithAk, provider, account } = useCustomAccount();
   const { data: blockNumber } = useBlockNumber({ watch: true });
   const soundStore = useSoundStore();
   const spaceInvadersStore: any = useSpaceInvadersStore();
