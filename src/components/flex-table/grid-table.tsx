@@ -87,7 +87,7 @@ const GridTable = (props: Props, ref: any) => {
   return (
     <div
       className={clsx(
-        "w-full text-white font-[Montserrat] text-[14px] font-normal leading-[16px]",
+        "w-full text-white font-[Oxanium] text-[16px] font-normal leading-[16px]",
         className
       )}
     >
