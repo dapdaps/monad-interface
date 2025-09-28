@@ -4,7 +4,7 @@ import { cookieStorage, createStorage, fallback, http } from "wagmi";
 import chains from "./chains";
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import { DEFAULT_CHAIN_ID } from '@/configs/index';
-import { mainnet, monadTestnet } from "viem/chains";
+import { mainnet, monadTestnet, sepolia } from "viem/chains";
 
 export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string;
 
@@ -32,10 +32,11 @@ export const config = getDefaultConfig({
   }),
   ssr: true,
   projectId: projectId,
-  chains: [monadTestnet, mainnet],
+  chains: [monadTestnet, mainnet, sepolia],
   transports: {
     [DEFAULT_CHAIN_ID]: http("https://testnet-rpc.monad.xyz"),
     [mainnet.id]: http("https://eth.merkle.io"),
+    [sepolia.id]: http("https://eth-sepolia.api.onfinality.io/public")
   },
 });
 

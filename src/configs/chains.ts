@@ -162,6 +162,9 @@ export const ChristmasActivityChains: Record<number, Chain | any> = {
   [mainnet.id]: {
     ...mainnet
   },
+  [sepolia.id]: {
+    ...sepolia,
+  },
   [berachainTestnetbArtio.id]: {
     ...berachainTestnetbArtio,
     rpcUrls: {
