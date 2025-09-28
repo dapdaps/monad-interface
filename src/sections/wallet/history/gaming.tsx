@@ -39,7 +39,7 @@ export default function Gaming({ refresh }: { refresh: number }) {
                             <tr>
                                 <td colSpan={6} className="pt-[50px]">
                                     <div className="flex justify-center items-center">
-                                        <Empty />
+                                        <Empty /> No data yet
                                     </div>
                                 </td>
                             </tr>
@@ -96,11 +96,13 @@ export default function Gaming({ refresh }: { refresh: number }) {
 const Icons: any = {
     777: '/images/mainnet/wallet/game_777.png',
     space: '/images/mainnet/wallet/game_space.png',
+    guess: '/images/mainnet/game/guess_who_hover.png',
 }
 
 const Names: any = {
     777: 'Lucky 777',
     space: 'Space Invaders',
+    guess: 'Guess Who',
 }
 function getGameType(name: string) {
     for (const key in Icons) {

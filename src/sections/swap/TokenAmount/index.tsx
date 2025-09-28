@@ -193,7 +193,7 @@ export default function TokenAmout({
                   key={p.value}
                   className={clsx(
                     "cursor-pointer h-[22px] rounded-[6px] duration-500 text-[10px] leading-[22px] font-[400] hover:underline hover:text-white",
-                    p.value === percent ? "text-white" : "text-[#A6A6DB]"
+                    p.value === percent ? "text-[#BFFF60]" : "text-[#A6A6DB]"
                   )}
                   onClick={() => handleRangeChange({ target: p })}
                 >

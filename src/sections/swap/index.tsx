@@ -9,8 +9,8 @@ export default function Swap({ dapp }: any) {
   const isMobile = useIsMobile();
   return (
     <div className="pt-[150px]">
-      <div className="relative lg:w-[548px]">
-        <div className="relative z-[2] lg:w-[446px] md:w-[370px] lg:ml-[49px] lg:py-[40px] font-Oxanium">
+      <div className="relative lg:w-[522px]">
+        <div className="relative z-[2] px-[34px] lg:py-[40px] font-Oxanium">
           <Content
             dapp={dapp}
           // showSetting={!["SuperSwap"].includes(dapp.name)}

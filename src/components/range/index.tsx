@@ -2,13 +2,13 @@ import clsx from "clsx";
 import "./index.css";
 export default function Range({ value, onChange, style, className, disabled }: any) {
   return (
-    <div style={style} className={clsx("range relative", disabled ? "opacity-50" : "", className)}>
+    <div style={style} className={clsx("range relative cursor-pointer", disabled ? "opacity-50" : "", className)}>
       <input
         type="range"
         value={value}
         disabled={disabled}
         onChange={onChange}
-        className="appearance-none"
+        className="appearance-none cursor-pointer"
       />
       <div
         className={clsx(

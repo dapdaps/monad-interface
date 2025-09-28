@@ -136,7 +136,7 @@ export default function Swap({
         title={
           from === "marketplace"
             ? `GET ${outputCurrency?.symbol}`
-            : `Swap via ${dapp.name}`
+            : `Swap via ${dapp.name === "SuperSwap" ? "OneClick" : dapp.name}`
         }
         loading={loading}
         onQuoter={runQuoter}

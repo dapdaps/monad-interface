@@ -934,7 +934,7 @@ export default memo(function Tiger(props: any) {
             </div>
 
             <div className="flex items-center justify-between p-[10px]">
-              <div className="text-[#A5FFFD] text-[10px] text-left w-[220px] opacity-30">1 Free daily</div>
+              <div className="text-[#A5FFFD] text-[10px] text-left w-[220px] opacity-30"></div>
               <motion.button
                 data-bp="1009-007"
                 data-click-sound

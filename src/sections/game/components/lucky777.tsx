@@ -8,7 +8,7 @@ export default function Lucky777() {
         <div onClick={() => {
             router.push("/arcade/lucky777");
         }} className="w-[577px] h-[754px] absolute bottom-0 right-[calc(50%-720px)] cursor-pointer bg-[url('/images/mainnet/game/lucky777.png')] bg-no-repeat bg-cover bg-center group">
-            <img src="/images/mainnet/game/lucky777_hover.png" className="absolute top-[-10px] left-[-10px] w-[325px] h-[594px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+            <img src="/images/mainnet/game/lucky777_hover.png" className="absolute top-[-10px] left-[-10px] w-[330px] h-[594px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
             
             <div
                 className="absolute top-[24px] left-[-60px] w-[340px] h-[65px]"

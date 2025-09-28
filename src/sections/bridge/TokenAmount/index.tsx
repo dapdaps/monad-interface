@@ -160,7 +160,7 @@ export default function TokenAmout({
               <motion.div
                 key={p.value}
                 className="cursor-pointer h-[22px] rounded-[6px] text-[#A6A6DB] text-[10px] font-[400] px-[8px] hover:underline hover:text-white"
-                animate={percent == p.value ? { color: "#fff" } : {}}
+                animate={percent == p.value ? { color: "#BFFF60" } : {}}
                 onClick={() => handleRangeChange({ target: p })}
               >
                 {p.label}

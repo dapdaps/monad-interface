@@ -56,7 +56,7 @@ export default function Transaction({ refresh }: { refresh: number }) {
                             <tr>
                                 <td colSpan={6} className="pt-[50px]">
                                     <div className="flex justify-center items-center">
-                                        <Empty />
+                                        <Empty /> No data yet
                                     </div>
                                 </td>
                             </tr>
