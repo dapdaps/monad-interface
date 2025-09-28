@@ -37,7 +37,7 @@ export default memo(function Footer(props: any) {
         <img src="/images/footer/mirror.svg" alt="mirror" className="w-[24px] cursor-pointer" />
         <Tip text="Mirror" />
       </Link>
-      <Link
+      {/* <Link
         className="group  ease-in-out duration-300 w-[24px] cursor-pointer relative"
         href="/terminal"
         target="_blank"
@@ -45,7 +45,7 @@ export default memo(function Footer(props: any) {
       >
         <img src="/images/footer/terminal.svg" alt="ternimal" className="w-[24px] cursor-pointer" />
         <Tip text="NADSA Terminal" />
-      </Link>
+      </Link> */}
 
       <Link
         className="group  ease-in-out duration-300 w-[24px] cursor-pointer relative"
