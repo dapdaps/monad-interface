@@ -40,10 +40,11 @@ export function useHistory(props?: any) {
         _list.data = res.data.data || [];
         _list.data.forEach((item: any) => {
           item.isCreatorOwn = item.address.toLowerCase() === account.toLowerCase();
-          item.isPlayerOwn = item.player_address.toLowerCase() === account.toLowerCase();
+          // item.isPlayerOwn = item.player_address.toLowerCase() === account.toLowerCase();
           item.isWinner = item.winner_address.toLowerCase() === account.toLowerCase();
           item.isDraw = item.winner === RPSWinner.Draw;
-          item.isClaimable = item.status === RPSStatus.Canceled && Big(Math.floor(Date.now() / 1000)).minus(item.create_time).gt(RPS_TIMEOUT_DURATION);
+          // item.isClaimable = item.status === RPSStatus.Canceled && Big(Math.floor(Date.now() / 1000)).minus(item.create_time).gt(RPS_TIMEOUT_DURATION);
+          item.isClaimable = true;
         });
         _list.pageTotal = res.data.total_page;
         return _list;

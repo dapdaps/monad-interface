@@ -1,5 +1,6 @@
 import InputNumber from "@/components/input-number";
 import clsx from "clsx";
+import { RPS_MIN_BET_AMOUNT } from "../config";
 
 const BetInput = (props: any) => {
   const {
@@ -31,17 +32,17 @@ const BetInput = (props: any) => {
       </div>
       <Button
         onClick={() => {
-          setBetAmount("0.1");
+          setBetAmount(RPS_MIN_BET_AMOUNT + "");
         }}
       >
-        +0.1
+        +{RPS_MIN_BET_AMOUNT}
       </Button>
       <Button
         onClick={() => {
-          setBetAmount("1");
+          setBetAmount((RPS_MIN_BET_AMOUNT * 10) + "");
         }}
       >
-        +1
+        +{RPS_MIN_BET_AMOUNT * 10}
       </Button>
     </div>
   );
