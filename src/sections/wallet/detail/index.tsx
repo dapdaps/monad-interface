@@ -14,7 +14,7 @@ const transactionTabStyle = {
     color: "#fff"
 }
 export default function Detail(props: any) {
-    const { tokens, isLoading: tokensLoading } = props;
+    const { tokens, isLoading: tokensLoading, isRotating, setIsRotating } = props;
     const [transactionTab, setTransactionTab] = useState<any>(1);
 
     const tabs: any = [
@@ -26,7 +26,7 @@ export default function Detail(props: any) {
         {
             label: "NFTs",
             value: "NFTs",
-            content: <TabContent><Nfts /></TabContent>,
+            content: <TabContent><Nfts refresh={isRotating} /></TabContent>,
         },
         // {
         //     label: "DeFi Position",
@@ -36,12 +36,12 @@ export default function Detail(props: any) {
         {
             label: "Transactions",
             value: "Transactions",
-            content: <History type={transactionTab} />,
+            content: <History type={transactionTab} refresh={isRotating} />,
         }
     ]
 
     const [tab, setTab] = useState<any>(tabs[0]);
-    const [isRotating, setIsRotating] = useState(0);
+    
 
     const tabWidth = 'auto';
     const onTab = (tab: typeof Tab) => {

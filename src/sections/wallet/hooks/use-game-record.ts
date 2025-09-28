@@ -3,7 +3,7 @@ import { get } from "@/utils/http";
 import { useCallback, useEffect, useState } from "react";
 
 const PAGE_SIZE = 10;
-export default function useGameRecord() {
+export default function useGameRecord({ refresh }: { refresh: number }) {
     const { userInfo } = useUser();
     const [gameRecord, setGameRecord] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -30,7 +30,7 @@ export default function useGameRecord() {
             return;
         }
         fetchGameRecord();
-    }, [page, userInfo]);
+    }, [page, userInfo, refresh]);
 
     return {
         gameRecord,

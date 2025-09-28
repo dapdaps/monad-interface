@@ -6,8 +6,8 @@ import Empty from "@/components/empty";
 import Loading from "@/components/loading";
 import HashLink from "../hash-link";
 
-export default function Transaction() {
-    const { transaction, isLoading, page, pageTotal, PAGE_SIZE, setPage } = useTransaction({ type: "" });
+export default function Transaction({ refresh }: { refresh: number }) {
+    const { transaction, isLoading, page, pageTotal, PAGE_SIZE, setPage } = useTransaction({ type: "", refresh });
     const { price }: any = usePriceStore()
 
     return (
@@ -25,7 +25,7 @@ export default function Transaction() {
                 </thead>
                 <tbody className="text-[16px]">
                     {
-                        transaction && transaction.map((item: any) => {
+                        !isLoading && transaction && transaction.map((item: any) => {
                             return <tr className=" hover:bg-[#23263B] transition" key={item.id}>
                                 <td className="py-4 pl-[10px]" >
                                     <div className="flex items-center gap-2">

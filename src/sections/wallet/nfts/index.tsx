@@ -4,10 +4,8 @@ import Pagination from "@/components/pagination";
 import Loading from "@/components/loading";
 import Empty from "@/components/empty";
 
-export default function Nfts() {
-    const { nfts, getNfts, page, pageTotal, PAGE_SIZE, isLoading } = useNft();
-
-    console.log(nfts);
+export default function Nfts({ refresh }: { refresh: number }) {
+    const { nfts, getNfts, page, pageTotal, PAGE_SIZE, isLoading } = useNft({ refresh });
 
     return (
         <div className="px-[30px] py-[20px] overflow-y-auto">

@@ -5,8 +5,8 @@ import Empty from "@/components/empty";
 import HashLink from "../hash-link";
 import dayjs from "dayjs";
 
-export default function Gaming() {
-    const { gameRecord, isLoading, fetchGameRecord, page, pageTotal, PAGE_SIZE, setPage } = useGameRecord();
+export default function Gaming({ refresh }: { refresh: number }) {
+    const { gameRecord, isLoading, fetchGameRecord, page, pageTotal, PAGE_SIZE, setPage } = useGameRecord({ refresh });
 
     return (
         <div>

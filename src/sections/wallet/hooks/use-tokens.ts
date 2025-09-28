@@ -12,7 +12,8 @@ import Big from "big.js";
 import { usePriceStore } from "@/stores/usePriceStore";
 import useTokenBalance from "@/hooks/use-token-balance";
 
-export default function useTokens() {
+export default function useTokens({ refresh }: { refresh: number }) {
+
     const [tokens, setTokens] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const rpcStore = useRpcStore();
@@ -127,7 +128,7 @@ export default function useTokens() {
             return;
         }
         fetchTokens();
-    }, [price, userInfo, tokenBalance]);
+    }, [price, userInfo, tokenBalance, refresh]);
 
 
     return {

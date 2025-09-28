@@ -3,7 +3,7 @@ import { get } from "@/utils/http";
 import { useCallback, useEffect, useState } from "react";
 
 const PAGE_SIZE = 10;
-export default function useTransaction({ type }: { type?: string }) {
+export default function useTransaction({ type, refresh }: { type?: string, refresh: number }) {
     const { userInfo } = useUser();
     const [transaction, setTransaction] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -49,7 +49,7 @@ export default function useTransaction({ type }: { type?: string }) {
             return;
         }
         fetchTransaction();
-    }, [page, userInfo]);
+    }, [page, userInfo, refresh]);
 
     return {
         transaction,

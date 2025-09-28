@@ -3,7 +3,7 @@ import { get } from "@/utils/http";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const PAGE_SIZE = 12;
-export default function useNft() {
+export default function useNft({ refresh }: { refresh: number }) {
     const { userInfo } = useUser(); 
     const [nfts, setNfts] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -11,13 +11,20 @@ export default function useNft() {
     const [page, setPage] = useState(1);
     const [pageTotal, setPageTotal] = useState(1);
     const continuationRef = useRef<string | null>(null);
+    const toalPageRef = useRef(1);
 
     const getNfts = useCallback(async (pageIndex: number = 1) => {
         if (isLoading) {
             return;
         }
 
-        if (pageIndex < pageTotal) {
+        if (page === 1) {
+            // continuationRef.current = null;
+            // pagedNfts.current = []
+            // setPageTotal(1)
+        }
+
+        if (pageIndex < toalPageRef.current) {
             setNfts(pagedNfts.current[pageIndex - 1]);
             setPage(pageIndex);
             return;
@@ -39,8 +46,10 @@ export default function useNft() {
                 if (res.data.continuation) {
                     continuationRef.current = res.data.continuation;
                     setPageTotal(pageIndex + 1);
+                    toalPageRef.current = pageIndex + 1;
                 } else {
                     setPageTotal(pageIndex);
+                    toalPageRef.current = pageIndex;
                 }
             } else {
                 setNfts([]);
@@ -52,13 +61,22 @@ export default function useNft() {
         }
     }, [pageTotal, isLoading]);
 
-
     useEffect(() => {
         if (!userInfo.address) {
             return;
         }
+
+        setPageTotal(1)
+        continuationRef.current = null
+        pagedNfts.current = []
+        toalPageRef.current = 1
+
         getNfts(1);
-    }, [userInfo]);
+    }, [userInfo, refresh]);
+
+   
+
+    
 
     return {
         nfts,
