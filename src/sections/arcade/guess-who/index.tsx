@@ -9,6 +9,13 @@ import Monsters from "./components/monsters";
 import { motion } from "framer-motion";
 import BetInput from "./components/bet-input";
 import { useGuessWho } from "./hooks";
+import GridTable, { GridTableAlign, GridTableSortDirection } from "@/components/flex-table/grid-table";
+import HexagonButton from "@/components/button/hexagon";
+import { numberFormatter } from "@/utils/number-formatter";
+import PlayerAvatar from "./components/player-avatar";
+import Pagination from "@/components/pagination";
+import GuessWhoToast from "./components/toast";
+import JoinRoomModal from "./components/join/modal";
 
 const GuessWho = () => {
 
@@ -33,6 +40,7 @@ const GuessWho = () => {
                 betMonster={create.betMonster}
                 onSelectMonster={create.onSelectMonster}
                 className="absolute z-[1] bottom-[46px]"
+                visibleMonsters={[Monster.Eye1, Monster.Eye2, Monster.Eye3]}
               />
               <motion.img
                 src="/images/mainnet/arcade/guess-who/ufo-light.png"
@@ -105,11 +113,156 @@ const GuessWho = () => {
             />
           </div>
         </div>
-        <div className="shrink-0">
-          <div className="w-[874px] h-[101px] flex justify-between items-center bg-[url('/images/mainnet/arcade/guess-who/bg-room-item.png')] bg-no-repeat bg-center bg-contain">
+        <div className="shrink-0 w-[890px]">
+          <div className="w-full flex justify-between items-center gap-[10px]">
+            <button
+              type="button"
+              className="group hover:text-white hover:bg-[radial-gradient(50%_66%_at_46%_50%,_#553BE4_0%,_#221662_100%)] transition-all duration-150 flex items-center justify-center gap-[10px] w-[86px] h-[32px] shrink-0 text-[#A1AECB] text-[16px] font-normal leading-normal bg-black rounded-[4px] border border-[#34304B]"
+            >
+              <svg
+                width="10"
+                height="12"
+                viewBox="0 0 10 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-[10px] h-[12px] shrink-0 rotate-180 group-hover:[filter:drop-shadow(0_0_10px_rgba(255,255,255,0.60))]"
+              >
+                <path d="M9.5 5.06218C10.1667 5.44708 10.1667 6.40933 9.5 6.79423L2.23205 10.9904C1.34602 11.5019 0.354474 10.5104 0.866025 9.62436L2.71133 6.4282C2.88996 6.1188 2.88996 5.7376 2.71132 5.4282L0.866025 2.23205C0.354474 1.34602 1.34602 0.354474 2.23205 0.866025L9.5 5.06218Z" fill="currentColor" />
+              </svg>
+              <div>Back</div>
+            </button>
+            <div className="text-[22px] font-[600] uppercase text-center pt-[13px]">
+              All GAMES . 36
+            </div>
+            <div className="flex justify-end items-center gap-[10px] pt-[13px]">
+              <button
+                type="button"
+                className="w-[18px] h-[18px] p-[3px] flex justify-center items-center rounded-[2px] border border-[#5E549D] bg-[#1A1843] shadow-[0_0_10px_0_rgba(0,0,0,0.05)]"
+              >
+                <div
+                  className={clsx(
+                    "w-full h-full bg-[#BFFF60] rounded-[2px] flex justify-center items-center transition-all duration-300 opacity-0",
+                  )}
+                />
+              </button>
+              <div className="text-[#A1AECB]">
+                You Joined only
+              </div>
+            </div>
+          </div>
+          <div className="w-full">
+            <GridTable
+              headerRowClassName="!px-0 !gap-x-[40px]"
+              bodyRowClassName="odd:bg-[unset] !px-0 !gap-x-[40px] text-[18px] h-[104px] bg-[url('/images/mainnet/arcade/guess-who/bg-room-item.png')] bg-no-repeat bg-center bg-contain"
+              columns={[
+                {
+                  dataIndex: "no",
+                  title: () => (
+                    <div className="pl-[40px]">
+                      Game No.
+                    </div>
+                  ),
+                  width: 140,
+                  sort: true,
+                  render: (record: any) => {
+                    return (
+                      <div className="pl-[40px]">
+                        {record.no}
+                      </div>
+                    );
+                  },
+                },
+                {
+                  dataIndex: "player",
+                  title: "Player",
+                  sort: true,
+                  render: (record: any) => {
+                    return (
+                      <div className="flex items-center gap-[40px]">
+                        <PlayerAvatar />
+                        <PlayerAvatar />
+                        <PlayerAvatar />
+                      </div>
+                    );
+                  },
+                },
+                {
+                  dataIndex: "bet_amount",
+                  title: "Bet Price",
+                  width: 100,
+                  sort: true,
+                  render: (record: any) => {
+                    return (
+                      <div className="flex items-center gap-[6px]">
+                        <img
+                          src={guessWho.betToken.icon}
+                          alt=""
+                          className="w-[18px] h-[18px] object-center object-contain shrink-0"
+                        />
+                        <div className="">
+                          {numberFormatter(record.bet_amount, 3, true, { isShort: true })}
+                        </div>
+                      </div>
+                    );
+                  },
+                },
+                {
+                  dataIndex: "join",
+                  title: "",
+                  width: 170,
+                  render: (record: any) => {
+                    return (
+                      <>
+                        <HexagonButton
+                          onClick={() => {
+                          }}
+                          loading={record.loading}
+                          disabled={record.loading}
+                          height={36}
+                          className="!text-[18px]"
+                          innerClassName="!pl-[47px] !pr-[19px]"
+                        >
+                          <div className="">
+                            Join
+                          </div>
+                          <img
+                            src="/images/mainnet/discover/icon-more3.svg"
+                            alt=""
+                            className="w-[14px] h-[12px] object-center object-contain shrink-0"
+                          />
+                        </HexagonButton>
+                      </>
+                    );
+                  },
+                },
+              ]}
+              data={[
+                { no: "52305", bet_amount: "10" },
+                { no: "52305", bet_amount: "10" },
+              ]}
+              loading={false}
+              sortDirection={GridTableSortDirection.Desc}
+              sortDataIndex="no"
+              onSort={(dataIndex, nextDirection) => {
+                console.log(dataIndex, nextDirection);
+              }}
+            />
+            <div className="flex justify-end items-center pr-[110px]">
+              <Pagination
+                page={1}
+                totalPage={1}
+                pageSize={10}
+                onPageChange={(_page: number) => {
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
+      <GuessWhoToast />
+      <JoinRoomModal
+        betToken={guessWho.betToken}
+      />
     </div>
   );
 };
