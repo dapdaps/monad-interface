@@ -12,7 +12,7 @@ const Game: React.FC<any> = () => {
       <Entry />
       <Space />
       <Lucky777 />
-      <Sum />
+      {/* <Sum /> */}
       <User />
     </div>
   );

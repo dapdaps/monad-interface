@@ -1,3 +1,4 @@
+import HexagonButton from "@/components/button/hexagon";
 import Modal from "@/components/modal";
 import useClickTracking from "@/hooks/use-click-tracking";
 import { IDapp } from "@/types";
@@ -13,7 +14,7 @@ export default memo(function externalLinksModal({
   const { handleReport } = useClickTracking()
   return (
     <Modal
-      open={dapp}
+      open={dapp != null}
       onClose={onClose}
       closeIcon={(
         <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9" viewBox="0 0 10 9" fill="none">
@@ -21,25 +22,25 @@ export default memo(function externalLinksModal({
         </svg>
       )}
     >
-      <div className="flex flex-col items-center w-[300px] h-[342px] rounded-[6px] border border-[#3E347C] bg-[rgba(26,24,67,0.80)] shadow-[0_0_0px_0_rgba(0,0,0,0.25)] blur-[10]">
+      <div className="flex flex-col items-center font-Oxanium w-[300px] h-[342px] rounded-[6px] border border-[#3E347C] bg-[rgba(26,24,67,0.80)] shadow-[0_0_0px_0_rgba(0,0,0,0.25)] blur-[10]">
         <div className="m-[48px_auto_24px] w-[23px]">
           <img src="/images/dapps/link_2.svg" alt="link_2" />
         </div>
-        <div className="text-white font-Unbounded text-[20px] font-medium leading-[100%]">External Links</div>
+        <div className="text-white  text-[20px] font-medium leading-[100%]">External Links</div>
         <div className="flex items-center gap-[10px] m-[18px_0_14px]">
           <div className="w-[30px]">
             <img src={dapp?.icon} alt={dapp?.name} className="w-[30px] h-[30px] object-center object-contain rounded-[6px]" />
           </div>
-          <div className="text-white font-Unbounded text-[16px] leading-[100%]">{dapp?.name}</div>
+          <div className="text-white  text-[16px] leading-[100%]">{dapp?.name}</div>
         </div>
-        <div className="text-center text-white font-Unbounded text-[12px] leading-[150%] opacity-60">The app you selected needs to be<br />used on its official website.<br />We will redirect you to an external<br />link shortly.</div>
-        <div
-          className="mt-[22px] cursor-pointer w-[253px] h-[42px] rounded-[6px] bg-[#8B87FF] flex items-center justify-center text-white font-Unbounded text-[14px] font-medium leading-[100%]"
+        <div className="text-center text-white  text-[12px] leading-[150%] opacity-60">The app you selected needs to be<br />used on its official website.<br />We will redirect you to an external<br />link shortly.</div>
+        <HexagonButton
+          className="mt-[22px] w-[253px] h-[42px] flex items-center justify-center text-white  text-[14px] font-medium leading-[100%]"
           onClick={() => {
-            handleReport("1003-001", dapp.name)
-            window.open(dapp.link, "_blank");
+            handleReport("1003-001", dapp?.name)
+            window.open(dapp?.link, "_blank");
           }}
-        >Visit</div>
+        >Visit</HexagonButton>
       </div>
     </Modal>
   )

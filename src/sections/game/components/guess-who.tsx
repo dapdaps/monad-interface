@@ -1,18 +1,24 @@
 import Eyes from "@/sections/arcade/guess-who/components/eyes";
 import clsx from "clsx";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 export default function GuessWho() {
+    const router = useRouter();
+    
     return (
-        <div className="w-[640px] h-[728px] absolute bottom-0 left-0 cursor-pointer bg-[url('/images/mainnet/game/guess_who.png')] bg-no-repeat bg-cover bg-center group">
+        <div onClick={() => {
+            router.push("/arcade/guess-who");
+        }} className="w-[640px] h-[728px] absolute bottom-0 left-0 cursor-pointer bg-[url('/images/mainnet/game/guess_who.png')] bg-no-repeat bg-cover bg-center group">
             <img 
                 src="/images/mainnet/game/guess_who_hover.png" 
                 className="absolute top-[4px] left-[268px] w-[377px] h-[530px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
             />
 
-            <div className="absolute top-[5px] left-[313px] -rotate-[12deg] rounded-full pointer-events-none">
+            <div className="absolute top-[45px] left-[350px] -rotate-[12deg] rounded-full pointer-events-none">
                 <Eyes size={38} />
             </div>
+
             {
                 [1,2].map((item) => (
                     <div key={item} className={clsx("absolute pointer-events-none top-[68px] left-[310px] text-white text-[42px] font-[800] italic font-Oxanium uppercase -rotate-[12.5deg]", item === 1 ? "[-webkit-text-stroke:15px_#13AEAF]" : "[-webkit-text-stroke:5px_#fff]")}>

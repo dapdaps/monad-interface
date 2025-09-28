@@ -15,7 +15,9 @@ const Card = (props: any) => {
         {title}
       </div>
       {children}
-      {
+
+      
+      {/* {
         onExploreAll && (
           <button
             type="button"
@@ -32,7 +34,7 @@ const Card = (props: any) => {
             />
           </button>
         )
-      }
+      } */}
     </div>
   );
 };

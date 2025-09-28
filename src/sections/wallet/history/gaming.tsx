@@ -51,15 +51,15 @@ export default function Gaming() {
                             return <tr className=" hover:bg-[#23263B] transition" key={item.id}>
                                 <td className="py-4 pl-[30px]" >
                                     <div className="flex items-center gap-2">
-                                        <img src={ getGameType(item.game_category) } className="w-[27px] h-[27px]" />
-                                        <span>{ item.game_category }</span>
+                                        <img src={getGameType(item.game_category)} className="w-[27px] h-[27px]" />
+                                        <span>{item.game_category}</span>
                                     </div>
                                 </td>
                                 {/* <td className="pl-[30px]">Mon</td> */}
-                                <td className="pl-[30px]">{ item.amount }</td>
+                                <td className="pl-[30px]">{item.amount}</td>
                                 {/* <td className="pl-[30px]">$744.71</td> */}
                                 <td className="pl-[30px] text-[#727D97]">
-                                    { dayjs.unix(item.create_time).utc().format('YYYY/MM/DD HH:mm') }
+                                    {dayjs.unix(item.create_time).utc().format('YYYY/MM/DD HH:mm')}
                                 </td>
                                 <td className="pl-[30px]">
                                     <div className="flex items-center gap-2">
@@ -75,16 +75,20 @@ export default function Gaming() {
                 </tbody>
             </table>
 
-            <div className="flex justify-end">
-                <Pagination
-                    page={page}
-                    totalPage={pageTotal}
-                    pageSize={PAGE_SIZE}
-                    onPageChange={(_page: number) => {
-                        setPage(_page);
-                    }}
-                />
-            </div>
+            {
+                pageTotal > 1 && (
+                    <div className="flex justify-end">
+                        <Pagination
+                            page={page}
+                            totalPage={pageTotal}
+                            pageSize={PAGE_SIZE}
+                            onPageChange={(_page: number) => {
+                                setPage(_page);
+                            }}
+                        />
+                    </div>
+                )
+            }
         </div>
     )
 }

@@ -6,6 +6,7 @@ import { useProgressRouter } from "@/hooks/use-progress-router";
 import { AppCategory, AppList } from "../config";
 import useClickTracking from "@/hooks/use-click-tracking";
 import { numberFormatter } from "@/utils/number-formatter";
+import ExternalLinksModal from "@/sections/dapps/components/external-links-modal";
 
 const TABS = [
   {
@@ -170,6 +171,8 @@ const ButtonVisit = (props: any) => {
 const AppItem = (props: any) => {
   const { app, getVisits } = props;
 
+  const [showExternalLinksModal, setShowExternalLinksModal] = useState(false);
+
   const router = useProgressRouter();
   const { handleReportWithoutDebounce } = useClickTracking();
   const visits = getVisits(app.bpContent);
@@ -210,13 +213,26 @@ const AppItem = (props: any) => {
           onClick={() => {
             handleReportWithoutDebounce(app.bp, app.bpContent);
             if (/^https?:\/\//.test(app.link)) {
-              window.open(app.link, "_blank");
+              setShowExternalLinksModal(true);
               return;
             }
+            
             router.push(app.link);
+            
           }}
         />
       </div>
+
+      {
+        showExternalLinksModal && (
+          <ExternalLinksModal
+            dapp={app}
+            onClose={() => {
+              setShowExternalLinksModal(false);
+             }}
+          />
+        )
+      }
     </div>
   );
 };

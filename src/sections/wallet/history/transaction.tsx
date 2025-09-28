@@ -80,16 +80,20 @@ export default function Transaction() {
                 </tbody>
             </table >
 
-            <div className="flex justify-end">
-                <Pagination
-                    page={page}
-                    totalPage={pageTotal}
-                    pageSize={PAGE_SIZE}
-                    onPageChange={(_page: number) => {
-                        setPage(_page);
-                    }}
-                />
-            </div>
+            {
+                pageTotal > 1 && (
+                    <div className="flex justify-end">
+                        <Pagination
+                            page={page}
+                            totalPage={pageTotal}
+                            pageSize={PAGE_SIZE}
+                            onPageChange={(_page: number) => {
+                                setPage(_page);
+                            }}
+                        />
+                    </div>
+                )
+            }
 
         </div>
     )

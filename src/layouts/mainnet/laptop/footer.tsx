@@ -8,7 +8,7 @@ const LaptopFooter = (props: any) => {
   return (
     <div className={clsx("fixed text-white text-[26px] font-[300] leading-[24px] z-[10] left-0 bottom-0 w-full p-[10px_20px_10px_30px] flex justify-between items-end", className)}>
       <div className="flex flex-col gap-[17px]">
-        <div className="flex items-end gap-[30px]">
+        {/* <div className="flex items-end gap-[30px]">
           <div className="flex flex-col gap-[15px]">
             <div className="text-[#727D97] text-[14px] font-[400] leading-[15px] uppercase">
               total rewards
@@ -37,7 +37,7 @@ const LaptopFooter = (props: any) => {
           src="/images/mainnet/layout/footer-line.png"
           alt=""
           className="w-[435px] h-[6px] object-contain object-center shrink-0"
-        />
+        /> */}
       </div>
       <div className="flex justify-end items-end gap-[9px]">
         {

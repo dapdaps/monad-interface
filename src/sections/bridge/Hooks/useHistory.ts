@@ -13,7 +13,7 @@ export const useHistory = () => {
         if (!address) return
 
         setIsLoading(true)
-        const res = await http.get(`/action/get-actions-by-type`, {
+        const res = await http.get(`/transaction/list`, {
             action_type: 'Bridge',
             page: 1,
             page_size: 1000,
@@ -24,7 +24,7 @@ export const useHistory = () => {
     }, 5000, { immediate: true })
 
     const updateStatus = useCallback(async (item: any) => {
-        await http.post('/action/bridge/status', {
+        await http.post('/transaction/bridge/status', {
             tx_id: item.tx_id,
             status: '4'
         });
