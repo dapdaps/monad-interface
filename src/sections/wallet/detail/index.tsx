@@ -36,7 +36,7 @@ export default function Detail(props: any) {
         {
             label: "Transactions",
             value: "Transactions",
-            content: <History type={transactionTab} refresh={isRotating} />,
+            content: <TabContent><History type={transactionTab} refresh={isRotating} /></TabContent>,
         }
     ]
 

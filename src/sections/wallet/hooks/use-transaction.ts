@@ -22,6 +22,7 @@ export default function useTransaction({ type, refresh }: { type?: string, refre
                 page_size: PAGE_SIZE,
                 action_type: type || undefined,
             });
+
             const _transaction = res.data.data.map((item: any) => {
                 // item.action_type = item.action_type.toLowerCase();
                 try {

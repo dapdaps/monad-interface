@@ -11,7 +11,7 @@ export default function Gaming({ refresh }: { refresh: number }) {
     return (
         <div className="max-h-[95%] overflow-y-auto">
             <table className="min-w-[600px] w-full text-[18px]">
-                <thead className="sticky top-0 z-10 text-[18px]">
+                <thead className="sticky top-0 z-10 text-[18px] bg-[#000000]">
                     <tr className=" text-left font-[400] text-[#727D97]">
                         <th className="py-4 pl-[30px]">Type</th>
                         {/* <th className="py-4 pl-[30px]">Assets</th> */}

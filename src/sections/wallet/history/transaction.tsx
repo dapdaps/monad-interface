@@ -13,7 +13,7 @@ export default function Transaction({ refresh }: { refresh: number }) {
     return (
         <div className="max-h-[95%] overflow-y-auto">
             <table className="min-w-[600px] w-full text-[18px]  ">
-                <thead className="sticky top-0 z-10">
+                <thead className="sticky top-0 z-10 bg-[#000000]">
                     <tr className=" text-left font-[400] text-[#727D97] text-[18px]">
                         <th className="py-4 pl-[10px]">Type</th>
                         <th className="py-4 ">Assets</th>
@@ -120,23 +120,27 @@ const Icons: any = {
         </defs>
     </svg>,
     bridge: <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g filter="url(#filter0_d_40235_1895)">
+        <g filter="url(#filter0_d_157_1027)">
             <path d="M11 15C11 12.7909 12.7909 11 15 11H33C35.2091 11 37 12.7909 37 15V33C37 35.2091 35.2091 37 33 37H15C12.7909 37 11 35.2091 11 33V15Z" fill="#101113" />
             <path d="M33 10.5C35.4853 10.5 37.5 12.5147 37.5 15V33C37.5 35.4853 35.4853 37.5 33 37.5H15C12.5147 37.5 10.5 35.4853 10.5 33V15C10.5 12.5147 12.5147 10.5 15 10.5H33Z" stroke="#34304B" />
         </g>
+        <path d="M32.7324 24.1738L29.168 30.3477L27.8691 29.5977L30.5674 24.9238H27.4639V23.4238H30.5674L27.8691 18.75L29.168 18L32.7324 24.1738Z" fill="#727D97" />
+        <path d="M15 24.1738L18.5645 30.3477L19.8633 29.5977L17.165 24.9238H20.2686V23.4238H17.165L19.8633 18.75L18.5645 18L15 24.1738Z" fill="#727D97" />
+        <path d="M25.3554 24.1738C25.3554 25.0472 24.6473 25.7553 23.7739 25.7553C22.9004 25.7553 22.1924 25.0472 22.1924 24.1738C22.1924 23.3003 22.9004 22.5923 23.7739 22.5923C24.6473 22.5923 25.3554 23.3003 25.3554 24.1738Z" fill="#727D97" />
         <defs>
-            <filter id="filter0_d_40235_1895" x="0" y="0" width="48" height="48" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <filter id="filter0_d_157_1027" x="0" y="0" width="48" height="48" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
                 <feFlood flood-opacity="0" result="BackgroundImageFix" />
                 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
                 <feOffset />
                 <feGaussianBlur stdDeviation="5" />
                 <feComposite in2="hardAlpha" operator="out" />
                 <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0" />
-                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_40235_1895" />
-                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_40235_1895" result="shape" />
+                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_157_1027" />
+                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_157_1027" result="shape" />
             </filter>
         </defs>
     </svg>
+
 
 
 }

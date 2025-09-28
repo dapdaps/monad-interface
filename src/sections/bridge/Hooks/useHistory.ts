@@ -19,6 +19,8 @@ export const useHistory = () => {
             page_size: 1000,
         })
 
+        console.log(res?.data?.data)
+
         setData(res?.data?.data || [])
         setIsLoading(false)
     }, 5000, { immediate: true })
