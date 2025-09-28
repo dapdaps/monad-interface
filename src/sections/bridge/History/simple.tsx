@@ -10,7 +10,7 @@ export default function Simple({
   setActiveTab: (tab: string) => void;
 }) {
   return (
-    <div className="p-4 relative font-Unbounded">
+    <div className="p-4 relative font-Oxanium">
       <div
         className="absolute top-[30px] cursor-pointer right-[30px]"
         onClick={() => setIsOpen(true)}

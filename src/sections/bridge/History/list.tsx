@@ -27,7 +27,7 @@ export default function History({ pendingCount, historyCount, list, setIsOpen, a
 
     const cls = isMobile
         ? 'm-auto md:w-[92.307vw] border border-[#000] rounded-2xl bg-[#FFFDEB]'
-        : 'fixed bottom-[-10px] w-[350px] right-24 z-50 bg-[url("/images/bridge/history-bg.svg")] bg-no-repeat bg-top'
+        : 'fixed bottom-[-10px] w-[350px] right-[220px] z-50 bg-[url("/images/bridge/history-bg.svg")] bg-no-repeat bg-top'
 
     return (
         <div className={cls}>

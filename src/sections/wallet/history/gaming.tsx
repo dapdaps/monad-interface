@@ -9,8 +9,8 @@ export default function Gaming({ refresh }: { refresh: number }) {
     const { gameRecord, isLoading, fetchGameRecord, page, pageTotal, PAGE_SIZE, setPage } = useGameRecord({ refresh });
 
     return (
-        <div>
-            <table className="min-w-[600px] w-full text-[18px] max-h-[180px] overflow-y-auto">
+        <div className="max-h-[95%] overflow-y-auto">
+            <table className="min-w-[600px] w-full text-[18px]">
                 <thead className="sticky top-0 z-10 text-[18px]">
                     <tr className=" text-left font-[400] text-[#727D97]">
                         <th className="py-4 pl-[30px]">Type</th>

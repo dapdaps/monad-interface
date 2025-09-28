@@ -21,11 +21,11 @@ export default function Summary(props: any) {
                 Wallet
             </div>
             <div className="pb-[10px] text-white flex-1 border border-[#383E4E] bg-[#00000080] pt-[36px]">
-                <div className="h-[30dvh] relative">
-                    <img src="/images/mainnet/wallet/main-nft.png" className="w-full h-full object-cover" />
+                <div className="w-[346px] mx-auto relative flex justify-center items-center">
+                    <img src="/images/mainnet/wallet/main-nft.png" className="w-[346px]" />
                     {
                         hasNFT && (
-                            <div className="absolute top-[7.3dvh] left-1/2 -translate-x-1/2 text-black font-bold">
+                            <div className="absolute top-[131px] left-1/2 -translate-x-1/2 text-black font-bold">
                                 NO.{tokenIds[0]}
                             </div>
                         )
@@ -50,7 +50,9 @@ export default function Summary(props: any) {
                                 <ArrawIcon />
                             </div>
                         </HexagonButton>
-                        <HexagonButton>
+                        <HexagonButton onClick={() => {
+                            router.push('/superswap');
+                        }}>
                             <div className="px-[20px] flex items-center justify-center relative group">
                                 <div>Swap</div>
                                 <ArrawIcon />

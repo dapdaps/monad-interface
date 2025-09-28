@@ -18,12 +18,6 @@ export default function useNft({ refresh }: { refresh: number }) {
             return;
         }
 
-        if (page === 1) {
-            // continuationRef.current = null;
-            // pagedNfts.current = []
-            // setPageTotal(1)
-        }
-
         if (pageIndex < toalPageRef.current) {
             setNfts(pagedNfts.current[pageIndex - 1]);
             setPage(pageIndex);
@@ -61,6 +55,7 @@ export default function useNft({ refresh }: { refresh: number }) {
         }
     }, [pageTotal, isLoading]);
 
+
     useEffect(() => {
         if (!userInfo.address) {
             return;
@@ -73,10 +68,6 @@ export default function useNft({ refresh }: { refresh: number }) {
 
         getNfts(1);
     }, [userInfo, refresh]);
-
-   
-
-    
 
     return {
         nfts,

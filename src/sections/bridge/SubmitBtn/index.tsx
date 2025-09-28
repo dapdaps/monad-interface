@@ -32,7 +32,12 @@ export default function SubmitBtn(props: any) {
       className={cls}
       disabled={comingSoon || (chainId === fromChainId && disabled)}
       onClick={() => {
+        console.log('chainId:', chainId)
+        console.log('fromChainId:', fromChainId)
+
         if (chainId !== fromChainId) {
+          console.log(2222)
+          
           switchChain({ chainId: fromChainId })
           return
         }
@@ -44,8 +49,6 @@ export default function SubmitBtn(props: any) {
         if (isLoading) {
           return
         }
-
-
 
         onClick()
       }}

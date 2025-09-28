@@ -19,12 +19,14 @@ export default function History({ activeTab, setActiveTab, isOpen, setIsOpen, ge
 
     const cls = isMobile 
     ? 'm-auto mt-[10px] md:w-[92.307vw] border border-[#9892C0] bg-[#2B294A]' 
-    : 'fixed bottom-[0px] w-[350px] right-24 z-50 bg-[url("/images/bridge/history-bg.svg")] bg-no-repeat bg-top'
+    : 'fixed bottom-[0px] w-[350px] right-[220px] z-50 bg-[url("/images/bridge/history-bg.svg")] bg-no-repeat bg-top'
     
     return (
         <div className={cls}>
             {
-                isOpen ? <List setIsOpen={setIsOpen} activeTab={activeTab} setActiveTab={setActiveTab} pendingCount={pendingCount} historyCount={historyCount} list={list} /> : <Simple setActiveTab={setActiveTab} setIsOpen={setIsOpen} pendingCount={pendingCount} historyCount={historyCount} />
+                isOpen && historyCount > 0 ? 
+                <List setIsOpen={setIsOpen} activeTab={activeTab} setActiveTab={setActiveTab} pendingCount={pendingCount} historyCount={historyCount} list={list} /> : 
+                <Simple setActiveTab={setActiveTab} setIsOpen={setIsOpen} pendingCount={pendingCount} historyCount={historyCount} />
             }
         </div>
     )

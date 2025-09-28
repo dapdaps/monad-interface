@@ -6,8 +6,8 @@ export default function Tokens(props: any) {
 
     return (
         <div className="pb-[20px]">
-            <div className="rounded-lg overflow-hidden shadow-lg">
-                <table className="min-w-[600px] w-full text-[18px] max-h-[180px] overflow-y-auto">
+            <div className="rounded-lg overflow-hidden shadow-lg max-h-[95%]">
+                <table className="min-w-[600px] w-full text-[18px]  overflow-y-auto">
                     <thead className="sticky top-0 z-10">
                         <tr className=" text-left font-[400] text-[#727D97]">
                             <th className="py-4 pl-[30px]">Assets</th>
