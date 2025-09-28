@@ -1,4 +1,8 @@
+import useGameUser from "../hooks/use-game-user";
+
 export default function User() {
+    const { gameUser, isLoading } = useGameUser();
+
     return (
         <div
             className="absolute bottom-[80px] left-[40px] w-[350px] border-b-2 border-t-2 text-[16px] font-[500] uppercase border-[#A5FFFD] font-Oxanium text-[#A5FFFD] [background:radial-gradient(50%_46.84%_at_50%_53.16%,rgba(0,0,0,0.15)_0%,rgba(165,255,253,0.15)_100%)]"
@@ -8,11 +12,11 @@ export default function User() {
         >
             <div className="flex items-center justify-between h-[40px] px-[20px] border-b border-[#A5FFFD]">
                 <div>YOUr PNL</div>
-                <div>12.35 MON</div>
+                <div>{gameUser.profit} MON</div>
             </div>
             <div className="flex items-center justify-between h-[40px] px-[20px] border-b border-[#A5FFFD]">
                 <div>You total player</div>
-                <div>123 times</div>
+                <div>{gameUser.total_play_times} times</div>
             </div>
 
             <div className="flex items-center justify-between h-[40px] px-[20px] border-b border-[#A5FFFD]">

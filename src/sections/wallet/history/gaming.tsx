@@ -52,7 +52,7 @@ export default function Gaming() {
                                 <td className="py-4 pl-[30px]" >
                                     <div className="flex items-center gap-2">
                                         <img src={getGameType(item.game_category)} className="w-[27px] h-[27px]" />
-                                        <span>{item.game_category}</span>
+                                        <span>{getGameName(item.game_category)}</span>
                                     </div>
                                 </td>
                                 {/* <td className="pl-[30px]">Mon</td> */}
@@ -98,11 +98,22 @@ const Icons: any = {
     space: '/images/mainnet/wallet/game_space.png',
 }
 
-
+const Names: any = {
+    777: 'Lucky 777',
+    space: 'Space Invaders',
+}
 function getGameType(name: string) {
     for (const key in Icons) {
         if (name.toLowerCase().includes(key)) {
             return Icons[key]
+        }
+    }
+}
+
+function getGameName(name: string) {
+    for (const key in Names) {
+        if (name.toLowerCase().includes(key)) {
+            return Names[key]
         }
     }
 }
