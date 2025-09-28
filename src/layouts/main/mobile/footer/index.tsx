@@ -23,14 +23,14 @@ const Footer = () => {
           >
             <img src="/images/footer/mirror.svg" alt="mirror" className="w-[24px] cursor-pointer" />
           </Link>
-          <Link
+          {/* <Link
             className="group  ease-in-out duration-300 w-[24px] cursor-pointer relative"
             href="/terminal"
             target="_blank"
             data-bp="1001-012"
           >
             <img src="/images/footer/terminal.svg" alt="ternimal" className="w-[24px] cursor-pointer" />
-          </Link>
+          </Link> */}
           <Link
             className="group  ease-in-out duration-300 w-[24px] cursor-pointer relative"
             href="https://www.dapdap.net/"
