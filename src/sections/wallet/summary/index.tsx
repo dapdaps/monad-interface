@@ -20,7 +20,7 @@ export default function Summary(props: any) {
             <div className="w-full h-[71px] bg-[url('/images/mainnet/wallet/wallet-header.png')] bg-[length:100%_100%] bg-no-repeat bg-center flex items-center text-white text-[26px] font-[500] pl-[25px] uppercase [text-shadow:0_0_10px_#FFFFFF80]">
                 Wallet
             </div>
-            <div className="pb-[10px] text-white flex-1 border border-[#383E4E] bg-[#00000080] pt-[36px]">
+            <div className="pb-[10px] text-white flex-1 border border-[#383E4E] bg-[#00000080] pt-[36px] overflow-y-auto">
                 <div className="w-[346px] mx-auto relative flex justify-center items-center">
                     <img src="/images/mainnet/wallet/main-nft.png" className="w-[346px]" />
                     {

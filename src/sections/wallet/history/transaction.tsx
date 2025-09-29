@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import Empty from "@/components/empty";
 import Loading from "@/components/loading";
 import HashLink from "../hash-link";
+import { formatDisplayCurrency } from "@/utils/formatMoney";
 
 export default function Transaction({ refresh }: { refresh: number }) {
     const { transaction, isLoading, page, pageTotal, PAGE_SIZE, setPage } = useTransaction({ type: "", refresh });
@@ -35,7 +36,7 @@ export default function Transaction({ refresh }: { refresh: number }) {
                                 </td>
                                 <td className="">{item.assets ? item.assets.join(' to ') : ''}</td>
                                 <td className="">{item.action_amount} <span className="text-[#727D97]">{item.assets && item.assets[0]}</span></td>
-                                <td className="">${item.trading_value || '-'}</td>
+                                <td className="">{formatDisplayCurrency(item.trading_value || '-')}</td>
                                 <td className=" text-[#727D97]">
                                     {dayjs.unix(item.timestamp).utc().format('YYYY/MM/DD HH:mm')}
                                 </td>

@@ -5,7 +5,7 @@ import LaptopSidebar from "./sidebar";
 import { useMemo } from "react";
 
 const EXCLUDE_FOOTER_PATHS = [
-  /^\/arcade/,
+  // /^\/arcade/,
   /^\/marketplace/,
 ];
 
