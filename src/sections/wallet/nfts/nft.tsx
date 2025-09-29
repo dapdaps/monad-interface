@@ -14,6 +14,10 @@ export default function Nft({ data }: { data: any }) {
                             className="w-full h-[200px] object-cover"
                         />
                     }
+
+                    {
+                        !data.images && <div className="w-full h-[200px] bg-[#343b4a]"></div>
+                    }
                 </div>
             </div>
 
