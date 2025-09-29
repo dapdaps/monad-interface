@@ -11,7 +11,7 @@ export const Spotlight = (props: any) => {
 
   return (
     <div
-      className={clsx("relative w-[clamp(1px,_19.31vw,_calc(var(--pc-1512)*0.1931))] h-[clamp(1px,_25.26vw,_calc(var(--pc-1512)*0.2526))] overflow-hidden shrink-0 bg-no-repeat bg-center bg-contain", className)}
+      className={clsx("relative w-[clamp(1px,_19.31vw,_calc(var(--pc-1512)*0.1931))] h-[clamp(1px,_25.26vw,_calc(var(--pc-1512)*0.2526))] shrink-0 bg-no-repeat bg-center bg-contain", className)}
       style={{
         backgroundImage: isLeft ? "url('/images/mainnet/discover/spotlight-card-left.png')" : "url('/images/mainnet/discover/spotlight-card-right.png')",
         paddingLeft: isLeft ? "clamp(1px, 1.12vw, calc(var(--pc-1512)*0.0112))" : "0px",
@@ -25,8 +25,9 @@ export const Spotlight = (props: any) => {
           backgroundImage: `url(${data.banner})`,
         }}
         whileHover={{
-          x: isLeft ? -5 : 5,
-          y: 5,
+          x: isLeft ? -2 : 2,
+          y: 2,
+          scale: 1.05,
         }}
         onClick={onClick}
       >
