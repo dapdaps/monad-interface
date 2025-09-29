@@ -103,6 +103,7 @@ export default function Swap({
     setInputCurrency(_inputCurrency);
     setOutputCurrency(_outputCurrency);
     setDisplayCurrencySelect(false);
+    setInputCurrencyAmount("");
   };
 
   useEffect(() => {
