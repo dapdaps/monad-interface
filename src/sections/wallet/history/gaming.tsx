@@ -4,9 +4,11 @@ import Loading from "@/components/loading";
 import Empty from "@/components/empty";
 import HashLink from "../hash-link";
 import dayjs from "dayjs";
+import { usePriceStore } from "@/stores/usePriceStore";
 
 export default function Gaming({ refresh }: { refresh: number }) {
     const { gameRecord, isLoading, fetchGameRecord, page, pageTotal, PAGE_SIZE, setPage } = useGameRecord({ refresh });
+    const { price }: any = usePriceStore()
 
     return (
         <div className="max-h-[95%] overflow-y-auto">
@@ -14,9 +16,9 @@ export default function Gaming({ refresh }: { refresh: number }) {
                 <thead className="sticky top-0 z-10 text-[18px] bg-[#000000]">
                     <tr className=" text-left font-[400] text-[#727D97]">
                         <th className="py-4 pl-[30px]">Type</th>
-                        {/* <th className="py-4 pl-[30px]">Assets</th> */}
+                        <th className="py-4 pl-[30px]">Assets</th>
                         <th className="py-4 pl-[30px]">Amount</th>
-                        {/* <th className="py-4 pl-[30px]">Value</th> */}
+                        <th className="py-4 pl-[30px]">Value</th>
                         <th className="py-4 pl-[30px]">Time</th>
                         <th className="py-4 pl-[30px]">Wallet</th>
                     </tr>
@@ -55,9 +57,9 @@ export default function Gaming({ refresh }: { refresh: number }) {
                                         <span>{getGameName(item.game_category)}</span>
                                     </div>
                                 </td>
-                                {/* <td className="pl-[30px]">Mon</td> */}
-                                <td className="pl-[30px]">{item.amount}</td>
-                                {/* <td className="pl-[30px]">$744.71</td> */}
+                                <td className="pl-[30px]">{getGameAssets(item)}</td>
+                                <td className="pl-[30px]">{getGameAmount(item)}</td>
+                                <td className="pl-[30px]">{getGameValue(item, price['MON'])}</td>
                                 <td className="pl-[30px] text-[#727D97]">
                                     {dayjs.unix(item.create_time).utc().format('YYYY/MM/DD HH:mm')}
                                 </td>
@@ -96,13 +98,13 @@ export default function Gaming({ refresh }: { refresh: number }) {
 const Icons: any = {
     777: '/images/mainnet/wallet/game_777.png',
     space: '/images/mainnet/wallet/game_space.png',
-    guess: '/images/mainnet/game/guess_who_hover.png',
+    rps: '/images/mainnet/game/guess_who_hover.png',
 }
 
 const Names: any = {
     777: 'Lucky 777',
     space: 'Space Invaders',
-    guess: 'Guess Who',
+    rps: 'Guess Who',
 }
 function getGameType(name: string) {
     for (const key in Icons) {
@@ -118,4 +120,66 @@ function getGameName(name: string) {
             return Names[key]
         }
     }
+}
+
+
+
+
+function getGameAmount(item: any) {
+    const { game_category, amount, whitelist } = item;
+    switch (game_category) {
+        case 'spaceCashOut':
+            return <div className="text-[#BFFF60]">{'+' + amount}</div>
+        case 'spaceCreate':
+            return <div>{'-' + amount}</div>
+        case 'purchase777':
+            return <div>{'-' + amount}</div>
+        case '777':
+            return <div className="text-[#BFFF60]">{'+' + amount}</div>
+        case 'rpsCreate':
+            return <div>{'-' + amount}</div>
+        case 'rpsJoin':
+            return <div>{'-' + amount}</div>
+        case 'rpsCashOut':
+            return <div className="text-[#BFFF60]">{'+' + amount}</div>
+        default:
+            return amount;
+    }
+}
+
+const CashOut = () => <div className="flex items-center gap-2">
+    <img src="/images/monad.svg" alt="MON" className="w-6 h-6" />
+    <span>Cash out</span>
+</div>
+
+function getGameAssets(item: any) {
+    const { game_category, whitelist } = item;
+    switch (game_category) {
+        case 'spaceCashOut':
+            return whitelist ? whitelist : <CashOut />
+        case 'spaceCreate':
+            return <CashOut />
+        case 'purchase777':
+            return <CashOut />
+        case '777':
+            return whitelist ? whitelist : <CashOut />
+        case 'rpsCreate':
+            return <CashOut />
+        case 'rpsJoin':
+            return <CashOut />
+        case 'rpsCashOut':
+            return whitelist ? whitelist : <CashOut />
+        default:
+            return <CashOut />
+    }
+}
+
+function getGameValue(item: any, monPrice: number) {
+    const { amount, whitelist } = item;
+    if (!whitelist && amount) {
+        return <div>${(amount * monPrice).toFixed(2)}</div>
+    }
+
+    return <div className="text-[#727D97]">N/A</div>
+
 }
