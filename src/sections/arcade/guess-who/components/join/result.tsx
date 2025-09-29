@@ -1,5 +1,7 @@
+import { useDebounceFn } from "ahooks";
 import clsx from "clsx";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 const Result = (props: any) => {
   const { className, monster } = props;
@@ -12,7 +14,7 @@ const Result = (props: any) => {
         className="w-[201px] h-[150px] object-center object-contain shrink-0"
       />
       <div className="text-[#FFF] text-[32px] mt-[20px] text-center">
-        Three Eeyes
+        {monster.name}
       </div>
     </div>
   );
@@ -21,7 +23,15 @@ const Result = (props: any) => {
 export default Result;
 
 export const ResultUFO = (props: any) => {
-  const { } = props;
+  const { onClose } = props;
+
+  const { run: onCloseDelay } = useDebounceFn(() => {
+    onClose();
+  }, { wait: 5000 });
+
+  useEffect(() => {
+    onCloseDelay();
+  }, []);
 
   return (
     <motion.div
@@ -48,7 +58,6 @@ export const ResultUFO = (props: any) => {
       }}
       exit={{
         scale: 0,
-        opacity: 0,
       }}
     >
       <motion.img

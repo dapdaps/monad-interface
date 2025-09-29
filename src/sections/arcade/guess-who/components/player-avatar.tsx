@@ -1,7 +1,8 @@
 import clsx from "clsx";
+import { Monster, MONSTERS } from "../config";
 
 const PlayerAvatar = (props: any) => {
-  const { avatar, className, avatarClassName } = props;
+  const { avatar, moves, className, avatarClassName } = props;
 
   return (
     <div
@@ -11,15 +12,16 @@ const PlayerAvatar = (props: any) => {
         !avatar ? "bg-[url('/images/mainnet/arcade/guess-who/avatar-user-empty.png')]" : "",
       )}
       style={avatar ? {
-        backgroundImage: `url('/images/mainnet/arcade/guess-who/${avatar}')`,
+        backgroundImage: `url("${avatar}")`,
       } : {}}
     >
       <img
-        src="/images/mainnet/arcade/guess-who/avatar-monster-empty.png"
+        src={moves !== void 0 ? MONSTERS[moves as Monster]?.avatar : "/images/mainnet/arcade/guess-who/avatar-monster-empty.png"}
         alt=""
         className={clsx(
           "w-[39px] h-[30px] object-center object-contain shrink-0 absolute top-[-10px] right-[-16px]",
           avatarClassName,
+          !avatar ? "" : "rotate-[24deg]",
         )}
       />
     </div>
