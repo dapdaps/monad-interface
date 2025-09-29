@@ -41,7 +41,7 @@ export default function Bg(props: any) {
           repeatDelay: 23
         }}
         src="/images/dex/p-2-1.gif"
-        className="w-[74px] h-[100px] absolute top-[6300px] z-[7] right-[-74px]"
+        className="w-[74px] h-[100px] absolute top-[630px] z-[7] right-[-74px]"
       />
       <motion.img
         animate={{ x: ["0%", "110vw"] }}
@@ -53,7 +53,7 @@ export default function Bg(props: any) {
           repeatDelay: 23
         }}
         src="/images/dex/p-2-2.gif"
-        className="w-[74px] h-[100px] absolute top-[6300px] z-[7] left-[-74px]"
+        className="w-[74px] h-[100px] absolute top-[630px] z-[7] left-[-74px]"
       />
       <div className="bg-[url(/images/dex/bg.png)] w-full h-[374px] bg-center absolute top-[262px] z-[1]" />
       <div className="bg-[url(/images/dex/frames.png)] w-full h-[522px] bg-center absolute top-[128px] z-[5]" />

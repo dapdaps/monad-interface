@@ -56,6 +56,13 @@ export default function TokenAmout({
     percent = Math.min(Math.max(+percent, 0), 100);
     handleRangeChange?.({ target: { value: percent } }, false);
   };
+
+  useEffect(() => {
+    console.log('amount', amount);
+    setRange(amount || '0');
+  }, [amount, tokenBalance]);
+
+  
   useEffect(() => {
     if (tokenBalance && onUpdateCurrencyBalance)
       onUpdateCurrencyBalance(tokenBalance);

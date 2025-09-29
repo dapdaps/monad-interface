@@ -260,7 +260,7 @@ export default function Bridge() {
                 comingSoon={ComingSoon}
               />
               <div
-                className="h-[8px] md:h-4 flex justify-center items-center"
+                className="h-[8px] md:h-4 flex justify-center items-center cursor-pointer"
                 onClick={() => {
                   const [_fromChain, _toChain] = [toChain, fromChain];
                   const [_fromToken, _toToken] = [toToken, fromToken];

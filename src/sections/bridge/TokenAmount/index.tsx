@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TokenSelector from '../TokenSelector';
 
 import Range from "@/components/range";
@@ -15,6 +15,7 @@ import ChainAndTokenSelector from '../ChainAndTokenSelector';
 import { motion } from 'framer-motion';
 import Big from 'big.js';
 import HexagonButton from '@/components/button/hexagon';
+import clsx from 'clsx';
 
 const BalancePercentList = [
   { value: 25, label: "25%" },
@@ -74,6 +75,15 @@ export default function TokenAmout({
           .replace(/[.]?0+$/, "")
       );
   };
+
+  useEffect(() => {
+    if (tokenBalance && Number(tokenBalance) > 0) {
+      handleRangeChange({ target: { value: Math.min(Number(amount) / Number(tokenBalance) * 100, 100) } }, false);
+    } else {
+      handleRangeChange({ target: { value: 0 } }, false);
+    }
+  }, [amount, tokenBalance]);
+
 
   return (
     <div className=' rounded-[6px] p-[14px] bg-[#201D31] font-white border border-[#34304B]'>
@@ -159,8 +169,7 @@ export default function TokenAmout({
             {BalancePercentList.map((p) => (
               <motion.div
                 key={p.value}
-                className="cursor-pointer h-[22px] rounded-[6px] text-[#A6A6DB] text-[10px] font-[400] px-[8px] hover:underline hover:text-white"
-                animate={percent == p.value ? { color: "#BFFF60" } : {}}
+                className={clsx("cursor-pointer h-[22px] rounded-[6px text-[10px] font-[400] px-[8px] hover:underline", percent == p.value ? "text-[#BFFF60]" : "text-white")}
                 onClick={() => handleRangeChange({ target: p })}
               >
                 {p.label}

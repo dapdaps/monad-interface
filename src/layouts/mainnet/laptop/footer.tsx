@@ -32,12 +32,12 @@ const LaptopFooter = (props: any) => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
         <img
           src="/images/mainnet/layout/footer-line.png"
           alt=""
           className="w-[435px] h-[6px] object-contain object-center shrink-0"
-        /> */}
+        />
       </div>
       <div className="flex justify-end items-end gap-[9px]">
         {
