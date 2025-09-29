@@ -5,13 +5,15 @@ import Mouse from "../components/mouse";
 import clsx from "clsx";
 import { useProgressRouter } from "@/hooks/use-progress-router";
 import useClickTracking from "@/hooks/use-click-tracking";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import ExternalLinksModal from "@/sections/dapps/components/external-links-modal";
 
 const SpotlightApps = (props: any) => {
   const { getVisits, swiperRef } = props;
-
+  const [showExternalLinksModal, setShowExternalLinksModal] = useState(false);
   const router = useProgressRouter();
   const { handleReportWithoutDebounce } = useClickTracking();
+  const [dapp, setDapp] = useState<any>(null);
 
   const SpotlightList = useMemo(() => {
     return AppList.filter((item) => item.isSpotlight).slice(0, 4);
@@ -45,7 +47,8 @@ const SpotlightApps = (props: any) => {
                     handleReportWithoutDebounce(item.bp, item.bpContent);
 
                     if (/^https?:\/\//.test(item.link)) {
-                      window.open(item.link, "_blank");
+                      setDapp(item);
+                      setShowExternalLinksModal(true);
                       return;
                     }
 
@@ -81,6 +84,17 @@ const SpotlightApps = (props: any) => {
           Explore All Apps
         </div>
       </div>
+
+      {
+        showExternalLinksModal && (
+          <ExternalLinksModal
+            dapp={dapp}
+            onClose={() => {
+              setShowExternalLinksModal(false);
+             }}
+          />
+        )
+      }
     </div>
   );
 };
