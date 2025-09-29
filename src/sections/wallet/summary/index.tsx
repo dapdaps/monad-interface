@@ -20,7 +20,7 @@ export default function Summary(props: any) {
             <div className="w-full h-[71px] bg-[url('/images/mainnet/wallet/wallet-header.png')] bg-[length:100%_100%] bg-no-repeat bg-center flex items-center text-white text-[26px] font-[500] pl-[25px] uppercase [text-shadow:0_0_10px_#FFFFFF80]">
                 Wallet
             </div>
-            <div className="pb-[10px] flex flex-col justify-between text-white flex-1 border border-[#383E4E] bg-[#00000080] pt-[36px] overflow-y-auto">
+            <div className="pb-[10px] flex flex-col justify-around text-white flex-1 border border-[#383E4E] bg-[#00000080] pt-[36px] overflow-y-auto">
                 <div className="w-[346px] mx-auto relative flex justify-center items-center">
                     <img src="/images/mainnet/wallet/main-nft.png" className="w-[346px]" />
                     {
@@ -31,7 +31,7 @@ export default function Summary(props: any) {
                         )
                     }
                 </div>
-                <div className="mt-[30px] flex-1 flex flex-col justify-center">
+                <div className="flex flex-col justify-center">
                     <div className="font-[600] text-[20px] flex justify-center items-center gap-[10px]">
                         <div>
                             {userInfo?.address?.slice(0, 5)}...{userInfo?.address?.slice(-4)}
@@ -40,8 +40,9 @@ export default function Summary(props: any) {
                     </div>
 
                     <div className="text-[36px] font-[600] leading-[1] mt-[30px] text-center">${sumValue || '0.00'}</div>
+                </div>
 
-                    <div className="flex gap-[20px] mt-[50px] justify-center">
+                <div className="flex gap-[20px] mt-[50px] justify-center">
                         <HexagonButton onClick={() => {
                             router.push('/bridge');
                         }}>
@@ -59,7 +60,6 @@ export default function Summary(props: any) {
                             </div>
                         </HexagonButton>
                     </div>
-                </div>
             </div>
         </div>
     )
