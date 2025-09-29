@@ -64,7 +64,7 @@ export default function Gaming({ refresh }: { refresh: number }) {
                                     {dayjs.unix(item.create_time).utc().format('YYYY/MM/DD HH:mm')}
                                 </td>
                                 <td className="pl-[30px]">
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex items-center justify-end pr-[10px] gap-2">
                                         {/* <span className="text-[#727D97]">From</span>
                                         <span>0x...2b35</span> */}
                                         <HashLink hash={item.tx_hash} />
