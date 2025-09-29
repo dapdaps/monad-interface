@@ -124,7 +124,6 @@ export default function TokenAmout({
                     src={chain.icon}
                   />
                 </div>
-                
               </div>
               <div>
                 <div className='text-[16px] w-[80px] font-[600] whitespace-nowrap overflow-hidden text-ellipsis'>{token?.symbol}</div>
@@ -154,9 +153,9 @@ export default function TokenAmout({
 
       </div>
 
-      <div className="flex items-center justify-between text-[#A6A6DB] mt-[10px] text-[12px]">
+      <div className="flex items-center justify-between text-[#727D97] mt-[10px] text-[12px]">
         <div >${(token && tokenBalance) ? balanceFormated(prices[token.symbol.toUpperCase()] * (amount as any), 4) : '~'}</div>
-        <div className={"flex items-center cursor-pointer"} onClick={() => {
+        <div className={clsx("flex items-center ", disabledInput ? '' : 'cursor-pointer')} onClick={() => {
           onAmountChange?.(tokenBalance)
         }}>balance: {isLoading ? <Loading size={12} /> : <span className={(disabledInput ? '' : ' underline')}>{balanceFormated(tokenBalance, 4)}</span>}</div>
       </div>
