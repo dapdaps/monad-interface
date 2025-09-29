@@ -62,6 +62,17 @@ export default function TokenAmout({
   }, [tokenBalance]);
 
   useEffect(() => {
+    const formatedBalance = balanceFormated(tokenBalance);
+    if (["-", "Loading", "0"].includes(formatedBalance)) return;
+    onAmountChange?.(
+      Big(tokenBalance)
+        .times(Big(percent || 0).div(100))
+        .toFixed(currency?.decimals)
+        .replace(/[.]?0+$/, "")
+    );
+  }, [percent, tokenBalance, currency]);
+
+  useEffect(() => {
     update();
   }, [updater]);
   return (

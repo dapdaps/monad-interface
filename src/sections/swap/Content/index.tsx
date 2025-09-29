@@ -21,7 +21,8 @@ export default function Swap({
   outputCurrencyReadonly = false,
   showSetting = true,
   from,
-  onSuccess
+  onSuccess,
+  isAutoExchange = true,
 }: any) {
   const [inputCurrencyAmount, setInputCurrencyAmount] = useState("");
   const [outputCurrencyAmount, setOutputCurrencyAmount] = useState("");
@@ -82,13 +83,21 @@ export default function Swap({
 
     if (selectType === "in") {
       _inputCurrency = token;
-      if (token.address.toLowerCase() === outputCurrency?.address.toLowerCase())
-        _outputCurrency = null;
+      if (token.address.toLowerCase() === outputCurrency?.address.toLowerCase()) {
+        if (!isAutoExchange) {
+          return;
+        }
+        _outputCurrency = null
+      }
     }
     if (selectType === "out") {
       _outputCurrency = token;
-      if (token.address.toLowerCase() === inputCurrency?.address.toLowerCase())
+      if (token.address.toLowerCase() === inputCurrency?.address.toLowerCase()) {
+        if (!isAutoExchange) {
+          return;
+        }
         _inputCurrency = null;
+      }
     }
     if (!_inputCurrency || !_outputCurrency) setOutputCurrencyAmount("");
     setInputCurrency(_inputCurrency);

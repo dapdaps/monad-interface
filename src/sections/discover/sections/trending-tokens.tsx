@@ -106,6 +106,7 @@ const TrendingTokens = (props: any) => {
             setShowSwapModal(false);
           }}
           from="marketplace"
+          isAutoExchange={false}
         />
       )}
     </div>
