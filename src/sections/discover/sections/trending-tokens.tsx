@@ -18,7 +18,7 @@ import { monad } from "@/configs/tokens/monad-testnet";
 dayjs.extend(utc);
 
 const TrendingTokens = (props: any) => {
-  const { } = props;
+  const { swiperRef } = props;
 
   const router = useProgressRouter();
 
@@ -82,7 +82,11 @@ const TrendingTokens = (props: any) => {
         </div>
       </Card>
       <div className="flex flex-col items-center translate-y-[clamp(calc(var(--pc-1512)*-0.0397),_-3.97vw,_1px)]">
-        <Mouse />
+        <Mouse
+          onClick={() => {
+            swiperRef?.current?.swiper?.slideNext();
+          }}
+        />
         <img
           src="/images/mainnet/discover/icon-down.svg"
           alt=""
