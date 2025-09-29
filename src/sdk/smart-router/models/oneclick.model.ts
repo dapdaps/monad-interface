@@ -135,6 +135,13 @@ export class OneClick {
       gasLimit: estimateGas
     });
 
+    if (BigNumber(bestTrade.amount_out || 0).lte(0)) {
+      return {
+        outputCurrencyAmount: "",
+        noPair: true
+      };
+    }
+
     return {
       outputCurrencyAmount: BigNumber(bestTrade.amount_out || 0).div(10 ** outputCurrency.decimals).toFixed(outputCurrency.decimals).replace(/\.?0+$/, ""),
       noPair: false,

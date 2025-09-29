@@ -43,12 +43,12 @@ const SpotlightApps = (props: any) => {
                   )}
                   onClick={() => {
                     handleReportWithoutDebounce(item.bp, item.bpContent);
-  
+
                     if (/^https?:\/\//.test(item.link)) {
                       window.open(item.link, "_blank");
                       return;
                     }
-  
+
                     router.push(item.link);
                   }}
                   visits={visits}
@@ -59,13 +59,17 @@ const SpotlightApps = (props: any) => {
         </div>
       </Card>
       <div className="flex flex-col items-center translate-y-[clamp(calc(var(--pc-1512)*-0.0397),_-3.97vw,_1px)]">
-        <Mouse />
+        <Mouse
+          onClick={() => {
+            swiperRef?.current?.swiper?.slideNext();
+          }}
+        />
         <img
           src="/images/mainnet/discover/icon-down.svg"
           alt=""
           className="w-[12px] h-[10px] object-center object-contain shrink-0 mt-[20px]"
         />
-        <div className="mt-[16px] text-[18px] text-white font-[400] uppercase">
+        <div className="mt-[16px] text-[18px] text-white font-[400] uppercase opacity-80">
           Trending tokens
         </div>
         <img

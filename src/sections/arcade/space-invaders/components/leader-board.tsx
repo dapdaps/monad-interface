@@ -56,7 +56,7 @@ const LeaderBoard = (props: any) => {
   // }, [getData]);
 
   return (
-    <div className={clsx("fixed z-[3] flex flex-col top-0 right-0 bg-[#191B25] border border-black w-[20.29vw] max-w-[280px] h-[83dvh] font-[Montserrat] text-[12px] text-white font-[600] leading-[150%]", className)}>
+    <div className={clsx("fixed z-[3] flex flex-col top-0 left-0 bg-[#191B25] border border-black w-[20.29vw] max-w-[280px] h-[83dvh] font-[Montserrat] text-[12px] text-white font-[600] leading-[150%]", className)}>
       <div className="shrink-0 w-full pt-[72px] md:pt-[20px] text-center font-[HackerNoonV2] text-[24px] text-[#E7E2FF] [text-shadow:0_0_30px_#836EF9] leading-[90%] font-[400]">
         LEADERBOARD
       </div>

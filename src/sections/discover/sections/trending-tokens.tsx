@@ -18,7 +18,7 @@ import { monad } from "@/configs/tokens/monad-testnet";
 dayjs.extend(utc);
 
 const TrendingTokens = (props: any) => {
-  const { } = props;
+  const { swiperRef } = props;
 
   const router = useProgressRouter();
 
@@ -32,6 +32,7 @@ const TrendingTokens = (props: any) => {
       _tokens.forEach((token: any) => {
         const curr = Object.values(monad).find((_token: any) => _token.address.toLowerCase() === token.address.toLowerCase());
         token.icon = curr?.icon || "/assets/tokens/default_icon.png";
+        token.decimals = curr?.decimals || 18;
       });
       return _tokens;
     } catch (error) {
@@ -47,7 +48,7 @@ const TrendingTokens = (props: any) => {
   return (
     <div className="pt-[clamp(1px,_5.16vw,_calc(var(--pc-1512)*0.0516))]">
       <div className="flex flex-col items-center">
-        <div className="text-[18px] text-white font-[400] uppercase">
+        <div className="text-[18px] text-white font-[400] uppercase opacity-80">
           Spotlight apps
         </div>
         <img
@@ -82,13 +83,17 @@ const TrendingTokens = (props: any) => {
         </div>
       </Card>
       <div className="flex flex-col items-center translate-y-[clamp(calc(var(--pc-1512)*-0.0397),_-3.97vw,_1px)]">
-        <Mouse />
+        <Mouse
+          onClick={() => {
+            swiperRef?.current?.swiper?.slideNext();
+          }}
+        />
         <img
           src="/images/mainnet/discover/icon-down.svg"
           alt=""
           className="w-[12px] h-[10px] object-center object-contain shrink-0 mt-[20px]"
         />
-        <div className="mt-[16px] text-[18px] text-white font-[400] uppercase">
+        <div className="mt-[16px] text-[18px] text-white font-[400] uppercase opacity-80">
           EXPLORE ALL APPS
         </div>
       </div>
@@ -101,6 +106,7 @@ const TrendingTokens = (props: any) => {
             setShowSwapModal(false);
           }}
           from="marketplace"
+          isAutoExchange={false}
         />
       )}
     </div>
@@ -124,7 +130,8 @@ const PriceChart = ({ data }: { data: { price: string; symbol: string; timestamp
   // Calculate price trend to determine line color
   const firstPrice = chartData[0]?.value || 0;
   const lastPrice = chartData[chartData.length - 1]?.value || 0;
-  const isPositive = lastPrice >= firstPrice;
+  const lastPrevPrice = chartData[chartData.length - 2]?.value || 0;
+  const isPositive = lastPrice >= lastPrevPrice;
 
   // Calculate dynamic Y-axis range for better visualization
   const values = chartData.map(item => item.value);
@@ -193,7 +200,13 @@ const TokenItem = (props: any) => {
   const { token, onClick } = props;
 
   return (
-    <div className="w-full flex flex-col gap-[clamp(1px,_0.99vw,_calc(var(--pc-1512)*0.0099))] p-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))_clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))_clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] border border-[#27272A] hover:border-[#7262FF] hover:bg-[rgba(53,52,112,0.60)] hover:bg-[url('')] transition-all duration-150 bg-black rounded-[8px] bg-[radial-gradient(21.57%_137.97%_at_2.76%_0%,_rgba(80,70,229,0.30)_0%,_rgba(1,1,1,0.30)_100%)]">
+    <div
+      className="w-full flex cursor-pointer flex-col gap-[clamp(1px,_0.99vw,_calc(var(--pc-1512)*0.0099))] p-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))_clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))_clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] border border-[#27272A] hover:border-[#7262FF] hover:bg-[rgba(53,52,112,0.60)] hover:bg-[url('')] transition-all duration-150 bg-black rounded-[8px] bg-[radial-gradient(21.57%_137.97%_at_2.76%_0%,_rgba(80,70,229,0.30)_0%,_rgba(1,1,1,0.30)_100%)]"
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick();
+      }}
+    >
       <div className="w-full flex justify-between items-center gap-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
         <div className="flex items-center gap-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] flex-1">
           <img

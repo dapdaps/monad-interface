@@ -73,11 +73,14 @@ const Discover = (props: any) => {
               />
             </SwiperSlide>
             <SwiperSlide>
-              <TrendingTokens />
+              <TrendingTokens
+                swiperRef={swiperRef}
+              />
             </SwiperSlide>
             <SwiperSlide>
               <ExploreAllApps
                 getVisits={getVisits}
+                swiperRef={swiperRef}
               />
             </SwiperSlide>
           </Swiper>
