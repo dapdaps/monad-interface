@@ -78,16 +78,16 @@ export default function TokenAmout({
 
   useEffect(() => {
     if (tokenBalance && Number(tokenBalance) > 0) {
-      handleRangeChange({ target: { value: Math.min(Number(amount) / Number(tokenBalance) * 100, 100) } }, false);
+      setPercent(Math.min(Number(amount) / Number(tokenBalance) * 100, 100));
     } else {
-      handleRangeChange({ target: { value: 0 } }, false);
+      setPercent(0);
     }
   }, [amount, tokenBalance]);
 
 
   return (
     <div className=' rounded-[6px] p-[14px] bg-[#201D31] font-white border border-[#34304B]'>
-      <div className='text-[14px] font-[400] text-[#A6A6DB]'>{isDest ? 'To' : 'Send'}</div>
+      <div className='text-[14px] font-[400] text-[#A6A6DB]'>{isDest ? 'Receive' : 'From'}</div>
 
       <div className='flex items-center justify-between gap-[10px]'>
         <div className="flex-1">
@@ -118,10 +118,13 @@ export default function TokenAmout({
                     src={token?.icon}
                   /> : <div className='w-[26px] h-[26px] rounded-[50%] bg-[#000]' />
                 }
-                <img
-                  className='w-[10px] h-[10px] absolute right-0 bottom-0 md:rounded-sm'
-                  src={chain.icon}
-                />
+                <div className='absolute right-0 bottom-0 w-[14px] h-[14px] border border-[#2C2A4A] rounded-[4px] bg-[#2C2A4A]'>
+                  <img
+                    className='w-full h-full'
+                    src={chain.icon}
+                  />
+                </div>
+                
               </div>
               <div>
                 <div className='text-[16px] w-[80px] font-[600] whitespace-nowrap overflow-hidden text-ellipsis'>{token?.symbol}</div>
