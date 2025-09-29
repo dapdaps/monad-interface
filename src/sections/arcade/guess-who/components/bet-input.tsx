@@ -1,6 +1,8 @@
 import InputNumber from "@/components/input-number";
 import clsx from "clsx";
 import { RPS_MIN_BET_AMOUNT } from "../config";
+import Big from "big.js";
+import { numberRemoveEndZero } from "@/utils/number-formatter";
 
 const BetInput = (props: any) => {
   const {
@@ -32,14 +34,14 @@ const BetInput = (props: any) => {
       </div>
       <Button
         onClick={() => {
-          setBetAmount(RPS_MIN_BET_AMOUNT + "");
+          setBetAmount((prev: any) => numberRemoveEndZero(Big(prev || 0).plus(RPS_MIN_BET_AMOUNT).toFixed(betToken.decimals)));
         }}
       >
         +{RPS_MIN_BET_AMOUNT}
       </Button>
       <Button
         onClick={() => {
-          setBetAmount((RPS_MIN_BET_AMOUNT * 10) + "");
+          setBetAmount((prev: any) => numberRemoveEndZero(Big(prev || 0).plus(RPS_MIN_BET_AMOUNT * 10).toFixed(betToken.decimals)));
         }}
       >
         +{RPS_MIN_BET_AMOUNT * 10}
