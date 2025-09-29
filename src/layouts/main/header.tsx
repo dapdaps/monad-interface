@@ -1,6 +1,7 @@
 // "use client";
 
 import ConnectWallet from "@/components/connect-wallet";
+import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover";
 import Sound from "@/components/sound";
 import useIsMobile from "@/hooks/use-isMobile";
 import { useProgressRouter } from "@/hooks/use-progress-router";
@@ -219,7 +220,7 @@ const MainLayoutHeader = (props: Props) => {
           "flex-1",
           isMobile
             ? "w-[100vw] absolute left-0 top-0 right-0" +
-                (isMobileMenuOpen ? " z-[3]" : "")
+            (isMobileMenuOpen ? " z-[3]" : "")
             : "flex items-center justify-center relative"
         )}
       >
@@ -247,16 +248,30 @@ const MainLayoutHeader = (props: Props) => {
               <div className={clsx(textCls, "")}>Faucet</div>
               {pathname === "/faucet" && <LineBottom />}
             </div>
-            <div
-              className={clsx(menuCls, pathname === "/codes" ? hoverCls : "")}
-              onClick={() => {
-                pathname !== "/codes" && router.push("/codes");
-              }}
+
+            <Popover
+              content={(
+                <div className="text-white text-[10px] p-[10px_15px] bg-[rgba(26,24,67,0.80)] border border-[#3E347C] rounded-[8px] backdrop-blur-[10px]">
+                  Under maintenance
+                </div>
+              )}
+              placement={PopoverPlacement.Bottom}
+              trigger={PopoverTrigger.Hover}
+              closeDelayDuration={0}
+              offset={10}
+              triggerContainerClassName="h-full flex-1"
             >
-              <CodesSvg />
-              <div className={clsx(textCls, "")}>Codes</div>
-              {pathname === "/codes" && <LineBottom />}
-            </div>
+              <div
+                className={clsx(menuCls.replace("cursor-pointer", "cursor-not-allowed"), "opacity-50", pathname === "/codes" ? hoverCls : "")}
+                onClick={() => {
+                  // pathname !== "/codes" && router.push("/codes");
+                }}
+              >
+                <CodesSvg />
+                <div className={clsx(textCls, "")}>Codes</div>
+                {pathname === "/codes" && <LineBottom />}
+              </div>
+            </Popover>
 
             <div className="w-[200px]"></div>
 
