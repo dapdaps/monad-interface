@@ -128,7 +128,8 @@ const PriceChart = ({ data }: { data: { price: string; symbol: string; timestamp
   // Calculate price trend to determine line color
   const firstPrice = chartData[0]?.value || 0;
   const lastPrice = chartData[chartData.length - 1]?.value || 0;
-  const isPositive = lastPrice >= firstPrice;
+  const lastPrevPrice = chartData[chartData.length - 2]?.value || 0;
+  const isPositive = lastPrice >= lastPrevPrice;
 
   // Calculate dynamic Y-axis range for better visualization
   const values = chartData.map(item => item.value);
