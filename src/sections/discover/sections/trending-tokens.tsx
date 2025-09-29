@@ -198,7 +198,13 @@ const TokenItem = (props: any) => {
   const { token, onClick } = props;
 
   return (
-    <div className="w-full flex flex-col gap-[clamp(1px,_0.99vw,_calc(var(--pc-1512)*0.0099))] p-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))_clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))_clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] border border-[#27272A] hover:border-[#7262FF] hover:bg-[rgba(53,52,112,0.60)] hover:bg-[url('')] transition-all duration-150 bg-black rounded-[8px] bg-[radial-gradient(21.57%_137.97%_at_2.76%_0%,_rgba(80,70,229,0.30)_0%,_rgba(1,1,1,0.30)_100%)]">
+    <div
+      className="w-full flex cursor-pointer flex-col gap-[clamp(1px,_0.99vw,_calc(var(--pc-1512)*0.0099))] p-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))_clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))_clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] border border-[#27272A] hover:border-[#7262FF] hover:bg-[rgba(53,52,112,0.60)] hover:bg-[url('')] transition-all duration-150 bg-black rounded-[8px] bg-[radial-gradient(21.57%_137.97%_at_2.76%_0%,_rgba(80,70,229,0.30)_0%,_rgba(1,1,1,0.30)_100%)]"
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick();
+      }}
+    >
       <div className="w-full flex justify-between items-center gap-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
         <div className="flex items-center gap-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] flex-1">
           <img
