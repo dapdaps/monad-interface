@@ -101,6 +101,16 @@ export default function useTokens({ refresh }: { refresh: number }) {
     const fetchTokenInfo = useCallback(async (_tokens: any[], method: string = 'balanceOf', params: any[] = []) => {
         if (!userInfo?.address || !rpc) return;
 
+        if (method !== 'balanceOf') {
+            const tokenInfo = window.localStorage.getItem('tokenInfo-' + method);
+            if (tokenInfo) {
+                const _tokenInfo = JSON.parse(tokenInfo);
+                if (_tokenInfo.length === _tokens.length) {
+                    return _tokenInfo;
+                }
+            }
+        }
+
         const provider = new ethers.providers.JsonRpcProvider(rpc);
 
         const callerc20s = _tokens.map((token: any) => ({
@@ -118,6 +128,10 @@ export default function useTokens({ refresh }: { refresh: number }) {
             multicallAddress: multicallAddresses[monadTestnet.id],
             provider
         });
+
+        if (method !== 'balanceOf') {
+            window.localStorage.setItem('tokenInfo-' + method, JSON.stringify(multicallErc20Results));
+        }
 
         return multicallErc20Results;
     }, [rpc, userInfo]);
