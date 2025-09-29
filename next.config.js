@@ -221,7 +221,14 @@ const nextConfig = {
         ]
       }
     ];
-  }
+  },
+  redirects: async () => [
+    {
+      source: "/codes",
+      destination: "/",
+      permanent: true
+    },
+  ]
 };
 
 const withBundleStatsPlugin =
