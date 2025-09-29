@@ -47,7 +47,7 @@ const TrendingTokens = (props: any) => {
   return (
     <div className="pt-[clamp(1px,_5.16vw,_calc(var(--pc-1512)*0.0516))]">
       <div className="flex flex-col items-center">
-        <div className="text-[18px] text-white font-[400] uppercase">
+        <div className="text-[18px] text-white font-[400] uppercase opacity-80">
           Spotlight apps
         </div>
         <img
@@ -88,7 +88,7 @@ const TrendingTokens = (props: any) => {
           alt=""
           className="w-[12px] h-[10px] object-center object-contain shrink-0 mt-[20px]"
         />
-        <div className="mt-[16px] text-[18px] text-white font-[400] uppercase">
+        <div className="mt-[16px] text-[18px] text-white font-[400] uppercase opacity-80">
           EXPLORE ALL APPS
         </div>
       </div>

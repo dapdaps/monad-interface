@@ -65,7 +65,7 @@ const SpotlightApps = (props: any) => {
           alt=""
           className="w-[12px] h-[10px] object-center object-contain shrink-0 mt-[20px]"
         />
-        <div className="mt-[16px] text-[18px] text-white font-[400] uppercase">
+        <div className="mt-[16px] text-[18px] text-white font-[400] uppercase opacity-80">
           Trending tokens
         </div>
         <img
