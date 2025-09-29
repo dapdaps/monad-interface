@@ -6,6 +6,8 @@ import Empty from "@/components/empty";
 import Loading from "@/components/loading";
 import HashLink from "../hash-link";
 import { formatDisplayCurrency } from "@/utils/formatMoney";
+import { monad } from "@/configs/tokens/monad-testnet";
+import clsx from "clsx";
 
 export default function Transaction({ refresh }: { refresh: number }) {
     const { transaction, isLoading, page, pageTotal, PAGE_SIZE, setPage } = useTransaction({ type: "", refresh });
@@ -34,8 +36,26 @@ export default function Transaction({ refresh }: { refresh: number }) {
                                         <span>{item.action_type}</span>
                                     </div>
                                 </td>
-                                <td className="">{item.assets ? item.assets.join(' to ') : ''}</td>
-                                <td className="">{item.action_amount} <span className="text-[#727D97]">{item.assets && item.assets[0]}</span></td>
+                                <td className="">
+                                    <div className="flex items-center gap-2">
+                                        <div className="flex items-center gap-2">
+                                            {
+                                                item.assets && item.assets.length > 0 && item.assets.map((asset: any, index: number) => {
+                                                    return <img
+                                                        key={asset}
+                                                        className={clsx("w-[20px] h-[20px]", index > 0 && "ml-[-15px]")}
+                                                        src={monad[asset.toLowerCase()]?.icon}
+                                                        alt="" />
+                                                })
+                                            }
+                                        </div>
+                                        <div>
+                                            {item.assets && item.assets.length > 0 && item.assets[0]}
+                                        </div>
+                                    </div>
+
+                                </td>
+                                <td className="">{item.action_amount} <span className="text-[#727D97]">{item.assets && item.assets.length > 0 && item.assets[0]}</span></td>
                                 <td className="">{formatDisplayCurrency(item.trading_value || '-')}</td>
                                 <td className=" text-[#727D97]">
                                     {dayjs.unix(item.timestamp).utc().format('YYYY/MM/DD HH:mm')}
