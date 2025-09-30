@@ -69,8 +69,8 @@ export function useCreate(props?: any) {
     if (isDouble) {
       params = [
         utils.parseUnits(betAmount || "0", betToken.decimals),
-        betMonster[0] < betMonster[1] ? betMonster[0] : betMonster[1],
-        betMonster[1] < betMonster[0] ? betMonster[0] : betMonster[1],
+        betMonster[0],
+        betMonster[1],
       ];
     }
 
