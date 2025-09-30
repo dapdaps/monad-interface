@@ -60,7 +60,7 @@ export default function Gaming({ refresh }: { refresh: number }) {
                                 <td className="pl-[30px]">{getGameAssets(item)}</td>
                                 <td className="pl-[30px]">{getGameAmount(item)}</td>
                                 <td className="pl-[30px]">{getGameValue(item, price['MON'])}</td>
-                                <td className="pl-[30px] text-[#727D97]">
+                                <td className="pl-[30px] text-[#232426]">
                                     {dayjs.unix(item.create_time).utc().format('YYYY/MM/DD HH:mm')}
                                 </td>
                                 <td className="pl-[30px]">
@@ -142,6 +142,8 @@ function getGameAmount(item: any) {
             return <div>{'-' + amount}</div>
         case 'rpsCashOut':
             return <div className="text-[#BFFF60]">{'+' + amount}</div>
+        case 'rpsPayOut':
+            return <div className="text-[#BFFF60]">{'+' + amount}</div>
         default:
             return amount;
     }
@@ -168,6 +170,8 @@ function getGameAssets(item: any) {
         case 'rpsJoin':
             return <CashOut />
         case 'rpsCashOut':
+            return whitelist ? whitelist : <CashOut />
+        case 'rpsPayOut':
             return whitelist ? whitelist : <CashOut />
         default:
             return <CashOut />
