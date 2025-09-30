@@ -11,21 +11,24 @@ import { erc20Abi } from "viem";
 import Big from "big.js";
 import { usePriceStore } from "@/stores/usePriceStore";
 import useTokenBalance from "@/hooks/use-token-balance";
+import { useWalletInfoStore } from "@/stores/useWalletInfoStore";
 
-export default function useTokens({ refresh }: { refresh: number }) {
-
-    const [tokens, setTokens] = useState<any[]>([]);
+export default function useWalletTokens() {
+    // const [tokens, setTokens] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const rpcStore = useRpcStore();
     const { userInfo } = useUser()
     const rpc = useMemo(() => RPC_LIST[rpcStore.selected], [rpcStore.selected]);
     const { price } = usePriceStore();
-    const [ sumValue, setSumValue ] = useState<string>('');
+    // const [ sumValue, setSumValue ] = useState<string>('');
     const { tokenBalance, isLoading: tokenBalanceLoading } = useTokenBalance('native', 18, monadTestnet.id)
+    const { set, isFresh } = useWalletInfoStore();
 
 
     const fetchTokens = useCallback(async () => {
         if (isLoading || !price || !userInfo?.address) return;
+
+        set({ isLoading: true, walletInfo: { tokens: [], sumValue: '0' } });
 
         setIsLoading(true);
         try {
@@ -82,17 +85,25 @@ export default function useTokens({ refresh }: { refresh: number }) {
                 const sumValue = valuedTokens.reduce((acc: any, token: any) => {
                     return acc.add(new Big(token.value));
                 }, new Big(0));
-                setSumValue(sumValue.toFixed(2));
+                // setSumValue(sumValue.toFixed(2));
 
-                setTokens(valuedTokens)
+                // setTokens(valuedTokens)
+
+                set({
+                    walletInfo: {
+                        tokens: valuedTokens || [],
+                        sumValue: sumValue.toFixed(2)
+                    },
+                    isLoading: false
+                });
     
             } else {
-                setTokens([]);
+                // setTokens([]);
             }
             setIsLoading(false);
         } catch (err) {
             console.log(err);
-            setTokens([]);
+            // setTokens([]);
             setIsLoading(false);
         }
         
@@ -142,13 +153,13 @@ export default function useTokens({ refresh }: { refresh: number }) {
             return;
         }
         fetchTokens();
-    }, [price, userInfo, tokenBalance, refresh]);
-
+    }, [price, userInfo, tokenBalance, isFresh]);
 
     return {
-        tokens,
+        // tokens,
         isLoading,
         price,
-        sumValue,
+        fetchTokens,
+        // sumValue,
     }
 }

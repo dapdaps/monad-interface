@@ -3,10 +3,16 @@ import LaptopFooter from "./footer";
 import LaptopHeader from "./header";
 import LaptopSidebar from "./sidebar";
 import { useMemo } from "react";
+import WalletInfo from "@/components/walletInfo";
 
 const EXCLUDE_FOOTER_PATHS = [
   // /^\/arcade/,
   /^\/marketplace/,
+];
+
+const EXCLUDE_WALLET_INFO_PATHS = [
+  /^\/wallet/,
+  /^\/$/,
 ];
 
 const LaptopLayout = (props: any) => {
@@ -22,6 +28,8 @@ const LaptopLayout = (props: any) => {
     return result;
   }, [pathname]);
 
+  const showWalletInfo = !EXCLUDE_WALLET_INFO_PATHS.some((reg: any) => reg.test(pathname));
+
   return (
     <div className="w-full h-full relative">
       <LaptopSidebar />
@@ -34,6 +42,12 @@ const LaptopLayout = (props: any) => {
       <div className="relative h-full w-full">
         {children}
       </div>
+
+      {
+        showWalletInfo && (
+          <WalletInfo />
+        )
+      }
     </div>
   );
 };

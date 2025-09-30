@@ -7,6 +7,7 @@ import useUser from "@/hooks/use-user";
 import { useUserStore } from "@/stores/user";
 import { createContext, useContext, useEffect } from "react";
 import { useAccount } from "wagmi";
+import useWalletTokens from "@/hooks/use-wallet-tokens";
 
 interface ILayoutContext {
   getNativeBalance: () => void;
@@ -23,6 +24,7 @@ const LayoutContextProvider = ({ children }: { children: any }) => {
   const { initializePrice } = useTokenPrice();
   const { handleReportNoCode } = useClickTracking();
   const setUserInfo = useUserStore((store: any) => store.set);
+  useWalletTokens();
 
   useEffect(() => {
     handleReportNoCode();
