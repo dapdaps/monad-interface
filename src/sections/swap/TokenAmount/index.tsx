@@ -58,7 +58,6 @@ export default function TokenAmout({
   };
 
   useEffect(() => {
-    console.log('amount', amount);
     setRange(amount || '0');
   }, [amount, tokenBalance]);
 

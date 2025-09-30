@@ -5,7 +5,7 @@ import Bg from "./Bg";
 import Content from "./Content";
 import DappIcon from "./Icon";
 
-export default function Swap({ dapp }: any) {
+export default function Swap({ dapp, isSuperSwap }: any) {
   const isMobile = useIsMobile();
   return (
     <div className="pt-[150px]">
@@ -13,10 +13,11 @@ export default function Swap({ dapp }: any) {
         <div className="relative z-[2] px-[34px] lg:py-[40px] font-Oxanium">
           <Content
             dapp={dapp}
+            isSuperSwap={isSuperSwap}
           // showSetting={!["SuperSwap"].includes(dapp.name)}
           />
-
         </div>
+
         {
           !isMobile && (
             <>

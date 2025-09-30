@@ -17,6 +17,7 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
   const slippage: any = useSettingsStore((store: any) => store.slippage);
   const [loading, setLoading] = useState(false);
   const [trade, setTrade] = useState<any>();
+  const [tradeList, setTradeList] = useState<any>();
   const { account, provider } = useAccount();
   const toast = useToast();
   const { addAction } = useAddAction(from || "dapp");
@@ -147,6 +148,7 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
             });
           });
         setTrade(_markets[0]);
+        setTradeList(_markets);
       } catch (err) {
         console.log(err);
         setTrade(null);
@@ -426,5 +428,5 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
     return contract.execute(commands, inputs, deadline, options);
   }, [account, provider, trade]);
 
-  return { loading, trade, onQuoter, onSwap };
+  return { loading, trade, tradeList, onQuoter, onSwap, setTrade };
 }

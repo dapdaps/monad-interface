@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import useDexTokens from "@/hooks/use-dex-tokens";
 
 export default function SuperSwapPage() {
-  const dappName = "superswap";
+  const dappName = "oneclick";
 
   const dapp = dapps[dappName as string];
   const tokens = useDexTokens(dapp);
@@ -22,5 +22,5 @@ export default function SuperSwapPage() {
     [dapp, tokens]
   );
 
-  return <SwapView dapp={dappConfig} />;
+  return <SwapView dapp={dappConfig} isSuperSwap={true} />;
 }

@@ -155,12 +155,15 @@ export class PancakeSwap {
       type = "v2";
     }
 
+    console.log('pancake bestTrade: %o', bestTrade);
+
     if (!bestTrade) {
       return {
         outputCurrencyAmount: "",
         noPair: true
       };
     }
+
 
     return this[type === "v3" ? "handleV3" : "handleV2"]({
       bestTrade,
@@ -377,7 +380,7 @@ export class PancakeSwapUniversal extends PancakeSwap {
 
     let candidates: CandidatePool[] = [];
     try {
-      const candidatesRes = await fetch("/pancakeswap.finance/api/pools/candidates?" + candidatesURL.searchParams.toString());
+      const candidatesRes = await fetch("https://pancakeswap.finance/api/pools/candidates?" + candidatesURL.searchParams.toString());
       const candidatesResJson = await candidatesRes.json();
       candidates = candidatesResJson.data;
     } catch (err: any) {

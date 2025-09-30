@@ -1,17 +1,14 @@
 import { monad } from "../tokens/monad-testnet";
 
 export default {
-  name: "SuperSwap",
-  logo: "",
+  name: "OneClick",
+  logo: "/images/mainnet/logo.svg",
   path: "/dex?dapp=superswap",
   defaultInputCurrency: monad["mon"],
-  defaultOutputCurrency: monad["usdt"],
+  defaultOutputCurrency: monad["usdc"],
   tokens: {
     10143: [
-      monad["mon"],
-      monad["wmon"],
-      monad["usdt"],
-      monad["usdc"],
+      ...Object.values(monad)
     ]
   }
 };

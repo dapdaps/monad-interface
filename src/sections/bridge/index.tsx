@@ -128,7 +128,7 @@ export default function Bridge() {
     });
 
     return allTokens;
-  }, [fromToken, fromChain]);
+  }, [fromToken, fromChain]); 
 
   useEffect(() => {
     if (!fromToken) {

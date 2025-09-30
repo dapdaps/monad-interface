@@ -15,7 +15,7 @@ import Big from "big.js";
 import TokenSelector from "../TokenSelector";
 import { DEFAULT_CHAIN_ID } from "@/configs/index";
 import chains from "@/configs/chains";
-
+import dapps from "@/configs/swap";
 export default function Swap({
   dapp,
   outputCurrencyReadonly = false,
@@ -23,6 +23,7 @@ export default function Swap({
   from,
   onSuccess,
   isAutoExchange = true,
+  isSuperSwap = false,
 }: any) {
   const [inputCurrencyAmount, setInputCurrencyAmount] = useState("");
   const [outputCurrencyAmount, setOutputCurrencyAmount] = useState("");
@@ -43,9 +44,10 @@ export default function Swap({
   const prices = usePriceStore((store: any) => store.price);
 
   const [selectType, setSelectType] = useState<"in" | "out">("in");
-  const { loading, trade, onQuoter, onSwap } = useTrade({
+  const { loading, trade, tradeList, onQuoter, onSwap, setTrade } = useTrade({
     chainId: DEFAULT_CHAIN_ID,
-    template: dapp.name,
+    // template: dapp.name,
+    template: isSuperSwap ? ['Uniswap', 'Pancake', 'OneClick', 'iZumi', 'LFJ', 'Kuru'] : dapp.name,
     from,
     onSuccess: () => {
       setUpdater(Date.now());
@@ -144,9 +146,10 @@ export default function Swap({
         dapp={dapp}
         style={{ justifyContent: "space-between" }}
         title={
-          from === "marketplace"
-            ? `GET ${outputCurrency?.symbol}`
-            : `Swap via ${dapp.name === "SuperSwap" ? "OneClick" : dapp.name}`
+          ' '
+          // from === "marketplace"
+          //   ? `GET ${outputCurrency?.symbol}`
+          //   : `Swap via ${dapp.name === "SuperSwap" ? "OneClick" : dapp.name}`
         }
         loading={loading}
         onQuoter={runQuoter}
@@ -208,6 +211,7 @@ export default function Swap({
               inputCurrencyAmount={inputCurrencyAmount}
               outputCurrencyAmount={outputCurrencyAmount}
               priceImpactType={trade?.priceImpactType}
+              trade={trade}
               onClose={() => {
                 setShowDetail(!showDetail);
               }}
@@ -217,8 +221,15 @@ export default function Swap({
               priceImpact={trade?.priceImpact}
               gasUsd={trade?.gasUsd}
               routerStr={trade?.routerStr}
+              inputCurrency={inputCurrency}
+              outputCurrency={outputCurrency}
               outputCurrencyAmount={outputCurrencyAmount}
               show={showDetail}
+              trade={trade}
+              tradeList={tradeList}
+              onSelectRoute={(trade: any) => {
+                setTrade(trade)
+              }}
             />
           </>
         )}

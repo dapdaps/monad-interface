@@ -11,14 +11,14 @@ export default function WalletInfo() {
         <div
             className="fixed bottom-[130px] right-[40px] w-[350px] border-b-2 border-t-2 text-[16px] font-[500] uppercase border-[#A5FFFD] font-Oxanium text-[#A5FFFD] [background:radial-gradient(50%_46.84%_at_50%_53.16%,rgba(0,0,0,0.15)_0%,rgba(165,255,253,0.15)_100%)]"
             style={{
-                transform: "perspective(600px) skewX(8deg) rotateZ(8deg) rotateY(-10deg) "
+                transform: "perspective(600px) skewX(6deg) rotateZ(6deg) rotateY(-10deg) "
             }}
         >
             <div className="flex items-center justify-between h-[40px] px-[20px] border-b border-[#A5FFFD]">
                 <div>Wallet</div>
                 <div>{userInfo?.address?.slice(0, 5)}...{userInfo?.address?.slice(-4)}</div>
             </div>
-            <div className="flex items-center justify-between h-[40px] px-[20px]">
+            <div className="flex items-center justify-between h-[60px] px-[20px]">
                 <div></div>
                 <div className="text-[26px] flex gap-[10px] items-center">
                     <span>${walletInfo?.sumValue}</span>
