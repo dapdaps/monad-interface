@@ -79,11 +79,6 @@ export function useCreate(props?: any) {
       method = "initAndJoinRoom";
     }
 
-    console.log("create amount: %o", utils.formatUnits(parsedAmount, betToken.decimals));
-    console.log("create params: %o", params);
-    console.log("create method: %o", method);
-    console.log("create options: %o", options);
-
     try {
       const estimatedGas = await contract.estimateGas[method](...params, options);
       options.gasLimit = Math.floor(Number(estimatedGas) * 1.2);
@@ -97,8 +92,27 @@ export function useCreate(props?: any) {
 
       toast.dismiss(toastId);
       toastId = toast.loading({ title: "Confirming...", chainId, tx: tx.hash });
-      const { status, transactionHash } = await tx.wait();
+      const txReceipt = await tx.wait();
+      const { status, transactionHash } = txReceipt;
       toast.dismiss(toastId);
+
+      const events = txReceipt.logs.map((log: any) => {
+        try {
+          return contract.interface.parseLog(log);
+        } catch (e) {
+          return null;
+        }
+      }).filter(Boolean);
+
+      const roomCreatedEvent = events.find((event: any) => event.name === "RoomCreated");
+      if (roomCreatedEvent) {
+        const { roomId, entrantA, betAmount, numberA, createTime } = roomCreatedEvent.args;
+        console.log("created room_id: %o", roomId.toString());
+        console.log("created playerA: %o", entrantA);
+        console.log("created betAmount: %o", betAmount);
+        console.log("created numberA: %o", numberA);
+        console.log("created createTime: %o", createTime);
+      }
 
       if (status !== 1) {
         toast.fail({
