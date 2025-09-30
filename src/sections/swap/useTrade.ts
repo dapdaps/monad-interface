@@ -104,6 +104,7 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
         } else {
           params.templates = template;
         }
+
         const data = await quoter(params);
 
         if (!data) {

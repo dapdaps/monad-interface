@@ -36,6 +36,7 @@ export default function SwapModal({
     >
       <div className="md:px-[10px]">
         <Content
+          isSuperSwap={true}
           dapp={{
             name: "SuperSwap",
             tokens: { [DEFAULT_CHAIN_ID]: tokens },
