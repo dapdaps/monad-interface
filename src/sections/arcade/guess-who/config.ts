@@ -38,11 +38,48 @@ export enum Status {
   Canceled = 4,
 }
 
+export const StatusMap: Record<Status, { name: string; color: string; }> = {
+  [Status.Ongoing]: {
+    name: "Waiting...",
+    color: "#7EA82B",
+  },
+  [Status.Joined]: {
+    name: "Waiting...",
+    color: "#7EA82B",
+  },
+  [Status.Won]: {
+    name: "Winner",
+    color: "#000",
+  },
+  [Status.Canceled]: {
+    name: "Closed",
+    color: "#857B7B",
+  },
+};
+
 export enum ContractStatus {
+  // Open
   Ongoing = 1,
+  // Closed
   Won = 2,
+  // ReadyForAdminReveal
   ReadyForAdminReveal = 3,
+  // PendingReveal
   Pending = 4,
+}
+
+export const ContractStatus2Status: Record<ContractStatus, Status> = {
+  [ContractStatus.Ongoing]: Status.Ongoing,
+  [ContractStatus.Won]: Status.Won,
+  [ContractStatus.ReadyForAdminReveal]: Status.Joined,
+  [ContractStatus.Pending]: Status.Ongoing,
+};
+
+export enum WinnerStatus {
+  WinnerPlayerA = 1,
+  WinnerPlayerB = 2,
+  WinnerPlayerC = 3,
+  UnusedRoomClosed = 4,
 }
 
 export interface Room {
@@ -54,6 +91,7 @@ export interface Room {
   create_time: number;
   status: Status;
   winner_address: string;
+  winner_moves: Monster;
   players: Player[];
 }
 

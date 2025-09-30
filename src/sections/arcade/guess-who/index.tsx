@@ -209,6 +209,7 @@ const GuessWho = () => {
           </div>
           <div className="w-full">
             <GridTable
+              bodyClassName="max-h-[calc(100dvh_-_187px)] overflow-y-auto"
               headerRowClassName="!px-0 !gap-x-[20px]"
               bodyRowClassName="odd:bg-[unset] !px-0 !gap-x-[20px] text-[18px] h-[104px] bg-[url('/images/mainnet/arcade/guess-who/bg-room-item.png')] bg-no-repeat bg-center bg-contain"
               columns={[
@@ -321,7 +322,7 @@ const GuessWho = () => {
                 guessWho.onSort(dataIndex, nextDirection);
               }}
             />
-            <div className="flex justify-end items-center pr-[110px]">
+            <div className="flex justify-start items-center pl-[10px] py-[10px]">
               <Pagination
                 page={guessWho.list.page}
                 totalPage={guessWho.list.pageTotal}

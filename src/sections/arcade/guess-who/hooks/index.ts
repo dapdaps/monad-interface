@@ -4,15 +4,19 @@ import useCustomAccount from "@/hooks/use-account";
 import { get } from "@/utils/http";
 import { useDebounceFn, useRequest } from "ahooks";
 import { useState } from "react";
-import { EmptyPlayer, PlayerAvatars, Room } from "../config";
-import { Contract } from "ethers";
+import { ContractStatus, ContractStatus2Status, EmptyPlayer, PlayerAvatars, Room, Status, WinnerStatus } from "../config";
+import { Contract, utils } from "ethers";
 import { RPS_CONTRACT_ADDRESS, RPS_CONTRACT_ADDRESS_ABI } from "../contract";
 import { cloneDeep } from "lodash";
+import { multicall, multicallAddresses } from "@/utils/multicall";
+import { DEFAULT_CHAIN_ID } from "@/configs";
+import dayjs from "dayjs";
+import Big from "big.js";
 
 export function useGuessWho() {
   const [betToken] = useState(monad["mon"]);
 
-  const { account, provider } = useCustomAccount();
+  const { accountWithAk, account, provider } = useCustomAccount();
   const { nativeBalance, nativeBalanceLoading, getNativeBalance } = useLayoutContext();
 
   const [room, setRoom] = useState<Room>();
@@ -28,6 +32,18 @@ export function useGuessWho() {
     order: "desc",
     joined: false,
   });
+  const [userList, setUserList] = useState({
+    data: [],
+    page: 1,
+    pageSize: 10,
+    pageTotal: 0,
+    total: 0,
+    // bet_amount | create_time
+    sort: "create_time",
+    // asc | desc
+    order: "desc",
+  });
+  const [historyOpen, setHistoryOpen] = useState(false);
 
   const setPlayersAvatar = (players: any) => {
     const palyerAvatars: Record<string, string> = {};
@@ -50,7 +66,56 @@ export function useGuessWho() {
     });
   };
 
+  const { loading: gameConfigLoading, data: gameConfig } = useRequest(async () => {
+    if (!provider) {
+      return;
+    }
+    const _result = {
+      minBetAmount: "1",
+      // hours
+      timeoutDuration: "86400",
+    };
+    const multicallAddress = multicallAddresses[DEFAULT_CHAIN_ID];
+    const calls = [
+      {
+        address: RPS_CONTRACT_ADDRESS,
+        name: "minBetAmount",
+        params: [],
+      },
+      {
+        address: RPS_CONTRACT_ADDRESS,
+        name: "timeoutDuration",
+        params: [],
+      },
+    ];
+    try {
+      const _gameConfig = await multicall({
+        abi: RPS_CONTRACT_ADDRESS_ABI,
+        options: {},
+        calls,
+        multicallAddress,
+        provider
+      });
+      const [[_minBetAmount], [_timeoutDuration]] = _gameConfig ?? [];
+      const minBetAmount = utils.formatUnits(_minBetAmount, betToken.decimals);
+      const timeoutDuration = utils.formatUnits(_timeoutDuration, 0);
+      _result.minBetAmount = minBetAmount;
+      _result.timeoutDuration = timeoutDuration;
+      console.log("%cGame config: %o", "background:#696FC7;color:#fff;", _result);
+    } catch (error) {
+      console.log("get game config failed: %o", error);
+    }
+
+    return _result;
+  }, {
+    refreshDeps: [provider],
+  });
+
   const { runAsync: getList, loading } = useRequest(async (params?: any) => {
+    if (!gameConfig) {
+      return;
+    }
+
     const _page = params?.page || list.page;
     const _sort = params?.sort || list.sort;
     const _order = params?.order || list.order;
@@ -84,12 +149,97 @@ export function useGuessWho() {
       console.log("get rps list failed: %o", error);
     }
   }, {
-    refreshDeps: [],
+    refreshDeps: [gameConfig],
   });
+
+  const { runAsync: getUserList, loading: userListLoading } = useRequest(async (params?: any) => {
+    if (!accountWithAk || !gameConfig) {
+      return;
+    }
+
+    const _page = params?.page || userList.page;
+    const _sort = params?.sort || userList.sort;
+    const _order = params?.order || userList.order;
+
+    try {
+      const res = await get("/game/rps/mine", {
+        page: _page,
+        sort: _sort,
+        order: _order,
+        page_size: list.pageSize,
+      });
+      if (res.code !== 200) {
+        return;
+      }
+      const now = dayjs().utc();
+      setUserList((prev) => {
+        const _userList = { ...prev };
+        _userList.data = res.data.data || [];
+        _userList.data.forEach((item: any) => {
+          item.isOwn = item.address.toLowerCase() === account.toLowerCase();
+          item.canClaim =
+            item.players[0]?.address?.toLowerCase() === account.toLowerCase()
+            && [Status.Ongoing, Status.Joined].includes(item.status)
+            && dayjs(item.create_time * 1000).add(Big(gameConfig.timeoutDuration).div(3600).toNumber(), "hours").utc().isBefore(now);
+          setPlayersAvatar(item.players);
+        });
+        console.log("_userList: %o", _userList);
+        if (_page === 1) {
+          _userList.pageTotal = res.data.total_page;
+          _userList.total = res.data.total;
+        }
+        return _userList;
+      });
+    } catch (error) {
+      console.log("get user list failed: %o", error);
+    }
+  }, {
+    refreshDeps: [accountWithAk, gameConfig],
+  });
+
+  const onUserListClaimed = (record: Room) => {
+    setUserList((prev) => {
+      const _useList = { ...prev };
+      const currRecord: any = _useList.data.find((item: any) => item.room_id === record.room_id);
+      if (!currRecord) {
+        return _useList;
+      }
+      currRecord.status = Status.Canceled;
+      return _useList;
+    });
+  };
 
   const { run: getListDelay } = useDebounceFn(() => {
     getList();
   }, { wait: 3000 });
+
+  const onChange2List = (type: any, room: Room) => {
+    if (type === "create") {
+      setList((prev: any) => {
+        const _list = { ...prev };
+        _list.data.unshift(room);
+        return _list;
+      });
+      return;
+    }
+    if (type === "join") {
+      setList((prev: any) => {
+        const _list = { ...prev };
+        const currRoom = _list.data.find((item: any) => item.room_id === room.room_id);
+        // first time join
+        if (!currRoom) {
+          return _list;
+        }
+        // existed
+        typeof room.players !== "undefined" && (currRoom.players = room.players);
+        typeof room.status !== "undefined" && (currRoom.status = room.status);
+        typeof room.winner_address !== "undefined" && (currRoom.winner_address = room.winner_address);
+        typeof room.winner_moves !== "undefined" && (currRoom.winner_moves = room.winner_moves);
+        return _list;
+      });
+      return;
+    }
+  };
 
   const onPageChange = (page: number) => {
     setList((prev) => {
@@ -98,6 +248,15 @@ export function useGuessWho() {
       return _list;
     });
     getList({ page });
+  };
+
+  const onUserListPageChange = (page: number) => {
+    setUserList((prev) => {
+      const _list = { ...prev };
+      _list.page = page;
+      return _list;
+    });
+    getUserList({ page });
   };
 
   const onSort = (sort: "bet_amount" | "create_time", order: "asc" | "desc") => {
@@ -109,6 +268,17 @@ export function useGuessWho() {
       return _list;
     });
     getList({ order, page: 1 });
+  };
+
+  const onUserListSort = (sort: "bet_amount" | "create_time", order: "asc" | "desc") => {
+    setUserList((prev) => {
+      const _list = { ...prev };
+      _list.page = 1;
+      _list.sort = sort;
+      _list.order = order;
+      return _list;
+    });
+    getUserList({ order, page: 1 });
   };
 
   const onJoined = (joined: boolean) => {
@@ -132,6 +302,61 @@ export function useGuessWho() {
     });
   };
 
+  const formatRoomInfo = (currRoom: any, contractRoomInfo: any) => {
+    // numberA and data.playerA is always exist
+    if (contractRoomInfo.data.playerB !== EmptyPlayer) {
+      if (!currRoom.players[1]) {
+        currRoom.players[1] = {
+          address: contractRoomInfo.data.playerB,
+          moves: contractRoomInfo.numberB,
+          tx_hash: "",
+          tx_time: 0,
+        };
+      }
+    }
+    if (contractRoomInfo.data.playerC !== EmptyPlayer) {
+      if (!currRoom.players[2]) {
+        currRoom.players[2] = {
+          address: contractRoomInfo.data.playerC,
+          moves: contractRoomInfo.numberC,
+          tx_hash: "",
+          tx_time: 0,
+        };
+      }
+    }
+    currRoom.status = ContractStatus2Status[contractRoomInfo.status as ContractStatus];
+
+    if (contractRoomInfo.winnerStatus) {
+      // winnerStatus = 1: data.playerA won
+      // winnerStatus = 2: data.playerB won
+      // winnerStatus = 3: data.playerC won
+      const winnerMap: any = {
+        [WinnerStatus.WinnerPlayerA]: {
+          address: contractRoomInfo.data.playerA,
+          moves: contractRoomInfo.numberA,
+        },
+        [WinnerStatus.WinnerPlayerB]: {
+          address: contractRoomInfo.data.playerB,
+          moves: contractRoomInfo.numberB,
+        },
+        [WinnerStatus.WinnerPlayerC]: {
+          address: contractRoomInfo.data.playerC,
+          moves: contractRoomInfo.numberC,
+        },
+      };
+      if (contractRoomInfo.winnerStatus === WinnerStatus.UnusedRoomClosed) {
+        currRoom.status = Status.Canceled;
+      } else {
+        currRoom.winner_address = winnerMap[contractRoomInfo.winnerStatus as WinnerStatus].address;
+        currRoom.winner_moves = winnerMap[contractRoomInfo.winnerStatus as WinnerStatus].moves;
+      }
+    }
+
+    setPlayersAvatar(currRoom.players);
+
+    return currRoom;
+  };
+
   const { runAsync: getRoomInfo, loading: getRoomInfoLoading } = useRequest<Room, Room | any>(async (_room: Room) => {
     const _roomInfo = cloneDeep(_room);
     const contract = new Contract(RPS_CONTRACT_ADDRESS, RPS_CONTRACT_ADDRESS_ABI, provider);
@@ -141,44 +366,135 @@ export function useGuessWho() {
       const roomInfo = res[0];
       console.log("%cLatest roomInfo: %o", "background:#696FC7;color:#fff;", roomInfo);
       contractData = roomInfo;
-      // numberA and data.playerA is always exist
-      if (roomInfo.data.playerB !== EmptyPlayer) {
-        if (!_roomInfo.players[1]) {
-          _roomInfo.players[1] = {
-            address: roomInfo.data.playerB,
-            moves: roomInfo.numberB,
-            tx_hash: "",
-            tx_time: 0,
-          };
-        }
-      }
-      if (roomInfo.data.playerC !== EmptyPlayer) {
-        if (!_roomInfo.players[2]) {
-          _roomInfo.players[2] = {
-            address: roomInfo.data.playerC,
-            moves: roomInfo.numberC,
-            tx_hash: "",
-            tx_time: 0,
-          };
-        }
-      }
-      setPlayersAvatar(_roomInfo.players);
+      formatRoomInfo(_roomInfo, roomInfo);
     } catch (error) {
       console.log("join check failed: %o", error);
     }
     return {
       ..._roomInfo,
-      contractData: contractData,
+      contractData,
     };
   }, {
     manual: true,
   });
+
+  const [userLatest, setUserLatest] = useState([]);
+  const { loading: userLatestLoading, runAsync: getUserLatest } = useRequest(async () => {
+    if (!accountWithAk) {
+      setUserLatest([]);
+      return;
+    }
+    try {
+      const res = await get("/game/rps/user/latest");
+      if (res.code !== 200) {
+        setUserLatest([]);
+        return;
+      }
+      const _list = res.data || [];
+      _list.forEach((item: any) => {
+        setPlayersAvatar(item.players);
+      });
+      setUserLatest(_list);
+      return _list;
+    } catch (error) {
+      console.log("get user latest failed: %o", error);
+    }
+    setUserLatest([]);
+  }, {
+    refreshDeps: [accountWithAk],
+  });
+  const { } = useRequest(async () => {
+    if (!account || !provider) {
+      return;
+    }
+    const calls = userLatest
+      ?.filter((item: any) => !item.winner_address)
+      ?.map((item: any) => ({
+        address: RPS_CONTRACT_ADDRESS,
+        name: "getRoomsInfo",
+        params: [item.room_id, item.room_id],
+      }));
+    if (!calls?.length) {
+      return;
+    }
+    const multicallAddress = multicallAddresses[DEFAULT_CHAIN_ID];
+
+    try {
+      const roomInfos = await multicall({
+        abi: RPS_CONTRACT_ADDRESS_ABI,
+        options: {},
+        calls,
+        multicallAddress,
+        provider
+      });
+      setUserLatest((prev: any) => {
+        const _userLatest = prev.slice();
+        roomInfos.forEach((item: any) => {
+          const [[roomInfo]] = item;
+          const currRoom = _userLatest.find((item: any) => item.room_id === +roomInfo.data.roomId.toString());
+          if (!currRoom) {
+            return;
+          }
+          formatRoomInfo(currRoom, roomInfo);
+          console.log("currRoom: %o", currRoom);
+        });
+        return _userLatest;
+      });
+    } catch (error) {
+      console.log("polling latest contract room info failed: %o", error);
+    }
+  }, {
+    pollingInterval: 5000,
+  });
+  const onChange2UserLatest = (type: any, room: Room) => {
+    if (type === "create") {
+      setUserLatest((prev: any) => {
+        const _userLatest = prev.slice();
+        _userLatest.unshift(room);
+        return _userLatest;
+      });
+      return;
+    }
+    if (type === "join") {
+      setUserLatest((prev: any) => {
+        const _userLatest = prev.slice();
+        const currRoom = _userLatest.find((item: any) => item.room_id === room.room_id);
+        // first time join
+        if (!currRoom) {
+          _userLatest.unshift(room);
+        }
+        // existed
+        else {
+          typeof room.players !== "undefined" && (currRoom.players = room.players);
+          typeof room.status !== "undefined" && (currRoom.status = room.status);
+          typeof room.winner_address !== "undefined" && (currRoom.winner_address = room.winner_address);
+          typeof room.winner_moves !== "undefined" && (currRoom.winner_moves = room.winner_moves);
+        }
+        return _userLatest;
+      });
+      return;
+    }
+    if (type === "claim") {
+      setUserLatest((prev: any) => {
+        const _userLatest = prev.slice();
+        const currRoomIndex = _userLatest.findIndex((item: any) => item.room_id === room.room_id);
+        if (currRoomIndex < 0) {
+          return _userLatest;
+        }
+        // remove the closed room form user latest
+        _userLatest.splice(currRoomIndex, 1);
+        return _userLatest;
+      });
+      return;
+    }
+  };
 
   return {
     list,
     getList,
     getListDelay,
     loading,
+    gameConfigLoading,
     betToken,
     betTokenBalance: nativeBalance,
     betTokenBalanceLoading: nativeBalanceLoading,
@@ -193,5 +509,19 @@ export function useGuessWho() {
     getRoomInfo,
     getRoomInfoLoading,
     setPlayersAvatar,
+    gameConfig,
+    userList,
+    getUserList,
+    userListLoading,
+    onUserListPageChange,
+    onUserListSort,
+    historyOpen,
+    setHistoryOpen,
+    onUserListClaimed,
+    userLatest,
+    userLatestLoading,
+    getUserLatest,
+    onChange2UserLatest,
+    onChange2List,
   };
 }
