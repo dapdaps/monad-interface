@@ -176,7 +176,7 @@ export default function Bridge() {
     <>
       <div
         style={{ backgroundSize: "100% auto" }}
-        className='h-full overflow-hidden font-Oxanium relative pt-[110px] bg-[url("/images/bridge/full-bg.png")] bg-cover bg-black bg-right-bottom bg-no-repeat'
+        className='h-full overflow-hidden font-Oxanium relative pt-[110px] bg-[url("/images/bridge/full-bg.png")] bg-cover bg-[#0e0f28] bg-right-bottom bg-no-repeat'
       >
         {isMobile ? null : (
           <div className="absolute left-[36px] md:left-[15px] top-[31px] md:top-[14px] z-[12]" />

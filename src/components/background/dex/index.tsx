@@ -7,7 +7,7 @@ export default function Bg(props: any) {
   const { className, isDex } = props;
 
   return (
-    <div className={clsx("absolute left-[0px] top-[0px] bg-black w-full h-[100dvh] overflow-hidden", className)}>
+    <div className={clsx("absolute left-[0px] top-[0px] bg-[#0e0f28] w-full h-[100dvh] overflow-hidden", className)}>
       <motion.img
         animate={{ x: ["0%", "-105vw"] }}
         transition={{

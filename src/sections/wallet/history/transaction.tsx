@@ -54,8 +54,8 @@ export default function Transaction({ refresh }: { refresh: number }) {
                                             {item.assets && item.assets.length > 0 && item.assets[0]}
                                         </div>
                                     </div>
-
                                 </td>
+                                
                                 <td className="">{ balanceFormated(item.action_amount)} <span className="text-[#727D97]">{item.assets && item.assets.length > 0 && item.assets[0]}</span></td>
                                 <td className="">{formatDisplayCurrency(item.trading_value || '-')}</td>
                                 <td className=" text-[#727D97]">
