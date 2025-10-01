@@ -245,9 +245,9 @@ export function useJoin(props?: any) {
     if (!_roomInfo) {
       return;
     }
-    const _lastMonsters = Object.values(MONSTERS).map((it) => ({ ...it })).filter((it) => !_room?.players?.some((player: any) => player.moves === it.value));
+    const _lastMonsters = Object.values(MONSTERS).map((it) => ({ ...it })).filter((it) => !_roomInfo?.players?.some((player: any) => player.moves === it.value));
     if (_lastMonsters?.length === 1 && !betMonster.length) {
-      onSelectMonster(lastMonsters[0].value);
+      onSelectMonster(_lastMonsters[0].value);
     }
     setOpen(true);
   };

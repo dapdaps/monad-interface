@@ -23,19 +23,22 @@ const Result = (props: any) => {
 export default Result;
 
 export const ResultUFO = (props: any) => {
-  const { onClose } = props;
+  const { onClose, isShowUFO } = props;
 
   const { run: onCloseDelay } = useDebounceFn(() => {
     onClose();
-  }, { wait: 5000 });
+  }, { wait: 6000 });
 
   useEffect(() => {
+    if (!isShowUFO) {
+      return;
+    }
     onCloseDelay();
-  }, []);
+  }, [isShowUFO]);
 
   return (
     <motion.div
-      className="w-[540px] h-[172px] origin-left top-0 left-0 absolute bg-[url('/images/mainnet/arcade/guess-who/ufo4.png')] bg-no-repeat bg-center bg-contain"
+      className="w-[540px] h-[172px] flex justify-center items-center origin-left top-0 left-0 absolute bg-[url('/images/mainnet/arcade/guess-who/ufo4.png')] bg-no-repeat bg-center bg-contain"
       initial={{
         scale: 0.35,
         rotate: -22,
@@ -63,7 +66,21 @@ export const ResultUFO = (props: any) => {
       <motion.img
         src="/images/mainnet/arcade/guess-who/ufo-light2.png"
         alt=""
-        className="w-[417px] h-[598px] object-top object-contain shrink-0 translate-x-[5px] translate-y-[140px] rotate-[-15deg]"
+        className="w-[417px] h-[598px] object-top object-contain shrink-0 translate-x-[-57px] translate-y-[352px] rotate-[-15deg]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{
+          duration: 1,
+          delay: 4,
+          type: "spring",
+          stiffness: 200,
+          damping: 10,
+        }}
+      />
+      <motion.img
+        src="/images/mainnet/arcade/guess-who/lightning(neon).gif"
+        alt=""
+        className="w-[250px] h-[234px] absolute bottom-0 object-top object-contain shrink-0 translate-x-[5px] translate-y-[450px] rotate-[-15deg]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{
