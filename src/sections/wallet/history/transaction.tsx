@@ -58,7 +58,7 @@ export default function Transaction({ refresh }: { refresh: number }) {
                                 
                                 <td className="">{ balanceFormated(item.action_amount)} <span className="text-[#727D97]">{item.assets && item.assets.length > 0 && item.assets[0]}</span></td>
                                 <td className="">{formatDisplayCurrency(item.trading_value || '-')}</td>
-                                <td className=" text-[#727D97]">
+                                <td className="text-[#727D97]">
                                     {dayjs.unix(item.timestamp).utc().format('YYYY/MM/DD HH:mm')}
                                 </td>
                                 <td className="">
@@ -90,7 +90,7 @@ export default function Transaction({ refresh }: { refresh: number }) {
                         isLoading && (
                             <tr>
                                 <td colSpan={6} className="pt-[50px]">
-                                    <div className="flex justify-center items-center">
+                                    <div className="flex justify-center items-center overflow-hidden">
                                         <Loading />
                                     </div>
                                 </td>

@@ -25,16 +25,16 @@ export default function Gaming({ refresh }: { refresh: number }) {
                 </thead>
                 <tbody className="text-[16px]" >
                     {
-                        isLoading && (
-                            <tr>
+                        (
+                            isLoading && <tr>
                                 <td colSpan={6} className="pt-[50px]">
-                                    <div className="flex justify-center items-center">
+                                    <div className="flex justify-center items-center overflow-hidden">
                                         <Loading />
                                     </div>
                                 </td>
                             </tr>
                         )
-                    }
+                    } 
 
                     {
                         !isLoading && (!gameRecord || gameRecord?.length === 0) && (
@@ -60,13 +60,11 @@ export default function Gaming({ refresh }: { refresh: number }) {
                                 <td className="pl-[30px]">{getGameAssets(item)}</td>
                                 <td className="pl-[30px]">{getGameAmount(item)}</td>
                                 <td className="pl-[30px]">{getGameValue(item, price['MON'])}</td>
-                                <td className="pl-[30px] text-[#232426]">
+                                <td className="pl-[30px] text-[#727D97]">
                                     {dayjs.unix(item.create_time).utc().format('YYYY/MM/DD HH:mm')}
                                 </td>
                                 <td className="pl-[30px]">
                                     <div className="flex items-center pr-[10px] gap-2">
-                                        {/* <span className="text-[#727D97]">From</span>
-                                        <span>0x...2b35</span> */}
                                         <HashLink hash={item.tx_hash} />
                                     </div>
                                 </td>
@@ -77,9 +75,10 @@ export default function Gaming({ refresh }: { refresh: number }) {
                 </tbody>
             </table>
 
+
             {
                 pageTotal > 1 && (
-                    <div className="flex justify-end">
+                    <div className="flex justify-end pb-[20px]">
                         <Pagination
                             page={page}
                             totalPage={pageTotal}

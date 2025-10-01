@@ -25,7 +25,7 @@ export default function Swap({ dapp, isSuperSwap }: any) {
                 // !["SuperSwap"].includes(dapp.name) && (
                 //   <DappIcon dapp={dapp} />
                 // )
-                <DappIcon dapp={dapp} />
+                <DappIcon dapp={dapp} isSuperSwap={isSuperSwap}/>
               }
               <Bg />
             </>
