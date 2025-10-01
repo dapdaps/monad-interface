@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Monster, RPS_MIN_BET_AMOUNT } from "../config";
+import { Monster, RPS_MIN_BET_AMOUNT, Status } from "../config";
 import useCustomAccount from "@/hooks/use-account";
 import { useConnectWallet } from "@/hooks/use-connect-wallet";
 import useToast from "@/hooks/use-toast";
@@ -16,6 +16,9 @@ export function useCreate(props?: any) {
     getBetTokenBalance,
     getList,
     getListDelay,
+    setPlayersAvatar,
+    onChange2UserLatest,
+    onChange2List,
   } = props ?? {};
 
   const { accountWithAk, account, chainId, provider } = useCustomAccount();
@@ -69,8 +72,8 @@ export function useCreate(props?: any) {
     if (isDouble) {
       params = [
         utils.parseUnits(betAmount || "0", betToken.decimals),
-        betMonster[0] < betMonster[1] ? betMonster[0] : betMonster[1],
-        betMonster[1] < betMonster[0] ? betMonster[0] : betMonster[1],
+        betMonster[0],
+        betMonster[1],
       ];
     }
 
@@ -78,11 +81,6 @@ export function useCreate(props?: any) {
     if (isDouble) {
       method = "initAndJoinRoom";
     }
-
-    console.log("create amount: %o", utils.formatUnits(parsedAmount, betToken.decimals));
-    console.log("create params: %o", params);
-    console.log("create method: %o", method);
-    console.log("create options: %o", options);
 
     try {
       const estimatedGas = await contract.estimateGas[method](...params, options);
@@ -97,7 +95,8 @@ export function useCreate(props?: any) {
 
       toast.dismiss(toastId);
       toastId = toast.loading({ title: "Confirming...", chainId, tx: tx.hash });
-      const { status, transactionHash } = await tx.wait();
+      const txReceipt = await tx.wait();
+      const { status, transactionHash } = txReceipt;
       toast.dismiss(toastId);
 
       if (status !== 1) {
@@ -115,10 +114,64 @@ export function useCreate(props?: any) {
         chainId,
       });
 
+      // block crawling
+      let isCrawlingRoomEvent = false;
+      try {
+        const events = txReceipt.logs.map((log: any) => {
+          try {
+            return contract.interface.parseLog(log);
+          } catch (e) {
+            return null;
+          }
+        }).filter(Boolean);
+
+        const roomCreatedEvent = events.find((event: any) => event.name === "RoomCreated");
+        const RoomJoinedBEvent = events.find((event: any) => event.name === "RoomJoinedB");
+        if (roomCreatedEvent) {
+          const roomCreatedData = roomCreatedEvent.args;
+          const createdNewRoom = {
+            address: roomCreatedData.entrantA,
+            bet_amount: utils.formatUnits(roomCreatedData.betAmount, betToken.decimals),
+            create_time: +roomCreatedData.createTime.toString(),
+            create_tx_hash: transactionHash,
+            end_tx_hash: "",
+            players: [
+              {
+                address: roomCreatedData.entrantA,
+                moves: +roomCreatedData.numberA.toString(),
+                tx_hash: transactionHash,
+                tx_time: +roomCreatedData.createTime.toString(),
+              },
+            ],
+            room_id: +roomCreatedData.roomId.toString(),
+            status: Status.Ongoing,
+            winner_address: "",
+            winner_moves: 0,
+          };
+          // double
+          if (RoomJoinedBEvent) {
+            const roomJoinedBEventData = RoomJoinedBEvent.args;
+            createdNewRoom.players.push({
+              address: roomJoinedBEventData.entrant,
+              moves: +roomJoinedBEventData.number.toString(),
+              tx_hash: transactionHash,
+              tx_time: +roomCreatedData.createTime.toString(),
+            });
+          }
+          console.log("%cBlock crawling new room: %o", "background:#3A6F43;color:#fff;", createdNewRoom);
+          setPlayersAvatar(createdNewRoom.players);
+          onChange2UserLatest("create", createdNewRoom);
+          onChange2List("create", createdNewRoom);
+          isCrawlingRoomEvent = true;
+        }
+      } catch (err) {
+        console.log("Block crawling new room failed: %o", err);
+      }
+
       // reload list
       setBetMonster([]);
       getBetTokenBalance();
-      getListDelay();
+      !isCrawlingRoomEvent && getListDelay();
     } catch (error: any) {
       console.log("create rps failed: %o", error);
       toast.dismiss(toastId);

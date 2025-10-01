@@ -209,4 +209,129 @@ export const RPS_CONTRACT_ADDRESS_ABI = [
     "stateMutability": "view",
     "type": "function"
   },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "roomId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "entrantA",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "betAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum RockPaperScissors.Moves",
+        "name": "numberA",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "createTime",
+        "type": "uint64"
+      }
+    ],
+    "name": "RoomCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "roomId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "entrant",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "betAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum RockPaperScissors.Moves",
+        "name": "number",
+        "type": "uint8"
+      }
+    ],
+    "name": "RoomJoinedB",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "roomId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "entrant",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "betAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum RockPaperScissors.Moves",
+        "name": "number",
+        "type": "uint8"
+      }
+    ],
+    "name": "RoomJoinedC",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "minBetAmount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "timeoutDuration",
+    "outputs": [
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
 ];
