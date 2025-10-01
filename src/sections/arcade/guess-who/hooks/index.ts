@@ -436,8 +436,8 @@ export function useGuessWho() {
             return;
           }
           formatRoomInfo(currRoom, roomInfo);
-          console.log("currRoom: %o", currRoom);
         });
+        console.log("%cLatest polling result: %o", "background:#E2A16F;color:#fff;", _userLatest);
         return _userLatest;
       });
     } catch (error) {
