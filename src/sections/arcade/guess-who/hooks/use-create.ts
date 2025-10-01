@@ -185,7 +185,7 @@ export function useCreate(props?: any) {
   });
 
   const buttonValid = useMemo(() => {
-    const _result = { disabled: true, text: "", loading: false };
+    const _result = { disabled: true, text: "CREATE GAME", loading: false };
     if (!account) {
       _result.text = "Connect Wallet";
       _result.disabled = false;
@@ -208,11 +208,11 @@ export function useCreate(props?: any) {
       return _result;
     }
     if (Big(betAmount || 0).lt(RPS_MIN_BET_AMOUNT)) {
-      _result.text = `Minimum amount is ${RPS_MIN_BET_AMOUNT}`;
+      _result.text = `Minimum ${RPS_MIN_BET_AMOUNT}`;
       return _result;
     }
     if (betMonster.length < 1) {
-      _result.text = "Select your monster";
+      _result.text = "Select a guess";
       return _result;
     }
     _result.disabled = false;
