@@ -69,13 +69,15 @@ const formatTrade = ({
   let routerStr = '';
 
   if (market.routes?.length && market.template !== "OneClick") {
-    market.routes[0].routes.forEach((route: any, i: number) => {
-      if (i === 0) {
-        routerStr += route.token0.symbol + ' > ' + route.token1.symbol;
-      } else {
-        routerStr += ' > ' + route.token1.symbol;
-      }
-    });
+    if (market.routes[0].routes) {
+      market.routes[0].routes.forEach((route: any, i: number) => {
+        if (i === 0) {
+          routerStr += route.token0.symbol + ' > ' + route.token1.symbol;
+        } else {
+          routerStr += ' > ' + route.token1.symbol;
+        }
+      });
+    }
   } else {
     routerStr = inputCurrency.symbol + ' > ' + outputCurrency.symbol;
   }
