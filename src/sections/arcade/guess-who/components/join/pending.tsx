@@ -1,8 +1,9 @@
 import clsx from "clsx";
+import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
 const Pending = (props: any) => {
-  const { className } = props;
+  const { className, isShowUFO } = props;
   const [dots, setDots] = useState("");
 
   useEffect(() => {
@@ -21,10 +22,17 @@ const Pending = (props: any) => {
 
   return (
     <div className={clsx("flex flex-col justify-start items-center mt-[70px]", className)}>
-      <img
+      <motion.img
         src="/images/mainnet/arcade/guess-who/avatar-monster-pending.png"
         alt=""
         className="w-[201px] h-[150px] object-center object-contain shrink-0"
+        animate={isShowUFO ? {
+          rotateY: [0, 360, 720, 1080],
+        } : { rotateY: 0 }}
+        transition={isShowUFO ? {
+          delay: 4,
+          duration: 1.8,
+        } : { duration: 0 }}
       />
       <div className="text-[#FFF] text-[32px] mt-[20px] text-center">
         Guess Who{dots}

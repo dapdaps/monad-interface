@@ -74,7 +74,10 @@ const JoinRoom = (props: any) => {
       {
         resultPending
           ? (
-            <Pending className="" />
+            <Pending
+              className=""
+              isShowUFO={isShowUFO}
+            />
           )
           : (
             !!result
@@ -165,6 +168,7 @@ const JoinRoom = (props: any) => {
         {
           isShowUFO && (
             <ResultUFO
+              isShowUFO={isShowUFO}
               onClose={() => {
                 setIsShowUFO(false);
                 setResultPending(false);

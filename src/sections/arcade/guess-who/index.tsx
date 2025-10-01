@@ -78,51 +78,41 @@ const GuessWho = () => {
             </div>
           </div>
           <div className="relative w-[480px] h-[166px] flex justify-center items-center mx-auto mt-[60px] bg-[url('/images/mainnet/arcade/guess-who/create-game-base.png')] bg-no-repeat bg-center bg-contain">
-            <Popover
-              content={!!create.buttonValid.text ? (
-                <div className="rounded-[4px] bg-[#2A2631] p-[5px_15px] text-[#B9C3DC] text-[16px]">
-                  {create.buttonValid.text}
-                </div>
-              ) : null}
-              trigger={PopoverTrigger.Hover}
-              placement={PopoverPlacement.Top}
-              closeDelayDuration={0}
-              offset={32}
+            <motion.button
+              type="button"
+              className="w-[218px] h-[86px] text-[center] text-[20px] text-white uppercase font-[600] flex justify-center items-center disabled:!cursor-not-allowed disabled:opacity-50 shrink-0 bg-[url('/images/mainnet/arcade/guess-who/create-game-button2.png')] bg-no-repeat bg-center bg-contain"
+              disabled={create.buttonValid.disabled || create.buttonValid.loading}
+              onClick={() => {
+                create.onCreate();
+              }}
+              initial={{
+                transform: "translateY(-30px)",
+              }}
+              animate={{
+                transform: ["translateY(-30px)", "translateY(-25px)", "translateY(-35px)", "translateY(-30px)"],
+              }}
+              transition={{
+                repeat: Infinity,
+                duration: 5,
+                ease: "linear",
+              }}
+              whileHover={{
+                transform: "translateY(-30px)",
+                transition: {
+                  duration: 0.2,
+                  ease: "easeOut",
+                }
+              }}
+              whileTap={{
+                transform: "translateY(-25px)",
+                transition: {
+                  duration: 0.1,
+                  ease: "easeOut",
+                }
+              }}
             >
-              <motion.button
-                type="button"
-                className="w-[218px] h-[86px] disabled:!cursor-not-allowed disabled:opacity-50 shrink-0 bg-[url('/images/mainnet/arcade/guess-who/create-game-button.png')] bg-no-repeat bg-center bg-contain"
-                disabled={create.buttonValid.disabled || create.buttonValid.loading}
-                onClick={() => {
-                  create.onCreate();
-                }}
-                initial={{
-                  transform: "translateY(-30px)",
-                }}
-                animate={{
-                  transform: ["translateY(-30px)", "translateY(-25px)", "translateY(-35px)", "translateY(-30px)"],
-                }}
-                transition={{
-                  repeat: Infinity,
-                  duration: 5,
-                  ease: "linear",
-                }}
-                whileHover={{
-                  transform: "translateY(-30px)",
-                  transition: {
-                    duration: 0.2,
-                    ease: "easeOut",
-                  }
-                }}
-                whileTap={{
-                  transform: "translateY(-25px)",
-                  transition: {
-                    duration: 0.1,
-                    ease: "easeOut",
-                  }
-                }}
-              />
-            </Popover>
+              {create.buttonValid.text}
+            </motion.button>
             <img
               src="/images/mainnet/arcade/guess-who/create-game-base-right.png"
               alt=""
