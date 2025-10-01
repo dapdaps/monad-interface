@@ -1,6 +1,7 @@
 import Big from "big.js";
 import { useMemo, useState } from "react";
 import dapps from "@/configs/swap";
+import { balanceFormated } from "@/utils/balance";
 
 export default function Result({
   inputCurrency,
@@ -68,7 +69,7 @@ export default function Result({
         </button>
       </div>
       <div className="flex items-center gap-2">
-        {priceImpactType === 2 && (
+        {/* {priceImpactType === 2 && (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="18"
@@ -83,7 +84,7 @@ export default function Result({
               fill="white"
             />
           </svg>
-        )}
+        )} */}
 
         <div className="flex items-center gap-2 text-[12px]">
           <div className="relative group">
@@ -102,7 +103,7 @@ export default function Result({
           </svg>
           <div className="text-[#727D97] border-r border-[#34304B] pr-[10px] h-[12px] leading-[12px]">~10s</div>
           <img src={outputCurrency.icon} className="w-[14px] h-[14px]" />
-          <div>{ outputCurrencyAmount }</div>
+          <div>{ balanceFormated(outputCurrencyAmount, 4) }</div>
         </div>
 
         <button onClick={onClose}>
