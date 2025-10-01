@@ -2,7 +2,7 @@ import { RPC_LIST } from "@/configs/rpc";
 import { get } from "@/utils/http";
 import { multicallAddresses } from "@/utils/multicall";
 import { multicall } from "@/utils/multicall";
-import { ethers } from "ethers";
+import { ethers, utils } from "ethers";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { monadTestnet } from "viem/chains";
 import { useRpcStore } from "@/stores/rpc";
@@ -10,28 +10,25 @@ import useUser from "@/hooks/use-user";
 import { erc20Abi } from "viem";
 import Big from "big.js";
 import { usePriceStore } from "@/stores/usePriceStore";
-import useTokenBalance from "@/hooks/use-token-balance";
 import { useWalletInfoStore } from "@/stores/useWalletInfoStore";
 
 export default function useWalletTokens() {
-    // const [tokens, setTokens] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const rpcStore = useRpcStore();
     const { userInfo } = useUser()
     const rpc = useMemo(() => RPC_LIST[rpcStore.selected], [rpcStore.selected]);
     const { price } = usePriceStore();
-    // const [ sumValue, setSumValue ] = useState<string>('');
-    const { tokenBalance, isLoading: tokenBalanceLoading } = useTokenBalance('native', 18, monadTestnet.id)
-    const { set, isFresh } = useWalletInfoStore();
-
+    const { set, isFresh, address } = useWalletInfoStore();
 
     const fetchTokens = useCallback(async () => {
-        if (isLoading || !price || !userInfo?.address) return;
+        if (isLoading || !price || !userInfo?.address || !rpc) return;
 
-        set({ isLoading: true, walletInfo: { tokens: [], sumValue: '0' } });
+        set({ isLoading: true, walletInfo: { tokens: [], sumValue: '0' }, address: userInfo?.address });
 
         setIsLoading(true);
+
         try {
+            const _provider = new ethers.providers.JsonRpcProvider(rpc);
             const res = await get('/token/all');
             if (res.code === 200 && res.data) {
                 const _tokens = res.data.map((item: any) => {
@@ -70,6 +67,9 @@ export default function useWalletTokens() {
                     return token.originalBalance && Number(token.originalBalance) > 0;
                 });
 
+                const rawBalance = await _provider.getBalance(userInfo?.address);
+                const tokenBalance = utils.formatEther(rawBalance);
+
 
                 valuedTokens.unshift({
                     address: 'native',
@@ -85,16 +85,14 @@ export default function useWalletTokens() {
                 const sumValue = valuedTokens.reduce((acc: any, token: any) => {
                     return acc.add(new Big(token.value));
                 }, new Big(0));
-                // setSumValue(sumValue.toFixed(2));
-
-                // setTokens(valuedTokens)
 
                 set({
                     walletInfo: {
                         tokens: valuedTokens || [],
                         sumValue: sumValue.toFixed(2)
                     },
-                    isLoading: false
+                    isLoading: false,
+                    address: userInfo?.address
                 });
     
             } else {
@@ -107,7 +105,7 @@ export default function useWalletTokens() {
             setIsLoading(false);
         }
         
-    }, [isLoading, price, userInfo, tokenBalance]);
+    }, [isLoading, price, userInfo, rpc]);
 
     const fetchTokenInfo = useCallback(async (_tokens: any[], method: string = 'balanceOf', params: any[] = []) => {
         if (!userInfo?.address || !rpc) return;
@@ -147,19 +145,17 @@ export default function useWalletTokens() {
         return multicallErc20Results;
     }, [rpc, userInfo]);
 
-
     useEffect(() => {
-        if (!userInfo.address || !price || Object.keys(price).length === 0 || !tokenBalance) {
+        if (!userInfo.address || !price || Object.keys(price).length === 0) {
             return;
         }
+
         fetchTokens();
-    }, [price, userInfo, tokenBalance, isFresh]);
+    }, [price, userInfo, isFresh]);
 
     return {
-        // tokens,
         isLoading,
         price,
         fetchTokens,
-        // sumValue,
     }
 }

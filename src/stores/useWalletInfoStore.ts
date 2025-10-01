@@ -7,6 +7,7 @@ type WalletInfoState = {
   };
   isLoading: boolean;
   isFresh?: number;
+  address?: string;
 };
 
 type WalletInfoStore = WalletInfoState & {
@@ -20,6 +21,7 @@ export const useWalletInfoStore = create<WalletInfoStore>((set) => ({
   },
   isLoading: false,
   isFresh: 0,
+  address: '',
   setFresh: (fresh: number) => set(() => ({ isFresh: fresh })),
   set: (params) => set(() => ({ ...params })),
 }));
