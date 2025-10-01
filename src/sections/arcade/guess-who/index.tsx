@@ -16,8 +16,11 @@ import JoinRoomModal from "./components/join/modal";
 import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover";
 import dayjs from "dayjs";
 import { useJoin } from "./hooks/use-join";
+import { useProgressRouter } from "@/hooks/use-progress-router";
 
 const GuessWho = () => {
+
+  const router = useProgressRouter();
 
   const guessWho = useGuessWho();
   const create = useCreate(guessWho);
@@ -133,6 +136,9 @@ const GuessWho = () => {
               <button
                 type="button"
                 className="group hover:text-white hover:bg-[radial-gradient(50%_66%_at_46%_50%,_#553BE4_0%,_#221662_100%)] transition-all duration-150 flex items-center justify-center gap-[10px] w-[86px] h-[32px] shrink-0 text-[#A1AECB] text-[16px] font-normal leading-normal bg-black rounded-[4px] border border-[#34304B]"
+                onClick={() => {
+                  router.back();
+                }}
               >
                 <svg
                   width="10"
