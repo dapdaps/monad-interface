@@ -245,6 +245,10 @@ export function useJoin(props?: any) {
     if (!_roomInfo) {
       return;
     }
+    const _lastMonsters = Object.values(MONSTERS).map((it) => ({ ...it })).filter((it) => !_room?.players?.some((player: any) => player.moves === it.value));
+    if (_lastMonsters?.length === 1 && !betMonster.length) {
+      onSelectMonster(lastMonsters[0].value);
+    }
     setOpen(true);
   };
 
@@ -261,19 +265,21 @@ export function useJoin(props?: any) {
     // getList();
   };
 
-  const onSelectMonster = (move: Monster, index: number) => {
-    const _moves = betMonster.slice();
-    if (_moves.includes(move)) {
-      _moves.splice(_moves.indexOf(move), 1);
-    } else {
-      // join yourself room
-      // can select one only
-      if (account.toLowerCase() === room?.address?.toLowerCase()) {
-        _moves.splice(0, 1);
+  const onSelectMonster = (move: Monster) => {
+    setBetMonster((prev) => {
+      const _moves = prev.slice();
+      if (_moves.includes(move)) {
+        _moves.splice(_moves.indexOf(move), 1);
+      } else {
+        // join yourself room
+        // can select one only
+        if (account.toLowerCase() === room?.address?.toLowerCase()) {
+          _moves.splice(0, 1);
+        }
+        _moves.push(move);
       }
-      _moves.push(move);
-    }
-    setBetMonster(_moves);
+      return _moves;
+    });
   };
 
   const buttonValid = useMemo(() => {
