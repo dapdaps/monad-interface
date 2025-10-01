@@ -16,7 +16,8 @@ export default function Route({
     icon,
     duration,
     feeType,
-    gas
+    gas,
+    isBest
 }: any) {
     const prices: any = usePriceStore(store => store.price);
 
@@ -40,6 +41,11 @@ export default function Route({
             <div className="flex items-center gap-[10px]">
                 <img className="w-[20px] h-[20px] rounded-[4px]" src={icon} />
                 <div className="text-[14px] font-[400]">{name}</div>
+                {
+                    isBest && (
+                        <div className="text-[12px] text-[#BFFF60]">Best Price</div>
+                    )
+                }
             </div>
 
             <div className="">

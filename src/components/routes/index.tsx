@@ -15,6 +15,7 @@ export default function Routes({ routes, fromChain, inputCurrency, outputCurrenc
                     outputCurrency={outputCurrency}
                     inputCurrencyAmount={route.inputCurrencyAmount}
                     fee={route.fee}
+                    isBest={index === 0}
                     receiveAmount={route.outputCurrencyAmount}
                     fromChain={fromChain} 
                     icon={route.icon}
