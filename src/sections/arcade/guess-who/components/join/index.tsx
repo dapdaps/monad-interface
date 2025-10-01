@@ -49,25 +49,25 @@ const JoinRoom = (props: any) => {
           betToken={betToken}
           betAmount={room.bet_amount}
           player={room.players[0]}
-          isWon={isFinishedUFO && !!result && room.players[0] && result?.address?.toLowerCase() === room.players[0].address.toLowerCase()}
-          isLost={isFinishedUFO && !!result && room.players[0] && result?.address?.toLowerCase() !== room.players[0].address.toLowerCase()}
-          multipleAddresses={room.players.filter((player: any) => player.address === room.players[0]?.address)}
+          moves={result?.moves}
+          isWon={isFinishedUFO && !!result && room.players[0] && result?.address?.toLowerCase() === room.players[0].address.toLowerCase() && result?.moves === room.players[0].moves}
+          isLost={isFinishedUFO && !!result && room.players[0] && (result?.address?.toLowerCase() !== room.players[0].address.toLowerCase() || result?.moves !== room.players[0].moves)}
         />
         <Player
           betToken={betToken}
           betAmount={room.bet_amount}
           player={room.players[1]}
-          isWon={isFinishedUFO && !!result && room.players[1] && result?.address?.toLowerCase() === room.players[1].address.toLowerCase()}
-          isLost={isFinishedUFO && !!result && room.players[1] && result?.address?.toLowerCase() !== room.players[1].address.toLowerCase()}
-          multipleAddresses={room.players.filter((player: any) => player.address === room.players[1]?.address)}
+          moves={result?.moves}
+          isWon={isFinishedUFO && !!result && room.players[1] && result?.address?.toLowerCase() === room.players[1].address.toLowerCase() && result?.moves === room.players[1].moves}
+          isLost={isFinishedUFO && !!result && room.players[1] && (result?.address?.toLowerCase() !== room.players[1].address.toLowerCase() || result?.moves !== room.players[1].moves)}
         />
         <Player
           betToken={betToken}
           betAmount={room.bet_amount}
           player={room.players[2]}
-          isWon={isFinishedUFO && !!result && room.players[2] && result?.address?.toLowerCase() === room.players[2].address.toLowerCase()}
-          isLost={isFinishedUFO && !!result && room.players[2] && result?.address?.toLowerCase() !== room.players[2].address.toLowerCase()}
-          multipleAddresses={room.players.filter((player: any) => player.address === room.players[2]?.address)}
+          moves={result?.moves}
+          isWon={isFinishedUFO && !!result && room.players[2] && result?.address?.toLowerCase() === room.players[2].address.toLowerCase() && result?.moves === room.players[2].moves}
+          isLost={isFinishedUFO && !!result && room.players[2] && (result?.address?.toLowerCase() !== room.players[2].address.toLowerCase() || result?.moves !== room.players[2].moves)}
         />
       </div>
 
