@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { formatLongText } from "@/utils/utils";
 
 const Player = (props: any) => {
-  const { betToken, betAmount, className, isLost, isWon, player, multipleAddresses } = props;
+  const { betToken, betAmount, className, isLost, isWon, player } = props;
 
   return (
     <div
@@ -27,16 +27,14 @@ const Player = (props: any) => {
         </div>
         {
           !isLost && (
-            isWon && multipleAddresses[0].moves !== player.moves ? null : (
-              <BetToken
-                betToken={betToken}
-                betAmount={isWon ? Big(betAmount).times(3) : betAmount}
-              />
-            )
+            <BetToken
+              betToken={betToken}
+              betAmount={isWon ? Big(betAmount).times(3) : betAmount}
+            />
           )
         }
         {
-          isWon && multipleAddresses[0].moves === player.moves && (
+          isWon && (
             <div className="w-[120px] h-[32px] mt-[10px] shrink-0 rounded-[4px] border border-[#FFDAA9] text-[#FFBE73] text-[20px] flex items-center justify-center">
               x3 Winner
             </div>
