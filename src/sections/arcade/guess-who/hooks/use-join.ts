@@ -8,6 +8,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Contract, utils } from "ethers";
 import { RPS_CONTRACT_ADDRESS, RPS_CONTRACT_ADDRESS_ABI } from "../contract";
 import Big from "big.js";
+import { NotificationType, useNotificationContext } from "@/context/notification";
 
 export function useJoin(props?: any) {
   const {
@@ -27,6 +28,7 @@ export function useJoin(props?: any) {
   const { accountWithAk, account, chainId, provider } = useCustomAccount();
   const { onConnect, onSwitchChain } = useConnectWallet();
   const toast = useToast();
+  const { add } = useNotificationContext();
 
   const [betMonster, setBetMonster] = useState<Monster[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -198,6 +200,14 @@ export function useJoin(props?: any) {
         chainId,
       });
       playAudio({ type: "success", action: "play" });
+      // add to global notification
+      add?.({
+        id: `guessWho-${room.room_id}`,
+        type: NotificationType.GuessWho,
+        data: {
+          ...room,
+        },
+      });
 
       // reload list
       setBetMonster([]);

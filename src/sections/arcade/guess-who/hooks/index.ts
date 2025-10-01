@@ -403,49 +403,49 @@ export function useGuessWho() {
   }, {
     refreshDeps: [accountWithAk],
   });
-  const { } = useRequest(async () => {
-    if (!account || !provider) {
-      return;
-    }
-    const calls = userLatest
-      ?.filter((item: any) => !item.winner_address)
-      ?.map((item: any) => ({
-        address: RPS_CONTRACT_ADDRESS,
-        name: "getRoomsInfo",
-        params: [item.room_id, item.room_id],
-      }));
-    if (!calls?.length) {
-      return;
-    }
-    const multicallAddress = multicallAddresses[DEFAULT_CHAIN_ID];
+  // const { } = useRequest(async () => {
+  //   if (!account || !provider) {
+  //     return;
+  //   }
+  //   const calls = userLatest
+  //     ?.filter((item: any) => !item.winner_address)
+  //     ?.map((item: any) => ({
+  //       address: RPS_CONTRACT_ADDRESS,
+  //       name: "getRoomsInfo",
+  //       params: [item.room_id, item.room_id],
+  //     }));
+  //   if (!calls?.length) {
+  //     return;
+  //   }
+  //   const multicallAddress = multicallAddresses[DEFAULT_CHAIN_ID];
 
-    try {
-      const roomInfos = await multicall({
-        abi: RPS_CONTRACT_ADDRESS_ABI,
-        options: {},
-        calls,
-        multicallAddress,
-        provider
-      });
-      setUserLatest((prev: any) => {
-        const _userLatest = prev.slice();
-        roomInfos.forEach((item: any) => {
-          const [[roomInfo]] = item;
-          const currRoom = _userLatest.find((item: any) => item.room_id === +roomInfo.data.roomId.toString());
-          if (!currRoom) {
-            return;
-          }
-          formatRoomInfo(currRoom, roomInfo);
-        });
-        console.log("%cLatest polling result: %o", "background:#E2A16F;color:#fff;", _userLatest);
-        return _userLatest;
-      });
-    } catch (error) {
-      console.log("polling latest contract room info failed: %o", error);
-    }
-  }, {
-    pollingInterval: 5000,
-  });
+  //   try {
+  //     const roomInfos = await multicall({
+  //       abi: RPS_CONTRACT_ADDRESS_ABI,
+  //       options: {},
+  //       calls,
+  //       multicallAddress,
+  //       provider
+  //     });
+  //     setUserLatest((prev: any) => {
+  //       const _userLatest = prev.slice();
+  //       roomInfos.forEach((item: any) => {
+  //         const [[roomInfo]] = item;
+  //         const currRoom = _userLatest.find((item: any) => item.room_id === +roomInfo.data.roomId.toString());
+  //         if (!currRoom) {
+  //           return;
+  //         }
+  //         formatRoomInfo(currRoom, roomInfo);
+  //       });
+  //       console.log("%cLatest polling result: %o", "background:#E2A16F;color:#fff;", _userLatest);
+  //       return _userLatest;
+  //     });
+  //   } catch (error) {
+  //     console.log("polling latest contract room info failed: %o", error);
+  //   }
+  // }, {
+  //   pollingInterval: 5000,
+  // });
   const onChange2UserLatest = (type: any, room: Room) => {
     if (type === "create") {
       setUserLatest((prev: any) => {

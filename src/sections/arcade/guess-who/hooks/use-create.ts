@@ -8,6 +8,7 @@ import { DEFAULT_CHAIN_ID } from "@/configs";
 import { Contract, utils } from "ethers";
 import { RPS_CONTRACT_ADDRESS, RPS_CONTRACT_ADDRESS_ABI } from "../contract";
 import Big from "big.js";
+import { NotificationType, useNotificationContext } from "@/context/notification";
 
 export function useCreate(props?: any) {
   const {
@@ -25,6 +26,7 @@ export function useCreate(props?: any) {
   const { accountWithAk, account, chainId, provider } = useCustomAccount();
   const { onConnect, onSwitchChain } = useConnectWallet();
   const toast = useToast();
+  const { add } = useNotificationContext();
 
   const [betMonster, setBetMonster] = useState<Monster[]>([]);
   const [betAmount, setBetAmount] = useState<string>();
@@ -168,6 +170,15 @@ export function useCreate(props?: any) {
           setPlayersAvatar(createdNewRoom.players);
           onChange2UserLatest("create", createdNewRoom);
           onChange2List("create", createdNewRoom);
+
+          add?.({
+            id: `guessWho-${createdNewRoom.room_id}`,
+            type: NotificationType.GuessWho,
+            data: {
+              ...createdNewRoom,
+            },
+          });
+
           isCrawlingRoomEvent = true;
         }
       } catch (err) {

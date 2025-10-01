@@ -204,7 +204,7 @@ const GuessWho = () => {
                 }
               </button>
               <div className="text-[#A1AECB]">
-                You Joined only
+                Participated
               </div>
             </div>
           </div>
