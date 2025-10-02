@@ -34,7 +34,7 @@ export default function Gaming({ refresh }: { refresh: number }) {
                                 </td>
                             </tr>
                         )
-                    } 
+                    }
 
                     {
                         !isLoading && (!gameRecord || gameRecord?.length === 0) && (
@@ -78,7 +78,7 @@ export default function Gaming({ refresh }: { refresh: number }) {
 
             {
                 pageTotal > 1 && (
-                    <div className="flex justify-end pb-[20px]">
+                    <div className="flex justify-end py-[20px] pr-[20px]">
                         <Pagination
                             page={page}
                             totalPage={pageTotal}
@@ -148,9 +148,9 @@ function getGameAmount(item: any) {
     }
 }
 
-const CashOut = () => <div className="flex items-center gap-2">
+const CashOut = ({ text }: { text?: string }) => <div className="flex items-center gap-2">
     <img src="/images/monad.svg" alt="MON" className="w-6 h-6" />
-    <span>Cash out</span>
+    <span>{text || 'Cash out'}</span>
 </div>
 
 function getGameAssets(item: any) {
@@ -159,19 +159,21 @@ function getGameAssets(item: any) {
         case 'spaceCashOut':
             return whitelist ? whitelist : <CashOut />
         case 'spaceCreate':
-            return <CashOut />
+            return <CashOut text="Create" />
         case 'purchase777':
-            return <CashOut />
+            return <CashOut text="Purchase" />
         case '777':
             return whitelist ? whitelist : <CashOut />
         case 'rpsCreate':
-            return <CashOut />
+            return <CashOut text="Create" />
         case 'rpsJoin':
-            return <CashOut />
+            return <CashOut text="Join" />
         case 'rpsCashOut':
             return whitelist ? whitelist : <CashOut />
+        case 'rpsCashCancel':
+            return whitelist ? whitelist : <CashOut text="Cancel" />
         case 'rpsPayOut':
-            return whitelist ? whitelist : <CashOut />
+            return whitelist ? whitelist : <CashOut text="Pay out" />
         default:
             return <CashOut />
     }
