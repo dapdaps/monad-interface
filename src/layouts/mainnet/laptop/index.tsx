@@ -13,6 +13,9 @@ const EXCLUDE_FOOTER_PATHS = [
 const EXCLUDE_WALLET_INFO_PATHS = [
   /^\/wallet/,
   /^\/$/,
+  /^\/arcade\/guess-who$/,
+  /^\/arcade\/space-invaders$/,
+  /^\/arcade\/lucky777$/,
 ];
 
 const LaptopLayout = (props: any) => {

@@ -1,9 +1,9 @@
 import clsx from "clsx";
 import Eyes from "./components/eyes";
-import { Monster } from "./config";
+import { Monster, Status, StatusMap } from "./config";
 import { useCreate } from "./hooks/use-create";
 import Monsters from "./components/monsters";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import BetInput from "./components/bet-input";
 import { useGuessWho } from "./hooks";
 import GridTable from "@/components/flex-table/grid-table";
@@ -18,6 +18,11 @@ import dayjs from "dayjs";
 import { useJoin } from "./hooks/use-join";
 import { useProgressRouter } from "@/hooks/use-progress-router";
 import Audios from "./components/audios";
+import TimeAgo from "./components/time-ago";
+import Big from "big.js";
+import { useClaim } from "./hooks/use-claim";
+import ClaimModal from "./components/claim";
+import HistoryModal from "./components/history";
 
 const GuessWho = () => {
 
@@ -26,6 +31,7 @@ const GuessWho = () => {
   const guessWho = useGuessWho();
   const create = useCreate(guessWho);
   const join = useJoin(guessWho);
+  const claim = useClaim(guessWho);
 
   return (
     <div className="mainnet-content !pb-0 overflow-auto text-white">
@@ -145,22 +151,82 @@ const GuessWho = () => {
                 </svg>
                 <div>Back</div>
               </button>
+            </div>
+            <div className="flex justify-center items-center gap-[60px]">
+              <motion.button
+                type="button"
+                className="group relative text-[22px] font-[600] uppercase text-center"
+                initial={{
+                  color: "#727D97",
+                }}
+                animate={{
+                  color: guessWho.listTab === "all" ? "#FFF" : "#727D97",
+                }}
+                whileHover={{
+                  color: "#FFF",
+                }}
+                onClick={() => {
+                  if (guessWho.listTab === "all") return;
+                  guessWho.playAudio({ type: "click", action: "play" });
+                  guessWho.setListTab("all");
+                }}
+              >
+                All GAMES
+                <div
+                  className={clsx(
+                    "w-full h-[3px] bg-[#A5FFFD] absolute bottom-0 transition-all duration-300 group-hover:opacity-100  group-hover:translate-y-[5px]",
+                    guessWho.listTab === "all" ? "opacity-100 translate-y-[5px]" : "opacity-0 translate-y-[-5px]",
+                  )}
+                />
+              </motion.button>
+              <motion.button
+                type="button"
+                className="group relative text-[22px] font-[600] uppercase text-center"
+                initial={{
+                  color: "#727D97",
+                }}
+                animate={{
+                  color: guessWho.listTab === "yours" ? "#FFF" : "#727D97",
+                }}
+                whileHover={{
+                  color: "#FFF",
+                }}
+                onClick={() => {
+                  if (guessWho.listTab === "yours") return;
+                  guessWho.playAudio({ type: "click", action: "play" });
+                  guessWho.setListTab("yours");
+                }}
+              >
+                Yours
+                <div
+                  className={clsx(
+                    "w-full h-[3px] bg-[#A5FFFD] absolute bottom-0 transition-all duration-300 group-hover:opacity-100  group-hover:translate-y-[5px]",
+                    guessWho.listTab === "yours" ? "opacity-100 translate-y-[5px]" : "opacity-0 translate-y-[-5px]",
+                  )}
+                />
+              </motion.button>
+            </div>
+            <div className="flex justify-end items-center gap-[12px]">
               <button
                 type="button"
-                className="group disabled:opacity-50 disabled:!cursor-not-allowed hover:text-white hover:bg-[radial-gradient(50%_66%_at_46%_50%,_#553BE4_0%,_#221662_100%)] transition-all duration-150 flex items-center justify-center gap-[10px] w-[100px] h-[32px] shrink-0 text-[#A1AECB] text-[16px] font-normal leading-normal bg-black rounded-[4px] border border-[#34304B]"
-                disabled={guessWho.loading}
+                className="group disabled:opacity-50 disabled:!cursor-not-allowed hover:text-white hover:bg-[radial-gradient(50%_66%_at_46%_50%,_#553BE4_0%,_#221662_100%)] transition-all duration-150 flex items-center justify-center gap-[10px] w-[33px] h-[28px] shrink-0 text-[#66657E] text-[16px] font-normal leading-normal bg-black/50 rounded-[2px] border border-[#383E4E] backdrop-blur-[10px]"
+                disabled={guessWho.loading || guessWho.userListLoading}
                 onClick={() => {
                   guessWho.playAudio({ type: "click", action: "play" });
+                  if (guessWho.listTab === "yours") {
+                    guessWho.getUserList();
+                    return;
+                  }
                   guessWho.getList();
                 }}
               >
                 <motion.svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 12 12"
+                  width="15"
+                  height="16"
+                  viewBox="0 0 15 16"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-[12px] h-[12px] shrink-0 group-hover:[filter:drop-shadow(0_0_10px_rgba(255,255,255,0.60))]"
+                  className="w-[15px] h-[16px] shrink-0 group-hover:[filter:drop-shadow(0_0_10px_rgba(255,255,255,0.60))]"
                   animate={guessWho.loading ? {
                     rotate: [0, 360],
                   } : {
@@ -175,165 +241,331 @@ const GuessWho = () => {
                     duration: 0,
                   }}
                 >
-                  <path d="M11.6309 0.515677C11.6228 0.208176 11.3776 0.01438 11.0263 0.0214448C10.6744 0.0285096 10.4931 0.233543 10.4353 0.541168C10.4054 0.700697 10.415 0.867597 10.4133 1.03126C10.4103 1.31047 10.4125 1.58974 10.4125 1.86901C10.3668 1.8888 10.321 1.9086 10.2753 1.92842C10.1218 1.78751 9.97085 1.64395 9.81434 1.50613C8.40375 0.264124 6.73012 -0.198246 4.85584 0.0765588C2.20954 0.46454 0.248857 2.56873 0.018784 5.19545C-0.197047 7.65949 1.46737 10.0403 3.96569 10.8411C6.49304 11.6513 9.30514 10.7083 10.7266 8.57158C10.8181 8.43402 10.9132 8.29281 10.969 8.14072C11.0775 7.84532 11.023 7.57031 10.7175 7.41246C10.4231 7.26041 10.1441 7.32148 9.93509 7.57954C9.83056 7.7086 9.7511 7.85582 9.65352 7.99037C8.77224 9.20579 7.56164 9.86803 6.01254 9.94015C3.9383 10.0367 2.03687 8.75176 1.43236 6.85779C0.80802 4.90168 1.67158 2.79401 3.51867 1.7658C5.31415 0.766283 7.61919 1.05312 9.07218 2.46247C9.17858 2.56567 9.25027 2.70153 9.42277 2.93848C8.85551 2.93848 8.41879 2.91642 7.98572 2.94493C7.58578 2.97129 7.37396 3.19858 7.37725 3.51768C7.38045 3.82837 7.60713 4.08544 7.99196 4.09448C8.99643 4.11808 10.002 4.10952 11.0069 4.09929C11.338 4.09593 11.6121 3.91491 11.6222 3.60245C11.6552 2.57421 11.6578 1.54408 11.6309 0.515677Z" fill="#A1AECB" />
+                  <path d="M8.4375 15.5L9.375 11.75H11.6672C12.6045 10.726 13.1246 9.38822 13.125 8C13.125 5.44063 11.4113 3.21406 9.07125 2.52125C8.68875 2.40875 8.4375 2.04313 8.4375 1.64375C8.4375 1.03719 9.01594 0.570312 9.59812 0.740938C12.7181 1.65969 15 4.58656 15 8C15 11.7847 12.0806 14.9872 8.4375 15.5ZM0 8C0 4.21625 2.91938 1.01281 6.5625 0.5L5.625 4.25H3.33281C2.3955 5.27401 1.87544 6.61178 1.875 8C1.875 10.5594 3.58875 12.7859 5.92875 13.4778C6.11462 13.5369 6.27657 13.6542 6.39068 13.8124C6.5048 13.9706 6.56503 14.1612 6.5625 14.3562C6.5625 14.9628 5.98406 15.4297 5.40188 15.2591C2.28188 14.3403 0 11.4134 0 8Z" fill="currentColor" />
                 </motion.svg>
-                <div>Refresh</div>
               </button>
-            </div>
-            <div className="text-[22px] font-[600] uppercase text-center pt-[13px]">
-              All GAMES . {guessWho.list.total}
-            </div>
-            <div className="flex justify-end items-center gap-[10px] pt-[13px]">
               <button
                 type="button"
-                className="disabled:opacity-50 disabled:!cursor-not-allowed w-[18px] h-[18px] p-[3px] flex justify-center items-center rounded-[2px] border border-[#5E549D] bg-[#1A1843] shadow-[0_0_10px_0_rgba(0,0,0,0.05)]"
-                disabled={guessWho.loading}
+                className="text-[#A1AECB] font-[400] pr-[5px] hover:text-white transition-all duration-300"
                 onClick={() => {
                   guessWho.playAudio({ type: "click", action: "play" });
-                  guessWho.onJoined(!guessWho.list.joined);
+                  guessWho.setHistoryOpen(true);
                 }}
               >
-                {
-                  guessWho.list.joined && (
-                    <div
-                      className={clsx(
-                        "w-full h-full bg-[#BFFF60] rounded-[2px] flex justify-center items-center transition-all duration-300",
-                      )}
-                    />
-                  )
-                }
+                History
               </button>
-              <div className="text-[#A1AECB]">
-                Participated
-              </div>
             </div>
           </div>
-          <div className="w-full">
-            <GridTable
-              bodyClassName="max-h-[calc(100dvh_-_187px)] overflow-y-auto"
-              headerRowClassName="!px-0 !gap-x-[20px]"
-              bodyRowClassName="odd:bg-[unset] !px-0 !gap-x-[20px] text-[18px] h-[104px] bg-[url('/images/mainnet/arcade/guess-who/bg-room-item.png')] bg-no-repeat bg-center bg-contain"
-              columns={[
-                {
-                  dataIndex: "room_id",
-                  title: () => (
-                    <div className="pl-[40px]">
-                      Game No.
-                    </div>
-                  ),
-                  width: 140,
-                  sort: false,
-                  render: (record: any) => {
-                    return (
-                      <div className="pl-[40px]">
-                        {record.room_id}
-                      </div>
-                    );
-                  },
-                },
-                {
-                  dataIndex: "player",
-                  title: "Player",
-                  width: 250,
-                  sort: false,
-                  render: (record: any) => {
-                    return (
-                      <div className="flex items-center gap-[30px]">
-                        <PlayerAvatar
-                          avatar={record.players[0]?.avatar}
-                          moves={record.players[0]?.moves}
-                        />
-                        <PlayerAvatar
-                          avatar={record.players[1]?.avatar}
-                          moves={record.players[1]?.moves}
-                        />
-                        <PlayerAvatar
-                          avatar={record.players[2]?.avatar}
-                          moves={record.players[2]?.moves}
-                        />
-                      </div>
-                    );
-                  },
-                },
-                {
-                  dataIndex: "bet_amount",
-                  title: "Bet Price",
-                  width: 100,
-                  sort: true,
-                  render: (record: any) => {
-                    return (
-                      <div className="flex items-center gap-[6px]">
-                        <img
-                          src={guessWho.betToken.icon}
-                          alt=""
-                          className="w-[18px] h-[18px] object-center object-contain shrink-0"
-                        />
-                        <div className="">
-                          {numberFormatter(record.bet_amount, 3, true, { isShort: true, isZeroPrecision: false })}
-                        </div>
-                      </div>
-                    );
-                  },
-                },
-                {
-                  dataIndex: "create_time",
-                  title: "Create Time",
-                  width: 160,
-                  sort: true,
-                  render: (record: any) => {
-                    return dayjs(record.create_time * 1000).utc().format("MM/DD/YYYY HH:mm");
-                  },
-                },
-                {
-                  dataIndex: "join",
-                  title: "",
-                  width: 120,
-                  render: (record: any) => {
-                    return (
-                      <>
-                        <HexagonButton
-                          loading={record.loading}
-                          disabled={record.loading}
-                          height={36}
-                          className="!text-[18px]"
-                          innerClassName="!pl-[27px] !pr-[20px]"
-                          onClick={() => {
-                            join.onOpen(record);
-                          }}
-                        >
-                          <div className="">
-                            Join
+
+          <AnimatePresence>
+            {
+              guessWho.listTab === "all" && (
+                <motion.div
+                  key="all"
+                  className="w-full mt-[10px]"
+                  initial={{
+                    opacity: 0,
+                    x: -200,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    x: 0,
+                  }}
+                >
+                  <GridTable
+                    bodyClassName="max-h-[calc(100dvh_-_187px)] overflow-y-auto"
+                    headerRowClassName="!px-0 !gap-x-[20px]"
+                    bodyRowClassName="odd:bg-[unset] !px-0 !gap-x-[20px] text-[18px] h-[104px] bg-[url('/images/mainnet/arcade/guess-who/bg-room-item.png')] bg-no-repeat bg-center bg-contain"
+                    columns={[
+                      {
+                        dataIndex: "room_id",
+                        title: () => (
+                          <div className="pl-[40px]">
+                            Game No.
                           </div>
-                          <img
-                            src="/images/mainnet/discover/icon-more3.svg"
-                            alt=""
-                            className="w-[14px] h-[12px] object-center object-contain shrink-0"
-                          />
-                        </HexagonButton>
-                      </>
-                    );
-                  },
-                },
-              ]}
-              data={guessWho.list.data}
-              loading={guessWho.loading}
-              sortDirection={guessWho.list.order as any}
-              sortDataIndex={guessWho.list.sort}
-              onSort={(dataIndex: any, nextDirection: any) => {
-                guessWho.onSort(dataIndex, nextDirection);
-              }}
-            />
-            <div className="flex justify-start items-center pl-[10px] py-[10px]">
-              <Pagination
-                page={guessWho.list.page}
-                totalPage={guessWho.list.pageTotal}
-                pageSize={guessWho.list.pageSize}
-                onPageChange={(_page: number) => {
-                  guessWho.onPageChange(_page);
-                }}
-              />
-            </div>
-          </div>
+                        ),
+                        width: 140,
+                        sort: false,
+                        render: (record: any) => {
+                          return (
+                            <div className="pl-[40px]">
+                              {record.room_id}
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        dataIndex: "player",
+                        title: "Player",
+                        width: 300,
+                        sort: false,
+                        render: (record: any) => {
+                          return (
+                            <div className="flex items-center gap-[30px]">
+                              <PlayerAvatar
+                                avatar={record.players[0]?.avatar}
+                                moves={record.players[0]?.moves}
+                              />
+                              <PlayerAvatar
+                                avatar={record.players[1]?.avatar}
+                                moves={record.players[1]?.moves}
+                              />
+                              <PlayerAvatar
+                                avatar={record.players[2]?.avatar}
+                                moves={record.players[2]?.moves}
+                              />
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        dataIndex: "create_time",
+                        title: "Time",
+                        width: 110,
+                        sort: true,
+                        render: (record: any) => {
+                          return (
+                            <TimeAgo record={record} />
+                          )
+                        },
+                      },
+                      {
+                        dataIndex: "bet_amount",
+                        title: "Bet Price",
+                        width: 100,
+                        sort: true,
+                        render: (record: any) => {
+                          return (
+                            <div className="flex items-center gap-[6px]">
+                              <img
+                                src={guessWho.betToken.icon}
+                                alt=""
+                                className="w-[18px] h-[18px] object-center object-contain shrink-0"
+                              />
+                              <div className="">
+                                {numberFormatter(record.bet_amount, 3, true, { isShort: true, isZeroPrecision: false })}
+                              </div>
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        dataIndex: "join",
+                        title: "",
+                        width: 120,
+                        render: (record: any) => {
+                          return (
+                            <>
+                              <HexagonButton
+                                loading={record.loading}
+                                disabled={record.loading}
+                                height={36}
+                                className="!text-[18px]"
+                                innerClassName="!pl-[27px] !pr-[20px]"
+                                onClick={() => {
+                                  join.onOpen(record);
+                                }}
+                              >
+                                <div className="">
+                                  Join
+                                </div>
+                                <img
+                                  src="/images/mainnet/discover/icon-more3.svg"
+                                  alt=""
+                                  className="w-[14px] h-[12px] object-center object-contain shrink-0"
+                                />
+                              </HexagonButton>
+                            </>
+                          );
+                        },
+                      },
+                    ]}
+                    data={guessWho.list.data}
+                    loading={guessWho.loading}
+                    sortDirection={guessWho.list.order as any}
+                    sortDataIndex={guessWho.list.sort}
+                    onSort={(dataIndex: any, nextDirection: any) => {
+                      guessWho.onSort(dataIndex, nextDirection);
+                    }}
+                  />
+                  <div className="flex justify-start items-center pl-[10px] py-[10px]">
+                    <Pagination
+                      page={guessWho.list.page}
+                      totalPage={guessWho.list.pageTotal}
+                      pageSize={guessWho.list.pageSize}
+                      onPageChange={(_page: number) => {
+                        guessWho.onPageChange(_page);
+                      }}
+                    />
+                  </div>
+                </motion.div>
+              )
+            }
+            {
+              guessWho.listTab === "yours" && (
+                <motion.div
+                  key="yours"
+                  className="w-full mt-[10px]"
+                  initial={{
+                    opacity: 0,
+                    x: 200,
+                  }}
+                  animate={{
+                    opacity: 1,
+                    x: 0,
+                  }}
+                >
+                  <GridTable
+                    bodyClassName="max-h-[calc(100dvh_-_187px)] overflow-y-auto"
+                    headerRowClassName="!px-0 !gap-x-[20px]"
+                    bodyRowClassName="odd:bg-[unset] !px-0 !gap-x-[20px] text-[18px] h-[104px] bg-[url('/images/mainnet/arcade/guess-who/bg-room-item.png')] bg-no-repeat bg-center bg-contain"
+                    columns={[
+                      {
+                        dataIndex: "room_id",
+                        title: () => (
+                          <div className="pl-[40px]">
+                            Game No.
+                          </div>
+                        ),
+                        width: 140,
+                        sort: false,
+                        render: (record: any) => {
+                          return (
+                            <div className={clsx("pl-[40px]", [Status.Won, Status.Canceled].includes(record.status) && "opacity-50")}>
+                              {record.room_id}
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        dataIndex: "player",
+                        title: "Player",
+                        width: 250,
+                        sort: false,
+                        render: (record: any) => {
+                          return (
+                            <div className={clsx("flex items-center gap-[30px]", [Status.Won, Status.Canceled].includes(record.status) && "opacity-50")}>
+                              <PlayerAvatar
+                                avatar={record.players[0]?.avatar}
+                                moves={record.players[0]?.moves}
+                              />
+                              <PlayerAvatar
+                                avatar={record.players[1]?.avatar}
+                                moves={record.players[1]?.moves}
+                              />
+                              <PlayerAvatar
+                                avatar={record.players[2]?.avatar}
+                                moves={record.players[2]?.moves}
+                              />
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        dataIndex: "create_time",
+                        title: "Time",
+                        width: 90,
+                        render: (record: any) => {
+                          return (
+                            <TimeAgo record={record} className={[Status.Won, Status.Canceled].includes(record.status) ? "opacity-50" : ""} />
+                          )
+                        },
+                      },
+                      {
+                        dataIndex: "bet_amount",
+                        title: "Bet Price",
+                        width: 100,
+                        render: (record: any) => {
+                          return (
+                            <div className={clsx("flex items-center gap-[6px]", [Status.Won, Status.Canceled].includes(record.status) ? "opacity-50" : "")}>
+                              <img
+                                src={guessWho.betToken.icon}
+                                alt=""
+                                className="w-[18px] h-[18px] object-center object-contain shrink-0"
+                              />
+                              <div className="">
+                                {numberFormatter(record.bet_amount, 3, true, { isShort: true, isZeroPrecision: false })}
+                              </div>
+                            </div>
+                          );
+                        },
+                      },
+                      {
+                        dataIndex: "status",
+                        title: "Status",
+                        width: 200,
+                        render: (record: any) => {
+                          return record.status === Status.Won && record.winner_address ? (
+                            <div className="flex items-center gap-[15px] opacity-50">
+                              <div className="">
+                                {StatusMap[record.status as Status].name2}
+                              </div>
+                              <PlayerAvatar
+                                avatar={record.players?.find((player: any) => player.moves === record.winner_moves)?.avatar}
+                                moves={record.players?.find((player: any) => player.moves === record.winner_moves)?.moves}
+                                className="!w-[34px] !h-[34px] !rounded-[8px] translate-y-[0px]"
+                              />
+                              <div className="text-[#BFFF60] text-[16px] font-[400]">
+                                <div className="max-w-[70px] overflow-hidden whitespace-nowrap">
+                                  {numberFormatter(Big(record.bet_amount || 0).times(3), 2, true, { isShort: true })} {guessWho.betToken?.symbol}
+                                </div>
+                                <div className="mt-[0px]">
+                                  Winner
+                                </div>
+                              </div>
+                            </div>
+                          ) : (
+                            <div
+                              className="flex items-center gap-[5px]"
+                              style={{
+                                color: StatusMap[record.status as Status].color,
+                              }}
+                            >
+                              <div className="shrink-0">{StatusMap[record.status as Status].name}</div>
+                              {
+                                record.canClaim && (
+                                  <HexagonButton
+                                    type="button"
+                                    className="w-[80px] !bg-[#C7853A] !text-[#C7853A] hover:!text-white"
+                                    innerClassName="!bg-[#221F32] !bg-[url('')]"
+                                    hoverClassName="!bg-[#C7853A]"
+                                    height={36}
+                                    onClick={() => {
+                                      claim.onClaimOpen(true, record);
+                                    }}
+                                  >
+                                    <div>Close</div>
+                                  </HexagonButton>
+                                )
+                              }
+                            </div>
+                          );
+                        },
+                      },
+                    ]}
+                    data={guessWho.userList.data}
+                    loading={guessWho.userListLoading}
+                    sortDirection={guessWho.userList.order as any}
+                    sortDataIndex={guessWho.userList.sort}
+                    onSort={(dataIndex: any, nextDirection: any) => {
+                      guessWho.onUserListSort(dataIndex, nextDirection);
+                    }}
+                  />
+                  <div className="flex justify-start items-center pl-[10px] py-[10px]">
+                    <Pagination
+                      page={guessWho.userList.page}
+                      totalPage={guessWho.userList.pageTotal}
+                      pageSize={guessWho.userList.pageSize}
+                      onPageChange={(_page: number) => {
+                        guessWho.onUserListPageChange(_page);
+                      }}
+                    />
+                  </div>
+                </motion.div>
+              )
+            }
+          </AnimatePresence>
+
         </div>
       </div>
       {/* <GuessWhoToast /> */}
@@ -351,6 +583,22 @@ const GuessWho = () => {
         result={join.result}
         buttonValid={join.buttonValid}
         lastMonsters={join.lastMonsters}
+      />
+      <HistoryModal
+        open={guessWho.historyOpen}
+        onClose={() => {
+          guessWho.setHistoryOpen(false);
+        }}
+      />
+      <ClaimModal
+        account={guessWho.account}
+        open={claim.claimData.open}
+        room={claim.claimData.room}
+        onClose={() => {
+          claim.onClaimOpen(false);
+        }}
+        onClaim={claim.onClaim}
+        claiming={claim.claiming}
       />
       <Audios audioRefs={guessWho.audioRefs} />
     </div>

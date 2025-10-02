@@ -19,6 +19,7 @@ export function useGuessWho() {
   const { accountWithAk, account, provider } = useCustomAccount();
   const { nativeBalance, nativeBalanceLoading, getNativeBalance } = useLayoutContext();
 
+  const [listTab, setListTab] = useState("all");
   const [room, setRoom] = useState<Room>();
   const [list, setList] = useState({
     data: [],
@@ -162,7 +163,7 @@ export function useGuessWho() {
     const _order = params?.order || userList.order;
 
     try {
-      const res = await get("/game/rps/mine", {
+      const res = await get("/game/rps/user/list", {
         page: _page,
         sort: _sort,
         order: _order,
@@ -205,6 +206,7 @@ export function useGuessWho() {
         return _useList;
       }
       currRecord.status = Status.Canceled;
+      currRecord.canClaim = false;
       return _useList;
     });
   };
@@ -564,6 +566,8 @@ export function useGuessWho() {
     getRoomInfoLoading,
     setPlayersAvatar,
     gameConfig,
+    listTab,
+    setListTab,
     userList,
     getUserList,
     userListLoading,
