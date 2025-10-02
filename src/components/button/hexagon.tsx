@@ -11,6 +11,7 @@ const HexagonButton = (props: any) => {
     htmlType = "button",
     className,
     innerClassName,
+    hoverClassName,
     isLoading = true,
     height = 50,
     ...restProps
@@ -54,6 +55,7 @@ const HexagonButton = (props: any) => {
           className={clsx(
             "rounded-[4px] absolute z-[2] w-full h-full left-0 top-0 bg-[#836EF9] transition-all duration-150 scale-0 opacity-0",
             disabled || loading ? "" : "group-hover:scale-100 group-hover:opacity-100",
+            hoverClassName,
           )}
           style={{
             clipPath: `polygon(${clipCorner}px 1px, calc(100% - 1px) 1px, calc(100% - 1px) calc(100% - ${clipCorner}px), calc(100% - ${clipCorner}px) calc(100% - 1px), calc(100% - ${clipCorner}px) calc(100% - 1px), 1px calc(100% - 1px), 1px ${clipCorner}px)`,

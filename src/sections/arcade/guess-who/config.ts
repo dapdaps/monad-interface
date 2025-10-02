@@ -38,21 +38,25 @@ export enum Status {
   Canceled = 4,
 }
 
-export const StatusMap: Record<Status, { name: string; color: string; }> = {
+export const StatusMap: Record<Status, { name: string; color: string; name2: string; }> = {
   [Status.Ongoing]: {
     name: "Waiting...",
+    name2: "Waiting...",
     color: "#7EA82B",
   },
   [Status.Joined]: {
     name: "Waiting...",
+    name2: "Opening...",
     color: "#7EA82B",
   },
   [Status.Won]: {
     name: "Winner",
+    name2: "Ended",
     color: "#000",
   },
   [Status.Canceled]: {
     name: "Closed",
+    name2: "Closed",
     color: "#857B7B",
   },
 };
@@ -107,3 +111,30 @@ export const PlayerAvatars: Record<string, string> = {
 };
 
 export const EmptyPlayer = "0x0000000000000000000000000000000000000000";
+
+export enum HistoryAction {
+  Create = "rpsCreate",
+  Join = "rpsJoin",
+  Refund = "rpsCancel",
+  Won = "rpsPayOut",
+}
+
+export const HistoryActionMap: Record<HistoryAction, { name: string; isIncome?: boolean; }> = {
+  [HistoryAction.Create]: {
+    name: "Create room",
+  },
+  [HistoryAction.Join]: {
+    name: "Play",
+  },
+  [HistoryAction.Refund]: {
+    name: "Refund",
+    isIncome: true,
+  },
+  [HistoryAction.Won]: {
+    name: "Play",
+    isIncome: true,
+  },
+};
+
+// -10%
+export const ClaimRefundFee = 0.1;
