@@ -2,6 +2,8 @@ import clsx from "clsx";
 import { SocialList } from "./icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Sound from "@/components/sound";
+import Rpc from "@/components/rpc";
 
 const ExcludeLeft = [
   /^\/arcade\/guess-who/,
@@ -62,6 +64,10 @@ const Socials = (props: any) => {
 
   return (
     <div className={clsx("flex justify-end items-end gap-[9px]", className)}>
+      <div className="h-[36px] flex jusity-end items-center gap-[9px]">
+        <Sound />
+        <Rpc />
+      </div>
       {
         SocialList.map((social, index) => (
           <Link

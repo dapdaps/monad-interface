@@ -1,2 +1,0 @@
-const RPS_CONTRACT_ADDRESS = "";
-export default RPS_CONTRACT_ADDRESS;

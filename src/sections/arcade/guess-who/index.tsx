@@ -121,7 +121,7 @@ const GuessWho = () => {
                 </motion.button>
               </div>
             </div>
-            <div className="w-[370px] h-[172px] flex flex-col items-stretch mt-[70px] translate-x-[20px] shrink-0">
+            <div className="w-[370px] h-[172px] flex flex-col items-stretch mt-[70px] translate-x-[20px] shrink-0 mb-[20px]">
               <div className="absolute z-[1] left-0 top-0 w-full h-full bg-[radial-gradient(50%_87.3%_at_50%_29.37%,rgba(0,0,0,0.15)_0%,rgba(165,255,253,0.15)_100%)] blur-[5px]"></div>
               <div className="relative z-[2] w-full border-b-[2px] pl-[3px] pr-[10px] shrink-0 text-white text-[18px] font-[600] border-t-[2px] border-[#A5FFFD] pt-[7px] pb-[10px] flex justify-between items-center">
                 <div className="uppercase">

@@ -131,7 +131,7 @@ export const HistoryActionMap: Record<HistoryAction, { name: string; isIncome?: 
     isIncome: true,
   },
   [HistoryAction.Won]: {
-    name: "Play",
+    name: "Cash out",
     isIncome: true,
   },
 };

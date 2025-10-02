@@ -270,10 +270,10 @@ export function useJoin(props?: any) {
       playAudio({ type: "error", action: "play" });
       return;
     }
-    const _lastMonsters = Object.values(MONSTERS).map((it) => ({ ...it })).filter((it) => !_roomInfo?.players?.some((player: any) => player.moves === it.value));
-    if (_lastMonsters?.length === 1 && !betMonster.length) {
-      onSelectMonster(_lastMonsters[0].value);
-    }
+    // const _lastMonsters = Object.values(MONSTERS).map((it) => ({ ...it })).filter((it) => !_roomInfo?.players?.some((player: any) => player.moves === it.value));
+    // if (_lastMonsters?.length === 1 && !betMonster.length) {
+    //   onSelectMonster(_lastMonsters[0].value);
+    // }
     setOpen(true);
   };
 

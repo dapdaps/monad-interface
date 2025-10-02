@@ -12,12 +12,14 @@ import { multicall, multicallAddresses } from "@/utils/multicall";
 import { DEFAULT_CHAIN_ID } from "@/configs";
 import dayjs from "dayjs";
 import Big from "big.js";
+import { useSoundStore } from "@/stores/sound";
 
 export function useGuessWho() {
   const [betToken] = useState(monad["mon"]);
 
   const { accountWithAk, account, provider } = useCustomAccount();
   const { nativeBalance, nativeBalanceLoading, getNativeBalance } = useLayoutContext();
+  const soundStore = useSoundStore();
 
   const [listTab, setListTab] = useState("all");
   const [room, setRoom] = useState<Room>();
@@ -493,6 +495,10 @@ export function useGuessWho() {
 
   const audioRefs = useRef<Map<string, HTMLAudioElement | null>>(new Map());
   const playAudio = (preload: { type: string; action?: "play" | "pause"; }) => {
+    if (soundStore?.muted) {
+      return;
+    }
+
     let { type, action } = preload;
     action = action || "play";
 
