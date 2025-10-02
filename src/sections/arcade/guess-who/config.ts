@@ -46,7 +46,7 @@ export const StatusMap: Record<Status, { name: string; color: string; name2: str
   },
   [Status.Joined]: {
     name: "Waiting...",
-    name2: "Opening...",
+    name2: "Waiting...",
     color: "#7EA82B",
   },
   [Status.Won]: {
