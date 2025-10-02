@@ -50,7 +50,7 @@ const GuessWho = () => {
               <Monsters
                 betMonster={create.betMonster}
                 onSelectMonster={create.onSelectMonster}
-                className="absolute z-[1] bottom-[46px]"
+                className="absolute z-[1] top-[50px]"
                 visibleMonsters={[Monster.Eye1, Monster.Eye2, Monster.Eye3]}
               />
               <motion.img
@@ -77,55 +77,137 @@ const GuessWho = () => {
                 }}
               />
               <BetInput
-                className="absolute z-[1] bottom-[-30px] w-[422px] mx-auto"
+                className="absolute z-[1] top-[250px] w-[422px] mx-auto"
                 betToken={guessWho.betToken}
                 playAudio={guessWho.playAudio}
                 betAmount={create.betAmount}
                 setBetAmount={create.setBetAmount}
               />
+              <div className="absolute bottom-[-50px] w-[480px] h-[166px] flex justify-center items-center bg-[url('/images/mainnet/arcade/guess-who/create-game-base.png')] bg-no-repeat bg-center bg-contain">
+                <motion.button
+                  type="button"
+                  className="w-[218px] h-[86px] text-[center] text-[20px] text-white uppercase font-[600] flex justify-center items-center disabled:!cursor-not-allowed disabled:opacity-50 shrink-0 bg-[url('/images/mainnet/arcade/guess-who/create-game-button2.png')] bg-no-repeat bg-center bg-contain"
+                  disabled={create.buttonValid.disabled || create.buttonValid.loading}
+                  onClick={() => {
+                    create.onCreate();
+                  }}
+                  initial={{
+                    transform: "translateY(-30px)",
+                  }}
+                  animate={{
+                    transform: ["translateY(-30px)", "translateY(-25px)", "translateY(-35px)", "translateY(-30px)"],
+                  }}
+                  transition={{
+                    repeat: Infinity,
+                    duration: 5,
+                    ease: "linear",
+                  }}
+                  whileHover={{
+                    transform: "translateY(-30px)",
+                    transition: {
+                      duration: 0.2,
+                      ease: "easeOut",
+                    }
+                  }}
+                  whileTap={{
+                    transform: "translateY(-25px)",
+                    transition: {
+                      duration: 0.1,
+                      ease: "easeOut",
+                    }
+                  }}
+                >
+                  {create.buttonValid.text}
+                </motion.button>
+              </div>
             </div>
-          </div>
-          <div className="relative w-[480px] h-[166px] flex justify-center items-center mx-auto mt-[60px] bg-[url('/images/mainnet/arcade/guess-who/create-game-base.png')] bg-no-repeat bg-center bg-contain">
-            <motion.button
-              type="button"
-              className="w-[218px] h-[86px] text-[center] text-[20px] text-white uppercase font-[600] flex justify-center items-center disabled:!cursor-not-allowed disabled:opacity-50 shrink-0 bg-[url('/images/mainnet/arcade/guess-who/create-game-button2.png')] bg-no-repeat bg-center bg-contain"
-              disabled={create.buttonValid.disabled || create.buttonValid.loading}
-              onClick={() => {
-                create.onCreate();
-              }}
-              initial={{
-                transform: "translateY(-30px)",
-              }}
-              animate={{
-                transform: ["translateY(-30px)", "translateY(-25px)", "translateY(-35px)", "translateY(-30px)"],
-              }}
-              transition={{
-                repeat: Infinity,
-                duration: 5,
-                ease: "linear",
-              }}
-              whileHover={{
-                transform: "translateY(-30px)",
-                transition: {
-                  duration: 0.2,
-                  ease: "easeOut",
+            <div className="w-[370px] h-[172px] flex flex-col items-stretch mt-[70px] translate-x-[20px] shrink-0">
+              <div className="absolute z-[1] left-0 top-0 w-full h-full bg-[radial-gradient(50%_87.3%_at_50%_29.37%,rgba(0,0,0,0.15)_0%,rgba(165,255,253,0.15)_100%)] blur-[5px]"></div>
+              <div className="relative z-[2] w-full border-b-[2px] pl-[3px] pr-[10px] shrink-0 text-white text-[18px] font-[600] border-t-[2px] border-[#A5FFFD] pt-[7px] pb-[10px] flex justify-between items-center">
+                <div className="uppercase">
+                  Joining
+                </div>
+                <div className="">
+                  {numberFormatter(guessWho.userLatest?.length, 0, true)}
+                </div>
+              </div>
+              <div className="relative z-[2] w-full h-0 flex-1 overflow-y-auto">
+                {
+                  guessWho.userLatest.map((it: any, idx: number) => (
+                    <div
+                      key={idx}
+                      className="w-full flex justify-between items-center gap-[10px] pt-[12px] pb-[5px] pl-[3px] pr-[10px]"
+                    >
+                      <div className="flex items-center gap-[10px] shrink-0">
+                        <div className="max-w-[60px] whitespace-nowrap overflow-hidden text-ellipsis" title={it.room_id}>
+                          {it.room_id}
+                        </div>
+                        <div className="flex items-center gap-[15px]">
+                          {
+                            it.status === Status.Won && it.winner_address ? (
+                              it.players?.filter((player: any) => player.moves !== it.winner_moves)?.map((player: any, playerIdx: number) => (
+                                <PlayerAvatar
+                                  key={`${idx}-${playerIdx}`}
+                                  avatar={player.avatar}
+                                  moves={player.moves}
+                                  className="!w-[26px] !h-[26px] !rounded-[8px] translate-y-[0px]"
+                                />
+                              ))
+                            ) : (
+                              <>
+                                <PlayerAvatar
+                                  key={`${idx}-${0}`}
+                                  avatar={it.players?.[0]?.avatar}
+                                  moves={it.players?.[0]?.moves}
+                                  className="!w-[26px] !h-[26px] !rounded-[8px] translate-y-[0px]"
+                                />
+                                <PlayerAvatar
+                                  key={`${idx}-${1}`}
+                                  avatar={it.players?.[1]?.avatar}
+                                  moves={it.players?.[1]?.moves}
+                                  className="!w-[26px] !h-[26px] !rounded-[8px] translate-y-[0px]"
+                                />
+                                <PlayerAvatar
+                                  key={`${idx}-${2}`}
+                                  avatar={it.players?.[2]?.avatar}
+                                  moves={it.players?.[2]?.moves}
+                                  className="!w-[26px] !h-[26px] !rounded-[8px] translate-y-[0px]"
+                                />
+                              </>
+                            )
+                          }
+                        </div>
+                      </div>
+                      <div className="shrink-0 flex justify-end items-center gap-[5px]">
+                        {
+                          it.status === Status.Won && it.winner_address ? (
+                            <div className="flex justify-end items-center gap-[2px]">
+                              <div className="text-[#BFFF60]">
+                                {numberFormatter(Big(it.bet_amount || 0).times(3), 2, true, { isShort: true })} {guessWho.betToken?.symbol} Winner
+                              </div>
+                              <PlayerAvatar
+                                avatar={it.players?.find?.((player: any) => player.moves === it.winner_moves)?.avatar}
+                                moves={it.players?.find?.((player: any) => player.moves === it.winner_moves)?.moves}
+                                className="!w-[26px] !h-[26px] !rounded-[8px] translate-y-[0px]"
+                              />
+                            </div>
+                          ) : (
+                            <div
+                              className=""
+                              style={{
+                                color: StatusMap[it.status as Status].color,
+                              }}
+                            >
+                              {StatusMap[it.status as Status].name}
+                            </div>
+                          )
+                        }
+                      </div>
+                    </div>
+                  ))
                 }
-              }}
-              whileTap={{
-                transform: "translateY(-25px)",
-                transition: {
-                  duration: 0.1,
-                  ease: "easeOut",
-                }
-              }}
-            >
-              {create.buttonValid.text}
-            </motion.button>
-            <img
-              src="/images/mainnet/arcade/guess-who/create-game-base-right.png"
-              alt=""
-              className="w-[171px] h-[112px] object-center object-contain pointer-events-none absolute bottom-0 right-[-213px]"
-            />
+              </div>
+            </div>
           </div>
         </div>
         <div className="shrink-0 w-[890px]">

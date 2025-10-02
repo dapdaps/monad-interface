@@ -108,7 +108,7 @@ const History = (props: any) => {
             },
             {
               dataIndex: "bet_amount",
-              title: "BERA",
+              title: "MON",
               // width: 130,
               sort: true,
               render: (record: any) => {
