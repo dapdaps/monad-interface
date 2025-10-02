@@ -5,7 +5,7 @@ export default function Routes({ routes, fromChain, inputCurrency, outputCurrenc
 
     return <div className="border border-[#34304B] w-[369px] rounded-[4px] bg-[#22202F] p-[10px]">
         <div className="text-[18px] text-white py-[10px] pl-[10px]">Select Route</div>
-        <div className="overflow-y-auto max-h-[calc(100vh-300px)]">
+        <div className="overflow-y-auto max-h-[560px]">
             {
                 routes.map((route: any, index) => (
                     <Route

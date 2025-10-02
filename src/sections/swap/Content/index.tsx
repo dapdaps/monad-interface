@@ -16,6 +16,7 @@ import TokenSelector from "../TokenSelector";
 import { DEFAULT_CHAIN_ID } from "@/configs/index";
 import chains from "@/configs/chains";
 import dapps from "@/configs/swap";
+import RoutesModal from '@/components/routes/index'
 export default function Swap({
   dapp,
   outputCurrencyReadonly = false,
@@ -24,6 +25,7 @@ export default function Swap({
   onSuccess,
   isAutoExchange = true,
   isSuperSwap = false,
+  onShowRoute,
 }: any) {
   const [inputCurrencyAmount, setInputCurrencyAmount] = useState("");
   const [outputCurrencyAmount, setOutputCurrencyAmount] = useState("");
@@ -42,6 +44,7 @@ export default function Swap({
   const { account, chainId } = useAccount();
   const [showDetail, setShowDetail] = useState(true);
   const prices = usePriceStore((store: any) => store.price);
+  const [selectedRoute, setSelectedRoute] = useState(null)
 
   const [selectType, setSelectType] = useState<"in" | "out">("in");
   const { loading, trade, tradeList, onQuoter, onSwap, setTrade } = useTrade({
@@ -137,6 +140,40 @@ export default function Swap({
   useEffect(() => {
     setOutputCurrencyAmount(trade?.outputCurrencyAmount || "");
   }, [trade]);
+
+  const routes = useMemo(() => {
+    if (!tradeList) return null;
+
+    return tradeList.map((route: any) => {
+      const dapp = dapps[route.name.toLowerCase()];
+      return {
+        name: route.name,
+        icon: dapp.logo,
+        outputCurrencyAmount: route.outputCurrencyAmount,
+        gas: route.gasUsd,
+        fee: route.fee,
+        feeType: 2,
+        duration: 10,
+        inputCurrencyAmount: route.inputCurrencyAmount,
+        priceImpact: route.priceImpact || 0,
+        priceImpactType: route.priceImpactType || 0,
+        inputCurrency: inputCurrency,
+        outputCurrency: outputCurrency,
+      }
+    })
+  }, [tradeList])
+
+  useEffect(() => {
+    if (routes && routes.length > 0) {
+      routes.find((route: any) => {
+        if (route.name === trade.name) {
+          setSelectedRoute(route)
+        }
+      })
+    }
+
+    onShowRoute?.(routes)
+  }, [routes, trade])
 
   return (
     <>
@@ -274,6 +311,30 @@ export default function Swap({
         }}
         onSelect={onSelectToken}
       />
+
+      {
+        trade && routes.length > 0 && (
+          <div className="absolute top-0 right-[-385px] pt-[15px]">
+            <RoutesModal
+              routes={routes}
+              fromChain={trade.fromChain}
+              inputCurrency={inputCurrency}
+              outputCurrency={outputCurrency}
+              selectedRoute={selectedRoute}
+              setSelectedRoute={(route) => {
+                setSelectedRoute(route)
+                tradeList.find((trade: any) => {
+                  if (route.name === trade.name) {
+                    setTrade(trade)
+                  }
+                })
+              }}
+
+            />
+          </div>
+        )
+      }
+
     </>
   );
 }

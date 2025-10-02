@@ -9,7 +9,7 @@ export default function SuperSwapLayout({
 }) {
   return (
     <div className="w-full relative">
-      <div className="relative z-[20] lg:w-[548px] mx-auto">{children}</div>
+      <div className="relative z-[20] lg:w-[915px] mx-auto">{children}</div>
       <Bg isDex={false} />
     </div>
   );

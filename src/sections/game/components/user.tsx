@@ -16,7 +16,7 @@ export default function User() {
             </div>
             <div className="flex items-center justify-between h-[40px] px-[20px] border-b border-[#A5FFFD]">
                 <div>Total played</div>
-                <div>{gameUser.total_play_times} times</div>
+                <div>{gameUser.total_play_times}</div>
             </div>
 
             <div className="flex items-center justify-between h-[40px] px-[20px] border-b border-[#A5FFFD]">
