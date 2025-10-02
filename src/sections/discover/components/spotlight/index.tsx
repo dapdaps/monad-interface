@@ -11,7 +11,7 @@ export const Spotlight = (props: any) => {
 
   return (
     <div
-      className={clsx("relative w-[clamp(1px,_19.31vw,_calc(var(--pc-1512)*0.1931))] h-[clamp(1px,_25.26vw,_calc(var(--pc-1512)*0.2526))] shrink-0 bg-no-repeat bg-center bg-contain", className)}
+      className={clsx("relative w-[clamp(1px,_19.31vw,_calc(var(--pc-1512)*0.1931))] h-[clamp(1px,_25.26vw,_calc(var(--pc-1512)*0.2526))] shrink-0 bg-no-repeat bg-center bg-contain transition-all duration-300", className)}
       style={{
         backgroundImage: isLeft ? "url('/images/mainnet/discover/spotlight-card-left.png')" : "url('/images/mainnet/discover/spotlight-card-right.png')",
         paddingLeft: isLeft ? "clamp(1px, 1.12vw, calc(var(--pc-1512)*0.0112))" : "0px",

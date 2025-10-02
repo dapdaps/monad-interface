@@ -6,7 +6,13 @@ import clsx from "clsx";
 import { useProgressRouter } from "@/hooks/use-progress-router";
 import useClickTracking from "@/hooks/use-click-tracking";
 import { useMemo, useState } from "react";
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+
 import ExternalLinksModal from "@/sections/dapps/components/external-links-modal";
+
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 const SpotlightApps = (props: any) => {
   const { getVisits, swiperRef } = props;
@@ -14,9 +20,11 @@ const SpotlightApps = (props: any) => {
   const router = useProgressRouter();
   const { handleReportWithoutDebounce } = useClickTracking();
   const [dapp, setDapp] = useState<any>(null);
+  const [firstIndex, setFirstIndex] = useState(0);
+  const [lastIndex, setLastIndex] = useState(3);
 
   const SpotlightList = useMemo(() => {
-    return AppList.filter((item) => item.isSpotlight).slice(0, 4);
+    return AppList.filter((item) => item.isSpotlight).slice(0, 5);
   }, [AppList]);
 
   return (
@@ -29,36 +37,52 @@ const SpotlightApps = (props: any) => {
           swiperRef?.current?.swiper?.slideTo(2);
         }}
       >
-        <div className="w-full flex justify-center gap-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))]">
-          {
-            SpotlightList.map((item, index) => {
-              const visits = getVisits(item.bpContent);
+        <div className="w-full flex justify-center gap-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))] mt-[-30px] pl-[20px]">
+          <Swiper
+            spaceBetween={30}
+            slidesPerView={4}
+            loop={true}
+            onSlideChange={(params) => {
+              setFirstIndex(params.realIndex);
+              setLastIndex((params.realIndex + 3) % SpotlightList.length);
+            }}
+            direction="horizontal"
+            className="w-full"
+            allowTouchMove={true}
+          >
+            {
+              SpotlightList.map((item, index) => {
+                const visits = getVisits(item.bpContent);
 
-              return (
-                <Spotlight
-                  key={index}
-                  type={index <= 1 ? "left" : "right"}
-                  data={item}
-                  className={clsx(
-                    index === 0 ? "[transform:perspective(clamp(1px,_66.14vw,_calc(var(--pc-1512)*0.6614)))_rotateY(24deg)_scale(1.05)] origin-[center_center_clamp(calc(var(--pc-1512)*-0.0265),_-2.65vw,_1px)] backface-hidden" : "",
-                    index === SpotlightList.length - 1 ? "[transform:perspective(clamp(1px,_66.14vw,_calc(var(--pc-1512)*0.6614)))_rotateY(-24deg)_scale(1.05)] origin-[center_center_clamp(calc(var(--pc-1512)*-0.0265),_-2.65vw,_1px)] backface-hidden" : "",
-                  )}
-                  onClick={() => {
-                    handleReportWithoutDebounce(item.bp, item.bpContent);
+                return (
+                  <SwiperSlide key={index}>
+                    <div className="py-[30px]">
+                      <Spotlight
+                        type={index === firstIndex ? "left" : index === lastIndex ? "right" : ""}
+                        data={item}
+                        className={clsx(
+                          index === firstIndex ? "[transform:perspective(clamp(1px,_66.14vw,_calc(var(--pc-1512)*0.6614)))_rotateY(24deg)_scale(1.05)] origin-[center_center_clamp(calc(var(--pc-1512)*-0.0265),_-2.65vw,_1px)] backface-hidden" : "",
+                          index === lastIndex ? "[transform:perspective(clamp(1px,_66.14vw,_calc(var(--pc-1512)*0.6614)))_rotateY(-24deg)_scale(1.05)] origin-[center_center_clamp(calc(var(--pc-1512)*-0.0265),_-2.65vw,_1px)] backface-hidden" : "",
+                        )}
+                        onClick={() => {
+                          handleReportWithoutDebounce(item.bp, item.bpContent);
 
-                    if (/^https?:\/\//.test(item.link)) {
-                      setDapp(item);
-                      setShowExternalLinksModal(true);
-                      return;
-                    }
+                          if (/^https?:\/\//.test(item.link)) {
+                            setDapp(item);
+                            setShowExternalLinksModal(true);
+                            return;
+                          }
 
-                    router.push(item.link);
-                  }}
-                  visits={visits}
-                />
-              );
-            })
-          }
+                          router.push(item.link);
+                        }}
+                        visits={visits}
+                      />
+                    </div>
+                  </SwiperSlide>
+                );
+              })
+            }
+          </Swiper>
         </div>
       </Card>
       <div className="flex flex-col items-center translate-y-[clamp(calc(var(--pc-1512)*-0.0397),_-3.97vw,_1px)]">
@@ -91,7 +115,7 @@ const SpotlightApps = (props: any) => {
             dapp={dapp}
             onClose={() => {
               setShowExternalLinksModal(false);
-             }}
+            }}
           />
         )
       }
