@@ -7,6 +7,7 @@ import { AppCategory, AppList } from "../config";
 import useClickTracking from "@/hooks/use-click-tracking";
 import { numberFormatter } from "@/utils/number-formatter";
 import ExternalLinksModal from "@/sections/dapps/components/external-links-modal";
+import Badge from "../components/spotlight/badge";
 
 const TABS = [
   {
@@ -187,7 +188,19 @@ const AppItem = (props: any) => {
             className="w-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))] h-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))] border border-[#836EF9] rounded-[4px] object-center object-contain shrink-0"
           />
           <div className="w-[clamp(1px,_8.60vw,_calc(var(--pc-1512)*0.0860))] text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] text-white font-[600]">
-            {app.name}
+            <div className="">
+              {app.name}
+            </div>
+            {
+              app.isOutlink && (
+                <Badge
+                  isStar={false}
+                  className="w-[clamp(1px,_5.31vw,_calc(var(--pc-1512)*0.0531))] !pl-[clamp(1px,_0.73vw,_calc(var(--pc-1512)*0.0073))]"
+                >
+                  Outlink
+                </Badge>
+              )
+            }
           </div>
         </div>
         <div className="flex items-center gap-[clamp(1px,_1.98vw,_calc(var(--pc-1512)*0.0198))] flex-1">
@@ -216,9 +229,9 @@ const AppItem = (props: any) => {
               setShowExternalLinksModal(true);
               return;
             }
-            
+
             router.push(app.link);
-            
+
           }}
         />
       </div>
@@ -229,7 +242,7 @@ const AppItem = (props: any) => {
             dapp={app}
             onClose={() => {
               setShowExternalLinksModal(false);
-             }}
+            }}
           />
         )
       }

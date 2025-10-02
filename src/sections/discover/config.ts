@@ -18,6 +18,7 @@ export const AppList = [
     bp: "1026_001",
     bpContent: "kuru",
     isSpotlight: true,
+    isOutlink: true,
     description: "Kuru is a fully on-chain order book exchange built on Monad. Kuru is trying to close the gap between decentralized and centralized exchanges. Users will get the best of both worlds with slippage, self-custody and composability.",
   },
   {
@@ -30,6 +31,7 @@ export const AppList = [
     bp: "1026_001",
     bpContent: "space",
     isSpotlight: true,
+    isOutlink: false,
     description: "Attacked or Escape! Bet MON. Cash out. Repeat.",
   },
   {
@@ -42,6 +44,7 @@ export const AppList = [
     bp: "1026_001",
     bpContent: "apriori",
     isSpotlight: true,
+    isOutlink: true,
     description: "aPriori is the leading MEV-powered liquid staking platform on Monad, providing a simple way for users to earn MEV-boosted rewards on their Monad tokens. Users that stake with aPriori can use liquid tokens on a range of DeFi applications to gain extra rewards. ",
   },
   {
@@ -54,6 +57,7 @@ export const AppList = [
     bp: "1026_001",
     bpContent: "lucky777",
     isSpotlight: true,
+    isOutlink: false,
     description: "Spin! Spin! Spin! Earn MON or NFTs by the easiest way",
   },
   {
@@ -66,6 +70,7 @@ export const AppList = [
     bp: "1026_001",
     bpContent: "rps",
     isSpotlight: false,
+    isOutlink: false,
     description: "Can you guess who this is?",
   },
   {
@@ -78,6 +83,7 @@ export const AppList = [
     bp: "1026_001",
     bpContent: "magma",
     isSpotlight: false,
+    isOutlink: true,
     description: "Magma is a community-owned Liquid Staking Protocol on Monad, designed for equitable token distribution via Points Programs and the with MEV-boosted yield powered by the fastest block engine in crypto. Magma's staking pool allows users to stake their Monad tokens in exchange for liquid staked Monad tokens (gMON).",
   },
   {
@@ -90,6 +96,7 @@ export const AppList = [
     bp: "1026_001",
     bpContent: "magiceden",
     isSpotlight: true,
+    isOutlink: true,
     description: "The leading NFTs trading & minting platform on Monad",
   },
   {
@@ -102,6 +109,7 @@ export const AppList = [
     bp: "1026_001",
     bpContent: "levr",
     isSpotlight: false,
+    isOutlink: true,
     description: "Leverage Sports Betting with Fully Liquid Positions.",
   },
   {
@@ -114,6 +122,7 @@ export const AppList = [
     bp: "1026_001",
     bpContent: "kizzy",
     isSpotlight: false,
+    isOutlink: true,
     description: "Kizzy is a social media betting app. Bet on how your favorite influencers and celebrities will perform on Twitter and YouTube.",
   },
   {
@@ -126,6 +135,7 @@ export const AppList = [
     bp: "1026_001",
     bpContent: "rarebetsports",
     isSpotlight: false,
+    isOutlink: true,
     description: "Building consumer sports applications powered by the RBS Oracle. Play RareLink and win up to 100x your crypto.",
   },
   {
@@ -138,6 +148,7 @@ export const AppList = [
     bp: "1026_001",
     bpContent: "chogstar",
     isSpotlight: false,
+    isOutlink: true,
     description: "Chogstars initial mission is to spread positivity and share unique collectibles that resonate beyond the Monad community while connecting with broader audience. Chogstars strive to craft a creative identity that serves as a beacon of inspiration and reminding everyone that they are, indeed, a star.",
   },
   {
@@ -150,6 +161,7 @@ export const AppList = [
     bp: "1026_001",
     bpContent: "timeswap",
     isSpotlight: false,
+    isOutlink: true,
     description: "Timeswap is the first oracleless lending/borrowing protocol — enabling the creation of money markets for ANY ERC20 token.",
   },
   {
@@ -162,6 +174,7 @@ export const AppList = [
     bp: "1026_001",
     bpContent: "enjoyoors",
     isSpotlight: false,
+    isOutlink: true,
     description: "Unlocks yield on any asset on any chain.",
   },
 ];

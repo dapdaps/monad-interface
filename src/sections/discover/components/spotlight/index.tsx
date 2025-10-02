@@ -31,7 +31,19 @@ export const Spotlight = (props: any) => {
         }}
         onClick={onClick}
       >
-        <Badge className="absolute left-[clamp(1px,_0.53vw,_calc(var(--pc-1512)*0.0053))] top-[clamp(1px,_0.53vw,_calc(var(--pc-1512)*0.0053))]" />
+        <Badge className="absolute left-[clamp(1px,_0.53vw,_calc(var(--pc-1512)*0.0053))] top-[clamp(1px,_0.53vw,_calc(var(--pc-1512)*0.0053))]">
+          Spotlight
+        </Badge>
+        {
+          data.isOutlink && (
+            <Badge
+              isStar={false}
+              className="absolute !pl-[clamp(1px,_0.73vw,_calc(var(--pc-1512)*0.0073))] left-[clamp(1px,_7.53vw,_calc(var(--pc-1512)*0.0753))] top-[clamp(1px,_0.53vw,_calc(var(--pc-1512)*0.0053))]"
+            >
+              Outlink
+            </Badge>
+          )
+        }
         <Trend className="absolute right-[clamp(1px,_0.53vw,_calc(var(--pc-1512)*0.0053))] top-[clamp(1px,_0.53vw,_calc(var(--pc-1512)*0.0053))]">
           {numberFormatter(visits, 0, true)}
         </Trend>
