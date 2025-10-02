@@ -164,7 +164,7 @@ export default function Swap({
   }, [tradeList])
 
   useEffect(() => {
-    if (routes && routes.length > 0) {
+    if (routes && routes.length > 0 && trade) {
       routes.find((route: any) => {
         if (route.name === trade.name) {
           setSelectedRoute(route)
