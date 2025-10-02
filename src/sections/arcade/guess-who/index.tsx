@@ -17,6 +17,7 @@ import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover"
 import dayjs from "dayjs";
 import { useJoin } from "./hooks/use-join";
 import { useProgressRouter } from "@/hooks/use-progress-router";
+import Audios from "./components/audios";
 
 const GuessWho = () => {
 
@@ -72,6 +73,7 @@ const GuessWho = () => {
               <BetInput
                 className="absolute z-[1] bottom-[-30px] w-[422px] mx-auto"
                 betToken={guessWho.betToken}
+                playAudio={guessWho.playAudio}
                 betAmount={create.betAmount}
                 setBetAmount={create.setBetAmount}
               />
@@ -127,6 +129,7 @@ const GuessWho = () => {
                 type="button"
                 className="group hover:text-white hover:bg-[radial-gradient(50%_66%_at_46%_50%,_#553BE4_0%,_#221662_100%)] transition-all duration-150 flex items-center justify-center gap-[10px] w-[86px] h-[32px] shrink-0 text-[#A1AECB] text-[16px] font-normal leading-normal bg-black rounded-[4px] border border-[#34304B]"
                 onClick={() => {
+                  guessWho.playAudio({ type: "click", action: "play" });
                   router.back();
                 }}
               >
@@ -147,6 +150,7 @@ const GuessWho = () => {
                 className="group disabled:opacity-50 disabled:!cursor-not-allowed hover:text-white hover:bg-[radial-gradient(50%_66%_at_46%_50%,_#553BE4_0%,_#221662_100%)] transition-all duration-150 flex items-center justify-center gap-[10px] w-[100px] h-[32px] shrink-0 text-[#A1AECB] text-[16px] font-normal leading-normal bg-black rounded-[4px] border border-[#34304B]"
                 disabled={guessWho.loading}
                 onClick={() => {
+                  guessWho.playAudio({ type: "click", action: "play" });
                   guessWho.getList();
                 }}
               >
@@ -185,6 +189,7 @@ const GuessWho = () => {
                 className="disabled:opacity-50 disabled:!cursor-not-allowed w-[18px] h-[18px] p-[3px] flex justify-center items-center rounded-[2px] border border-[#5E549D] bg-[#1A1843] shadow-[0_0_10px_0_rgba(0,0,0,0.05)]"
                 disabled={guessWho.loading}
                 onClick={() => {
+                  guessWho.playAudio({ type: "click", action: "play" });
                   guessWho.onJoined(!guessWho.list.joined);
                 }}
               >
@@ -199,7 +204,7 @@ const GuessWho = () => {
                 }
               </button>
               <div className="text-[#A1AECB]">
-                You Joined only
+                Participated
               </div>
             </div>
           </div>
@@ -347,6 +352,7 @@ const GuessWho = () => {
         buttonValid={join.buttonValid}
         lastMonsters={join.lastMonsters}
       />
+      <Audios audioRefs={guessWho.audioRefs} />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Contract, utils } from "ethers";
 import { RPS_CONTRACT_ADDRESS, RPS_CONTRACT_ADDRESS_ABI } from "../contract";
 import Big from "big.js";
+import { NotificationType, useNotificationContext } from "@/context/notification";
 
 export function useJoin(props?: any) {
   const {
@@ -21,11 +22,13 @@ export function useJoin(props?: any) {
     onRoomLoading,
     onChange2List,
     onChange2UserLatest,
+    playAudio,
   } = props ?? {};
 
   const { accountWithAk, account, chainId, provider } = useCustomAccount();
   const { onConnect, onSwitchChain } = useConnectWallet();
   const toast = useToast();
+  const { add } = useNotificationContext();
 
   const [betMonster, setBetMonster] = useState<Monster[]>([]);
   const [open, setOpen] = useState<boolean>(false);
@@ -120,8 +123,11 @@ export function useJoin(props?: any) {
   }, { manual: true });
 
   const { runAsync: onJoin, loading: joining } = useRequest(async () => {
+    playAudio({ type: "click", action: "play" });
+
     const _roomInfo = await onJoinCheck(room);
     if (!_roomInfo) {
+      playAudio({ type: "error", action: "play" });
       return;
     }
 
@@ -183,6 +189,7 @@ export function useJoin(props?: any) {
           tx: transactionHash,
           chainId,
         });
+        playAudio({ type: "error", action: "play" });
         return;
       }
 
@@ -191,6 +198,15 @@ export function useJoin(props?: any) {
         text: "Please wait for the game is confirming...",
         tx: transactionHash,
         chainId,
+      });
+      playAudio({ type: "success", action: "play" });
+      // add to global notification
+      add?.({
+        id: `guessWho-${room.room_id}`,
+        type: NotificationType.GuessWho,
+        data: {
+          ...room,
+        },
       });
 
       // reload list
@@ -210,6 +226,12 @@ export function useJoin(props?: any) {
             address: _newRoomInfo.winner_address,
             moves: _newRoomInfo.winner_moves,
           });
+
+          if (_newRoomInfo.winner_address?.toLowerCase() === account?.toLowerCase()) {
+            playAudio({ type: "win", action: "play" });
+            return;
+          }
+          playAudio({ type: "failed", action: "play" });
         }
       };
 
@@ -235,14 +257,17 @@ export function useJoin(props?: any) {
         title: "Join failed",
         text: error?.message?.includes("user rejected transaction") ? "User rejected transaction" : "",
       });
+      playAudio({ type: "error", action: "play" });
     }
   }, {
     manual: true,
   });
 
   const onOpen = async (_room: Room) => {
+    playAudio({ type: "click", action: "play" });
     const _roomInfo = await onJoinCheck(_room, { isReset: true });
     if (!_roomInfo) {
+      playAudio({ type: "error", action: "play" });
       return;
     }
     const _lastMonsters = Object.values(MONSTERS).map((it) => ({ ...it })).filter((it) => !_roomInfo?.players?.some((player: any) => player.moves === it.value));
@@ -271,6 +296,7 @@ export function useJoin(props?: any) {
       if (_moves.includes(move)) {
         _moves.splice(_moves.indexOf(move), 1);
       } else {
+        playAudio({ type: "select", action: "play" });
         // join yourself room
         // can select one only
         if (account.toLowerCase() === room?.address?.toLowerCase()) {

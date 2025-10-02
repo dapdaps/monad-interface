@@ -10,6 +10,7 @@ const BetInput = (props: any) => {
     betToken,
     setBetAmount,
     betAmount,
+    playAudio,
   } = props;
 
   return (
@@ -20,6 +21,7 @@ const BetInput = (props: any) => {
           value={betAmount}
           onNumberChange={setBetAmount}
           autoFocus
+          decimals={1}
         />
         <div className="absolute left-[11px] flex items-center gap-[11px]">
           <img
@@ -34,6 +36,7 @@ const BetInput = (props: any) => {
       </div>
       <Button
         onClick={() => {
+          playAudio({ type: "click", action: "play" });
           setBetAmount((prev: any) => numberRemoveEndZero(Big(prev || 0).plus(RPS_MIN_BET_AMOUNT).toFixed(betToken.decimals)));
         }}
       >
@@ -41,6 +44,7 @@ const BetInput = (props: any) => {
       </Button>
       <Button
         onClick={() => {
+          playAudio({ type: "click", action: "play" });
           setBetAmount((prev: any) => numberRemoveEndZero(Big(prev || 0).plus(RPS_MIN_BET_AMOUNT * 10).toFixed(betToken.decimals)));
         }}
       >

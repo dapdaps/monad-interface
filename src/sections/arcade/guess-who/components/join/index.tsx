@@ -8,6 +8,7 @@ import Pending from "./pending";
 import Result, { ResultUFO } from "./result";
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
+import dayjs from "dayjs";
 
 const JoinRoom = (props: any) => {
   const {
@@ -41,10 +42,18 @@ const JoinRoom = (props: any) => {
           className="relative z-[2] w-[202px] h-[39px] object-center object-contain shrink-0 mt-[-10px]"
         />
       </div>
-      <div className="w-[159px] h-[32px] shrink-0 rounded-[4px] bg-[#2A2631] text-[#B9C3DC] text-center text-[16px] font-medium leading-[16px] flex items-center justify-center">
-        Game No.{room.room_id}
+      <div className="flex justify-between items-start gap-[10px] pt-[9px]">
+        <div className="text-[#9BD742] translate-y-[-20px]">LIVE</div>
+        <div className="bg-[#836EF9] translate-x-[50px] w-[227px] h-[42px] p-[1px] shrink-0 [clip-path:polygon(6.61%_0,93.39%_0,100%_50%,93.39%_100%,6.61%_100%,0_50%)]">
+          <div className="w-full h-full bg-[#191338] text-[#B9C3DC] text-center text-[16px] font-medium leading-[16px] flex items-center justify-center [clip-path:polygon(6.61%_0,93.39%_0,100%_50%,93.39%_100%,6.61%_100%,0_50%)]">
+            <span>Game No. </span><span className="text-white">{room.room_id}</span>
+          </div>
+        </div>
+        <div className="text-[#727D97] pr-[10px] translate-y-[-20px]">
+          {dayjs(room.created_at).utc().format("YYYY.MM.DD HH:mm")}
+        </div>
       </div>
-      <div className="mt-[71px] flex items-start justify-center gap-[80px]">
+      <div className="mt-[47px] flex items-start justify-center gap-[80px]">
         <Player
           betToken={betToken}
           betAmount={room.bet_amount}

@@ -8,6 +8,7 @@ import { DEFAULT_CHAIN_ID } from "@/configs";
 import { Contract, utils } from "ethers";
 import { RPS_CONTRACT_ADDRESS, RPS_CONTRACT_ADDRESS_ABI } from "../contract";
 import Big from "big.js";
+import { NotificationType, useNotificationContext } from "@/context/notification";
 
 export function useCreate(props?: any) {
   const {
@@ -19,11 +20,13 @@ export function useCreate(props?: any) {
     setPlayersAvatar,
     onChange2UserLatest,
     onChange2List,
+    playAudio,
   } = props ?? {};
 
   const { accountWithAk, account, chainId, provider } = useCustomAccount();
   const { onConnect, onSwitchChain } = useConnectWallet();
   const toast = useToast();
+  const { add } = useNotificationContext();
 
   const [betMonster, setBetMonster] = useState<Monster[]>([]);
   const [betAmount, setBetAmount] = useState<string>();
@@ -34,6 +37,7 @@ export function useCreate(props?: any) {
       if (_betMonster.includes(monster)) {
         _betMonster.splice(_betMonster.indexOf(monster), 1);
       } else {
+        playAudio({ type: "select", action: "play" });
         _betMonster.push(monster);
         if (_betMonster.length > 2) {
           _betMonster.shift();
@@ -44,6 +48,8 @@ export function useCreate(props?: any) {
   };
 
   const { runAsync: onCreate, loading: creating } = useRequest(async () => {
+    playAudio({ type: "click", action: "play" });
+
     if (!account) {
       onConnect();
       return;
@@ -100,6 +106,7 @@ export function useCreate(props?: any) {
       toast.dismiss(toastId);
 
       if (status !== 1) {
+        playAudio({ type: "error", action: "play" });
         toast.fail({
           title: "Created failed",
           tx: transactionHash,
@@ -113,6 +120,7 @@ export function useCreate(props?: any) {
         tx: transactionHash,
         chainId,
       });
+      playAudio({ type: "success", action: "play" });
 
       // block crawling
       let isCrawlingRoomEvent = false;
@@ -162,6 +170,15 @@ export function useCreate(props?: any) {
           setPlayersAvatar(createdNewRoom.players);
           onChange2UserLatest("create", createdNewRoom);
           onChange2List("create", createdNewRoom);
+
+          add?.({
+            id: `guessWho-${createdNewRoom.room_id}`,
+            type: NotificationType.GuessWho,
+            data: {
+              ...createdNewRoom,
+            },
+          });
+
           isCrawlingRoomEvent = true;
         }
       } catch (err) {
@@ -179,6 +196,7 @@ export function useCreate(props?: any) {
         title: "Create failed",
         text: error?.message?.includes("user rejected transaction") ? "User rejected transaction" : "",
       });
+      playAudio({ type: "error", action: "play" });
     }
   }, {
     manual: true,

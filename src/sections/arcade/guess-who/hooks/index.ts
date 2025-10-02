@@ -3,7 +3,7 @@ import { useLayoutContext } from "@/context/layout";
 import useCustomAccount from "@/hooks/use-account";
 import { get } from "@/utils/http";
 import { useDebounceFn, useRequest } from "ahooks";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ContractStatus, ContractStatus2Status, EmptyPlayer, PlayerAvatars, Room, Status, WinnerStatus } from "../config";
 import { Contract, utils } from "ethers";
 import { RPS_CONTRACT_ADDRESS, RPS_CONTRACT_ADDRESS_ABI } from "../contract";
@@ -403,49 +403,49 @@ export function useGuessWho() {
   }, {
     refreshDeps: [accountWithAk],
   });
-  const { } = useRequest(async () => {
-    if (!account || !provider) {
-      return;
-    }
-    const calls = userLatest
-      ?.filter((item: any) => !item.winner_address)
-      ?.map((item: any) => ({
-        address: RPS_CONTRACT_ADDRESS,
-        name: "getRoomsInfo",
-        params: [item.room_id, item.room_id],
-      }));
-    if (!calls?.length) {
-      return;
-    }
-    const multicallAddress = multicallAddresses[DEFAULT_CHAIN_ID];
+  // const { } = useRequest(async () => {
+  //   if (!account || !provider) {
+  //     return;
+  //   }
+  //   const calls = userLatest
+  //     ?.filter((item: any) => !item.winner_address)
+  //     ?.map((item: any) => ({
+  //       address: RPS_CONTRACT_ADDRESS,
+  //       name: "getRoomsInfo",
+  //       params: [item.room_id, item.room_id],
+  //     }));
+  //   if (!calls?.length) {
+  //     return;
+  //   }
+  //   const multicallAddress = multicallAddresses[DEFAULT_CHAIN_ID];
 
-    try {
-      const roomInfos = await multicall({
-        abi: RPS_CONTRACT_ADDRESS_ABI,
-        options: {},
-        calls,
-        multicallAddress,
-        provider
-      });
-      setUserLatest((prev: any) => {
-        const _userLatest = prev.slice();
-        roomInfos.forEach((item: any) => {
-          const [[roomInfo]] = item;
-          const currRoom = _userLatest.find((item: any) => item.room_id === +roomInfo.data.roomId.toString());
-          if (!currRoom) {
-            return;
-          }
-          formatRoomInfo(currRoom, roomInfo);
-          console.log("currRoom: %o", currRoom);
-        });
-        return _userLatest;
-      });
-    } catch (error) {
-      console.log("polling latest contract room info failed: %o", error);
-    }
-  }, {
-    pollingInterval: 5000,
-  });
+  //   try {
+  //     const roomInfos = await multicall({
+  //       abi: RPS_CONTRACT_ADDRESS_ABI,
+  //       options: {},
+  //       calls,
+  //       multicallAddress,
+  //       provider
+  //     });
+  //     setUserLatest((prev: any) => {
+  //       const _userLatest = prev.slice();
+  //       roomInfos.forEach((item: any) => {
+  //         const [[roomInfo]] = item;
+  //         const currRoom = _userLatest.find((item: any) => item.room_id === +roomInfo.data.roomId.toString());
+  //         if (!currRoom) {
+  //           return;
+  //         }
+  //         formatRoomInfo(currRoom, roomInfo);
+  //       });
+  //       console.log("%cLatest polling result: %o", "background:#E2A16F;color:#fff;", _userLatest);
+  //       return _userLatest;
+  //     });
+  //   } catch (error) {
+  //     console.log("polling latest contract room info failed: %o", error);
+  //   }
+  // }, {
+  //   pollingInterval: 5000,
+  // });
   const onChange2UserLatest = (type: any, room: Room) => {
     if (type === "create") {
       setUserLatest((prev: any) => {
@@ -489,6 +489,60 @@ export function useGuessWho() {
     }
   };
 
+  const audioRefs = useRef<Map<string, HTMLAudioElement | null>>(new Map());
+  const playAudio = (preload: { type: string; action?: "play" | "pause"; }) => {
+    let { type, action } = preload;
+    action = action || "play";
+
+    const audioRef = audioRefs.current.get(type);
+    if (!audioRef) {
+      return;
+    }
+
+    const _play = async () => {
+      try {
+        switch (action) {
+          case "play":
+            audioRef.currentTime = 0;
+            // iOS Safari/Chrome requires user interaction to play audio
+            const playPromise = audioRef.play();
+            if (playPromise !== undefined) {
+              try {
+                await playPromise;
+              } catch (playError) {
+                console.warn(`Failed to play audio ${type}:`, playError);
+                // Try to load the audio first if play failed
+                audioRef.load();
+                try {
+                  await audioRef.play();
+                } catch (retryError) {
+                  console.warn(`Retry play failed for audio ${type}:`, retryError);
+                }
+              }
+            }
+            break;
+          case "pause":
+            audioRef.pause();
+            break;
+          default:
+            break;
+        }
+      } catch (error) {
+        console.warn(`Error in playAudio for ${type}:`, error);
+      }
+    };
+
+    _play();
+  };
+
+  useEffect(() => {
+    playAudio({ type: "environment", action: "play" });
+
+    return () => {
+      playAudio({ type: "environment", action: "pause" });
+    };
+  }, []);
+
   return {
     list,
     getList,
@@ -523,5 +577,7 @@ export function useGuessWho() {
     getUserLatest,
     onChange2UserLatest,
     onChange2List,
+    audioRefs,
+    playAudio,
   };
 }
