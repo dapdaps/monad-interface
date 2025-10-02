@@ -6,7 +6,8 @@ import clsx from "clsx";
 import { useProgressRouter } from "@/hooks/use-progress-router";
 import useClickTracking from "@/hooks/use-click-tracking";
 import { useMemo, useState } from "react";
-import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from 'swiper/modules';
 
 import ExternalLinksModal from "@/sections/dapps/components/external-links-modal";
 
@@ -46,9 +47,15 @@ const SpotlightApps = (props: any) => {
               setFirstIndex(params.realIndex);
               setLastIndex((params.realIndex + 3) % SpotlightList.length);
             }}
+            autoplay={{
+              delay: 5000,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
             direction="horizontal"
             className="w-full"
             allowTouchMove={true}
+            modules={[Autoplay]}
           >
             {
               SpotlightList.map((item, index) => {
