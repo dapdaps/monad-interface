@@ -55,7 +55,7 @@ const Content = (props: any) => {
 
   const { run: handleClose } = useDebounceFn(() => {
     onClose();
-  }, { wait: 5000 });
+  }, { wait: 10000 });
 
   useEffect(() => {
     handleClose();
