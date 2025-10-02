@@ -9,7 +9,7 @@ export default function WalletInfo() {
 
     return (
         <div
-            className="fixed bottom-[130px] right-[40px] w-[350px] border-b-2 border-t-2 text-[16px] font-[500] uppercase border-[#A5FFFD] font-Oxanium text-[#A5FFFD] [background:radial-gradient(50%_46.84%_at_50%_53.16%,rgba(0,0,0,0.15)_0%,rgba(165,255,253,0.15)_100%)]"
+            className="fixed z-[51] bottom-[130px] right-[40px] w-[350px] border-b-2 border-t-2 text-[16px] font-[500] uppercase border-[#A5FFFD] font-Oxanium text-[#A5FFFD] [background:radial-gradient(50%_46.84%_at_50%_53.16%,rgba(0,0,0,0.15)_0%,rgba(165,255,253,0.15)_100%)]"
             style={{
                 transform: "perspective(600px) skewX(6deg) rotateZ(6deg) rotateY(-10deg) "
             }}
