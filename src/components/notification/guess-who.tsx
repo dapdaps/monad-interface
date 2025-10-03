@@ -3,7 +3,8 @@ import { numberFormatter } from "@/utils/number-formatter";
 import { useDebounceFn } from "ahooks";
 import Big from "big.js";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const GuessWhoNotification = (props: any) => {
   const { open, onClose, room } = props;
@@ -53,6 +54,22 @@ export default GuessWhoNotification;
 const Content = (props: any) => {
   const { onClose, room, audioRef } = props;
 
+  const pathname = usePathname();
+
+  const [position, styles] = useMemo(() => {
+    if (pathname === "/arcade") {
+      return ["center", {
+        bottom: 62,
+        left: "50%",
+        x: "-50%",
+      }];
+    }
+    return ["right", {
+      bottom: 62,
+      right: 0,
+    }];
+  }, [pathname]);
+
   const { run: handleClose } = useDebounceFn(() => {
     onClose();
   }, { wait: 10000 });
@@ -72,16 +89,17 @@ const Content = (props: any) => {
 
   return (
     <motion.div
-      className="w-[273px] h-[68px] fixed right-0 bottom-[62px] text-white font-[600] flex flex-col justify-center gap-[0px] pl-[60px] bg-[url('/images/mainnet/arcade/guess-who/bg-guess-who-toast.png')] bg-no-repeat bg-center bg-contain"
-      initial={{
+      className="w-[273px] h-[68px] fixed text-white font-[600] flex flex-col justify-center gap-[0px] pl-[60px] bg-[url('/images/mainnet/arcade/guess-who/bg-guess-who-toast.png')] bg-no-repeat bg-center bg-contain"
+      style={styles}
+      initial={position === "right" ? {
         x: "150%",
-      }}
-      animate={{
+      } : { y: 200 }}
+      animate={position === "right" ? {
         x: 0,
-      }}
-      exit={{
+      } : { y: 0 }}
+      exit={position === "right" ? {
         x: "150%",
-      }}
+      } : { y: 200 }}
     >
       <div className="absolute left-[-42px] flex justify-center items-center">
         <img

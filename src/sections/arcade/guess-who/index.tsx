@@ -136,7 +136,7 @@ const GuessWho = () => {
                   guessWho.userLatest.map((it: any, idx: number) => (
                     <div
                       key={idx}
-                      className="w-full flex justify-between items-center gap-[10px] pt-[12px] pb-[5px] pl-[3px] pr-[10px]"
+                      className="w-full flex justify-between items-center gap-[10px] pt-[12px] pb-[5px] pl-[3px] pr-[15px]"
                     >
                       <div className="flex items-center gap-[10px] shrink-0">
                         <div className="max-w-[60px] whitespace-nowrap overflow-hidden text-ellipsis" title={it.room_id}>
@@ -151,6 +151,7 @@ const GuessWho = () => {
                                   avatar={player.avatar}
                                   moves={player.moves}
                                   className="!w-[26px] !h-[26px] !rounded-[8px] translate-y-[0px]"
+                                  avatarClassName="!right-[-10px] !top-[-15px]"
                                 />
                               ))
                             ) : (
@@ -160,18 +161,21 @@ const GuessWho = () => {
                                   avatar={it.players?.[0]?.avatar}
                                   moves={it.players?.[0]?.moves}
                                   className="!w-[26px] !h-[26px] !rounded-[8px] translate-y-[0px]"
+                                  avatarClassName="!right-[-10px] !top-[-15px]"
                                 />
                                 <PlayerAvatar
                                   key={`${idx}-${1}`}
                                   avatar={it.players?.[1]?.avatar}
                                   moves={it.players?.[1]?.moves}
                                   className="!w-[26px] !h-[26px] !rounded-[8px] translate-y-[0px]"
+                                  avatarClassName="!right-[-10px] !top-[-15px]"
                                 />
                                 <PlayerAvatar
                                   key={`${idx}-${2}`}
                                   avatar={it.players?.[2]?.avatar}
                                   moves={it.players?.[2]?.moves}
                                   className="!w-[26px] !h-[26px] !rounded-[8px] translate-y-[0px]"
+                                  avatarClassName="!right-[-10px] !top-[-15px]"
                                 />
                               </>
                             )
@@ -189,6 +193,7 @@ const GuessWho = () => {
                                 avatar={it.players?.find?.((player: any) => player.moves === it.winner_moves)?.avatar}
                                 moves={it.players?.find?.((player: any) => player.moves === it.winner_moves)?.moves}
                                 className="!w-[26px] !h-[26px] !rounded-[8px] translate-y-[0px]"
+                                avatarClassName="!right-[-10px] !top-[-15px]"
                               />
                             </div>
                           ) : (
