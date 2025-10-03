@@ -13,7 +13,7 @@ export default function Card({
           ...style,
           backgroundSize: '100% 100%',
         }}
-        className={`px-[37px] py-[45px] bg-[url('/images/mainnet/bridge/dapp-bg.png')] bg-[100%_100%] bg-no-repeat md:px-[10px] md:py-[16px] ${className}`}
+        className={`px-[37px] py-[45px] bg-[url('/images/mainnet/bridge/dapp-bg.png?r=1')] bg-[100%_100%] bg-no-repeat md:px-[10px] md:py-[16px] ${className}`}
       >
         {children}
       </div>
