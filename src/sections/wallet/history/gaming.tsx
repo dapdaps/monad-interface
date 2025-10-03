@@ -173,7 +173,7 @@ function getGameAssets(item: any) {
         case 'rpsCashCancel':
             return whitelist ? whitelist : <CashOut text="Cancel" />
         case 'rpsPayOut':
-            return whitelist ? whitelist : <CashOut text="Pay out" />
+            return whitelist ? whitelist : <CashOut />
         default:
             return <CashOut />
     }
