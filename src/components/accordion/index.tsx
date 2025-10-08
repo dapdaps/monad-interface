@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 const Accordion = (props: any) => {
-  const { className, label, children, contentClassName, labelClassName } = props;
+  const { className, label, children, contentClassName, labelClassName, defaultExpand = false } = props;
 
-  const [expand, setExpand] = useState(false);
+  const [expand, setExpand] = useState(defaultExpand);
 
   return (
     <div

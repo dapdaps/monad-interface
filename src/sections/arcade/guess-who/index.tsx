@@ -23,6 +23,7 @@ import Big from "big.js";
 import { useClaim } from "./hooks/use-claim";
 import ClaimModal from "./components/claim";
 import HistoryModal from "./components/history";
+import RulesModal from "./components/rules";
 
 const GuessWho = () => {
 
@@ -237,6 +238,16 @@ const GuessWho = () => {
                   <path d="M9.5 5.06218C10.1667 5.44708 10.1667 6.40933 9.5 6.79423L2.23205 10.9904C1.34602 11.5019 0.354474 10.5104 0.866025 9.62436L2.71133 6.4282C2.88996 6.1188 2.88996 5.7376 2.71132 5.4282L0.866025 2.23205C0.354474 1.34602 1.34602 0.354474 2.23205 0.866025L9.5 5.06218Z" fill="currentColor" />
                 </svg>
                 <div>Back</div>
+              </button>
+              <button
+                type="button"
+                className="group hover:text-white hover:bg-[radial-gradient(50%_66%_at_46%_50%,_#553BE4_0%,_#221662_100%)] transition-all duration-150 flex items-center justify-center gap-[10px] w-[86px] h-[32px] shrink-0 text-[#A1AECB] text-[16px] font-normal leading-normal bg-black rounded-[4px] border border-[#34304B]"
+                onClick={() => {
+                  guessWho.playAudio({ type: "click", action: "play" });
+                  guessWho.setRulesOpen(true);
+                }}
+              >
+                <div>Rules</div>
               </button>
             </div>
             <div className="flex justify-center items-center gap-[60px]">
@@ -688,6 +699,12 @@ const GuessWho = () => {
         claiming={claim.claiming}
       />
       <Audios audioRefs={guessWho.audioRefs} />
+      <RulesModal
+        open={guessWho.rulesOpen}
+        onClose={() => {
+          guessWho.setRulesOpen(false);
+        }}
+      />
     </div>
   );
 };

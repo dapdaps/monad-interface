@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useSpaceInvadersContext } from "../../context";
 import { useEffect } from "react";
-import Accordion from "./accordion";
+import Accordion from "@/components/accordion";
 
 const Rules = (props: any) => {
   const { className } = props;
