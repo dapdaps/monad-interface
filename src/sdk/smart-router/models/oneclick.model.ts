@@ -8,7 +8,7 @@ export class OneClick {
   private chainId: number;
   private wrappedNativeAddress: string;
   private ROUTER: { [key: number]: string } = {
-    10143: "0xe0ab727AdbbCdA72EfB3A516203a61764813dd74"
+    10143: "0xc26484D2ce20e31e363e2f27782B4E9718fF918a"
   };
   private HOST = "https://api-trade.nadsa.space";
 
