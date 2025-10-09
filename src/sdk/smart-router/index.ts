@@ -38,7 +38,10 @@ async function multiQuoter(params: any): Promise<any> {
     const dapp = new model(options.inputCurrency.chainId);
     return (async () => {
       try {
-        return await dapp.quoter(options);
+        return {
+          data: await dapp.quoter(options),
+          template,
+        };
       } catch (err) {
         console.error(`${template} error`);
       }
@@ -47,9 +50,9 @@ async function multiQuoter(params: any): Promise<any> {
   const result = await Promise.all(calls);
 
   return result
-    .filter((item: any) => item && item.outputCurrencyAmount)
+    .filter((item: any) => item && item.data && item.data.outputCurrencyAmount)
     .map((item: any, i: number) => ({
-      ...item,
-      template: filteredTemplates[i]
+      ...item.data,
+      template: item.template
     }));
 }
