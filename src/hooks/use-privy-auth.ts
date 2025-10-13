@@ -117,7 +117,7 @@ export function usePrivyAuth({ isBind = false }: { isBind?: boolean }) {
 
     useEffect(() => {
         (async () => {
-            if (address && isBind) {
+            if (address && isBind && userInfo && userInfo.address) {
                 if (!userInfo.game_address) {
                     const res = await bindGameAddress(address, '');
                     if (res === 10007) {
