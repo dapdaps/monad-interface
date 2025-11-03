@@ -1,0 +1,113 @@
+import Chart from "./chart";
+import Leaderboard from "./leaderboard";
+import Back from "./back";
+import DoomButton from "./button";
+import TokenPrice from "./price";
+import Bet from "./bet";
+import Balance from "./balance";
+import useWallet from "./hooks/useWallet";
+import useBet from "./hooks/useBet";
+import usePriceAndBets from "./hooks/usePriceAndBets";
+import InsufficientBalanceModal from "./insufficientBalanceModal";
+import WalletModal from "./wallet";
+import { useState } from "react";
+
+export default function MoonOrDoom() {
+    const {
+        tokenBalance,
+        gameBalance,
+        depositList,
+        depositPage,
+        depositPageTotal,
+        depositListLoading,
+        withdrawList,
+        withdrawPage,
+        withdrawPageTotal,
+        withdrawListLoading,
+        deposit,
+        depositLoading,
+        withdraw,
+        withdrawLoading,
+        refreshUserInfo,
+    } = useWallet();
+    const { bet, setBet, handleBet, betLoading, userBet, setInsufficientBalance, insufficientBalance } = useBet({
+        gameBalance: gameBalance || 0,
+    });
+
+    const { list, betList, disconnect } = usePriceAndBets()
+    const [walletModalOpen, setWalletModalOpen] = useState(false);
+
+    return <div className="w-full h-full bg-black pt-[100px] pb-[90px] overflow-hidden px-[30px] text-white bg-[url('/images/moon-or-doom/moon-or-doom-bg.png')] bg-no-repeat bg-[length:100%_100%] bg-center">
+        <div className="w-full h-full flex justify-center items-center gap-[10px]">
+            <div className="w-[20%] h-full flex flex-col justify-between">
+                <div>
+                    <Back />
+                </div>
+
+                <div className="relative">
+                    <div className="absolute top-[-100px] pointer-events-none">
+                        <img src="/images/moon-or-doom/slogan.png" alt="moon-or-doom-logo" className="h-[134px]" />
+                    </div>
+                    <div className="flex justify-end mb-[10px]">
+                        <DoomButton
+                            label="Rules"
+                            onClick={() => {
+                                console.log('Rules')
+                            }}
+                        />
+                        <DoomButton
+                            label="History"
+                            onClick={() => {
+                                console.log('History')
+                            }}
+                        />
+                    </div>
+                    <Leaderboard endAt={Date.now() + 1000 * 60 * 60 * 24} />
+                </div>
+            </div>
+            <div className="flex-1 h-full">
+                <div className="h-[40px] flex items-center justify-between pr-[80px]">
+                    <TokenPrice price={list && list.length > 0 ? list[list.length - 1].price : 0} />
+                    <div className="flex items-center gap-[50px]">
+                        <Bet bet={bet} onChange={(betNum) => {
+                            setBet(betNum)
+                        }} />
+                        <Balance
+                            gameBalance={gameBalance}
+                            onOpenWalletModal={() => setWalletModalOpen(true)}
+                        />
+                    </div>
+                </div>
+                <div className="mt-[10px] h-[calc(100%-40px)]">
+                    <Chart list={list} betList={betList} handleBet={handleBet} betLoading={betLoading} bet={bet} userBet={userBet} />
+                </div>
+            </div>
+        </div>
+
+        {
+            insufficientBalance && (
+                <InsufficientBalanceModal
+                    open={true}
+                    onClose={() => setInsufficientBalance(false)}
+                    gameBalance={gameBalance}
+                    onRecharge={() => {
+                        setWalletModalOpen(true);
+                    }}
+                />
+            )
+        }
+
+        <WalletModal
+            deposit={deposit}
+            depositLoading={depositLoading}
+            withdraw={withdraw}
+            withdrawLoading={withdrawLoading}
+            tokenBalance={tokenBalance}
+            gameBalance={gameBalance}
+            open={walletModalOpen}
+            onSuccess={() => {
+                refreshUserInfo?.();
+            }}
+            onClose={() => setWalletModalOpen(false)} />
+    </div>
+}

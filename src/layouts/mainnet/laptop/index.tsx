@@ -16,6 +16,11 @@ const EXCLUDE_WALLET_INFO_PATHS = [
   /^\/arcade\/guess-who$/,
   /^\/arcade\/space-invaders$/,
   /^\/arcade\/lucky777$/,
+  /^\/arcade\/moon-or-doom$/,
+];
+
+const EXCLUDE_SIDEBAR_PATHS = [
+  /^\/arcade\/moon-or-doom$/,
 ];
 
 const LaptopLayout = (props: any) => {
@@ -33,9 +38,15 @@ const LaptopLayout = (props: any) => {
 
   const showWalletInfo = !EXCLUDE_WALLET_INFO_PATHS.some((reg: any) => reg.test(pathname));
 
+  const showSidebar = !EXCLUDE_SIDEBAR_PATHS.some((reg: any) => reg.test(pathname));
+
   return (
     <div className="w-full h-full relative">
-      <LaptopSidebar />
+      {
+        showSidebar && (
+          <LaptopSidebar />
+        )
+      }
       <LaptopHeader />
       {
         isFooter && (
