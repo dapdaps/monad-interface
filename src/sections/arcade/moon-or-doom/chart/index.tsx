@@ -270,7 +270,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             .style('pointer-events', 'all');
 
         (rect.node() as any).__gridTime__ = gridTime.format('HH:mm:ss');
-        (rect.node() as any).__gridPrice__ = price + 0.5;
+        (rect.node() as any).__gridPrice__ = price;
         (rect.node() as any).__isPast__ = isPast;
 
         let timeOut: any = null
@@ -278,9 +278,20 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         rect
             .on('mouseenter', function (event) {
                 const isPastRect = (this as any).__isPast__;
+                const gridTime = (this as any).__gridTime__;
+                const price = (this as any).__gridPrice__;
+
+                const [hours, minutes, seconds] = gridTime.split(':').map(Number);
+                const fullGridTime = dayjs(configRef.current?.startTime)
+                    .hour(hours)
+                    .minute(minutes)
+                    .second(seconds)
+                    .millisecond(0);
+
                 if (!isDraggingRef.current && !isPastRect) {
                     const elem = event.currentTarget as SVGRectElement;
-                    const betMultiplier = betRef.current?.[gridTime.valueOf() + '-' + (price + 0.5)];
+                    const betMultiplier = betRef.current?.[fullGridTime.valueOf() + '-' + (price)];
+
                     if (betMultiplier) {
                         if (timeOut) {
                             clearTimeout(timeOut);
@@ -301,7 +312,12 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 const isPastRect = (this as any).__isPast__;
 
                 timeOut = setTimeout(() => {
+                    if (timeOut) {
+                        clearTimeout(timeOut);
+                        timeOut = null;
+                    }
                     d3.select('.shot-icon').style('display', null);
+                    timeOut = null;
                 }, 500)
 
                 if (isPastRect) return;
@@ -316,14 +332,24 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         if (includeMousedown) {
             rect.on('mousedown', function (event) {
                 const isPastRect = (this as any).__isPast__;
+                const gridTime = (this as any).__gridTime__;
+                const price = (this as any).__gridPrice__;
+
+                const [hours, minutes, seconds] = gridTime.split(':').map(Number);
+                const fullGridTime = dayjs(configRef.current?.startTime)
+                    .hour(hours)
+                    .minute(minutes)
+                    .second(seconds)
+                    .millisecond(0);
+
                 if (!isDraggingRef.current && !isPastRect) {
-                    const betMultiplier = betRef.current?.[gridTime.valueOf() + '-' + (price + 0.5)];
+                    const betMultiplier = betRef.current?.[fullGridTime.valueOf() + '-' + (price)];
                     if (betMultiplier) {
                         handleBet({
                             betAmount: bet.toString(),
-                            minPrice: (price + 0.5).toString(),
+                            minPrice: (price).toString(),
                             multiplier: betMultiplier.toString(),
-                            startTime: gridTime.valueOf()
+                            startTime: fullGridTime.valueOf()
                         })
                     }
 
@@ -621,13 +647,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
 
         if (lastExistingTime && configRef.current && lastExistingTime.isBefore(configRef.current.endTime)) {
             let gridTime = lastExistingTime.add(5, 'second');
-            const xScale = d3.scaleTime()
-                .domain([configRef.current.startTime.toDate(), configRef.current.endTime.toDate()])
-                .range([0, configRef.current.plotWidth]);
-            const yScale = d3.scaleLinear()
-                .domain([configRef.current.priceMin, configRef.current.priceMax])
-                .range([configRef.current.plotHeight, 0]);
-
             while (gridTime.isBefore(configRef.current.endTime)) {
                 const nextGridTime = gridTime.add(5, 'second');
                 const x1 = Math.max(0, xScale(gridTime.toDate()));
@@ -681,10 +700,24 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         });
 
         const futureGridRects = chartGroup.select('.future-grid').selectAll('rect');
+        chartGroup.select('.future-grid').selectAll('.' + 'bet-text').remove();
+        chartGroup.select('.future-grid').selectAll('.' + 'bet-number').remove();
 
         futureGridRects.each(function () {
             const gridTimeStr = (this as any).__gridTime__;
-            const gridPrice = (this as any).__gridPrice__;
+            let gridPrice = (this as any).__gridPrice__;
+            
+            // 根据yScale从rect的y1推出当前的price
+            const rectY1 = Number(d3.select(this).attr('y'));
+            if (!isNaN(rectY1)) {
+                const calculatedPrice = yScale.invert(rectY1);
+                // 将价格对齐到PRICE_STEP的倍数
+                const alignedPrice = Math.floor(calculatedPrice / PRICE_STEP) * PRICE_STEP;
+                const oldPrice = gridPrice;
+                gridPrice = alignedPrice;
+                (this as any).__gridPrice__ = gridPrice;
+            }
+            
             if (gridTimeStr) {
                 const [hours, minutes, seconds] = gridTimeStr.split(':').map(Number);
                 const fullGridTime = dayjs(configRef.current?.startTime)
@@ -712,7 +745,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 if (betText.empty() && betMultiplier > 0) {
                     const padding = 8;
                     betText = chartGroup.select('.future-grid').append<SVGTextElement>('text')
-                        .attr('class', className)
+                        .attr('class', className + ' bet-text')
                         .attr('x', Number(d3.select(this).attr('x')) + configRef.current?.gridCellSize - padding)
                         .attr('y', Number(d3.select(this).attr('y')) + configRef.current?.gridCellSize - padding)
                         .attr('fill', '#fff')
@@ -733,7 +766,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 
                 if (betNumber.empty() && userBetRef.current?.[key]) {
                     betNumber = chartGroup.select('.future-grid').append<SVGTextElement>('text')
-                        .attr('class', className + '-bet-number')
+                        .attr('class', className + '-bet-number bet-number')
                         .attr('x', Number(d3.select(this).attr('x')) + configRef.current?.gridCellSize / 2)
                         .attr('y', Number(d3.select(this).attr('y')) + configRef.current?.gridCellSize / 2)
                         .attr('fill', '#000')
