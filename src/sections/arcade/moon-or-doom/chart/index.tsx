@@ -20,7 +20,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     const [chartContainerHeight, setChartContainerHeight] = useState(0);
     const [isInitialized, setIsInitialized] = useState(false);
     const isDraggingRef = useRef(false);
-    const actualTranslationRef = useRef<{ x: number; y: number } | null>(null);
     const clickTimerRef = useRef<NodeJS.Timeout | null>(null);
     const lastPriceRef = useRef<number | null>(null);
     const isAnimatingRef = useRef(false);
@@ -81,7 +80,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     useEffect(() => {
         const timer = setInterval(() => {
             setEndTime(dayjs(configRef.current?.endTime).add(60, 'second'));
-            // setStartTime(dayjs(configRef.current?.startTime).subtract(60, 'second'));
         }, 60 * 1000);
         return () => clearInterval(timer);
     }, []);
@@ -116,8 +114,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         priceMin = Math.floor(priceMin * 2) / 2;
         priceMax = Math.floor(priceMax * 2) / 2;
 
-
-
         return {
             viewportWidth,
             viewportHeight,
@@ -140,7 +136,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         };
     }, [containerSize, startTime, endTime, list, chartContainerHeight]);
 
-
     const initialHistoricalData = useMemo(() => {
         const data: PricePoint[] = [];
         list.forEach(item => {
@@ -149,6 +144,10 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 price: Number(item.price),
             })
         })
+
+        if (list.length > 0) {
+            lastPriceRef.current = Number(list[list.length - 1].price);
+        }
         return data;
     }, [list]);
 
@@ -158,8 +157,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
 
         const chartGroup = d3.select(chartGroupRef.current);
 
-        if (isDraggingRef.current && actualTranslationRef.current) {
-            chartGroup.attr('transform', `translate(${actualTranslationRef.current.x}, ${actualTranslationRef.current.y})`);
+        if (isDraggingRef.current && translationRef.current) {
+            chartGroup.attr('transform', `translate(${translationRef.current.x}, ${translationRef.current.y})`);
             return;
         }
 
@@ -213,7 +212,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         }
 
         const currentTranslation = translationRef.current || { x: 0, y: 0 };
-        actualTranslationRef.current = currentTranslation;
         chartGroup.attr('transform', `translate(${currentTranslation.x}, ${currentTranslation.y})`);
 
         if (chartGroup.select('.line-group').empty()) {
@@ -392,8 +390,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         xAxisGroup.selectAll("*").remove();
         yAxisGroup.selectAll("*").remove();
 
-        const currentTranslation = (isDraggingRef.current && actualTranslationRef.current)
-            ? actualTranslationRef.current
+        const currentTranslation = (isDraggingRef.current && translationRef.current)
+            ? translationRef.current
             : (translation || { x: 0, y: 0 });
         const visibleXStart = -currentTranslation.x;
         const visibleXEnd = visibleXStart + containerRect.width;
@@ -801,10 +799,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const containerRect = container.getBoundingClientRect();
         const viewportWidth = containerRect.width;
         const viewportHeight = containerRect.height;
-        const now = dayjs();
-        const pastData = initialHistoricalData.filter(
-            d => dayjs(d.time).isBefore(now) || dayjs(d.time).isSame(now, 'second')
-        );
+        const pastData = initialHistoricalData
         if (pastData.length === 0) {
             setIsInitialized(true);
             updateTranslation({ x: 0, y: 0 });
@@ -830,7 +825,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const finalX = Math.max(minX, Math.min(maxX, initialX));
         const finalY = Math.max(minY, Math.min(maxY, initialY));
         const initialTranslation = { x: finalX, y: finalY };
-        actualTranslationRef.current = initialTranslation;
         updateTranslation(initialTranslation);
         setIsInitialized(true);
     }, [initialHistoricalData, isInitialized, containerSize]);
@@ -860,18 +854,16 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 .range([configRef.current?.plotHeight, 0]);
             const nowX = xScale(now.toDate());
             const translationX = viewportWidth / 2 - nowX;
-            let lastPrice = 0;
-            if (initialHistoricalData && initialHistoricalData.length > 0) {
-                const lastPoint = initialHistoricalData[initialHistoricalData.length - 1];
-                lastPrice = lastPoint.price;
-            }
+            let lastPrice = lastPriceRef.current ?? 0;
             const pointY = yScale(lastPrice);
             const visibleY = pointY + currentY;
+
             const upBorder = viewportHeight * 0.2;
             const lowBorder = viewportHeight * 0.8;
             let targetY = currentY;
             const centerY = viewportHeight / 2;
             if (visibleY < upBorder || visibleY > lowBorder) {
+                console.log('visibleY < upBorder || visibleY > lowBorder', visibleY < upBorder, visibleY > lowBorder);
                 targetY = centerY - pointY;
             }
             currentY = currentY + (targetY - currentY) * 0.22;
@@ -880,7 +872,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         };
         animate();
         return () => { stop = true; };
-    }, [isInitialized, containerSize, initialHistoricalData]);
+    }, [isInitialized, containerSize]);
 
 
     return (
