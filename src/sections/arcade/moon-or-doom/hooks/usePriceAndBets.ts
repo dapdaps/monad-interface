@@ -40,8 +40,8 @@ export default function usePriceAndBets() {
                         }
 
                         let last50Items = prev;
-                        if (prev.length >= 300) {
-                            last50Items = prev.slice(prev.length - 299);
+                        if (prev.length >= 500) {
+                            last50Items = prev.slice(prev.length - 499);
                         }
 
                         return [
@@ -53,9 +53,7 @@ export default function usePriceAndBets() {
                         ]
 
                     });
-
                 } else if (Array.isArray(data) && data.length > 0 && data[0].e === 'bet') {
-
                     setBetList((prev) => {
                         let updated = [...prev, data[0]];
                         if (updated.length > 50) {
