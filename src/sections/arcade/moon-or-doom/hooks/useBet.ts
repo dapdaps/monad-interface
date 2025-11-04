@@ -29,8 +29,6 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
         startTime: string
     }) => {
 
-        console.log('handleBet', gameBalanceRef.current, betAmount, minPrice, multiplier, startTime);
-
         if (Big(gameBalanceRef.current).lt(betAmount)) {
             setInsufficientBalance(true);
             return;
@@ -73,19 +71,7 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
 
     };
 
-    const getAllBet = useCallback(async () => {
-        const res = await get('/game/euphoria/latest');
-        console.log('res:', res);
-        if (res.code === 200) {
-            
-        }
-    }, []);
-
-    useEffect(() => {
-        if (userInfo.address) {
-            getAllBet();
-        }
-    }, [userInfo]);
+   
 
 
     return {
@@ -94,7 +80,6 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
         handleBet,
         betLoading,
         userBet: userBetObj,
-        getAllBet,
         insufficientBalance,
         setInsufficientBalance,
     };

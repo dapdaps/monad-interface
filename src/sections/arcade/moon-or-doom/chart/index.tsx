@@ -8,7 +8,7 @@ interface PricePoint {
 }
 
 const PRICE_STEP = 0.5;
-export default function Chart({ bet, list = [], betList = [], handleBet, betLoading, userBet }: { bet: number, list: any[], betList: any[], handleBet: (bet: any) => void, betLoading: boolean, userBet: any }) {
+export default function Chart({ bet, list = [], betList = [], handleBet, betLoading, userBet, winObj }: { bet: number, list: any[], betList: any[], handleBet: (bet: any) => void, betLoading: boolean, userBet: any, winObj: any }) {
     const containerRef = useRef<HTMLDivElement>(null);
     const svgRef = useRef<SVGSVGElement>(null);
     const chartGroupRef = useRef<SVGGElement>(null);
@@ -30,10 +30,15 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     const configRef = useRef<any>(null);
     const betRef = useRef<any>(null);
     const userBetRef = useRef<any>(null);
+    const winObjRef = useRef<any>({});
 
     useEffect(() => {
         userBetRef.current = userBet;
     }, [userBet]);
+
+    useEffect(() => {
+        winObjRef.current = winObj;
+    }, [winObj]);
 
     const updateTranslation = (tr: { x: number; y: number }) => {
         translationRef.current = tr;
@@ -754,8 +759,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     betText.text(betMultiplier + 'x');
                 }
 
-                
-
                 let betNumber: any = chartGroup.select('.future-grid').select('.' + className + '-bet-number');
                 
                 if (betNumber.empty() && userBetRef.current?.[key]) {
@@ -781,6 +784,9 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     betNumber.style('opacity', 0.5);
                     betText.style('fill', '#000');
                     d3.select(this).style('opacity', 0.5).style('fill', '#727D97');
+                    if (winObjRef.current?.[key]) {
+                        d3.select(this).style('opacity', 0.5).style('fill', '#31FFA6');
+                    }
                 }
 
                 (this as any).__isPast__ = isPast;

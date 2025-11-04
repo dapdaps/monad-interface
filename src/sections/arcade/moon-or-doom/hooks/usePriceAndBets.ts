@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import WSClient from "../lib/ws";
+import useUser from "@/hooks/use-user";
+import { get } from "@/utils/http";
 
 const WS_URL = "wss://dev-stream-monad.dapdap.net/ws";
 
@@ -7,10 +9,18 @@ export default function usePriceAndBets() {
     const wsClientRef = useRef<WSClient | null>(null);
     const [list, setList] = useState<any[]>([]);
     const [betList, setBetList] = useState<any[]>([]);
+    const [winObj, setWinObj] = useState<any>({});
+    const [animationNumbers, setAnimationNumbers] = useState<Array<{ id: string; amount: number }>>([]);
+    const { userInfo } = useUser();
 
     useEffect(() => {
+        if (!userInfo.address) {
+            return;
+        }
+
         const wsClient = new WSClient({
             url: WS_URL,
+            address: userInfo.address,
             onMessage: (event: MessageEvent) => {
                 const data = JSON.parse(event.data);
                 if (data.e === 'price') {
@@ -30,8 +40,8 @@ export default function usePriceAndBets() {
                         }
 
                         let last50Items = prev;
-                        if (prev.length >= 200) {
-                            last50Items = prev.slice(prev.length - 199);
+                        if (prev.length >= 300) {
+                            last50Items = prev.slice(prev.length - 299);
                         }
 
                         return [
@@ -53,7 +63,25 @@ export default function usePriceAndBets() {
                         }
                         return updated;
                     });
+                } else if (data.e === 'win') {
+                    setWinObj((prev: any) => {
+                        return {
+                            ...prev,
+                            [data.start_time + '-' + data.min_price]: 1,
+                        }
+                    });
+
+                    const winAmount = data.amount
+                    if (winAmount > 0) {
+                        const animationId = `${Date.now()}-${Math.random()}`;
+                        setAnimationNumbers((prev) => [...prev, { id: animationId, amount: winAmount }]);
+                        
+                        setTimeout(() => {
+                            setAnimationNumbers((prev) => prev.filter((item) => item.id !== animationId));
+                        }, 2000);
+                    }
                 }
+               
             },
         });
 
@@ -65,6 +93,18 @@ export default function usePriceAndBets() {
                 wsClientRef.current = null;
             }
         };
+    }, [userInfo]);
+
+    const getAllBet = useCallback(async () => {
+        const res = await get('/game/euphoria/latest');
+        console.log('res:', res);
+        if (res.code === 200) {
+            setBetList(res.data || []);
+        }
+    }, []);
+
+    useEffect(() => {
+        getAllBet()
     }, []);
 
     return {
@@ -75,5 +115,7 @@ export default function usePriceAndBets() {
         },
         list,
         betList,
+        winObj,
+        animationNumbers,
     };
 }

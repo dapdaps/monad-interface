@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import Chart from "./chart";
 import Leaderboard from "./leaderboard";
 import Back from "./back";
@@ -8,9 +10,10 @@ import Balance from "./balance";
 import useWallet from "./hooks/useWallet";
 import useBet from "./hooks/useBet";
 import usePriceAndBets from "./hooks/usePriceAndBets";
-import InsufficientBalanceModal from "./insufficientBalanceModal";
+import InsufficientBalanceModal from "./insufficient-balance-modal";
+import NumberUpAnimation from "./number-up-animation";
 import WalletModal from "./wallet";
-import { useState } from "react";
+
 
 export default function MoonOrDoom() {
     const {
@@ -23,12 +26,11 @@ export default function MoonOrDoom() {
         refreshUserInfo,
     } = useWallet();
 
-
     const { bet, setBet, handleBet, betLoading, userBet, setInsufficientBalance, insufficientBalance } = useBet({
         gameBalance: gameBalance || 0,
     });
 
-    const { list, betList, disconnect } = usePriceAndBets()
+    const { list, betList, winObj, disconnect, animationNumbers } = usePriceAndBets()
     const [walletModalOpen, setWalletModalOpen] = useState(false);
 
     return <div className="w-full h-full bg-black pt-[100px] pb-[90px] overflow-hidden px-[30px] text-white bg-[url('/images/moon-or-doom/moon-or-doom-bg.png')] bg-no-repeat bg-[length:100%_100%] bg-center">
@@ -73,7 +75,7 @@ export default function MoonOrDoom() {
                     </div>
                 </div>
                 <div className="mt-[10px] h-[calc(100%-40px)]">
-                    <Chart list={list} betList={betList} handleBet={handleBet} betLoading={betLoading} bet={bet} userBet={userBet} />
+                    <Chart list={list} betList={betList} handleBet={handleBet} winObj={winObj} betLoading={betLoading} bet={bet} userBet={userBet} />
                 </div>
             </div>
         </div>
@@ -103,5 +105,11 @@ export default function MoonOrDoom() {
                 refreshUserInfo?.();
             }}
             onClose={() => setWalletModalOpen(false)} />
+
+        <AnimatePresence>
+            {animationNumbers.length > 0 && animationNumbers.map((item) => (
+                <NumberUpAnimation key={item.id} amount={item.amount} id={item.id} />
+            ))}
+        </AnimatePresence>
     </div>
 }

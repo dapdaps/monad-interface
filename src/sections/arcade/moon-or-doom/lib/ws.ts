@@ -1,6 +1,7 @@
 export interface WSConfig {
   url: string;
   protocols?: string | string[];
+  address: string;
   onMessage?: (event: MessageEvent) => void;
 }
 
@@ -11,10 +12,10 @@ class WSClient {
   constructor(config: WSConfig) {
     this.ws = new WebSocket(config.url, config.protocols);
     this.onMessageCallback = config.onMessage;
-    this.setupEventHandlers();
+    this.setupEventHandlers(config.address);
   }
 
-  private setupEventHandlers(): void {
+  private setupEventHandlers(address: string): void {
     if (!this.ws) return;
 
     this.ws.onopen = () => {
@@ -23,7 +24,7 @@ class WSClient {
       const subscribeMsg = JSON.stringify({
         id: 1,
         method: 'SUBSCRIBE',
-        params: ['ethusdt@price', 'ethusdt@bet'],
+        params: ['ethusdt@price', 'ethusdt@bet', `${address.toLowerCase()}@account`],
       });
       this.send(subscribeMsg);
     };
