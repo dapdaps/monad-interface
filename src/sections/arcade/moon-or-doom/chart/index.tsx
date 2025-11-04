@@ -157,10 +157,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
 
         const chartGroup = d3.select(chartGroupRef.current);
 
-        if (isDraggingRef.current && translationRef.current) {
-            chartGroup.attr('transform', `translate(${translationRef.current.x}, ${translationRef.current.y})`);
-            return;
-        }
 
         const hasStaticElements = !chartGroup.select('.drag-background').empty() &&
             !chartGroup.select('.grid').empty();
@@ -459,8 +455,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     useEffect(() => {
         if (!chartGroupRef.current || !initialHistoricalData.length) return;
         if (translationRef.current === null) return;
-        if (isDraggingRef.current) return;
-
 
         const chartGroup = d3.select(chartGroupRef.current);
 
@@ -862,12 +856,17 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             const lowBorder = viewportHeight * 0.8;
             let targetY = currentY;
             const centerY = viewportHeight / 2;
-            if (visibleY < upBorder || visibleY > lowBorder) {
-                console.log('visibleY < upBorder || visibleY > lowBorder', visibleY < upBorder, visibleY > lowBorder);
-                targetY = centerY - pointY;
-            }
-            currentY = currentY + (targetY - currentY) * 0.22;
-            updateTranslation({ x: translationX, y: currentY });
+            const initialY = centerY - pointY;
+            const maxY = 0;
+            const minY = Math.min(0, -(configRef.current?.plotHeight - viewportHeight));
+            const finalY = Math.max(minY, Math.min(maxY, initialY));
+
+            // if (visibleY < upBorder || visibleY > lowBorder) {
+            //     console.log('visibleY < upBorder || visibleY > lowBorder', visibleY < upBorder, visibleY > lowBorder);
+            //     targetY = centerY - pointY;
+            // }
+            // currentY = currentY + (targetY - currentY) * 0.22;
+            updateTranslation({ x: translationX, y: finalY });
             requestAnimationFrame(animate);
         };
         animate();

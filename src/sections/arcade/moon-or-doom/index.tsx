@@ -13,6 +13,7 @@ import usePriceAndBets from "./hooks/usePriceAndBets";
 import InsufficientBalanceModal from "./insufficient-balance-modal";
 import NumberUpAnimation from "./number-up-animation";
 import WalletModal from "./wallet";
+import HistoryModal from "./history";
 
 
 export default function MoonOrDoom() {
@@ -32,6 +33,7 @@ export default function MoonOrDoom() {
 
     const { list, betList, winObj, disconnect, animationNumbers } = usePriceAndBets()
     const [walletModalOpen, setWalletModalOpen] = useState(false);
+    const [historyModalOpen, setHistoryModalOpen] = useState(false);
 
     return <div className="w-full h-full bg-black pt-[100px] pb-[90px] overflow-hidden px-[30px] text-white bg-[url('/images/moon-or-doom/moon-or-doom-bg.png')] bg-no-repeat bg-[length:100%_100%] bg-center">
         <div className="w-full h-full flex justify-center items-center gap-[10px]">
@@ -54,7 +56,7 @@ export default function MoonOrDoom() {
                         <DoomButton
                             label="History"
                             onClick={() => {
-                                console.log('History')
+                                setHistoryModalOpen(true);
                             }}
                         />
                     </div>
@@ -105,6 +107,19 @@ export default function MoonOrDoom() {
                 refreshUserInfo?.();
             }}
             onClose={() => setWalletModalOpen(false)} />
+
+        <HistoryModal
+            deposit={deposit}
+            depositLoading={depositLoading}
+            withdraw={withdraw}
+            withdrawLoading={withdrawLoading}
+            tokenBalance={tokenBalance}
+            gameBalance={gameBalance}
+            open={historyModalOpen}
+            onSuccess={() => {
+                refreshUserInfo?.();
+            }}
+            onClose={() => setHistoryModalOpen(false)} />
 
         <AnimatePresence>
             {animationNumbers.length > 0 && animationNumbers.map((item) => (
