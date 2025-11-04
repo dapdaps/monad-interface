@@ -702,18 +702,16 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const futureGridRects = chartGroup.select('.future-grid').selectAll('rect');
         chartGroup.select('.future-grid').selectAll('.' + 'bet-text').remove();
         chartGroup.select('.future-grid').selectAll('.' + 'bet-number').remove();
+        chartGroup.select('.future-grid').selectAll('rect').style('opacity', 1).style('fill', null);
 
         futureGridRects.each(function () {
             const gridTimeStr = (this as any).__gridTime__;
             let gridPrice = (this as any).__gridPrice__;
             
-            // 根据yScale从rect的y1推出当前的price
             const rectY1 = Number(d3.select(this).attr('y'));
             if (!isNaN(rectY1)) {
                 const calculatedPrice = yScale.invert(rectY1);
-                // 将价格对齐到PRICE_STEP的倍数
                 const alignedPrice = Math.floor(calculatedPrice / PRICE_STEP) * PRICE_STEP;
-                const oldPrice = gridPrice;
                 gridPrice = alignedPrice;
                 (this as any).__gridPrice__ = gridPrice;
             }
@@ -732,8 +730,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 const strokeOpacity = isPast ? 0.15 : 0.4;
 
                 d3.select(this)
-                    .attr('data-time', fullGridTime.valueOf() + '-' + gridPrice)
-                    .attr('data-multiplier', betRef.current?.[fullGridTime.valueOf() + '-' + gridPrice] ?? 0)
                     .attr('fill', `rgba(131, 110, 249, ${baseOpacity})`)
                     .attr('stroke', `rgba(131, 110, 249, ${strokeOpacity})`);
 
@@ -754,13 +750,11 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         .attr('text-anchor', 'end')
                 }
 
-                if (betMultiplier > 0 && !betText.empty() && !isPast) {
+                if (betMultiplier > 0 && !betText.empty() && (!isPast || userBetRef.current?.[key])) {
                     betText.text(betMultiplier + 'x');
                 }
 
-                if ((betMultiplier === 0 || (isPast && !userBetRef.current?.[key])) && !betText.empty()) {
-                    betText.text('');
-                }
+                
 
                 let betNumber: any = chartGroup.select('.future-grid').select('.' + className + '-bet-number');
                 
