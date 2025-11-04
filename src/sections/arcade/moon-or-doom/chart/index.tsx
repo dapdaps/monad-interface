@@ -676,11 +676,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     }
                     
                     d3.select(this).remove();
-
-                    console.log('remove:', key);
                 }
-
-                
             }
         });
 

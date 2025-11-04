@@ -24,10 +24,6 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
         multiplier: string,
         startTime: string
     }) => {
-
-        setInsufficientBalance(true);
-            return;
-
         if (Big(gameBalance).lt(betAmount)) {
             setInsufficientBalance(true);
             return;
