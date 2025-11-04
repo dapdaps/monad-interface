@@ -2,18 +2,22 @@ import useToast from "@/hooks/use-toast";
 import useUser from "@/hooks/use-user";
 import { get, post } from "@/utils/http";
 import Big from "big.js";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function useBet({ gameBalance }: { gameBalance: number }) {
     const [bet, setBet] = useState<number>(0.1);
     const [betLoading, setBetLoading] = useState<boolean>(false);
     const [userBetObj, setUserBetObj] = useState<any>({});
     const [insufficientBalance, setInsufficientBalance] = useState<boolean>(false);
+    const gameBalanceRef = useRef<number>(gameBalance);
 
     const { success, fail } = useToast();
     const { userInfo } = useUser();
-    
-    const handleBet = useCallback(async ({
+
+    useEffect(() => {
+        gameBalanceRef.current = gameBalance;
+    }, [gameBalance]);
+    const handleBet = async ({
         betAmount,
         minPrice,
         multiplier,
@@ -24,7 +28,10 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
         multiplier: string,
         startTime: string
     }) => {
-        if (Big(gameBalance).lt(betAmount)) {
+
+        console.log('handleBet', gameBalanceRef.current, betAmount, minPrice, multiplier, startTime);
+
+        if (Big(gameBalanceRef.current).lt(betAmount)) {
             setInsufficientBalance(true);
             return;
         }
@@ -64,8 +71,7 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
             setBetLoading(false);
         }
 
-
-    }, [betLoading, gameBalance]);
+    };
 
     const getAllBet = useCallback(async () => {
         const res = await get('/game/euphoria/latest');

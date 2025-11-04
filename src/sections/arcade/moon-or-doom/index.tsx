@@ -16,20 +16,14 @@ export default function MoonOrDoom() {
     const {
         tokenBalance,
         gameBalance,
-        depositList,
-        depositPage,
-        depositPageTotal,
-        depositListLoading,
-        withdrawList,
-        withdrawPage,
-        withdrawPageTotal,
-        withdrawListLoading,
         deposit,
         depositLoading,
         withdraw,
         withdrawLoading,
         refreshUserInfo,
     } = useWallet();
+
+
     const { bet, setBet, handleBet, betLoading, userBet, setInsufficientBalance, insufficientBalance } = useBet({
         gameBalance: gameBalance || 0,
     });
