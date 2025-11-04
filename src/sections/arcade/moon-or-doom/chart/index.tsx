@@ -314,8 +314,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 d3.select(elem)
                     .attr('fill', `rgba(131, 110, 249, ${baseFill})`)
                     .attr('stroke', `rgba(131, 110, 249, ${baseStroke})`);
-
-                
             });
 
         if (includeMousedown) {
@@ -330,18 +328,15 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     .minute(minutes)
                     .second(seconds)
                     .millisecond(0);
+                const betMultiplier = betRef.current?.[fullGridTime.valueOf() + '-' + (price)];
 
-                if (!isDraggingRef.current && !isPastRect) {
-                    const betMultiplier = betRef.current?.[fullGridTime.valueOf() + '-' + (price)];
-                    if (betMultiplier) {
-                        handleBet({
-                            betAmount: bet.toString(),
-                            minPrice: (price).toString(),
-                            multiplier: betMultiplier.toString(),
-                            startTime: fullGridTime.valueOf()
-                        })
-                    }
-
+                if (!isPastRect && betMultiplier > 0) {
+                    handleBet({
+                        betAmount: bet.toString(),
+                        minPrice: (price).toString(),
+                        multiplier: betMultiplier.toString(),
+                        startTime: fullGridTime.valueOf()
+                    })
                 }
             });
         }

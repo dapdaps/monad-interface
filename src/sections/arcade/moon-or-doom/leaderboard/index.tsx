@@ -1,17 +1,19 @@
+import Empty from '@/components/empty'
+import Loading from '@/components/loading'
+import useUser from '@/hooks/use-user'
+import { get } from '@/utils/http'
+import dayjs from 'dayjs'
 import { useEffect, useMemo, useState } from 'react'
 
 type LeaderboardEntry = {
     rank: number
-    name: string
-    score: number
-    avatarUrl?: string
-    isMe?: boolean
+    address: string
+    profit: number
 }
 
 interface LeaderboardProps {
     title?: string
-    endAt?: number
-    
+
 }
 
 function useCountdown(endAt?: number) {
@@ -35,9 +37,7 @@ function useCountdown(endAt?: number) {
 }
 
 function formatScore(value: number) {
-    const [int, dec] = value.toFixed(2).split('.')
-    const paddedInt = int.padStart(3, '0')
-    return `${paddedInt}.${dec}`
+    return value
 }
 
 function MyEntryRow({ entry }: { entry: LeaderboardEntry }) {
@@ -47,15 +47,10 @@ function MyEntryRow({ entry }: { entry: LeaderboardEntry }) {
                 <div className="flex items-center h-[56px] px-3 gap-3">
                     <div className="w-[24px] text-center text-[#99FF4D] font-bold text-[14px]">{entry.rank}</div>
                     <div className="w-[32px] h-[32px] rounded-full bg-white/10 overflow-hidden flex items-center justify-center text-[12px]">
-                        {entry.avatarUrl ? (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img src={entry.avatarUrl} alt="me" className="w-full h-full object-cover" />
-                        ) : (
-                            <span className="opacity-80">🙂</span>
-                        )}
+                        <span className="opacity-80">🙂</span>
                     </div>
-                    <div className="flex-1 truncate text-[13px]">{entry.name}</div>
-                    <div className="font-mono tabular-nums text-[15px]">{formatScore(entry.score)}</div>
+                    <div className="flex-1 truncate text-[13px]">{entry.address.slice(0, 5)}...{entry.address.slice(-5)}</div>
+                    <div className="font-mono tabular-nums text-[15px]">{formatScore(entry.profit)}</div>
                 </div>
             </div>
         </div>
@@ -63,29 +58,36 @@ function MyEntryRow({ entry }: { entry: LeaderboardEntry }) {
 }
 
 export default function Leaderboard(props: LeaderboardProps) {
-    const { title = '24H CLIMBING BOARD', endAt } = props
-    const countdown = useCountdown(endAt)
-    
-    const entries: LeaderboardEntry[] = [
-        { rank: 1, name: 'Satoshi', score: 123.45 },
-        { rank: 2, name: 'Vitalik', score: 118.32 },
-        { rank: 3, name: 'Ada', score: 112.08 },
-        { rank: 4, name: 'Nick', score: 108.77 },
-        { rank: 5, name: 'Hal', score: 104.12 },
-        { rank: 6, name: 'Wei', score: 101.56 },
-        { rank: 7, name: 'Gavin', score: 99.31 },
-        { rank: 8, name: 'Linus', score: 95.80 },
-        { rank: 9, name: 'Grace', score: 90.42 },
-        { rank: 10, name: 'Turing', score: 88.05 },
-    ]
+    const { title = '24H CLIMBING BOARD' } = props
+    const countdown = useCountdown(dayjs.utc().endOf('day').valueOf())
+    const { userInfo } = useUser()
 
-    const myEntry: LeaderboardEntry | undefined = {
-        rank: 23,
-        name: 'Me_Player',
-        score: 67.89,
-        avatarUrl: '',
-        isMe: true,
-    }
+    const [entries, setEntries] = useState<LeaderboardEntry[]>([])
+    const [loading, setLoading] = useState(false)
+    const [myEntry, setMyEntry] = useState<any | undefined>(undefined)
+
+    useEffect(() => {
+        const fetchEntries = async () => {
+            setLoading(true)
+            const res = await get('/game/euphoria/leaderboard/day', {
+                address: userInfo.address
+            })
+            if (res.code !== 200) {
+                return
+            }
+
+            console.log(res.data)
+            setEntries(res.data.data || [])
+            setLoading(false)
+            setMyEntry(res.data.user || undefined)
+        }
+
+        if (userInfo?.address) {
+            fetchEntries()
+        }
+    }, [userInfo])
+
+
 
     return (
         <div className="w-full relative text-white bg-[#24242480] rounded-[8px] overflow-hidden backdrop-blur-[20px]">
@@ -95,29 +97,34 @@ export default function Leaderboard(props: LeaderboardProps) {
             </div>
 
             <div className="mt-2">
-                <div className=" overflow-hidden text-[14px] mb-[72px]">
-                    <div className="pr-1">
-                        {entries.map((item) => (
+                <div className="overflow-hidden text-[14px] mb-[72px]">
+                    <div className="pr-1 h-[600px] overflow-y-auto">
+                        {entries.length > 0 ? entries.map((item) => (
                             <div
-                                key={`${item.rank}-${item.name}`}
+                                key={`${item.rank}-${item.address}`}
                                 className="flex items-center h-[44px] px-3 gap-3"
                             >
                                 <div className="w-[24px] text-center text-[#99FF4D] font-bold text-[14px]">{item.rank}</div>
                                 <div className="w-[28px] h-[28px] rounded-full bg-white/10 overflow-hidden flex items-center justify-center text-[12px]">
-                                    {item.avatarUrl ? (
-                                        // eslint-disable-next-line @next/next/no-img-element
-                                        <img src={item.avatarUrl} alt="avatar" className="w-full h-full object-cover" />
-                                    ) : (
-                                        <span className="opacity-80">👤</span>
-                                    )}
+                                    <span className="opacity-80">👤</span>
                                 </div>
-                                <div className="flex-1 truncate text-[13px] opacity-90">{item.name}</div>
-                                <div className="font-mono tabular-nums text-[13px] opacity-90">{formatScore(item.score)}</div>
+                                <div className="flex-1 truncate text-[13px] opacity-90">{item.address.slice(0, 5)}...{item.address.slice(-5)}</div>
+                                <div className="font-mono tabular-nums text-[13px] opacity-90">{formatScore(item.profit)}</div>
                             </div>
-                        ))}
+                        )) : (
+                            loading ? (
+                                <div className="flex items-center justify-center h-full pt-[100px]">
+                                    <Loading />
+                                </div>
+                            ) : (
+                                <div className="flex items-center justify-center h-full pt-[100px]">
+                                    <Empty desc="No data yet..." />
+                                </div>
+                            )
+                        )}
                     </div>
                 </div>
-                
+
             </div>
             {myEntry ? (<MyEntryRow entry={myEntry} />) : null}
         </div>
