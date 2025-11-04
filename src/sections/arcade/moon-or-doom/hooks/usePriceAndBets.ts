@@ -24,16 +24,18 @@ export default function usePriceAndBets() {
                             ]
                         }
 
-
                         const lastItem = prev[prev.length - 1];
                         if (lastItem.time >= data.timestamp) {
                             return prev;
                         }
 
-                        // console.log('data.timestamp', data.timestamp, Date.now(), data.timestamp - Date.now());
+                        let last50Items = prev;
+                        if (prev.length >= 200) {
+                            last50Items = prev.slice(prev.length - 199);
+                        }
 
                         return [
-                            ...prev,
+                            ...last50Items,
                             {
                                 price: data.price,
                                 time: data.timestamp,
@@ -43,12 +45,14 @@ export default function usePriceAndBets() {
                     });
 
                 } else if (Array.isArray(data) && data.length > 0 && data[0].e === 'bet') {
+
                     setBetList((prev) => {
-                        return [
-                            ...prev,
-                            data[0]
-                        ]
-                    })
+                        let updated = [...prev, data[0]];
+                        if (updated.length > 50) {
+                            updated = updated.slice(updated.length - 50);
+                        }
+                        return updated;
+                    });
                 }
             },
         });
