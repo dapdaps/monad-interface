@@ -255,7 +255,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         const y1 = yScale(price);
                         const y2 = yScale(price + PRICE_STEP);
 
-                        createGridRect(futureGridGroup as any, x1, x2, y1, y2, gridTime, price, isPast, true);
+                        createGridRect(futureGridGroup as any, x1, x2, y1, y2, gridTime, price, isPast, !isPast);
                     }
                 }
 
@@ -376,8 +376,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             });
 
         if (includeMousedown) {
+            rect.attr('data-mousedown', 'true');
             rect.on('mousedown', function (event) {
-
                 const isPastRect = (this as any).__isPast__;
                 const gridTime = (this as any).__gridTime__;
                 const price = (this as any).__gridPrice__;
@@ -720,7 +720,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         const y1 = yScale(price);
                         const y2 = yScale(price + PRICE_STEP);
 
-                        createGridRect(futureGridGroup, x1, x2, y1, y2, gridTime, price, isPast, false);
+                        createGridRect(futureGridGroup, x1, x2, y1, y2, gridTime, price, isPast, !isPast);
                     }
                 }
 
@@ -787,8 +787,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     .millisecond(0);
 
                 const isPast = fullGridTime.isBefore(now) || fullGridTime.isSame(now, 'second');
-
-                
 
                 const key = fullGridTime.valueOf() + '-' + gridPrice;
                 const className = ('bet-text-' + key).replace('.', '-');
