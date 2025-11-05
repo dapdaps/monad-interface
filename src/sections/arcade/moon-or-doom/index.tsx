@@ -60,7 +60,7 @@ export default function MoonOrDoom() {
                             }}
                         />
                     </div>
-                    <Leaderboard endAt={Date.now() + 1000 * 60 * 60 * 24} />
+                    <Leaderboard />
                 </div>
             </div>
             <div className="flex-1 h-full">
