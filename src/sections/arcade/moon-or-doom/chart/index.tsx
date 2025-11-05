@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
 import dayjs from "dayjs";
+import { useDebounceFn, useThrottleEffect } from "ahooks";
 
 interface PricePoint {
     time: Date;
@@ -31,6 +32,54 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     const userBetRef = useRef<any>(null);
     const winObjRef = useRef<any>({});
 
+    const [gridNumber, setGridNumber] = useState(13);
+ 
+    const gridCellSize = useMemo(() => {
+        const chartGroup = d3.select(chartGroupRef.current);
+        const futureGrid = chartGroup.select('.future-grid');
+        if (futureGrid.size() > 0) {
+            futureGrid.selectAll('rect').remove();
+            chartGroup.select('.future-grid').selectAll('.' + 'bet-text').remove();
+            chartGroup.select('.future-grid').selectAll('.' + 'bet-number').remove();
+        }
+        return containerSize.width / gridNumber;
+    }, [containerSize, gridNumber]);
+
+    const handleWheel = useCallback((event: WheelEvent) => {
+        event.preventDefault();
+        const delta = event.deltaY > 0 ? 1 : -1;
+        const newGridNumber = Math.max(5, Math.min(30, gridNumber + delta));
+
+        if (newGridNumber < 13) {
+            return;
+        }
+
+        console.log('newGridNumber', newGridNumber, 16 * containerSize.width / newGridNumber, containerSize.height);
+
+        if (16 * containerSize.width / newGridNumber <= containerSize.height) {
+            return;
+        }
+
+        setGridNumber(newGridNumber);
+    }, [gridNumber, containerSize]);
+
+    const { run: debouncedHandleWheel } = useDebounceFn(handleWheel, {
+        wait: 100,
+    });
+
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        container.addEventListener('wheel', debouncedHandleWheel, { passive: false });
+
+        return () => {
+            container.removeEventListener('wheel', debouncedHandleWheel);
+        };
+    }, [debouncedHandleWheel]);
+
+    
+
     useEffect(() => {
         userBetRef.current = userBet;
     }, [userBet]);
@@ -43,18 +92,25 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         translationRef.current = tr;
         setTranslation(tr);
     };
-    useEffect(() => {
-        const updateSize = () => {
-            if (containerRef.current) {
-                const rect = containerRef.current.getBoundingClientRect();
-                setContainerSize({ width: rect.width, height: rect.height });
-            }
-        };
 
+    const updateSize = () => {
+        if (containerRef.current) {
+            const rect = containerRef.current.getBoundingClientRect();
+            setContainerSize({ width: rect.width, height: rect.height });
+        }
+    };
+
+    const { run: debouncedUpdateSize } = useDebounceFn(updateSize, {
+        wait: 150,
+    });
+
+    useEffect(() => {
         updateSize();
-        window.addEventListener('resize', updateSize);
-        return () => window.removeEventListener('resize', updateSize);
-    }, []);
+        window.addEventListener('resize', debouncedUpdateSize);
+        return () => {
+            window.removeEventListener('resize', debouncedUpdateSize);
+        };
+    }, [debouncedUpdateSize]);
 
     useEffect(() => {
         const updateChartContainerHeight = () => {
@@ -88,7 +144,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const viewportWidth = containerSize.width || 800;
         const viewportHeight = containerSize.height || 500;
 
-        const gridCellSize = (chartContainerHeight) / 16;
+        // const gridCellSize = (chartContainerHeight) / 16;
+        // const gridCellSize = (viewportWidth) / 13;
         const pixelsPerSecond = gridCellSize / 5;
         const pixelsPerUnit = gridCellSize / PRICE_STEP;
 
@@ -134,7 +191,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             gridCellSize,
             disabled: list.length === 0,
         };
-    }, [containerSize, startTime, endTime, list, chartContainerHeight]);
+    }, [containerSize, startTime, endTime, list, chartContainerHeight, gridNumber, gridCellSize]);
 
     const initialHistoricalData = useMemo(() => {
         const data: PricePoint[] = [];
@@ -286,6 +343,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     .minute(minutes)
                     .second(seconds)
                     .millisecond(0);
+
+                d3.select(this).attr('data-key', gridTime + '-' + (price));
                 const betMultiplier = betRef.current?.[fullGridTime.valueOf() + '-' + (price)];
 
                 if (!isDraggingRef.current && !isPastRect && betMultiplier > 0) {
@@ -318,6 +377,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
 
         if (includeMousedown) {
             rect.on('mousedown', function (event) {
+
                 const isPastRect = (this as any).__isPast__;
                 const gridTime = (this as any).__gridTime__;
                 const price = (this as any).__gridPrice__;
@@ -329,6 +389,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     .second(seconds)
                     .millisecond(0);
                 const betMultiplier = betRef.current?.[fullGridTime.valueOf() + '-' + (price)];
+
 
                 if (!isPastRect && betMultiplier > 0) {
                     handleBet({
@@ -361,10 +422,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             (node as any).parentNode.appendChild(node);
         }
     };
-
-    const canRun = useMemo(() => {
-        return isInitialized && configRef.current && !configRef.current?.disabled
-    }, [isInitialized, config]);
 
     useEffect(() => {
         if (!chartGroupRef.current || !translation || configRef.current?.disabled) return;
@@ -455,7 +512,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
 
     }, [translation, containerSize]);
 
-    useEffect(() => {
+    useThrottleEffect(() => {
         if (!chartGroupRef.current || !initialHistoricalData.length) return;
         if (translationRef.current === null) return;
 
@@ -521,22 +578,22 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 pathSelection.exit().remove();
             }
 
-            const timeLineSelection = lineGroup.selectAll<SVGLineElement, number>('line.current-time-line')
-                .data(nowX >= 0 && nowX <= configRef.current?.plotWidth ? [nowX] : []);
+            // const timeLineSelection = lineGroup.selectAll<SVGLineElement, number>('line.current-time-line')
+            //     .data(nowX >= 0 && nowX <= configRef.current?.plotWidth ? [nowX] : []);
 
-            timeLineSelection.enter()
-                .append('line')
-                .attr('class', 'current-time-line')
-                .attr('stroke', 'rgba(131, 110, 249, 0.5)')
-                .attr('stroke-width', 1)
-                .attr('stroke-dasharray', '4,4')
-                .attr('y1', 0)
-                .attr('y2', configRef.current?.plotHeight)
-                .merge(timeLineSelection)
-                .attr('x1', d => d)
-                .attr('x2', d => d);
+            // timeLineSelection.enter()
+            //     .append('line')
+            //     .attr('class', 'current-time-line')
+            //     .attr('stroke', 'rgba(131, 110, 249, 0.5)')
+            //     .attr('stroke-width', 1)
+            //     .attr('stroke-dasharray', '4,4')
+            //     .attr('y1', 0)
+            //     .attr('y2', configRef.current?.plotHeight)
+            //     .merge(timeLineSelection)
+            //     .attr('x1', d => d)
+            //     .attr('x2', d => d);
 
-            timeLineSelection.exit().remove();
+            // timeLineSelection.exit().remove();
 
             const lastPoint = pastData[pastData.length - 1];
             const pointX = xScale(lastPoint.time);
@@ -631,7 +688,11 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const futureGridGroup = chartGroup.select('.future-grid');
         const allRects = futureGridGroup.selectAll('rect');
 
-        let lastExistingTime: dayjs.Dayjs | null = null;
+        let realNow = dayjs().subtract(120, 'second');
+        const seconds = Math.floor(realNow.second() / 10) * 10;
+        realNow = realNow.second(seconds).millisecond(0);
+
+        let lastExistingTime: dayjs.Dayjs | null = realNow;
         if (allRects.size() > 0 && configRef.current) {
             const lastRect = allRects.nodes()[allRects.size() - 1] as any;
             const gridTimeStr = lastRect.__gridTime__;
@@ -727,13 +788,22 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
 
                 const isPast = fullGridTime.isBefore(now) || fullGridTime.isSame(now, 'second');
 
-                const baseOpacity = isPast ? 0.08 : 0.25;
-                const strokeOpacity = isPast ? 0.15 : 0.4;
+                
 
                 const key = fullGridTime.valueOf() + '-' + gridPrice;
                 const className = ('bet-text-' + key).replace('.', '-');
                 let betText: any = chartGroup.select('.future-grid').select('.' + className);
                 const betMultiplier = betRef.current?.[key] ?? 0;
+
+                let baseOpacity = 0.25;
+                let strokeOpacity = 0.4;
+
+                if (isPast || !betMultiplier) {
+                    baseOpacity = 0.08;
+                    strokeOpacity = 0.15;
+                }
+
+                // console.log('betText', fullGridTime, key, betText.empty(), betMultiplier);
 
                 if (isHover && !isPast && betMultiplier > 0) {
                     d3.select(this)
@@ -747,7 +817,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         .attr('stroke', `rgba(131, 110, 249, ${strokeOpacity})`);
                 }
 
-                if (betText.empty() && betMultiplier > 0) {
+                if (betText.empty() && betMultiplier > 0) { 
                     const padding = 8;
                     betText = chartGroup.select('.future-grid').append<SVGTextElement>('text')
                         .attr('class', className + ' bet-text')
@@ -757,6 +827,18 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         .attr('font-size', '12px')
                         .attr('font-weight', '500')
                         .attr('text-anchor', 'end')
+                } else {
+                    
+                    // const padding = 8;
+                    // betText = chartGroup.select('.future-grid').append<SVGTextElement>('text')
+                    //     .attr('class', className + ' bet-text')
+                    //     .attr('x', Number(d3.select(this).attr('x')) + configRef.current?.gridCellSize - padding)
+                    //     .attr('y', Number(d3.select(this).attr('y')) + configRef.current?.gridCellSize - padding)
+                    //     .attr('fill', '#fff')
+                    //     .attr('font-size', '12px')
+                    //     .attr('font-weight', '500')
+                    //     .attr('text-anchor', 'end')
+                    //     .text(key);
                 }
 
                 if (betMultiplier > 0 && !betText.empty() && (!isPast || userBetRef.current?.[key])) {
@@ -797,7 +879,9 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             }
         });
 
-    }, [initialHistoricalData]);
+    }, [initialHistoricalData], {
+        wait: 500
+    });
 
     useEffect(() => {
         if (isInitialized || !containerRef.current || !initialHistoricalData.length || configRef.current?.disabled) return;

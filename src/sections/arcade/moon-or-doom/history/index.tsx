@@ -405,7 +405,10 @@ function RechargeTab({
                                                 {item.status === 1 ? 'Success' : 'Pending'}
                                             </span>
 
-                                            <a href={`https://testnet.monadexplorer.com/tx/${item.tx_hash}`} target="_blank" className="text-[#836EF9] ml-[10px] underline">Tx</a>
+                                            {
+                                                item.status === 1 && <a href={`https://testnet.monadexplorer.com/tx/${item.tx_hash}`} target="_blank" className="text-[#836EF9] ml-[10px] underline">Tx</a>
+
+                                            }
                                         </td>
                                     </tr>
                                 ))}
@@ -469,7 +472,9 @@ function WithdrawTab({
                                                 {item.status === 1 ? 'Success' : 'Pending'}
                                             </span>
 
-                                            <a href={`https://testnet.monadexplorer.com/tx/${item.tx_hash}`} target="_blank" className="text-[#836EF9] ml-[10px] underline">Tx</a>
+                                            {
+                                                item.status === 1 && <a href={`https://testnet.monadexplorer.com/tx/${item.tx_hash}`} target="_blank" className="text-[#836EF9] ml-[10px] underline">Tx</a>
+                                            }
                                         </td>
                                     </tr>
                                 ))}

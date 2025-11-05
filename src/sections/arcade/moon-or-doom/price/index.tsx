@@ -24,7 +24,7 @@ export default function TokenPrice({
 
       <div className="flex items-baseline gap-2">
         <span className="font-extrabold text-2xl leading-none text-lime-400">
-          {balanceFormated(price, 2)}
+          ${balanceFormated(price, 2)}
         </span>
         {/* <span className={`text-sm font-semibold leading-none ${changeColor}`}>
           ({change !== 0 ? `${changeSign}${changeAbs}%` : "0.00%"})
