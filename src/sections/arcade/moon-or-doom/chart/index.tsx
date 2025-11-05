@@ -165,11 +165,16 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const svgWidth = plotWidth;
         const svgHeight = plotHeight;
 
-        let priceMin = list.length > 0 ? Number(list[list.length - 1].price) - PRICE_STEP * 8 : 3800;
-        let priceMax = list.length > 0 ? Number(list[list.length - 1].price) + PRICE_STEP * 8 : 3900;
-
-        priceMin = Math.floor(priceMin * 2) / 2;
-        priceMax = Math.floor(priceMax * 2) / 2;
+        const lastPrice = list.length > 0 ? Number(list[list.length - 1].price) : 0;    
+        let priceMin = 0;
+        let priceMax = 0;
+        if (configRef.current && lastPrice > configRef.current.priceMin && lastPrice < configRef.current.priceMax) {
+            priceMin = configRef.current.priceMin;
+            priceMax = configRef.current.priceMax;
+        } else {
+            priceMin = lastPrice - PRICE_STEP * 8;
+            priceMax = lastPrice + PRICE_STEP * 8;
+        }
 
         return {
             viewportWidth,
@@ -429,7 +434,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         chartGroup.attr('transform', `translate(${translation.x}, ${translation.y})`);
     }, [translation]);
 
-    useEffect(() => {
+    useThrottleEffect(() => {
         if (!containerRef.current || !xAxisRef.current || !yAxisRef.current || configRef.current?.disabled) return;
         if (translation === null) return;
 
@@ -510,7 +515,9 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             .attr('text-anchor', 'start')
             .text(d => d.price.toFixed(2));
 
-    }, [translation, containerSize]);
+    }, [translation, containerSize], {
+        wait: 100,
+    });
 
     useThrottleEffect(() => {
         if (!chartGroupRef.current || !initialHistoricalData.length) return;
@@ -927,17 +934,18 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             let lastPrice = lastPriceRef.current ?? 0;
             const pointY = yScale(lastPrice);
 
-
-            const rectY = pointY + (translationRef.current?.y ?? 0);
+            const previousY = translationRef.current?.y ?? 0;
+            const rectY = pointY + previousY;
             if (rectY > 0 && rectY < viewportHeight) {
-                updateTranslation({ x: translationX, y: translationRef.current?.y ?? 0 });
+                const minY = Math.min(0, previousY);
+                const finalY = Math.max(minY, Math.min(0, minY));
+
+                updateTranslation({ x: translationX, y: previousY });
             } else {
                 const centerY = viewportHeight / 2;
                 const initialY = centerY - pointY;
-                const maxY = 0;
                 const minY = Math.min(0, -(configRef.current?.plotHeight - viewportHeight));
-                const finalY = Math.max(minY, Math.min(maxY, initialY));
-                console.log('finalY', finalY, minY, initialY);
+                const finalY = Math.max(minY, Math.min(0, initialY));
     
                 updateTranslation({ x: translationX, y: finalY });
             }
