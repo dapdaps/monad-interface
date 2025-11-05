@@ -530,7 +530,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const pointGroup = chartGroup.select('.point-group');
 
         const now = dayjs().add(5, 'second');
-        const nowX = xScale(dayjs().toDate());
 
         const pastData = initialHistoricalData
 
@@ -577,23 +576,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
 
                 pathSelection.exit().remove();
             }
-
-            // const timeLineSelection = lineGroup.selectAll<SVGLineElement, number>('line.current-time-line')
-            //     .data(nowX >= 0 && nowX <= configRef.current?.plotWidth ? [nowX] : []);
-
-            // timeLineSelection.enter()
-            //     .append('line')
-            //     .attr('class', 'current-time-line')
-            //     .attr('stroke', 'rgba(131, 110, 249, 0.5)')
-            //     .attr('stroke-width', 1)
-            //     .attr('stroke-dasharray', '4,4')
-            //     .attr('y1', 0)
-            //     .attr('y2', configRef.current?.plotHeight)
-            //     .merge(timeLineSelection)
-            //     .attr('x1', d => d)
-            //     .attr('x2', d => d);
-
-            // timeLineSelection.exit().remove();
 
             const lastPoint = pastData[pastData.length - 1];
             const pointX = xScale(lastPoint.time);
@@ -944,23 +926,23 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             const translationX = viewportWidth / 2 - nowX;
             let lastPrice = lastPriceRef.current ?? 0;
             const pointY = yScale(lastPrice);
-            const visibleY = pointY + currentY;
 
-            const upBorder = viewportHeight * 0.2;
-            const lowBorder = viewportHeight * 0.8;
-            let targetY = currentY;
-            const centerY = viewportHeight / 2;
-            const initialY = centerY - pointY;
-            const maxY = 0;
-            const minY = Math.min(0, -(configRef.current?.plotHeight - viewportHeight));
-            const finalY = Math.max(minY, Math.min(maxY, initialY));
 
-            // if (visibleY < upBorder || visibleY > lowBorder) {
-            //     console.log('visibleY < upBorder || visibleY > lowBorder', visibleY < upBorder, visibleY > lowBorder);
-            //     targetY = centerY - pointY;
-            // }
-            // currentY = currentY + (targetY - currentY) * 0.22;
-            updateTranslation({ x: translationX, y: finalY });
+            const rectY = pointY + (translationRef.current?.y ?? 0);
+            if (rectY > 0 && rectY < viewportHeight) {
+                updateTranslation({ x: translationX, y: translationRef.current?.y ?? 0 });
+            } else {
+                const centerY = viewportHeight / 2;
+                const initialY = centerY - pointY;
+                const maxY = 0;
+                const minY = Math.min(0, -(configRef.current?.plotHeight - viewportHeight));
+                const finalY = Math.max(minY, Math.min(maxY, initialY));
+                console.log('finalY', finalY, minY, initialY);
+    
+                updateTranslation({ x: translationX, y: finalY });
+            }
+            
+            
             requestAnimationFrame(animate);
         };
         animate();
