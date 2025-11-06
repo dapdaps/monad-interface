@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import GuessWho from "./guess-who";
 import Space from "./space";
 import Lucky777 from "./lucky777";
-import { useEffect, useState } from "react";
+import ChartVoyager from "./chart-voyager";
+
 export default function MainnetEntry() {
     const [scale, setScale] = useState(1);
 
@@ -24,6 +26,7 @@ export default function MainnetEntry() {
                 transformOrigin: "center center",
             }}>
                 <GuessWho />
+                <ChartVoyager />
                 <Space />
                 <Lucky777 />
             </div>
