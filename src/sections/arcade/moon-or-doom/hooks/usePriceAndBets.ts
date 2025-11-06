@@ -12,6 +12,7 @@ export default function usePriceAndBets() {
     const [winObj, setWinObj] = useState<any>({});
     const [animationNumbers, setAnimationNumbers] = useState<Array<{ id: string; amount: number }>>([]);
     const { userInfo } = useUser();
+    const betListRef = useRef<any[]>([]);
 
     useEffect(() => {
         if (!userInfo.address) {
@@ -54,11 +55,20 @@ export default function usePriceAndBets() {
 
                     });
                 } else if (Array.isArray(data) && data.length > 0 && data[0].e === 'bet') {
+
+                    if (betListRef.current.length > 0) {
+                        const lastBet = betListRef.current[betListRef.current.length - 1];
+                        if (lastBet.end_time !== data[0].start_time) {
+                            getAllBet();
+                        }
+                    }
+
                     setBetList((prev) => {
                         let updated = [...prev, data[0]];
                         if (updated.length > 50) {
                             updated = updated.slice(updated.length - 50);
                         }
+                        betListRef.current = updated;
                         return updated;
                     });
                 } else if (data.e === 'win') {
@@ -95,8 +105,8 @@ export default function usePriceAndBets() {
 
     const getAllBet = useCallback(async () => {
         const res = await get('/game/euphoria/latest');
-        console.log('res:', res);
         if (res.code === 200) {
+            betListRef.current = res.data || [];
             setBetList(res.data || []);
         }
     }, []);
