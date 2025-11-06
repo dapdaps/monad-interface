@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as d3 from "d3";
 import dayjs from "dayjs";
 import { useDebounceFn, useThrottleEffect } from "ahooks";
+import { numberFormatter } from "@/utils/number-formatter";
 
 interface PricePoint {
     time: Date;
@@ -183,8 +184,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             priceMin = configRef.current.priceMin;
             priceMax = configRef.current.priceMax;
         } else {
-            priceMin = lastPrice - PRICE_STEP * 8;
-            priceMax = lastPrice + PRICE_STEP * 8;
+            priceMin = Math.floor((lastPrice - PRICE_STEP * 8));
+            priceMax = priceMin + PRICE_STEP * 16;
         }
 
         return {
@@ -541,7 +542,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             .attr('fill', '#ffffff')
             .attr('font-size', '10px')
             .attr('text-anchor', 'start')
-            .text(d => d.price.toFixed(1));
+            .text(d => numberFormatter(d.price, 1, true));
 
     }, [translation, containerSize], {
         wait: 50,
@@ -756,7 +757,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 if (x1 < configRef.current.plotWidth && x2 > 0) {
                     const isPast = gridTime.isBefore(now) || gridTime.isSame(now, 'second');
 
-                    for (let price = configRef.current.priceMin; price < configRef.current.priceMax; price += PRICE_STEP) {
+                    for (let price = configRef.current.priceMin; price <= configRef.current.priceMax; price += PRICE_STEP) {
                         const y1 = yScale(price);
                         const y2 = yScale(price + PRICE_STEP);
 
@@ -814,7 +815,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             if (!isNaN(rectY1)) {
                 const calculatedPrice = yScale.invert(rectY1);
                 const alignedPrice = Math.floor(calculatedPrice / PRICE_STEP) * PRICE_STEP;
-                gridPrice = alignedPrice;
+                gridPrice = alignedPrice - PRICE_STEP;
                 (this as any).__gridPrice__ = gridPrice;
             }
 
@@ -865,19 +866,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         .attr('font-size', '12px')
                         .attr('font-weight', '500')
                         .attr('text-anchor', 'end')
-                } else {
-
-                    // const padding = 8;
-                    // betText = chartGroup.select('.future-grid').append<SVGTextElement>('text')
-                    //     .attr('class', className + ' bet-text')
-                    //     .attr('x', Number(d3.select(this).attr('x')) + configRef.current?.gridCellSize - padding)
-                    //     .attr('y', Number(d3.select(this).attr('y')) + configRef.current?.gridCellSize - padding)
-                    //     .attr('fill', '#fff')
-                    //     .attr('font-size', '12px')
-                    //     .attr('font-weight', '500')
-                    //     .attr('text-anchor', 'end')
-                    //     .text(key);
-                }
+                } 
 
                 if (betMultiplier > 0 && !betText.empty() && (!isPast || userBetRef.current?.[key])) {
                     betText.text(betMultiplier + 'x');
