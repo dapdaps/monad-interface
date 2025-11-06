@@ -13,6 +13,7 @@ export default function usePriceAndBets() {
     const [animationNumbers, setAnimationNumbers] = useState<Array<{ id: string; amount: number }>>([]);
     const { userInfo } = useUser();
     const betListRef = useRef<any[]>([]);
+    const allTimePriceRef = useRef<any>({});
 
     useEffect(() => {
         if (!userInfo.address) {
@@ -44,6 +45,14 @@ export default function usePriceAndBets() {
                         if (prev.length >= 500) {
                             last50Items = prev.slice(prev.length - 499);
                         }
+
+                        // data.timestamp assumed to be in milliseconds
+                        const prev5sTimestamp = data.timestamp - (data.timestamp % 5000);
+                        const roundedPrice = Math.floor(data.price / 0.5) * 0.5;
+                        allTimePriceRef.current[prev5sTimestamp + '-' + roundedPrice] = true;
+
+
+                        console.log('prev5sTimestamp:', allTimePriceRef);
 
                         return [
                             ...last50Items,
@@ -125,5 +134,6 @@ export default function usePriceAndBets() {
         betList,
         winObj,
         animationNumbers,
+        allTimePrice: allTimePriceRef.current,
     };
 }

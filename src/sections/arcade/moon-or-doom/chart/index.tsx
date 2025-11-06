@@ -10,7 +10,7 @@ interface PricePoint {
 }
 
 const PRICE_STEP = 0.5;
-export default function Chart({ bet, list = [], betList = [], handleBet, betLoading, userBet, winObj }: { bet: number, list: any[], betList: any[], handleBet: (bet: any) => void, betLoading: boolean, userBet: any, winObj: any }) {
+export default function Chart({ bet, list = [], betList = [], handleBet, betLoading, userBet, winObj, allTimePrice }: { bet: number, list: any[], betList: any[], handleBet: (bet: any) => void, betLoading: boolean, userBet: any, winObj: any, allTimePrice: any }) {
     const containerRef = useRef<HTMLDivElement>(null);
     const svgRef = useRef<SVGSVGElement>(null);
     const chartGroupRef = useRef<SVGGElement>(null);
@@ -851,9 +851,17 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
 
                     showShotIcon(this as SVGRectElement);
                 } else {
-                    d3.select(this)
-                        .attr('fill', `rgba(131, 110, 249, ${baseOpacity})`)
-                        .attr('stroke', `rgba(131, 110, 249, ${strokeOpacity})`);
+                    if (allTimePrice[fullGridTime.valueOf() + '-' + gridPrice]) {
+                        d3.select(this)
+                            .attr('fill', `rgba(131, 110, 249, ${baseOpacity})`)
+                            .attr('stroke', `rgba(255, 153, 0, 1)`)
+                            .attr('filter', 'url(#glow-orange)');
+                    } else {
+                        d3.select(this)
+                            .attr('filter', 'none')
+                            .attr('fill', `rgba(131, 110, 249, ${baseOpacity})`)
+                            .attr('stroke', `rgba(131, 110, 249, ${strokeOpacity})`);
+                    }
                 }
 
                 if (betText.empty() && betMultiplier > 0) {
@@ -954,13 +962,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         if (shouldBlock) return;
 
         if (!isInitialized || !containerRef.current || configRef.current?.disabled || !chartGroupRef.current) return;
-        let stop = false;
-        let currentY = translationRef.current?.y ?? 0;
-
 
         const animate = () => {
-            if (stop) return;
-            if (isDraggingRef.current || (Date.now() - dragEndTimeRef.current < 500)) return;
             const container = containerRef.current;
             if (!container) return;
             const viewportWidth = container.getBoundingClientRect().width;
@@ -978,11 +981,11 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             const pointY = yScale(lastPrice);
 
             const previousY = translationRef.current?.y ?? 0;
-
+            const rectY = pointY + previousY;
             if (isScrollRef.current) {
                 updateTranslation({ x: translationX, y: previousY });
             } else {
-                const rectY = pointY + previousY;
+                
                 if (rectY > viewportHeight && rectY < viewportHeight) {
                     const minY = Math.min(0, -(configRef.current?.plotHeight - viewportHeight));
                     const finalY = Math.max(minY, Math.min(0, previousY));
@@ -1000,7 +1003,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             requestAnimationFrame(animate);
         };
         animate();
-        return () => { stop = true; };
     }, [isInitialized, containerSize]);
 
 
@@ -1020,6 +1022,19 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         top: 0,
                     }}
                 >
+                    <defs>
+                        <filter id="glow-orange" x="-50%" y="-50%" width="200%" height="200%">
+                            <feGaussianBlur stdDeviation="4" result="outerBlur"/>
+                            <feMorphology operator="erode" radius="1.5" in="SourceGraphic" result="eroded"/>
+                            <feGaussianBlur stdDeviation="2.5" in="eroded" result="innerBlur"/>
+                            <feComposite in="innerBlur" in2="SourceAlpha" operator="in" result="innerGlow"/>
+                            <feMerge>
+                                <feMergeNode in="outerBlur"/>
+                                <feMergeNode in="innerGlow"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
                     <g
                         ref={chartGroupRef}
                         style={{ pointerEvents: 'all' }}

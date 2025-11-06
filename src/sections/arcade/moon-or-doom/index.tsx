@@ -32,7 +32,7 @@ export default function MoonOrDoom() {
         gameBalance: gameBalance || 0,
     });
 
-    const { list, betList, winObj, disconnect, animationNumbers } = usePriceAndBets()
+    const { list, betList, winObj, disconnect, animationNumbers, allTimePrice } = usePriceAndBets()
     const [walletModalOpen, setWalletModalOpen] = useState(false);
     const [historyModalOpen, setHistoryModalOpen] = useState(false);
     const [rulesModalOpen, setRulesModalOpen] = useState(false);
@@ -79,7 +79,16 @@ export default function MoonOrDoom() {
                     </div>
                 </div>
                 <div className="mt-[10px] h-[calc(100%-40px)]">
-                    <Chart list={list} betList={betList} handleBet={handleBet} winObj={winObj} betLoading={betLoading} bet={bet} userBet={userBet} />
+                    <Chart
+                        list={list}
+                        betList={betList}
+                        handleBet={handleBet}
+                        winObj={winObj}
+                        betLoading={betLoading}
+                        bet={bet}
+                        userBet={userBet}
+                        allTimePrice={allTimePrice}
+                    />
                 </div>
             </div>
         </div>
