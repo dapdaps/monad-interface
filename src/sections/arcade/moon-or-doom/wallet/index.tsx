@@ -85,8 +85,8 @@ export default function WalletModal({
         >
             <div className="relative w-[520px]">
                 <div className="">
-                    <div className="flex items-center justify-center absolute top-[-120px] left-0 w-full">
-                        <img src="/images/moon-or-doom/balance-header.png" alt="moon-or-doom" className="h-[180px]" />
+                    <div className="flex items-center justify-center absolute top-[-40px] left-0 w-full">
+                        <img src="/images/moon-or-doom/slogan-new.png" alt="moon-or-doom" className="w-[215px]" />
                     </div>
                     <div className="mt-[14px] flex items-center justify-center gap-[80px] pt-[60px]">
                         <button

@@ -107,6 +107,7 @@ export default function MoonOrDoom() {
             open={walletModalOpen}
             onSuccess={() => {
                 refreshUserInfo?.();
+                setWalletModalOpen(false);
             }}
             onClose={() => setWalletModalOpen(false)} />
 
