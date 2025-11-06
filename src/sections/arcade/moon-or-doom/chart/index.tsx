@@ -893,15 +893,11 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 }
 
                 if (!betNumber.empty() && isPast) {
-                    const now = dayjs();
+                    const now = dayjs().subtract(5, 'second');
                     if (now.isAfter(fullGridTime)) {
                         betText.style('opacity', 0.5).style('fill', '#000');
                         betNumber.style('opacity', 0.5);
                         d3.select(this).style('opacity', 0.5).style('fill', '#727D97');
-                    } else {
-                        // betText.style('opacity', 0.5).style('fill', '#000');
-                        // betNumber.style('opacity', 0.5);
-                        // d3.select(this).style('opacity', 0.5).style('fill', '#727D97');
                     }
 
                     if (winObjRef.current?.[key]) {

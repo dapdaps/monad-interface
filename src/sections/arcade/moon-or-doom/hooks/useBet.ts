@@ -11,6 +11,7 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
     const [insufficientBalance, setInsufficientBalance] = useState<boolean>(false);
     const gameBalanceRef = useRef<number>(gameBalance);
     const userBetObjRef = useRef<any>({});
+    const betRef = useRef<number>(bet);
 
     const { success, fail } = useToast();
     const { userInfo } = useUser();
@@ -18,6 +19,10 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
     useEffect(() => {
         gameBalanceRef.current = gameBalance;
     }, [gameBalance]);
+
+    useEffect(() => {
+        betRef.current = bet;
+    }, [bet]);
     
     const handleBet = useCallback(async ({
         minPrice,
@@ -50,7 +55,7 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
         try {
             setBetLoading(true)
             const res = await post('/game/euphoria/order', {
-                "bet_amount": bet.toString(),
+                "bet_amount": betRef.current.toString(),
                 "min_price": minPrice,
                 "multiplier": multiplier,
                 "start_time": startTime
@@ -62,7 +67,7 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
                     userBetObjRef.current = {
                         ...prev,
                         [key]: {
-                            betAmount: bet.toString(),
+                            betAmount: betRef.current.toString(),
                             minPrice,
                             multiplier,
                             startTime
@@ -79,11 +84,6 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
             setBetLoading(false);
         }
     }, [bet]);
-
-    
-
-   
-
 
     return {
         bet,
