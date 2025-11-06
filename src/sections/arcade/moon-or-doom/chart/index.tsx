@@ -31,9 +31,10 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     const betRef = useRef<any>(null);
     const userBetRef = useRef<any>(null);
     const winObjRef = useRef<any>({});
+    const isScrollRef = useRef(false);
 
-    const [gridNumber, setGridNumber] = useState(13);
- 
+    const [gridNumber, setGridNumber] = useState(16);
+
     const gridCellSize = useMemo(() => {
         const chartGroup = d3.select(chartGroupRef.current);
         const futureGrid = chartGroup.select('.future-grid');
@@ -48,18 +49,31 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     const handleWheel = useCallback((event: WheelEvent) => {
         event.preventDefault();
         const delta = event.deltaY > 0 ? 1 : -1;
-        const newGridNumber = Math.max(5, Math.min(30, gridNumber + delta));
+        // const newGridNumber = Math.max(5, Math.min(30, gridNumber + delta));
 
-        if (newGridNumber < 13) {
-            return;
-        }
+        // if (newGridNumber < 16) {
+        //     return;
+        // }
 
-        if (16 * containerSize.width / newGridNumber <= containerSize.height) {
-            return;
-        }
+        // if (16 * containerSize.width / newGridNumber <= containerSize.height) {
+        //     return;
+        // }
 
-        setGridNumber(newGridNumber);
-    }, [gridNumber, containerSize]);
+        // setGridNumber(newGridNumber);
+        isScrollRef.current = true;
+
+        const newY = (translationRef.current?.y ?? 0) + delta * gridCellSize;
+
+        const minY = Math.min(0, -(configRef.current?.plotHeight - configRef.current?.viewportHeight));
+        const finalY = Math.max(minY, Math.min(0, newY));
+
+        updateTranslation({
+            x: translationRef.current?.x ?? 0,
+            y: finalY,
+        })
+
+
+    }, [gridNumber, gridCellSize]);
 
     const { run: debouncedHandleWheel } = useDebounceFn(handleWheel, {
         wait: 100,
@@ -76,7 +90,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         };
     }, [debouncedHandleWheel]);
 
-    
+
 
     useEffect(() => {
         userBetRef.current = userBet;
@@ -163,7 +177,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const svgWidth = plotWidth;
         const svgHeight = plotHeight;
 
-        const lastPrice = list.length > 0 ? Number(list[list.length - 1].price) : 0;    
+        const lastPrice = list.length > 0 ? Number(list[list.length - 1].price) : 0;
         let priceMin = 0;
         let priceMax = 0;
         if (configRef.current && lastPrice > configRef.current.priceMin && lastPrice < configRef.current.priceMax) {
@@ -442,7 +456,11 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     useEffect(() => {
         if (!chartGroupRef.current || !translation || configRef.current?.disabled) return;
         const chartGroup = d3.select(chartGroupRef.current);
-        chartGroup.attr('transform', `translate(${translation.x}, ${translation.y})`);
+        chartGroup
+            .transition()
+            .duration(300)
+            .ease(d3.easeCubicOut)
+            .attr('transform', `translate(${translation.x}, ${translation.y})`);
     }, [translation]);
 
     useThrottleEffect(() => {
@@ -524,7 +542,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             .attr('fill', '#ffffff')
             .attr('font-size', '12px')
             .attr('text-anchor', 'start')
-            .text(d => d.price.toFixed(2));
+            .text(d => d.price.toFixed(1));
 
     }, [translation, containerSize], {
         wait: 50,
@@ -669,7 +687,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     .attr('font-weight', '500')
                     .attr('text-anchor', 'middle')
                     .attr('dominant-baseline', 'middle');
-                
+
                 if (prevLabelInfo) {
                     labelGroup.attr('transform', `translate(${prevLabelInfo.x}, ${prevLabelInfo.y})`);
                 } else {
@@ -682,11 +700,11 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 .duration(isNewLabelPoint ? 500 : 400)
                 .ease(d3.easeCubicOut)
                 .attr('transform', `translate(${pointX + labelOffsetX}, ${pointY})`);
-            
-            previousLabelPositionRef.current = { 
-                x: pointX + labelOffsetX, 
-                y: pointY, 
-                t: dayjs(lastPoint.time).valueOf() 
+
+            previousLabelPositionRef.current = {
+                x: pointX + labelOffsetX,
+                y: pointY,
+                t: dayjs(lastPoint.time).valueOf()
             };
 
             const labelText = labelGroup.select('.price-label-text')
@@ -838,7 +856,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         .attr('stroke', `rgba(131, 110, 249, ${strokeOpacity})`);
                 }
 
-                if (betText.empty() && betMultiplier > 0) { 
+                if (betText.empty() && betMultiplier > 0) {
                     const padding = 8;
                     betText = chartGroup.select('.future-grid').append<SVGTextElement>('text')
                         .attr('class', className + ' bet-text')
@@ -849,7 +867,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         .attr('font-weight', '500')
                         .attr('text-anchor', 'end')
                 } else {
-                    
+
                     // const padding = 8;
                     // betText = chartGroup.select('.future-grid').append<SVGTextElement>('text')
                     //     .attr('class', className + ' bet-text')
@@ -969,22 +987,25 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             const pointY = yScale(lastPrice);
 
             const previousY = translationRef.current?.y ?? 0;
-            const rectY = pointY + previousY;
-            if (rectY > 0 && rectY < viewportHeight) {
-                const minY = Math.min(0, -(configRef.current?.plotHeight - viewportHeight));
-                const finalY = Math.max(minY, Math.min(0, previousY));
 
-                updateTranslation({ x: translationX, y: finalY });
+            if (isScrollRef.current) {
+                updateTranslation({ x: translationX, y: previousY });
             } else {
-                const centerY = viewportHeight / 2;
-                const initialY = centerY - pointY;
-                const minY = Math.min(0, -(configRef.current?.plotHeight - viewportHeight));
-                const finalY = Math.max(minY, Math.min(0, initialY));
-    
-                updateTranslation({ x: translationX, y: finalY });
+                const rectY = pointY + previousY;
+                if (rectY > viewportHeight && rectY < viewportHeight) {
+                    const minY = Math.min(0, -(configRef.current?.plotHeight - viewportHeight));
+                    const finalY = Math.max(minY, Math.min(0, previousY));
+
+                    updateTranslation({ x: translationX, y: finalY });
+                } else {
+                    const centerY = viewportHeight / 2;
+                    const initialY = centerY - pointY;
+                    const minY = Math.min(0, -(configRef.current?.plotHeight - viewportHeight));
+                    const finalY = Math.max(minY, Math.min(0, initialY));
+                    updateTranslation({ x: translationX, y: finalY });
+                }
             }
-            
-            
+
             requestAnimationFrame(animate);
         };
         animate();

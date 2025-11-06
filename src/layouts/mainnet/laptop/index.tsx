@@ -16,11 +16,11 @@ const EXCLUDE_WALLET_INFO_PATHS = [
   /^\/arcade\/guess-who$/,
   /^\/arcade\/space-invaders$/,
   /^\/arcade\/lucky777$/,
-  /^\/arcade\/moon-or-doom$/,
+  /^\/arcade\/chart-voyager$/,
 ];
 
 const EXCLUDE_SIDEBAR_PATHS = [
-  /^\/arcade\/moon-or-doom$/,
+  /^\/arcade\/chart-voyager$/,
 ];
 
 const LaptopLayout = (props: any) => {
