@@ -23,7 +23,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     const isDraggingRef = useRef(false);
     const clickTimerRef = useRef<NodeJS.Timeout | null>(null);
     const lastPriceRef = useRef<number | null>(null);
-    const isAnimatingRef = useRef(false);
     const dragEndTimeRef = useRef<number>(Date.now());
     const previousPathLengthRef = useRef<number | null>(null);
     const previousPointRef = useRef<{ x: number; y: number; t: number } | null>(null);
@@ -54,8 +53,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         if (newGridNumber < 13) {
             return;
         }
-
-        console.log('newGridNumber', newGridNumber, 16 * containerSize.width / newGridNumber, containerSize.height);
 
         if (16 * containerSize.width / newGridNumber <= containerSize.height) {
             return;
@@ -372,13 +369,26 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             .on('mouseleave', function (event) {
                 const isPastRect = (this as any).__isPast__;
                 (rect.node() as any).__isHover__ = false;
+                const price = (this as any).__gridPrice__;
+                const gridTime = (this as any).__gridTime__;
+
+                const [hours, minutes, seconds] = gridTime.split(':').map(Number);
+                const fullGridTime = dayjs(configRef.current?.startTime)
+                    .hour(hours)
+                    .minute(minutes)
+                    .second(seconds)
+                    .millisecond(0);
+
                 if (isPastRect) return;
-                const elem = event.currentTarget as SVGRectElement;
-                const baseFill = 0.25;
-                const baseStroke = 0.4;
-                d3.select(elem)
-                    .attr('fill', `rgba(131, 110, 249, ${baseFill})`)
-                    .attr('stroke', `rgba(131, 110, 249, ${baseStroke})`);
+
+                if (betRef.current?.[fullGridTime.valueOf() + '-' + (price)]) {
+                    const elem = event.currentTarget as SVGRectElement;
+                    const baseFill = 0.25;
+                    const baseStroke = 0.4;
+                    d3.select(elem)
+                        .attr('fill', `rgba(131, 110, 249, ${baseFill})`)
+                        .attr('stroke', `rgba(131, 110, 249, ${baseStroke})`);
+                }
             });
 
         if (includeMousedown) {
