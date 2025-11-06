@@ -222,7 +222,7 @@ export default function HistoryModal({
                 </div>
 
                 {/* Content */}
-                <div className="py-[30px] max-h-[60vh] overflow-y-auto">
+                <div className="py-[30px] max-h-[60vh] min-h-[200px] overflow-y-auto">
                     {activeTab === "bid-records" && (
                         <BidRecordsTab
                             records={bidRecords}
@@ -325,7 +325,7 @@ function BidRecordsTab({
                                 <td className="py-3 px-2 text-[#A6A6DB]">{formatTime(record.time)}</td>
                                 <td className="py-3 px-2">
                                     {
-                                        record.result === 0 && <span>Pending</span>
+                                        record.result === 0 && <span className="text-[#836EF999]">Pending</span>
                                     }
                                     {
                                         record.result === 1 && <span className="text-[#9BD742]">Win</span>

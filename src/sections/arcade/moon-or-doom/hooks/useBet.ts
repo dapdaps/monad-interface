@@ -10,6 +10,7 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
     const [userBetObj, setUserBetObj] = useState<any>({});
     const [insufficientBalance, setInsufficientBalance] = useState<boolean>(false);
     const gameBalanceRef = useRef<number>(gameBalance);
+    const userBetObjRef = useRef<any>({});
 
     const { success, fail } = useToast();
     const { userInfo } = useUser();
@@ -17,6 +18,7 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
     useEffect(() => {
         gameBalanceRef.current = gameBalance;
     }, [gameBalance]);
+    
     const handleBet = async ({
         betAmount,
         minPrice,
@@ -37,6 +39,13 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
         if (betLoading) {
             return;
         }
+        const key = startTime + '-' + minPrice;
+
+
+        if (userBetObjRef.current[key]) {
+            fail({ title: 'You have already placed a bet on this time' });
+            return;
+        }
 
         try {
             setBetLoading(true)
@@ -50,15 +59,16 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
             if (res.code === 200) {
                 success({ title: 'Bet successful' });
                 setUserBetObj((prev: any) => {
-                    return {
+                    userBetObjRef.current = {
                         ...prev,
-                        [startTime + '-' + minPrice]: {
+                        [key]: {
                             betAmount,
                             minPrice,
                             multiplier,
                             startTime
                         }
                     }
+                    return userBetObjRef.current;
                 });
             } else {
                 fail({ title: 'Bet failed' });

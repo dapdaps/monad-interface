@@ -2,6 +2,7 @@ import Empty from '@/components/empty'
 import Loading from '@/components/loading'
 import useUser from '@/hooks/use-user'
 import { get } from '@/utils/http'
+import { formatLongText } from '@/utils/utils'
 import dayjs from 'dayjs'
 import { useEffect, useMemo, useState } from 'react'
 
@@ -41,16 +42,30 @@ function formatScore(value: number) {
 }
 
 function MyEntryRow({ entry }: { entry: LeaderboardEntry }) {
+    const { userInfo } = useUser()
+
+    const rank = useMemo(() => {
+        return entry ? entry.rank : '-'
+    }, [entry])
+
+    const address = useMemo(() => {
+        return entry ? formatLongText(entry.address, 5, 5) : formatLongText(userInfo?.address, 5, 5)
+    }, [entry, userInfo])
+
+    const profit = useMemo(() => {
+        return entry ? entry.profit : '-'
+    }, [entry])
+
     return (
         <div className="absolute left-0 right-0 bottom-0">
             <div className="rounded-[8px] bg-[#242230] backdrop-blur">
                 <div className="flex items-center h-[56px] px-3 gap-3">
-                    <div className="w-[24px] text-center text-[#99FF4D] font-bold text-[14px]">{entry.rank}</div>
+                    <div className="w-[24px] text-center text-[#99FF4D] font-bold text-[14px]">{rank}</div>
                     <div className="w-[32px] h-[32px] rounded-full bg-white/10 overflow-hidden flex items-center justify-center text-[12px]">
                         <span className="opacity-80">🙂</span>
                     </div>
-                    <div className="flex-1 truncate text-[13px]">{entry.address.slice(0, 5)}...{entry.address.slice(-5)}</div>
-                    <div className="font-mono tabular-nums text-[15px]">{formatScore(entry.profit)}</div>
+                    <div className="flex-1 truncate text-[13px]">{address}</div>
+                    <div className="font-mono tabular-nums text-[15px]">{profit}</div>
                 </div>
             </div>
         </div>
@@ -98,7 +113,7 @@ export default function Leaderboard(props: LeaderboardProps) {
 
             <div className="mt-2">
                 <div className="overflow-hidden text-[14px] mb-[72px]">
-                    <div className="pr-1 h-[600px] overflow-y-auto">
+                    <div className="pr-1 max-h-[600px] min-h-[200px] overflow-y-auto">
                         {entries.length > 0 ? entries.map((item) => (
                             <div
                                 key={`${item.rank}-${item.address}`}
@@ -113,20 +128,19 @@ export default function Leaderboard(props: LeaderboardProps) {
                             </div>
                         )) : (
                             loading ? (
-                                <div className="flex items-center justify-center h-full pt-[100px]">
+                                <div className="flex items-center justify-center h-full pt-[50px]">
                                     <Loading />
                                 </div>
                             ) : (
-                                <div className="flex items-center justify-center h-full pt-[100px]">
+                                <div className="flex items-center justify-center h-full pt-[50px]">
                                     <Empty desc="No data yet..." />
                                 </div>
                             )
                         )}
                     </div>
                 </div>
-
             </div>
-            {myEntry ? (<MyEntryRow entry={myEntry} />) : null}
+            <MyEntryRow entry={myEntry} />
         </div>
     )
 }

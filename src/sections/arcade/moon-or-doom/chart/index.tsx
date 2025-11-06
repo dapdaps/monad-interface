@@ -27,6 +27,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     const dragEndTimeRef = useRef<number>(Date.now());
     const previousPathLengthRef = useRef<number | null>(null);
     const previousPointRef = useRef<{ x: number; y: number; t: number } | null>(null);
+    const previousLabelPositionRef = useRef<{ x: number; y: number; t: number } | null>(null);
     const configRef = useRef<any>(null);
     const betRef = useRef<any>(null);
     const userBetRef = useRef<any>(null);
@@ -516,7 +517,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             .text(d => d.price.toFixed(2));
 
     }, [translation, containerSize], {
-        wait: 100,
+        wait: 50,
     });
 
     useThrottleEffect(() => {
@@ -634,6 +635,13 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             const labelOffsetX = 24;
 
             let labelGroup = pointGroup.select<SVGGElement>('g.price-label');
+            const prevLabelInfo = previousLabelPositionRef.current;
+            const isNewLabelPoint = (() => {
+                const t = dayjs(lastPoint.time).valueOf();
+                const prevT = prevLabelInfo?.t ?? null;
+                return prevT === null || t !== prevT;
+            })();
+
             if (labelGroup.empty()) {
                 labelGroup = pointGroup.append<SVGGElement>('g')
                     .attr('class', 'price-label');
@@ -651,9 +659,25 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     .attr('font-weight', '500')
                     .attr('text-anchor', 'middle')
                     .attr('dominant-baseline', 'middle');
+                
+                if (prevLabelInfo) {
+                    labelGroup.attr('transform', `translate(${prevLabelInfo.x}, ${prevLabelInfo.y})`);
+                } else {
+                    labelGroup.attr('transform', `translate(${pointX + labelOffsetX}, ${pointY})`);
+                }
             }
 
-            labelGroup.attr('transform', `translate(${pointX + labelOffsetX}, ${pointY})`);
+            labelGroup
+                .transition()
+                .duration(isNewLabelPoint ? 500 : 400)
+                .ease(d3.easeCubicOut)
+                .attr('transform', `translate(${pointX + labelOffsetX}, ${pointY})`);
+            
+            previousLabelPositionRef.current = { 
+                x: pointX + labelOffsetX, 
+                y: pointY, 
+                t: dayjs(lastPoint.time).valueOf() 
+            };
 
             const labelText = labelGroup.select('.price-label-text')
                 .text(priceText);

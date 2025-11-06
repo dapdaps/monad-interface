@@ -14,6 +14,7 @@ import InsufficientBalanceModal from "./insufficient-balance-modal";
 import NumberUpAnimation from "./number-up-animation";
 import WalletModal from "./wallet";
 import HistoryModal from "./history";
+import RulesModal from "./rule";
 
 
 export default function MoonOrDoom() {
@@ -34,6 +35,7 @@ export default function MoonOrDoom() {
     const { list, betList, winObj, disconnect, animationNumbers } = usePriceAndBets()
     const [walletModalOpen, setWalletModalOpen] = useState(false);
     const [historyModalOpen, setHistoryModalOpen] = useState(false);
+    const [rulesModalOpen, setRulesModalOpen] = useState(false);
 
     return <div className="w-full h-full bg-black pt-[100px] pb-[90px] overflow-hidden px-[30px] text-white bg-[url('/images/moon-or-doom/moon-or-doom-bg.png')] bg-no-repeat bg-[length:100%_100%] bg-center">
         <div className="w-full h-full flex justify-center items-center gap-[10px]">
@@ -43,14 +45,14 @@ export default function MoonOrDoom() {
                 </div>
 
                 <div className="relative">
-                    <div className="absolute top-[-100px] pointer-events-none">
-                        <img src="/images/moon-or-doom/slogan.png" alt="moon-or-doom-logo" className="h-[134px]" />
+                    <div className="absolute top-[-100px] left-0 right-0 pointer-events-none">
+                        <img src="/images/moon-or-doom/slogan-new.png" alt="moon-or-doom-logo" className="h-[81px] mx-auto" />
                     </div>
                     <div className="flex justify-end mb-[10px]">
                         <DoomButton
                             label="Rules"
                             onClick={() => {
-                                console.log('Rules')
+                                setRulesModalOpen(true);
                             }}
                         />
                         <DoomButton
@@ -120,6 +122,11 @@ export default function MoonOrDoom() {
                 refreshUserInfo?.();
             }}
             onClose={() => setHistoryModalOpen(false)} />
+
+        <RulesModal
+            open={rulesModalOpen}
+            onClose={() => setRulesModalOpen(false)}
+        />
 
         <AnimatePresence>
             {animationNumbers.length > 0 && animationNumbers.map((item) => (
