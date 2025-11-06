@@ -363,10 +363,11 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
 
                 d3.select(this).attr('data-key', gridTime + '-' + (price));
                 const betMultiplier = betRef.current?.[fullGridTime.valueOf() + '-' + (price)];
+                const userBet = userBetRef.current?.[fullGridTime.valueOf() + '-' + (price)];
 
-                if (!isDraggingRef.current && !isPastRect && betMultiplier > 0) {
+                if (!isDraggingRef.current && !isPastRect && betMultiplier > 0 && !userBet) {
                     const elem = event.currentTarget as SVGRectElement;
-                    if (betMultiplier) {
+                    if (betMultiplier && !userBet) {
                         d3.select(elem)
                             .attr('fill', `#000000`)
                             .attr('stroke', `#31FFA6`);
@@ -423,7 +424,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
 
                 if (!isPastRect && betMultiplier > 0) {
                     handleBet({
-                        betAmount: bet.toString(),
                         minPrice: (price).toString(),
                         multiplier: betMultiplier.toString(),
                         startTime: fullGridTime.valueOf()
@@ -893,12 +893,19 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 }
 
                 if (!betNumber.empty() && isPast) {
-                    betText.style('opacity', 0.5);
-                    betNumber.style('opacity', 0.5);
-                    betText.style('fill', '#000');
-                    d3.select(this).style('opacity', 0.5).style('fill', '#727D97');
+                    const now = dayjs();
+                    if (now.isAfter(fullGridTime)) {
+                        betText.style('opacity', 0.5).style('fill', '#000');
+                        betNumber.style('opacity', 0.5);
+                        d3.select(this).style('opacity', 0.5).style('fill', '#727D97');
+                    } else {
+                        // betText.style('opacity', 0.5).style('fill', '#000');
+                        // betNumber.style('opacity', 0.5);
+                        // d3.select(this).style('opacity', 0.5).style('fill', '#727D97');
+                    }
+
                     if (winObjRef.current?.[key]) {
-                        d3.select(this).style('opacity', 0.5).style('fill', '#31FFA6');
+                        d3.select(this).style('fill', '#31FFA6');
                     }
                 }
 
