@@ -73,7 +73,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         })
 
 
-    }, [gridNumber, gridCellSize]);
+    }, [gridCellSize]);
 
     const { run: debouncedHandleWheel } = useDebounceFn(handleWheel, {
         wait: 100,
@@ -89,7 +89,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             container.removeEventListener('wheel', debouncedHandleWheel);
         };
     }, [debouncedHandleWheel]);
-
 
 
     useEffect(() => {
@@ -208,7 +207,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             gridCellSize,
             disabled: list.length === 0,
         };
-    }, [containerSize, startTime, endTime, list, chartContainerHeight, gridNumber, gridCellSize]);
+    }, [containerSize, startTime, endTime, list, chartContainerHeight, gridCellSize]);
 
     const initialHistoricalData = useMemo(() => {
         const data: PricePoint[] = [];
@@ -456,11 +455,11 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     useEffect(() => {
         if (!chartGroupRef.current || !translation || configRef.current?.disabled) return;
         const chartGroup = d3.select(chartGroupRef.current);
-        chartGroup
-            .transition()
-            .duration(300)
-            .ease(d3.easeCubicOut)
-            .attr('transform', `translate(${translation.x}, ${translation.y})`);
+        chartGroup.attr('transform', `translate(${translation.x}, ${translation.y})`)
+            // .transition()
+            // .duration(300)
+            // .ease(d3.easeCubicOut)
+            // .attr('transform', `translate(${translation.x}, ${translation.y})`);
     }, [translation]);
 
     useThrottleEffect(() => {
@@ -517,7 +516,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             })
             .attr('y', 10)
             .attr('fill', '#ffffff')
-            .attr('font-size', '12px')
+            .attr('font-size', '10px')
             .attr('text-anchor', 'middle')
             .text(d => dayjs(d.time).format('HH:mm:ss'));
 
@@ -540,7 +539,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 return chartY + 5;
             })
             .attr('fill', '#ffffff')
-            .attr('font-size', '12px')
+            .attr('font-size', '10px')
             .attr('text-anchor', 'start')
             .text(d => d.price.toFixed(1));
 
