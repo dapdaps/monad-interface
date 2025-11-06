@@ -971,10 +971,10 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             const previousY = translationRef.current?.y ?? 0;
             const rectY = pointY + previousY;
             if (rectY > 0 && rectY < viewportHeight) {
-                const minY = Math.min(0, previousY);
-                const finalY = Math.max(minY, Math.min(0, minY));
+                const minY = Math.min(0, -(configRef.current?.plotHeight - viewportHeight));
+                const finalY = Math.max(minY, Math.min(0, previousY));
 
-                updateTranslation({ x: translationX, y: previousY });
+                updateTranslation({ x: translationX, y: finalY });
             } else {
                 const centerY = viewportHeight / 2;
                 const initialY = centerY - pointY;
