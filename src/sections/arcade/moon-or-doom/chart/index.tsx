@@ -887,7 +887,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         .attr('text-anchor', 'end')
                 } 
 
-                if (betMultiplier > 0 && !betText.empty() && (!isPast || userBetRef.current?.[key])) {
+                if (betMultiplier > 0 && !betText.empty() && ((isPast && userBetRef.current?.[key]) || !isPast) ) {
                     betText.text(betMultiplier + 'x');
                 }
 
