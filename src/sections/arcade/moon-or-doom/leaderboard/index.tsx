@@ -38,7 +38,7 @@ function useCountdown(endAt?: number) {
 }
 
 function formatScore(value: number) {
-    return value
+    return value > 0 ? '+' + value : value
 }
 
 function MyEntryRow({ entry }: { entry: LeaderboardEntry }) {

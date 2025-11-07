@@ -536,6 +536,9 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             .attr('fill', '#ffffff')
             .attr('font-size', '10px')
             .attr('text-anchor', 'start')
+            .attr('dominant-baseline', 'auto')
+            // .attr('dy', (d, i) => i ===  ? '1.2em' : '0em')
+            // .attr('dy', '0.7em') 
             .text(d => numberFormatter(d.price, 1, true));
 
     }, [translation, containerSize], {
@@ -847,12 +850,13 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 } else {
                     if (allTimePrice[fullGridTime.valueOf() + '-' + gridPrice]) {
                         d3.select(this)
-                            .attr('fill', `rgba(131, 110, 249, ${baseOpacity})`)
-                            .attr('stroke', `rgba(255, 153, 0, 1)`)
-                            .attr('filter', 'url(#glow-orange)');
+                            .attr('fill', `rgba(131, 110, 249, 0.15)`)
+                            // .attr('stroke', `rgba(255, 153, 0, 1)`)
+                            .attr('stroke', `rgba(131, 110, 249, ${strokeOpacity})`)
+                            // .attr('filter', 'url(#glow-orange)');
                     } else {
                         d3.select(this)
-                            .attr('filter', 'none')
+                            // .attr('filter', 'none')
                             .attr('fill', `rgba(131, 110, 249, ${baseOpacity})`)
                             .attr('stroke', `rgba(131, 110, 249, ${strokeOpacity})`);
                     }
@@ -1062,7 +1066,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     width: '80px',
                     height: 'calc(100% - 10px)',
                     pointerEvents: 'none',
-                    overflow: 'hidden'
+                    // overflow: 'hidden'
                 }}
             />
         </div>
