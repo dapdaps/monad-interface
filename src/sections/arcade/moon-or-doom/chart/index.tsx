@@ -53,11 +53,17 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
 
     const handleWheel = useCallback((event: WheelEvent) => {
         event.preventDefault();
-        const delta = event.deltaY > 0 ? 1 : -1;
+        event.stopPropagation();
+        
+        const isTouchpad = Math.abs(event.deltaY) < 50;
+        
+        const scrollAmount = isTouchpad 
+            ? event.deltaY * 0.5  
+            : (event.deltaY > 0 ? 1 : -1) * gridCellSize;  
        
         isScrollRef.current = true;
 
-        const newY = (translationRef.current?.y ?? 0) + delta * gridCellSize;
+        const newY = (translationRef.current?.y ?? 0) - scrollAmount;
 
         const minY = Math.min(0, -(configRef.current?.plotHeight - configRef.current?.viewportHeight));
         const finalY = Math.max(minY, Math.min(0, newY));
@@ -66,24 +72,25 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             x: translationRef.current?.x ?? 0,
             y: finalY,
         })
-
-
     }, [gridCellSize]);
 
-    const { run: debouncedHandleWheel } = useDebounceFn(handleWheel, {
-        wait: 100,
-    });
+    const directHandleWheel = useCallback((event: WheelEvent) => {
+        handleWheel(event);
+    }, [handleWheel]);
 
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
 
-        container.addEventListener('wheel', debouncedHandleWheel, { passive: false });
+        container.addEventListener('wheel', directHandleWheel, { 
+            passive: false,
+            capture: true 
+        });
 
         return () => {
-            container.removeEventListener('wheel', debouncedHandleWheel);
+            container.removeEventListener('wheel', directHandleWheel, { capture: true });
         };
-    }, [debouncedHandleWheel]);
+    }, [directHandleWheel]);
 
 
     useEffect(() => {
