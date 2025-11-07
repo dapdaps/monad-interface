@@ -44,23 +44,17 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             chartGroup.select('.future-grid').selectAll('.' + 'bet-text').remove();
             chartGroup.select('.future-grid').selectAll('.' + 'bet-number').remove();
         }
-        return containerSize.width / gridNumber;
+
+        let _gridCellSize = containerSize.width / gridNumber;
+        
+
+        return Math.max(60, _gridCellSize);
     }, [containerSize, gridNumber]);
 
     const handleWheel = useCallback((event: WheelEvent) => {
         event.preventDefault();
         const delta = event.deltaY > 0 ? 1 : -1;
-        // const newGridNumber = Math.max(5, Math.min(30, gridNumber + delta));
-
-        // if (newGridNumber < 16) {
-        //     return;
-        // }
-
-        // if (16 * containerSize.width / newGridNumber <= containerSize.height) {
-        //     return;
-        // }
-
-        // setGridNumber(newGridNumber);
+       
         isScrollRef.current = true;
 
         const newY = (translationRef.current?.y ?? 0) + delta * gridCellSize;
@@ -964,6 +958,10 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         if (!isInitialized || !containerRef.current || configRef.current?.disabled || !chartGroupRef.current) return;
 
         const animate = () => {
+            if (window) {
+
+            }
+
             const container = containerRef.current;
             if (!container) return;
             const viewportWidth = container.getBoundingClientRect().width;
