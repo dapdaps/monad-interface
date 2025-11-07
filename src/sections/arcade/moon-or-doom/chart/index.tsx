@@ -181,7 +181,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const lastPrice = list.length > 0 ? Number(list[list.length - 1].price) : 0;
         let priceMin = 0;
         let priceMax = 0;
-        if (configRef.current && lastPrice > configRef.current.priceMin && lastPrice < configRef.current.priceMax) {
+        if (configRef.current && lastPrice > configRef.current.priceMin + PRICE_STEP && lastPrice < configRef.current.priceMax - PRICE_STEP) {
             priceMin = configRef.current.priceMin;
             priceMax = configRef.current.priceMax;
         } else {

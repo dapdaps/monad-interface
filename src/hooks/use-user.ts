@@ -42,6 +42,18 @@ export function useUser() {
   }, []);
 
   const getAccessToken = async (from?: string) => {
+    if (isSigning) return;
+
+    const tokens = JSON.parse(window.sessionStorage.getItem('_user') || "{}");
+    if (tokens.state?.accessToken?.access_token) {
+      isSigning = false;
+      return;
+    }
+
+    isSigning = true;
+
+    console.log('getAccessToken from: %s', from);
+
     setUserInfo({
       accessTokenLoading: true,
       accessToken: {
@@ -64,6 +76,8 @@ export function useUser() {
         },
         accessTokenLoading: false,
       });
+
+      isSigning = false;
       return;
     }
 
@@ -94,25 +108,44 @@ export function useUser() {
     //   }
     // }
 
-    console.log("%creload access token from: %s", "background:#f00;color:#fff;", from);
 
-    // const msg = `By signing this message, you confirm that you are the owner of ${currentAddress.toLowerCase()}`
+    if (!address) {
+      isSigning = false;
+      return;
+    }
 
-    // const signedMessage = await signMessage({
-    //   message: msg,
-    // });
+    const msg = `By signing this message, you confirm that you are the owner of ${currentAddress?.toLowerCase()}`
+
+    return new Promise((resolve, reject) => {
+      signMessage({
+        message: msg,
+      }, {
+        onSuccess: async (signedMessage) => {
+          console.log('signedMessage:', signedMessage);
+          const res = await post('/login', {
+            address: currentAddress,
+            wallet: _walletName.toLowerCase(),
+            signatuer: signedMessage,
+          });
+          setUserInfo({
+            accessToken: res.data,
+            accessTokenLoading: false,
+          });
+          await getUserInfo();
+          isSigning = false;
+          resolve(null);
+        },
+        onError: (error) => {
+          console.log('error:', error);
+          isSigning = false;
+          reject(error);
+        },
+      });
+    })
 
     // console.log('signedMessage:', signedMessage);
 
-    const res = await post('/login', {
-      address: currentAddress,
-      wallet: _walletName.toLowerCase(),
-    });
-    setUserInfo({
-      accessToken: res.data,
-      accessTokenLoading: false,
-    });
-    await getUserInfo();
+    
   };
 
   const bindGameAddress = async (address: string, account: string) => {

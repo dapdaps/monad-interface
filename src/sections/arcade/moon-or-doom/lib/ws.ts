@@ -3,16 +3,41 @@ export interface WSConfig {
   protocols?: string | string[];
   address: string;
   onMessage?: (event: MessageEvent) => void;
+  heartbeatTimeout?: number;
+  reconnectDelay?: number;
+  maxReconnectAttempts?: number;
 }
 
 class WSClient {
   private ws: WebSocket | null = null;
   private onMessageCallback?: (event: MessageEvent) => void;
+  private config: WSConfig;
+  private heartbeatTimer: NodeJS.Timeout | null = null;
+  private reconnectTimer: NodeJS.Timeout | null = null;
+  private reconnectAttempts: number = 0;
+  private isManualClose: boolean = false;
+  private lastMessageTime: number = Date.now();
 
   constructor(config: WSConfig) {
-    this.ws = new WebSocket(config.url, config.protocols);
+    this.config = {
+      heartbeatTimeout: 30000,
+      reconnectDelay: 3000,
+      maxReconnectAttempts: 5,
+      ...config,
+    };
     this.onMessageCallback = config.onMessage;
-    this.setupEventHandlers(config.address);
+    this.connect();
+  }
+
+  private connect(): void {
+    try {
+      this.ws = new WebSocket(this.config.url, this.config.protocols);
+      this.setupEventHandlers(this.config.address);
+      this.startHeartbeat();
+    } catch (error) {
+      console.error('[WSClient] Failed to create WebSocket:', error);
+      this.handleReconnect();
+    }
   }
 
   private setupEventHandlers(address: string): void {
@@ -20,6 +45,8 @@ class WSClient {
 
     this.ws.onopen = () => {
       console.log('[WSClient] WebSocket connected');
+      this.reconnectAttempts = 0;
+      this.lastMessageTime = Date.now();
       
       const subscribeMsg = JSON.stringify({
         id: 1,
@@ -31,6 +58,11 @@ class WSClient {
 
     this.ws.onclose = () => {
       console.log('[WSClient] WebSocket disconnected');
+      this.stopHeartbeat();
+      
+      if (!this.isManualClose) {
+        this.handleReconnect();
+      }
     };
 
     this.ws.onerror = (error) => {
@@ -38,11 +70,65 @@ class WSClient {
     };
 
     this.ws.onmessage = (event: MessageEvent) => {
-    //   console.log('[WSClient] Received message:', event.data);
+      this.lastMessageTime = Date.now();
+      
+      //   console.log('[WSClient] Received message:', event.data);
       if (this.onMessageCallback) {
         this.onMessageCallback(event);
       }
     };
+  }
+
+  private startHeartbeat(): void {
+    this.stopHeartbeat();
+    
+    this.heartbeatTimer = setInterval(() => {
+      const now = Date.now();
+      const timeSinceLastMessage = now - this.lastMessageTime;
+      
+      if (timeSinceLastMessage > (this.config.heartbeatTimeout || 30000)) {
+        console.warn(`[WSClient] No message received for ${timeSinceLastMessage}ms, reconnecting...`);
+        this.reconnect();
+      }
+    }, 5000);
+  }
+
+  private stopHeartbeat(): void {
+    if (this.heartbeatTimer) {
+      clearInterval(this.heartbeatTimer);
+      this.heartbeatTimer = null;
+    }
+  }
+
+  private handleReconnect(): void {
+    if (this.reconnectTimer) {
+      return;
+    }
+
+    const maxAttempts = this.config.maxReconnectAttempts || 5;
+    if (this.reconnectAttempts >= maxAttempts) {
+      console.error(`[WSClient] Max reconnect attempts (${maxAttempts}) reached, giving up`);
+      return;
+    }
+
+    this.reconnectAttempts++;
+    const delay = this.config.reconnectDelay || 3000;
+    
+    console.log(`[WSClient] Attempting to reconnect (${this.reconnectAttempts}/${maxAttempts}) in ${delay}ms...`);
+    
+    this.reconnectTimer = setTimeout(() => {
+      this.reconnectTimer = null;
+      this.connect();
+    }, delay);
+  }
+
+  private reconnect(): void {
+    console.log('[WSClient] Triggering reconnect...');
+    if (this.ws) {
+      this.ws.close();
+      this.ws = null;
+    }
+    this.connect();
   }
 
   public send(data: string | ArrayBuffer | Blob): boolean {
@@ -70,6 +156,14 @@ class WSClient {
   }
 
   public close(): void {
+    this.isManualClose = true;
+    this.stopHeartbeat();
+    
+    if (this.reconnectTimer) {
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = null;
+    }
+    
     if (this.ws) {
       this.ws.close();
       this.ws = null;
