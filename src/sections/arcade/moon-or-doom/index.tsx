@@ -48,7 +48,7 @@ export default function MoonOrDoom() {
                     <div className="absolute top-[-100px] left-0 right-0 pointer-events-none">
                         <img src="/images/moon-or-doom/slogan-new.png" alt="moon-or-doom-logo" className="h-[81px] mx-auto" />
                     </div>
-                    <div className="flex justify-end mb-[10px]">
+                    <div className="flex justify-end mb-[10px] gap-[10px]">
                         <DoomButton
                             label="Rules"
                             onClick={() => {

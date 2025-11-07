@@ -102,8 +102,6 @@ export default function Leaderboard(props: LeaderboardProps) {
         }
     }, [userInfo])
 
-
-
     return (
         <div className="w-full relative text-white bg-[#24242480] rounded-[8px] overflow-hidden backdrop-blur-[20px]">
             <div className="flex items-center justify-between text-[18px] h-[60px] font-semibold tracking-wide px-3 select-none bg-[#24242480]">
@@ -113,7 +111,7 @@ export default function Leaderboard(props: LeaderboardProps) {
 
             <div className="mt-2">
                 <div className="overflow-hidden text-[14px] mb-[72px]">
-                    <div className="pr-1 h-[calc(100vh-650px)] overflow-y-auto">
+                    <div className="pr-1 h-[calc(100vh-600px)] overflow-y-auto">
                         {entries.length > 0 ? entries.map((item) => (
                             <div
                                 key={`${item.rank}-${item.address}`}
