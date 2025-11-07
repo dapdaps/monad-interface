@@ -1,18 +1,19 @@
 import { useUserStore } from '@/stores/user';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { get, post } from '@/utils/http';
-import { useAccount } from 'wagmi';
+import { useAccount, useSignMessage } from 'wagmi';
 import useToast from '@/hooks/use-toast';
 import { useWalletName } from '@/hooks/use-wallet-name';
 import { useConnectedWalletsStore } from '@/stores/useConnectedWalletsStore';
 import { usePathname } from 'next/navigation';
 import { useInterval } from 'ahooks';
 
+let isSigning = false;
 export function useUser() {
   const { address } = useAccount();
   const { name: walletName } = useWalletName();
   const toast = useToast();
-
+  const { signMessage } = useSignMessage();
   const accessToken = useUserStore((store: any) => store.accessToken?.access_token);
   const accessTokenLoading = useUserStore((store: any) => store.accessTokenLoading);
   const userInfo = useUserStore((store: any) => store.user);
@@ -94,6 +95,15 @@ export function useUser() {
     // }
 
     console.log("%creload access token from: %s", "background:#f00;color:#fff;", from);
+
+    // const msg = `By signing this message, you confirm that you are the owner of ${currentAddress.toLowerCase()}`
+
+    // const signedMessage = await signMessage({
+    //   message: msg,
+    // });
+
+    // console.log('signedMessage:', signedMessage);
+
     const res = await post('/login', {
       address: currentAddress,
       wallet: _walletName.toLowerCase(),
@@ -135,6 +145,31 @@ export function useUser() {
       getAccessToken("interval");
     }
   }, 1000 * 20)
+
+  // useEffect(() => {
+  //   (async () => {
+  //     if (!address || isSigning) return;
+  //     isSigning = true
+  //     const msg = `By signing this message, you confirm that you are the owner of ${address.toLowerCase()}`
+
+  //     signMessage({
+  //       message: msg,
+  //     }, {
+  //       onSuccess: (signedMessage) => {
+  //         console.log('signedMessage:', signedMessage);
+  //         isSigning = true;
+  //       },
+  //       onError: (error) => {
+  //         console.log('error:', error);
+  //         isSigning = true;
+  //       },
+  //       onSettled: () => {
+  //         isSigning = true;
+  //       },
+        
+  //     });
+  //   })();
+  // }, [address]);
 
   return {
     userInfo,

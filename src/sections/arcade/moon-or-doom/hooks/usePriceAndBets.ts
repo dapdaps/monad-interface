@@ -50,9 +50,9 @@ export default function usePriceAndBets() {
                         const prev5sTimestamp = data.timestamp - (data.timestamp % 5000);
                         const roundedPrice = Math.floor(data.price / 0.5) * 0.5;
                         allTimePriceRef.current[prev5sTimestamp + '-' + roundedPrice] = true;
-
-
-                        console.log('prev5sTimestamp:', allTimePriceRef);
+                        // allTimePriceRef.current = {
+                        //     [prev5sTimestamp + '-' + roundedPrice]: true,
+                        // }
 
                         return [
                             ...last50Items,

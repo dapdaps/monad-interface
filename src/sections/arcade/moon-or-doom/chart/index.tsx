@@ -985,8 +985,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             if (isScrollRef.current) {
                 updateTranslation({ x: translationX, y: previousY });
             } else {
-                
-                if (rectY > viewportHeight && rectY < viewportHeight) {
+                if (rectY > 0 && rectY < viewportHeight) {
                     const minY = Math.min(0, -(configRef.current?.plotHeight - viewportHeight));
                     const finalY = Math.max(minY, Math.min(0, previousY));
 
