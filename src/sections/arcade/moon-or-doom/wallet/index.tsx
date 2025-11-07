@@ -63,12 +63,12 @@ export default function WalletModal({
 
     useEffect(() => {
         try {
-            if (tab === 'recharge') {
-                setPercent(Number(new Big(Number(amount) / Number(tokenBalance)).toFixed(2)));
+            if (tab === 'recharge' && amount && tokenBalance) {
+                setPercent(new Big(amount).div(tokenBalance).toNumber());
             }
     
-            if (tab === 'withdraw') {
-                setPercent(Number(new Big(Number(amount) / Number(gameBalance)).toFixed(2)));
+            if (tab === 'withdraw' && amount && gameBalance) {
+                setPercent(new Big(amount).div(gameBalance).toNumber());
             }
         } catch (error) {
             console.error('handlePercent error', error);

@@ -1,12 +1,13 @@
 import { useUserStore } from '@/stores/user';
 import { useCallback, useEffect } from 'react';
 import { get, post } from '@/utils/http';
-import { useAccount, useSignMessage } from 'wagmi';
+import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
 import useToast from '@/hooks/use-toast';
 import { useWalletName } from '@/hooks/use-wallet-name';
 import { useConnectedWalletsStore } from '@/stores/useConnectedWalletsStore';
 import { usePathname } from 'next/navigation';
 import { useInterval } from 'ahooks';
+
 
 let isSigning = false;
 export function useUser() {
@@ -19,6 +20,7 @@ export function useUser() {
   const userInfo = useUserStore((store: any) => store.user);
   const userInfoLoading = useUserStore((store: any) => store.loading);
   const setUserInfo = useUserStore((store: any) => store.set);
+  const { disconnect } = useDisconnect();
 
   const { connectedWallets } = useConnectedWalletsStore();
 
@@ -125,7 +127,7 @@ export function useUser() {
           const res = await post('/login', {
             address: currentAddress,
             wallet: _walletName.toLowerCase(),
-            signatuer: signedMessage,
+            signature: signedMessage,
           });
           setUserInfo({
             accessToken: res.data,
@@ -137,6 +139,7 @@ export function useUser() {
         },
         onError: (error) => {
           console.log('error:', error);
+          disconnect();
           isSigning = false;
           reject(error);
         },
