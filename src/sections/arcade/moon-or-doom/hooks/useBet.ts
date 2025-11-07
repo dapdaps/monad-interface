@@ -61,7 +61,7 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
                 "start_time": startTime
             });
 
-            if (res.code === 200) {
+            if (res.code === 200 && res.data.success) {
                 success({ title: 'Bet successful' });
                 setUserBetObj((prev: any) => {
                     userBetObjRef.current = {
