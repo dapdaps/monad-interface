@@ -1,5 +1,6 @@
 import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover";
 import { useConnectWallet } from "@/hooks/use-connect-wallet";
+import { useUserStore } from "@/stores/user";
 import { numberFormatter } from "@/utils/number-formatter";
 import Big from "big.js";
 import clsx from "clsx";
@@ -41,6 +42,8 @@ const Account = (props: any) => {
     balance,
   } = useConnectWallet();
 
+  const setUserInfo = useUserStore((store: any) => store.set);
+
   return (
     <div className="flex h-full items-start justify-end gap-[10px]">
       {
@@ -65,7 +68,18 @@ const Account = (props: any) => {
                   name={name}
                   avatar={avatar}
                   balance={balance}
-                  onDisconnect={onDisconnect}
+                  onDisconnect={() => {
+                    onDisconnect();
+                    setUserInfo({
+                      user: {},
+                      accessToken: {
+                        access_token: '',
+                        refresh_access_token: '',
+                        token_type: 'bearer',
+                      },
+                      accessTokenLoading: false,
+                    });
+                  }}
                 />
               )}
             >

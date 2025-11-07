@@ -375,59 +375,62 @@ function RechargeTab({
     return (
         <div>
             {/* Deposit History */}
-            <div className="">
-                {loading ? (
-                    <div className="flex justify-center py-[50px]">
-                        <Loading />
-                    </div>
-                ) : depositList.length === 0 ? (
-                    <Empty />
-                ) : (
-                    <>
-                        <table className="w-full text-[14px]">
-                            <thead>
-                                <tr className="text-left text-[#727D97] font-[600] border-b border-[#34304B]">
-                                    <th className="py-2 px-2 pl-[30px]">Amount</th>
-                                    <th className="py-2 px-2">Time</th>
-                                    <th className="py-2 px-2 pr-[30px]">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {depositList.map((item: any, index: number) => (
-                                    <tr key={index} className="text-white">
-                                        <td className="py-2 px-2 pl-[30px]">{Number(item.amount || 0).toFixed(2)} MON</td>
-                                        <td className="py-2 px-2 ">{dayjs(item.created_at || item.time).format('YYYY-MM-DD HH:mm:ss')}</td>
-                                        <td className="py-2 px-2 pr-[30px]">
-                                            <span className={clsx(
-                                                "font-[600]",
-                                                item.status === 1 ? "text-[#31FFA6]" : "text-[#FF3B3B]"
-                                            )}>
-                                                {item.status === 1 ? 'Success' : 'Pending'}
-                                            </span>
+            <table className="w-full text-[14px]">
+                <thead>
+                    <tr className="text-left text-[#727D97] font-[600] border-b border-[#34304B]">
+                        <th className="py-2 px-2 pl-[30px]">Amount</th>
+                        <th className="py-2 px-2">Time</th>
+                        <th className="py-2 px-2 pr-[30px]">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {loading ? (
+                        <tr>
+                            <td colSpan={3} className="py-[50px] text-center">
+                                <Loading />
+                            </td>
+                        </tr>
+                    ) : depositList.length === 0 ? (
+                        <tr>
+                            <td colSpan={3} className="py-[50px]">
+                                <Empty />
+                            </td>
+                        </tr>
+                    ) : (
+                        depositList.map((item: any, index: number) => (
+                            <tr key={index} className="text-white">
+                                <td className="py-2 px-2 pl-[30px]">{Number(item.amount || 0).toFixed(2)} MON</td>
+                                <td className="py-2 px-2 ">{dayjs(item.created_at || item.time).format('YYYY-MM-DD HH:mm:ss')}</td>
+                                <td className="py-2 px-2 pr-[30px]">
+                                    <span className={clsx(
+                                        "font-[600]",
+                                        item.status === 1 ? "text-[#31FFA6]" : "text-[#FF3B3B]"
+                                    )}>
+                                        {item.status === 1 ? 'Success' : 'Pending'}
+                                    </span>
 
-                                            {
-                                                item.status === 1 && <a href={`https://testnet.monadexplorer.com/tx/${item.tx_hash}`} target="_blank" className="text-[#836EF9] ml-[10px] underline">Tx</a>
+                                    {
+                                        item.status === 1 && <a href={`https://testnet.monadexplorer.com/tx/${item.tx_hash}`} target="_blank" className="text-[#836EF9] ml-[10px] underline">Tx</a>
 
-                                            }
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        {pageTotal > 1 && (
-                            <div className="flex justify-end mt-[20px] pr-[30px]">
-                                <Pagination
-                                    page={page}
-                                    totalPage={pageTotal}
-                                    pageSize={PAGE_SIZE}
-                                    onPageChange={onPageChange}
-                                    canJump={false}
-                                />
-                            </div>
-                        )}
-                    </>
-                )}
-            </div>
+                                    }
+                                </td>
+                            </tr>
+                        ))
+                    )}
+                </tbody>
+            </table>
+
+            {pageTotal > 1 && (
+                <div className="flex justify-end mt-[20px] pr-[30px]">
+                    <Pagination
+                        page={page}
+                        totalPage={pageTotal}
+                        pageSize={PAGE_SIZE}
+                        onPageChange={onPageChange}
+                        canJump={false}
+                    />
+                </div>
+            )}
         </div>
     );
 }
@@ -442,58 +445,61 @@ function WithdrawTab({
 }: any) {
     return (
         <div>
-            <div className="">
-                {loading ? (
-                    <div className="flex justify-center py-[50px]">
-                        <Loading />
-                    </div>
-                ) : withdrawList.length === 0 ? (
-                    <Empty />
-                ) : (
-                    <>
-                        <table className="w-full text-[14px]">
-                            <thead>
-                                <tr className="text-left text-[#727D97] font-[600] border-b border-[#34304B]">
-                                    <th className="py-2 px-2 pl-[30px]">Amount</th>
-                                    <th className="py-2 px-2">Time</th>
-                                    <th className="py-2 px-2 pr-[30px]">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {withdrawList.map((item: any, index: number) => (
-                                    <tr key={index} className="text-white">
-                                        <td className="py-2 px-2 pl-[30px]">{Number(item.amount || 0).toFixed(2)} MON</td>
-                                        <td className="py-2 px-2 ">{dayjs(item.created_at || item.time).format('YYYY-MM-DD HH:mm:ss')}</td>
-                                        <td className="py-2 px-2 pr-[30px]">
-                                            <span className={clsx(
-                                                "font-[600]",
-                                                item.status === 1 ? "text-[#31FFA6]" : "text-[#FF3B3B]"
-                                            )}>
-                                                {item.status === 1 ? 'Success' : 'Pending'}
-                                            </span>
+            <table className="w-full text-[14px]">
+                <thead>
+                    <tr className="text-left text-[#727D97] font-[600] border-b border-[#34304B]">
+                        <th className="py-2 px-2 pl-[30px]">Amount</th>
+                        <th className="py-2 px-2">Time</th>
+                        <th className="py-2 px-2 pr-[30px]">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {loading ? (
+                        <tr>
+                            <td colSpan={3} className="py-[50px] text-center">
+                                <Loading />
+                            </td>
+                        </tr>
+                    ) : withdrawList.length === 0 ? (
+                        <tr>
+                            <td colSpan={3} className="py-[50px]">
+                                <Empty />
+                            </td>
+                        </tr>
+                    ) : (
+                        withdrawList.map((item: any, index: number) => (
+                            <tr key={index} className="text-white">
+                                <td className="py-2 px-2 pl-[30px]">{Number(item.amount || 0).toFixed(2)} MON</td>
+                                <td className="py-2 px-2 ">{dayjs(item.created_at || item.time).format('YYYY-MM-DD HH:mm:ss')}</td>
+                                <td className="py-2 px-2 pr-[30px]">
+                                    <span className={clsx(
+                                        "font-[600]",
+                                        item.status === 1 ? "text-[#31FFA6]" : "text-[#FF3B3B]"
+                                    )}>
+                                        {item.status === 1 ? 'Success' : 'Pending'}
+                                    </span>
 
-                                            {
-                                                item.status === 1 && <a href={`https://testnet.monadexplorer.com/tx/${item.tx_hash}`} target="_blank" className="text-[#836EF9] ml-[10px] underline">Tx</a>
-                                            }
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        {pageTotal > 1 && (
-                            <div className="flex justify-end mt-[20px] pr-[30px]">
-                                <Pagination
-                                    page={page}
-                                    totalPage={pageTotal}
-                                    pageSize={PAGE_SIZE}
-                                    onPageChange={onPageChange}
-                                    canJump={false}
-                                />
-                            </div>
-                        )}
-                    </>
-                )}
-            </div>
+                                    {
+                                        item.status === 1 && <a href={`https://testnet.monadexplorer.com/tx/${item.tx_hash}`} target="_blank" className="text-[#836EF9] ml-[10px] underline">Tx</a>
+                                    }
+                                </td>
+                            </tr>
+                        ))
+                    )}
+                </tbody>
+            </table>
+
+            {pageTotal > 1 && (
+                <div className="flex justify-end mt-[20px] pr-[30px]">
+                    <Pagination
+                        page={page}
+                        totalPage={pageTotal}
+                        pageSize={PAGE_SIZE}
+                        onPageChange={onPageChange}
+                        canJump={false}
+                    />
+                </div>
+            )}
         </div>
     );
 }

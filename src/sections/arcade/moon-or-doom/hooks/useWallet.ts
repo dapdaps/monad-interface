@@ -80,6 +80,10 @@ export default function useWallet() {
     };
 
     const getUserInfo = async () => {
+        if (!userInfo.address) {
+            setGameBalance(0);
+            return;
+        }
         const res = await get('/game/euphoria/user');
         if (res.code === 200) {
             setGameBalance(res.data.balance || 0);
@@ -88,45 +92,7 @@ export default function useWallet() {
         }
     };
 
-    const getDepositList = async ({ pageSize }: { pageSize: number }) => {
-        if (depositListLoading) {
-            return;
-        }
-
-        setDepositListLoading(true);
-        const res = await get('/game/euphoria/user/deposits', {
-            page: depositPage,
-            page_size: pageSize || 10,
-        });
-        if (res.code === 200) {
-            setDepositList(res.data.data || []);
-            setDepositPageTotal(res.data.total_page || 0);
-        } else {
-            toast.fail({ title: res.message || "Get deposit list failed" });
-        }
-        setDepositListLoading(false);
-    }
-
-    const getWithdrawList = async ({ pageSize }: { pageSize: number }) => {
-
-        if (withdrawListLoading) {
-            return;
-        }
-
-        setWithdrawListLoading(true);
-        const res = await get('/game/euphoria/user/withdrawals', {
-            page: withdrawPage,
-            page_size: pageSize || 10,
-        });
-        if (res.code === 200) {
-            setWithdrawList(res.data.data || []);
-            setWithdrawPageTotal(res.data.total_page || 0);
-        } else {
-            toast.fail({ title: res.message || "Get withdraw list failed" });
-        }
-        setWithdrawListLoading(false);
-    }
-
+   
     useEffect(() => {
         if (userInfo.address) {
             getUserInfo();
@@ -135,6 +101,7 @@ export default function useWallet() {
 
     useEffect(() => {
         if (!userInfo.address) {
+            setGameBalance(0);
             return;
         }
 
@@ -147,18 +114,6 @@ export default function useWallet() {
             clearInterval(interval);
         };
     }, [userInfo.address]);
-
-    // useEffect(() => {
-    //     if (account && depositPage) {
-    //         getDepositList({  pageSize: 10 });
-    //     }
-    // }, [account, depositPage]);
-
-    // useEffect(() => {
-    //     if (account && withdrawPage) {
-    //         getWithdrawList({ pageSize: 10 });
-    //     }
-    // }, [account, withdrawPage]);
 
     
 

@@ -99,6 +99,8 @@ export default function Leaderboard(props: LeaderboardProps) {
 
         if (userInfo?.address) {
             fetchEntries()
+        } else {
+            setMyEntry(undefined)
         }
     }, [userInfo])
 
