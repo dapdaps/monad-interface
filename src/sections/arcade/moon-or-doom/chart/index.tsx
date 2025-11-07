@@ -546,6 +546,12 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     });
 
     useThrottleEffect(() => {
+
+        // Only execute when the page is active (i.e., tab is visible)
+        if (typeof document !== 'undefined' && document.visibilityState !== 'visible') {
+            return;
+        }
+
         if (!chartGroupRef.current || !initialHistoricalData.length) return;
         if (translationRef.current === null) return;
 
@@ -962,8 +968,9 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         if (!isInitialized || !containerRef.current || configRef.current?.disabled || !chartGroupRef.current) return;
 
         const animate = () => {
-            if (window) {
-
+            // Only execute when the page is active (i.e., tab is visible)
+            if (typeof document !== 'undefined' && document.visibilityState !== 'visible') {
+                return;
             }
 
             const container = containerRef.current;
