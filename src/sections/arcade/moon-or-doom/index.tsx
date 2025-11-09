@@ -15,6 +15,7 @@ import NumberUpAnimation from "./number-up-animation";
 import WalletModal from "./wallet";
 import HistoryModal from "./history";
 import RulesModal from "./rule";
+import Confetti from "./confetti";
 
 
 export default function MoonOrDoom() {
@@ -143,5 +144,9 @@ export default function MoonOrDoom() {
                 <NumberUpAnimation key={item.id} amount={item.amount} id={item.id} />
             ))}
         </AnimatePresence>
+
+        {animationNumbers.map((item) => (
+            <Confetti key={`confetti-${item.id}`} id={item.id} />
+        ))}
     </div>
 }
