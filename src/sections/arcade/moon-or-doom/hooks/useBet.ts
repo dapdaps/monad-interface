@@ -12,6 +12,7 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
     const gameBalanceRef = useRef<number>(gameBalance);
     const userBetObjRef = useRef<any>({});
     const betRef = useRef<number>(bet);
+    const userInfoRef = useRef<any>({});
 
     const { success, fail } = useToast();
     const { userInfo } = useUser();
@@ -23,6 +24,10 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
     useEffect(() => {
         betRef.current = bet;
     }, [bet]);
+
+    useEffect(() => {
+        userInfoRef.current = userInfo;
+    }, [userInfo]);
     
     const handleBet = useCallback(async ({
         minPrice,
@@ -34,7 +39,10 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
         startTime: string
     }) => {
 
-        console.log('bet', bet);
+        if (!userInfoRef.current.address) {
+            fail({ title: 'Please login first' });
+            return;
+        }
 
         if (Big(gameBalanceRef.current).lt(bet)) {
             setInsufficientBalance(true);
@@ -83,7 +91,7 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
         } finally {
             setBetLoading(false);
         }
-    }, [bet]);
+    }, [bet, userInfo]);
 
     return {
         bet,

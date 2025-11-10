@@ -1036,6 +1036,12 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         left: 0,
                         top: 0,
                     }}
+                    onMouseLeave={() => {
+                        d3.select('.shot-icon').style('display', 'none');
+                        d3.select(chartGroupRef.current).selectAll('rect').each(function () {
+                            (this as any).__isHover__ = false;
+                        });
+                    }}
                 >
                     <defs>
                         <filter id="glow-orange" x="-50%" y="-50%" width="200%" height="200%">

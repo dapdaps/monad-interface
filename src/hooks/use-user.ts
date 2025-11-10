@@ -44,7 +44,12 @@ export function useUser() {
   }, []);
 
   const getAccessToken = async (from?: string) => {
+    if (!address) {
+      return;
+    }
+
     if (isSigning) return;
+
 
     const tokens = JSON.parse(window.sessionStorage.getItem('_user') || "{}");
     if (tokens.state?.accessToken?.access_token) {
@@ -53,8 +58,6 @@ export function useUser() {
     }
 
     isSigning = true;
-
-    console.log('getAccessToken from: %s', from);
 
     setUserInfo({
       accessTokenLoading: true,
