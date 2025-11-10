@@ -60,7 +60,6 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                             const hasBetOnLast5s = userBetKeys.some(key => key.startsWith(`${last5s}-`));
                             const betKey = winObjKeys.find(key => key.startsWith(`${last5s}-`));
                             if (hasBetOnLast5s && !betKey) {
-                                console.log('[Price Time Jump] playSound6');
                                 playSound6(); // user placed a bet for this 5s but hasn't won yet
                             }
                         }

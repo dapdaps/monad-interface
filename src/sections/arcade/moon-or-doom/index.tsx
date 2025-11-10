@@ -18,8 +18,8 @@ import RulesModal from "./rule";
 import Confetti from "./confetti";
 import { cleanupAudio, playSound1, playSound2, playSound7, preloadAudio } from "./lib/sound";
 
-
 export default function MoonOrDoom() {
+
     const {
         tokenBalance,
         gameBalance,
@@ -48,7 +48,6 @@ export default function MoonOrDoom() {
         let cleanupClick: (() => void) | null = null;
 
         preloadAudio().then(() => {
-            console.log('preloadAudio success');
             playAttempted = true;
             playSound7()
                 .then(() => {
@@ -80,6 +79,8 @@ export default function MoonOrDoom() {
         };
     }, []);
 
+    
+
     return <div className="w-full h-full bg-black pt-[100px] pb-[90px] overflow-hidden px-[30px] text-white bg-[url('/images/moon-or-doom/moon-or-doom-bg.png')] bg-no-repeat bg-[length:100%_100%] bg-center">
         <div className="w-full h-full flex justify-center items-center gap-[10px]">
             <div className="w-[20%] h-full flex flex-col justify-between">
@@ -91,7 +92,8 @@ export default function MoonOrDoom() {
                     <div className="absolute top-[-100px] left-0 right-0 pointer-events-none">
                         <img src="/images/moon-or-doom/slogan-new.png" alt="moon-or-doom-logo" className="h-[81px] mx-auto" />
                     </div>
-                    <div className="flex justify-end mb-[10px] gap-[10px]">
+                    <div className="flex justify-end mb-[10px] gap-[10px] items-center">
+                      
                         <DoomButton
                             label="Rules"
                             onClick={() => {
