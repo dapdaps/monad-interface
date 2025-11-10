@@ -2,10 +2,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import WSClient from "../lib/ws";
 import useUser from "@/hooks/use-user";
 import { get } from "@/utils/http";
+import { playSound5, playSound6 } from "../lib/sound";
 
 const WS_URL = "wss://dev-stream-monad.dapdap.net/ws";
 
-export default function usePriceAndBets() {
+export default function usePriceAndBets({ userBet }: { userBet: any }) {
     const wsClientRef = useRef<WSClient | null>(null);
     const [list, setList] = useState<any[]>([]);
     const [betList, setBetList] = useState<any[]>([]);
@@ -14,6 +15,16 @@ export default function usePriceAndBets() {
     const { userInfo } = useUser();
     const betListRef = useRef<any[]>([]);
     const allTimePriceRef = useRef<any>({});
+    const userBetRef = useRef<any>({});
+    const winObjRef = useRef<any>({});
+
+    useEffect(() => {
+        userBetRef.current = userBet;
+    }, [userBet]);
+
+    useEffect(() => {
+        winObjRef.current = winObj;
+    }, [winObj]);
 
     useEffect(() => {
         if (!userInfo.address) {
@@ -41,18 +52,27 @@ export default function usePriceAndBets() {
                             return prev;
                         }
 
+                        const last5s = lastItem.time - (lastItem.time % 5000);
+                        const cur5s = data.timestamp - (data.timestamp % 5000);
+                        if ((lastItem.time < last5s + 5000 && data.timestamp >= cur5s) && (last5s !== cur5s)) {
+                            const userBetKeys = Object.keys(userBetRef.current || {});
+                            const winObjKeys = Object.keys(winObjRef.current || {});
+                            const hasBetOnLast5s = userBetKeys.some(key => key.startsWith(`${last5s}-`));
+                            const betKey = winObjKeys.find(key => key.startsWith(`${last5s}-`));
+                            if (hasBetOnLast5s && !betKey) {
+                                console.log('[Price Time Jump] playSound6');
+                                playSound6(); // user placed a bet for this 5s but hasn't won yet
+                            }
+                        }
+
                         let last50Items = prev;
                         if (prev.length >= 500) {
                             last50Items = prev.slice(prev.length - 499);
                         }
 
-                        // data.timestamp assumed to be in milliseconds
                         const prev5sTimestamp = data.timestamp - (data.timestamp % 5000);
                         const roundedPrice = Math.floor(data.price / 0.5) * 0.5;
                         allTimePriceRef.current[prev5sTimestamp + '-' + roundedPrice] = true;
-                        // allTimePriceRef.current = {
-                        //     [prev5sTimestamp + '-' + roundedPrice]: true,
-                        // }
 
                         return [
                             ...last50Items,
@@ -90,15 +110,16 @@ export default function usePriceAndBets() {
 
                     const winAmount = data.amount
                     if (winAmount > 0) {
+                        playSound5(); // play sound when win
                         const animationId = `${Date.now()}-${Math.random()}`;
                         setAnimationNumbers((prev) => [...prev, { id: animationId, amount: winAmount }]);
-                        
+
                         setTimeout(() => {
                             setAnimationNumbers((prev) => prev.filter((item) => item.id !== animationId));
-                        }, 2000);
+                        }, 3000);
                     }
                 }
-               
+
             },
         });
 

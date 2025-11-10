@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import Chart from "./chart";
 import Leaderboard from "./leaderboard";
@@ -16,6 +16,7 @@ import WalletModal from "./wallet";
 import HistoryModal from "./history";
 import RulesModal from "./rule";
 import Confetti from "./confetti";
+import { cleanupAudio, playSound1, playSound2, playSound7, preloadAudio } from "./lib/sound";
 
 
 export default function MoonOrDoom() {
@@ -33,10 +34,51 @@ export default function MoonOrDoom() {
         gameBalance: gameBalance || 0,
     });
 
-    const { list, betList, winObj, disconnect, animationNumbers, allTimePrice } = usePriceAndBets()
+    const { list, betList, winObj, disconnect, animationNumbers, allTimePrice } = usePriceAndBets({
+        userBet
+    })
+    
     const [walletModalOpen, setWalletModalOpen] = useState(false);
     const [historyModalOpen, setHistoryModalOpen] = useState(false);
     const [rulesModalOpen, setRulesModalOpen] = useState(false);
+
+    useEffect(() => {
+        let playAttempted = false;
+        let playSucceeded = false;
+        let cleanupClick: (() => void) | null = null;
+
+        preloadAudio().then(() => {
+            console.log('preloadAudio success');
+            playAttempted = true;
+            playSound7()
+                .then(() => {
+                    playSucceeded = true;
+                })
+                .catch(() => {
+                    playSucceeded = false;
+                });
+
+            const handleUserInteraction = () => {
+                if (!playSucceeded && playAttempted) {
+                    playSound7().finally(() => {
+                        playSucceeded = true;
+                    });
+                }
+                if (cleanupClick) {
+                    cleanupClick();
+                }
+            }
+            document.addEventListener('click', handleUserInteraction, { once: true });
+            cleanupClick = () => {
+                document.removeEventListener('click', handleUserInteraction);
+            };
+        });
+
+        return () => {
+            cleanupAudio();
+            if (cleanupClick) cleanupClick();
+        };
+    }, []);
 
     return <div className="w-full h-full bg-black pt-[100px] pb-[90px] overflow-hidden px-[30px] text-white bg-[url('/images/moon-or-doom/moon-or-doom-bg.png')] bg-no-repeat bg-[length:100%_100%] bg-center">
         <div className="w-full h-full flex justify-center items-center gap-[10px]">
@@ -53,12 +95,14 @@ export default function MoonOrDoom() {
                         <DoomButton
                             label="Rules"
                             onClick={() => {
+                                playSound1(); // play sound when open rules modal
                                 setRulesModalOpen(true);
                             }}
                         />
                         <DoomButton
                             label="History"
                             onClick={() => {
+                                playSound1(); // play sound when open history modal
                                 setHistoryModalOpen(true);
                             }}
                         />
@@ -75,7 +119,10 @@ export default function MoonOrDoom() {
                         }} />
                         <Balance
                             gameBalance={gameBalance}
-                            onOpenWalletModal={() => setWalletModalOpen(true)}
+                            onOpenWalletModal={() => {
+                                playSound1();
+                                setWalletModalOpen(true)
+                            }}
                         />
                     </div>
                 </div>
@@ -118,6 +165,7 @@ export default function MoonOrDoom() {
             onSuccess={() => {
                 refreshUserInfo?.();
                 setWalletModalOpen(false);
+                playSound2(); // play sound when deposit success
             }}
             onClose={() => setWalletModalOpen(false)} />
 

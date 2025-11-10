@@ -3,6 +3,7 @@ import useUser from "@/hooks/use-user";
 import { get, post } from "@/utils/http";
 import Big from "big.js";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { playSound3, playSound4, playSound5 } from "../lib/sound";
 
 export default function useBet({ gameBalance }: { gameBalance: number }) {
     const [bet, setBet] = useState<number>(0.1);
@@ -71,6 +72,7 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
 
             if (res.code === 200 && res.data.success) {
                 success({ title: 'Bet successful' });
+                playSound4(); // play sound when bet successful
                 setUserBetObj((prev: any) => {
                     userBetObjRef.current = {
                         ...prev,
@@ -85,9 +87,11 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
                 });
             } else {
                 fail({ title: 'Bet failed' });
+                playSound3(); // play sound when bet failed
             }
         } catch (error) {
             fail({ title: 'Bet failed' });
+            playSound3(); // play sound when bet failed
         } finally {
             setBetLoading(false);
         }

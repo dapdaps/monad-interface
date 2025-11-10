@@ -3,6 +3,7 @@ import * as d3 from "d3";
 import dayjs from "dayjs";
 import { useDebounceFn, useThrottleEffect } from "ahooks";
 import { numberFormatter } from "@/utils/number-formatter";
+import { preloadAudio, cleanupAudio } from "../lib/sound";
 
 interface PricePoint {
     time: Date;
@@ -1019,6 +1020,13 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         };
         animate();
     }, [isInitialized, containerSize]);
+    
+    useEffect(() => {
+        preloadAudio();
+        return () => {
+            cleanupAudio();
+        };
+    }, []);
 
 
     return (

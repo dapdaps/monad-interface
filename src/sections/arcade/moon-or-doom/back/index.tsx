@@ -3,6 +3,7 @@
 import { useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import DoomButton from '../button'
+import { playSound1 } from '../lib/sound'
 
 type BackProps = {
     label?: string
@@ -21,7 +22,10 @@ export default function Back(props: BackProps) {
         <DoomButton
             label={label}
             className={className}
-            onClick={handleBack}
+            onClick={() => {
+                playSound1();
+                handleBack();
+            }}
             icon={
                 <svg width="30" height="31" viewBox="0 0 30 31" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g filter="url(#filter0_d_83_12272)">

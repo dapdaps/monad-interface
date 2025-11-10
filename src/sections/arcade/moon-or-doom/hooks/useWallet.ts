@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import useToast from "@/hooks/use-toast";
 import { get, post } from "@/utils/http";
 import useUser from "@/hooks/use-user";
+import { playSound3 } from "../lib/sound";
 
 const CONTRACT_ADDRESS = "0xff6174156e98aa0a7124c26cda402C7b40682070";
 export default function useWallet() {
@@ -49,9 +50,11 @@ export default function useWallet() {
                 toast.success({ title: "Deposit successful", tx: receipt.transactionHash });
             } else {
                 toast.fail({ title: "Deposit failed" });
+                playSound3(); // play sound when deposit failed
             }
         } catch (error) {
             toast.fail({ title: "Deposit failed" });
+            playSound3(); // play sound when deposit failed
         } finally {
             setDepositLoading(false);
         }
@@ -71,9 +74,11 @@ export default function useWallet() {
                 toast.success({ title: "Withdraw successful", });
             } else {
                 toast.fail({ title: res.message || "Withdraw failed" });
+                playSound3(); // play sound when withdraw failed
             }
         } catch (e: any) {
             toast.fail({ title: e.message || "Withdraw failed" });
+            playSound3(); // play sound when withdraw failed
         } finally {
             setWithdrawLoading(false);
         }

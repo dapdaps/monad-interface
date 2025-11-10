@@ -1,7 +1,4 @@
 import clsx from "clsx";
-import { numberFormatter } from "@/utils/number-formatter";
-import { useCallback, useState } from "react";
-import WalletModal from "../wallet";
 
 type BalanceProps = {
     gameBalance?: number;

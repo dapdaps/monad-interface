@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 import ActionButton from "../action-button";
 import { numberFormatter } from "@/utils/number-formatter";
 import Big from "big.js";
+import { playSound1 } from "../lib/sound";
 
 type HistoryModalProps = {
     open: boolean;
@@ -185,7 +186,10 @@ export default function HistoryModal({
                                 ? " border-[#31FFA6]"
                                 : " border-transparent"
                         )}
-                        onClick={() => setActiveTab("bid-records")}
+                        onClick={() => {
+                            playSound1();
+                            setActiveTab("bid-records");
+                        }}
                     >
                         Bid Records
                     </button>
@@ -197,6 +201,7 @@ export default function HistoryModal({
                                 : " border-transparent"
                         )}
                         onClick={() => {
+                            playSound1();
                             setActiveTab("recharge");
                             setAmount("");
                             setPercent(0);
@@ -212,6 +217,7 @@ export default function HistoryModal({
                                 : " border-transparent"
                         )}
                         onClick={() => {
+                            playSound1();
                             setActiveTab("withdraw");
                             setAmount("");
                             setPercent(0);
