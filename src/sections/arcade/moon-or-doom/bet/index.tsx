@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useCallback } from 'react'
+import { playSound1 } from '../lib/sound'
 
 type BetProps = {
     bet?: number
@@ -13,7 +14,7 @@ export default function Bet(props: BetProps) {
     const { bet, onChange } = props
 
     const handleAmountClick = useCallback((amount: number) => {
-        console.log('amount:', amount)
+        playSound1();
         onChange?.(amount)  
     }, [onChange])
 

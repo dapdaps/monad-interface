@@ -4,6 +4,7 @@ import { useSwitchChain } from "wagmi";
 import { monadTestnet } from "viem/chains";
 import { useConnectWallet } from "@/hooks/use-connect-wallet";
 import Loading from "@/components/loading";
+import { playSound1 } from "../lib/sound";
 
 type ActionButtonProps = {
     onAction: () => void;
@@ -25,6 +26,7 @@ export default function ActionButton({
     if (!account) {
         return (
             <HexagonButton className="w-full" onClick={() => {
+                playSound1();
                 onConnect();
             }} >
                 Connect Wallet
@@ -35,6 +37,7 @@ export default function ActionButton({
     if (chainId !== monadTestnet.id) {
         return (
             <HexagonButton className="w-full" onClick={() => {
+                playSound1();
                 switchChain({ chainId: monadTestnet.id });
             }} >
                 Switch to Monad
@@ -60,7 +63,10 @@ export default function ActionButton({
     }
 
     return (
-        <HexagonButton className="w-full" onClick={onAction} disabled={actionDisabled}>
+        <HexagonButton className="w-full" onClick={() => {
+            playSound1();
+            onAction();
+        }} disabled={actionDisabled}>
             {text}
         </HexagonButton>
     );
