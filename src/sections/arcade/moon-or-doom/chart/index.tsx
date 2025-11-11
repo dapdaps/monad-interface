@@ -1021,12 +1021,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         animate();
     }, [isInitialized, containerSize]);
     
-    useEffect(() => {
-        preloadAudio();
-        return () => {
-            cleanupAudio();
-        };
-    }, []);
+   
 
 
     return (
