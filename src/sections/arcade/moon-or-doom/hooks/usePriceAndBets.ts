@@ -65,8 +65,8 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                         }
 
                         let last50Items = prev;
-                        if (prev.length >= 500) {
-                            last50Items = prev.slice(prev.length - 499);
+                        if (prev.length >= 1000) {
+                            last50Items = prev.slice(prev.length - 999);
                         }
 
                         const prev5sTimestamp = data.timestamp - (data.timestamp % 5000);
