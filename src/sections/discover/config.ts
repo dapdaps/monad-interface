@@ -63,7 +63,7 @@ export const AppList = [
   {
     name: "Guess Who",
     category: AppCategory.Gaming,
-    icon: "/images/mainnet/discover/avatar-space-invaders.png",
+    icon: "/images/mainnet/guess-who.png",
     banner: "",
     visits: "0",
     link: "/arcade/guess-who",
@@ -76,7 +76,7 @@ export const AppList = [
   {
     name: "Chart Voyager",
     category: AppCategory.Gaming,
-    icon: "/images/mainnet/discover/avatar-space-invaders.png",
+    icon: "/images/mainnet/chart-voyager.png",
     banner: "",
     visits: "0",
     link: "/arcade/chart-voyager",
