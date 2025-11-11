@@ -34,7 +34,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     const userBetRef = useRef<any>(null);
     const winObjRef = useRef<any>({});
     const isScrollRef = useRef(false);
-    const isCenterXRef = useRef(false);
+    const isCenterXRef = useRef(true);
     const translationXRef = useRef<number>(-1);
 
     const [gridNumber, setGridNumber] = useState(16);
@@ -143,8 +143,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     }, []);
 
     const [startTime, setStartTime] = useState(() => {
-        // const now = dayjs().subtract(2, 'minute');
-        const now = dayjs();
+        const now = dayjs().subtract(2, 'minute');
+        // const now = dayjs();
         const seconds = Math.floor(now.second() / 10) * 10;
         return now.second(seconds).millisecond(0);
     });
