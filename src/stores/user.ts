@@ -5,7 +5,14 @@ const EXPIRY_TIME = 24 * 60 * 60 * 1000;
 const TIMESTAMP_KEY = "_user_timestamp";
 
 const createExpirableStorage = () => {
-  const baseStorage = window.localStorage as any;
+  const baseStorage = typeof window !== 'undefined' ? window.localStorage : null;
+  if (!baseStorage) {
+    return {
+      getItem: () => null,
+      setItem: () => {},
+      removeItem: () => {}
+    };
+  }
   
   return {
     getItem: (name: string): string | null => {
