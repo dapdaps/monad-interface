@@ -19,14 +19,14 @@ const createExpirableStorage = () => {
       const timestamp = baseStorage.getItem(TIMESTAMP_KEY);
       const value = baseStorage.getItem(name);
       
-      if (timestamp && value) {
-        const storedTime = parseInt(timestamp, 10);
-        if (Date.now() - storedTime > EXPIRY_TIME) {
-          baseStorage.removeItem(name);
-          baseStorage.removeItem(TIMESTAMP_KEY);
-          return null;
-        }
-      }
+      // if (timestamp && value) {
+      //   const storedTime = parseInt(timestamp, 10);
+      //   if (Date.now() - storedTime > EXPIRY_TIME) {
+      //     baseStorage.removeItem(name);
+      //     baseStorage.removeItem(TIMESTAMP_KEY);
+      //     return null;
+      //   }
+      // }
       
       return value ? JSON.parse(value) : null;
     },
@@ -63,7 +63,7 @@ export const useUserStore = create(
     {
       name: "_user",
       version: 0.1,
-      storage: createExpirableStorage() as any
+      storage: createJSONStorage(() => localStorage)
     }
   )
 );
