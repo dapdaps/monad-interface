@@ -9,7 +9,7 @@ import { useAccount } from "wagmi";
 import { useUserStore } from "@/stores/user";
 
 const checkAk = async () => {
-  const result = window.sessionStorage.getItem(http.AUTH_TOKENS);
+  const result = window.localStorage.getItem(http.AUTH_TOKENS);
   const parsedResult = result ? JSON.parse(result) : {};
 
   if (parsedResult.access_token) {

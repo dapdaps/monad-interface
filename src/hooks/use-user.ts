@@ -51,7 +51,7 @@ export function useUser() {
     if (isSigning) return;
 
 
-    const tokens = JSON.parse(window.sessionStorage.getItem('_user') || "{}");
+    const tokens = JSON.parse(window.localStorage.getItem('_user') || "{}");
     if (tokens.state?.accessToken?.access_token) {
       isSigning = false;
       return;
@@ -190,7 +190,7 @@ export function useUser() {
   };
 
   useInterval(() => {
-    const tokens = JSON.parse(window.sessionStorage.getItem('_user') || "{}");
+    const tokens = JSON.parse(window.localStorage.getItem('_user') || "{}");
     if (!tokens.state?.accessToken?.access_token) {
       getAccessToken("interval");
     }

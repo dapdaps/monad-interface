@@ -270,12 +270,12 @@ export const useNFT = ({ nftAddress, autoChecking = true }: { nftAddress: string
     useEffect(() => {
         (async () => {
             if (checkedHasNFT && !hasNFT && autoChecking) {
-                let tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
+                let tokens = JSON.parse(window.localStorage.getItem(AUTH_TOKENS) || "{}");
                 let times = 0
                 while (!tokens.state?.accessToken?.access_token || times < 20) {
                     await sleep(1000);
                     times++
-                    tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
+                    tokens = JSON.parse(window.localStorage.getItem(AUTH_TOKENS) || "{}");
                 }
 
                 const res = await checkAllowlist();

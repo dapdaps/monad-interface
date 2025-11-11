@@ -105,7 +105,7 @@ export default function useWallet() {
     }, [userInfo]);
 
     useEffect(() => {
-        if (!userInfo.address) {
+        if (!userInfo?.address) {
             setGameBalance(0);
             return;
         }

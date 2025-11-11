@@ -54,7 +54,7 @@ const get = async (
   opts?: { isSkipFormatUrl?: boolean }
 ) => {
   const isSkipFormatUrl = opts?.isSkipFormatUrl;
-  const tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
+  const tokens = JSON.parse(window.localStorage.getItem(AUTH_TOKENS) || "{}");
 
   const options = {
     method: "GET",
@@ -120,7 +120,7 @@ const getWithoutActive = async (
     | "coin98",
   query?: Record<string, any>
 ) => {
-  const tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
+  const tokens = JSON.parse(window.localStorage.getItem(AUTH_TOKENS) || "{}");
   const options = {
     method: "GET",
     headers: {
@@ -141,7 +141,7 @@ const getWithoutActive = async (
 };
 
 const post = async (url: string, data?: object, headers?: object) => {
-  const tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
+  const tokens = JSON.parse(window.localStorage.getItem(AUTH_TOKENS) || "{}");
   const res = await fetch(getUrl(url), {
     method: "POST",
     headers: {
@@ -157,7 +157,7 @@ const post = async (url: string, data?: object, headers?: object) => {
 };
 
 const postFile = async (url: string, data?: any, headers?: object) => {
-  const tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
+  const tokens = JSON.parse(window.localStorage.getItem(AUTH_TOKENS) || "{}");
   const res = await fetch(getUrl(url), {
     method: "POST",
     headers: {
@@ -172,7 +172,7 @@ const postFile = async (url: string, data?: any, headers?: object) => {
 };
 
 const deleteRequest = async (url: string, data: object) => {
-  const tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
+  const tokens = JSON.parse(window.localStorage.getItem(AUTH_TOKENS) || "{}");
   const res = await fetch(getUrl(url), {
     method: "DELETE",
     headers: {
@@ -190,7 +190,7 @@ const asyncFetch = async (url: string, options?: object) => {
 };
 
 const postUpload = async (url: string, data: any) => {
-  const tokens = JSON.parse(window.sessionStorage.getItem(AUTH_TOKENS) || "{}");
+  const tokens = JSON.parse(window.localStorage.getItem(AUTH_TOKENS) || "{}");
   const res = await fetch(getUrl(url), {
     method: "POST",
     headers: {
