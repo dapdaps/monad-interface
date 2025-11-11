@@ -113,7 +113,7 @@ export default function Leaderboard(props: LeaderboardProps) {
 
             <div className="mt-2">
                 <div className="overflow-hidden text-[14px] mb-[72px]">
-                    <div className="pr-1 h-[calc(100vh-600px)] overflow-y-auto">
+                    <div className="pr-1 h-[calc(100vh-550px)] overflow-y-auto">
                         {entries.length > 0 ? entries.map((item) => (
                             <div
                                 key={`${item.rank}-${item.address}`}

@@ -34,6 +34,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     const userBetRef = useRef<any>(null);
     const winObjRef = useRef<any>({});
     const isScrollRef = useRef(false);
+    const isCenterXRef = useRef(false);
+    const translationXRef = useRef<number>(-1);
 
     const [gridNumber, setGridNumber] = useState(16);
 
@@ -103,6 +105,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     }, [winObj]);
 
     const updateTranslation = (tr: { x: number; y: number }) => {
+        // console.log('updateTranslation:', tr.x, tr.y)
         translationRef.current = tr;
         setTranslation(tr);
     };
@@ -140,7 +143,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     }, []);
 
     const [startTime, setStartTime] = useState(() => {
-        const now = dayjs().subtract(2, 'minute');
+        // const now = dayjs().subtract(2, 'minute');
+        const now = dayjs();
         const seconds = Math.floor(now.second() / 10) * 10;
         return now.second(seconds).millisecond(0);
     });
@@ -456,9 +460,19 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     };
 
     useEffect(() => {
+         // Only execute when the page is active (i.e., tab is visible)
+         if (typeof document !== 'undefined' && document.visibilityState !== 'visible') {
+            return;
+        }
+
         if (!chartGroupRef.current || !translation || configRef.current?.disabled) return;
         const chartGroup = d3.select(chartGroupRef.current);
-        chartGroup.attr('transform', `translate(${translation.x}, ${translation.y})`)
+        // if (!isCenterXRef.current) {
+        //     chartGroup.attr('transform', `translate(${0}, ${translation.y})`);
+        // } else {
+        //     chartGroup.attr('transform', `translate(${translation.x}, ${translation.y})`);
+        // }
+        chartGroup.attr('transform', `translate(${translation.x}, ${translation.y})`);
             // .transition()
             // .duration(300)
             // .ease(d3.easeCubicOut)
@@ -466,6 +480,11 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     }, [translation]);
 
     useThrottleEffect(() => {
+         // Only execute when the page is active (i.e., tab is visible)
+         if (typeof document !== 'undefined' && document.visibilityState !== 'visible') {
+            return;
+        }
+
         if (!containerRef.current || !xAxisRef.current || !yAxisRef.current || configRef.current?.disabled) return;
         if (translation === null) return;
 
@@ -485,7 +504,19 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const currentTranslation = (isDraggingRef.current && translationRef.current)
             ? translationRef.current
             : (translation || { x: 0, y: 0 });
-        const visibleXStart = -currentTranslation.x;
+        let visibleXStart = -currentTranslation.x;
+        
+        // if (!isCenterXRef.current) {
+        //     // if (translationXRef.current < 0) {
+        //     //     translationXRef.current = -currentTranslation.x
+        //     // }
+
+        //     // console.log('translationXRef.current:', translationXRef.current)
+        //     // visibleXStart = translationXRef.current;
+
+        //     visibleXStart = 0
+        // }
+
         const visibleXEnd = visibleXStart + containerRect.width;
         const visibleYStart = -currentTranslation.y;
         const visibleYEnd = visibleYStart + containerRect.height;
@@ -500,6 +531,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
 
         const xAxisTicks = [];
         let time = configRef.current?.startTime;
+
         while (time.isBefore(configRef.current?.endTime)) {
             const xPos = xScale(time.toDate());
             if (xPos >= visibleXStart - 100 && xPos <= visibleXEnd + 100) {
@@ -508,20 +540,27 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             time = time.add(5, 'second');
         }
 
-        xAxisGroup.selectAll('.tick')
-            .data(xAxisTicks)
-            .enter()
-            .append('text')
-            .attr('class', 'tick')
-            .attr('x', d => {
-                const chartX = d.x + currentTranslation.x;
-                return chartX;
-            })
-            .attr('y', 10)
-            .attr('fill', '#ffffff')
-            .attr('font-size', '10px')
-            .attr('text-anchor', 'middle')
-            .text(d => dayjs(d.time).format('HH:mm:ss'));
+        // console.log('xAxisTicks:', visibleXStart, visibleXEnd, xAxisTicks)
+        // if (isCenterXRef.current) {
+            xAxisGroup.selectAll('.tick')
+                .data(xAxisTicks)
+                .enter()
+                .append('text')
+                .attr('class', 'tick')
+                .attr('x', d => {
+                    let originalX = currentTranslation.x;
+                    if (!isCenterXRef.current) {
+                        originalX = -translationXRef.current;
+                    }
+                    const chartX = d.x + originalX
+                    return chartX;
+                })
+                .attr('y', 10)
+                .attr('fill', '#ffffff')
+                .attr('font-size', '10px')
+                .attr('text-anchor', 'middle')
+                .text(d => dayjs(d.time).format('HH:mm:ss'));
+        // }
 
         const yAxisTicks = [];
         for (let price = configRef.current?.priceMin; price <= configRef.current?.priceMax; price += PRICE_STEP) {
@@ -954,7 +993,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             .range([configRef.current?.plotHeight, 0]);
         const currentPointX = xScale(lastPoint.time);
         const currentPointY = yScale(lastPoint.price);
-        const centerX = viewportWidth / 2;
+        // const centerX = viewportWidth / 2;
+        const centerX = 0
         const centerY = viewportHeight / 2;
         const initialX = centerX - currentPointX;
         const initialY = centerY - currentPointY;
@@ -993,7 +1033,21 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 .domain([configRef.current?.priceMin, configRef.current?.priceMax])
                 .range([configRef.current?.plotHeight, 0]);
             const nowX = xScale(now.toDate());
-            const translationX = viewportWidth / 2 - nowX;
+            // const translationX = viewportWidth / 2 - nowX;
+            let translationX = 0;
+
+            let deltaX = viewportWidth / 2 - nowX;
+            // if (deltaX < 0) {
+            //     console.log('viewportWidth / 2 - nowX:', deltaX)
+            // }
+
+            if (!isCenterXRef.current && deltaX > 0) {
+                translationX = 0;
+            } else {
+                isCenterXRef.current = true;
+                translationX = deltaX;
+            }
+
             let lastPrice = lastPriceRef.current ?? 0;
             const pointY = yScale(lastPrice);
 
@@ -1005,7 +1059,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 if (rectY > 0 && rectY < viewportHeight) {
                     const minY = Math.min(0, -(configRef.current?.plotHeight - viewportHeight));
                     const finalY = Math.max(minY, Math.min(0, previousY));
-
                     updateTranslation({ x: translationX, y: finalY });
                 } else {
                     const centerY = viewportHeight / 2;
@@ -1021,11 +1074,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         animate();
     }, [isInitialized, containerSize]);
     
-   
-
-
     return (
-        <div className="w-[calc(100%-80px)] h-full relative pb-[30px]">
+        <div className="w-[calc(100%-80px)] h-full relative pb-[30px] pt-[5px]">
             <div
                 ref={containerRef}
                 className="border border-[#836EF9] rounded-[6px] bg-balck/30 backdrop-blur-[10px] h-[calc(100%-30px)] relative overflow-hidden"
@@ -1085,7 +1135,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 className="absolute"
                 style={{
                     right: '-80px',
-                    top: 0,
+                    top: '5px',
                     width: '80px',
                     height: 'calc(100% - 10px)',
                     pointerEvents: 'none',
