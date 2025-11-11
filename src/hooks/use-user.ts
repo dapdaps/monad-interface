@@ -57,6 +57,8 @@ export function useUser() {
       return;
     }
 
+    console.log('from:', from);
+
     isSigning = true;
 
     setUserInfo({
@@ -132,13 +134,22 @@ export function useUser() {
             wallet: _walletName.toLowerCase(),
             signature: signedMessage,
           });
-          setUserInfo({
-            accessToken: res.data,
-            accessTokenLoading: false,
-          });
-          await getUserInfo();
-          isSigning = false;
-          resolve(null);
+          if (res.code === 200) {
+            setUserInfo({
+              accessToken: res.data,
+              accessTokenLoading: false,
+            });
+            await getUserInfo();
+            isSigning = false;
+            resolve(null);
+          } else {
+            toast.fail({
+              title: 'Login failed, please try again later!',
+              message: res.data?.message,
+            });
+            disconnect();
+            isSigning = false;
+          }
         },
         onError: (error) => {
           console.log('error:', error);
