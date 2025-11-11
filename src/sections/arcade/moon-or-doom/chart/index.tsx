@@ -578,7 +578,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             .attr('x', 10)
             .attr('y', d => {
                 const chartY = d.y + currentTranslation.y;
-                return chartY + 5;
+                return chartY + 10;
             })
             .attr('fill', '#ffffff')
             .attr('font-size', '10px')
@@ -1135,9 +1135,9 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 className="absolute"
                 style={{
                     right: '-80px',
-                    top: '5px',
+                    top: '0px',
                     width: '80px',
-                    height: 'calc(100% - 10px)',
+                    height: 'calc(100% - 1px)',
                     pointerEvents: 'none',
                     // overflow: 'hidden'
                 }}
