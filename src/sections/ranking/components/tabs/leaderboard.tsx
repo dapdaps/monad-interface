@@ -73,19 +73,16 @@ const Leaderboard = () => {
         }
       </div>
       <TabTable
+        headerRowClassName="!pt-[19px] !pb-[15px]"
         columns={[
           {
             dataIndex: "rank",
-            title: () => (
-              <div className="pl-[40px]">
-                Rank
-              </div>
-            ),
+            title: "Rank",
             width: 140,
             sort: false,
             render: (record: any) => {
               return (
-                <div className="pl-[40px]">
+                <div className="">
                   #{record.rank}
                 </div>
               );
@@ -94,7 +91,7 @@ const Leaderboard = () => {
           {
             dataIndex: "user",
             title: "User",
-            width: 300,
+            width: void 0,
             sort: false,
             render: (record: any) => {
               return (

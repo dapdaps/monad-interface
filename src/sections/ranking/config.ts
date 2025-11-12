@@ -76,3 +76,34 @@ export const RankingTabs: Record<TRankingTab, IRankingTab> = {
     value: ERankingTabs.History,
   },
 };
+
+export enum EHistoryType {
+  All = "all",
+  Swap = "swap",
+  Brige = "brige",
+  Arcade = "arcade",
+}
+
+export interface IHistoryType {
+  label: string;
+  value: EHistoryType;
+}
+
+export const TypeOptions: Record<EHistoryType, IHistoryType> = {
+  [EHistoryType.All]: {
+    label: "All",
+    value: EHistoryType.All,
+  },
+  [EHistoryType.Swap]: {
+    label: "Swap",
+    value: EHistoryType.Swap,
+  },
+  [EHistoryType.Brige]: {
+    label: "Brige",
+    value: EHistoryType.Brige,
+  },
+  [EHistoryType.Arcade]: {
+    label: "Arcade",
+    value: EHistoryType.Arcade,
+  },
+};

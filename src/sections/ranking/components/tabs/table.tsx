@@ -1,5 +1,6 @@
 import GridTable from "@/components/flex-table/grid-table";
 import Pagination from "@/components/pagination";
+import clsx from "clsx";
 
 const TabTable = (props: any) => {
   const {
@@ -10,14 +11,17 @@ const TabTable = (props: any) => {
     pageSize,
     pageTotal,
     onPageChange,
+    className,
+    headerRowClassName,
+    bodyClassName,
   } = props;
 
   return (
     <div className="">
       <GridTable
-        className="border-t border-b border-[#836EF9]"
-        bodyClassName="text-[14px] font-Oxanium font-[400]"
-        headerRowClassName="!pt-[19px] !pb-[15px]"
+        className={clsx("border-t border-b border-[#836EF9]", className)}
+        bodyClassName={clsx("text-[14px] font-Oxanium font-[400]", bodyClassName)}
+        headerRowClassName={clsx("", headerRowClassName)}
         bodyRowClassName="odd:!bg-[rgba(131,110,249,0.20)]"
         columns={columns}
         data={data}
