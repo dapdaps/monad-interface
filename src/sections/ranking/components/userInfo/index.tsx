@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { useUser } from "@/hooks/use-user";
 import { formatLongText } from "@/utils/utils";
 import Copyed from "@/components/copyed";
-import { MilitaryRank } from "../../config";
+import { EMilitaryRank, MilitaryRank } from "../../config";
 import { useAccount } from "wagmi";
 import Tip from "../tip";
 
@@ -18,12 +18,12 @@ export default function UserInfo() {
     const progress = (currentRP / nextLevelRP) * 100;
 
     const currentRank = useMemo(() => {
-        if (rp >= 500) return MilitaryRank.General;
-        if (rp >= 300) return MilitaryRank.Colonel;
-        if (rp >= 200) return MilitaryRank.Major;
-        if (rp >= 100) return MilitaryRank.Lieutenant;
-        if (rp >= 50) return MilitaryRank.Corporal;
-        return MilitaryRank.Private;
+        if (rp >= 500) return MilitaryRank[EMilitaryRank.General];
+        if (rp >= 300) return MilitaryRank[EMilitaryRank.Colonel];
+        if (rp >= 200) return MilitaryRank[EMilitaryRank.Major];
+        if (rp >= 100) return MilitaryRank[EMilitaryRank.Lieutenant];
+        if (rp >= 50) return MilitaryRank[EMilitaryRank.Corporal];
+        return MilitaryRank[EMilitaryRank.Private];
     }, [rp]);
 
     const displayAddress = useMemo(() => {

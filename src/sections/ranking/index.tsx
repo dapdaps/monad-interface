@@ -6,16 +6,16 @@ import Booster from "./components/booster";
 
 export default function Ranking() {
     return (
-        <div className="w-full h-full bg-black">
+        <div className="w-full h-full bg-black overflow-y-auto pb-[70px]">
             <Bg />
             <div className="relative z-[1] pt-[30px]">
                 <Title />
-                <div className="flex gap-[5%] mt-[35px] mx-auto max-w-[1400px] min-w-[1200px]">
+                <div className="flex items-stretch gap-[5%] mt-[35px] mx-auto max-w-[1400px] min-w-[1200px]">
                     <div className="w-[33%] text-white">
                         <UserInfo />
                         <Booster />
                     </div>
-                    <div className="flex-1 bg-[#1B1B22] text-white">
+                    <div className="flex-1 text-white">
                         <RankingTabsView />
                     </div>
                 </div>
