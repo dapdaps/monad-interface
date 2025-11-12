@@ -5,43 +5,74 @@ export interface IMilitaryRank {
 }
 
 export enum EMilitaryRank {
-  Private = "Private",
-  Corporal = "Corporal",
-  Lieutenant = "Lieutenant",
-  Major = "Major",
-  Colonel = "Colonel",
-  General = "General",
+  Private = 1,
+  Corporal = 2,
+  Lieutenant = 3,
+  Major = 4,
+  Colonel = 5,
+  General = 6,
 }
 
-export const MilitaryRank: Record<EMilitaryRank, IMilitaryRank> = {
-  [EMilitaryRank.Private]: {
+export type TMilitaryRank = keyof typeof EMilitaryRank;
+
+export const MilitaryRank: Record<TMilitaryRank, IMilitaryRank> = {
+  Private: {
     icon: "/images/wallet/ranking/rank-1.png",
     name: "Private",
-    value: 1,
+    value: EMilitaryRank.Private,
   },
-  [EMilitaryRank.Corporal]: {
+  Corporal: {
     icon: "/images/wallet/ranking/rank-2.png",
     name: "Corporal",
-    value: 2,
+    value: EMilitaryRank.Corporal,
   },
-  [EMilitaryRank.Lieutenant]: {
+  Lieutenant: {
     icon: "/images/wallet/ranking/rank-3.png",
     name: "Lieutenant",
-    value: 3,
+    value: EMilitaryRank.Lieutenant,
   },
-  [EMilitaryRank.Major]: {
+  Major: {
     icon: "/images/wallet/ranking/rank-4.png",
     name: "Major",
-    value: 4,
+    value: EMilitaryRank.Major,
   },
-  [EMilitaryRank.Colonel]: {
+  Colonel: {
     icon: "/images/wallet/ranking/rank-5.png",
     name: "Colonel",
-    value: 5,
+    value: EMilitaryRank.Colonel,
   },
-  [EMilitaryRank.General]: {
+  General: {
     icon: "/images/wallet/ranking/rank-6.png",
     name: "General",
-    value: 6,
+    value: EMilitaryRank.General,
+  },
+};
+
+export enum ERankingTabs {
+  Leaderboard = "leaderboard",
+  EarnRP = "earn-rp",
+  History = "history",
+}
+
+export interface IRankingTab {
+  title: string;
+  value: ERankingTabs;
+  disabled?: boolean;
+}
+export type TRankingTab = keyof typeof ERankingTabs;
+
+export const RankingTabs: Record<TRankingTab, IRankingTab> = {
+  Leaderboard: {
+    title: "Leaderboard",
+    value: ERankingTabs.Leaderboard,
+  },
+  EarnRP: {
+    title: "EarnRP",
+    value: ERankingTabs.EarnRP,
+    disabled: true,
+  },
+  History: {
+    title: "History",
+    value: ERankingTabs.History,
   },
 };

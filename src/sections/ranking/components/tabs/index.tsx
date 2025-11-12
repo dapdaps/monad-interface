@@ -1,17 +1,21 @@
-import { MilitaryRank } from "../../config";
+import { MilitaryRank, RankingTabs } from "../../config";
 
-const RankingTabs = () => {
+const RankingTabsView = () => {
+  console.log("RankingTabs");
+  console.log("RankingTabs: %o", RankingTabs);
+
   return (
-    <div>
+    <div className="w-full text-white">
       <h1>
-        <img
+      {JSON.stringify(RankingTabs)}
+      </h1>
+      <img
           src={MilitaryRank.General.icon}
           alt=""
           className="w-[33px] h-[52px] object-center object-contain shrink-0"
         />
-      </h1>
     </div>
   )
 }
 
-export default RankingTabs;
+export default RankingTabsView;
