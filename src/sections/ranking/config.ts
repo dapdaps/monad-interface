@@ -15,33 +15,33 @@ export enum EMilitaryRank {
 
 export type TMilitaryRank = keyof typeof EMilitaryRank;
 
-export const MilitaryRank: Record<TMilitaryRank, IMilitaryRank> = {
-  Private: {
+export const MilitaryRank: Record<EMilitaryRank, IMilitaryRank> = {
+  [EMilitaryRank.Private]: {
     icon: "/images/wallet/ranking/rank-1.png",
     name: "Private",
     value: EMilitaryRank.Private,
   },
-  Corporal: {
+  [EMilitaryRank.Corporal]: {
     icon: "/images/wallet/ranking/rank-2.png",
     name: "Corporal",
     value: EMilitaryRank.Corporal,
   },
-  Lieutenant: {
+  [EMilitaryRank.Lieutenant]: {
     icon: "/images/wallet/ranking/rank-3.png",
     name: "Lieutenant",
     value: EMilitaryRank.Lieutenant,
   },
-  Major: {
+  [EMilitaryRank.Major]: {
     icon: "/images/wallet/ranking/rank-4.png",
     name: "Major",
     value: EMilitaryRank.Major,
   },
-  Colonel: {
+  [EMilitaryRank.Colonel]: {
     icon: "/images/wallet/ranking/rank-5.png",
     name: "Colonel",
     value: EMilitaryRank.Colonel,
   },
-  General: {
+  [EMilitaryRank.General]: {
     icon: "/images/wallet/ranking/rank-6.png",
     name: "General",
     value: EMilitaryRank.General,
