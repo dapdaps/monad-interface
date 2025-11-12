@@ -45,7 +45,7 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
             return;
         }
 
-        if (Big(gameBalanceRef.current).lt(bet)) {
+        if (Big(gameBalanceRef.current).lt(betRef.current)) {
             setInsufficientBalance(true);
             return;
         }
