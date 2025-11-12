@@ -1,19 +1,31 @@
-import { MilitaryRank, RankingTabs } from "../../config";
+"use client";
+
+import { ERankingTabs, RankingTabs } from "../../config";
+import { useRankingStore } from "../../store";
+import TabsSwitch from "./switch";
+import Leaderboard from "./leaderboard";
+import History from "./history";
 
 const RankingTabsView = () => {
-  console.log("RankingTabs");
-  console.log("RankingTabs: %o", RankingTabs);
+  const tabs = Object.values(RankingTabs).filter(tab => !tab.disabled);
+
+  const { currentTab, setCurrentTab } = useRankingStore();
 
   return (
     <div className="w-full text-white">
-      <h1>
-      {JSON.stringify(RankingTabs)}
-      </h1>
-      <img
-          src={MilitaryRank.General.icon}
-          alt=""
-          className="w-[33px] h-[52px] object-center object-contain shrink-0"
-        />
+      <TabsSwitch
+        tabs={tabs}
+        currentTab={currentTab}
+        setCurrentTab={setCurrentTab}
+      />
+      <div className="w-full">
+        {
+          currentTab === ERankingTabs.Leaderboard && <Leaderboard />
+        }
+        {
+          currentTab === ERankingTabs.History && <History />
+        }
+      </div>
     </div>
   )
 }
