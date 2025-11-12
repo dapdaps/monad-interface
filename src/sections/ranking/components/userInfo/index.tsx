@@ -36,8 +36,51 @@ export default function UserInfo() {
         return formatLongText(upperAddress, 3, 4);
     }, [displayAddress]);
 
+    const borderWidth = 1;
+    const borderRadius = 4;
+    const cutCorner = 24;
+    
+    const outerClipPath = `polygon(
+        ${cutCorner}px 0, 
+        calc(100% - ${borderRadius}px) 0, 
+        calc(100% - ${borderRadius * 0.5}px) ${borderRadius * 0.3}px, 
+        100% ${borderRadius}px, 
+        100% calc(100% - ${cutCorner}px), 
+        calc(100% - ${cutCorner}px) 100%, 
+        ${borderRadius}px 100%, 
+        ${borderRadius * 0.3}px calc(100% - ${borderRadius * 0.5}px), 
+        0 calc(100% - ${borderRadius}px), 
+        0 ${cutCorner}px
+    )`;
+    
+    const innerClipPath = `polygon(
+        ${cutCorner - borderWidth}px ${borderWidth}px, 
+        calc(100% - ${borderRadius + borderWidth}px) ${borderWidth}px, 
+        calc(100% - ${(borderRadius + borderWidth) * 0.5}px) ${borderWidth + borderRadius * 0.3}px, 
+        calc(100% - ${borderWidth}px) ${borderRadius + borderWidth}px, 
+        calc(100% - ${borderWidth}px) calc(100% - ${cutCorner - borderWidth}px), 
+        calc(100% - ${cutCorner - borderWidth}px) calc(100% - ${borderWidth}px), 
+        ${borderRadius + borderWidth}px calc(100% - ${borderWidth}px), 
+        ${borderWidth + borderRadius * 0.3}px calc(100% - ${(borderRadius + borderWidth) * 0.5}px), 
+        ${borderWidth}px calc(100% - ${borderRadius + borderWidth}px), 
+        ${borderWidth}px ${cutCorner - borderWidth}px
+    )`;
+    
     return (
-        <div className="w-full bg-[#1B1B22] text-white rounded-[8px] overflow-hidden bg-[radial-gradient(100%_60.5%_at_50%_0%,_rgba(131,110,249,0.3)_0%,_rgba(0,0,0,0)_100%)]">
+        <div 
+            className="w-full relative"
+            style={{
+                clipPath: outerClipPath,
+                background: '#382F6F',
+                padding: `${borderWidth}px`
+            }}
+        >
+            <div 
+                className="w-full h-full bg-[#1B1B22] text-white rounded-[8px] overflow-hidden bg-[radial-gradient(100%_60.5%_at_50%_0%,_rgba(131,110,249,0.3)_0%,_rgba(0,0,0,0)_100%)]"
+                style={{
+                    clipPath: innerClipPath
+                }}
+            >
             <div className="w-full bg-[#BFFF60] text-black h-[26px] flex items-center justify-center text-center font-[500] text-[14px] cursor-pointer">
                 + Authorize X to invite frenz
             </div>
@@ -89,6 +132,7 @@ export default function UserInfo() {
                         Next Level:{nextLevelRP}
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     );
