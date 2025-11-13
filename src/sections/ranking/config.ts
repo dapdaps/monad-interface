@@ -1,18 +1,18 @@
 export interface IMilitaryRank {
   icon: string;
   name: string;
-  value: number;
+  value: EMilitaryRank;
   minRP: number;
   maxRP: number;
 }
 
 export enum EMilitaryRank {
-  Private = 1,
-  Corporal = 2,
-  Lieutenant = 3,
-  Major = 4,
-  Colonel = 5,
-  General = 6,
+  Private = "private",
+  Corporal = "corporal",
+  Lieutenant = "lieutenant",
+  Major = "major",
+  Colonel = "colonel",
+  General = "general",
 }
 
 export type TMilitaryRank = keyof typeof EMilitaryRank;

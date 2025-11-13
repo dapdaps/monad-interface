@@ -4,32 +4,38 @@ import clsx from "clsx";
 import { EMilitaryRank, MilitaryRank } from "../../config";
 import TabTable from "./table";
 import { GridTableAlign } from "@/components/flex-table/grid-table";
+import { useTop } from "../../hooks/useTop";
+import { useEffect } from "react";
+import Skeleton from "react-loading-skeleton";
+import { useRank } from "../../hooks/useRank";
 
 const Leaderboard = () => {
-  const userInfo = {
-    level: 6,
-  };
-  const topUsers = [
-    {
-      img: '/images/mainnet/arcade/guess-who/avatar-user-1.png',
-      address: "0x635fa4477c7f9681a4ac88fa6147f441114e8655",
-      level: 6,
-      rp: 780,
-    },
-    {
-      img: '/images/mainnet/arcade/guess-who/avatar-user-2.png',
-      address: "0x635fa4477c7f9681a4ac88fa6147f441114e8656",
-      level: 5,
-      rp: 750,
-    },
-    {
-      img: '/images/mainnet/arcade/guess-who/avatar-user-3.png',
-      address: "0x635fa4477c7f9681a4ac88fa6147f441114e8657",
-      level: 4,
-      rp: 730,
-    },
-  ];
+  const { topUsers, getTopUsers, loading } = useTop();
+  const {
+    userRank,
+    rankList,
+    rankListPage,
+    account,
+    getUserRank,
+    userRankLoading,
+    getRankList,
+    rankListLoading,
+    onRankListPageChange,
+    onRankListTierChange,
+    userRankSwitch,
+    setUserRankSwitch,
+  } = useRank();
+
   const militaryRankList = Object.values(MilitaryRank);
+
+  useEffect(() => {
+    getTopUsers();
+    getRankList();
+  }, []);
+
+  useEffect(() => {
+    getUserRank();
+  }, [account]);
 
   return (
     <div className="w-full">
@@ -46,7 +52,13 @@ const Leaderboard = () => {
       >
         <button
           type="button"
-          className="absolute top-[-34px] right-0 flex items-center gap-[4px] text-[14px] text-white font-Oxanium font-[400] leading-[100%]"
+          className={clsx(
+            "absolute z-[2] top-[-34px] right-0 flex items-center gap-[4px] text-[14px] font-Oxanium font-[400] leading-[100%]",
+            userRankSwitch ? "text-[#FFFFFF]" : "text-[#A1AECB]",
+          )}
+          onClick={() => {
+            setUserRankSwitch(!userRankSwitch);
+          }}
         >
           <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M7.11328 12.4502C7.31872 12.4502 7.51587 12.5325 7.66113 12.6777C7.80626 12.823 7.8877 13.0202 7.8877 13.2256C7.88758 13.4307 7.80612 13.6273 7.66113 13.7725C7.51587 13.9177 7.31872 14 7.11328 14H2.69043C2.48506 13.9999 2.2878 13.9177 2.14258 13.7725C1.99764 13.6273 1.91613 13.4307 1.91602 13.2256C1.91602 13.0203 1.99751 12.823 2.14258 12.6777C2.2878 12.5325 2.48506 12.4502 2.69043 12.4502H7.11328ZM7.80859 0.0683594C9.13648 -0.319018 10.3141 1.01608 9.76367 2.28516L6.44922 9.92773C5.88047 11.2379 4.0218 11.238 3.45312 9.92773L0.138672 2.28516C-0.411328 1.01601 0.766357 -0.318926 2.09473 0.0683594L4.49414 0.768555C4.79289 0.855715 5.11044 0.85577 5.40918 0.768555L7.80859 0.0683594Z" fill="currentColor" />
@@ -57,18 +69,24 @@ const Leaderboard = () => {
         </button>
         {
           militaryRankList.reverse().map((rank) => (
-            <div
+            <button
+              type="button"
               key={rank.value}
               className={clsx(
-                "flex flex-col justify-center items-center gap-[9px] border",
-                userInfo.level === rank.value ? "bg-[radial-gradient(50%_66%_at_47.77%_50%,_#553BE4_0%,_#221662_100%)] border-[#836EF9]" : "border-[rgba(131,110,249,0.25)] bg-[rgba(131,110,249,0.25)]",
+                "cursor-pointer flex flex-col justify-center items-center gap-[9px] border",
+                (userRankSwitch ? userRank?.tier === rank.value : rankListPage.tier === rank.value) ? "bg-[radial-gradient(50%_66%_at_47.77%_50%,_#553BE4_0%,_#221662_100%)] border-[#836EF9]" : "border-[rgba(131,110,249,0.25)] bg-[rgba(131,110,249,0.25)]",
               )}
+              disabled={rankListLoading}
+              onClick={() => {
+                setUserRankSwitch(false);
+                onRankListTierChange(rank.value);
+              }}
             >
               <img src={rank.icon} alt="" className="w-[24px] h-[39px] object-center object-contain shrink-0" />
               <div className="text-center text-[16px] text-white font-Oxanium font-[600] leading-[100%]">
                 {rank.name}
               </div>
-            </div>
+            </button>
           ))
         }
       </div>
@@ -102,7 +120,7 @@ const Leaderboard = () => {
                       record.rank === 1 ? "w-[32px] h-[32px] bg-[legnth:32px_32px] border-[2px] border-[#FED801]" : "w-[28px] h-[28px] bg-[legnth:28px_28px]"
                     )}
                     style={{
-                      backgroundImage: `url(${record.avatar})`,
+                      backgroundImage: record.img ? `url(${record.img})` : "conic-gradient(from 180deg, rgb(0, 209, 255) 0deg, rgb(255, 0, 138) 360deg)",
                     }}
                   />
                   <div className="">
@@ -121,12 +139,12 @@ const Leaderboard = () => {
               return (
                 <div className="flex items-center gap-[5px]">
                   <img
-                    src={MilitaryRank[record.level as EMilitaryRank].icon}
+                    src={MilitaryRank[record.tier as EMilitaryRank].icon}
                     alt=""
                     className="w-[15px] h-[24px] object-center object-contain shrink-0"
                   />
                   <div className="">
-                    {MilitaryRank[record.level as EMilitaryRank].name}
+                    {MilitaryRank[record.tier as EMilitaryRank].name}
                   </div>
                 </div>
               )
@@ -147,24 +165,13 @@ const Leaderboard = () => {
             },
           },
         ]}
-        data={[
-          { rank: 1, level: 1, rp: 10000, address: "0x1234567890123456789012345678901234567890", avatar: "/images/mainnet/arcade/guess-who/avatar-user-1.png" },
-          { rank: 2, level: 2, rp: 8500, address: "0x9876543210987654321098765432109876543210", avatar: "/images/mainnet/arcade/guess-who/avatar-user-2.png" },
-          { rank: 3, level: 3, rp: 7600, address: "0xabcdefabcdefabcdefabcdefabcdefabcdefabcd", avatar: "/images/mainnet/arcade/guess-who/avatar-user-3.png" },
-          { rank: 4, level: 4, rp: 6920, address: "0x1234abcd5678ef901234abcd5678ef901234abcd", avatar: "/images/mainnet/arcade/guess-who/avatar-user-4.png" },
-          { rank: 5, level: 5, rp: 5800, address: "0xaabbccddeeffaabbccddeeffaabbccddeeffaabb", avatar: "/images/mainnet/arcade/guess-who/avatar-user-5.png" },
-          { rank: 6, level: 6, rp: 5100, address: "0x00112233445566778899aabbccddeeff00112233", avatar: "/images/mainnet/arcade/guess-who/avatar-user-6.png" },
-          { rank: 7, level: 3, rp: 4800, address: "0x88889999aaaabbbbccccdddd88889999aaaabbbb", avatar: "/images/mainnet/arcade/guess-who/avatar-user-7.png" },
-          { rank: 8, level: 2, rp: 4200, address: "0x55556666777788889999aaaabbbbccccdddd0000", avatar: "/images/mainnet/arcade/guess-who/avatar-user-1.png" },
-          { rank: 9, level: 4, rp: 3700, address: "0xabcdef1234567890abcdef1234567890abcdef12", avatar: "/images/mainnet/arcade/guess-who/avatar-user-2.png" },
-          { rank: 10, level: 1, rp: 3300, address: "0x123456abcdef123456abcdef123456abcdef1234", avatar: "/images/mainnet/arcade/guess-who/avatar-user-3.png" },
-        ]}
-        loading={false}
-        page={1}
-        pageSize={10}
-        pageTotal={100}
+        data={rankList}
+        loading={rankListLoading}
+        page={rankListPage.page}
+        pageSize={rankListPage.pageSize}
+        pageTotal={rankListPage.pageTotal}
         onPageChange={(page: number) => {
-          console.log(page);
+          onRankListPageChange(page);
         }}
       />
     </div>
@@ -176,6 +183,18 @@ export default Leaderboard;
 const TopUser = (props: any) => {
   const { user, rank } = props;
 
+  if (!user) {
+    return (
+      <div className="flex flex-col items-center gap-[30px]">
+        <Skeleton width={80} height={80} borderRadius={40} />
+        <div className="flex flex-col items-center gap-[8px]">
+          <Skeleton width={95} height={16} borderRadius={4} />
+          <Skeleton width={70} height={16} borderRadius={4} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col items-center gap-[30px]">
       <div
@@ -185,10 +204,10 @@ const TopUser = (props: any) => {
           rank === 2 && "border-[#DBDDDF]",
           rank === 3 && "border-[#D6B4A1]",
         )}
-        style={{ backgroundImage: `url(${user.img})` }}
+        style={{ backgroundImage: user.img ? `url(${user.img})` : "conic-gradient(from 180deg, rgb(0, 209, 255) 0deg, rgb(255, 0, 138) 360deg)" }}
       >
         <img
-          src={MilitaryRank[user.level as EMilitaryRank].icon}
+          src={MilitaryRank[user.tier as EMilitaryRank].icon}
           alt=""
           className="absolute w-[24px] h-[39px] object-center object-contain shrink-0 z-[1] bottom-[-20px]"
         />
