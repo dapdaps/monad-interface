@@ -9,6 +9,7 @@ import CircleLoading from "@/components/circle-loading";
 import MonadBaseCard from "@/components/card/monad-base-card";
 import useCustomAccount from "@/hooks/use-account";
 import { DEFAULT_CHAIN_ID, IS_PRODUCTION } from "@/configs";
+import { Contract } from "ethers";
 
 interface BuyTimesModalProps {
     open: boolean;
@@ -17,8 +18,12 @@ interface BuyTimesModalProps {
     spinUserData: any
 }
 
-export const GAME_CONTRACT_ADDRESS_TEST = "0xC5CFB30A2840fC03a933894A733A163f557F2ae4";
-export const GAME_CONTRACT_ADDRESS_PROD = "0xC5CFB30A2840fC03a933894A733A163f557F2ae4";
+// export const GAME_CONTRACT_ADDRESS_TEST = "0xC5CFB30A2840fC03a933894A733A163f557F2ae4";
+// export const GAME_CONTRACT_ADDRESS_PROD = "0xC5CFB30A2840fC03a933894A733A163f557F2ae4";
+
+export const GAME_CONTRACT_ADDRESS_TEST = "0x689c6D62Eb29A3246c239F9a3281E77eF8F85721";
+export const GAME_CONTRACT_ADDRESS_PROD = "0x689c6D62Eb29A3246c239F9a3281E77eF8F85721";
+
 export const GAME_CONTRACT_ADDRESS = IS_PRODUCTION ? GAME_CONTRACT_ADDRESS_PROD : GAME_CONTRACT_ADDRESS_TEST;
 const amount = 0.1;
 
@@ -57,10 +62,28 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
             spinBalance.current = spinUserData.spin_balance;
 
             const signer = provider?.getSigner(address);
-            const tx = {
-                to: GAME_CONTRACT_ADDRESS,
-                value: BigInt(amount * selectedTimes * 1e18),
-            };
+
+           
+            const abi = [
+                {
+                    "inputs": [],
+                    "name": "deposit",
+                    "outputs": [],
+                    "stateMutability": "payable",
+                    "type": "function"
+                }
+            ];
+            const contract = new Contract(
+                GAME_CONTRACT_ADDRESS,
+                abi,
+                signer
+            );
+
+            const tx = await contract.populateTransaction.deposit({
+                value: BigInt(amount * selectedTimes * 1e18)
+            });
+
+
             let gasLimit = 1000000;
             try {
                 const estimatedGas = await provider.estimateGas(tx);
@@ -68,6 +91,7 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
             } catch (err: any) {
                 console.log('estimateGas err: %o', err);
             }
+
             const txResponse = await signer.sendTransaction({
                 ...tx,
                 gasLimit: gasLimit,
@@ -104,7 +128,7 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
             startSpinBalance.current = false;
             setIsPending(false);
         }
-    }, [address, refreshData, tokenBalance, spinUserData]);
+    }, [address, refreshData, tokenBalance, spinUserData, provider]);
 
     useInterval(async () => {
         if (spinUserData && spinBalance.current === spinUserData.spin_balance && startSpinBalance.current) {
