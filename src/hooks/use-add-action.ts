@@ -267,7 +267,7 @@ export default function useAddAction(source: string, isNear = false) {
       params.source = source;
       params.wallet = walletName;
 
-      post("/action/add", params);
+      post("/transaction/add", params);
     },
     [chainId, account]
   );
