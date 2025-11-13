@@ -62,7 +62,7 @@ export default function UserInfo() {
         return MilitaryRank[EMilitaryRank[nextRankKey]];
     }, [currentRank]);
 
-  
+    console.log("userInfo", userInfo);
 
     return (
         <div
@@ -74,23 +74,43 @@ export default function UserInfo() {
             }}
         >
             <div
-                className="w-full h-full bg-[#1B1B22] text-white rounded-[8px] overflow-hidden bg-[radial-gradient(100%_60.5%_at_50%_0%,_rgba(131,110,249,0.3)_0%,_rgba(0,0,0,0)_100%)]"
+                className="w-full h-full bg-[#1B1B22] text-white rounded-[8px] overflow-hidden bg-[radial-gradient(100%_50%_at_50%_0%,_rgba(131,110,249,0.5)_0%,_rgba(0,0,0,0)_100%)]"
                 style={{
                     clipPath: innerClipPath
                 }}
             >
-                <div onClick={() => {
-                    window.open(
-                        `https://x.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${encodeURIComponent(window.location.origin)}&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`,
-                        "_blank"
-                    );
-                }} className="w-full bg-[#BFFF60] text-black h-[26px] flex items-center justify-center text-center font-[500] text-[14px] cursor-pointer">
-                    + Authorize X to invite frenz
-                </div>
+                {
+                    !userInfo?.social?.twitter_user_id && (
+                        <div onClick={() => {
+                            if (userInfo?.social?.twitter_id) {
+                                return;
+                            }
+                            window.open(
+                                `https://x.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${encodeURIComponent(window.location.origin)}&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`,
+                                "_blank"
+                            );
+                        }} className="w-full bg-[#BFFF60] text-black h-[26px] flex items-center justify-center text-center font-[500] text-[14px] cursor-pointer">
+                            + Authorize X to invite frenz
+                        </div>
+                    )
+                }
+
+                {
+                    userInfo?.social?.twitter_user_id && (
+                        <div className="flex items-center gap-2  justify-end pt-[10px] pr-[10px]">
+                            <div className="text-[#A1AECB] text-[14px]">Invite link: </div>
+                            <div className="text-white text-[14px] max-w-[50%] truncate">{window.location.origin + "/referral/" + userInfo?.invite_code}</div>
+                            <Copyed value={window.location.origin + "/referral/" + userInfo?.invite_code || ""} />
+                            <div onClick={() => {
+                                
+                            }} className="cursor-pointer flex items-center justify-center text-[14px] text-white bg-[#2D2948] px-[5px] py-[5px] rounded-[4px]">+ invite</div>
+                        </div>
+                    )
+                }
 
                 <div className="p-6 flex flex-col items-center">
                     <div className="relative w-[182px] h-[182px] rounded-[6px]  mb-5">
-                        <img src="/images/wallet/ranking/default-avatar.png" alt="avatar" className="w-full h-full object-cover" />
+                        <img src={userInfo?.social?.twitter_avatar || "/images/wallet/ranking/default-avatar.png"} alt="avatar" className="w-full h-full object-cover rounded-[6px]" />
                         <div className="absolute left-0 right-0 bottom-0 h-[25px] bg-[#000000A6] flex items-center justify-center">
                             <span className="text-[#BFFF60] text-[16px] font-[500] leading-none uppercase">{userRanking?.tier}</span>
                         </div>
