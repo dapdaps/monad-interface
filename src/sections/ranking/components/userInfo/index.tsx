@@ -66,8 +66,6 @@ export default function UserInfo() {
         return window.location.origin.includes('localhost') ? window.location.origin : 'https://alpha.nadsa.space/api/twitter_auth';
     }, []);
 
-    console.log('callbackUrl', callbackUrl);
-
     return (
         <div
             className="w-full relative"

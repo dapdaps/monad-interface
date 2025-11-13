@@ -44,7 +44,6 @@ export default function Booster() {
         if (!allBonus || allBonusLoading || Object.keys(allBonus).length === 0) {
             return 0;
         }
-        console.log('allBonus:', allBonus);
         return boosterItems.reduce((sum, item) => sum + (allBonus[item.key] ? item.boost : 0), 0);
     }, [allBonus, allBonusLoading]);
 
