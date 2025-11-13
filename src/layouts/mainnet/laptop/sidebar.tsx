@@ -2,7 +2,7 @@ import HexagonButton from "@/components/button/hexagon";
 import Skeleton from "react-loading-skeleton";
 import clsx from "clsx";
 import { useProgressRouter } from "@/hooks/use-progress-router";
-import { IconDiscover, IconArcade, IconMyWallet, IconBridge, IconSwap } from "./icons";
+import { IconDiscover, IconArcade, IconMyWallet, IconBridge, IconSwap, IconRank } from "./icons";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -81,6 +81,20 @@ const LaptopSidebar = (props: any) => {
       ),
       path: "/wallet",
       reg: /^\/wallet/,
+      isActive: false,
+    },
+    {
+      name: "Rank",
+      icon: (isActive?: boolean) => (
+        <IconRank
+          className={clsx(
+            "w-[35px] h-[38px] mt-[-10px] group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.60)] transition-all duration-150",
+            isActive ? "text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.60)]" : "text-[#A1AECB]",
+          )}
+        />
+      ),
+      path: "/rank",
+      reg: /^\/rank/,
       isActive: false,
     },
   ]);

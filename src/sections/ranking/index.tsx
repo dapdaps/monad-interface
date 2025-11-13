@@ -10,7 +10,7 @@ export default function Ranking() {
             <Bg />
             <div className="relative z-[1] pt-[30px]">
                 <Title />
-                <div className="flex items-stretch gap-[5%] mt-[35px] mx-auto max-w-[1400px] min-w-[1200px]">
+                <div className="flex items-stretch gap-[5%] mt-[35px] mx-auto max-w-[1400px] min-w-[1200px] relative z-1">
                     <div className="w-[33%] text-white shrink-0">
                         <UserInfo />
                         <Booster />

@@ -1,17 +1,16 @@
 "use client";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useUser } from "@/hooks/use-user";
 import { formatLongText } from "@/utils/utils";
 import Copyed from "@/components/copyed";
 import { EMilitaryRank, MilitaryRank } from "../../config";
 import { useAccount } from "wagmi";
 import Tip from "../tip";
-import { useUserRanking } from "../../hooks/useUserRanking";
+import { useUserRanking } from "../../hooks/use-user-ranking";
 
 export default function UserInfo() {
     const { userInfo } = useUser();
     const { userRanking } = useUserRanking();
-
 
     const formattedAddress = useMemo(() => {
         if (!userInfo?.address) return "";
@@ -63,6 +62,8 @@ export default function UserInfo() {
         return MilitaryRank[EMilitaryRank[nextRankKey]];
     }, [currentRank]);
 
+  
+
     return (
         <div
             className="w-full relative"
@@ -78,7 +79,12 @@ export default function UserInfo() {
                     clipPath: innerClipPath
                 }}
             >
-                <div className="w-full bg-[#BFFF60] text-black h-[26px] flex items-center justify-center text-center font-[500] text-[14px] cursor-pointer">
+                <div onClick={() => {
+                    window.open(
+                        `https://x.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${encodeURIComponent(window.location.origin)}&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`,
+                        "_blank"
+                    );
+                }} className="w-full bg-[#BFFF60] text-black h-[26px] flex items-center justify-center text-center font-[500] text-[14px] cursor-pointer">
                     + Authorize X to invite frenz
                 </div>
 

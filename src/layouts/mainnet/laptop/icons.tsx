@@ -63,6 +63,31 @@ export const IconBridge = (props: any) => {
   );
 };
 
+export const IconRank = (props: any) => {
+  const { className } = props;
+
+  return (
+    <svg className={className} width="38" height="41" viewBox="0 0 38 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g filter="url(#filter0_d_470_4338)">
+        <path d="M18.3292 10.4363C18.5749 9.85456 19.4252 9.85456 19.6708 10.4363L27.9432 30.0287C28.2087 30.6574 27.4898 31.2486 26.8927 30.8926L19.3799 26.414C19.1469 26.2752 18.8532 26.2752 18.6203 26.414L11.1073 30.8926C10.5102 31.2486 9.7913 30.6574 10.0568 30.0287L18.3292 10.4363Z" fill="white" />
+      </g>
+      <defs>
+        <filter id="filter0_d_470_4338" x="0" y="0" width="38" height="41" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+          <feOffset />
+          <feGaussianBlur stdDeviation="5" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0" />
+          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_470_4338" />
+          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_470_4338" result="shape" />
+        </filter>
+      </defs>
+    </svg>
+
+  );
+};
+
 export const IconMenuArrow = (props: any) => {
   const { className } = props;
 

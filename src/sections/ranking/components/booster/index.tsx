@@ -1,7 +1,7 @@
 "use client";
 
 import Tip from "../tip";
-import { useBonus } from "../../hooks/useBonus";
+import { useBonus } from "../../hooks/use-bonus";
 import clsx from "clsx";
 import { useMemo } from "react";
 
