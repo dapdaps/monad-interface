@@ -82,7 +82,7 @@ export default function UserInfo() {
                 }}
             >
                 {
-                    userInfo?.social?.twitter_user_id && (
+                    !userInfo?.social?.twitter_user_id && (
                         <div onClick={() => {
                             if (userInfo?.social?.twitter_id) {
                                 return;
