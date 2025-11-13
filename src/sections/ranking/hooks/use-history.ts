@@ -11,7 +11,9 @@ export function useHistory() {
       const res = await get("/rp/records", {
         page: page?.page || historyListPage.page,
         page_size: page?.pageSize || historyListPage.pageSize,
-        type: page?.type || historyListPage.type,
+        category: typeof page?.type === "undefined" ? historyListPage.type : page.type,
+        start_time: typeof page?.startTime === "undefined" ? historyListPage.startTime : page.startTime,
+        end_time: typeof page?.endTime === "undefined" ? historyListPage.endTime : page.endTime,
       });
       if (res.code !== 200) {
         setHistoryList([]);
@@ -50,6 +52,19 @@ export function useHistory() {
     });
   };
 
+  const onHistoryListTimeChange = (startTime?: number | null, endTime?: number | null) => {
+    setHistoryListPage({
+      page: 1,
+      startTime,
+      endTime,
+    });
+    getHistoryList({
+      page: 1,
+      startTime,
+      endTime,
+    });
+  };
+
   return {
     historyList,
     getHistoryList,
@@ -57,5 +72,6 @@ export function useHistory() {
     historyListPage,
     onHistoryListPageChange,
     onHistoryListTypeChange,
+    onHistoryListTimeChange,
   };
 }

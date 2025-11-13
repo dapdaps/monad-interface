@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "react-day-picker/style.css";
+
 @font-face {
   font-family: "Montserrat";
   src: url("./fonts/Montserrat-VariableFont_wght.ttf") format("truetype");
@@ -79,19 +81,22 @@
   font-weight: 100 900;
   font-stretch: 75% 125%;
 }
+
 /*#endregion 👆 Mainnet font 👆 */
 
 /*#region 👇 Mainnet styles 👇 */
-body > div[data-rk] {
+body>div[data-rk] {
   width: 100%;
   height: 100%;
 }
+
 .mainnet-content {
   width: 100%;
   height: 100%;
   padding-top: 65px;
   padding-bottom: 100px;
 }
+
 /*#endregion 👆 Mainnet styles 👆 */
 
 html,
@@ -199,6 +204,49 @@ body {
     -webkit-mask-image: radial-gradient(circle 8px at 8px 8px,
         transparent 8px,
         black 9px);
+  }
+}
+
+.rdp-root {
+  --rdp-accent-color: #836EF9;
+  /* Change the accent color to indigo. */
+  --rdp-accent-background-color: #252532;
+  /* Change the accent background color. */
+  --rdp-day_button-width: 44px;
+  --rdp-day_button-height: 26px;
+  --rdp-day-height: 28px;
+  --rdp-outside-opacity: 1;
+  --rdp-selected-border: 0px;
+}
+
+.nadsa-calendar {
+  .rdp-selected {
+    font-size: unset;
+  }
+  .rdp-day.rdp-selected {
+    background: var(--rdp-accent-color);
+    border-radius: 4px;
+  }
+  .rdp-day.rdp-selected.rdp-range_start {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .rdp-day.rdp-selected.rdp-range_middle {
+    border-radius: 0;
+  }
+
+  .rdp-day.rdp-selected.rdp-range_end {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .rdp-day.rdp-today.rdp-selected {
+    color: #fff;
+  }
+
+  .rdp-day.rdp-selected.rdp-range_start.rdp-range_end {
+    border-radius: 4px;
   }
 }
 

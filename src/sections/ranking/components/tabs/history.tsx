@@ -5,8 +5,11 @@ import { numberFormatter } from "@/utils/number-formatter";
 import { GridTableAlign } from "@/components/flex-table/grid-table";
 import Popover, { PopoverPlacement } from "@/components/popover";
 import { EHistoryType, TypeOptions } from "../../config";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useHistory } from "../../hooks/use-history";
+import { DateRange } from "react-day-picker";
+import { DatePickerPopover } from "@/components/date-picker";
+import { useDebounceFn } from "ahooks";
 
 const History = () => {
   const {
@@ -16,14 +19,35 @@ const History = () => {
     historyListPage,
     onHistoryListPageChange,
     onHistoryListTypeChange,
+    onHistoryListTimeChange,
   } = useHistory();
   const typeRef = useRef<any>(null);
 
+  const [selected, setSelected] = useState<Date | DateRange | undefined>();
   const currentType = TypeOptions[historyListPage.type as EHistoryType];
 
   useEffect(() => {
     getHistoryList();
   }, []);
+
+  const { run: onHistoryListTimeChangeDebounce, cancel } = useDebounceFn((startTime?: number | null, endTime?: number | null) => {
+    onHistoryListTimeChange(startTime, endTime);
+  }, {
+    wait: 300,
+  });
+
+  useEffect(() => {
+    cancel();
+    if (!selected) {
+      onHistoryListTimeChangeDebounce(null, null);
+      return;
+    }
+    if (selected && "from" in selected && selected.from && "to" in selected && selected.to) {
+      onHistoryListTimeChangeDebounce(dayjs(selected.from).startOf("day").unix(), dayjs(selected.to).endOf("day").unix());
+      return;
+    }
+    onHistoryListTimeChangeDebounce(dayjs(selected as Date).startOf("day").unix(), dayjs(selected as Date).endOf("day").unix());
+  }, [selected]);
 
   return (
     <div className="w-full pt-[20px]">
@@ -32,19 +56,18 @@ const History = () => {
           Filter:
         </div>
         <div className="flex items-center gap-[15px]">
-          {/* <div className="flex items-center gap-[10px]">
+          <div className="flex items-center gap-[10px]">
             <div className="">
               Time
             </div>
-            <div className="h-[28px] w-[125px] text-white text-[14px] leading-[100%] font-[400] border border-[#34304B] bg-[#191627] backdrop-blur-[15px] shrink-0 flex items-center justify-between px-[10px]">
-              <div className="">
-                2025/11/24
-              </div>
-              <svg width="8" height="7" viewBox="0 0 8 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3.10116 6.17081C3.49398 6.78933 4.39665 6.78933 4.78946 6.17081L7.73289 1.53611C8.15571 0.870343 7.67742 0 6.88874 0H1.00188C0.213202 0 -0.265085 0.870343 0.157732 1.53611L3.10116 6.17081Z" fill="#727D97" />
-              </svg>
-            </div>
-          </div> */}
+            <DatePickerPopover
+              selected={selected}
+              onSelect={(value) => {
+                setSelected(value);
+              }}
+              placement={PopoverPlacement.BottomRight}
+            />
+          </div>
           <div className="flex items-center gap-[10px]">
             <div className="">
               Type

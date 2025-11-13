@@ -13,7 +13,9 @@ export interface IRankListPage extends IRankPage {
 }
 
 export interface IRankHistoryPage extends IRankPage {
-  type: EHistoryType;
+  type?: EHistoryType;
+  startTime?: number | null;
+  endTime?: number | null;
 }
 
 interface IRankingStore {
