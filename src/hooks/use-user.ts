@@ -133,6 +133,7 @@ export function useUser() {
             address: currentAddress,
             wallet: _walletName.toLowerCase(),
             signature: signedMessage,
+            invite_code: window.localStorage.getItem('referral_code') || '',
           });
           if (res.code === 200) {
             setUserInfo({

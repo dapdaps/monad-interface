@@ -62,8 +62,6 @@ export default function UserInfo() {
         return MilitaryRank[EMilitaryRank[nextRankKey]];
     }, [currentRank]);
 
-    console.log("userInfo", userInfo);
-
     return (
         <div
             className="w-full relative"
