@@ -1,12 +1,19 @@
 import { create } from 'zustand';
-import { EMilitaryRank, ERankingTabs } from './config';
+import { EHistoryType, EMilitaryRank, ERankingTabs } from './config';
 
-export interface IRankListPage {
+interface IRankPage {
   page: number;
   pageSize: number;
   pageTotal: number;
   total: number;
+}
+
+export interface IRankListPage extends IRankPage {
   tier: EMilitaryRank;
+}
+
+export interface IRankHistoryPage extends IRankPage {
+  type: EHistoryType;
 }
 
 interface IRankingStore {
@@ -22,6 +29,10 @@ interface IRankingStore {
   setRankListPage: (page: Partial<IRankListPage>) => void;
   userRankSwitch: boolean;
   setUserRankSwitch: (value: boolean) => void;
+  historyList: any[];
+  setHistoryList: (list: any[]) => void;
+  historyListPage: IRankHistoryPage;
+  setHistoryListPage: (page: Partial<IRankHistoryPage>) => void;
 }
 
 export const useRankingStore = create<IRankingStore>((set) => ({
@@ -51,5 +62,23 @@ export const useRankingStore = create<IRankingStore>((set) => ({
   }),
   userRankSwitch: false,
   setUserRankSwitch: (value) => set({ userRankSwitch: value }),
+  historyList: [],
+  setHistoryList: (list) => set({ historyList: list }),
+  historyListPage: {
+    page: 1,
+    pageSize: 20,
+    pageTotal: 0,
+    total: 0,
+    type: EHistoryType.All,
+  },
+  setHistoryListPage: (page) => set((state) => {
+    return {
+      ...state,
+      historyListPage: {
+        ...state.historyListPage,
+        ...page,
+      },
+    };
+  }),
 }));
 

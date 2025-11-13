@@ -92,32 +92,55 @@ export const RankingTabs: Record<TRankingTab, IRankingTab> = {
 };
 
 export enum EHistoryType {
-  All = "all",
-  Swap = "swap",
-  Brige = "brige",
-  Arcade = "arcade",
+  All = "",
+  Swap = "Swap",
+  Brige = "Brige",
+  Game777 = "777",
+  GameSpace = "space",
+  GameGuessWho = "guessWho",
+  GameChartVoyager = "chartVoyager",
 }
 
 export interface IHistoryType {
   label: string;
   value: EHistoryType;
+  sort: number;
 }
 
 export const TypeOptions: Record<EHistoryType, IHistoryType> = {
   [EHistoryType.All]: {
     label: "All",
     value: EHistoryType.All,
+    sort: 1,
   },
   [EHistoryType.Swap]: {
     label: "Swap",
     value: EHistoryType.Swap,
+    sort: 2,
   },
   [EHistoryType.Brige]: {
     label: "Brige",
     value: EHistoryType.Brige,
+    sort: 3,
   },
-  [EHistoryType.Arcade]: {
-    label: "Arcade",
-    value: EHistoryType.Arcade,
+  [EHistoryType.Game777]: {
+    label: "Lucky 777",
+    value: EHistoryType.Game777,
+    sort: 4,
+  },
+  [EHistoryType.GameSpace]: {
+    label: "Space Invaders",
+    value: EHistoryType.GameSpace,
+    sort: 5,
+  },
+  [EHistoryType.GameGuessWho]: {
+    label: "Guess Who",
+    value: EHistoryType.GameGuessWho,
+    sort: 6,
+  },
+  [EHistoryType.GameChartVoyager]: {
+    label: "Chart Voyager",
+    value: EHistoryType.GameChartVoyager,
+    sort: 7,
   },
 };

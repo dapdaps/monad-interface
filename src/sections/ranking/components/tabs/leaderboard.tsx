@@ -4,10 +4,10 @@ import clsx from "clsx";
 import { EMilitaryRank, MilitaryRank } from "../../config";
 import TabTable from "./table";
 import { GridTableAlign } from "@/components/flex-table/grid-table";
-import { useTop } from "../../hooks/useTop";
+import { useTop } from "../../hooks/use-top";
 import { useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
-import { useRank } from "../../hooks/useRank";
+import { useRank } from "../../hooks/use-rank";
 
 const Leaderboard = () => {
   const { topUsers, getTopUsers, loading } = useTop();
