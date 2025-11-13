@@ -2,6 +2,8 @@ export interface IMilitaryRank {
   icon: string;
   name: string;
   value: number;
+  minRP: number;
+  maxRP: number;
 }
 
 export enum EMilitaryRank {
@@ -20,31 +22,43 @@ export const MilitaryRank: Record<EMilitaryRank, IMilitaryRank> = {
     icon: "/images/wallet/ranking/rank-1.png",
     name: "Private",
     value: EMilitaryRank.Private,
+    minRP: 0,
+    maxRP: 50,
   },
   [EMilitaryRank.Corporal]: {
     icon: "/images/wallet/ranking/rank-2.png",
     name: "Corporal",
     value: EMilitaryRank.Corporal,
+    minRP: 50,
+    maxRP: 150,
   },
   [EMilitaryRank.Lieutenant]: {
     icon: "/images/wallet/ranking/rank-3.png",
     name: "Lieutenant",
     value: EMilitaryRank.Lieutenant,
+    minRP: 150,
+    maxRP: 250,
   },
   [EMilitaryRank.Major]: {
     icon: "/images/wallet/ranking/rank-4.png",
     name: "Major",
     value: EMilitaryRank.Major,
+    minRP: 250,
+    maxRP: 450,
   },
   [EMilitaryRank.Colonel]: {
     icon: "/images/wallet/ranking/rank-5.png",
     name: "Colonel",
     value: EMilitaryRank.Colonel,
+    minRP: 450,
+    maxRP: 650,
   },
   [EMilitaryRank.General]: {
     icon: "/images/wallet/ranking/rank-6.png",
     name: "General",
     value: EMilitaryRank.General,
+    minRP: 650,
+    maxRP: Infinity,
   },
 };
 

@@ -1,12 +1,16 @@
 "use client";
 
 import Tip from "../tip";
+import { useBonus } from "../../hooks/useBonus";
+import clsx from "clsx";
+import { useMemo } from "react";
 
 interface BoosterItem {
     icon: string;
     label: string;
     boost: number;
     tip: string;
+    key: string;
 }
 
 const boosterItems: BoosterItem[] = [
@@ -15,23 +19,34 @@ const boosterItems: BoosterItem[] = [
         label: "5500 Core Community",
         boost: 5,
         tip: "Members who received the Monad airdrop earn a 5% RP bonus",
+        key: "admission",
     },
     {
         icon: "/images/wallet/ranking/booster-3.png",
         label: "Admission Ticket",
         boost: 10,
         tip: "Admission Ticket holders get a 10% RP bonus",
+        key: "golden",
     },
     {
         icon: "/images/wallet/ranking/booster-2.png",
         label: "Sequence Number",
         boost: 3,
         tip: "Sequence Number NFT holders get a 3% RP bonus",
+        key: "sequence",
     },
 ];
 
 export default function Booster() {
-    const totalBoost = boosterItems.reduce((sum, item) => sum + item.boost, 0);
+
+    const { allBonus, allBonusLoading } = useBonus();
+    const totalBoost = useMemo(() => {
+        if (!allBonus || allBonusLoading || Object.keys(allBonus).length === 0) {
+            return 0;
+        }
+        console.log('allBonus:', allBonus);
+        return boosterItems.reduce((sum, item) => sum + (allBonus[item.key] ? item.boost : 0), 0);
+    }, [allBonus, allBonusLoading]);
 
     const borderWidth = 1;
     const borderRadius = 4;
@@ -83,12 +98,12 @@ export default function Booster() {
                     <h2 className="text-white text-[18px]">
                         BOOSTER
                     </h2>
-                    <div className="flex items-center gap-2 px-4 h-[30px] bg-[#2D2948] rounded-[4px]">
+                    <div className="flex items-center gap-1 px-4 h-[30px] bg-[#2D2948] rounded-[4px]">
                         <svg width="14" height="18" viewBox="0 0 14 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path opacity="0.3" d="M7.08896 6.55364L10.4365 0H3.6343L0 9.81818H6.66749L4.21123 18L14 6.55364H7.08896Z" fill="white" />
+                            <path opacity={totalBoost > 0 ? "1" : "0.3"} d="M7.08896 6.55364L10.4365 0H3.6343L0 9.81818H6.66749L4.21123 18L14 6.55364H7.08896Z" fill={totalBoost > 0 ? "#BFFF60" : "white"} />
                         </svg>
 
-                        <span className="text-white opacity-30 text-[16px]">
+                        <span className={clsx("text-[16px]", totalBoost > 0 ? "opacity-100 text-[#BFFF60]" : "opacity-30 text-white")}>
                             +{totalBoost}%
                         </span>
                     </div>
@@ -100,7 +115,7 @@ export default function Booster() {
                         <div key={index} className="flex-1 flex flex-col items-center ">
                             {/* Icon Container */}
                             <div
-                                className="grayscale opacity-50 mb-4 relative w-full border border-[#382F6F] rounded-[4px] [background:radial-gradient(100%_75%_at_50%_10%,_rgba(131,110,249,0.3)_0%,_rgba(0,0,0,0)_100%)]"
+                                className={clsx("mb-4 relative w-full border border-[#382F6F] rounded-[4px] [background:radial-gradient(100%_75%_at_50%_10%,_rgba(131,110,249,0.3)_0%,_rgba(0,0,0,0)_100%)]", allBonus?.[item.key] ? "" : "grayscale opacity-50")}
                             >
                                 {/* Icon */}
                                 <div className="w-full h-[100px] flex items-center justify-center">
