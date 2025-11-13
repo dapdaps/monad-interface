@@ -62,6 +62,10 @@ export default function UserInfo() {
         return MilitaryRank[EMilitaryRank[nextRankKey]];
     }, [currentRank]);
 
+    const callbackUrl = useMemo(() => {
+        return window.location.origin.includes('localhost') ? window.location.origin : 'https://alpha.nadsa.space/api/twitter_auth';
+    }, []);
+
     return (
         <div
             className="w-full relative"
@@ -78,13 +82,13 @@ export default function UserInfo() {
                 }}
             >
                 {
-                    !userInfo?.social?.twitter_user_id && (
+                    userInfo?.social?.twitter_user_id && (
                         <div onClick={() => {
                             if (userInfo?.social?.twitter_id) {
                                 return;
                             }
                             window.open(
-                                `https://x.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${encodeURIComponent(window.location.origin)}&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`,
+                                `https://x.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${encodeURIComponent(callbackUrl)}&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`,
                                 "_blank"
                             );
                         }} className="w-full bg-[#BFFF60] text-black h-[26px] flex items-center justify-center text-center font-[500] text-[14px] cursor-pointer">
