@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import clsx from "clsx";
 import { useProgressRouter } from "@/hooks/use-progress-router";
 import { useUser } from "@/hooks/use-user";
@@ -14,12 +14,13 @@ import { useUserRP } from "../../hooks/use-user-rp";
 import { useInvite } from "../../hooks/use-invite";
 import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover";
 import { BoosterItems } from "../../config";
+import { shareReferral } from "../../lib";
 
 interface EarningSection {
     key: string;
     icon: React.ReactNode;
     title: string;
-    summary: string;
+    summary: string | ReactNode;
     buttonText: string;
     buttonRoute: string;
     description: string;
@@ -81,9 +82,12 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
                 </svg>
             ),
             title: "REFFERRAL",
-            summary: `${numberFormatter(invite?.total_rp_earned || 0, 2, true)} RP`,
+            summary: <div className="flex items-center gap-[10px]">
+                <span className="text-[#A1AECB]">{invite?.total || 0} invites</span> |
+                <span className="text-white">{numberFormatter(invite?.total_rp_earned || 0, 2, true)} RP</span>
+            </div>,
             buttonText: "INVITE",
-            buttonRoute: userInfo?.invite_code ? `/referral/${userInfo.invite_code}` : "/invitation",
+            buttonRoute: '',
             description: "Invite friends to NADSA and earn 5% of their RP — this 5% is not affected by any RP bonuses.",
         },
         {
@@ -256,7 +260,13 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
                                         </span>
 
                                         <HexagonButton
-                                            onClick={() => router.push(section.buttonRoute)}
+                                            onClick={() => {
+                                                if (isReferral) {
+                                                    shareReferral(userInfo?.invite_code || '');
+                                                    return
+                                                }
+                                                router.push(section.buttonRoute)
+                                            }}
                                             className="!h-[30px] !text-[16px]"
                                         >
                                             <div className="flex gap-[5px] items-center">

@@ -7,6 +7,7 @@ import { EMilitaryRank, MilitaryRank } from "../../config";
 import { useAccount } from "wagmi";
 import Tip from "../tip";
 import { useUserRanking } from "../../hooks/use-user-ranking";
+import { shareReferral } from "../../lib";
 
 export default function UserInfo() {
     const { userInfo } = useUser();
@@ -105,12 +106,7 @@ export default function UserInfo() {
                             <div className="text-white text-[14px] max-w-[50%] truncate">{window.location.origin + "/referral?code=" + userInfo?.invite_code}</div>
                             <Copyed value={window.location.origin + "/referral?code=" + userInfo?.invite_code || ""} />
                             <div onClick={() => {
-                                const shareText = encodeURIComponent(
-                                    "New crew wanted.\n\nEnter NADSA, explore the stations, and start earning RP.\n\nBoard now — the countdown has started."
-                                );
-                                const shareUrl = encodeURIComponent(window.location.origin + "/referral?code=" + userInfo?.invite_code);
-                                const twitterShareUrl = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
-                                window.open(twitterShareUrl, "_blank");
+                                shareReferral(userInfo?.invite_code);
                             }} className="cursor-pointer flex items-center justify-center text-[14px] text-white bg-[#2D2948] px-[5px] py-[5px] rounded-[4px]">+ invite</div>
                         </div>
                     )
