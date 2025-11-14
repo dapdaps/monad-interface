@@ -297,7 +297,7 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
 
                         {/* Expanded Content */}
                         {isExpanded && (
-                            <div className="py-[20px] pl-[68px]">
+                            <div className="py-[20px]">
                                 {isReferral ? (
                                     <>
                                         {section.description && (
@@ -307,7 +307,7 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
                                         )}
 
                                         <TabTable
-                                            className="!border-0"
+                                            className="!border-0 pl-[68px]"
                                             headerRowClassName="!pt-[10px] !pb-[0px] !text-[#A1AECB]"
                                             columns={[
                                                 {
