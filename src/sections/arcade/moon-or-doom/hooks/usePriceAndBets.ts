@@ -83,21 +83,22 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
 
                     });
                 } else if (data.e === 'bet') {
-                    if (betListRef.current.length > 0) {
+                    if (betListRef.current.length > 0 && data.data.length > 0) {
                         const lastBet = betListRef.current[betListRef.current.length - 1];
-                        if (lastBet.end_time !== data.start_time) {
+                        if (lastBet.end_time !== data.data[0].start_time) {
                             getAllBet();
                         }
                     }
 
                     setBetList((prev) => {
-                        let updated = [...prev, data];
+                        let updated = [...prev, ...data.data];
                         if (updated.length > 50) {
                             updated = updated.slice(updated.length - 50);
                         }
                         betListRef.current = updated;
                         return updated;
                     });
+
                 } else if (data.e === 'win') {
                     setWinObj((prev: any) => {
                         return {
