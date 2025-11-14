@@ -65,7 +65,7 @@ export default function UserInfo() {
     const callbackUrl = useMemo(() => {
         return window.location.origin.includes('localhost') ? window.location.origin : 'https://alpha.nadsa.space/api/twitter_auth';
     }, []);
-    
+
 
     return (
         <div
@@ -102,10 +102,15 @@ export default function UserInfo() {
                     userInfo?.social?.twitter_user_id && (
                         <div className="flex items-center gap-2  justify-end pt-[10px] pr-[10px]">
                             <div className="text-[#A1AECB] text-[14px]">Invite link: </div>
-                            <div className="text-white text-[14px] max-w-[50%] truncate">{window.location.origin + "/referral/" + userInfo?.invite_code}</div>
-                            <Copyed value={window.location.origin + "/referral/" + userInfo?.invite_code || ""} />
+                            <div className="text-white text-[14px] max-w-[50%] truncate">{window.location.origin + "/referral?code=" + userInfo?.invite_code}</div>
+                            <Copyed value={window.location.origin + "/referral?code=" + userInfo?.invite_code || ""} />
                             <div onClick={() => {
-                                
+                                const shareText = encodeURIComponent(
+                                    "New crew wanted.\n\nEnter NADSA, explore the stations, and start earning RP.\n\nBoard now — the countdown has started."
+                                );
+                                const shareUrl = encodeURIComponent(window.location.origin + "/referral?code=" + userInfo?.invite_code);
+                                const twitterShareUrl = `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`;
+                                window.open(twitterShareUrl, "_blank");
                             }} className="cursor-pointer flex items-center justify-center text-[14px] text-white bg-[#2D2948] px-[5px] py-[5px] rounded-[4px]">+ invite</div>
                         </div>
                     )
@@ -157,7 +162,7 @@ export default function UserInfo() {
                         }
 
                         <div className="text-right text-[#A1AECB] pt-[10px]">
-                            Next Level: { nextRank?.name }
+                            Next Level: {nextRank?.name}
                         </div>
                     </div>
                 </div>
