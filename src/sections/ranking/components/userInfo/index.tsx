@@ -65,6 +65,7 @@ export default function UserInfo() {
     const callbackUrl = useMemo(() => {
         return window.location.origin.includes('localhost') ? window.location.origin : 'https://alpha.nadsa.space/api/twitter_auth';
     }, []);
+    
 
     return (
         <div
