@@ -197,12 +197,12 @@ export function useAmount(props: any) {
         transactionHash,
         extra_data: {
           // new api structure
-          token_in: {
+          token_in: [{
             symbol: market?.tokens?.[0]?.symbol,
             address: market?.tokens?.[0]?.address,
             amount: actionAmount,
             decimal: market?.tokens?.[0]?.decimals,
-          },
+          }],
         },
       });
     } catch (err: any) {

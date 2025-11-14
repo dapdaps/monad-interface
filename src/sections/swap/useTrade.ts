@@ -204,18 +204,18 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
         token_out_currency: trade.outputCurrency,
         extra_data: {
           // new api structure
-          token_in: {
+          token_in: [{
             symbol: trade.inputCurrency?.symbol,
             address: trade.inputCurrency?.address,
             amount: trade.inputCurrencyAmount,
             decimal: trade.inputCurrency?.decimals,
-          },
-          token_out: {
+          }],
+          token_out: [{
             symbol: trade.outputCurrency?.symbol,
             address: trade.outputCurrency?.address,
             amount: trade.outputCurrencyAmount,
             decimal: trade.outputCurrency?.decimals,
-          },
+          }],
         },
       });
     } catch (err: any) {

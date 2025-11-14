@@ -32,31 +32,35 @@ export default function useAddAction(source: string, isNear = false) {
 
       if (!currentChain && !isNear) return;
 
-      if (typeof data?.extra_data?.token_in === "object") {
-        data.extra_data.token_in.address = data.extra_data.token_in.address === "native" ? ZeroAddress : data.extra_data.token_in.address;
+      if (data && Array.isArray(data?.extra_data?.token_in)) {
+        data.extra_data.token_in.forEach((token: any) => {
+          token.address = token.address === "native" ? ZeroAddress : token.address;
+        });
       }
-      if (typeof data?.extra_data?.token_out === "object") {
-        data.extra_data.token_out.address = data.extra_data.token_out.address === "native" ? ZeroAddress : data.extra_data.token_out.address;
+      if (data && Array.isArray(data?.extra_data?.token_out)) {
+        data.extra_data.token_out.forEach((token: any) => {
+          token.address = token.address === "native" ? ZeroAddress : token.address;
+        });
       }
 
       if (data.type === "Swap" && data.template !== "launchpad") {
 
         const extraData = data?.extra_data || {};
-        if (data?.token_in_currency && typeof extraData.token_in !== "object") {
-          extraData.token_in = {
+        if (data?.token_in_currency && !Array.isArray(extraData.token_in)) {
+          extraData.token_in = [{
             symbol: data.token_in_currency.symbol,
             address: data.token_in_currency.address === "native" ? ZeroAddress : data.token_in_currency.address,
             amount: data?.inputCurrencyAmount,
             decimal: data.token_in_currency.decimals,
-          };
+          }];
         }
-        if (data?.token_out_currency && typeof extraData.token_out !== "object") {
-          extraData.token_out = {
+        if (data?.token_out_currency && !Array.isArray(extraData.token_out)) {
+          extraData.token_out = [{
             symbol: data.token_out_currency.symbol,
             address: data.token_out_currency.address === "native" ? ZeroAddress : data.token_out_currency.address,
             amount: data?.outputCurrencyAmount,
             decimal: data.token_out_currency.decimals,
-          };
+          }];
         }
 
         params = {

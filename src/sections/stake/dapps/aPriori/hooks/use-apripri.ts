@@ -75,12 +75,12 @@ export default function useAPriori() {
                 tokens: [TOKENS[0]],
                 extra_data: {
                     // new api structure
-                    token_in: {
+                    token_in: [{
                         symbol: TOKENS[0]?.symbol,
                         address: TOKENS[0]?.address,
                         amount: amount,
                         decimal: TOKENS[0]?.decimals,
-                    },
+                    }],
                 },
             });
             return tx.hash;
@@ -112,12 +112,12 @@ export default function useAPriori() {
                 tokens: [TOKENS[1]],
                 extra_data: {
                     // new api structure
-                    token_in: {
+                    token_in: [{
                         symbol: TOKENS[1]?.symbol,
                         address: TOKENS[1]?.address,
                         amount: amount,
                         decimal: TOKENS[1]?.decimals,
-                    },
+                    }],
                 },
             });
 
@@ -184,12 +184,12 @@ export default function useAPriori() {
                 tokens: [TOKENS[0]],
                 extra_data: {
                     // new api structure
-                    token_in: {
+                    token_in: [{
                         symbol: TOKENS[0]?.symbol,
                         address: TOKENS[0]?.address,
                         amount: '0',
                         decimal: TOKENS[0]?.decimals,
-                    },
+                    }],
                 },
             });
 

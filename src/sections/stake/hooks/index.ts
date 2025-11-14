@@ -131,12 +131,12 @@ export function useStake(props: any) {
           tokens: [inputToken],
           extra_data: {
             // new api structure
-            token_in: {
+            token_in: [{
               symbol: inputToken?.symbol,
               address: inputToken?.address,
               amount: inputAmount,
               decimal: inputToken?.decimals,
-            },
+            }],
           },
         });
         // Succeed
