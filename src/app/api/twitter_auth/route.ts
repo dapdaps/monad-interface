@@ -1,17 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 export const runtime = "edge";
-export async function GET(request: Request | NextRequest) {
-  const parsedUrl = new URL(request.url as string);
-  const searchParams = parsedUrl.searchParams;
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
   
-  const protocol = parsedUrl.protocol;
-  const host = request.headers.get("host") || parsedUrl.host;
-  const baseUrl = `${protocol}//${host}`;
+  const queryString = searchParams.toString();
+  const redirectPath = queryString ? `/?${queryString}` : "/";
   
-  const redirectUrl = new URL("/", baseUrl);
-  searchParams.forEach((value, key) => {
-    redirectUrl.searchParams.set(key, value);
-  });
+  const redirectUrl = `${request.nextUrl.origin}${redirectPath}`;
 
   return NextResponse.redirect(redirectUrl);
 }
