@@ -19,14 +19,14 @@ const boosterItems: BoosterItem[] = [
         label: "5500 Core Community",
         boost: 5,
         tip: "Members who received the Monad airdrop earn a 5% RP bonus",
-        key: "admission",
+        key: "golden",
     },
     {
         icon: "/images/wallet/ranking/booster-3.png",
         label: "Admission Ticket",
         boost: 10,
         tip: "Admission Ticket holders get a 10% RP bonus",
-        key: "golden",
+        key: "admission",
     },
     {
         icon: "/images/wallet/ranking/booster-2.png",

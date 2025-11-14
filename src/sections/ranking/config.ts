@@ -83,7 +83,6 @@ export const RankingTabs: Record<TRankingTab, IRankingTab> = {
   EarnRP: {
     title: "EarnRP",
     value: ERankingTabs.EarnRP,
-    disabled: true,
   },
   History: {
     title: "History",

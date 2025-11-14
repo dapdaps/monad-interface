@@ -4,7 +4,7 @@ const TabsSwitch = (props: any) => {
   const { tabs, currentTab, setCurrentTab } = props;
 
   return (
-    <div className="w-full h-[50px] border-t border-b border-[#836EF9] grid grid-cols-2 gap-x-[15px]">
+    <div className="w-full h-[50px] border-t border-b border-[#836EF9] grid grid-cols-3 gap-x-[15px]">
       {
         tabs.map((tab: any) => (
           <button

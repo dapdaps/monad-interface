@@ -5,6 +5,7 @@ import { useRankingStore } from "../../store";
 import TabsSwitch from "./switch";
 import Leaderboard from "./leaderboard";
 import History from "./history";
+import EarnBP from "./earnbp";
 
 const RankingTabsView = () => {
   const tabs = Object.values(RankingTabs).filter(tab => !tab.disabled);
@@ -21,6 +22,9 @@ const RankingTabsView = () => {
       <div className="w-full">
         {
           currentTab === ERankingTabs.Leaderboard && <Leaderboard />
+        }
+        {
+          currentTab === ERankingTabs.EarnRP && <EarnBP />
         }
         {
           currentTab === ERankingTabs.History && <History />
