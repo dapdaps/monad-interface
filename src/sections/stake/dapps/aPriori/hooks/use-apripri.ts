@@ -73,6 +73,15 @@ export default function useAPriori() {
                 sub_type: 'stake',
                 transactionHash: tx.hash,
                 tokens: [TOKENS[0]],
+                extra_data: {
+                    // new api structure
+                    token_in: {
+                        symbol: TOKENS[0]?.symbol,
+                        address: TOKENS[0]?.address,
+                        amount: amount,
+                        decimal: TOKENS[0]?.decimals,
+                    },
+                },
             });
             return tx.hash;
         } catch (error) {
@@ -101,6 +110,15 @@ export default function useAPriori() {
                 sub_type: 'withdraw',
                 transactionHash: tx.hash,
                 tokens: [TOKENS[1]],
+                extra_data: {
+                    // new api structure
+                    token_in: {
+                        symbol: TOKENS[1]?.symbol,
+                        address: TOKENS[1]?.address,
+                        amount: amount,
+                        decimal: TOKENS[1]?.decimals,
+                    },
+                },
             });
 
             return tx.hash;
@@ -164,8 +182,17 @@ export default function useAPriori() {
                 sub_type: 'claim',
                 transactionHash: tx.hash,
                 tokens: [TOKENS[0]],
+                extra_data: {
+                    // new api structure
+                    token_in: {
+                        symbol: TOKENS[0]?.symbol,
+                        address: TOKENS[0]?.address,
+                        amount: '0',
+                        decimal: TOKENS[0]?.decimals,
+                    },
+                },
             });
-            
+
 
             return tx.hash;
         } catch (error) {

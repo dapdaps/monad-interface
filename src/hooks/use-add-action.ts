@@ -6,7 +6,18 @@ import { useWalletName } from "@/hooks/use-wallet-name";
 import { getReportTokenSymbol } from "@/utils/token/symbol";
 import { post } from "@/utils/http";
 
-//
+export const ZeroAddress = "0x0000000000000000000000000000000000000000";
+
+/**
+ * Transaction Reporting Interface
+ * @description Reports transaction data to the backend for data analysis and statistics.
+ * Be sure to include both token_in and token_out fields in extra_data for capturing token information in the transaction.
+ * If there is no token_out (e.g., stake operations), leave it empty.
+ * Native token address is 0x0000000000000000000000000000000000000000, you can use ZeroAddress constant.
+ * @param source
+ * @param isNear
+ * @returns
+ */
 export default function useAddAction(source: string, isNear = false) {
   const { account, chainId } = useAccount();
   const { name: walletName } = useWalletName();
@@ -21,9 +32,33 @@ export default function useAddAction(source: string, isNear = false) {
 
       if (!currentChain && !isNear) return;
 
-      console.info("addAction data: ", data);
+      if (typeof data?.extra_data?.token_in === "object") {
+        data.extra_data.token_in.address = data.extra_data.token_in.address === "native" ? ZeroAddress : data.extra_data.token_in.address;
+      }
+      if (typeof data?.extra_data?.token_out === "object") {
+        data.extra_data.token_out.address = data.extra_data.token_out.address === "native" ? ZeroAddress : data.extra_data.token_out.address;
+      }
 
       if (data.type === "Swap" && data.template !== "launchpad") {
+
+        const extraData = data?.extra_data || {};
+        if (data?.token_in_currency && typeof extraData.token_in !== "object") {
+          extraData.token_in = {
+            symbol: data.token_in_currency.symbol,
+            address: data.token_in_currency.address === "native" ? ZeroAddress : data.token_in_currency.address,
+            amount: data?.inputCurrencyAmount,
+            decimal: data.token_in_currency.decimals,
+          };
+        }
+        if (data?.token_out_currency && typeof extraData.token_out !== "object") {
+          extraData.token_out = {
+            symbol: data.token_out_currency.symbol,
+            address: data.token_out_currency.address === "native" ? ZeroAddress : data.token_out_currency.address,
+            amount: data?.outputCurrencyAmount,
+            decimal: data.token_out_currency.decimals,
+          };
+        }
+
         params = {
           // action_title: `Swap ${Number(data.inputCurrencyAmount)} ${data.inputCurrency.symbol} on ${data.template}`,
           action_title: `Swap ${data.inputCurrency.symbol} on ${data.template}`,
@@ -39,11 +74,7 @@ export default function useAddAction(source: string, isNear = false) {
           template: data.template,
           tx_id: data.transactionHash,
           chain_id: data.chainId || chainId,
-          token_in_currency: data?.token_in_currency,
-          token_out_currency: data?.token_out_currency,
-          extra_data: data?.extra_data
-            ? JSON.stringify(data?.extra_data)
-            : null,
+          extra_data: extraData ? JSON.stringify(extraData) : null,
           sub_type: data.sub_type
         };
       }
@@ -100,9 +131,8 @@ export default function useAddAction(source: string, isNear = false) {
           }));
         }
         params = {
-          action_title: `${data.action} ${symbols.join("-")} on ${
-            data.template
-          }`,
+          action_title: `${data.action} ${symbols.join("-")} on ${data.template
+            }`,
           action_type: data.type,
           action_tokens: JSON.stringify(symbols),
           action_amount: data.amount,
@@ -125,9 +155,8 @@ export default function useAddAction(source: string, isNear = false) {
         }
         params = {
           action_title: !!symbols.length
-            ? `${data.action} ${data.amount} ${symbols.join("-")} on ${
-                data.template
-              }`
+            ? `${data.action} ${data.amount} ${symbols.join("-")} on ${data.template
+            }`
             : "",
           action_type: "Staking",
           action_tokens: !!symbols.length
@@ -156,9 +185,8 @@ export default function useAddAction(source: string, isNear = false) {
         }
         params = {
           action_title: !!symbols.length
-            ? `${data.action} ${data.amount} ${symbols.join("-")} on ${
-                data.template
-              }`
+            ? `${data.action} ${data.amount} ${symbols.join("-")} on ${data.template
+            }`
             : "",
           action_type: "Mint",
           action_tokens: !!symbols.length
@@ -196,9 +224,8 @@ export default function useAddAction(source: string, isNear = false) {
 
       if (data.type === "Yield") {
         params = {
-          action_title: `${data.action} ${
-            data?.token0 + (data?.token1 ? "-" + data.token1 : "")
-          } on ${data.template}`,
+          action_title: `${data.action} ${data?.token0 + (data?.token1 ? "-" + data.token1 : "")
+            } on ${data.template}`,
           action_type: data.type,
           action_tokens: JSON.stringify([
             data?.token0 ?? "",
@@ -216,10 +243,9 @@ export default function useAddAction(source: string, isNear = false) {
 
       if (data.template === "launchpad" || data.template === "Launchpad") {
         params = {
-          action_title: `Launchpad ${
-            data?.token0.symbol +
+          action_title: `Launchpad ${data?.token0.symbol +
             (data?.token1.symbol ? "-" + data.token1.symbol : "")
-          } on ${data.template}`,
+            } on ${data.template}`,
           action_type: "Swap",
           action_tokens: JSON.stringify([
             data?.token0.symbol ?? "",
@@ -258,8 +284,7 @@ export default function useAddAction(source: string, isNear = false) {
       }
 
       params.ss = getSignature(
-        `template=${data.template}&action_type=${data.type}&tx_hash=${
-          data.transactionHash
+        `template=${data.template}&action_type=${data.type}&tx_hash=${data.transactionHash
         }&chain_id=${data.chainId || chainId}&time=${Math.ceil(
           Date.now() / 1000
         )}`
