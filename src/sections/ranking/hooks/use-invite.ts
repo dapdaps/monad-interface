@@ -7,7 +7,7 @@ export const useInvite = () => {
     const { userInfo } = useUser();
     const [page, setPage] = useState(1);
 
-    const { data: invite, runAsync: getInvite } = useRequest(async () => {
+    const { data: invite, runAsync: getInvite, loading: inviteLoading } = useRequest(async () => {
         const res = await get('/invite/records', {
             page: page,
             page_size: 10,
@@ -31,5 +31,6 @@ export const useInvite = () => {
         invite,
         page,
         setPage,
+        inviteLoading,
     };
 }

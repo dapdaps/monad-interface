@@ -14,6 +14,7 @@ const TabTable = (props: any) => {
     className,
     headerRowClassName,
     bodyClassName,
+    showPage = true,
   } = props;
 
   return (
@@ -27,16 +28,21 @@ const TabTable = (props: any) => {
         data={data}
         loading={loading}
       />
-      <div className="flex justify-end items-center pl-[10px] py-[10px]">
-        <Pagination
-          page={page}
-          totalPage={pageTotal}
-          pageSize={pageSize}
-          onPageChange={(_page: number) => {
-            onPageChange(_page);
-          }}
-        />
-      </div>
+      
+      {
+        showPage && (
+          <div className="flex justify-end items-center pl-[10px] py-[10px]">
+            <Pagination
+              page={page}
+              totalPage={pageTotal}
+              pageSize={pageSize}
+              onPageChange={(_page: number) => {
+                onPageChange(_page);
+              }}
+            />
+          </div>
+        )
+      }
     </div>
   );
 };

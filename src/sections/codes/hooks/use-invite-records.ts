@@ -16,7 +16,6 @@ export default function useInviteRecords(updater?: any) {
       setInviteRecords(result?.data)
     } catch (error: any) {
       setLoading(false)
-      throw new Error(error)
     }
   }
   useEffect(() => {

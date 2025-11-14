@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import clsx from "clsx";
 import { useProgressRouter } from "@/hooks/use-progress-router";
 import { useUser } from "@/hooks/use-user";
 import { formatLongText } from "@/utils/utils";
 import { numberFormatter } from "@/utils/number-formatter";
-import useInviteRecords from "@/sections/codes/hooks/use-invite-records";
 import dayjs from "dayjs";
 import TabTable from "./table";
 import { GridTableAlign } from "@/components/flex-table/grid-table";
@@ -14,6 +13,7 @@ import HexagonButton from "@/components/button/hexagon";
 import { useUserRP } from "../../hooks/use-user-rp";
 import { useInvite } from "../../hooks/use-invite";
 import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover";
+import { BoosterItems } from "../../config";
 
 interface EarningSection {
     key: string;
@@ -30,10 +30,16 @@ interface EarningSection {
     }[];
 }
 
-const EarnBP = () => {
+const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading: boolean }) => {
     const router = useProgressRouter();
     const { userInfo } = useUser();
-    const { inviteRecords, loading: inviteRecordsLoading } = useInviteRecords();
+
+    const totalBoost = useMemo(() => {
+        if (!allBonus || allBonusLoading || Object.keys(allBonus).length === 0) {
+            return 0;
+        }
+        return BoosterItems.reduce((sum, item) => sum + (allBonus[item.key] ? item.boost : 0), 0);
+    }, [allBonus, allBonusLoading]);
 
     const [expandedSections, setExpandedSections] = useState<Set<string>>(
         new Set(["referral"])
@@ -50,9 +56,7 @@ const EarnBP = () => {
     };
 
     const { userRP } = useUserRP()
-    const { invite, page, setPage } = useInvite()
-
-    console.log(invite)
+    const { invite, page, setPage, inviteLoading } = useInvite()
 
     const sections: EarningSection[] = [
         {
@@ -172,8 +176,6 @@ const EarnBP = () => {
         },
     ];
 
-    const totalBoost = 10;
-
     return (
         <div className="w-full pt-[20px]">
             <div className="py-[20px] flex items-center justify-center gap-[10px] relative">
@@ -280,90 +282,86 @@ const EarnBP = () => {
                                                 {section.description}
                                             </div>
                                         )}
-                                        {inviteRecords?.invites && inviteRecords.invites.length > 0 ? (
-                                            <TabTable
-                                                className="!border-0"
-                                                headerRowClassName="!pt-[10px] !pb-[0px]"
-                                                columns={[
-                                                    {
-                                                        dataIndex: "invited",
-                                                        title: "Invited",
-                                                        width: 200,
-                                                        sort: false,
-                                                        render: (record: any) => {
-                                                            return (
-                                                                <div className="flex items-center gap-[10px]">
-                                                                    <div
-                                                                        className="w-[28px] h-[28px] rounded-full bg-center bg-no-repeat shrink-0"
-                                                                        style={{
-                                                                            backgroundImage: record.avatar
-                                                                                ? `url(${record.avatar})`
-                                                                                : "conic-gradient(from 180deg, rgb(0, 209, 255) 0deg, rgb(255, 0, 138) 360deg)",
-                                                                        }}
-                                                                    />
-                                                                    <div className="text-white text-[14px] font-Oxanium font-[400]">
-                                                                        {formatLongText(record.address, 5, 4)}
-                                                                    </div>
-                                                                </div>
-                                                            );
-                                                        },
-                                                    },
-                                                    {
-                                                        dataIndex: "joined",
-                                                        title: "Joined",
-                                                        width: 200,
-                                                        sort: false,
-                                                        render: (record: any) => {
-                                                            return (
-                                                                <div className="text-[#A1AECB] text-[14px] font-Oxanium font-[400]">
-                                                                    {dayjs(record.created_at).utc().format("YYYY/MM/DD HH:mm:ss")}
-                                                                </div>
-                                                            );
-                                                        },
-                                                    },
-                                                    {
-                                                        dataIndex: "earned",
-                                                        title: "Earned",
-                                                        width: 120,
-                                                        sort: false,
-                                                        align: GridTableAlign.Right,
-                                                        render: (record: any) => {
-                                                            return (
-                                                                <div className="text-[#A1AECB] text-[14px] font-Oxanium font-[400]">
-                                                                    {numberFormatter(record.rp || 0, 2, true)} RP
-                                                                </div>
-                                                            );
-                                                        },
-                                                    },
-                                                    {
-                                                        dataIndex: "your_share",
-                                                        title: "Your share",
-                                                        width: 120,
-                                                        sort: false,
-                                                        align: GridTableAlign.Right,
-                                                        render: (record: any) => {
-                                                            return (
+
+                                        <TabTable
+                                            className="!border-0"
+                                            headerRowClassName="!pt-[10px] !pb-[0px] !pl-[60px]"
+                                            columns={[
+                                                {
+                                                    dataIndex: "invited",
+                                                    title: "Invited",
+                                                    width: 200,
+                                                    sort: false,
+                                                    render: (record: any) => {
+                                                        return (
+                                                            <div className="flex items-center gap-[10px]">
+                                                                <div
+                                                                    className="w-[28px] h-[28px] rounded-full bg-center bg-no-repeat shrink-0"
+                                                                    style={{
+                                                                        backgroundImage: record.avatar
+                                                                            ? `url(${record.avatar})`
+                                                                            : "conic-gradient(from 180deg, rgb(0, 209, 255) 0deg, rgb(255, 0, 138) 360deg)",
+                                                                    }}
+                                                                />
                                                                 <div className="text-white text-[14px] font-Oxanium font-[400]">
-                                                                    {numberFormatter(record.reward_rp || 0, 2, true)} RP
+                                                                    {formatLongText(record.address, 5, 4)}
                                                                 </div>
-                                                            );
-                                                        },
+                                                            </div>
+                                                        );
                                                     },
-                                                ]}
-                                                data={inviteRecords.invites}
-                                                loading={inviteRecordsLoading}
-                                                page={page}
-                                                pageSize={10}
-                                                pageTotal={invite?.total_page || 0}
-                                                onPageChange={() => {
-                                                    setPage(page + 1);
-                                                }}
-                                            />
-                                        ) : (
-                                            <div className="text-[#A1AECB] text-[14px] font-[400] py-[40px] text-center">
-                                                No referrals yet. Invite friends to start earning RP!
-                                            </div>
-                                        )}
+                                                },
+                                                {
+                                                    dataIndex: "joined",
+                                                    title: "Joined",
+                                                    width: 200,
+                                                    sort: false,
+                                                    render: (record: any) => {
+                                                        return (
+                                                            <div className="text-[#A1AECB] text-[14px] font-Oxanium font-[400]">
+                                                                {dayjs(record.created_at).utc().format("YYYY/MM/DD HH:mm:ss")}
+                                                            </div>
+                                                        );
+                                                    },
+                                                },
+                                                {
+                                                    dataIndex: "earned",
+                                                    title: "Earned",
+                                                    width: 120,
+                                                    sort: false,
+                                                    align: GridTableAlign.Right,
+                                                    render: (record: any) => {
+                                                        return (
+                                                            <div className="text-[#A1AECB] text-[14px] font-Oxanium font-[400]">
+                                                                {numberFormatter(record.rp || 0, 2, true)} RP
+                                                            </div>
+                                                        );
+                                                    },
+                                                },
+                                                {
+                                                    dataIndex: "your_share",
+                                                    title: "Your share",
+                                                    width: 120,
+                                                    sort: false,
+                                                    align: GridTableAlign.Right,
+                                                    render: (record: any) => {
+                                                        return (
+                                                            <div className="text-white text-[14px] font-Oxanium font-[400]">
+                                                                {numberFormatter(record.reward_rp || 0, 2, true)} RP
+                                                            </div>
+                                                        );
+                                                    },
+                                                },
+                                            ]}
+                                            showPage={invite?.total_page > 1}
+                                            data={invite?.data}
+                                            loading={inviteLoading}
+                                            page={page}
+                                            pageSize={10}
+                                            pageTotal={invite?.total_page || 0}
+                                            onPageChange={() => {
+                                                setPage(page + 1);
+                                            }}
+                                        />
                                     </>
                                 ) : (
                                     <div className="space-y-[8px]">

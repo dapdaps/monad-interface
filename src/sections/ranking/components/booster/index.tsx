@@ -4,47 +4,16 @@ import Tip from "../tip";
 import { useBonus } from "../../hooks/use-bonus";
 import clsx from "clsx";
 import { useMemo } from "react";
+import { BoosterItems } from "../../config";
 
-interface BoosterItem {
-    icon: string;
-    label: string;
-    boost: number;
-    tip: string;
-    key: string;
-}
 
-const boosterItems: BoosterItem[] = [
-    {
-        icon: "/images/wallet/ranking/booster-1.png",
-        label: "5500 Core Community",
-        boost: 5,
-        tip: "Members who received the Monad airdrop earn a 5% RP bonus",
-        key: "golden",
-    },
-    {
-        icon: "/images/wallet/ranking/booster-3.png",
-        label: "Admission Ticket",
-        boost: 10,
-        tip: "Admission Ticket holders get a 10% RP bonus",
-        key: "admission",
-    },
-    {
-        icon: "/images/wallet/ranking/booster-2.png",
-        label: "Sequence Number",
-        boost: 3,
-        tip: "Sequence Number NFT holders get a 3% RP bonus",
-        key: "sequence",
-    },
-];
+export default function Booster({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading: boolean }) {
 
-export default function Booster() {
-
-    const { allBonus, allBonusLoading } = useBonus();
     const totalBoost = useMemo(() => {
         if (!allBonus || allBonusLoading || Object.keys(allBonus).length === 0) {
             return 0;
         }
-        return boosterItems.reduce((sum, item) => sum + (allBonus[item.key] ? item.boost : 0), 0);
+        return BoosterItems.reduce((sum, item) => sum + (allBonus[item.key] ? item.boost : 0), 0);
     }, [allBonus, allBonusLoading]);
 
     const borderWidth = 1;
@@ -110,7 +79,7 @@ export default function Booster() {
 
                 {/* Booster Items */}
                 <div className="flex justify-between gap-[10px] px-[33px] pb-[50px] pt-[30px]">
-                    {boosterItems.map((item, index) => (
+                    {BoosterItems.map((item, index) => (
                         <div key={index} className="flex-1 flex flex-col items-center ">
                             {/* Icon Container */}
                             <div

@@ -143,3 +143,36 @@ export const TypeOptions: Record<EHistoryType, IHistoryType> = {
     sort: 7,
   },
 };
+
+
+interface BoosterItem {
+  icon: string;
+  label: string;
+  boost: number;
+  tip: string;
+  key: string;
+}
+
+export const BoosterItems: BoosterItem[] = [
+  {
+      icon: "/images/wallet/ranking/booster-1.png",
+      label: "5500 Core Community",
+      boost: 5,
+      tip: "Members who received the Monad airdrop earn a 5% RP bonus",
+      key: "golden",
+  },
+  {
+      icon: "/images/wallet/ranking/booster-3.png",
+      label: "Admission Ticket",
+      boost: 10,
+      tip: "Admission Ticket holders get a 10% RP bonus",
+      key: "admission",
+  },
+  {
+      icon: "/images/wallet/ranking/booster-2.png",
+      label: "Sequence Number",
+      boost: 3,
+      tip: "Sequence Number NFT holders get a 3% RP bonus",
+      key: "sequence",
+  },
+];

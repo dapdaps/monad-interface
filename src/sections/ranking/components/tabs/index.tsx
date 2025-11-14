@@ -7,7 +7,7 @@ import Leaderboard from "./leaderboard";
 import History from "./history";
 import EarnBP from "./earnbp";
 
-const RankingTabsView = () => {
+const RankingTabsView = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading: boolean }) => {
   const tabs = Object.values(RankingTabs).filter(tab => !tab.disabled);
 
   const { currentTab, setCurrentTab } = useRankingStore();
@@ -24,7 +24,7 @@ const RankingTabsView = () => {
           currentTab === ERankingTabs.Leaderboard && <Leaderboard />
         }
         {
-          currentTab === ERankingTabs.EarnRP && <EarnBP />
+          currentTab === ERankingTabs.EarnRP && <EarnBP allBonus={allBonus} allBonusLoading={allBonusLoading}/>
         }
         {
           currentTab === ERankingTabs.History && <History />

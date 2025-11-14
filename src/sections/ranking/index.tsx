@@ -1,10 +1,14 @@
+"use client";
 import Bg from "./components/bg";
 import RankingTabsView from "./components/tabs";
 import Title from "./components/title";
 import UserInfo from "./components/userInfo";
 import Booster from "./components/booster";
+import { useBonus } from "./hooks/use-bonus";
 
 export default function Ranking() {
+    const { allBonus, allBonusLoading } = useBonus();
+
     return (
         <div className="w-full h-full bg-black overflow-y-auto pb-[70px]">
             <Bg />
@@ -13,10 +17,10 @@ export default function Ranking() {
                 <div className="flex items-stretch gap-[5%] mt-[35px] mx-auto max-w-[1400px] min-w-[1200px] relative z-1">
                     <div className="w-[33%] text-white shrink-0">
                         <UserInfo />
-                        <Booster />
+                        <Booster allBonus={allBonus} allBonusLoading={allBonusLoading}/>
                     </div>
                     <div className="flex-1 text-white">
-                        <RankingTabsView />
+                        <RankingTabsView allBonus={allBonus} allBonusLoading={allBonusLoading}/>
                     </div>
                 </div>
             </div>
