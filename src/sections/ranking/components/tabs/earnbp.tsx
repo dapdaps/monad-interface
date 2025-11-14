@@ -45,6 +45,7 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
     const [expandedSections, setExpandedSections] = useState<Set<string>>(
         new Set(["referral"])
     );
+    const [rotationAngle, setRotationAngle] = useState(0);
 
     const toggleSection = (key: string) => {
         const newExpanded = new Set(expandedSections);
@@ -56,8 +57,8 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
         setExpandedSections(newExpanded);
     };
 
-    const { userRP } = useUserRP()
-    const { invite, page, setPage, inviteLoading } = useInvite()
+    const { userRP, getUserRP } = useUserRP()
+    const { invite, page, setPage, inviteLoading, getInvite } = useInvite()
 
     const sections: EarningSection[] = [
         {
@@ -214,8 +215,20 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
                     </div>
                 </Popover>
 
-                <div className="absolute right-0 bottom-[20px] flex items-center justify-center w-[30px] h-[26px] border border-[#382F6F] rounded-[2px] cursor-pointer">
-                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <div onClick={() => {
+                    setRotationAngle(prev => prev + 360);
+                    getUserRP();
+                    getInvite();
+                }} className="absolute right-0 bottom-[20px] flex items-center justify-center w-[30px] h-[26px] border border-[#382F6F] rounded-[2px] cursor-pointer">
+                    <svg 
+                        width="15" 
+                        height="15" 
+                        viewBox="0 0 15 15" 
+                        fill="none" 
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="transition-transform duration-[1000ms] ease-in-out"
+                        style={{ transform: `rotate(${rotationAngle}deg)` }}
+                    >
                         <path d="M8.4375 15L9.375 11.25H11.6672C12.6045 10.226 13.1246 8.88822 13.125 7.5C13.125 4.94063 11.4113 2.71406 9.07125 2.02125C8.68875 1.90875 8.4375 1.54313 8.4375 1.14375C8.4375 0.537188 9.01594 0.0703125 9.59812 0.240938C12.7181 1.15969 15 4.08656 15 7.5C15 11.2847 12.0806 14.4872 8.4375 15ZM0 7.5C0 3.71625 2.91938 0.512812 6.5625 0L5.625 3.75H3.33281C2.3955 4.77401 1.87544 6.11178 1.875 7.5C1.875 10.0594 3.58875 12.2859 5.92875 12.9778C6.11462 13.0369 6.27657 13.1542 6.39068 13.3124C6.5048 13.4706 6.56503 13.6612 6.5625 13.8562C6.5625 14.4628 5.98406 14.9297 5.40188 14.7591C2.28188 13.8403 0 10.9134 0 7.5Z" fill="#66657E" />
                     </svg>
                 </div>
@@ -284,7 +297,7 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
 
                         {/* Expanded Content */}
                         {isExpanded && (
-                            <div className="p-[20px]">
+                            <div className="py-[20px] pl-[68px]">
                                 {isReferral ? (
                                     <>
                                         {section.description && (
@@ -295,7 +308,7 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
 
                                         <TabTable
                                             className="!border-0"
-                                            headerRowClassName="!pt-[10px] !pb-[0px] !pl-[60px]"
+                                            headerRowClassName="!pt-[10px] !pb-[0px] !text-[#A1AECB]"
                                             columns={[
                                                 {
                                                     dataIndex: "invited",
@@ -304,7 +317,7 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
                                                     sort: false,
                                                     render: (record: any) => {
                                                         return (
-                                                            <div className="flex items-center gap-[10px]">
+                                                            <div className="flex items-center gap-[10px] pl-[10px]">
                                                                 <div
                                                                     className="w-[28px] h-[28px] rounded-full bg-center bg-no-repeat shrink-0"
                                                                     style={{
@@ -350,12 +363,10 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
                                                 {
                                                     dataIndex: "your_share",
                                                     title: "Your share",
-                                                    width: 120,
-                                                    sort: false,
                                                     align: GridTableAlign.Right,
                                                     render: (record: any) => {
                                                         return (
-                                                            <div className="text-white text-[14px] font-Oxanium font-[400]">
+                                                            <div className="text-white text-[14px] font-Oxanium font-[400] pr-[10px]">
                                                                 {numberFormatter(record.reward_rp || 0, 2, true)} RP
                                                             </div>
                                                         );

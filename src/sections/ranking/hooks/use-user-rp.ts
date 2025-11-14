@@ -24,5 +24,6 @@ export const useUserRP = () => {
 
     return {
         userRP,
+        getUserRP,
     };
 };

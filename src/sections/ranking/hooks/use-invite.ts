@@ -32,5 +32,6 @@ export const useInvite = () => {
         page,
         setPage,
         inviteLoading,
+        getInvite   
     };
 }
