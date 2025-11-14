@@ -82,17 +82,16 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                         ]
 
                     });
-                } else if (Array.isArray(data) && data.length > 0 && data[0].e === 'bet') {
-
+                } else if (data.e === 'bet') {
                     if (betListRef.current.length > 0) {
                         const lastBet = betListRef.current[betListRef.current.length - 1];
-                        if (lastBet.end_time !== data[0].start_time) {
+                        if (lastBet.end_time !== data.start_time) {
                             getAllBet();
                         }
                     }
 
                     setBetList((prev) => {
-                        let updated = [...prev, data[0]];
+                        let updated = [...prev, data];
                         if (updated.length > 50) {
                             updated = updated.slice(updated.length - 50);
                         }
