@@ -7,12 +7,12 @@ export default function Referral() {
     const { code } = useParams()
     const router = useRouter()
     useEffect(() => {
-        if (code) {
+        if (code && typeof window !== 'undefined') {
             window.localStorage.setItem('referral_code', code as string)
             setTimeout(() => {
                 router.push('/')
             }, 1000)
         }
     }, [])
-    return null
+    return <div/>
 }

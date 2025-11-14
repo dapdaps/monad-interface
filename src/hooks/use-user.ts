@@ -128,7 +128,6 @@ export function useUser() {
         message: msg,
       }, {
         onSuccess: async (signedMessage) => {
-          console.log('signedMessage:', signedMessage);
           const res = await post('/login', {
             address: currentAddress,
             wallet: _walletName.toLowerCase(),
