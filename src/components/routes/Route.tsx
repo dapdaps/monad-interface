@@ -40,7 +40,7 @@ export default function Route({
         <div className="flex items-start gap-[10px] justify-between w-full whitespace-nowrap">
             <div className="flex items-center gap-[10px]">
                 <img className="w-[20px] h-[20px] rounded-[4px]" src={icon} />
-                <div className="text-[14px] font-[400]">{name}</div>
+                <div className="text-[14px] font-[400]">{name === 'OneClick' ? 'Conductor v0.1' : name}</div>
                 {
                     isBest && (
                         <div className="text-[12px] text-[#BFFF60]">Best Price</div>

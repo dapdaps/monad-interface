@@ -27,9 +27,9 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
     }, [winObj]);
 
     useEffect(() => {
-        if (!userInfo.address) {
-            return;
-        }
+        // if (!userInfo.address) {
+        //     return;
+        // }
 
         const wsClient = new WSClient({
             url: WS_URL,
@@ -83,21 +83,32 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
 
                     });
                 } else if (data.e === 'bet') {
+                    
                     if (betListRef.current.length > 0 && data.data.length > 0) {
                         const lastBet = betListRef.current[betListRef.current.length - 1];
-                        if (lastBet.end_time !== data.data[0].start_time) {
+                        if (Number(lastBet.end_time) < Number(data.data[0].start_time)) {
                             getAllBet();
                         }
                     }
 
-                    setBetList((prev) => {
-                        let updated = [...prev, ...data.data];
-                        if (updated.length > 50) {
-                            updated = updated.slice(updated.length - 50);
-                        }
-                        betListRef.current = updated;
-                        return updated;
-                    });
+                    if (data.data.length > 0) {
+                        setBetList((prev) => {
+                            const dataKeys = new Set(
+                                data.data.map((item: any) => `${item.start_time}-${item.end_time}`)
+                            );
+                            
+                            const filteredPrev = prev.filter(
+                                item => !dataKeys.has(`${item.start_time}-${item.end_time}`)
+                            );
+                            
+                            let updated = [...filteredPrev, ...data.data];
+                            if (updated.length > 50) {
+                                updated = updated.slice(updated.length - 50);
+                            }
+                            betListRef.current = updated;
+                            return updated;
+                        });
+                    }
 
                 } else if (data.e === 'win') {
                     setWinObj((prev: any) => {

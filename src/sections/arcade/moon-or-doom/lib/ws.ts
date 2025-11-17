@@ -47,11 +47,16 @@ class WSClient {
       console.log('[WSClient] WebSocket connected');
       this.reconnectAttempts = 0;
       this.lastMessageTime = Date.now();
+
+      const params = ['ethusdt@price', 'ethusdt@bet'];
+      if (address) {
+        params.push(`${address.toLowerCase()}@account`);
+      }
       
       const subscribeMsg = JSON.stringify({
         id: 1,
         method: 'SUBSCRIBE',
-        params: ['ethusdt@price', 'ethusdt@bet', `${address.toLowerCase()}@account`],
+        params,
       });
       this.send(subscribeMsg);
     };

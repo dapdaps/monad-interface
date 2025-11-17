@@ -1010,8 +1010,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     }, [initialHistoricalData, isInitialized, containerSize]);
 
     useEffect(() => {
-        const shouldBlock = isDraggingRef.current || (Date.now() - dragEndTimeRef.current < 500);
-        if (shouldBlock) return;
+        // const shouldBlock = isDraggingRef.current || (Date.now() - dragEndTimeRef.current < 500);
+        // if (shouldBlock) return;
 
         if (!isInitialized || !containerRef.current || configRef.current?.disabled || !chartGroupRef.current) return;
 
@@ -1041,12 +1041,13 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             //     console.log('viewportWidth / 2 - nowX:', deltaX)
             // }
 
-            if (!isCenterXRef.current && deltaX > 0) {
-                translationX = 0;
-            } else {
-                isCenterXRef.current = true;
-                translationX = deltaX;
-            }
+            // if (!isCenterXRef.current && deltaX > 0) {
+            //     translationX = 0;
+            // } else {
+            //     isCenterXRef.current = true;
+            //     translationX = deltaX;
+            // }
+            translationX = deltaX;
 
             let lastPrice = lastPriceRef.current ?? 0;
             const pointY = yScale(lastPrice);
@@ -1122,7 +1123,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 className="absolute"
                 style={{
                     left: 0,
-                    top: '96%',
+                    top: '94%',
                     width: 'calc(100% - 10px)',
                     height: '40px',
                     pointerEvents: 'none',

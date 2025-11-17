@@ -8,7 +8,8 @@ export class OneClick {
   private chainId: number;
   private wrappedNativeAddress: string;
   private ROUTER: { [key: number]: string } = {
-    10143: "0xc26484D2ce20e31e363e2f27782B4E9718fF918a"
+    // 10143: "0xc26484D2ce20e31e363e2f27782B4E9718fF918a",
+    10143: "0x5E17a41378018B092cE9778413aB736418CE60E8",
   };
   private HOST = "https://api-trade.nadsa.space";
 
@@ -85,7 +86,9 @@ export class OneClick {
       min_amount_out: _minAmountOut,
       ...bestTrade,
       chain_id: this.chainId,
-      referral: "0x760AfE86e5de5fa0Ee542fc7B7B713e1c5425701",
+      appFeeRate: 100,
+      appFeeRecipient: "0xf817257fed379853cDe0fa4F97AB987181B1E",
+      // referral: "0x760AfE86e5de5fa0Ee542fc7B7B713e1c5425701",
       in_eth: inputCurrency.isNative ? 1 : 0,
       out_eth: outputCurrency.isNative ? 1 : 0,
     };
@@ -141,6 +144,8 @@ export class OneClick {
         noPair: true
       };
     }
+
+    console.log('oneclick txn', txn);
 
     return {
       outputCurrencyAmount: BigNumber(bestTrade.amount_out || 0).div(10 ** outputCurrency.decimals).toFixed(outputCurrency.decimals).replace(/\.?0+$/, ""),
