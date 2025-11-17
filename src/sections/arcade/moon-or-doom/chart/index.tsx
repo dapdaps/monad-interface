@@ -315,7 +315,10 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             const betObj: any = {}
             betList.forEach(bet => {
                 bet.bets.forEach((betItem: any) => {
-                    betObj[bet.start_time + '-' + betItem.min_price] = betItem.multiplier;
+                    betObj[bet.start_time + '-' + betItem.min_price] = {
+                        ...betItem,
+                        source_time: bet.source_time,
+                    };
                 });
             });
             betRef.current = betObj;
@@ -368,7 +371,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     .millisecond(0);
 
                 d3.select(this).attr('data-key', gridTime + '-' + (price));
-                const betMultiplier = betRef.current?.[fullGridTime.valueOf() + '-' + (price)];
+                const betMultiplier = betRef.current?.[fullGridTime.valueOf() + '-' + (price)]?.multiplier;
                 const userBet = userBetRef.current?.[fullGridTime.valueOf() + '-' + (price)];
 
                 if (!isDraggingRef.current && !isPastRect && betMultiplier > 0 && !userBet) {
@@ -425,14 +428,18 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     .minute(minutes)
                     .second(seconds)
                     .millisecond(0);
-                const betMultiplier = betRef.current?.[fullGridTime.valueOf() + '-' + (price)];
+                const betItem = betRef.current?.[fullGridTime.valueOf() + '-' + (price)];   
+                const betMultiplier = betItem?.multiplier;
+                const sourceTime = betItem?.source_time;
 
+                console.log('betItem', betItem);
 
                 if (!isPastRect && betMultiplier > 0) {
                     handleBet({
                         minPrice: (price).toString(),
                         multiplier: betMultiplier.toString(),
-                        startTime: fullGridTime.valueOf()
+                        startTime: fullGridTime.valueOf(),
+                        sourceTime: sourceTime
                     })
                 }
             });
@@ -882,7 +889,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 const key = fullGridTime.valueOf() + '-' + gridPrice;
                 const className = ('bet-text-' + key).replace('.', '-');
                 let betText: any = chartGroup.select('.future-grid').select('.' + className);
-                const betMultiplier = betRef.current?.[key] ?? 0;
+                const betMultiplier = betRef.current?.[key]?.multiplier ?? 0;
 
                 let baseOpacity = 0.25;
                 let strokeOpacity = 0.4;

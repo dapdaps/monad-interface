@@ -85,9 +85,12 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                 } else if (data.e === 'bet') {
                     
                     if (betListRef.current.length > 0 && data.data.length > 0) {
+                        // betListRef.current.sort((a, b) => Number(a.end_time) - Number(b.end_time));
                         const lastBet = betListRef.current[betListRef.current.length - 1];
-                        if (Number(lastBet.end_time) < Number(data.data[0].start_time)) {
+                       
+                        if (Number(lastBet.end_time) < Number(data.data[0].start_time) - 5000) {
                             getAllBet();
+                            // console.log('lastBet', lastBet.end_time, data.data[0].start_time);
                         }
                     }
 
@@ -115,7 +118,9 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                             if (updated.length > 30) {
                                 updated = updated.slice(updated.length - 30);
                             }
-                            betListRef.current = updated;
+
+
+                            betListRef.current = updated.sort((a, b) => Number(a.end_time) - Number(b.end_time));
                             return updated;
                         });
                     }
@@ -164,6 +169,8 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
     useEffect(() => {
         getAllBet()
     }, []);
+
+    // console.log('betList', betList);
 
     return {
         disconnect: () => {

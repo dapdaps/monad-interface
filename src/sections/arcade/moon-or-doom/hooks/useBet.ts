@@ -33,11 +33,13 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
     const handleBet = useCallback(async ({
         minPrice,
         multiplier,
+        sourceTime,
         startTime
     }: {
         minPrice: string,
         multiplier: string,
-        startTime: string
+        startTime: string,
+        sourceTime: string
     }) => {
 
         if (!userInfoRef.current.address) {
@@ -67,7 +69,8 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
                 "bet_amount": betRef.current.toString(),
                 "min_price": minPrice,
                 "multiplier": multiplier,
-                "start_time": startTime
+                "start_time": startTime,
+                "source_time": sourceTime,
             });
 
             if (res.code === 200 && res.data.success) {

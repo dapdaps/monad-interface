@@ -36,7 +36,7 @@ export default function Routes({
       // setShowRoutesModal(true);
     }}>
       <img src={dapp.logo} className="w-[16px] h-[16px]" />
-      <div className="text-[12px] text-white">{dapp.name}</div>
+      <div className="text-[12px] text-white">{dapp.name === "OneClick" ? "Conductor v0.1" : dapp.name}</div>
       {/* <div>...</div> */}
     </div>
   }, [trade, dapps]);
