@@ -165,6 +165,7 @@ const Leaderboard = () => {
             },
           },
         ]}
+        emptyText="No one’s claimed this rank yet — be the first! "
         data={rankList}
         loading={rankListLoading}
         page={rankListPage.page}

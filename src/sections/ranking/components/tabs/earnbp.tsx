@@ -374,6 +374,7 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
                                                     },
                                                 },
                                             ]}
+                                            
                                             showPage={invite?.total_page > 1}
                                             data={invite?.data}
                                             loading={inviteLoading}

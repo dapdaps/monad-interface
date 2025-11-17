@@ -18,6 +18,7 @@ const GridTable = (props: Props, ref: any) => {
     bodyColClassName,
     emptyClassName,
     fixedClassName,
+    emptyText,
     sortDataIndex,
     sortDirection,
     onSort,
@@ -233,7 +234,7 @@ const GridTable = (props: Props, ref: any) => {
                       className="w-[122px] h-[166px] object-center object-contain"
                     />
                   )}
-                  desc="No data yet..."
+                  desc={emptyText || "No data yet..."}
                   descClassName="translate-y-[-80px] font-[300]"
                 />
               </div>
@@ -269,6 +270,7 @@ export interface Props {
   headerColClassName?: string;
   bodyColClassName?: string;
   emptyClassName?: string;
+  emptyText?: string;
   fixedClassName?: string;
   sortDataIndex?: string;
   sortDirection?: GridTableSortDirection;

@@ -15,6 +15,7 @@ const TabTable = (props: any) => {
     headerRowClassName,
     bodyClassName,
     showPage = true,
+    emptyText = "No data yet...",
   } = props;
 
   return (
@@ -27,6 +28,7 @@ const TabTable = (props: any) => {
         columns={columns}
         data={data}
         loading={loading}
+        emptyText={emptyText}
       />
       
       {
