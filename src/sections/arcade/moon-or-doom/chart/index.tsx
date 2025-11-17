@@ -1123,7 +1123,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 className="absolute"
                 style={{
                     left: 0,
-                    top: '94%',
+                    top: '95%',
                     width: 'calc(100% - 10px)',
                     height: '40px',
                     pointerEvents: 'none',

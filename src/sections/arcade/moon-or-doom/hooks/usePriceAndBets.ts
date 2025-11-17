@@ -93,17 +93,27 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
 
                     if (data.data.length > 0) {
                         setBetList((prev) => {
-                            const dataKeys = new Set(
-                                data.data.map((item: any) => `${item.start_time}-${item.end_time}`)
+                            const dataSourceTimeMap = new Map(
+                                data.data.map((item: any) => [
+                                    `${item.start_time}-${item.end_time}`,
+                                    item.source_time
+                                ])
                             );
                             
-                            const filteredPrev = prev.filter(
-                                item => !dataKeys.has(`${item.start_time}-${item.end_time}`)
-                            );
+                            const filteredPrev = prev.filter((item) => {
+                                const key = `${item.start_time}-${item.end_time}`;
+                                const newSourceTime = dataSourceTimeMap.get(key);
+                                
+                                if (newSourceTime === undefined) {
+                                    return true;
+                                }
+                                
+                                return Number(item.source_time || 0) >= Number(newSourceTime || 0);
+                            });
                             
                             let updated = [...filteredPrev, ...data.data];
-                            if (updated.length > 50) {
-                                updated = updated.slice(updated.length - 50);
+                            if (updated.length > 30) {
+                                updated = updated.slice(updated.length - 30);
                             }
                             betListRef.current = updated;
                             return updated;
