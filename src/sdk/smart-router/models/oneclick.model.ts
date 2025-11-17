@@ -46,6 +46,8 @@ export class OneClick {
     candidatesParams.set("slippage", slippage);
     candidatesParams.set("poolSafeMode", "true");
     candidatesParams.set("maxTickCount", "10");
+    candidatesParams.set("appFeeRate", "100");
+    candidatesParams.set("appFeeRecipient", "0xf817257fed379853cDe0fa4F97AB987181B1E");
 
     let bestTrade: any;
     try {
@@ -86,8 +88,8 @@ export class OneClick {
       min_amount_out: _minAmountOut,
       ...bestTrade,
       chain_id: this.chainId,
-      appFeeRate: 100,
-      appFeeRecipient: "0xf817257fed379853cDe0fa4F97AB987181B1E",
+      // app_fee_rate: 1000,
+      // app_fee_recipient: "0xf817257fed379853cDe0fa4F97AB987181B1E",
       // referral: "0x760AfE86e5de5fa0Ee542fc7B7B713e1c5425701",
       in_eth: inputCurrency.isNative ? 1 : 0,
       out_eth: outputCurrency.isNative ? 1 : 0,
