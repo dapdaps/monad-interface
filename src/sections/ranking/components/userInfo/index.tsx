@@ -1,10 +1,10 @@
 "use client";
-import { useEffect, useMemo } from "react";
+
+import { useMemo } from "react";
 import { useUser } from "@/hooks/use-user";
 import { formatLongText } from "@/utils/utils";
 import Copyed from "@/components/copyed";
 import { EMilitaryRank, MilitaryRank } from "../../config";
-import { useAccount } from "wagmi";
 import Tip from "../tip";
 import { useUserRanking } from "../../hooks/use-user-ranking";
 import { shareReferral } from "../../lib";
@@ -12,12 +12,6 @@ import { shareReferral } from "../../lib";
 export default function UserInfo() {
     const { userInfo } = useUser();
     const { userRanking } = useUserRanking();
-
-    const formattedAddress = useMemo(() => {
-        if (!userInfo?.address) return "";
-        const upperAddress = userInfo?.address.toUpperCase();
-        return formatLongText(upperAddress, 3, 4);
-    }, [userInfo]);
 
     const borderWidth = 1;
     const borderRadius = 4;
@@ -67,13 +61,13 @@ export default function UserInfo() {
         return window.location.origin.includes('localhost') ? window.location.origin : 'https://alpha.nadsa.space/api/twitter_auth';
     }, []);
 
-
     const avatar = useMemo(() => {
         if (userInfo?.social?.twitter_avatar) {
             return userInfo?.social?.twitter_avatar.replace('normal', '400x400');
         }
         return "/images/wallet/ranking/default-avatar.png";
     }, [userInfo]);
+
 
     return (
         <div
@@ -133,7 +127,9 @@ export default function UserInfo() {
                     </div>
 
                     <div className="flex items-center gap-2 mb-4">
-                        <span className="text-white text-[20px]">{formattedAddress}</span>
+                        <span className="text-white text-[20px]">
+                            {formatLongText(userRanking?.user_name || userRanking?.address, !!userRanking?.user_name ? 10 : 5, 4)}
+                        </span>
                         <Copyed value={userInfo?.address || ""} />
                     </div>
 
