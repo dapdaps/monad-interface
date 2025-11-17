@@ -117,14 +117,14 @@ const Leaderboard = () => {
                   <div
                     className={clsx(
                       "rounded-full bg-center bg-no-repeat shrink-0",
-                      record.rank === 1 ? "w-[32px] h-[32px] bg-[legnth:32px_32px] border-[2px] border-[#FED801]" : "w-[28px] h-[28px] bg-[legnth:28px_28px]"
+                      record.rank === 1 ? "w-[32px] h-[32px] bg-[length:32px_32px] border-[2px] border-[#FED801]" : "w-[28px] h-[28px] bg-[length:28px_28px]"
                     )}
                     style={{
-                      backgroundImage: record.img ? `url(${record.img})` : "conic-gradient(from 180deg, rgb(0, 209, 255) 0deg, rgb(255, 0, 138) 360deg)",
+                      backgroundImage: record.avatar ? `url(${record.avatar})` : "conic-gradient(from 180deg, rgb(0, 209, 255) 0deg, rgb(255, 0, 138) 360deg)",
                     }}
                   />
                   <div className="">
-                    {formatLongText(record.address, 5, 4)}
+                    {formatLongText(record.user_name || record.address, !!record.user_name ? 10 : 5, 4)}
                   </div>
                 </div>
               );
@@ -199,12 +199,12 @@ const TopUser = (props: any) => {
     <div className="flex flex-col items-center gap-[30px]">
       <div
         className={clsx(
-          "relative flex justify-center items-center w-[80px] h-[80px] border-[4px] rounded-full bg-center bg-[legnth:80px_80px] bg-no-repeat shrink-0",
+          "relative flex justify-center items-center w-[80px] h-[80px] border-[4px] rounded-full bg-center bg-[length:80px_80px] bg-no-repeat shrink-0",
           rank === 1 && "border-[#FED801] translate-y-[-10px]",
           rank === 2 && "border-[#DBDDDF]",
           rank === 3 && "border-[#D6B4A1]",
         )}
-        style={{ backgroundImage: user.img ? `url(${user.img})` : "conic-gradient(from 180deg, rgb(0, 209, 255) 0deg, rgb(255, 0, 138) 360deg)" }}
+        style={{ backgroundImage: user.avatar ? `url(${user.avatar})` : "conic-gradient(from 180deg, rgb(0, 209, 255) 0deg, rgb(255, 0, 138) 360deg)" }}
       >
         <img
           src={MilitaryRank[user.tier as EMilitaryRank].icon}
@@ -214,7 +214,7 @@ const TopUser = (props: any) => {
       </div>
       <div className="text-center text-[16px] text-white font-Oxanium font-[600] leading-[100%]">
         <div className="">
-          {formatLongText(user.address, 5, 4)}
+          {formatLongText(user.user_name || user.address, !!user.user_name ? 10 : 5, 4)}
         </div>
         <div className={clsx("mt-[8px]", rank === 1 && "text-[#FED801]")}>
           {numberFormatter(user.rp, 2, true)} RP
