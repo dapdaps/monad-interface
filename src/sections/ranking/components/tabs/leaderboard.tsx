@@ -50,7 +50,7 @@ const Leaderboard = () => {
           gridTemplateColumns: `repeat(${militaryRankList.length}, 1fr)`,
         }}
       >
-        <button
+        {/* <button
           type="button"
           className={clsx(
             "absolute z-[2] top-[-34px] right-0 flex items-center gap-[4px] text-[14px] font-Oxanium font-[400] leading-[100%]",
@@ -66,7 +66,7 @@ const Leaderboard = () => {
           <div className="">
             My Ranking
           </div>
-        </button>
+        </button> */}
         {
           militaryRankList.reverse().map((rank) => (
             <button

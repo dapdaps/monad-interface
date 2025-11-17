@@ -7,6 +7,10 @@ export const useUserRanking = () => {
     const { userInfo } = useUser();
 
     const { runAsync: getUserRanking, data: userRanking } = useRequest(async () => {
+        if (!userInfo?.address) {
+            return {};
+        }
+
         const res = await get('/rp/ranking/user', {
             address: userInfo.address
         });
@@ -19,16 +23,18 @@ export const useUserRanking = () => {
         return res.data;
     }, {
         manual: true,
-        refreshDeps: [userInfo.address],
+        refreshDeps: [userInfo?.address],
     });
 
     useEffect(() => {
         if (userInfo?.address) {
             getUserRanking();
+        } else {
+
         }
     }, [userInfo]);
 
     return {
-        userRanking
+        userRanking: userInfo?.address ? userRanking : {}
     }
 }

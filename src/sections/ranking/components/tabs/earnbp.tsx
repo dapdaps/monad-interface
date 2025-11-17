@@ -258,13 +258,14 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
                                         className="flex items-center gap-[8px] text-white text-[16px] font-Oxanium font-[600] uppercase hover:opacity-80 transition-opacity"
                                     >
                                         {section.title}
-                                        <svg className={clsx(
-                                            "transition-transform duration-200",
-                                            !isExpanded ? "rotate-180" : ""
-                                        )} width="15" height="8" viewBox="0 0 15 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0.609375 6.26172L7.10938 1.26172L13.6094 6.26172" stroke="#A1AECB" stroke-width="2" />
-                                        </svg>
-
+                                        {
+                                            isReferral && <svg className={clsx(
+                                                "transition-transform duration-200",
+                                                !isExpanded ? "rotate-180" : ""
+                                            )} width="15" height="8" viewBox="0 0 15 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M0.609375 6.26172L7.10938 1.26172L13.6094 6.26172" stroke="#A1AECB" stroke-width="2" />
+                                            </svg>
+                                        }
                                     </button>
 
                                     <div className="flex items-center justify-center gap-[10px]">
@@ -385,22 +386,23 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
                                         />
                                     </>
                                 ) : (
-                                    <div className="space-y-[8px]">
-                                        {section.tiers?.map((tier, index) => (
-                                            <div
-                                                key={index}
-                                                className="flex items-center justify-between text-[14px] font-[400] text-[#A1AECB] pl-[70px]"
-                                            >
-                                                <div className="flex items-center gap-[5px]">
-                                                    <span>{tier.volume}</span>
-                                                    <span className="">{tier.fees}</span>
-                                                </div>
-                                                <div className="">
-                                                    {tier.reward}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
+                                    null
+                                    // <div className="space-y-[8px]">
+                                    //     {section.tiers?.map((tier, index) => (
+                                    //         <div
+                                    //             key={index}
+                                    //             className="flex items-center justify-between text-[14px] font-[400] text-[#A1AECB] pl-[70px]"
+                                    //         >
+                                    //             <div className="flex items-center gap-[5px]">
+                                    //                 <span>{tier.volume}</span>
+                                    //                 <span className="">{tier.fees}</span>
+                                    //             </div>
+                                    //             <div className="">
+                                    //                 {tier.reward}
+                                    //             </div>
+                                    //         </div>
+                                    //     ))}
+                                    // </div>
                                 )}
                             </div>
                         )}

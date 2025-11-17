@@ -6,6 +6,10 @@ import { useEffect } from "react";
 export const useUserRP = () => {
     const { userInfo } = useUser();
     const { data: userRP, runAsync: getUserRP } = useRequest(async () => {
+        if (!userInfo?.address) {
+            return {};
+        }
+
         const res = await get('/rp/user');
         if (res.code !== 200) {
             return {};
@@ -23,7 +27,7 @@ export const useUserRP = () => {
     }, [userInfo]);
 
     return {
-        userRP,
+        userRP: userInfo?.address ? userRP : {},
         getUserRP,
     };
 };

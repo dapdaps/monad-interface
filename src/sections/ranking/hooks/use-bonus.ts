@@ -7,6 +7,10 @@ export const useBonus = () => {
     const { userInfo } = useUser();
 
     const { data: allBonus, loading: allBonusLoading, runAsync: getBonus } = useRequest(async () => {
+        if (!userInfo?.address) {
+            return {};
+        }
+
         const res = await get('/rp/bonus', {
             address: userInfo.address,
         });
@@ -27,5 +31,5 @@ export const useBonus = () => {
         }
     }, [userInfo]);
 
-    return { allBonus, allBonusLoading };
+    return { allBonus: userInfo?.address ? allBonus : {}, allBonusLoading };
 }

@@ -8,6 +8,10 @@ export const useInvite = () => {
     const [page, setPage] = useState(1);
 
     const { data: invite, runAsync: getInvite, loading: inviteLoading } = useRequest(async () => {
+        if (!userInfo?.address) {
+            return {};
+        }
+
         const res = await get('/invite/records', {
             page: page,
             page_size: 10,
@@ -28,7 +32,7 @@ export const useInvite = () => {
     }, [userInfo]);
 
     return {
-        invite,
+        invite: userInfo?.address ? invite : {},
         page,
         setPage,
         inviteLoading,

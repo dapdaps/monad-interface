@@ -50,22 +50,24 @@ export default function UserInfo() {
     )`;
 
     const currentRank = useMemo(() => {
-        if (!userRanking?.tier) return null;
+        if (!userRanking?.tier || !userInfo?.address) return null;
         return MilitaryRank[EMilitaryRank[(userRanking?.tier?.charAt(0).toUpperCase() + userRanking?.tier?.slice(1)) as keyof typeof EMilitaryRank]];
-    }, [userRanking]);
+    }, [userRanking, userInfo]);
 
     const nextRank = useMemo(() => {
-        if (!currentRank) return null;
+        if (!currentRank || !userInfo?.address) return null;
         const rankNames = Object.keys(EMilitaryRank) as (keyof typeof EMilitaryRank)[];
         const currentIndex = rankNames.indexOf(currentRank.name as keyof typeof EMilitaryRank);
         if (currentIndex < 0 || currentIndex + 1 >= rankNames.length) return null;
         const nextRankKey = rankNames[currentIndex + 1];
         return MilitaryRank[EMilitaryRank[nextRankKey]];
-    }, [currentRank]);
+    }, [currentRank, userInfo]);
 
     const callbackUrl = useMemo(() => {
         return window.location.origin.includes('localhost') ? window.location.origin : 'https://alpha.nadsa.space/api/twitter_auth';
     }, []);
+
+    console.log('currentRank', currentRank);
 
 
     return (
@@ -118,9 +120,11 @@ export default function UserInfo() {
                         <div className="absolute left-0 right-0 bottom-0 h-[25px] bg-[#000000A6] flex items-center justify-center">
                             <span className="text-[#BFFF60] text-[16px] font-[500] leading-none uppercase">{userRanking?.tier}</span>
                         </div>
-                        <div className="absolute bottom-[-15px] left-[-2px] w-[42px] flex items-center justify-center">
-                            <img src={currentRank?.icon} alt="rank" className="w-full" />
-                        </div>
+                        {
+                            currentRank?.icon && <div className="absolute bottom-[-15px] left-[-2px] w-[42px] flex items-center justify-center">
+                                <img src={currentRank?.icon} alt="rank" className="w-full" />
+                            </div>
+                        }
                     </div>
 
                     <div className="flex items-center gap-2 mb-4">
