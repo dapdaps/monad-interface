@@ -2,17 +2,18 @@ import { useRequest } from "ahooks";
 import { useUser } from "@/hooks/use-user";
 import { get } from "@/utils/http";
 import { useEffect } from "react";
+import useCustomAccount from "@/hooks/use-account";
 
 export const useUserRanking = () => {
-    const { userInfo } = useUser();
+    const { account } = useCustomAccount();
 
     const { runAsync: getUserRanking, data: userRanking } = useRequest(async () => {
-        if (!userInfo?.address) {
+        if (!account) {
             return {};
         }
 
         const res = await get('/rp/ranking/user', {
-            address: userInfo.address
+            address: account
         });
 
 
@@ -23,18 +24,18 @@ export const useUserRanking = () => {
         return res.data;
     }, {
         manual: true,
-        refreshDeps: [userInfo?.address],
+        refreshDeps: [account],
     });
 
     useEffect(() => {
-        if (userInfo?.address) {
+        if (account) {
             getUserRanking();
         } else {
 
         }
-    }, [userInfo]);
+    }, [account]);
 
     return {
-        userRanking: userInfo?.address ? userRanking : {}
+        userRanking: account ? userRanking : {}
     }
 }
