@@ -41,7 +41,7 @@ export default function Routes({
     </div>
   }, [trade, dapps]);
 
-  
+  console.log('trade', trade);
 
   return (
     <>

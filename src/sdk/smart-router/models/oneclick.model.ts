@@ -9,7 +9,8 @@ export class OneClick {
   private wrappedNativeAddress: string;
   private ROUTER: { [key: number]: string } = {
     // 10143: "0xc26484D2ce20e31e363e2f27782B4E9718fF918a",
-    10143: "0x5E17a41378018B092cE9778413aB736418CE60E8",
+    // 10143: "0x5E17a41378018B092cE9778413aB736418CE60E8",
+    10143: "0x92493D26DDe5Edbd1660e0f49f1dd853B9623f80",
   };
   private HOST = "https://api-trade.nadsa.space";
 
@@ -47,7 +48,7 @@ export class OneClick {
     candidatesParams.set("poolSafeMode", "true");
     candidatesParams.set("maxTickCount", "10");
     candidatesParams.set("appFeeRate", "100");
-    candidatesParams.set("appFeeRecipient", "0xf817257fed379853cDe0fa4F97AB987181B1E");
+    candidatesParams.set("appFeeRecipient", "0xf9f2384fee12a3e31b3d61a262df9baa6b4e8a13");
 
     let bestTrade: any;
     try {
@@ -87,11 +88,11 @@ export class OneClick {
       deadline: deadline,
       min_amount_out: _minAmountOut,
       ...bestTrade,
-      chainId: this.chainId,
+      // chainId: this.chainId,
       app_fee_rate: 100,
-      app_fee_recipient: "0xf817257fed379853cDe0fa4F97AB987181B1E",
+      app_fee_recipient: "0xf9f2384fee12a3e31b3d61a262df9baa6b4e8a13",
       appFeeRate: 100,
-      appFeeRecipient: "0xf817257fed379853cDe0fa4F97AB987181B1E",
+      appFeeRecipient: "0xf9f2384fee12a3e31b3d61a262df9baa6b4e8a13",
       // referral: "0x760AfE86e5de5fa0Ee542fc7B7B713e1c5425701",
       in_eth: inputCurrency.isNative ? 1 : 0,
       out_eth: outputCurrency.isNative ? 1 : 0,
