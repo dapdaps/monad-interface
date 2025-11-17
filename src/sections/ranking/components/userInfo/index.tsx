@@ -67,8 +67,13 @@ export default function UserInfo() {
         return window.location.origin.includes('localhost') ? window.location.origin : 'https://alpha.nadsa.space/api/twitter_auth';
     }, []);
 
-    console.log('currentRank', currentRank);
 
+    const avatar = useMemo(() => {
+        if (userInfo?.social?.twitter_avatar) {
+            return userInfo?.social?.twitter_avatar.replace('normal', '400x400');
+        }
+        return "/images/wallet/ranking/default-avatar.png";
+    }, [userInfo]);
 
     return (
         <div
@@ -116,7 +121,7 @@ export default function UserInfo() {
 
                 <div className="p-6 flex flex-col items-center">
                     <div className="relative w-[182px] h-[182px] rounded-[6px]  mb-5">
-                        <img src={userRanking?.avatar || "/images/wallet/ranking/default-avatar.png"} alt="avatar" className="w-full h-full object-cover rounded-[6px]" />
+                        <img src={avatar} alt="avatar" className="w-full h-full object-cover rounded-[6px]" />
                         <div className="absolute left-0 right-0 bottom-0 h-[25px] bg-[#000000A6] flex items-center justify-center">
                             <span className="text-[#BFFF60] text-[16px] font-[500] leading-none uppercase">{userRanking?.tier}</span>
                         </div>
