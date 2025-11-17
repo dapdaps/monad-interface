@@ -178,7 +178,21 @@ export default function useBridge({ originFromChain, originToChain, derection, d
           bridgeType: selectedRoute.bridgeType,
           fromAddress: account,
           toAddress: account,
-          status: 3
+          status: 3,
+
+          // new api structure
+          token_in: [{
+            symbol: fromToken?.symbol,
+            address: fromToken?.address,
+            amount: inputValue,
+            decimal: fromToken?.decimals,
+          }],
+          token_out: [{
+            symbol: toToken?.symbol,
+            address: toToken?.address,
+            amount: reciveAmount,
+            decimal: toToken?.decimals,
+          }],
         };
 
 

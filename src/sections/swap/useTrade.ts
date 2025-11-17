@@ -201,7 +201,22 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
         transactionHash,
         add: 0,
         token_in_currency: trade.inputCurrency,
-        token_out_currency: trade.outputCurrency
+        token_out_currency: trade.outputCurrency,
+        extra_data: {
+          // new api structure
+          token_in: [{
+            symbol: trade.inputCurrency?.symbol,
+            address: trade.inputCurrency?.address,
+            amount: trade.inputCurrencyAmount,
+            decimal: trade.inputCurrency?.decimals,
+          }],
+          token_out: [{
+            symbol: trade.outputCurrency?.symbol,
+            address: trade.outputCurrency?.address,
+            amount: trade.outputCurrencyAmount,
+            decimal: trade.outputCurrency?.decimals,
+          }],
+        },
       });
     } catch (err: any) {
       toast.dismiss(toastId);

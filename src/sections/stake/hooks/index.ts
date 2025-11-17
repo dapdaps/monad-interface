@@ -129,6 +129,15 @@ export function useStake(props: any) {
           status,
           transactionHash,
           tokens: [inputToken],
+          extra_data: {
+            // new api structure
+            token_in: [{
+              symbol: inputToken?.symbol,
+              address: inputToken?.address,
+              amount: inputAmount,
+              decimal: inputToken?.decimals,
+            }],
+          },
         });
         // Succeed
         afterSuccess();
