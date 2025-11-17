@@ -3,8 +3,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import Fee from "./Fee";
 import { useSettingsStore } from "@/stores/settings";
 import dapps from "@/configs/swap";
+import { usePriceStore } from "@/stores/usePriceStore";
 
 import { useEffect, useMemo, useState } from "react";
+import { balanceFormated } from "@/utils/balance";
 
 const COLOR: Record<number, string> = {
   1: "text-[#ff9445]",
@@ -28,6 +30,7 @@ export default function Routes({
   const slippage = useSettingsStore((store: any) => store.slippage);
   const [showRoutesModal, setShowRoutesModal] = useState(false);
   const [selectedRoute, setSelectedRoute] = useState(null)
+  const prices = usePriceStore((store: any) => store.price);
 
   const RouteInfo = useMemo(() => {
     if (!trade) return null;
@@ -41,7 +44,13 @@ export default function Routes({
     </div>
   }, [trade, dapps]);
 
-  console.log('trade', trade);
+  console.log('trade', trade, prices);
+
+  const tradeFee = useMemo(() => {
+    if (!trade || !trade.fee) return null;
+    return trade.fee?.fee 
+    ? balanceFormated(new Big(trade.fee?.fee.toString()).div(10 ** trade.fee?.token?.decimals).mul(prices[trade.fee?.token?.symbol] || prices[trade.fee?.token?.address]).toString()) : '-';
+  }, [trade, prices]);
 
   return (
     <>
@@ -64,7 +73,7 @@ export default function Routes({
               value={`${priceImpact || "-"}%`}
               valueClassName={COLOR[priceImpactType || 0]}
             />
-            <Fee name="Trading fee" value={gasUsd} />
+            <Fee name="Trading fee" value={tradeFee} />
             <Fee name="Route" value={RouteInfo} />
           </motion.div>
         )}

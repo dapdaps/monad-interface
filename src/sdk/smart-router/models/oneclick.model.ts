@@ -150,13 +150,17 @@ export class OneClick {
       };
     }
 
-    console.log('oneclick txn', txn);
+    console.log('oneclick txn', bestTrade);
 
     return {
       outputCurrencyAmount: BigNumber(bestTrade.amount_out || 0).div(10 ** outputCurrency.decimals).toFixed(outputCurrency.decimals).replace(/\.?0+$/, ""),
       noPair: false,
       routerAddress: this.ROUTER[inputCurrency.chainId],
       routes: bestTrade.routes,
+      fee: {
+        fee: Number(bestTrade.amount_out_no_fee) - Number(bestTrade.amount_out),
+        token: outputCurrency
+      },
       txn,
     };
   }

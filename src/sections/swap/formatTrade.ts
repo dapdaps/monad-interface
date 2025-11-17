@@ -96,6 +96,7 @@ const formatTrade = ({
     isGasEnough,
     priceImpact,
     priceImpactType,
+    fee: market.fee,
     gasUsd: nativeTokenPrice
       ? Big(nativeTokenPrice)
           .mul(gas)
