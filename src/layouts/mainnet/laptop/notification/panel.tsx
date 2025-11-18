@@ -8,10 +8,14 @@ import { useTimeAgo } from "@/hooks/use-time-ago";
 const NotitficationPanel = (props: any) => {
   const { } = props;
 
-  const { getList, list, loading, accountWithAk, hasMore } = useNotification();
+  const { getList, list, loading, accountWithAk, hasMore, clearList } = useNotification();
 
   useEffect(() => {
     getList();
+
+    return () => {
+      clearList();
+    };
   }, [accountWithAk]);
 
   return (
@@ -71,17 +75,21 @@ const NotitficationPanel = (props: any) => {
           )
         }
         {
-          hasMore && list?.length > 0 && (
-            <button
-              type="button"
-              className="my-[15px] text-center font-[400] underline underline-offset-1"
-              disabled={loading}
-              onClick={() => {
-                getList(list[list.length - 1].created_at);
-              }}
-            >
-              View more
-            </button>
+          list?.length > 0 && (
+            hasMore ? (
+              <button
+                type="button"
+                className="my-[15px] text-center font-[400] underline underline-offset-1"
+                disabled={loading}
+                onClick={() => {
+                  getList(list[list.length - 1].created_at);
+                }}
+              >
+                View more
+              </button>
+            ) : (
+              <div className="my-[15px] text-center font-[400] text-[12px]">No more notifications</div>
+            )
           )
         }
       </div>

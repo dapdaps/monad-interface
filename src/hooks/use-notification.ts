@@ -48,6 +48,10 @@ export function useNotification() {
     }
   }, { pollingInterval: UnreadPollingDuration, manual: true });
 
+  const clearList = () => {
+    setList([], { isFirst: true });
+  };
+
   return {
     unread,
     list,
@@ -57,5 +61,6 @@ export function useNotification() {
     unreadLoading,
     accountWithAk,
     hasMore,
+    clearList,
   };
 }
