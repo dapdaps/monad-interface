@@ -24,7 +24,7 @@ export default function History({ activeTab, setActiveTab, isOpen, setIsOpen, ge
     return (
         <div className={cls}>
             {
-                isOpen && historyCount > 0 ? 
+                isOpen && (historyCount > 0 || pendingCount > 0) ? 
                 <List setIsOpen={setIsOpen} activeTab={activeTab} setActiveTab={setActiveTab} pendingCount={pendingCount} historyCount={historyCount} list={list} /> : 
                 <Simple setActiveTab={setActiveTab} setIsOpen={setIsOpen} pendingCount={pendingCount} historyCount={historyCount} />
             }

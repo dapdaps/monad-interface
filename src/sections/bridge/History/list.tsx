@@ -27,12 +27,14 @@ export default function History({ pendingCount, historyCount, list, setIsOpen, a
 
     const cls = isMobile
         ? 'm-auto md:w-[92.307vw] border border-[#000] rounded-2xl bg-[#FFFDEB]'
-        : 'fixed bottom-[-10px] w-[350px] right-[220px] z-50 bg-[url("/images/bridge/history-bg.svg")] bg-no-repeat bg-top'
+        : 'fixed bottom-[-10px] w-[350px] right-[260px] z-50 bg-[url("/images/bridge/history-bg.svg")] bg-no-repeat bg-top'
 
     return (
         <div className={cls}>
             <div className="relative p-[13px]">
-                <div className="absolute top-[30px] cursor-pointer right-[30px]" data-click-sound onClick={() => setIsOpen(false)}>
+                <div className="absolute top-[30px] cursor-pointer right-[30px]" data-click-sound onClick={() => {
+                    setIsOpen(false)
+                }}>
                     <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g filter="url(#filter0_i_31923_1683)">
                             <path d="M8.73205 2C7.96225 0.666666 6.03775 0.666668 5.26795 2L1.80385 8C1.03405 9.33334 1.9963 11 3.5359 11L10.4641 11C12.0037 11 12.966 9.33333 12.1962 8L8.73205 2Z" fill="#BFFF60" />
