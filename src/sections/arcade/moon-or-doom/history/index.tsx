@@ -476,7 +476,7 @@ function WithdrawTab({
                         withdrawList.map((item: any, index: number) => (
                             <tr key={index} className="text-white">
                                 <td className="py-2 px-2 pl-[30px]">{Number(item.amount || 0).toFixed(2)} MON</td>
-                                <td className="py-2 px-2 ">{dayjs(item.tx_time * 1000).utc().format('YYYY-MM-DD HH:mm:ss')}</td>
+                                <td className="py-2 px-2 ">{dayjs(item.created_at).utc().format('YYYY-MM-DD HH:mm:ss')}</td>
                                 <td className="py-2 px-2 pr-[30px]">
                                     <span className={clsx(
                                         "font-[600]",
