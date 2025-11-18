@@ -5,6 +5,7 @@ import { OpenOcean } from "./openocean.model";
 import { Uniswap } from "./uniswap.model";
 import { Kuru } from "./kuru.model";
 import { OneClick } from "./oneclick.model";
+import { MondayTrade } from "./mondaytrade.model";
 
 export default {
   iZumi: iZiSwap,
@@ -13,5 +14,6 @@ export default {
   OpenOcean,
   Uniswap,
   Kuru,
-  OneClick: OneClick,
+  OneClick,
+  MondayTrade,
 } as { [key: string]: any };

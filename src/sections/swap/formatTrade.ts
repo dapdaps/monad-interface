@@ -82,6 +82,7 @@ const formatTrade = ({
     routerStr = inputCurrency.symbol + ' > ' + outputCurrency.symbol;
   }
 
+
   return {
     inputCurrency,
     outputCurrency,
@@ -92,7 +93,7 @@ const formatTrade = ({
     noPair: market.noPair,
     outputCurrencyAmount: market.outputCurrencyAmount,
     routerStr,
-    routes: market.routes?.[0].routes || [],
+    routes: market.routes?.[0]?.routes || [],
     isGasEnough,
     priceImpact,
     priceImpactType,

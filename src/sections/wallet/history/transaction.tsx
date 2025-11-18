@@ -72,7 +72,6 @@ export default function Transaction({ refresh }: { refresh: number }) {
                         })
                     }
 
-
                     {
                         !isLoading && transaction.length === 0 && (
                             <tr>
