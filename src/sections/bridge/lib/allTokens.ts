@@ -17,9 +17,9 @@ import { zkSync } from "../../../configs/tokens/zkSync";
 import { optimism } from "../../../configs/tokens/optimism";
 import { blast } from "../../../configs/tokens/blast";
 import { scroll } from '../../../configs/tokens/scroll';
-
+import { monad } from "../../../configs/tokens/monad";
 import { tokenPairs } from './bridges/stargate/config'
-import { monad } from "../../../configs/tokens/monad-testnet";
+import { monad as monadTestnet } from "../../../configs/tokens/monad-testnet";
 import { sepolia } from "../../../configs/tokens/sepolia";
 
 const mapFn = (item: Token) => {
@@ -64,7 +64,8 @@ const allTokens: { [key: number]: Token[] } = {
   324: Object.values(zkSync).map(mapFn).filter(fikterFn),
   10: Object.values(optimism).map(mapFn).filter(fikterFn),
   81457: Object.values(blast).map(mapFn).filter(fikterFn),
-  10143: Object.values(monad).map(mapFn),
+  143: Object.values(monad).map(mapFn),
+  10143: Object.values(monadTestnet).map(mapFn),
   11155111: Object.values(sepolia).map(mapFn)
 };
 

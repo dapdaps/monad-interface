@@ -90,6 +90,10 @@ export const contractAddresses: any = {
     534352: {
         ETH: '0xc2b638cb5042c1b3c5d5c969361fb50569840583',
         USDC: '0x3Fc69CC4A842838bCDC9499178740226062b14E4'
+    },
+
+    143: {
+        USDC: '0x3Fc69CC4A842838bCDC9499178740226062b14E4'
     }
 }
 
@@ -112,7 +116,8 @@ export const chainIds: any = {
     169: 30225,
     534352: 30214,
     81457: 30194,
-    34443: 30234
+    34443: 30234,
+    143: 30390,
 }
 
 export const tokenPairs: any = {

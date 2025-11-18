@@ -1,12 +1,12 @@
 export const RPC_LIST: any = {
   default: {
-    url: "https://testnet-rpc.monad.xyz",
+    url: "https://rpc-mainnet.monadinfra.com/rpc/aXs4fXLNOkkrC4T6W8DU7F4SOJ12gst6",
     simpleName: "Monad RPC"
   },
-  drpc: {
-    url: "https://monad-testnet.drpc.org",
-    simpleName: "dRPC"
-  },
+  // drpc: {
+  //   url: "https://monad-testnet.drpc.org",
+  //   simpleName: "dRPC"
+  // },
 };
 
 export enum RpcStatus {

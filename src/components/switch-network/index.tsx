@@ -17,7 +17,7 @@ const SwitchNetwork = (props: Props) => {
 
   const handleOpenOrSwitch = () => {
     if (chainId) {
-      switchChain({ chainId: targetChain.id });
+      // switchChain({ chainId: targetChain.id });
     } else {
       openConnectModal?.()
     }

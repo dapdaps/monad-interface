@@ -1,9 +1,12 @@
 export const tokenPairs: any = {
-    11155111: {
-        'ETH': 'ETH',
+    1: {
+        'USDC': 'USDC',
     },
-    10143: {
-        'ETH': 'ETH',
+    143: {
+        'USDC': 'USDC',
+    },
+    56: {
+        'USDC': 'USDC',
     },
 }
 

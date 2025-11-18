@@ -112,15 +112,10 @@ export async function getQuote(request: QuoteRequest, signer: Signer): Promise<Q
             params.oftCmd
         ]
 
-        console.log('sendParams:', sendParams)
-
         const result = await contract.quoteSend(
             sendParams,
             payInLzToken
         );
-
-        console.log('result:', result)
-
 
         const uuid = setQuote({
             route: sendParams,
@@ -131,7 +126,6 @@ export async function getQuote(request: QuoteRequest, signer: Signer): Promise<Q
             contractAddress,
             fee: result
         })
-
 
         return {
             uuid,

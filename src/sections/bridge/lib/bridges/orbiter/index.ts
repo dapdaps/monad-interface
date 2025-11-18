@@ -11,8 +11,8 @@ import chainConfig from '../../util/chainConfig'
 import type { QuoteRequest, QuoteResponse, ExecuteRequest } from '../../type/index'
 
 const icon = getIcon('orbiter')
-// const base_url = 'https://api.orbiter.finance/sdk';
-const base_url = 'https://testnet-api.orbiter.finance/sdk';
+const base_url = 'https://api.orbiter.finance/sdk';
+// const base_url = 'https://testnet-api.orbiter.finance/sdk';
 
 let crossChainRouter: any[] = []
 let tokens: any = null

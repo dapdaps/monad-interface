@@ -21,9 +21,6 @@ import type { Token, Chain } from "@/types";
 import { motion } from "framer-motion";
 import { tokenPairs } from "./lib/bridges/orbiter/config";
 import useBridgeType from "./Hooks/useBridgeType";
-import Nft from "./Nft";
-import { Tab } from "@/components/tab/Tab";
-import { TabItem } from "@/components/tab/TabItem";
 import useClickTracking from "@/hooks/use-click-tracking";
 
 const DappHeader: React.FC = () => {
@@ -63,7 +60,7 @@ const DappHeader: React.FC = () => {
 
 const ComingSoon = false;
 const chainList = Object.values(chains).filter((chain) =>
-  [10143, 11155111].includes(chain.chainId)
+  [1, 143, 56].includes(chain.chainId)
 );
 
 export default function Bridge() {
@@ -104,8 +101,8 @@ export default function Bridge() {
     executeRoute,
     getStatus
   } = useBridge({
-    originFromChain: chains[11155111],
-    originToChain: chains[10143],
+    originFromChain: chains[56],
+    originToChain: chains[143],
     derection: 1,
     account: address,
     defaultBridgeText: "Bridge"
@@ -152,8 +149,12 @@ export default function Bridge() {
   }, [fromChain, fromToken]);
 
   useEffect(() => {
-    setFromToken(allTokens[11155111][0]);
-    setToToken(allTokens[10143][1]);
+    const fromToken = allTokens[56].find((token: Token) => token.symbol.toUpperCase() === 'USDC');
+    const toToken = allTokens[143].find((token: Token) => token.symbol.toUpperCase() === 'USDC');
+    if (fromToken && toToken) {
+      setFromToken(fromToken as Token);
+      setToToken(toToken as Token);
+    }
   }, []);
 
   useEffect(() => {
