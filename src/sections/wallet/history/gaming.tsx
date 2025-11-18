@@ -40,7 +40,7 @@ export default function Gaming({ refresh }: { refresh: number }) {
                         !isLoading && (!gameRecord || gameRecord?.length === 0) && (
                             <tr>
                                 <td colSpan={6} className="pt-[50px]">
-                                    <div className="flex justify-center items-center">
+                                    <div className="flex justify-center items-center flex-col">
                                         <Empty /> No data yet
                                     </div>
                                 </td>
@@ -98,12 +98,16 @@ const Icons: any = {
     777: '/images/mainnet/wallet/game_777.png',
     space: '/images/mainnet/wallet/game_space.png',
     rps: '/images/mainnet/game/guess_who_hover.png',
+    chartwithdraw: '/images/mainnet/chart-voyager.png',
+    chartdeposit: '/images/mainnet/chart-voyager.png',
 }
 
 const Names: any = {
     777: 'Lucky 777',
     space: 'Space Invaders',
     rps: 'Guess Who',
+    chartdeposit: 'Chart Deposit',
+    chartwithdraw: 'Chart Withdraw',
 }
 function getGameType(name: string) {
     for (const key in Icons) {
@@ -174,6 +178,10 @@ function getGameAssets(item: any) {
             return whitelist ? whitelist : <CashOut text="Cancel" />
         case 'rpsPayOut':
             return whitelist ? whitelist : <CashOut />
+        case 'chartDeposit':
+            return <CashOut text="Deposit" />
+        case 'chartWithdraw':
+            return <CashOut text="Withdraw" />
         default:
             return <CashOut />
     }

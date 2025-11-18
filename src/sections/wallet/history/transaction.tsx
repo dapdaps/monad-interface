@@ -77,7 +77,7 @@ export default function Transaction({ refresh }: { refresh: number }) {
                         !isLoading && transaction.length === 0 && (
                             <tr>
                                 <td colSpan={6} className="pt-[50px]">
-                                    <div className="flex justify-center items-center">
+                                    <div className="flex justify-center items-center flex-col">
                                         <Empty /> No data yet
                                     </div>
                                 </td>
