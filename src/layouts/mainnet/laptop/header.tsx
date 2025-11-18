@@ -6,8 +6,10 @@ import { numberFormatter } from "@/utils/number-formatter";
 import Big from "big.js";
 import clsx from "clsx";
 import Link from "next/link";
-import { useMemo } from "react";
+import { lazy, Suspense, useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
+
+const Notification = lazy(() => import("./notification"));
 
 const LaptopHeader = (props: any) => {
   const { className } = props;
@@ -72,35 +74,40 @@ const Account = (props: any) => {
           </div>
         ) : (
           connected ? (
-            <Popover
-              placement={PopoverPlacement.BottomRight}
-              trigger={PopoverTrigger.Hover}
-              content={(
-                <AccountMenu
+            <>
+              <Suspense fallback={null}>
+                <Notification />
+              </Suspense>
+              <Popover
+                placement={PopoverPlacement.BottomRight}
+                trigger={PopoverTrigger.Hover}
+                content={(
+                  <AccountMenu
+                    name={name}
+                    avatar={avatar}
+                    balance={balance}
+                    onDisconnect={() => {
+                      onDisconnect();
+                      setUserInfo({
+                        user: {},
+                        accessToken: {
+                          access_token: '',
+                          refresh_access_token: '',
+                          token_type: 'bearer',
+                        },
+                        accessTokenLoading: false,
+                      });
+                    }}
+                  />
+                )}
+              >
+                <ConnectedAccount
                   name={name}
-                  avatar={avatar}
+                  avatar={newAvatar}
                   balance={balance}
-                  onDisconnect={() => {
-                    onDisconnect();
-                    setUserInfo({
-                      user: {},
-                      accessToken: {
-                        access_token: '',
-                        refresh_access_token: '',
-                        token_type: 'bearer',
-                      },
-                      accessTokenLoading: false,
-                    });
-                  }}
                 />
-              )}
-            >
-              <ConnectedAccount
-                name={name}
-                avatar={newAvatar}
-                balance={balance}
-              />
-            </Popover>
+              </Popover>
+            </>
           ) : (
             <button
               type="button"
