@@ -1,10 +1,12 @@
 import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover";
 import { useConnectWallet } from "@/hooks/use-connect-wallet";
+import useUser from "@/hooks/use-user";
 import { useUserStore } from "@/stores/user";
 import { numberFormatter } from "@/utils/number-formatter";
 import Big from "big.js";
 import clsx from "clsx";
 import Link from "next/link";
+import { useMemo } from "react";
 import Skeleton from "react-loading-skeleton";
 
 const LaptopHeader = (props: any) => {
@@ -32,6 +34,8 @@ export default LaptopHeader;
 const Account = (props: any) => {
   const { } = props;
 
+  const { userInfo } = useUser();
+
   const {
     connecting,
     connected,
@@ -43,6 +47,14 @@ const Account = (props: any) => {
   } = useConnectWallet();
 
   const setUserInfo = useUserStore((store: any) => store.set);
+
+  const newAvatar = useMemo(() => {
+    if (userInfo?.social?.twitter_avatar) {
+      return `url("${userInfo?.social?.twitter_avatar.replace('normal', '400x400')}")`;
+    }
+    return avatar;
+  }, [userInfo, avatar]);
+
 
   return (
     <div className="flex h-full items-start justify-end gap-[10px]">
@@ -85,7 +97,7 @@ const Account = (props: any) => {
             >
               <ConnectedAccount
                 name={name}
-                avatar={avatar}
+                avatar={newAvatar}
                 balance={balance}
               />
             </Popover>
@@ -199,6 +211,9 @@ const ConnectedAccount = (props: any) => {
         className="w-[40px] h-[40px] rounded-[4px] border border-[#727D97] shrink-0"
         style={{
           backgroundImage: avatar,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
         }}
       />
     </div>
