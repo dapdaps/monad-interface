@@ -54,6 +54,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         return Math.max(60, _gridCellSize);
     }, [containerSize, gridNumber]);
 
+    // console.log('userBetRef', userBetRef);
+
     const handleWheel = useCallback((event: WheelEvent) => {
         event.preventDefault();
         event.stopPropagation();
@@ -431,8 +433,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 const betItem = betRef.current?.[fullGridTime.valueOf() + '-' + (price)];   
                 const betMultiplier = betItem?.multiplier;
                 const sourceTime = betItem?.source_time;
-
-                console.log('betItem', betItem);
 
                 if (!isPastRect && betMultiplier > 0) {
                     handleBet({
@@ -922,7 +922,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     }
                 }
 
-                if (betText.empty() && betMultiplier > 0) {
+                if (betText.empty() && (betMultiplier > 0 || userBetRef.current?.[key])) {
                     const padding = 8;
                     betText = chartGroup.select('.future-grid').append<SVGTextElement>('text')
                         .attr('class', className + ' bet-text')
@@ -934,7 +934,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         .attr('text-anchor', 'end')
                 } 
 
-                if (betMultiplier > 0 && !betText.empty() && ((isPast && userBetRef.current?.[key]) || !isPast) ) {
+                if ((betMultiplier > 0 || userBetRef.current?.[key]) && !betText.empty() && ((isPast && userBetRef.current?.[key]) || !isPast) ) {
                     betText.text(betMultiplier + 'x');
                 }
 
@@ -954,7 +954,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     d3.select(this).style('fill', '#31FFA6');
 
                     if (!betText.empty()) {
-                        betText.style('fill', '#000');
+                        betText.style('fill', '#000')
+                        .text(userBetRef.current?.[key]?.multiplier + 'x');
                     }
                 }
 
