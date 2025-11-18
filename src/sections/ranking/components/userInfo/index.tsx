@@ -137,9 +137,13 @@ export default function UserInfo() {
                         <div className="text-[#BFFF60] text-[26px] font-bold mb-1 leading-none">
                             {userRanking?.rp} RP
                         </div>
-                        <div className="text-white text-[14px]">
-                            Rank #{userRanking?.rank}
-                        </div>
+                        {
+                            userRanking?.rank && userRanking?.rank !== 0 && (
+                                <div className="text-white text-[14px]">
+                                    Rank #{userRanking?.rank}
+                                </div>
+                            )
+                        }
                     </div>
 
                     <div className="w-full text-[#A1AECB] text-[14px]">

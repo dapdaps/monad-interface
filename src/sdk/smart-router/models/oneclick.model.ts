@@ -4,6 +4,8 @@ import BigNumber from "bignumber.js";
 import chains from "../config/chains";
 import oneclickAbi from "../config/abi/oneclick";
 
+const FEE_RATE = 100;
+const FEE_RECIPIENT = "0xf9f2384fee12a3e31b3d61a262df9baa6b4e8a13";
 export class OneClick {
   private chainId: number;
   private wrappedNativeAddress: string;
@@ -47,8 +49,8 @@ export class OneClick {
     candidatesParams.set("slippage", slippage);
     candidatesParams.set("poolSafeMode", "true");
     candidatesParams.set("maxTickCount", "10");
-    candidatesParams.set("appFeeRate", "100");
-    candidatesParams.set("appFeeRecipient", "0xf9f2384fee12a3e31b3d61a262df9baa6b4e8a13");
+    candidatesParams.set("appFeeRate", FEE_RATE.toString());
+    candidatesParams.set("appFeeRecipient", FEE_RECIPIENT);
 
     let bestTrade: any;
     try {
@@ -89,10 +91,10 @@ export class OneClick {
       min_amount_out: _minAmountOut,
       ...bestTrade,
       // chainId: this.chainId,
-      app_fee_rate: 100,
-      app_fee_recipient: "0xf9f2384fee12a3e31b3d61a262df9baa6b4e8a13",
-      appFeeRate: 100,
-      appFeeRecipient: "0xf9f2384fee12a3e31b3d61a262df9baa6b4e8a13",
+      app_fee_rate: FEE_RATE,
+      app_fee_recipient: FEE_RECIPIENT,
+      appFeeRate: FEE_RATE,
+      appFeeRecipient: FEE_RECIPIENT,
       // referral: "0x760AfE86e5de5fa0Ee542fc7B7B713e1c5425701",
       in_eth: inputCurrency.isNative ? 1 : 0,
       out_eth: outputCurrency.isNative ? 1 : 0,
@@ -159,7 +161,8 @@ export class OneClick {
       routes: bestTrade.routes,
       fee: {
         fee: Number(bestTrade.amount_out_no_fee) - Number(bestTrade.amount_out),
-        token: outputCurrency
+        token: outputCurrency,
+        feeRate: (Number(FEE_RATE) / 100000).toString()
       },
       txn,
     };

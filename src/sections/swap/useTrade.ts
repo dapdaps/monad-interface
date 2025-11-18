@@ -216,6 +216,7 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
             amount: trade.outputCurrencyAmount,
             decimal: trade.outputCurrency?.decimals,
           }],
+          fee: trade.fee?.feeRate || '0',
         },
       });
     } catch (err: any) {
