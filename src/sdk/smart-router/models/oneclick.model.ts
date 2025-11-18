@@ -4,7 +4,7 @@ import BigNumber from "bignumber.js";
 import chains from "../config/chains";
 import oneclickAbi from "../config/abi/oneclick";
 
-const FEE_RATE = 100;
+const FEE_RATE = 10;
 const FEE_RECIPIENT = "0xf9f2384fee12a3e31b3d61a262df9baa6b4e8a13";
 export class OneClick {
   private chainId: number;
@@ -162,7 +162,7 @@ export class OneClick {
       fee: {
         fee: Number(bestTrade.amount_out_no_fee) - Number(bestTrade.amount_out),
         token: outputCurrency,
-        feeRate: (Number(FEE_RATE) / 100000).toString()
+        feeRate: (Number(FEE_RATE) / 10000).toString()
       },
       txn,
     };
