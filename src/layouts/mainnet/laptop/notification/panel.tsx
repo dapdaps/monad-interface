@@ -3,6 +3,7 @@ import { IconUnreadNotification } from "../icons";
 import { useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import Empty from "@/components/empty";
+import { useTimeAgo } from "@/hooks/use-time-ago";
 
 const NotitficationPanel = (props: any) => {
   const { } = props;
@@ -103,9 +104,7 @@ const NotificationItem = (props: any) => {
           {data.content}
         </div>
         <div className="w-full flex justify-between items-center gap-[10px] mt-[10px]">
-          <div className="">
-            1 min
-          </div>
+          <TimeAgo data={data} />
           {
             !!data.link && (
               <a
@@ -124,6 +123,18 @@ const NotificationItem = (props: any) => {
           <IconUnreadNotification />
         ) : <div className="w-[11px]"></div>
       }
+    </div>
+  );
+};
+
+const TimeAgo = (props: any) => {
+  const { data } = props;
+
+  const { timeAgo } = useTimeAgo({ date: data.created_at });
+
+  return (
+    <div className="">
+      {timeAgo}
     </div>
   );
 };
