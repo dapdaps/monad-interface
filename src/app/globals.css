@@ -494,3 +494,19 @@ input[type="number"]::-webkit-inner-spin-button {
     transform: rotate(1turn);
   }
 }
+
+@keyframes orbiter-sway {
+  0%,
+  100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+
+.orbiter-image {
+  animation: orbiter-sway 1.4s ease-in-out infinite;
+  transform-origin: center center;
+  transform-box: fill-box;
+}
