@@ -1,7 +1,6 @@
 import { monadTestnet } from "viem/chains";
 
-export const DEFAULT_CHAIN_ID =
-  Number(process.env.NEXT_PUBLIC_CHAIN_ID) || 143;
+export const DEFAULT_CHAIN_ID = 143
 
 export const IS_PRODUCTION = process.env.NEXT_PUBLIC_API === "https://testnet-api-monad.dapdap.net";
 

@@ -84,7 +84,7 @@ export class PancakeSwap {
     143: "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865"
   };
   private QUOTER: { [key: number]: string } = {
-    10143: "0x74b06eFA24F39C60AA7F61BD516a3eaf39613D57"
+    143: "0x4c650FB471fe4e0f476fD3437C3411B1122c4e3B"
   };
   private ROUTER: { [key: number]: string } = {
     143: "0x1b81D678ffb9C0263b24A97847620C99d213eB14"
