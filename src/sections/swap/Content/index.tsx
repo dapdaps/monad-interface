@@ -122,7 +122,7 @@ export default function Swap({
   useEffect(() => {
     const interval = setInterval(() => {
       setRefreshQuoter(Date.now());
-    }, 1000 * 20);
+    }, 1000 * 30);
 
     return () => {
       clearInterval(interval);
