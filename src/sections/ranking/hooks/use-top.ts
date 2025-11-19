@@ -12,7 +12,7 @@ export function useTop() {
         setTopUsers([]);
         return;
       }
-      setTopUsers(res.data);
+      setTopUsers(res.data || []);
     } catch (error) {
       console.log("get top failed: %o", error);
       setTopUsers([]);

@@ -33,8 +33,6 @@ async function multiQuoter(params: any): Promise<any> {
     (template: string) => models[template]
   );
 
-  console.log('options', options);
-
   const calls = filteredTemplates.map((template: string) => {
     const model = models[template];
     const dapp = new model(options.inputCurrency.chainId);

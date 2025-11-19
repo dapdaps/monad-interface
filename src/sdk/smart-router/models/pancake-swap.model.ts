@@ -353,84 +353,84 @@ export class PancakeSwapUniversal extends PancakeSwap {
     this.wrappedNativeAddress = weth[chainId];
   }
 
-  public async quoter(params: any) {
-    let {
-      inputCurrency: _inputCurrency,
-      outputCurrency: _outputCurrency,
-      inputAmount,
-      slippage,
-      account
-    } = params;
+  // public async quoter(params: any) {
+  //   let {
+  //     inputCurrency: _inputCurrency,
+  //     outputCurrency: _outputCurrency,
+  //     inputAmount,
+  //     slippage,
+  //     account
+  //   } = params;
 
-    const inputCurrency = { ..._inputCurrency };
-    const outputCurrency = { ..._outputCurrency };
+  //   const inputCurrency = { ..._inputCurrency };
+  //   const outputCurrency = { ..._outputCurrency };
 
-    const _inputAmount = BigNumber(inputAmount)
-      .multipliedBy(10 ** (inputCurrency.decimals || 18))
-      .toFixed(0);
-    inputCurrency.address = inputCurrency.address.toLowerCase();
-    outputCurrency.address = outputCurrency.address.toLowerCase();
+  //   const _inputAmount = BigNumber(inputAmount)
+  //     .multipliedBy(10 ** (inputCurrency.decimals || 18))
+  //     .toFixed(0);
+  //   inputCurrency.address = inputCurrency.address.toLowerCase();
+  //   outputCurrency.address = outputCurrency.address.toLowerCase();
 
-    const candidatesURL = new URL("https://pancakeswap.finance/api/pools/candidates");
-    candidatesURL.searchParams.set("addressA", this.normalizeAddress(inputCurrency.address));
-    candidatesURL.searchParams.set("addressB", this.normalizeAddress(outputCurrency.address));
-    candidatesURL.searchParams.set("chainId", this.chainId + "");
-    candidatesURL.searchParams.set("protocol", "stable,v2,v3");
-    candidatesURL.searchParams.set("type", "light");
+  //   const candidatesURL = new URL("https://pancakeswap.finance/api/pools/candidates");
+  //   candidatesURL.searchParams.set("addressA", this.normalizeAddress(inputCurrency.address));
+  //   candidatesURL.searchParams.set("addressB", this.normalizeAddress(outputCurrency.address));
+  //   candidatesURL.searchParams.set("chainId", this.chainId + "");
+  //   candidatesURL.searchParams.set("protocol", "stable,v2,v3");
+  //   candidatesURL.searchParams.set("type", "light");
 
-    let candidates: CandidatePool[] = [];
-    try {
-      const candidatesRes = await fetch("https://pancakeswap.finance/api/pools/candidates?" + candidatesURL.searchParams.toString());
-      const candidatesResJson = await candidatesRes.json();
-      candidates = candidatesResJson.data;
-    } catch (err: any) {
-      console.log('get candidates failed: %o', err);
-    }
+  //   let candidates: CandidatePool[] = [];
+  //   try {
+  //     const candidatesRes = await fetch("https://pancakeswap.finance/api/pools/candidates?" + candidatesURL.searchParams.toString());
+  //     const candidatesResJson = await candidatesRes.json();
+  //     candidates = candidatesResJson.data;
+  //   } catch (err: any) {
+  //     console.log('get candidates failed: %o', err);
+  //   }
 
-    if (!candidates.length) {
-      return {
-        outputCurrencyAmount: "",
-        noPair: true
-      };
-    }
+  //   if (!candidates.length) {
+  //     return {
+  //       outputCurrencyAmount: "",
+  //       noPair: true
+  //     };
+  //   }
 
-    const {
-      bestTrade,
-      routerAddress,
-      type
-    } = await this.findBestRoute(
-      inputCurrency,
-      outputCurrency,
-      candidates,
-      _inputAmount,
-      slippage,
-      account
-    );
+  //   const {
+  //     bestTrade,
+  //     routerAddress,
+  //     type
+  //   } = await this.findBestRoute(
+  //     inputCurrency,
+  //     outputCurrency,
+  //     candidates,
+  //     _inputAmount,
+  //     slippage,
+  //     account
+  //   );
 
-    if (!bestTrade) {
-      return {
-        outputCurrencyAmount: "",
-        noPair: true
-      };
-    }
+  //   if (!bestTrade) {
+  //     return {
+  //       outputCurrencyAmount: "",
+  //       noPair: true
+  //     };
+  //   }
 
-    const handleRes = await this[type === "v3" ? "handleV3" : "handleV2"]({
-      bestTrade,
-      outputCurrency,
-      inputCurrency,
-      _amount: _inputAmount,
-      slippage,
-      account,
-      routerAddress
-    });
+  //   const handleRes = await this[type === "v3" ? "handleV3" : "handleV2"]({
+  //     bestTrade,
+  //     outputCurrency,
+  //     inputCurrency,
+  //     _amount: _inputAmount,
+  //     slippage,
+  //     account,
+  //     routerAddress
+  //   });
 
-    return {
-      ...handleRes,
-      routerAddress,
-      version: type,
-      type: "UniversalRouter",
-    };
-  }
+  //   return {
+  //     ...handleRes,
+  //     routerAddress,
+  //     version: type,
+  //     type: "UniversalRouter",
+  //   };
+  // }
 
   private normalizeAddress(addr?: string, isWrapped?: boolean): string {
     if (!addr) return "";

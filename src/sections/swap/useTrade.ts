@@ -178,7 +178,16 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
       }
       toast.dismiss(toastId);
       toastId = toast.loading({ title: "Pending...", tx: tx.hash, chainId });
-      const { status, transactionHash } = await tx.wait ? tx.wait() : tx;
+      let status, transactionHash
+      if (tx.wait) {
+        ({ status, transactionHash } = await tx.wait());
+      } else {
+        status = tx.status;
+        transactionHash = tx.transactionHash;
+      }
+
+      console.log('status:', tx, status, transactionHash);
+
       setLoading(false);
       toast.dismiss(toastId);
 

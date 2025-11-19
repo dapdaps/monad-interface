@@ -40,9 +40,9 @@ const Leaderboard = () => {
   return (
     <div className="w-full">
       <div className="flex justify-center items-end gap-[78px] mt-[26px]">
-        <TopUser user={topUsers[1]} rank={2} />
-        <TopUser user={topUsers[0]} rank={1} />
-        <TopUser user={topUsers[2]} rank={3} />
+        <TopUser user={topUsers?.length > 1 ? topUsers[1] : undefined} rank={2} />
+        <TopUser user={topUsers?.length > 0 ? topUsers[0] : undefined} rank={1} />
+        <TopUser user={topUsers?.length > 2 ? topUsers[2] : undefined} rank={3} />
       </div>
       <div
         className="relative mt-[22px] h-[96px] grid gap-x-[4px]"
