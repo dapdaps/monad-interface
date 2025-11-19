@@ -38,6 +38,8 @@ export default function CurrencySelect({
     queryBalance
   } = useTokensBalance(showBalance ? tokens : []);
 
+  console.log('balances', balances, chainId, tokens);
+
   const handleSearch = () => {
     let tokenIsAvailable = false;
     const _tokens = tokens.filter((token: any) => {
