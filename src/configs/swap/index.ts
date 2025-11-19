@@ -5,6 +5,7 @@ import openocean from "./openocean";
 import uniswap from "./uniswap";
 import kuru from "./kuru";
 import oneclick from "./oneclick";
+import mondaytrade from "./mondaytrade";
 
 export default {
   izumi,
@@ -14,4 +15,5 @@ export default {
   uniswap,
   kuru,
   oneclick: oneclick,
+  mondaytrade: mondaytrade,
 } as Record<string, any>;

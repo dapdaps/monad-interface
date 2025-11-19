@@ -26,10 +26,6 @@ const History = () => {
   const [selected, setSelected] = useState<Date | DateRange | undefined>();
   const currentType = TypeOptions[historyListPage.type as EHistoryType];
 
-  useEffect(() => {
-    getHistoryList();
-  }, []);
-
   const { run: onHistoryListTimeChangeDebounce, cancel } = useDebounceFn((startTime?: number | null, endTime?: number | null) => {
     onHistoryListTimeChange(startTime, endTime);
   }, {

@@ -1,3 +1,5 @@
+import clsx from "clsx";
+
 export const IconLogOut = (props: any) => {
   const { className } = props;
 
@@ -141,3 +143,35 @@ export const SocialList = [
     iconSize: [13, 14],
   },
 ];
+
+export const IconNotification = (props: any) => {
+  const { className } = props;
+
+  return (
+    <svg className={className} width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g filter="url(#filter0_d_642_1308)">
+        <path d="M12.75 21.75H17.25C17.25 22.3467 17.0129 22.919 16.591 23.341C16.169 23.7629 15.5967 24 15 24C14.4033 24 13.831 23.7629 13.409 23.341C12.9871 22.919 12.75 22.3467 12.75 21.75ZM20.625 20.625H7.125C6.82663 20.625 6.54048 20.5065 6.3295 20.2955C6.11853 20.0845 6 19.7984 6 19.5C6 19.2016 6.11853 18.9155 6.3295 18.7045C6.54048 18.4935 6.82663 18.375 7.125 18.375H8.25V12.75C8.25 10.9598 8.96116 9.2429 10.227 7.97703C11.4929 6.71116 13.2098 6 15 6C16.7902 6 18.5071 6.71116 19.773 7.97703C21.0388 9.2429 21.75 10.9598 21.75 12.75V18.375H22.875C23.1734 18.375 23.4595 18.4935 23.6705 18.7045C23.8815 18.9155 24 19.2016 24 19.5C24 19.7984 23.8815 20.0845 23.6705 20.2955C23.4595 20.5065 23.1734 20.625 22.875 20.625H20.625ZM10.5 12.75V18.375H19.5V12.75C19.5 11.5565 19.0259 10.4119 18.182 9.56802C17.3381 8.72411 16.1935 8.25 15 8.25C13.8065 8.25 12.6619 8.72411 11.818 9.56802C10.9741 10.4119 10.5 11.5565 10.5 12.75Z" fill="white" />
+      </g>
+      <defs>
+        <filter id="filter0_d_642_1308" x="0" y="0" width="30" height="30" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+          <feOffset />
+          <feGaussianBlur stdDeviation="3" />
+          <feComposite in2="hardAlpha" operator="out" />
+          <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0" />
+          <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_642_1308" />
+          <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_642_1308" result="shape" />
+        </filter>
+      </defs>
+    </svg>
+  );
+};
+
+export const IconUnreadNotification = (props: any) => {
+  const { className } = props;
+
+  return (
+    <div className={clsx("w-[11px] h-[11px] border-[2px] border-black bg-[#FF008A] rounded-full shrink-0", className)}></div>
+  );
+};

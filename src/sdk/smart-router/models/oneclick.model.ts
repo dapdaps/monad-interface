@@ -4,15 +4,15 @@ import BigNumber from "bignumber.js";
 import chains from "../config/chains";
 import oneclickAbi from "../config/abi/oneclick";
 
-const FEE_RATE = 100;
+const FEE_RATE = 10;
 const FEE_RECIPIENT = "0xf9f2384fee12a3e31b3d61a262df9baa6b4e8a13";
 export class OneClick {
   private chainId: number;
   private wrappedNativeAddress: string;
   private ROUTER: { [key: number]: string } = {
     // 10143: "0xc26484D2ce20e31e363e2f27782B4E9718fF918a",
-    // 10143: "0x5E17a41378018B092cE9778413aB736418CE60E8",
     10143: "0x92493D26DDe5Edbd1660e0f49f1dd853B9623f80",
+    143: "0x5E17a41378018B092cE9778413aB736418CE60E8",
   };
   private HOST = "https://api-trade.nadsa.space";
 
@@ -162,7 +162,7 @@ export class OneClick {
       fee: {
         fee: Number(bestTrade.amount_out_no_fee) - Number(bestTrade.amount_out),
         token: outputCurrency,
-        feeRate: (Number(FEE_RATE) / 100000).toString()
+        feeRate: (Number(FEE_RATE) / 10000).toString()
       },
       txn,
     };

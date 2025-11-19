@@ -170,12 +170,14 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
       let tx: any;
       if (template === "Pancake" && !trade.wrapType) {
         tx = await onSwapUniversal({ signer, toastId });
+      } else if (typeof trade.txn === 'function') {
+        tx = await trade.txn({ signer });
       } else {
         tx = await signer.sendTransaction(trade.txn);
       }
       toast.dismiss(toastId);
       toastId = toast.loading({ title: "Pending...", tx: tx.hash, chainId });
-      const { status, transactionHash } = await tx.wait();
+      const { status, transactionHash } = await tx.wait ? tx.wait() : tx;
       setLoading(false);
       toast.dismiss(toastId);
 
