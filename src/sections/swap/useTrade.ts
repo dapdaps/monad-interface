@@ -74,7 +74,7 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
             gasLimit
           });
 
-          setTrade({
+          const _trade = {
             inputCurrency,
             inputCurrencyAmount,
             outputCurrency,
@@ -82,10 +82,11 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
             noPair: false,
             txn,
             routerAddress: wethAddress,
-            gas,
-            isGasEnough,
-            wrapType,
-          });
+            name: Array.isArray(template) ? template?.[0] : template,
+          }
+
+          setTrade(_trade);
+          setTradeList([_trade]);
           setLoading(false);
 
           return;
