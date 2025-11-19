@@ -47,7 +47,7 @@ export async function getDynamicDtc(
 
     if (resJson.code === 0 && resJson.dtc) {
         return resJson.dtc;
-    } 
+    }
 
     return null;
 }
@@ -74,8 +74,7 @@ export async function getOwltoRoute(
                 toChainId,
                 new Big(amount).div(10 ** fromTokenDecimal).toString()
             )
-        ])
-            .then(resolve)
+        ]).then(resolve)
             .catch((e) => {
                 resolve(null);
             });
@@ -292,7 +291,7 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer): Prom
 
             const gas = await computeGas({
                 contract_address
-            }, quoteRequest.amount, quoteRequest.fromAddress, isNative, newSigner) 
+            }, quoteRequest.amount, quoteRequest.fromAddress, isNative, newSigner)
             // const gas = currentChainId === Number(quoteRequest.fromChainId) ? await computeGas(res[0], quoteRequest.amount, signer) : '0'
 
             let networkCode = toChain.networkCode.toString()
