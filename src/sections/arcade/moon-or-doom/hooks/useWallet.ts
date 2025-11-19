@@ -10,6 +10,7 @@ import useUser from "@/hooks/use-user";
 import { playSound3 } from "../lib/sound";
 
 const CONTRACT_ADDRESS = "0xff6174156e98aa0a7124c26cda402C7b40682070";
+const CONTRACT_ADDRESS_MAINNET = "0xc277eE4A10692E0E8022B87f29974d99E118f1C0";
 export default function useWallet() {
     const { provider, chainId } = useCustomAccount();
     const { userInfo } = useUser();
@@ -40,7 +41,7 @@ export default function useWallet() {
         try {
             setDepositLoading(true);
             const signer = provider.getSigner(userInfo.address);
-            const contract = new Contract(CONTRACT_ADDRESS, abi, signer);
+            const contract = new Contract(CONTRACT_ADDRESS_MAINNET, abi, signer);
             const value = ethers.utils.parseEther(amount);
             const tx = await contract.deposit(
                 value,
