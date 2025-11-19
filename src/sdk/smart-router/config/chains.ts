@@ -158,5 +158,13 @@ export default {
     nativeCurrency: { name: "MON", symbol: "MON", decimals: 18 },
     rpcUrls: ["https://testnet-rpc.monad.xyz"],
     blockExplorers: "https://testnet.monadexplorer.com/"
+  },
+  143: {
+    chainId: 143,
+    chainName: "Monad Mainnet",
+    icon: "",
+    nativeCurrency: { name: "MON", symbol: "MON", decimals: 18 },
+    rpcUrls: ["https://rpc-mainnet.monadinfra.com/rpc/aXs4fXLNOkkrC4T6W8DU7F4SOJ12gst6"],
+    blockExplorers: "https://mainnet-beta.monvision.io"
   }
 } as { [key: string]: any };

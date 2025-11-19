@@ -51,7 +51,9 @@ export default function Swap({
   const { loading, trade, tradeList, onQuoter, onSwap, setTrade } = useTrade({
     chainId: DEFAULT_CHAIN_ID,
     // template: dapp.name,
-    template: isSuperSwap ? ['Uniswap', 'Pancake', 'OneClick', 'iZumi', 'LFJ', 'Kuru', 'MondayTrade'] : dapp.name,
+    template: isSuperSwap ? ['Uniswap', 'Pancake', 'OneClick', 'Kuru'] : dapp.name,
+    // template: isSuperSwap ? ['Uniswap', 'Pancake', 'OneClick', 'iZumi', 'LFJ', 'Kuru', 'MondayTrade'] : dapp.name,
+
     from,
     onSuccess: () => {
       setUpdater(Date.now());
@@ -324,7 +326,7 @@ export default function Swap({
       />
 
       {
-        trade && routes.length > 0 && (
+        trade && routes && routes.length > 0 && (
           <div className="absolute top-0 right-[-385px] pt-[15px]">
             <RoutesModal
               routes={routes}

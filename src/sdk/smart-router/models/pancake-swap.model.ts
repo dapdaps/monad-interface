@@ -81,25 +81,25 @@ export class PancakeSwap {
   private v2: V2;
 
   private FACTORY: { [key: number]: string } = {
-    10143: "0x3b7838D96Fc18AD1972aFa17574686be79C50040"
+    143: "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865"
   };
   private QUOTER: { [key: number]: string } = {
     10143: "0x74b06eFA24F39C60AA7F61BD516a3eaf39613D57"
   };
   private ROUTER: { [key: number]: string } = {
-    10143: "0xe27dC57FcE896350a38D8d8aDcEefBfb5649D9De"
+    143: "0x1b81D678ffb9C0263b24A97847620C99d213eB14"
   };
   private FEES: { [key: number]: number[] } = {
-    10143: [100, 500, 2500, 10000]
+    143: [100, 500, 2500, 10000]
   };
   private MID_TOKENS: { [key: number]: any } = {
-    10143: []
+    143: []
   };
   private V2_ROUTER: { [key: number]: string } = {
-    10143: "0x3a3eBAe0Eec80852FBC7B9E824C6756969cc8dc1"
+    143: "0x8cFe327CEc66d1C090Dd72bd0FF11d690C33a2Eb"
   };
   private V2_FACTORY: { [key: number]: string } = {
-    10143: "0x82438CE666d9403e488bA720c7424434e8Aa47CD"
+    143: "0x02a84c1b3BBD7401a5f7fa98a384EBC70bB5749E"
   };
   constructor(chainId: number) {
     this.v3 = new V3({

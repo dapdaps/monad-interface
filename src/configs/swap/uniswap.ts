@@ -1,11 +1,14 @@
 import { monad } from "../tokens/monad-testnet";
+import { monad as monadMainnet } from "../tokens/monad";
 
 export default {
   name: "Uniswap",
   logo: "/images/dapps/icons/uniswap.png",
   path: "/dex?dapp=uniswap",
-  defaultInputCurrency: monad["mon"],
+  defaultInputCurrency: monadMainnet["mon"],
+  defaultOutputCurrency: monadMainnet["usdc"],
   tokens: {
-    10143: [monad["mon"], monad["wmon"], monad["usdt"]]
+    10143: [monad["mon"], monad["wmon"], monad["usdt"]],
+    143: [...Object.values(monadMainnet)]
   }
 };

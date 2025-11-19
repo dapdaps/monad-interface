@@ -6,13 +6,13 @@ import chains from "../config/chains";
 export class Kuru {
   private Api = "https://api.kuru.io";
   private RouterAddress: Record<string, string> = {
-    10143: "0xc816865f172d640d93712C68a7E1F83F3fA63235"
+    143: "0xd651346d7c789536ebf06dc72aE3C8502cd695CC"
   };
   private MID_TOKENS: { [key: number]: any } = {
-    10143: [
-      { symbol: "MON", address: "0x0000000000000000000000000000000000000000" }, // MON
-      { symbol: "USDC", address: "0xf817257fed379853cDe0fa4F97AB987181B1E5Ea" }, // USDC
-      { symbol: "WMON", address: "0x760AfE86e5de5fa0Ee542fc7B7B713e1c5425701" }
+    143: [
+      // { symbol: "MON", address: "0x0000000000000000000000000000000000000000" }, // MON
+      // { symbol: "USDC", address: "0xf817257fed379853cDe0fa4F97AB987181B1E5Ea" }, // USDC
+      // { symbol: "WMON", address: "0x760AfE86e5de5fa0Ee542fc7B7B713e1c5425701" }
     ]
   };
   private log(str: string, ...restParams: any) {

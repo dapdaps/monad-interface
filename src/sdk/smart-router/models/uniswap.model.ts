@@ -11,25 +11,25 @@ export class Uniswap {
   private v2: V2;
 
   private FACTORY: { [key: number]: string } = {
-    10143: "0x961235a9020b05c44df1026d956d1f4d78014276"
+    143: "0x204faca1764b154221e35c0d20abb3c525710498"
   };
   private QUOTER: { [key: number]: string } = {
-    10143: "0x1b4e313fef15630af3e6f2de550dbf4cc9d3081d"
+    143: "0x2d01411773c8c24805306e89a41f7855c3c4fe65"
   };
   private ROUTER: { [key: number]: string } = {
-    10143: "0x4c4eabd5fb1d1a7234a48692551eaecff8194ca7"
+    143: "0xd6145b2d3f379919e8cdeda7b97e37c4b2ca9c40"
   };
   private FEES: { [key: number]: number[] } = {
-    10143: [100, 500, 3000, 10000]
+    143: [100, 500, 3000, 10000]
   };
   private MID_TOKENS: { [key: number]: any } = {
-    10143: []
+    143: []
   };
   private V2_ROUTER: { [key: number]: string } = {
-    10143: "0xfb8e1c3b833f9e67a71c859a132cf783b645e436"
+    143: "0x661e93cca42afacb172121ef892830ca3b70f08d"
   };
   private V2_FACTORY: { [key: number]: string } = {
-    10143: "0x733e88f248b742db6c14c0b1713af5ad7fdd59d0"
+    143: "0x182a927119d56008d921126764bf884221b10f59"
   };
   constructor(chainId: number) {
     this.v3 = new V3({

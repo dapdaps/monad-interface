@@ -36,6 +36,7 @@ export default function Result({
     ]
   );
 
+
   const icon = useMemo(() => {
     return dapps[trade.name.toLowerCase()].logo
   }, [trade, dapps])

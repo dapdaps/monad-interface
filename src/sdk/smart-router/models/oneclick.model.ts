@@ -56,7 +56,9 @@ export class OneClick {
     try {
       const candidatesRes = await fetch(`${this.HOST}/findPath?` + candidatesParams.toString());
       const candidatesResJson = await candidatesRes.json();
-      bestTrade = candidatesResJson.result_data;
+      if (candidatesResJson.result_code === 0) {
+        bestTrade = candidatesResJson.result_data;
+      }
     } catch (err: any) {
       console.log('get bestTrade failed: %o', err);
     }

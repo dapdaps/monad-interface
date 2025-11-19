@@ -3,14 +3,14 @@ import type { Token } from "@/types";
 const CHAIN_ID = 143;
 
 export const monad: { [key: string]: Token } = {
-  monad: {
+  mon: {
     address: "native",
     isNative: true,
     chainId: CHAIN_ID,
-    symbol: "MONAD",
+    symbol: "MON",
     decimals: 18,
-    name: "MONAD",
-    icon: "/assets/tokens/monad.svg",
+    name: "MON",
+    icon: "/images/monad.svg",
     color: "#78350F"
   },
   usdc: {
@@ -20,6 +20,15 @@ export const monad: { [key: string]: Token } = {
     decimals: 6,
     name: "USD Coin",
     icon: "/assets/tokens/usdc.png",
+    color: "#78350F"
+  },
+  wmon: {
+    address: "0x3bd359C1119dA7Da1D913D1C4D2B7c461115433A",
+    chainId: CHAIN_ID,
+    symbol: "WMON",
+    decimals: 18,
+    name: "Wrapped Monad",
+    icon: "/assets/tokens/wmon.png",
     color: "#78350F"
   },
 }

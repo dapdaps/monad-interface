@@ -1,11 +1,16 @@
 import { monad } from "../tokens/monad-testnet";
+import { monad as monadMainnet } from "../tokens/monad";
 
 export default {
   name: "Kuru",
   logo: "/images/dapps/icons/kuru.svg",
   path: "/dex?dapp=kuru",
-  defaultInputCurrency: monad["mon"],
+  defaultInputCurrency: monadMainnet["mon"],
+  defaultOutputCurrency: monadMainnet["usdc"],
   tokens: {
+    143: [
+      ...Object.values(monadMainnet)
+    ],
     10143: [
       monad["mon"],
       monad["wmon"],
