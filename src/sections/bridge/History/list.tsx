@@ -1,5 +1,5 @@
 import { useStatus } from '../Hooks/Stargate/useStatus'
-import { useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { icons } from '@/configs/chains'
 import { formatEnglishDate } from '@/utils/date'
 import useIsMobile from '@/hooks/use-isMobile';
@@ -20,6 +20,7 @@ Object.keys(allTokens).forEach((chainId: string) => {
 
 export default function History({ pendingCount, historyCount, list, setIsOpen, activeTab, setActiveTab }: { pendingCount: number, historyCount: number, list: any[], setIsOpen: (isOpen: boolean) => void, activeTab: string, setActiveTab: (tab: string) => void }) {
     const isMobile = useIsMobile();
+    const containerRef = useRef<HTMLDivElement>(null);
 
     const filteredList = list.filter((item: any) =>
         activeTab === 'pending' ? Number(item.bridge_status) !== 4 : Number(item.bridge_status) === 4
@@ -27,10 +28,23 @@ export default function History({ pendingCount, historyCount, list, setIsOpen, a
 
     const cls = isMobile
         ? 'm-auto md:w-[92.307vw] border border-[#000] rounded-2xl bg-[#FFFDEB]'
-        : 'fixed bottom-[-10px] w-[350px] right-[260px] z-50 bg-[url("/images/bridge/history-bg.svg")] bg-no-repeat bg-top'
+        : 'fixed bottom-[-10px] w-[350px] right-[260px] z-[100] bg-[url("/images/bridge/history-bg.svg")] bg-no-repeat bg-top'
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [setIsOpen]);
 
     return (
-        <div className={cls}>
+        <div ref={containerRef} className={cls}>
             <div className="relative p-[13px]">
                 <div className="absolute top-[30px] cursor-pointer right-[30px]" data-click-sound onClick={() => {
                     setIsOpen(false)

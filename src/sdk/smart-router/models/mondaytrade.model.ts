@@ -39,7 +39,6 @@ export class MondayTrade {
     ctx.use(aggregatorPlugin());
     ctx.use(txPlugin({ gasEstimator: new DefaultEthGasEstimator() }));
 
-    console.log('MondayTrade ctx', ctx);
 
     await ctx.init();
 

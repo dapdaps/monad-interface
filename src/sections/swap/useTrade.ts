@@ -172,7 +172,6 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
         tx = await onSwapUniversal({ signer, toastId });
       } else if (typeof trade.txn === 'function') {
         tx = await trade.txn({ signer });
-        console.log('MondayTrade tx', tx);
       } else {
         tx = await signer.sendTransaction(trade.txn);
       }

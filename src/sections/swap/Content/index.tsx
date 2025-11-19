@@ -45,6 +45,7 @@ export default function Swap({
   const [showDetail, setShowDetail] = useState(true);
   const prices = usePriceStore((store: any) => store.price);
   const [selectedRoute, setSelectedRoute] = useState(null)
+  const [refreshQuoter, setRefreshQuoter] = useState(Date.now())
 
   const [selectType, setSelectType] = useState<"in" | "out">("in");
   const { loading, trade, tradeList, onQuoter, onSwap, setTrade } = useTrade({
@@ -119,6 +120,16 @@ export default function Swap({
   }, [dapp]);
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      setRefreshQuoter(Date.now());
+    }, 1000 * 20);
+
+    return () => {
+      clearInterval(interval);
+    }
+  }, []);
+
+  useEffect(() => {
     if (!inputCurrency || !outputCurrency) {
       setErrorTips("Select token");
       return;
@@ -135,7 +146,7 @@ export default function Swap({
     }
 
     runQuoter();
-  }, [inputCurrency, outputCurrency, inputCurrencyAmount, maxInputBalance]);
+  }, [inputCurrency, outputCurrency, inputCurrencyAmount, maxInputBalance, refreshQuoter]);
 
   useEffect(() => {
     setOutputCurrencyAmount(trade?.outputCurrencyAmount || "");
@@ -174,8 +185,6 @@ export default function Swap({
 
     onShowRoute?.(routes)
   }, [routes, trade])
-
-  console.log('trade', trade);
 
   return (
     <>
