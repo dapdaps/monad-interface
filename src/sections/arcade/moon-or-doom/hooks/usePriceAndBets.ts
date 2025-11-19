@@ -4,7 +4,7 @@ import useUser from "@/hooks/use-user";
 import { get } from "@/utils/http";
 import { playSound5, playSound6 } from "../lib/sound";
 
-const WS_URL = "wss://dev-stream-monad.dapdap.net/ws";
+const WS_URL = process.env.NEXT_PUBLIC_WS_URL || "wss://mainnet-stream-monad.dapdap.net";
 
 export default function usePriceAndBets({ userBet }: { userBet: any }) {
     const wsClientRef = useRef<WSClient | null>(null);
