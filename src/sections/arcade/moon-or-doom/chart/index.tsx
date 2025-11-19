@@ -49,7 +49,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         }
 
         let _gridCellSize = containerSize.width / gridNumber;
-        
+
 
         return Math.max(60, _gridCellSize);
     }, [containerSize, gridNumber]);
@@ -59,13 +59,13 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     const handleWheel = useCallback((event: WheelEvent) => {
         event.preventDefault();
         event.stopPropagation();
-        
+
         const isTouchpad = Math.abs(event.deltaY) < 50;
-        
-        const scrollAmount = isTouchpad 
-            ? event.deltaY * 0.5  
-            : (event.deltaY > 0 ? 1 : -1) * gridCellSize;  
-       
+
+        const scrollAmount = isTouchpad
+            ? event.deltaY * 0.5
+            : (event.deltaY > 0 ? 1 : -1) * gridCellSize;
+
         isScrollRef.current = true;
 
         const newY = (translationRef.current?.y ?? 0) - scrollAmount;
@@ -87,9 +87,9 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const container = containerRef.current;
         if (!container) return;
 
-        container.addEventListener('wheel', directHandleWheel, { 
+        container.addEventListener('wheel', directHandleWheel, {
             passive: false,
-            capture: true 
+            capture: true
         });
 
         return () => {
@@ -430,7 +430,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     .minute(minutes)
                     .second(seconds)
                     .millisecond(0);
-                const betItem = betRef.current?.[fullGridTime.valueOf() + '-' + (price)];   
+                const betItem = betRef.current?.[fullGridTime.valueOf() + '-' + (price)];
                 const betMultiplier = betItem?.multiplier;
                 const sourceTime = betItem?.source_time;
 
@@ -467,8 +467,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     };
 
     useEffect(() => {
-         // Only execute when the page is active (i.e., tab is visible)
-         if (typeof document !== 'undefined' && document.visibilityState !== 'visible') {
+        // Only execute when the page is active (i.e., tab is visible)
+        if (typeof document !== 'undefined' && document.visibilityState !== 'visible') {
             return;
         }
 
@@ -480,15 +480,15 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         //     chartGroup.attr('transform', `translate(${translation.x}, ${translation.y})`);
         // }
         chartGroup.attr('transform', `translate(${translation.x}, ${translation.y})`);
-            // .transition()
-            // .duration(300)
-            // .ease(d3.easeCubicOut)
-            // .attr('transform', `translate(${translation.x}, ${translation.y})`);
+        // .transition()
+        // .duration(300)
+        // .ease(d3.easeCubicOut)
+        // .attr('transform', `translate(${translation.x}, ${translation.y})`);
     }, [translation]);
 
     useThrottleEffect(() => {
-         // Only execute when the page is active (i.e., tab is visible)
-         if (typeof document !== 'undefined' && document.visibilityState !== 'visible') {
+        // Only execute when the page is active (i.e., tab is visible)
+        if (typeof document !== 'undefined' && document.visibilityState !== 'visible') {
             return;
         }
 
@@ -512,7 +512,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             ? translationRef.current
             : (translation || { x: 0, y: 0 });
         let visibleXStart = -currentTranslation.x;
-        
+
         // if (!isCenterXRef.current) {
         //     // if (translationXRef.current < 0) {
         //     //     translationXRef.current = -currentTranslation.x
@@ -549,24 +549,24 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
 
         // console.log('xAxisTicks:', visibleXStart, visibleXEnd, xAxisTicks)
         // if (isCenterXRef.current) {
-            xAxisGroup.selectAll('.tick')
-                .data(xAxisTicks)
-                .enter()
-                .append('text')
-                .attr('class', 'tick')
-                .attr('x', d => {
-                    let originalX = currentTranslation.x;
-                    if (!isCenterXRef.current) {
-                        originalX = -translationXRef.current;
-                    }
-                    const chartX = d.x + originalX
-                    return chartX;
-                })
-                .attr('y', 10)
-                .attr('fill', '#ffffff')
-                .attr('font-size', '10px')
-                .attr('text-anchor', 'middle')
-                .text(d => dayjs(d.time).format('HH:mm:ss'));
+        xAxisGroup.selectAll('.tick')
+            .data(xAxisTicks)
+            .enter()
+            .append('text')
+            .attr('class', 'tick')
+            .attr('x', d => {
+                let originalX = currentTranslation.x;
+                if (!isCenterXRef.current) {
+                    originalX = -translationXRef.current;
+                }
+                const chartX = d.x + originalX
+                return chartX;
+            })
+            .attr('y', 10)
+            .attr('fill', '#ffffff')
+            .attr('font-size', '10px')
+            .attr('text-anchor', 'middle')
+            .text(d => dayjs(d.time).format('HH:mm:ss'));
         // }
 
         const yAxisTicks = [];
@@ -678,46 +678,77 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             { cx: pointX, cy: pointY, r: 12, fill: '#836EF9', opacity: 0.5 },
             { cx: pointX, cy: pointY, r: 9, fill: '#ffffff', opacity: 1 }];
 
-            const circleSelection = pointGroup.selectAll<SVGCircleElement, typeof pointData[0]>('circle')
-                .data(pointData, (d, i) => `circle-${i}`);
+            // const circleSelection = pointGroup.selectAll<SVGCircleElement, typeof pointData[0]>('circle')
+            //     .data(pointData, (d, i) => `circle-${i}`);
 
-            const prevInfo = previousPointRef.current;
-            const enterSel = circleSelection.enter()
-                .append('circle')
-                .attr('fill', d => d.fill)
-                .attr('r', d => d.r)
-                .attr('opacity', d => d.opacity)
-                .attr('cx', d => (prevInfo ? prevInfo.x : d.cx))
-                .attr('cy', d => (prevInfo ? prevInfo.y : d.cy));
+            // const prevInfo = previousPointRef.current;
+            // const enterSel = circleSelection.enter()
+            //     .append('circle')
+            //     .attr('fill', d => d.fill)
+            //     .attr('r', d => d.r)
+            //     .attr('opacity', d => d.opacity)
+            //     .attr('cx', d => (prevInfo ? prevInfo.x : d.cx))
+            //     .attr('cy', d => (prevInfo ? prevInfo.y : d.cy));
 
-            const mergedSel = enterSel.merge(circleSelection as any);
+            // const mergedSel = enterSel.merge(circleSelection as any);
 
-            const isNewPoint = (() => {
+            // const isNewPoint = (() => {
+            //     const t = dayjs(lastPoint.time).valueOf();
+            //     const prev = previousPointRef.current;
+            //     const prevT = prev?.t ?? null;
+            //     return prevT === null || t !== prevT;
+            // })();
+
+            // mergedSel
+            //     .attr('r', d => d.r)
+            //     .attr('opacity', d => d.opacity);
+
+            // mergedSel
+            //     .transition()
+            //     .duration(isNewPoint ? 500 : 400)
+            //     .ease(d3.easeCubicOut)
+            //     .attr('cx', d => d.cx)
+            //     .attr('cy', d => d.cy);
+
+            // circleSelection.exit().remove();
+
+            previousPointRef.current = { x: pointX, y: pointY, t: dayjs(lastPoint.time).valueOf() };
+
+            // Add orbiter image at the head of the line
+            const imageSize = 80;
+            const imageOffsetX = -imageSize / 2;
+            const imageOffsetY = -imageSize / 2;
+
+            let orbiterImage = pointGroup.select<SVGImageElement>('image.orbiter-image');
+            const prevImageInfo = previousPointRef.current;
+            const isNewImagePoint = (() => {
                 const t = dayjs(lastPoint.time).valueOf();
-                const prev = previousPointRef.current;
-                const prevT = prev?.t ?? null;
+                const prevT = prevImageInfo?.t ?? null;
                 return prevT === null || t !== prevT;
             })();
 
-            mergedSel
-                .attr('r', d => d.r)
-                .attr('opacity', d => d.opacity);
+            if (orbiterImage.empty()) {
+                orbiterImage = pointGroup.append<SVGImageElement>('image')
+                    .attr('class', 'orbiter-image')
+                    .attr('href', '/images/moon-or-doom/chart-orbiter.png')
+                    .attr('width', imageSize)
+                    .attr('height', imageSize)
+                    .attr('x', prevImageInfo ? prevImageInfo.x + imageOffsetX : pointX + imageOffsetX)
+                    .attr('y', prevImageInfo ? prevImageInfo.y + imageOffsetY : pointY + imageOffsetY);
+            }
 
-            mergedSel
+            orbiterImage
                 .transition()
-                .duration(isNewPoint ? 500 : 400)
+                .duration(isNewImagePoint ? 500 : 400)
                 .ease(d3.easeCubicOut)
-                .attr('cx', d => d.cx)
-                .attr('cy', d => d.cy);
-
-            circleSelection.exit().remove();
-
-            previousPointRef.current = { x: pointX, y: pointY, t: dayjs(lastPoint.time).valueOf() };
+                .attr('x', pointX + imageOffsetX)
+                .attr('y', pointY + imageOffsetY);
 
             const priceText = `$${lastPoint.price.toFixed(2)}`;
             const labelPadding = 8;
             const labelHeight = 24;
-            const labelOffsetX = 24;
+            const labelOffsetX = 45;
+            const labelOffsetY = 8;
 
             let labelGroup = pointGroup.select<SVGGElement>('g.price-label');
             const prevLabelInfo = previousLabelPositionRef.current;
@@ -735,7 +766,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     .attr('class', 'price-label-bg')
                     .attr('rx', 6)
                     .attr('ry', 6)
-                    .attr('fill', '#836EF9');
+                    .attr('fill', 'rgba(131, 110, 249, 0.6)');
 
                 labelGroup.append('text')
                     .attr('class', 'price-label-text')
@@ -748,7 +779,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 if (prevLabelInfo) {
                     labelGroup.attr('transform', `translate(${prevLabelInfo.x}, ${prevLabelInfo.y})`);
                 } else {
-                    labelGroup.attr('transform', `translate(${pointX + labelOffsetX}, ${pointY})`);
+                    labelGroup.attr('transform', `translate(${pointX + labelOffsetX}, ${pointY + labelOffsetY})`);
                 }
             }
 
@@ -756,7 +787,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 .transition()
                 .duration(isNewLabelPoint ? 500 : 400)
                 .ease(d3.easeCubicOut)
-                .attr('transform', `translate(${pointX + labelOffsetX}, ${pointY})`);
+                .attr('transform', `translate(${pointX + labelOffsetX}, ${pointY + labelOffsetY})`);
 
             previousLabelPositionRef.current = {
                 x: pointX + labelOffsetX,
@@ -913,7 +944,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                             .attr('fill', `rgba(131, 110, 249, 0.15)`)
                             // .attr('stroke', `rgba(255, 153, 0, 1)`)
                             .attr('stroke', `rgba(131, 110, 249, ${strokeOpacity})`)
-                            // .attr('filter', 'url(#glow-orange)');
+                        // .attr('filter', 'url(#glow-orange)');
                     } else {
                         d3.select(this)
                             // .attr('filter', 'none')
@@ -932,9 +963,9 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         .attr('font-size', '12px')
                         .attr('font-weight', '500')
                         .attr('text-anchor', 'end')
-                } 
+                }
 
-                if ((betMultiplier > 0 || userBetRef.current?.[key]) && !betText.empty() && ((isPast && userBetRef.current?.[key]) || !isPast) ) {
+                if ((betMultiplier > 0 || userBetRef.current?.[key]) && !betText.empty() && ((isPast && userBetRef.current?.[key]) || !isPast)) {
                     betText.text(betMultiplier + 'x');
                 }
 
@@ -955,7 +986,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
 
                     if (!betText.empty()) {
                         betText.style('fill', '#000')
-                        .text(userBetRef.current?.[key]?.multiplier + 'x');
+                            .text(userBetRef.current?.[key]?.multiplier + 'x');
                     }
                 }
 
@@ -1082,7 +1113,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         };
         animate();
     }, [isInitialized, containerSize]);
-    
+
     return (
         <div className="w-[calc(100%-80px)] h-full relative pb-[30px] pt-[5px]">
             <div
@@ -1107,14 +1138,14 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 >
                     <defs>
                         <filter id="glow-orange" x="-50%" y="-50%" width="200%" height="200%">
-                            <feGaussianBlur stdDeviation="4" result="outerBlur"/>
-                            <feMorphology operator="erode" radius="1.5" in="SourceGraphic" result="eroded"/>
-                            <feGaussianBlur stdDeviation="2.5" in="eroded" result="innerBlur"/>
-                            <feComposite in="innerBlur" in2="SourceAlpha" operator="in" result="innerGlow"/>
+                            <feGaussianBlur stdDeviation="4" result="outerBlur" />
+                            <feMorphology operator="erode" radius="1.5" in="SourceGraphic" result="eroded" />
+                            <feGaussianBlur stdDeviation="2.5" in="eroded" result="innerBlur" />
+                            <feComposite in="innerBlur" in2="SourceAlpha" operator="in" result="innerGlow" />
                             <feMerge>
-                                <feMergeNode in="outerBlur"/>
-                                <feMergeNode in="innerGlow"/>
-                                <feMergeNode in="SourceGraphic"/>
+                                <feMergeNode in="outerBlur" />
+                                <feMergeNode in="innerGlow" />
+                                <feMergeNode in="SourceGraphic" />
                             </feMerge>
                         </filter>
                     </defs>
@@ -1123,6 +1154,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         style={{ pointerEvents: 'all' }}
                     />
 
+                    
                 </svg>
             </div>
 
