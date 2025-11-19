@@ -125,9 +125,6 @@ function getGameName(name: string) {
     }
 }
 
-
-
-
 function getGameAmount(item: any) {
     const { game_category, amount, whitelist } = item;
     switch (game_category) {
@@ -146,6 +143,10 @@ function getGameAmount(item: any) {
         case 'rpsCashOut':
             return <div className="text-[#BFFF60]">{'+' + amount}</div>
         case 'rpsPayOut':
+            return <div className="text-[#BFFF60]">{'+' + amount}</div>
+            case 'chartDeposit':
+            return <div>{'-' + amount}</div>
+        case 'chartWithdraw':
             return <div className="text-[#BFFF60]">{'+' + amount}</div>
         default:
             return amount;

@@ -2,6 +2,7 @@ import { Contract, providers } from "ethers";
 import weth from "../config/weth";
 import BigNumber from "bignumber.js";
 import chains from "../config/chains";
+import { BigNumber as EthersBigNumber } from 'ethers';
 
 import { Context, ZERO, ZERO_ADDRESS } from '@derivation-tech/context';
 import { DefaultEthGasEstimator, txPlugin } from '@derivation-tech/tx-plugin';
@@ -15,6 +16,8 @@ QUERY_SINGLE_ROUTE_ADDRESS[monadTestnet.id] = '0xB03bB95FAA5DC18D66FAd10A38529f1
 QUERY_SPLIT_ROUTE_ADDRESS[monadTestnet.id] = '0x7a7278dd84B5E63Ada2a4cE3F846b2FF66Fd3cf7'
 OYSTER_AGGREGATOR_ADDRESS[monadTestnet.id] = '0xEf8DD29d887EcD977064Ce169366C95d53926B13'
 
+const FEE_RATE = 10;
+const FEE_RECIPIENT = "0xf9f2384fee12a3e31b3d61a262df9baa6b4e8a13";
 export class MondayTrade {
   private chainId: number;
   private wrappedNativeAddress: string;
@@ -69,7 +72,9 @@ export class MondayTrade {
             toTokenAddress: outputToken.address,
             bestPathInfo: result.bestPathInfo,
             bestAmount: result.bestAmount,
-            slippageInBps: Math.ceil(slippage * 100 / 100) * 100,
+            slippageInBps: Math.ceil(slippage) * 100,
+            // broker: FEE_RECIPIENT,
+            // brokerFeeRate: EthersBigNumber.from(FEE_RATE),
             broker: ZERO_ADDRESS,
             brokerFeeRate: ZERO,
             deadline: Date.now() + 120 * 1000,
@@ -90,6 +95,11 @@ export class MondayTrade {
       noPair: false,
       routerAddress: OYSTER_AGGREGATOR_ADDRESS[this.chainId],
       routes: bestTrade.routes,
+      // fee: {
+      //   fee: Number(bestTrade.amount_out) * (Number(FEE_RATE) / 10000),
+      //   token: outputCurrency,
+      //   feeRate: (Number(FEE_RATE) / 10000).toString()
+      // },
       fee: null,
       txn: bestTrade.txn,
     };

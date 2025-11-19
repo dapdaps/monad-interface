@@ -176,7 +176,7 @@ const History = () => {
             render: (record: any) => {
               return (
                 <div className="text-[#A1AECB]">
-                  {record.fee ? numberFormatter(record.fee, 2, true, { isShort: true, prefix: "$" }) : "-"}
+                  {record.fee ? numberFormatter(record.fee_volume, 2, true, { isShort: true, prefix: "$" }) : "-"}
                 </div>
               );
             },
