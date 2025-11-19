@@ -1,4 +1,5 @@
 import Drawer from "@/components/drawer";
+import { DEFAULT_CHAIN_ID } from "@/configs";
 import { monadTestnet } from "viem/chains";
 import { useDisconnect } from "wagmi";
 
@@ -53,7 +54,7 @@ const MobileUser = (props: Props) => {
           <div className="mt-2.5 flex items-center gap-2 pb-4 border-b border-[#A6A6DB] border-opacity-[0.3]">
             <img src="/images/mobile/monad-testnet.svg" alt="" />
             <div className="text-white font-Unbounded leading-[1] text-[14px]">
-              {currentChainInfo?.id === monadTestnet.id ? "Monad" : currentChainInfo?.name || ""}{" "}
+              {currentChainInfo?.id === DEFAULT_CHAIN_ID ? "Monad Mainnet" : currentChainInfo?.name || ""}{" "}
               {currentChainInfo?.testnet ? "Testnet" : "Mainnet"}
             </div>
           </div>

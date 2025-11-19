@@ -34,11 +34,11 @@ export default function ActionButton({
         );
     }
 
-    if (chainId !== monadTestnet.id) {
+    if (chainId !== 143) {
         return (
             <HexagonButton className="w-full" onClick={() => {
                 playSound1();
-                switchChain({ chainId: monadTestnet.id });
+                switchChain({ chainId: 143 });
             }} >
                 Switch to Monad
             </HexagonButton>

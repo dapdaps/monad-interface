@@ -44,7 +44,7 @@ export default function useCustomAccount() {
   const account = useAccount();
   const { accessToken } = useUser();
   const { data: client } = useConnectorClient<Config>({
-    chainId: account ? account.chainId : DEFAULT_CHAIN_ID
+    chainId: DEFAULT_CHAIN_ID
   });
 
   const provider = useMemo(

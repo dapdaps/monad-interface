@@ -27,6 +27,8 @@ export default function useWalletTokens() {
 
         setIsLoading(true);
 
+        console.log('fetchTokens:', isLoading, price, userInfo?.address, rpc);
+
         try {
             const _provider = new ethers.providers.JsonRpcProvider(rpc);
             const res = await get('/token/all');
@@ -56,6 +58,8 @@ export default function useWalletTokens() {
                         token.decimals = decimalses[index][0];
                         if (price[token.symbol]) {
                             token.value = new Big(token.balance).mul(price[token.symbol]).toFixed(2);
+                        } else {
+                            token.value = '0';
                         }
                     }
 
@@ -146,12 +150,12 @@ export default function useWalletTokens() {
     }, [rpc, userInfo]);
 
     useEffect(() => {
-        if (!userInfo.address || !price || Object.keys(price).length === 0) {
+        if (!userInfo.address) {
             return;
         }
 
         fetchTokens();
-    }, [price, userInfo, isFresh]);
+    }, [userInfo, isFresh]);
 
     return {
         isLoading,
