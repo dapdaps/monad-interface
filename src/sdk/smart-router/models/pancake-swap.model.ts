@@ -216,7 +216,7 @@ export class PancakeSwap {
     const returnData = {
       outputCurrencyAmount,
       noPair: false,
-      routerAddress: this.ROUTER[inputCurrency.chainId],
+      routerAddress: this.V2_ROUTER[inputCurrency.chainId],
       routes: bestTrade.routes
     };
 
@@ -224,7 +224,7 @@ export class PancakeSwap {
       chains[inputCurrency.chainId].rpcUrls[0]
     );
     const RouterContract = new Contract(
-      this.ROUTER[inputCurrency.chainId],
+      this.V2_ROUTER[inputCurrency.chainId],
       routerV2Abi,
       provider.getSigner(account)
     );
@@ -340,6 +340,7 @@ export class PancakeSwap {
       routerV3Abi,
       provider.getSigner(account)
     );
+    
 
     let estimateGas;
     try {

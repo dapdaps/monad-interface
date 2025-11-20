@@ -27,7 +27,7 @@ export class Uniswap {
     143: []
   };
   private V2_ROUTER: { [key: number]: string } = {
-    143: "0x661e93cca42afacb172121ef892830ca3b70f08d"
+    143: "0x4b2ab38dbf28d31d467aa8993f6c2585981d6804"
   };
   private V2_FACTORY: { [key: number]: string } = {
     143: "0x182a927119d56008d921126764bf884221b10f59"
@@ -148,7 +148,7 @@ export class Uniswap {
     const returnData = {
       outputCurrencyAmount,
       noPair: false,
-      routerAddress: this.ROUTER[inputCurrency.chainId],
+      routerAddress: this.V2_ROUTER[inputCurrency.chainId],
       routes: bestTrade.routes
     };
 
@@ -156,7 +156,7 @@ export class Uniswap {
       chains[inputCurrency.chainId].rpcUrls[0]
     );
     const RouterContract = new Contract(
-      this.ROUTER[inputCurrency.chainId],
+      this.V2_ROUTER[inputCurrency.chainId],
       routerV2Abi,
       provider.getSigner(account)
     );
@@ -201,7 +201,8 @@ export class Uniswap {
       // console.log('estimateGas err', err);
     }
 
-    console.log("estimateGas v2", estimateGas?.toString());
+    console.log('estimateGas v2', RouterContract);
+
 
     const txn = await RouterContract.populateTransaction[method](...params, {
       ...options,
