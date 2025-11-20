@@ -45,7 +45,7 @@ export default function Routes({
   }, [trade, dapps]);
 
   const tradeFee = useMemo(() => {
-    if (!trade || !trade.fee) return null;
+    if (!trade || !trade.fee || !prices || Object.keys(prices).length === 0) return null;
     return trade.fee?.fee 
     ? '$' + balanceFormated(new Big(trade.fee?.fee.toString()).div(10 ** trade.fee?.token?.decimals).mul(prices[trade.fee?.token?.symbol] || prices[trade.fee?.token?.address]).toString()) : '-';
   }, [trade, prices]);
