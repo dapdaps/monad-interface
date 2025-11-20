@@ -5,6 +5,8 @@ import { useFaucetContext } from "@/sections/faucet/context";
 import useCheckinList from "@/sections/faucet/hooks/use-checkin-list";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
+import { DEFAULT_CHAIN_ID } from "@/configs";
+import chains from "@/configs/chains";
 
 dayjs.extend(utc);
 
@@ -65,7 +67,7 @@ export default memo(function HistoryModal() {
               className="cursor-pointer"
               onClick={() => {
                 window.open(
-                  "https://testnet.monadexplorer.com/tx/" + record?.tx_hash
+                  `${chains[DEFAULT_CHAIN_ID].blockExplorers.default.url}/tx/${record?.tx_hash}`
                 );
               }}
             >

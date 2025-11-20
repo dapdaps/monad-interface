@@ -13,6 +13,8 @@ import Pagination from "@/components/pagination";
 import Skeleton from "react-loading-skeleton";
 import TimeAgo from "./time-ago";
 import GridTable from "@/components/flex-table/grid-table";
+import chains from "@/configs/chains";
+import { DEFAULT_CHAIN_ID } from "@/configs";
 
 const Results = (props: any) => {
   const { className } = props;
@@ -164,7 +166,7 @@ const Results = (props: any) => {
               type="button"
               className="w-[12px] h-[12px] flex-0 bg-[url('/images/game/icon-link.png')] bg-no-repeat bg-center bg-contain"
               onClick={async () => {
-                window.open(`${monadTestnet.blockExplorers?.default.url}/tx/${record.end_hash}`, "_blank");
+                window.open(`${chains[DEFAULT_CHAIN_ID].blockExplorers.default.url}/tx/${record.end_hash}`, "_blank");
               }}
             />
             <button

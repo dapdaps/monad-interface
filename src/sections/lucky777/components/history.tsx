@@ -11,6 +11,8 @@ import useIsMobile from "@/hooks/use-isMobile";
 import clsx from "clsx";
 import DiscordRewardModal from "./reward/modal";
 import { getRewardConfigByCode, getAllRewardCodes } from "../reward-config";
+import chains from "@/configs/chains";
+import { DEFAULT_CHAIN_ID } from "@/configs";
 
 const IconClose = () => {
     return <div className={`mt-[15px] mr-[15px]`}>
@@ -195,7 +197,7 @@ function List({ type, winningOnly, setRewardVisible, setCurrentNft }: { type: st
                                         <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
                                         </svg>
-                                        <a href={`https://testnet.monvision.io/tx/${item.tx_hash}`} target="_blank" rel="noreferrer">
+                                        <a href={`${chains[DEFAULT_CHAIN_ID].blockExplorers.default.url}/tx/${item.tx_hash}`} target="_blank" rel="noreferrer">
                                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M5.36364 9.18182L13 1M13 1H7M13 1V7M4.81818 1H1V13H13V9.18182" stroke="#A9ADB8" />
                                             </svg>
@@ -250,7 +252,7 @@ function List({ type, winningOnly, setRewardVisible, setCurrentNft }: { type: st
                                                         <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
                                                         </svg>
-                                                        <a href={`https://testnet.monvision.io/tx/${item.tx_hash}`} target="_blank" rel="noreferrer">
+                                                        <a href={`${chains[DEFAULT_CHAIN_ID].blockExplorers.default.url}/tx/${item.tx_hash}`} target="_blank" rel="noreferrer">
                                                             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                 <path d="M5.36364 9.18182L13 1M13 1H7M13 1V7M4.81818 1H1V13H13V9.18182" stroke="#A9ADB8" />
                                                             </svg>

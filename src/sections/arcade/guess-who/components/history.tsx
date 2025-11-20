@@ -13,6 +13,8 @@ import { useState } from "react";
 import { berachain } from "viem/chains";
 import { HistoryAction, HistoryActionMap } from "../config";
 import clsx from "clsx";
+import { DEFAULT_CHAIN_ID } from "@/configs";
+import chains from "@/sdk/smart-router/config/chains";
 
 const HistoryModal = (props: any) => {
   const { open, onClose } = props;
@@ -141,7 +143,7 @@ const History = (props: any) => {
                       {dayjs(record.create_time * 1000).utc().format("YYYY/M/D HH:mm")}
                     </div>
                     <Link
-                      href={`${berachain.blockExplorers.default.url}/tx/${record.tx_hash}`}
+                      href={`${chains[DEFAULT_CHAIN_ID].blockExplorers.default.url}/tx/${record.tx_hash}`}
                       target="_blank"
                       rel="noreferrer nofollow noopener"
                       className="block w-[16px] h-[16px] shrink-0 bg-[url('/images/playground/magician/icon-share.png')] bg-center bg-no-repeat bg-[length:10px_10px]"

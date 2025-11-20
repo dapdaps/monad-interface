@@ -4,6 +4,8 @@ import dayjs from "dayjs";
 import { usePrizeRoundDetail } from "./usePrizeRoundDetail";
 import { formatThousandsSeparator } from "@/utils/balance";
 import CircleLoading from "@/components/circle-loading";
+import { DEFAULT_CHAIN_ID } from "@/configs";
+import chains from "@/configs/chains";
 
 
 const rankColors = [
@@ -18,6 +20,7 @@ export const Icon = () => (
 
 const RoundDetail: React.FC<{ round: any, onBack: () => void }> = ({ round, onBack }) => {
     const { prizeRoundDetail, getPrizeRoundDetail, loading } = usePrizeRoundDetail({ round: round.round });
+    const chain = chains[DEFAULT_CHAIN_ID];
 
     return (
         <div className=" w-full text-white max-w-[600px] mx-auto font-Montserrat">
@@ -64,7 +67,7 @@ const RoundDetail: React.FC<{ round: any, onBack: () => void }> = ({ round, onBa
                                 <path d="M1 5.34783L6.77778 11L17 1" stroke="#78FEFF" stroke-width="2" />
                             </svg>
                             <svg onClick={() => {
-                                window.open(`https://testnet.monvision.io/tx/${w.tx_hash}`, '_blank');
+                                window.open(`${chain.blockExplorers.default.url}/tx/${w.tx_hash}`, '_blank');
                             }}  width="14" height="14" viewBox="0 0 14 14" fill="none" className="cursor-pointer" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5.36364 9.18182L13 1M13 1H7M13 1V7M4.81818 1H1V13H13V9.18182" stroke="#A9ADB8" />
                             </svg>

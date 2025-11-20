@@ -10,6 +10,8 @@ import { monadTestnet } from "viem/chains";
 import TimeAgo from "./time-ago";
 import Empty from "@/components/empty";
 import useIsMobile from "@/hooks/use-isMobile";
+import chains from "@/configs/chains";
+import { DEFAULT_CHAIN_ID } from "@/configs";
 
 const Nft = (props: any) => {
   const { className } = props;
@@ -146,7 +148,7 @@ const Nft = (props: any) => {
                         <a
                           target="_blank"
                           className="underline underline-offset-2"
-                          href={`${monadTestnet.blockExplorers?.default.url}/tx/${nft.tx_hash}`}
+                          href={`${chains[DEFAULT_CHAIN_ID].blockExplorers.default.url}/tx/${nft.tx_hash}`}
                           rel="noreferrer nofollow noopener"
                         >
                           Tx

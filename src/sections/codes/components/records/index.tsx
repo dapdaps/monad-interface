@@ -6,6 +6,8 @@ import Big from "big.js";
 import Loading from "@/components/loading";
 import useIsMobile from "@/hooks/use-isMobile";
 import clsx from "clsx";
+import chains from "@/configs/chains";
+import { DEFAULT_CHAIN_ID } from "@/configs";
 
 const Records = (props: any) => {
   const { className } = props;
@@ -92,7 +94,7 @@ const Records = (props: any) => {
             return (
               <div className="flex items-center gap-[8px]">
                 <span className="text-[#6D7EA5] font-Unbounded text-[14px] leading-[120%]">Claimed</span>
-                <a href={`https://testnet.monvision.io/tx/${record.tx_hash}`} target="_blank" rel="noreferrer">
+                <a href={`${chains[DEFAULT_CHAIN_ID].blockExplorers.default.url}/tx/${record.tx_hash}`} target="_blank" rel="noreferrer">
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
                     <path d="M5.36364 9.18182L13 1M13 1H7M13 1V7M4.81818 1H1V13H13V9.18182" stroke="#A9ADB8" />
                   </svg>

@@ -11,6 +11,8 @@ import ActionButton from "../action-button";
 import { numberFormatter } from "@/utils/number-formatter";
 import Big from "big.js";
 import { playSound1 } from "../lib/sound";
+import chains from "@/configs/chains";
+import { DEFAULT_CHAIN_ID } from "@/configs";
 
 type HistoryModalProps = {
     open: boolean;
@@ -416,7 +418,7 @@ function RechargeTab({
                                     </span>
 
                                     {
-                                        item.status === 1 && <a href={`https://testnet.monadexplorer.com/tx/${item.tx_hash}`} target="_blank" className="text-[#836EF9] ml-[10px] underline">Tx</a>
+                                        item.status === 1 && <a href={`${chains[DEFAULT_CHAIN_ID].blockExplorers.default.url}/tx/${item.tx_hash}`} target="_blank" className="text-[#836EF9] ml-[10px] underline">Tx</a>
 
                                     }
                                 </td>
@@ -486,7 +488,7 @@ function WithdrawTab({
                                     </span>
 
                                     {
-                                        item.status === 1 && <a href={`https://testnet.monadexplorer.com/tx/${item.tx_hash}`} target="_blank" className="text-[#836EF9] ml-[10px] underline">Tx</a>
+                                        item.status === 1 && <a href={`${chains[DEFAULT_CHAIN_ID].blockExplorers.default.url}/tx/${item.tx_hash}`} target="_blank" className="text-[#836EF9] ml-[10px] underline">Tx</a>
                                     }
                                 </td>
                             </tr>
