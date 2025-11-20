@@ -31,7 +31,7 @@ const TrendingTokens = (props: any) => {
       const _tokens = res.data || [];
       _tokens.forEach((token: any) => {
         const curr = Object.values(monad).find((_token: any) => _token.address.toLowerCase() === token.address.toLowerCase());
-        token.icon = curr?.icon || "/assets/tokens/default_icon.png";
+        token.icon = curr?.icon || token.icon || "/assets/tokens/default_icon.png";
         token.decimals = curr?.decimals || 18;
       });
 

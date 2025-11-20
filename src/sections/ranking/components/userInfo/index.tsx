@@ -181,7 +181,7 @@ export default function UserInfo() {
                         }
 
                         <div className="text-right text-[#A1AECB] pt-[10px]">
-                            Next Level: {nextRank?.name}
+                            Next Level: {userRanking?.rp > 0 ? nextRank?.name : 'Private'}
                         </div>
                     </div>
                 </div>

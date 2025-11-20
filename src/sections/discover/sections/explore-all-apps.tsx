@@ -213,14 +213,14 @@ const AppItem = (props: any) => {
         </div>
       </div>
       <div className="flex items-center justify-end gap-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] shrink-0">
-        <div className="rounded-[4px] shrink-0 flex justify-center items-center gap-[clamp(1px,_0.4vw,_calc(var(--pc-1512)*0.0040))] text-[#FFF] px-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] text-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] h-[clamp(1px,_2.78vw,_calc(var(--pc-1512)*0.0278))] backdrop-blur-[2px] bg-[rgba(131,110,249,0.20)]">
+        {/* <div className="rounded-[4px] shrink-0 flex justify-center items-center gap-[clamp(1px,_0.4vw,_calc(var(--pc-1512)*0.0040))] text-[#FFF] px-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] text-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] h-[clamp(1px,_2.78vw,_calc(var(--pc-1512)*0.0278))] backdrop-blur-[2px] bg-[rgba(131,110,249,0.20)]">
           <img
             src="/images/mainnet/discover/icon-up.svg"
             alt=""
             className="w-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] h-[clamp(1px,_0.53vw,_calc(var(--pc-1512)*0.0053))] object-center object-contain shrink-0"
           />
           <div>{numberFormatter(visits, 0, true)}</div>
-        </div>
+        </div> */}
         <ButtonVisit
           className=""
           onClick={() => {

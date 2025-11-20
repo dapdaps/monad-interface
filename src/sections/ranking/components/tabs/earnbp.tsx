@@ -85,7 +85,7 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
             title: "REFFERRAL",
             summary: <div className="flex items-center gap-[10px]">
                 <span className="text-[#A1AECB]">{invite?.total || 0} invites</span> |
-                <span className="text-white">{numberFormatter(invite?.total_rp_earned || 0, 2, true)} RP</span>
+                <span className="text-white">{numberFormatter(invite?.total_reward_rp || 0, 2, true)} RP</span>
             </div>,
             buttonText: "INVITE",
             buttonRoute: '',
@@ -184,7 +184,7 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
     return (
         <div className="w-full pt-[20px]">
             <div className="py-[20px] flex items-center justify-center gap-[10px] relative">
-                <div className="text-white text-[32px] font-Oxanium font-[600]">{userRP?.total_rp} RP</div>
+                <div className="text-white text-[32px] font-Oxanium font-[600]">{userRP?.total_rp || 0} RP</div>
 
                 <Popover
                     content={
@@ -193,11 +193,11 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
                         >
                             <div className="flex items-center justify-between py-[5px]">
                                 <div className="text-[#9BADD3]">Basic</div>
-                                <div className="text-white">{userRP?.basic_rp} RP</div>
+                                <div className="text-white">{userRP?.basic_rp || 0} RP</div>
                             </div>
                             <div className="flex items-center justify-between py-[5px]">
                                 <div className="text-[#9BADD3]">Boost</div>
-                                <div className="text-[#BFFF60]">{userRP?.boost_rp} RP</div>
+                                <div className="text-[#BFFF60]">{userRP?.boost_rp || 0} RP</div>
                             </div>
                         </div>
                     }
