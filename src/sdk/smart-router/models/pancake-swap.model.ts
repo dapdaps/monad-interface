@@ -233,6 +233,8 @@ export class PancakeSwap {
       .multipliedBy(1 - slippage)
       .toFixed(0);
 
+    // const _amountOut = BigNumber(1)
+
     const deadline = Math.ceil(Date.now() / 1000) + 120;
     let method = "";
     const options: any = {};
@@ -351,8 +353,6 @@ export class PancakeSwap {
     } catch (err) {
       // console.log('estimateGas err', err);
     }
-
-    console.log("estimateGas v3", estimateGas?.toString());
 
     const txn = await multicallContract.populateTransaction.multicall(
       multicallParams,

@@ -3,7 +3,7 @@ import { utils, providers, Contract } from "ethers";
 import { V3 } from "../libs/v3.lib";
 import { V2 } from "../libs/v2.lib";
 import chains from "../config/chains";
-import routerV3Abi from "../config/abi/router-v3-4";
+import routerV3Abi from "../config/abi/router-v3-2";
 import routerV2Abi from "../config/abi/router-v2-1";
 
 export class Uniswap {
@@ -201,9 +201,6 @@ export class Uniswap {
       // console.log('estimateGas err', err);
     }
 
-    console.log('estimateGas v2', RouterContract);
-
-
     const txn = await RouterContract.populateTransaction[method](...params, {
       ...options,
       gasLimit: estimateGas
@@ -238,6 +235,7 @@ export class Uniswap {
       value: inputCurrency.isNative ? _amount : "0"
     };
 
+    const deadline = Math.ceil(Date.now() / 1000) + 120;
     const _amountOut = BigNumber(bestTrade.amountOut)
       .multipliedBy(1 - slippage)
       .toFixed(0);
@@ -249,6 +247,7 @@ export class Uniswap {
       recipient: outputCurrency.isNative
         ? this.ROUTER[inputCurrency.chainId]
         : account,
+      deadline,  
       amountIn: _amount,
       amountOutMinimum: _amountOut
     };
@@ -282,8 +281,6 @@ export class Uniswap {
     } catch (err) {
       // console.log('estimateGas err', err);
     }
-
-    console.log("estimateGas v3", estimateGas?.toString());
 
     const txn = await multicallContract.populateTransaction.multicall(
       multicallParams,
