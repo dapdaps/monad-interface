@@ -7,6 +7,7 @@ import routerV3Abi from "../config/abi/router-v3-4";
 import routerV2Abi from "../config/abi/router-v2-1";
 
 export class Uniswap {
+  
   private v3: V3;
   private v2: V2;
 
@@ -31,6 +32,8 @@ export class Uniswap {
   private V2_FACTORY: { [key: number]: string } = {
     143: "0x182a927119d56008d921126764bf884221b10f59"
   };
+
+  private type: number = 1;
   constructor(chainId: number) {
     this.v3 = new V3({
       fees: this.FEES[chainId],
@@ -50,6 +53,11 @@ export class Uniswap {
       feeIn: true
     });
   }
+
+  public setType(type: number) {
+    this.type = type;
+  }
+
   public async quoter({
     inputCurrency,
     outputCurrency,
@@ -60,26 +68,47 @@ export class Uniswap {
     const _amount = BigNumber(inputAmount)
       .multipliedBy(10 ** inputCurrency.decimals)
       .toFixed(0);
-    const [bestTradeV3, bestTradeV2] = await Promise.all([
-      this.v3.bestTrade({
+
+    const quoterAry = []
+    if (this.type === 1) {
+      quoterAry.push(this.v3.bestTrade({
         inputCurrency,
         outputCurrency,
         inputAmount: _amount
-      }),
-      this.v2.bestTrade({
+      }));
+      quoterAry.push(this.v2.bestTrade({
         inputCurrency,
         outputCurrency,
         inputAmount: BigNumber(inputAmount).multipliedBy(
           10 ** inputCurrency.decimals
         )
-      })
-    ]);
+      }));
+    } else if (this.type === 2) {
+      quoterAry.push(null)
+      quoterAry.push(this.v2.bestTrade({
+        inputCurrency,
+        outputCurrency,
+        inputAmount: BigNumber(inputAmount).multipliedBy(
+          10 ** inputCurrency.decimals
+        )
+      }));
+    } else if (this.type === 3) {
+      quoterAry.push(this.v3.bestTrade({
+        inputCurrency,
+        outputCurrency,
+        inputAmount: _amount
+      }));
+      quoterAry.push(null)
+    }
+
+
+    const [bestTradeV3, bestTradeV2] = await Promise.all(quoterAry);
 
     let bestTrade = bestTradeV3;
     let routerAddress = this.ROUTER[inputCurrency.chainId];
     let type = "v3";
 
-    if (BigNumber(bestTrade?.amountOut).lt(bestTradeV2?.amountOut)) {
+    if ((!bestTradeV3 && bestTradeV2) || (bestTradeV3 && bestTradeV2 && BigNumber(bestTrade?.amountOut).lt(bestTradeV2?.amountOut))) {
       bestTrade = bestTradeV2;
       routerAddress = this.V2_ROUTER[inputCurrency.chainId];
       type = "v2";
@@ -266,5 +295,19 @@ export class Uniswap {
     );
 
     return { ...returnData, txn };
+  }
+}
+
+export class UniswapV2 extends Uniswap {
+  constructor(chainId: number) {
+    super(chainId);
+    this.setType(2);
+  }
+}
+
+export class UniswapV3 extends Uniswap {
+  constructor(chainId: number) {
+    super(chainId);
+    this.setType(3);
   }
 }

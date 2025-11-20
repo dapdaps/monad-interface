@@ -110,5 +110,13 @@ export const monad: { [key: string]: Token } = {
     decimals: 18,
     name: "PINGU",
     icon: "https://assets.dapdap.net/monad/pingu.png"
+  },
+  huhu: {
+    address: "0xD8b8d868e994df5D4Ba8bD599eadBc21598a732E",
+    chainId: CHAIN_ID,
+    symbol: "HUHU",
+    decimals: 18,
+    name: "HUHU",
+    icon: "https://assets.dapdap.net/monad/huhu.png"
   }
 }

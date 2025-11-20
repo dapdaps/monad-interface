@@ -186,8 +186,6 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
         transactionHash = tx.transactionHash;
       }
 
-      console.log('status:', tx, status, transactionHash);
-
       setLoading(false);
       toast.dismiss(toastId);
 

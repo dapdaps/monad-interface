@@ -21,22 +21,22 @@ type QuoterProps = {
 
 export class iZiSwap {
   private MULTI: { [key: number]: string } = {
-    10143: "0x78F942F8F9110067c08183183c45903e5Dc2763A"
+    143: "0x14323AfbC2b82fE58F0D9c203830EE969B4d1bE2"
   };
   private LIQUIDITY_MANAGER: { [key: number]: string } = {
-    10143: "0x1eE5eDC5Fe498a2dD82862746D674DB2a5e7fef6"
+    143: "0x19b683A2F45012318d9B2aE1280d68d3eC54D663"
   };
   private QUOTER: { [key: number]: string } = {
-    10143: "0x4d140E612e476A6ba54EF1306b2bA398a5dEff09"
+    143: "0x3EF68D3f7664b2805D4E88381b64868a56f88bC4"
   };
   private ROUTER: { [key: number]: string } = {
-    10143: "0xF6FFe4f3FdC8BBb7F70FFD48e61f17D1e343dDfD"
+    143: "0x34bc1b87f60e0a30c0e24FD7Abada70436c71406"
   };
   private MID_TOKENS: { [key: number]: any } = {
-    10143: []
+    143: []
   };
   private FEES: { [key: number]: number[] } = {
-    10143: [100, 500, 3000, 10000]
+    143: [100, 500, 3000, 10000]
   };
   private formatToken(token: any) {
     return { ...nativeToWNative(token), decimal: token.decimals };
@@ -95,6 +95,7 @@ export class iZiSwap {
     const _inputCurrency = this.formatToken(inputCurrency);
     const _outputCurrency = this.formatToken(outputCurrency);
 
+
     const searchParams = {
       chainId: inputCurrency.chainId,
       web3,
@@ -111,15 +112,21 @@ export class iZiSwap {
       amount: _amount
     };
 
+    console.log('iziswap searchParams: %o', searchParams);
+
     const { pathQueryResult, preQueryResult } = await searchPathQuery(
       searchParams
     );
+
+    console.log('iziswap pathQueryResult: %o', pathQueryResult);
+
     if (!pathQueryResult) {
       return {
         outputCurrencyAmount: "",
         noPair: true
       };
     }
+
 
     const tokens = pathQueryResult.path.tokenChain;
     const routes: any = [];
