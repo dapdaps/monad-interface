@@ -17,8 +17,9 @@ import TokenRow from './Token';
 
 const Container = styled.div`
   display: flex;
-  height: 500px;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 const ChainWapper = styled.div`
@@ -91,10 +92,7 @@ const ChainWapper = styled.div`
                     width: 500px;
                } */
         background-color: inherit;
-
-        border-radius: 12px 0 0 12px;
         border: 1px solid rgba(55, 58, 83, 1);
-        border-right: 0;
         box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.3);
       }
       &.disabeld {
@@ -107,6 +105,7 @@ const ChainWapper = styled.div`
 
 const TokenWapper = styled.div`
   flex: 1;
+  width: 100%;
   .ctg-wapper {
     height: calc(100% - 120px);
     overflow: auto;
@@ -146,8 +145,9 @@ const TokenList = styled.div`
   /* height: calc(100% - 120px);
     overflow: auto; */
     margin-top: 20px;
-    height: 200px;
+    height: 540px;
     overflow-y: auto;
+    margin-bottom: 20px;
 `;
 
 const ChainGroup = styled.div`
@@ -485,7 +485,7 @@ export default function ChainAndTokenSelector({
 
   return (
 
-    <div className="absolute top-[50px] left-[15px] right-[15px] h-[calc(100%-80px)] z-[1000] font-Oxanium px-[20px] bg-black text-white">
+    <div className="overflow-y-auto absolute top-0 left-[15px] right-[15px] pb-[10px] h-[800px] z-[1000] font-Oxanium px-[20px] bg-black text-white">
       <div className="relative flex items-center justify-center text-[18px] font-[400] h-[50px]">
         <div onClick={() => {
           onClose?.();

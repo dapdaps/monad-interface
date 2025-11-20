@@ -44,7 +44,7 @@ export default function UserInfo() {
     )`;
 
     const currentRank = useMemo(() => {
-        if (!userRanking?.tier || !userInfo?.address) return null;
+        if (!userRanking?.tier || !userInfo?.address) return MilitaryRank[EMilitaryRank.Private];
         return MilitaryRank[EMilitaryRank[(userRanking?.tier?.charAt(0).toUpperCase() + userRanking?.tier?.slice(1)) as keyof typeof EMilitaryRank]];
     }, [userRanking, userInfo]);
 
@@ -56,6 +56,7 @@ export default function UserInfo() {
         const nextRankKey = rankNames[currentIndex + 1];
         return MilitaryRank[EMilitaryRank[nextRankKey]];
     }, [currentRank, userInfo]);
+
 
     const callbackUrl = useMemo(() => {
         return window.location.origin.includes('localhost') ? window.location.origin : 'https://alpha.nadsa.space/api/twitter_auth';
@@ -120,7 +121,7 @@ export default function UserInfo() {
                             <span className="text-[#BFFF60] text-[16px] font-[500] leading-none uppercase">{userRanking?.tier}</span>
                         </div>
                         {
-                            currentRank?.icon && <div className="absolute bottom-[-15px] left-[-2px] w-[42px] flex items-center justify-center">
+                            currentRank?.icon && userRanking?.rp && <div className="absolute bottom-[-15px] left-[-2px] w-[42px] flex items-center justify-center">
                                 <img src={currentRank?.icon} alt="rank" className="w-full" />
                             </div>
                         }
@@ -128,15 +129,28 @@ export default function UserInfo() {
 
                     <div className="flex items-center gap-2 mb-4">
                         <span className="text-white text-[20px]">
-                            {formatLongText(userRanking?.user_name || userRanking?.address, !!userRanking?.user_name ? 10 : 5, 4)}
+                            {formatLongText(userRanking?.user_name || userInfo?.address, !!userRanking?.user_name ? 10 : 5, 4)}
                         </span>
                         <Copyed value={userInfo?.address || ""} />
                     </div>
 
                     <div className="flex flex-col items-center mb-6">
-                        <div className="text-[#BFFF60] text-[26px] font-bold mb-1 leading-none">
-                            {userRanking?.rp} RP
-                        </div>
+                        {
+                            !userRanking?.rp && (
+                                <div className="text-white text-[14px]">
+                                    Earn any amount of RP to reach the Private.
+                                </div>
+                            )
+                        }
+
+                        {
+                            userRanking?.rp && (
+                                <div className="text-[#BFFF60] text-[26px] font-bold mb-1 leading-none">
+                                    {userRanking?.rp} RP
+                                </div>
+                            )
+                        }
+                        
                         {
                             userRanking?.rank && userRanking?.rank !== 0 && (
                                 <div className="text-white text-[14px]">
@@ -152,7 +166,7 @@ export default function UserInfo() {
                                 <span className=" text-[14px]">Rank Progress</span>
                                 <Tip content="Earn RP to advance to higher ranks" />
                             </div>
-                            <span className="">{userRanking?.rp}/{currentRank?.maxRP} RP</span>
+                            <span className="">{userRanking?.rp || 0}/{currentRank?.maxRP} RP</span>
                         </div>
 
                         {
