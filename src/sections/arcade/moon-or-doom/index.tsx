@@ -30,6 +30,7 @@ export default function MoonOrDoom() {
         refreshUserInfo,
     } = useWallet();
 
+    
     const { bet, setBet, handleBet, betLoading, userBet, setInsufficientBalance, insufficientBalance } = useBet({
         gameBalance: gameBalance || 0,
     });

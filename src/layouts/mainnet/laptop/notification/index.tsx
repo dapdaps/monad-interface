@@ -16,6 +16,8 @@ const Notification = () => {
       trigger={PopoverTrigger.Click}
       placement={PopoverPlacement.BottomRight}
       content={<NotitficationPanel />}
+      triggerContainerClassName=""
+      contentClassName="!z-[30]"
     >
       <div className="relative">
         <IconNotification className="cursor-pointer mt-[10px] shrink-0 w-[30px] h-[30px]" />

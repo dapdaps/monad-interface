@@ -15,7 +15,7 @@ const LaptopHeader = (props: any) => {
   const { className } = props;
 
   return (
-    <div className={clsx("fixed pr-[0px] pl-[31px] z-[10] left-0 top-0 w-full h-[65px] flex justify-between items-center", className)}>
+    <div className={clsx("fixed pr-[0px] pl-[31px] z-[30] left-0 top-0 w-full h-[65px] flex justify-between items-center", className)}>
       <Link
         href="/"
         className="block"
