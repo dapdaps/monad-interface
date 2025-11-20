@@ -6,9 +6,10 @@ import { Mousewheel } from "swiper/modules";
 import SpotlightApps from "./sections/spotlight-apps";
 import TrendingTokens from "./sections/trending-tokens";
 import ExploreAllApps from "./sections/explore-all-apps";
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, lazy, Suspense } from "react";
 import { useClick } from "./hooks/use-click";
 import { Virtual, Navigation, Pagination } from 'swiper/modules';
+import Welcome from "./components/welcome";
 
 const Discover = (props: any) => {
   const { } = props;
@@ -47,48 +48,51 @@ const Discover = (props: any) => {
   }, []);
 
   return (
-    <div className="relative mainnet-content !pb-0 !pt-0 overflow-y-auto bg-no-repeat bg-top bg-cover text-white bg-[#000000] bg-[url(/images/mainnet/discover/bg.png)]">
-      <div className="relative w-full h-full flex flex-col items-center">
-        <div className="w-full h-full relative z-[2]">
-          <Swiper
-            ref={swiperRef}
-            modules={[Mousewheel]}
-            spaceBetween={0}
-            slidesPerView={1}
-            loop={false}
-            direction="vertical"
-            className="w-full h-full overflow-hidden"
-            mousewheel={{
-              enabled: true,
-              sensitivity: 1,
-              releaseOnEdges: true,
-              thresholdDelta: 25,
-              thresholdTime: 150,
-            }}
-            allowTouchMove={false}
-          >
-            <SwiperSlide>
-              <SpotlightApps
-                getVisits={getVisits}
-                swiperRef={swiperRef}
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <TrendingTokens
-                swiperRef={swiperRef}
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <ExploreAllApps
-                getVisits={getVisits}
-                swiperRef={swiperRef}
-              />
-            </SwiperSlide>
-          </Swiper>
+    <>
+      <Welcome className="fixed z-[31] top-[0px] left-[50%] -translate-x-1/2" />
+      <div className="relative mainnet-content !pb-0 !pt-0 overflow-y-auto bg-no-repeat bg-top bg-cover text-white bg-[#000000] bg-[url(/images/mainnet/discover/bg.png)]">
+        <div className="relative w-full h-full flex flex-col items-center">
+          <div className="w-full h-full relative z-[2]">
+            <Swiper
+              ref={swiperRef}
+              modules={[Mousewheel]}
+              spaceBetween={0}
+              slidesPerView={1}
+              loop={false}
+              direction="vertical"
+              className="w-full h-full overflow-hidden"
+              mousewheel={{
+                enabled: true,
+                sensitivity: 1,
+                releaseOnEdges: true,
+                thresholdDelta: 25,
+                thresholdTime: 150,
+              }}
+              allowTouchMove={false}
+            >
+              <SwiperSlide>
+                <SpotlightApps
+                  getVisits={getVisits}
+                  swiperRef={swiperRef}
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <TrendingTokens
+                  swiperRef={swiperRef}
+                />
+              </SwiperSlide>
+              <SwiperSlide>
+                <ExploreAllApps
+                  getVisits={getVisits}
+                  swiperRef={swiperRef}
+                />
+              </SwiperSlide>
+            </Swiper>
+          </div>
+          <Bottom />
         </div>
-        <Bottom />
       </div>
-    </div >
+    </>
   );
 };
 

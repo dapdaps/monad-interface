@@ -9,7 +9,7 @@ export const letterVariants = {
 
 const WAIT = 150;
 
-const Typewriter = ({ text, onAnimationComplete, contentClassName, ...rest }: any) => {
+const Typewriter = ({ text, onAnimationComplete, contentClassName, charStyle, ...rest }: any) => {
   const length = text?.length || 0;
 
   const staggerChildren = useMemo(() => {
@@ -48,7 +48,11 @@ const Typewriter = ({ text, onAnimationComplete, contentClassName, ...rest }: an
       {text.split("\n").map((item: string, index: number) => (
         <div key={index} className={contentClassName}>
           {item.split("").map((char: any, i: number) => (
-            <motion.span key={`${char}-${i}`} variants={letterVariants}>
+            <motion.span
+              key={`${char}-${i}`}
+              variants={letterVariants}
+              style={charStyle?.[index]?.[i] ?? {}}
+            >
               {char}
             </motion.span>
           ))}

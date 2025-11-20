@@ -8,14 +8,10 @@ import Big from "big.js";
 import Skeleton from "react-loading-skeleton";
 import SwapModal from "@/sections/swap/SwapModal";
 import { LineChart, Line, ResponsiveContainer, Tooltip, YAxis } from "recharts";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
+import dayjs from "@/libs/day";
 import { useRequest } from "ahooks";
 import { get } from "@/utils/http";
 import { monad } from "@/configs/tokens/monad";
-
-// Initialize dayjs UTC plugin
-dayjs.extend(utc);
 
 const TrendingTokens = (props: any) => {
   const { swiperRef } = props;

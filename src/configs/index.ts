@@ -1,4 +1,4 @@
-import { monadTestnet } from "viem/chains";
+import dayjs from "@/libs/day";
 
 export const DEFAULT_CHAIN_ID = 143
 
@@ -13,3 +13,5 @@ export enum HTTP_CODE {
 export const DEFAULT_SWAP_DAPP = "izumi";
 export const DEFAULT_LENDING_DAPP = "timeswap";
 export const DEFAULT_STAKE_DAPP = "apriori";
+
+export const MONAD_TESTNET_START_DATE = dayjs.utc("2025-02-19 00:00:00");
