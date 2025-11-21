@@ -3,11 +3,17 @@ import Badge from "./badge";
 import Trend from "./trend";
 import clsx from "clsx";
 import { numberFormatter } from "@/utils/number-formatter";
+import { useMemo } from "react";
+import { randomVividColorHex } from "@/utils/color";
 
 export const Spotlight = (props: any) => {
   const { data, type = "left", className, onClick, visits } = props;
 
   const isLeft = type === "left";
+
+  const [randomColor] = useMemo(() => {
+    return [randomVividColorHex()];
+  }, []);
 
   return (
     <div
@@ -20,7 +26,7 @@ export const Spotlight = (props: any) => {
       }}
     >
       <motion.div
-        className="relative cursor-pointer w-full h-full rounded-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] overflow-hidden bg-no-repeat bg-center bg-cover"
+        className="relative z-[2] cursor-pointer w-full h-full rounded-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] overflow-hidden bg-no-repeat bg-center bg-cover"
         style={{
           backgroundImage: `url(${data.banner})`,
         }}
@@ -49,11 +55,22 @@ export const Spotlight = (props: any) => {
         </Trend> */}
         <div className="absolute rounded-b-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] pl-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] pr-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] left-0 bottom-0 flex justify-between items-center gap-[10px] w-full h-[clamp(1px,_4.37vw,_calc(var(--pc-1512)*0.0437))] bg-[rgba(92,90,101,0.30)] backdrop-blur-[20px]">
           <div className="flex items-center gap-[10px]">
-            <img
-              src={data.icon}
-              alt=""
-              className="border border-[#2F3543] rounded-[8px] w-[clamp(1px,_3.04vw,_calc(var(--pc-1512)*0.0304))] h-[clamp(1px,_3.04vw,_calc(var(--pc-1512)*0.0304))] object-center object-contain shrink-0"
-            />
+            {
+              !!data.icon ? (
+                <img
+                  src={data.icon}
+                  alt=""
+                  className="border border-[#2F3543] rounded-[8px] w-[clamp(1px,_3.04vw,_calc(var(--pc-1512)*0.0304))] h-[clamp(1px,_3.04vw,_calc(var(--pc-1512)*0.0304))] object-center object-contain shrink-0"
+                />
+              ) : (
+                <div
+                  className="flex justify-center items-center text-[20px] text-[#BFFF60] border border-[#2F3543] rounded-[8px] w-[clamp(1px,_3.04vw,_calc(var(--pc-1512)*0.0304))] h-[clamp(1px,_3.04vw,_calc(var(--pc-1512)*0.0304))]"
+                  style={{ color: randomColor }}
+                >
+                  {data.name.charAt(0).toUpperCase()}
+                </div>
+              )
+            }
             <div className="flex flex-col justify-center gap-[4px]">
               <div className="text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] font-[500]">{data.name}</div>
               <div className="text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] text-[rgba(255,255,255,0.65)]">{data.category}</div>
@@ -68,6 +85,16 @@ export const Spotlight = (props: any) => {
           </div>
         </div>
       </motion.div>
+      {
+        !data.banner && (
+          <div
+            className="absolute w-full h-full left-0 top-0 z-[1] flex justify-center items-center text-[20px]"
+            style={{ color: randomColor }}
+          >
+            {data.name}
+          </div>
+        )
+      }
     </div>
   );
 };

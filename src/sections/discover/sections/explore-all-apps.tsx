@@ -8,6 +8,7 @@ import useClickTracking from "@/hooks/use-click-tracking";
 import { numberFormatter } from "@/utils/number-formatter";
 import ExternalLinksModal from "@/sections/dapps/components/external-links-modal";
 import Badge from "../components/spotlight/badge";
+import { randomVividColorHex } from "@/utils/color";
 
 const TABS = [
   {
@@ -16,18 +17,23 @@ const TABS = [
     selected: true,
   },
   {
+    label: "DeFi",
+    value: AppCategory.DeFi,
+    selected: false,
+  },
+  {
     label: "Gaming",
     value: AppCategory.Gaming,
     selected: false,
   },
   {
-    label: "Dex",
-    value: AppCategory.Dex,
+    label: "NFT",
+    value: AppCategory.NFT,
     selected: false,
   },
   {
-    label: "Staking",
-    value: AppCategory.Staking,
+    label: "Consumer",
+    value: AppCategory.Consumer,
     selected: false,
   },
 ];
@@ -178,15 +184,30 @@ const AppItem = (props: any) => {
   const { handleReportWithoutDebounce } = useClickTracking();
   const visits = getVisits(app.bpContent);
 
+  const [randomColor] = useMemo(() => {
+    return [randomVividColorHex()];
+  }, []);
+
   return (
     <div className="flex justify-between items-center shrink-0 pl-[clamp(1px,_1.98vw,_calc(var(--pc-1512)*0.0198))] pr-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] gap-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] w-[clamp(1px,_78.04vw,_calc(var(--pc-1512)*0.7804))] h-[clamp(1px,_6.68vw,_calc(var(--pc-1512)*0.0668))] mx-auto bg-[url('/images/mainnet/discover/bg-explore-app2.png')] bg-no-repeat bg-center bg-contain">
       <div className="flex items-center gap-[clamp(1px,_2.31vw,_calc(var(--pc-1512)*0.0231))] flex-1">
         <div className="flex items-center gap-[clamp(1px,_1.46vw,_calc(var(--pc-1512)*0.0146))] shrink-0">
-          <img
-            src={app.icon}
-            alt=""
-            className="w-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))] h-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))] border border-[#836EF9] rounded-[4px] object-center object-contain shrink-0"
-          />
+          {
+            !!app.icon ? (
+              <img
+                src={app.icon}
+                alt=""
+                className="w-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))] h-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))] border border-[#836EF9] rounded-[4px] object-center object-contain shrink-0"
+              />
+            ) : (
+              <div
+                className="flex justify-center items-center text-[20px] text-[#BFFF60] w-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))] h-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))] border border-[#836EF9] rounded-[4px]"
+                style={{ color: randomColor }}
+              >
+                {app.name.charAt(0).toUpperCase()}
+              </div>
+            )
+          }
           <div className="w-[clamp(1px,_8.60vw,_calc(var(--pc-1512)*0.0860))] text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] text-white font-[600]">
             <div className="">
               {app.name}
@@ -208,7 +229,7 @@ const AppItem = (props: any) => {
             {app.category}
           </div>
           <div className="text-[#A1AECB] w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(1px,_1.06vw,_calc(var(--pc-1512)*0.0106))]">
-            {app.description}
+            {app.description || "-"}
           </div>
         </div>
       </div>
