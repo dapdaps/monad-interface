@@ -4,34 +4,13 @@ import ClientProviders from "@/components/client-providers";
 
 import "./globals.css";
 
-export const dynamic = 'force-dynamic';
-
 const BASE_URL = process.env.NEXT_PUBLIC_API || "https://mainnet-api-monad.dapdap.net";
-
-async function getApps() {
-  try {
-    const res = await fetch(`${BASE_URL}/api/apps`, {
-      cache: 'no-store',
-    });
-    const result = await res.json();
-    const _list = result?.data || [];
-    _list.forEach((app: any) => {
-      app.bp = "1026_001";
-    });
-    return _list;
-  } catch (error) {
-    console.error('Failed to fetch apps on server:', error);
-    return [];
-  }
-}
 
 export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const apps = await getApps();
-
   return (
     <html lang="en" className="w-full h-full md:overflow-hidden">
       <head>
@@ -44,7 +23,7 @@ export default async function RootLayout({
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className="w-full h-full md:overflow-hidden">
-        <ClientProviders initialApps={apps}>{children}</ClientProviders>
+        <ClientProviders>{children}</ClientProviders>
       </body>
       <Script
         async

@@ -10,24 +10,20 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import InvitationContextProvider from "@/context/invitation";
-import { useAppsStore, App } from "@/stores/apps";
+import { useApps } from "@/hooks/use-apps";
 
 interface ClientProvidersProps {
   children: React.ReactNode;
-  initialApps?: App[];
 }
 
 export default function ClientProviders({
   children,
-  initialApps = [],
 }: ClientProvidersProps) {
-  const setApps = useAppsStore((state) => state.setApps);
+  const { fetchApps } = useApps();
 
   useEffect(() => {
-    if (initialApps && initialApps.length > 0) {
-      setApps(initialApps);
-    }
-  }, [initialApps, setApps]);
+    fetchApps();
+  }, []);
 
   return (
     <>
