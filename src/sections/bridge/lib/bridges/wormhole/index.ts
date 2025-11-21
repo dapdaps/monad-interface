@@ -10,9 +10,9 @@ import { getIcon } from '../../util/index'
 import { QuoteRequest, QuoteResponse, ExecuteRequest, StatusParams } from '../../type/index'
 import { FeeType } from '../../type/index'
 import { Chain, createWalletClient, custom } from 'viem';
-import { mainnet, berachain, polygon, arbitrum, optimism, scroll, polygonZkEvm ,metis, bsc, manta, mode, base, mantle, avalanche, fantom, gnosis, linea, zksync, } from 'viem/chains';
+import { mainnet, berachain, polygon, arbitrum, optimism, scroll, polygonZkEvm, metis, bsc, manta, mode, base, mantle, avalanche, fantom, gnosis, linea, zksync, } from 'viem/chains';
 
-const chains = [arbitrum, mainnet, optimism, polygon, scroll, metis,berachain, polygonZkEvm, manta, mode, bsc, base, mantle, avalanche, fantom, gnosis, linea, zksync]
+const chains = [arbitrum, mainnet, optimism, polygon, scroll, metis, berachain, polygonZkEvm, manta, mode, bsc, base, mantle, avalanche, fantom, gnosis, linea, zksync]
 export async function init(signer: Signer) {
     const chainId = await signer.getChainId()
     const client: any = createWalletClient({
@@ -21,9 +21,9 @@ export async function init(signer: Signer) {
         transport: custom((signer as any)?.provider?.provider),
     })
 
-    
+    const wh = await wormhole("Mainnet", [evm]);
 
-    
+    return wh;
 }
 export async function getQuote(
     quoteRequest: QuoteRequest, signer: Signer
@@ -59,16 +59,49 @@ export async function getQuote(
         routes.CCTPRoute, // manual CCTP
         routes.AutomaticCCTPRoute, // automatic CCTP
         routes.AutomaticPorticoRoute, // Native eth transfers
-      ]);
+    ]);
 
     const sendChain = wh.getChain("Ethereum");
-    const destChain = wh.getChain("Arbitrum");
+    const destChain = wh.getChain("Monad");
 
-    const sendToken = Wormhole.tokenId(sendChain.chain, "native");
+    const sendToken = Wormhole.tokenId(sendChain.chain, "0xdAC17F958D2ee523a2206206994597C13D831ec7");
 
     const destTokens = await resolver.supportedDestinationTokens(sendToken, sendChain, destChain);
 
     console.log('destTokens', destTokens);
+
+    const destinationToken = destTokens[0]!;
+
+    const tr = await routes.RouteTransferRequest.create(wh, {
+        source: sendToken,
+        destination: destinationToken,
+    });
+
+    console.log('tr', tr)
+
+    const foundRoutes = await resolver.findRoutes(tr);
+    console.log("For the transfer parameters, we found these routes: ", foundRoutes);
+
+    const bestRoute = foundRoutes[0]!;
+    const amt = "0.001";
+    const transferParams = { amount: amt, options: { nativeGas: 0 } };
+
+    const validated = await bestRoute.validate(tr, transferParams);
+    if (!validated.valid) throw validated.error;
+    console.log("Validated parameters: ", validated.params);
+
+    const quote = await bestRoute.quote(tr, validated.params);
+    if (!quote.success) throw quote.error;
+    console.log("Best route quote: ", quote);
+
+    // const receipt = await bestRoute.initiate(tr, signer, quote, quoteRequest.destAddress);
+    // console.log("Initiated transfer with receipt: ", receipt);
+    // EXAMPLE_REQUEST_INITIATE
+
+    // // Kick off a wait log, if there is an opportunity to complete, this function will do it
+    // // see the implementation for how this works
+    // await routes.checkAndCompleteTransfer(bestRoute, receipt, signer);
+
 
     // const routes = result.routes
     // if (routes && routes.length) {
@@ -109,7 +142,7 @@ export async function execute(request: ExecuteRequest, signer: Signer): Promise<
 
     let isResolved = false
     return await new Promise(async (resolve, reject) => {
-        
+
     })
 
 
@@ -125,7 +158,7 @@ export async function getStatus(params: StatusParams) {
             status: 1
         }
     }
-    
+
     return {
         status: 0
     }

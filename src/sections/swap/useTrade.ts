@@ -12,6 +12,7 @@ import quoter from "@/sdk/smart-router";
 import { ethers } from "ethers";
 import dayjs from "dayjs";
 import { AllowanceProvider, MaxAllowanceTransferAmount, PermitSingle, AllowanceTransfer } from "@uniswap/permit2-sdk";
+import { usePriceStore } from "@/stores/usePriceStore";
 
 export default function useTrade({ chainId, template, from, onSuccess }: any) {
   const slippage: any = useSettingsStore((store: any) => store.slippage);
@@ -23,7 +24,7 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
   const { addAction } = useAddAction(from || "dapp");
   const lastestCachedKey = useRef("");
   const cachedTokens = useRef<any>();
-  const prices = {};
+  const prices = usePriceStore(store => store.price);
 
   const onQuoter = useCallback(
     async ({ inputCurrency, outputCurrency, inputCurrencyAmount }: any) => {
@@ -139,6 +140,7 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
             (a: any, b: any) => b.outputCurrencyAmount - a.outputCurrencyAmount
           )
           .map((item: any) => {
+
             return formatTrade({
               market: item,
               rawBalance,
@@ -149,6 +151,7 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
               inputCurrencyAmount
             });
           });
+
         setTrade(_markets[0]);
         setTradeList(_markets);
       } catch (err) {

@@ -15,7 +15,7 @@ export const useXBind = () => {
     const { runAsync: bindX, loading: bindXLoading, error: bindXError, data: bindXData } = useRequest(async () => {
         const code = searchParams.get("code");
         const state = searchParams.get("state");
-        const redirectUri = window.location.origin.includes('localhost') ? window.location.origin : 'https://alpha.nadsa.space/api/twitter_auth';
+        const redirectUri = window.location.origin.includes('localhost') ? window.location.origin : window.location.origin +'/api/twitter_auth';
         
         if (code && state) {
             const res = await post('/twitter/bind', {
@@ -23,7 +23,6 @@ export const useXBind = () => {
                 redirect_uri: redirectUri,
             });
 
-            console.log("Twitter OAuth bind res:", res);
             if (res.code !== 200) {
                 toast.fail({
                     title: "Bind twitter failed!",
