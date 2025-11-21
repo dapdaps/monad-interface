@@ -12,8 +12,6 @@ const loadingDuration = 1000;
 const WelcomeLoading = (props: WelcomeLoadingProps) => {
   const { progress = 0, bonus } = props;
 
-  console.log("bonus: %o", bonus);
-
   const [loadingCompleted, setLoadingCompleted] = useState(false);
   const [showMessages, setShowMessages] = useState<any>([]);
 

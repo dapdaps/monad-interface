@@ -13,7 +13,7 @@ const WelcomeDownloadTerminal = (props: any, ref: any) => {
 
   const router = useRouter();
   const { setShareOpen, setStatus } = useWelcomeContext();
-  const { setWelcomeOpen } = useNftStore();
+  const { setWelcomeOpen, setWelcomeDownloaded } = useNftStore();
 
   const messagesRef = useRef<any>(null);
   const messagesTimerRef = useRef<any>(null);
@@ -166,6 +166,7 @@ const WelcomeDownloadTerminal = (props: any, ref: any) => {
                   onClick={() => {
                     router.push("/rank");
                     setWelcomeOpen?.(false);
+                    setWelcomeDownloaded?.(true);
                   }}
                   className="underline"
                 >

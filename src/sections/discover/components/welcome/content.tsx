@@ -1,15 +1,14 @@
 import useCustomAccount from "@/hooks/use-account";
-import { lazy, Suspense, useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useWelcomeContext } from "./context";
 import { EWelcomeStatus } from "./config";
 import { useBonus } from "@/sections/ranking/hooks/use-bonus";
 import { useDebounceFn, useRequest } from "ahooks";
-
-const WelcomeConnect = lazy(() => import("./connect"));
-const WelcomeLoading = lazy(() => import("./loading"));
-const WelcomeNft = lazy(() => import("./nft"));
-const WelcomeProgress = lazy(() => import("./progress"));
-const WelcomeStart = lazy(() => import("./start"));
+import WelcomeNft from "./nft";
+import WelcomeConnect from "./connect";
+import WelcomeLoading from "./loading";
+import WelcomeProgress from "./progress";
+import WelcomeStart from "./start";
 
 const WelcomeContent = (props: any) => {
   const { } = props;
@@ -132,33 +131,31 @@ const WelcomeContent = (props: any) => {
 
   return (
     <div className="w-full">
-      <Suspense fallback={null}>
-        {
-          status === EWelcomeStatus.CONNECTING && (
-            <WelcomeConnect />
-          )
-        }
-        {
-          [EWelcomeStatus.LOADING, EWelcomeStatus.NOT_FOUND].includes(status as EWelcomeStatus) && (
-            <WelcomeLoading bonus={allBonus} progress={progress} />
-          )
-        }
-        {
-          [EWelcomeStatus.READY, EWelcomeStatus.OPENED].includes(status as EWelcomeStatus) && (
-            <WelcomeNft bonus={allBonus} />
-          )
-        }
-        {
-          [EWelcomeStatus.LOADING].includes(status as EWelcomeStatus) && (
-            <WelcomeProgress progress={progress} className="mt-[10px]" />
-          )
-        }
-        {
-          [EWelcomeStatus.NOT_FOUND, EWelcomeStatus.OPENED].includes(status as EWelcomeStatus) && (
-            <WelcomeStart />
-          )
-        }
-      </Suspense>
+      {
+        status === EWelcomeStatus.CONNECTING && (
+          <WelcomeConnect />
+        )
+      }
+      {
+        [EWelcomeStatus.LOADING, EWelcomeStatus.NOT_FOUND].includes(status as EWelcomeStatus) && (
+          <WelcomeLoading bonus={allBonus} progress={progress} />
+        )
+      }
+      {
+        [EWelcomeStatus.READY, EWelcomeStatus.OPENED].includes(status as EWelcomeStatus) && (
+          <WelcomeNft bonus={allBonus} />
+        )
+      }
+      {
+        [EWelcomeStatus.LOADING].includes(status as EWelcomeStatus) && (
+          <WelcomeProgress progress={progress} className="mt-[10px]" />
+        )
+      }
+      {
+        [EWelcomeStatus.NOT_FOUND, EWelcomeStatus.OPENED].includes(status as EWelcomeStatus) && (
+          <WelcomeStart />
+        )
+      }
     </div>
   );
 };

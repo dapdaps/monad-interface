@@ -3,21 +3,35 @@
 import { useNftStore } from "@/stores/nft";
 import clsx from "clsx";
 import { motion } from "framer-motion";
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { EWelcomeStatus } from "./config";
 import { IShareOpen, WelcomeProvider } from "./context";
+import { useDebounceFn } from "ahooks";
 
 const WelcomeModal = lazy(() => import("./modal"));
 const WelcomeShareModal = lazy(() => import("./share"));
+const WelcomeDownload = lazy(() => import("./download"));
 
 const Welcome = (props: any) => {
   const { className } = props;
 
-  const { setWelcomeOpen } = useNftStore();
+  const { setWelcomeOpen, welcomeDownloaded } = useNftStore();
 
   const [bonus, setBonus] = useState<any>();
   const [status, setStatus] = useState<EWelcomeStatus>(EWelcomeStatus.CONNECTING);
   const [shareOpen, setShareOpen] = useState<IShareOpen>({ open: false });
+
+  const { run: openWelcome, cancel: cancelOpenWelcome } = useDebounceFn(() => {
+    setWelcomeOpen(true);
+  }, { wait: 2000 });
+
+  useEffect(() => {
+    cancelOpenWelcome();
+    if (welcomeDownloaded) {
+      return;
+    }
+    openWelcome();
+  }, [welcomeDownloaded]);
 
   return (
     <WelcomeProvider
@@ -73,6 +87,9 @@ const Welcome = (props: any) => {
       </Suspense>
       <Suspense fallback={null}>
         <WelcomeShareModal />
+      </Suspense>
+      <Suspense fallback={null}>
+        <WelcomeDownload />
       </Suspense>
     </WelcomeProvider>
   );

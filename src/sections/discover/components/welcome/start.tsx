@@ -3,7 +3,7 @@ import { useNftStore } from "@/stores/nft";
 const WelcomeStart = (props: any) => {
   const { } = props;
 
-  const { setWelcomeOpen } = useNftStore();
+  const { setWelcomeOpen, setWelcomeDownloaded } = useNftStore();
 
   return (
     <div className="w-full flex justify-center items-center mt-[15px]">
@@ -15,6 +15,7 @@ const WelcomeStart = (props: any) => {
         }}
         onClick={() => {
           setWelcomeOpen?.(false);
+          setWelcomeDownloaded?.(true);
         }}
       >
         Start Exploring Monad
