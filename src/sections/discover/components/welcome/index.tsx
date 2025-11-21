@@ -5,19 +5,31 @@ import clsx from "clsx";
 import { motion } from "framer-motion";
 import { lazy, Suspense, useState } from "react";
 import { EWelcomeStatus } from "./config";
-import { WelcomeProvider } from "./context";
+import { IShareOpen, WelcomeProvider } from "./context";
 
 const WelcomeModal = lazy(() => import("./modal"));
+const WelcomeShareModal = lazy(() => import("./share"));
 
 const Welcome = (props: any) => {
   const { className } = props;
 
   const { setWelcomeOpen } = useNftStore();
 
+  const [bonus, setBonus] = useState<any>();
   const [status, setStatus] = useState<EWelcomeStatus>(EWelcomeStatus.CONNECTING);
+  const [shareOpen, setShareOpen] = useState<IShareOpen>({ open: false });
 
   return (
-    <WelcomeProvider value={{ status, setStatus }}>
+    <WelcomeProvider
+      value={{
+        status,
+        setStatus,
+        shareOpen,
+        setShareOpen,
+        bonus,
+        setBonus,
+      }}
+    >
       <div
         className={clsx("cursor-pointer w-[678px] flex justify-center items-center gap-[10px] h-[50px] flex-shrink-0 rounded-[4px] border border-[#6750FF] bg-[rgba(29,30,34,0.80)] shadow-[0_0_30px_0_#836EF9] backdrop-blur-[15px] text-[#BFFF60] font-[pixelmix] text-[14px] font-normal leading-[100%] px-6", className)}
         onClick={() => {
@@ -58,6 +70,9 @@ const Welcome = (props: any) => {
       </div>
       <Suspense fallback={null}>
         <WelcomeModal />
+      </Suspense>
+      <Suspense fallback={null}>
+        <WelcomeShareModal />
       </Suspense>
     </WelcomeProvider>
   );

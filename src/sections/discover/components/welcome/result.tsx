@@ -3,11 +3,13 @@ import WelcomeTypewriter from "./typewriter";
 import { useRouter } from "next-nprogress-bar";
 import Big from "big.js";
 import { numberFormatter } from "@/utils/number-formatter";
+import { useWelcomeContext } from "./context";
 
 const WelcomeResult = (props: any) => {
   const { bonus } = props;
 
   const router = useRouter();
+  const { setShareOpen } = useWelcomeContext();
 
   const [showMessages, setShowMessages] = useState<any>([]);
 
@@ -84,12 +86,18 @@ const WelcomeResult = (props: any) => {
         <button
           type="button"
           className="h-[32px] border border-[#BFFF60] flex justify-center items-center px-[11px] text-[14px] text-[#BFFF60] font-[400]"
+          onClick={() => {
+            setShareOpen?.({ open: true, type: "share" });
+          }}
         >
           SHARE
         </button>
         <button
           type="button"
           className="h-[32px] border border-[#BFFF60] flex justify-center items-center px-[10px] text-[14px] text-[#BFFF60] font-[400]"
+          onClick={() => {
+            setShareOpen?.({ open: true, type: "download" });
+          }}
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none">
             <path d="M6.5 0V8.5M6.5 8.5L2 4M6.5 8.5L11 4M0 11.5H13" stroke="#BFFF60" stroke-width="1.6" />

@@ -15,7 +15,7 @@ const WelcomeContent = (props: any) => {
   const { } = props;
 
   const { account } = useCustomAccount();
-  const { status, setStatus } = useWelcomeContext();
+  const { status, setStatus, setBonus } = useWelcomeContext();
   const { allBonus, getBonus } = useBonus({ autoLoad: false });
   const [progress, setProgress] = useState(0);
   const minDuration = 3000; // Minimum 3 seconds
@@ -79,7 +79,8 @@ const WelcomeContent = (props: any) => {
     updateProgress();
 
     // Start getBonus request
-    getBonusDelay().then(() => {
+    getBonusDelay().then((bonus) => {
+      setBonus?.(bonus);
       clearInterval(progressTimerRef.current);
       progressTimerRef.current = null;
       updateProgress(true);
