@@ -143,7 +143,7 @@ export default function WalletModal({
                                     <span className="opacity-30">|</span>
                                     <button className={clsx("hover:text-[#31FFA6]", percent === 1 && "text-white")} onClick={handleMax}>Max</button>
                                 </div>
-                                <div className="opacity-70">bal: {Number(balanceText || 0).toFixed(2)}</div>
+                                <div className="opacity-70 cursor-pointer" onClick={handleMax}>bal: {Number(balanceText || 0).toFixed(2)}</div>
                             </div>
                         </div>
 

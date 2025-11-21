@@ -458,5 +458,5 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
     return contract.execute(commands, inputs, deadline, options);
   }, [account, provider, trade]);
 
-  return { loading, trade, tradeList, onQuoter, onSwap, setTrade };
+  return { loading, trade, tradeList, onQuoter, onSwap, setTrade, setTradeList };
 }

@@ -48,7 +48,7 @@ export default function Swap({
   const [refreshQuoter, setRefreshQuoter] = useState(Date.now())
 
   const [selectType, setSelectType] = useState<"in" | "out">("in");
-  const { loading, trade, tradeList, onQuoter, onSwap, setTrade } = useTrade({
+  const { loading, trade, tradeList, onQuoter, onSwap, setTrade, setTradeList } = useTrade({
     chainId: DEFAULT_CHAIN_ID,
     // template: dapp.name,
     template: isSuperSwap ? ['UniswapV3', 'UniswapV2', 'PancakeV2', 'PancakeV3', 'OneClick', 'iZumi', 'LFJ', 'Kuru', 'MondayTrade', 'MondayTradeV3'] : dapp.name,
@@ -130,18 +130,25 @@ export default function Swap({
     }
   }, []);
 
+
   useEffect(() => {
     if (!inputCurrency || !outputCurrency) {
       setErrorTips("Select token");
+      setTradeList([]);
+      setTrade(null);
       return;
     }
     if (Number(inputCurrencyAmount || 0) === 0) {
       setErrorTips("Enter an amount");
       setOutputCurrencyAmount("");
+      setTradeList([]);
+      setTrade(null);
       return;
     }
     if (Big(inputCurrencyAmount).gt(maxInputBalance || 0)) {
       setErrorTips(`Insufficient ${inputCurrency?.symbol} Balance`);
+      setTradeList([]);
+      setTrade(null);
     } else {
       setErrorTips("");
     }
