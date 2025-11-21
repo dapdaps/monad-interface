@@ -8,7 +8,7 @@ import useToast from "@/hooks/use-toast";
 import CircleLoading from "@/components/circle-loading";
 import MonadBaseCard from "@/components/card/monad-base-card";
 import useCustomAccount from "@/hooks/use-account";
-import { DEFAULT_CHAIN_ID, IS_PRODUCTION } from "@/configs";
+import { DEFAULT_CHAIN_ID } from "@/configs";
 import { Contract } from "ethers";
 
 interface BuyTimesModalProps {
@@ -24,7 +24,7 @@ interface BuyTimesModalProps {
 export const GAME_CONTRACT_ADDRESS_TEST = "0x689c6D62Eb29A3246c239F9a3281E77eF8F85721";
 export const GAME_CONTRACT_ADDRESS_PROD = "0x5b2070744Ae6D53B1dE362796B3b8910E28893bA";
 
-export const GAME_CONTRACT_ADDRESS = IS_PRODUCTION ? GAME_CONTRACT_ADDRESS_PROD : GAME_CONTRACT_ADDRESS_TEST;
+export const GAME_CONTRACT_ADDRESS = GAME_CONTRACT_ADDRESS_PROD;
 const amount = 0.1;
 
 const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesModalProps) => {
