@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const TerserPlugin = require("terser-webpack-plugin");
+const webpack = require('webpack');
+const path = require('path');
 
 const createBundleStatsPlugin = require("next-plugin-bundle-stats");
 
@@ -82,6 +84,29 @@ const nextConfig = {
   ],
   webpack: (config, { dev }) => {
     config.resolve.alias.stream = "stream-browserify";
+    
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(
+        /^ethers$/,
+        (resource) => {
+          if (
+            resource.context &&
+            (resource.context.includes('@wormhole-foundation/sdk-evm-cctp') ||
+             resource.context.includes('@wormhole-foundation/sdk-evm-core') ||
+             resource.context.includes('@wormhole-foundation/sdk-evm'))
+          ) {
+            const ethers6Path = path.resolve(__dirname, 'node_modules', '@wormhole-foundation', 'sdk-evm-cctp', 'node_modules', 'ethers');
+            try {
+              const fs = require('fs');
+              if (fs.existsSync(ethers6Path)) {
+                resource.request = ethers6Path;
+              }
+            } catch (e) {
+            }
+          }
+        }
+      )
+    );
 
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.(".svg")

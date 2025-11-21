@@ -6,6 +6,7 @@ import { getIcon, getAllToken, getChainScan, getBridgeMsg } from './util/index'
 import { getQuoteInfo, setQuote } from './util/routerController'
 import { getQuote as getOwltoRoute, execute as executeOwlto, getStatus as getOwltoStatus } from './bridges/owlto'
 import { getQuote as getOrbiterRoute, execute as executeOrbiter, getStatus as getOrbiterStatus } from './bridges/orbiter'
+// import { getQuote as getWormholeRoute, execute as executeWormhole, getStatus as getWormholeStatus } from './bridges/wormhole'
 
 import { ExecuteRequest, QuoteRequest, QuoteResponse, StatusParams, StatusRes } from './type'
 
@@ -66,6 +67,9 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer, callb
     // const owltoRoute = getOwltoRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('owlto:', e))
     const orbiterRoute = getOrbiterRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('orbiter:', e))
     quoteP.push(orbiterRoute)
+    // const { getQuote: getWormholeRoute } = await import('./bridges/wormhole/index')
+    // const wormholeRoute = getWormholeRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('wormhole:', e))
+    // quoteP.push(wormholeRoute)
   }
 
   const resList: (QuoteResponse | QuoteResponse[] | null | void)[] = await Promise.all(quoteP)

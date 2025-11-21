@@ -48,7 +48,7 @@ const SpotlightApps = (props: any) => {
               setLastIndex((params.realIndex + 3) % SpotlightList.length);
             }}
             autoplay={{
-              delay: 5000,
+              delay: 3000,
               disableOnInteraction: false,
               pauseOnMouseEnter: true,
             }}
