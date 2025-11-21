@@ -15,12 +15,18 @@ const BRIDGE_ICONS: {
   [key: string]: string
 } = {
   'stargate': 'https://s3.amazonaws.com/dapdap.prod/images/stargate.png',
+  'orbiter': 'https://s3.amazonaws.com/dapdap.prod/images/100-obiter.png',
+  'owlto': 'https://s3.amazonaws.com/dapdap.prod/images/owlto.png',
+  'liFi': 'https://s3.amazonaws.com/dapdap.prod/images/li.fi.png',
 }
 
 const BRIDGE_NAME: {
   [key: string]: string
 } = {
   'stargate': 'Stargate',
+  'orbiter': 'Orbiter',
+  'owlto': 'Owlto',
+  'liFi': 'Li.fi',
 }
 
 const BRIDGE_COLOR: {
