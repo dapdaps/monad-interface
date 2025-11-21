@@ -25,7 +25,7 @@ const SpotlightApps = (props: any) => {
   const [lastIndex, setLastIndex] = useState(3);
 
   const SpotlightList = useMemo(() => {
-    return AppList.filter((item) => item.isSpotlight).slice(0, 5);
+    return AppList.filter((item) => item.isSpotlight);
   }, [AppList]);
 
   return (
