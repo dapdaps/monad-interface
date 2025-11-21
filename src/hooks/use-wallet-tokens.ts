@@ -27,7 +27,6 @@ export default function useWalletTokens() {
 
         setIsLoading(true);
 
-        console.log('fetchTokens:', isLoading, price, userInfo?.address, rpc);
 
         try {
             const _provider = new ethers.providers.JsonRpcProvider(rpc);
@@ -64,7 +63,7 @@ export default function useWalletTokens() {
                     }
 
                     token.name = names[index]?.length > 0 ? names[index][0] : '';
-                    token.price = price[token.symbol] ? new Big(price[token.symbol]).toFixed(2) : 0;
+                    token.price = price[token.symbol] ? new Big(price[token.symbol]).toFixed(4) : 0;
                 });
     
                 const valuedTokens = _tokens.filter((token: any) => {
@@ -82,7 +81,7 @@ export default function useWalletTokens() {
                     name: 'MON',
                     icon: '/images/monad.svg',
                     balance: tokenBalance ? new Big(tokenBalance).toFixed(4) : 0,
-                    price: price['MON'] ? new Big(price['MON']).toFixed(2) : 0,
+                    price: price['MON'] ? new Big(price['MON']).toFixed(4) : 0,
                     value: price['MON'] && tokenBalance ? new Big(tokenBalance).mul(price['MON']).toFixed(2) : 0,
                 });
 

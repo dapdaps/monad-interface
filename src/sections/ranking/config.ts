@@ -155,7 +155,7 @@ interface BoosterItem {
 
 export const BoosterItems: BoosterItem[] = [
   {
-      icon: "/images/wallet/ranking/booster-1.png",
+      icon: "/images/wallet/ranking/booster-1-1.png",
       label: "5500 Core Community",
       boost: 5,
       tip: "Members who received the Monad airdrop earn a 5% RP bonus",

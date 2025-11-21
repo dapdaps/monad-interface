@@ -45,7 +45,6 @@ export default function Tokens(props: any) {
                                     <td className="pl-[30px]">${ token.price || '-' }</td>
                                     <td className="pl-[30px]">{ token.balance || '-' }</td>
                                     <td className="pl-[30px]">${ token.value || '-' }</td>
-
                                 </tr>
                             ))
                         }
