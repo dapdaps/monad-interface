@@ -4,12 +4,14 @@ import { useRouter } from "next-nprogress-bar";
 import Big from "big.js";
 import { numberFormatter } from "@/utils/number-formatter";
 import { useWelcomeContext } from "./context";
+import { useNftStore } from "@/stores/nft";
 
 const WelcomeResult = (props: any) => {
   const { bonus } = props;
 
   const router = useRouter();
   const { setShareOpen } = useWelcomeContext();
+  const { setWelcomeOpen } = useNftStore();
 
   const [showMessages, setShowMessages] = useState<any>([]);
 
@@ -65,6 +67,7 @@ const WelcomeResult = (props: any) => {
                   type="button"
                   onClick={() => {
                     router.push("/rank");
+                    setWelcomeOpen?.(false);
                   }}
                   className="underline"
                 >

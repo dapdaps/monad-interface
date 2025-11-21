@@ -24,13 +24,14 @@ const Typewriter = ({ text, onAnimationComplete, contentClassName, charStyle, ..
     return Math.max(0.001, Math.min(0.1, number));
   }, []);
 
-  const { run: handleAnimationComplete, cancel } = useDebounceFn(
-    onAnimationComplete,
+  const { run: handleAnimationComplete, cancel } = useDebounceFn(() => {
+    onAnimationComplete?.();
+  },
     { wait: WAIT }
   );
 
   return (
-    <motion.p
+    <motion.div
       key={text}
       className="break-words"
       variants={{
@@ -58,7 +59,7 @@ const Typewriter = ({ text, onAnimationComplete, contentClassName, charStyle, ..
           ))}
         </div>
       ))}
-    </motion.p>
+    </motion.div>
   );
 };
 
