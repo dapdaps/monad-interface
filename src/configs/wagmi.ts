@@ -32,13 +32,12 @@ export const config = getDefaultConfig({
   }),
   ssr: true,
   projectId: projectId,
-  chains: [monadTestnet, mainnet, sepolia, bsc, chains[143]],
+  chains: networks,
   transports: {
     [DEFAULT_CHAIN_ID]: http("https://testnet-rpc.monad.xyz"),
     [mainnet.id]: http("https://eth.merkle.io"),
     [sepolia.id]: http("https://eth-sepolia.api.onfinality.io/public"),
     [143]: http("https://rpc-mainnet.monadinfra.com/rpc/aXs4fXLNOkkrC4T6W8DU7F4SOJ12gst6"),
-    [56]: http("https://bsc-dataseed.binance.org")
   },
 });
 

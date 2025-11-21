@@ -49,19 +49,20 @@ const ChainWapper = styled.div`
   .chain-list {
     /* height: calc(100% - 20px); */
     overflow-y: auto;
-    padding-left: 20px;
     /* overflow-x: hidden; */
     margin-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
     display: flex;
     flex-wrap: wrap;
+    width: 432px;
     gap: 2px;
     .chain {
-      width: 108px;
-      height: 108px;
+      width: 100px;
+      height: 100px;
       border-radius: 4px;
       border: 1px solid #34304B;
       cursor: pointer;
-      margin-top: 8px;
       position: relative;
       background-color: #151822;
       display: flex;
@@ -145,7 +146,7 @@ const TokenList = styled.div`
   /* height: calc(100% - 120px);
     overflow: auto; */
     margin-top: 20px;
-    height: 540px;
+    max-height: 540px;
     overflow-y: auto;
     margin-bottom: 20px;
 `;
@@ -485,11 +486,11 @@ export default function ChainAndTokenSelector({
 
   return (
 
-    <div className="overflow-y-auto absolute top-0 left-[15px] right-[15px] pb-[10px] h-[800px] z-[1000] font-Oxanium px-[20px] bg-black text-white">
+    <div className="absolute top-0 left-0 right-0 pb-[10px] max-h-[800px] z-[1000] font-Oxanium px-[20px] bg-black text-white">
       <div className="relative flex items-center justify-center text-[18px] font-[400] h-[50px]">
         <div onClick={() => {
           onClose?.();
-        }} className='absolute left-[20px] top-[10px] w-[35px] h-[35px] border border-[#727D974D] rounded-[6px] flex items-center justify-center cursor-pointer'>
+        }} className='absolute left-0 top-[10px] w-[35px] h-[35px] border border-[#727D974D] rounded-[6px] flex items-center justify-center cursor-pointer'>
           <svg width="10" height="12" viewBox="0 0 10 12" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0.5 6.79427C-0.166667 6.40937 -0.166666 5.44712 0.5 5.06222L7.76795 0.866064C8.65398 0.354512 9.64553 1.34606 9.13398 2.23209L7.28867 5.42824C7.11004 5.73764 7.11004 6.11884 7.28868 6.42824L9.13398 9.62439C9.64553 10.5104 8.65398 11.502 7.76795 10.9904L0.5 6.79427Z" fill="#8E97AD" />
           </svg>
@@ -511,7 +512,7 @@ export default function ChainAndTokenSelector({
           //   setHoverChain(null);
           // }}
           >
-            {sortedChainList?.filter((chain) => limitBera ? chain.chainId === 10143 : chain.chainId !== 10143).map((chain) => {
+            {sortedChainList?.filter((chain) => limitBera ? chain.chainId === 143 : chain.chainId !== 143).map((chain) => {
               return (
                 <div
                   key={chain.chainId}
@@ -547,7 +548,7 @@ export default function ChainAndTokenSelector({
                   className={`chain ${tempChain?.chainId === chain.chainId ? 'active' : ''} ${disabledChainSelector && currentChain?.chainId !== chain.chainId ? 'disabeld' : ''}`}
                 >
                   <Image cls="img" src={chain.icon} />
-                  <div className="text-[14px] font-[400] leading-[16.8px] mt-[10px]">{chain.chainName}</div>
+                  <div className="text-[14px] font-[400] leading-[16.8px] mt-[10px] text-center whitespace-nowrap overflow-hidden text-ellipsis">{chain.chainName}</div>
                 </div>
               );
             })}

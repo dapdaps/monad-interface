@@ -14,14 +14,15 @@ import { useSearchParams } from "next/navigation";
 import History from "./History";
 import { useAccount, useSwitchChain } from "wagmi";
 import { formatLongText } from "@/utils/utils";
-import allTokens from "./lib/allTokens";
+import __allTokens from "./lib/allTokens";
 import useBridge from "./Hooks/useBridge";
 
 import type { Token, Chain } from "@/types";
 import { motion } from "framer-motion";
-import { tokenPairs } from "./lib/bridges/orbiter/config";
+// import { tokenPairs } from "./lib/bridges/orbiter/config";
 import useBridgeType from "./Hooks/useBridgeType";
 import useClickTracking from "@/hooks/use-click-tracking";
+import useChainAndTokenPair from "./Hooks/useChaninAndTokenPair";
 
 const DappHeader: React.FC = () => {
   const params = useSearchParams();
@@ -59,8 +60,8 @@ const DappHeader: React.FC = () => {
 };
 
 const ComingSoon = false;
-const chainList = Object.values(chains).filter((chain) =>
-  [1, 143, 56].includes(chain.chainId)
+const _chainList = Object.values(chains).filter((chain) =>
+  [1, 143, 56, 10, 43114, 5000, 8453, 42161, 59144, 1101].includes(chain.chainId)
 );
 
 export default function Bridge() {
@@ -75,6 +76,9 @@ export default function Bridge() {
   const targetRef = useRef<HTMLDivElement>(null);
   const [targetX, setTargetX] = useState("0px");
   const [targetY, setTargetY] = useState("0px");
+
+  const { chains: pairChains, tokenPairs: tokenPairs } = useChainAndTokenPair({ bridgeType: 'orbiter' });
+
 
   const {
     fromChain,
@@ -108,14 +112,32 @@ export default function Bridge() {
     defaultBridgeText: "Bridge"
   });
 
+  const usedChainList = useMemo(() => {
+    return _chainList.filter((chain) => pairChains.includes(chain.chainId.toString()));
+  }, [pairChains]);
+
+  const useTokenList = useMemo(() => {
+    const newTokenList: any = {};
+    Object.keys(__allTokens).map((key: any) => {
+      newTokenList[key] = __allTokens[key].filter((token: Token) => {
+        if (tokenPairs[key]) {
+          return tokenPairs[key][token.symbol.toUpperCase()];
+        } else {
+          return false;
+        }
+      });
+    });
+    return newTokenList;
+  }, [tokenPairs]);
+
   const _allTokens = useMemo(() => {
     if (!fromToken) {
-      return allTokens;
+      return useTokenList;
     }
 
     const newAllTokens: any = {};
-    Object.keys(allTokens).map((key: any) => {
-      newAllTokens[key] = allTokens[key].filter((token: Token) => {
+    Object.keys(useTokenList).map((key: any) => {
+      newAllTokens[key] = useTokenList[key].filter((token: Token) => {
         let symbol = token.symbol.toUpperCase();
         return (
           tokenPairs[fromChain.chainId][fromToken.symbol.toUpperCase()] ===
@@ -124,8 +146,8 @@ export default function Bridge() {
       });
     });
 
-    return allTokens;
-  }, [fromToken, fromChain]); 
+    return newAllTokens;
+  }, [fromToken, fromChain, useTokenList]); 
 
   useEffect(() => {
     if (!fromToken) {
@@ -134,8 +156,8 @@ export default function Bridge() {
     }
     const tokenPair =
       tokenPairs[fromChain.chainId][fromToken?.symbol.toUpperCase()];
-    if (tokenPair) {
-      const token = allTokens[toChain.chainId].find(
+    if (tokenPair && useTokenList[toChain.chainId]) {
+      const token = useTokenList[toChain.chainId].find(
         (token: Token) => token.symbol.toUpperCase() === tokenPair
       ) as Token;
       if (tokenPairs[toChain.chainId][tokenPair]) {
@@ -146,16 +168,19 @@ export default function Bridge() {
     } else {
       setToToken(undefined);
     }
-  }, [fromChain, fromToken]);
+  }, [fromChain, fromToken, useTokenList]);
 
   useEffect(() => {
-    const fromToken = allTokens[56].find((token: Token) => token.symbol.toUpperCase() === 'USDC');
-    const toToken = allTokens[143].find((token: Token) => token.symbol.toUpperCase() === 'USDC');
+    if (!useTokenList[56] || !useTokenList[143]) {
+      return;
+    }
+    const fromToken = useTokenList[56].find((token: Token) => token.symbol.toUpperCase() === 'USDC');
+    const toToken = useTokenList[143].find((token: Token) => token.symbol.toUpperCase() === 'USDC');
     if (fromToken && toToken) {
       setFromToken(fromToken as Token);
       setToToken(toToken as Token);
     }
-  }, []);
+  }, [useTokenList]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -243,7 +268,7 @@ export default function Bridge() {
             <div>
               <TokenAmout
                 isDest={false}
-                allTokens={allTokens}
+                allTokens={useTokenList}
                 limitBera={limitBera === 1}
                 chain={fromChain}
                 token={fromToken ?? null}
@@ -251,7 +276,7 @@ export default function Bridge() {
                 onAmountChange={(v: string) => {
                   onSendAmountChange(v);
                 }}
-                chainList={chainList}
+                chainList={usedChainList}
                 onChainChange={(chain: Chain) => {
                   setFromChain(chain);
                 }}
@@ -283,7 +308,7 @@ export default function Bridge() {
                 isDest={true}
                 limitBera={limitBera === 0}
                 amount={reciveAmount ?? ""}
-                chainList={chainList}
+                chainList={usedChainList}
                 chain={toChain}
                 token={toToken ?? null}
                 disabledInput={true}
