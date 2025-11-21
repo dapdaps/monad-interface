@@ -150,12 +150,12 @@ export default function useWalletTokens() {
     }, [rpc, userInfo]);
 
     useEffect(() => {
-        if (!userInfo.address) {
+        if (!userInfo.address || !price || Object.keys(price).length === 0) {
             return;
         }
 
         fetchTokens();
-    }, [userInfo, isFresh]);
+    }, [userInfo, isFresh, price]);
 
     return {
         isLoading,

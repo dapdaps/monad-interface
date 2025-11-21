@@ -59,7 +59,7 @@ export default function UserInfo() {
 
 
     const callbackUrl = useMemo(() => {
-        return window.location.origin.includes('localhost') ? window.location.origin : 'https://alpha.nadsa.space/api/twitter_auth';
+        return window.location.origin.includes('localhost') ? window.location.origin : window.location.origin + '/api/twitter_auth';
     }, []);
 
     const avatar = useMemo(() => {
@@ -135,13 +135,7 @@ export default function UserInfo() {
                     </div>
 
                     <div className="flex flex-col items-center mb-6">
-                        {
-                            !userRanking?.rp && (
-                                <div className="text-white text-[14px]">
-                                    Earn any amount of RP to reach the Private.
-                                </div>
-                            )
-                        }
+                      
 
                         {
                             userRanking?.rp && (
@@ -166,11 +160,23 @@ export default function UserInfo() {
                                 <span className=" text-[14px]">Rank Progress</span>
                                 <Tip content="Earn RP to advance to higher ranks" />
                             </div>
-                            <span className="">{userRanking?.rp || 0}/{currentRank?.maxRP} RP</span>
+                            {
+                                userRanking?.rp && (
+                                    <span className="">{userRanking?.rp || 0}/{currentRank?.maxRP} RP</span>
+                                )
+                            }
                         </div>
 
                         {
-                            currentRank?.maxRP && <div className="relative w-full h-[16px] bg-[#2D2948] rounded-full">
+                            !userRanking?.rp && (
+                                <div className="text-white text-[14px] text-center">
+                                    Earn any amount of RP to reach the Private.
+                                </div>
+                            )
+                        }
+
+                        {
+                            userRanking?.rp && currentRank?.maxRP && <div className="relative w-full h-[16px] bg-[#2D2948] rounded-full">
                                 <div
                                     className="absolute left-0 top-0 h-full bg-[#BFFF60] rounded-full transition-all duration-300"
                                     style={{ width: `${Math.min(userRanking?.rp / (currentRank?.maxRP || 1) * 100, 100)}%` }}

@@ -46,8 +46,9 @@ export default function Routes({
 
   const tradeFee = useMemo(() => {
     if (!trade || !trade.fee || !prices || Object.keys(prices).length === 0) return null;
+    const price = prices[trade.fee?.token?.symbol.toUpperCase()] || prices[trade.fee?.token?.address.toUpperCase()] || 0;
     return trade.fee?.fee 
-    ? '$' + balanceFormated(new Big(trade.fee?.fee.toString()).div(10 ** trade.fee?.token?.decimals).mul(prices[trade.fee?.token?.symbol] || prices[trade.fee?.token?.address]).toString()) : '-';
+    ? '$' + balanceFormated(new Big(trade.fee?.fee.toString()).div(10 ** trade.fee?.token?.decimals).mul(price).toString()) : '-';
   }, [trade, prices]);
 
   return (

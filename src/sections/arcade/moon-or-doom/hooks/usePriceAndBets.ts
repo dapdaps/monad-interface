@@ -85,12 +85,10 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                 } else if (data.e === 'bet') {
                     
                     if (betListRef.current.length > 0 && data.data.length > 0) {
-                        // betListRef.current.sort((a, b) => Number(a.end_time) - Number(b.end_time));
                         const lastBet = betListRef.current[betListRef.current.length - 1];
                        
                         if (Number(lastBet.end_time) < Number(data.data[0].start_time) - 5000) {
-                            getAllBet();
-                            // console.log('lastBet', lastBet.end_time, data.data[0].start_time);
+                            // getAllBet();
                         }
                     }
 
@@ -111,10 +109,21 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                                     return true;
                                 }
                                 
-                                return Number(item.source_time || 0) >= Number(newSourceTime || 0);
+                                if (Number(item.source_time || 0) > Number(newSourceTime || 0)) {
+                                    dataSourceTimeMap.delete(key);
+                                    return true;
+                                }
+
+                                return false;
+                            });
+
+                            const newBetList = data.data.filter((item: any) => {
+                                const key = `${item.start_time}-${item.end_time}`;
+                                const newSourceTime = dataSourceTimeMap.get(key);
+                                return !!newSourceTime
                             });
                             
-                            let updated = [...filteredPrev, ...data.data];
+                            let updated = [...filteredPrev, ...newBetList];
                             if (updated.length > 30) {
                                 updated = updated.slice(updated.length - 30);
                             }
@@ -169,8 +178,6 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
     useEffect(() => {
         getAllBet()
     }, []);
-
-    // console.log('betList', betList);
 
     return {
         disconnect: () => {
