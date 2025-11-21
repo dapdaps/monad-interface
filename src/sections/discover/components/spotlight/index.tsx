@@ -17,7 +17,7 @@ export const Spotlight = (props: any) => {
 
   return (
     <div
-      className={clsx("relative w-[clamp(1px,_19.31vw,_calc(var(--pc-1512)*0.1931))] h-[clamp(1px,_25.26vw,_calc(var(--pc-1512)*0.2526))] shrink-0 bg-no-repeat bg-center bg-contain transition-all duration-300", className)}
+      className={clsx("group relative w-[clamp(1px,_19.31vw,_calc(var(--pc-1512)*0.1931))] h-[clamp(1px,_25.26vw,_calc(var(--pc-1512)*0.2526))] shrink-0 bg-no-repeat bg-center bg-contain transition-all duration-300", className)}
       style={{
         backgroundImage: isLeft ? "url('/images/mainnet/discover/spotlight-card-left.png')" : "url('/images/mainnet/discover/spotlight-card-right.png')",
         paddingLeft: isLeft ? "clamp(1px, 1.12vw, calc(var(--pc-1512)*0.0112))" : "0px",
@@ -88,7 +88,7 @@ export const Spotlight = (props: any) => {
       {
         !data.banner && (
           <div
-            className="absolute w-full h-full left-0 top-0 z-[1] flex justify-center items-center text-[20px]"
+            className="group-hover:scale-105 duration-150 absolute w-full h-full left-0 top-0 z-[1] flex justify-center items-center text-[20px]"
             style={{ color: randomColor }}
           >
             {data.name}
