@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import "react-day-picker/style.css";
+@import "@/styles/animate.css";
 
 @font-face {
   font-family: "Montserrat";

@@ -2,17 +2,20 @@ import { get } from "@/utils/http";
 import { useRequest } from "ahooks";
 import { useUser } from "@/hooks/use-user";
 import { useEffect } from "react";
+import useCustomAccount from "@/hooks/use-account";
 
-export const useBonus = () => {
-    const { userInfo } = useUser();
+export const useBonus = (props?: { autoLoad?: boolean; }) => {
+    const { autoLoad = true } = props ?? {};
+
+    const { account } = useCustomAccount();
 
     const { data: allBonus, loading: allBonusLoading, runAsync: getBonus } = useRequest(async () => {
-        if (!userInfo?.address) {
+        if (!account) {
             return {};
         }
 
         const res = await get('/rp/bonus', {
-            address: userInfo.address,
+            address: account,
         });
 
         if (res.code !== 200) {
@@ -22,14 +25,14 @@ export const useBonus = () => {
         return res.data ?? {};
     }, {
         manual: true,
-        refreshDeps: [userInfo.address],
+        refreshDeps: [account],
     });
 
     useEffect(() => {
-        if (userInfo.address) {
+        if (account && autoLoad) {
             getBonus();
         }
-    }, [userInfo]);
+    }, [account, autoLoad]);
 
-    return { allBonus: userInfo?.address ? allBonus : {}, allBonusLoading };
+    return { allBonus: account ? allBonus : {}, allBonusLoading, getBonus };
 }

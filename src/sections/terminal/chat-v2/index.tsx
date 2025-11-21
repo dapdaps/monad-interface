@@ -20,7 +20,6 @@ import { v4 as uuidv4 } from "uuid";
 import NFT from "@/components/nft";
 import { useTwitterStore } from "@/stores/twitter";
 import { post } from "@/utils/http";
-import "./animate.css";
 import useIsMobile from "@/hooks/use-isMobile";
 import ChatFooter from "./footer";
 import DataOverrideMobile from "../components/data-override";

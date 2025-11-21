@@ -3,8 +3,6 @@
 import SceneContextProvider from "@/context/scene";
 import WagmiProvider from "@/context/wagmi";
 import MainnetLayout from "@/layouts/mainnet";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 import Script from "next/script";
 import React, { Suspense } from "react";
@@ -14,8 +12,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 import InvitationContextProvider from "@/context/invitation";
-
-dayjs.extend(utc);
 
 export default function RootLayout({
   children

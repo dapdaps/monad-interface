@@ -1,8 +1,5 @@
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
+import dayjs from "@/libs/day";
 import useCountdown from "@/hooks/use-count-down";
-
-dayjs.extend(utc);
 
 const getEndTimestamp = () => {
   return dayjs.utc("2025-06-24 15:00:00").unix();

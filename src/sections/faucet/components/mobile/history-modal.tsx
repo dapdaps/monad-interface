@@ -3,12 +3,9 @@ import Modal from "@/components/modal";
 import { memo, useEffect } from "react";
 import { useFaucetContext } from "@/sections/faucet/context";
 import useCheckinList from "@/sections/faucet/hooks/use-checkin-list";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
+import dayjs from "@/libs/day";
 import { DEFAULT_CHAIN_ID } from "@/configs";
 import chains from "@/configs/chains";
-
-dayjs.extend(utc);
 
 export default memo(function HistoryModal() {
   const { showHistory, setShowHistory } = useFaucetContext();
