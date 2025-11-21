@@ -337,6 +337,31 @@ input[type="number"]::-webkit-inner-spin-button {
   scrollbar-width: none;
 }
 
+.explore-all-apps-content::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.explore-all-apps-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.explore-all-apps-content::-webkit-scrollbar-thumb {
+  background: rgba(131, 110, 249, 0.3);
+  border-radius: 6px;
+  cursor: url("/images/cursor.svg") 12 0, auto;
+}
+
+.explore-all-apps-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(131, 110, 249, 0.5);
+}
+
+/* Firefox */
+.explore-all-apps-content {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(131, 110, 249, 0.3) transparent;
+}
+
 .invite-page-content {
   @media (max-width: 375px) {
     height: 610px;

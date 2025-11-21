@@ -59,9 +59,6 @@ const TrendingTokens = (props: any) => {
         title="Trending tokens"
         className="mx-auto"
         backdropClassName="!block [clip-path:polygon(0.9%_15%,99%_15%,99%_92.8%,96.7%_97.8%,78%_93.5%,76.5%_89.2%,70%_88.5%,60%_88%,50%_87.6%,35%_88%,23.4%_88.5%,21%_93%,2.7%_96.4%,2.7%_82%,0.9%_74.9%)]"
-        onExploreAll={() => {
-          router.push("/marketplace");
-        }}
       >
         <div className="grid grid-cols-4 gap-x-[clamp(1px,_1.06vw,_calc(var(--pc-1512)*0.0106))] gap-y-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] w-full pl-[100px] pr-[100px]">
           {
