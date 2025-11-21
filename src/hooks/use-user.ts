@@ -1,12 +1,13 @@
 import { useUserStore } from '@/stores/user';
 import { useCallback, useEffect } from 'react';
 import { get, post } from '@/utils/http';
-import { useAccount, useDisconnect, useSignMessage } from 'wagmi';
+import { useAccount, useDisconnect, useSignMessage, useSwitchChain } from 'wagmi';
 import useToast from '@/hooks/use-toast';
 import { useWalletName } from '@/hooks/use-wallet-name';
 import { useConnectedWalletsStore } from '@/stores/useConnectedWalletsStore';
 import { usePathname } from 'next/navigation';
 import { useInterval } from 'ahooks';
+import { DEFAULT_CHAIN_ID } from '@/configs';
 
 
 let isSigning = false;
@@ -15,6 +16,7 @@ export function useUser() {
   const { name: walletName } = useWalletName();
   const toast = useToast();
   const { signMessage } = useSignMessage();
+  const { switchChainAsync } = useSwitchChain();
   const accessToken = useUserStore((store: any) => store.accessToken?.access_token);
   const accessTokenLoading = useUserStore((store: any) => store.accessTokenLoading);
   const userInfo = useUserStore((store: any) => store.user);
@@ -123,6 +125,18 @@ export function useUser() {
 
     const msg = `By signing this message, you confirm that you are the owner of ${currentAddress?.toLowerCase()}`
 
+    await switchChainAsync({
+      chainId: DEFAULT_CHAIN_ID,
+    });
+
+    const waitSwitchChain = () => new Promise((resolve) => {
+      const timer = setTimeout(() => {
+        clearTimeout(timer);
+        resolve(true);
+      }, 1000);
+    });
+    await waitSwitchChain();
+
     return new Promise((resolve, reject) => {
       signMessage({
         message: msg,
@@ -162,7 +176,7 @@ export function useUser() {
 
     // console.log('signedMessage:', signedMessage);
 
-    
+
   };
 
   const bindGameAddress = async (address: string, account: string) => {
@@ -216,7 +230,7 @@ export function useUser() {
   //       onSettled: () => {
   //         isSigning = true;
   //       },
-        
+
   //     });
   //   })();
   // }, [address]);
