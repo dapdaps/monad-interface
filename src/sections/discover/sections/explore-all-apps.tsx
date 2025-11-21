@@ -3,12 +3,13 @@ import Card from "../components/card";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import { useProgressRouter } from "@/hooks/use-progress-router";
-import { AppCategory, AppList } from "../config";
+import { AppCategory } from "../config";
 import useClickTracking from "@/hooks/use-click-tracking";
 import { numberFormatter } from "@/utils/number-formatter";
 import ExternalLinksModal from "@/sections/dapps/components/external-links-modal";
 import Badge from "../components/spotlight/badge";
 import { randomVividColorHex } from "@/utils/color";
+import { useAppsStore } from "@/stores/apps";
 
 const TABS = [
   {
@@ -40,6 +41,8 @@ const TABS = [
 
 const ExploreAllApps = (props: any) => {
   const { getVisits } = props;
+
+  const AppList = useAppsStore((state) => state.apps);
 
   const [tabs, setTabs] = useState(TABS);
   const activeTab = useMemo(() => {

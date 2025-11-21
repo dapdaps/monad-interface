@@ -1,0 +1,66 @@
+"use client";
+
+import SceneContextProvider from "@/context/scene";
+import WagmiProvider from "@/context/wagmi";
+import MainnetLayout from "@/layouts/mainnet";
+import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
+import React, { Suspense, useEffect } from "react";
+import { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import InvitationContextProvider from "@/context/invitation";
+import { useAppsStore, App } from "@/stores/apps";
+
+interface ClientProvidersProps {
+  children: React.ReactNode;
+  initialApps?: App[];
+}
+
+export default function ClientProviders({
+  children,
+  initialApps = [],
+}: ClientProvidersProps) {
+  const setApps = useAppsStore((state) => state.setApps);
+
+  useEffect(() => {
+    if (initialApps && initialApps.length > 0) {
+      setApps(initialApps);
+    }
+  }, [initialApps, setApps]);
+
+  return (
+    <>
+      <WagmiProvider>
+        <SkeletonTheme baseColor="#7990F4" highlightColor="#8B87FF">
+          <SceneContextProvider>
+            <InvitationContextProvider>
+              <Suspense>
+                <MainnetLayout>{children}</MainnetLayout>
+              </Suspense>
+            </InvitationContextProvider>
+          </SceneContextProvider>
+        </SkeletonTheme>
+      </WagmiProvider>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={true}
+        theme="light"
+        toastStyle={{ backgroundColor: "transparent", boxShadow: "none" }}
+        newestOnTop
+        rtl={false}
+        pauseOnFocusLoss
+        closeButton={false}
+        limit={3}
+      />
+      <ProgressBar
+        height="4px"
+        color="#8B87FF"
+        options={{ showSpinner: false }}
+        shallowRouting
+      />
+    </>
+  );
+}
+
