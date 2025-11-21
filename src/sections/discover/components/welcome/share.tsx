@@ -93,10 +93,10 @@ const WelcomeShare = (props: any) => {
           disabled={sharing}
           onClick={async () => {
             if (!cardRef.current) return;
-            
+
             setSharing(true);
             let toastId = toast.loading({ title: "Preparing to share..." });
-            
+
             try {
               // Convert cardRef to image
               // const dataUrl: string = await domtoimage.toPng(cardRef.current, {
@@ -111,24 +111,25 @@ const WelcomeShare = (props: any) => {
               //     height: cardRef.current.offsetHeight + "px",
               //   }
               // });
-              
+
               // // Convert base64 to blob
               // const [blob] = base64ToBlob(dataUrl);
-              
+
               // // Upload image to server
               // const imageUrl = await uploadFile(blob, "/upload");
-              
+
               // // Generate Twitter card URL
               // const tweetUrl = `https://nadsa.space/api/twitter?img=${encodeURIComponent(imageUrl)}`;
-              
+
               // Share to Twitter
-              const tweetText = "Welcome monad mainnet!";
+              const tweetText = `My NADSA RP balance just skyrocketed to ${numberFormatter(totalRP, 2, true)} RP!
+%0A
+The space station is calling—come aboard and grab your rewards!
+%0A
+🛸 https://nadsa.space`;
               shareToX(tweetText);
-              
+
               toast.dismiss(toastId);
-              toast.success({
-                title: "Opening Twitter...",
-              });
             } catch (error: any) {
               toast.dismiss(toastId);
               const errorMessage = error?.message || "Unknown error occurred";
@@ -150,10 +151,10 @@ const WelcomeShare = (props: any) => {
           disabled={downloading}
           onClick={async () => {
             if (!cardRef.current) return;
-            
+
             setDownloading(true);
             let toastId = toast.loading({ title: "Generating image..." });
-            
+
             try {
               const dataUrl: string = await domtoimage.toPng(cardRef.current, {
                 quality: 1.0,
@@ -167,15 +168,15 @@ const WelcomeShare = (props: any) => {
                   height: cardRef.current.offsetHeight + "px",
                 }
               });
-              
+
               toast.dismiss(toastId);
-              
+
               // Create download link
               const link = document.createElement("a");
               link.download = `welcome-card-${Date.now()}.png`;
               link.href = dataUrl;
               link.click();
-              
+
               toast.success({
                 title: "Image saved",
               });
