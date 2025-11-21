@@ -17,7 +17,7 @@ export const AppList = [
     bpContent: "superswap",
     isSpotlight: true,
     isOutlink: false,
-    description: "",
+    description: "Lightning-fast token swaps with low fees on Monad",
   },
   {
     name: "Superbridge",
@@ -30,7 +30,7 @@ export const AppList = [
     bpContent: "superbridge",
     isSpotlight: true,
     isOutlink: false,
-    description: "",
+    description: "Fast and secure cross-chain transfers on Monad",
   },
   {
     name: "Kuru Exchange",
