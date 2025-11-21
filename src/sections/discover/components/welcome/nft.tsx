@@ -1,10 +1,98 @@
 import { BoosterItems } from "@/sections/ranking/config";
 import clsx from "clsx";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { DownloadDuration } from "./config";
 import WelcomeDownloadTerminal from "./download-terminal";
 import { numberFormatter } from "@/utils/number-formatter";
 import { useNftStore } from "@/stores/nft";
+
+// 3D Tilt Wrapper Component using Framer Motion
+const useTilt3D = () => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x, { stiffness: 500, damping: 100 });
+  const mouseYSpring = useSpring(y, { stiffness: 500, damping: 100 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["20deg", "-20deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-20deg", "20deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return {
+    rotateX,
+    rotateY,
+    handleMouseMove,
+    handleMouseLeave,
+  };
+};
+
+// 3D Tilt Card Component for closed state
+const TiltCard = ({ item }: { item: any }) => {
+  const { rotateX, rotateY, handleMouseMove, handleMouseLeave } = useTilt3D();
+
+  return (
+    <motion.div
+      className="w-[169px] h-[139px] px-[30px] pt-[30px] text-[#B9ACFF] text-center [text-shadow:0_0_30px_#836EF9] font-Pixelmix uppercase text-[12px] not-italic font-normal leading-[120%] flex justify-center items-center bg-no-repeat bg-center bg-contain shrink-0 bg-[url('/images/mainnet/discover/welcome/folder.png')]"
+      style={{
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+    >
+      {item.name}
+    </motion.div>
+  );
+};
+
+// 3D Tilt Card Component for opened state
+const OpenedTiltCard = ({ item }: { item: any }) => {
+  const { rotateX, rotateY, handleMouseMove, handleMouseLeave } = useTilt3D();
+
+  return (
+    <motion.div
+      className="relative w-[150px] h-[112px] bg-center bg-contain bg-no-repeat shrink-0"
+      style={{
+        backgroundImage: `url("${item.icon}")`,
+        rotateX,
+        rotateY,
+        transformStyle: "preserve-3d",
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+    >
+      <div
+        className={clsx(
+          "w-[60px] h-[60px] right-[-20px] bottom-[-10px] font-Oxanium flex justify-center items-center text-[#BFFF60] text-[14px] font-[600] leading-[100%] bg-[url('/images/wallet/ranking/boost-bg.png')] bg-no-repeat bg-center bg-contain absolute",
+          item.key === "golden" ? "translate-x-[-5px]" : "",
+          item.key === "sequence" ? "translate-x-[-30px]" : "",
+        )}
+      >
+        {numberFormatter(item.boost, 2, true, { prefix: "+" })}%
+      </div>
+    </motion.div>
+  );
+};
 
 const WelcomeNft = (props: any) => {
   const { bonus } = props;
@@ -78,29 +166,13 @@ const WelcomeNft = (props: any) => {
                         "w-full h-full justify-center flex flex-col items-center gap-[0px]",
                         index !== 0 ? "border-l border-dashed border-[#836EF9]" : "",
                       )}
+                      style={{ perspective: "1000px" }}
                     >
                       {
                         isOpened ? (
-                          <div
-                            className="relative w-[150px] h-[112px] bg-center bg-contain bg-no-repeat shrink-0"
-                            style={{ backgroundImage: `url("${item.icon}")` }}
-                          >
-                            <div
-                              className={clsx(
-                                "w-[60px] h-[60px] right-[-20px] bottom-[-10px] font-Oxanium flex justify-center items-center text-[#BFFF60] text-[14px] font-[600] leading-[100%] bg-[url('/images/wallet/ranking/boost-bg.png')] bg-no-repeat bg-center bg-contain absolute",
-                                item.key === "golden" ? "translate-x-[-5px]" : "",
-                                item.key === "sequence" ? "translate-x-[-30px]" : "",
-                              )}
-                            >
-                              {numberFormatter(item.boost, 2, true, { prefix: "+" })}%
-                            </div>
-                          </div>
+                          <OpenedTiltCard item={item} />
                         ) : (
-                          <div
-                            className="w-[169px] h-[139px] px-[30px] pt-[30px] text-[#B9ACFF] text-center [text-shadow:0_0_30px_#836EF9] font-Pixelmix uppercase text-[12px] not-italic font-normal leading-[120%] flex justify-center items-center bg-no-repeat bg-center bg-contain shrink-0 bg-[url('/images/mainnet/discover/welcome/folder.png')]"
-                          >
-                            {item.name}
-                          </div>
+                          <TiltCard item={item} />
                         )
                       }
                       {
