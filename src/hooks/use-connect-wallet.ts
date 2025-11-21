@@ -11,6 +11,7 @@ export function useConnectWallet() {
   const { address, isConnected, chainId, chain, isConnecting } = useAccount();
   const { switchChain, isPending: switching } = useSwitchChain();
   const userInfo = useUserStore((store: any) => store.user);
+  const setUserInfo = useUserStore((store: any) => store.set);
   const userNativeBalance = useUserStore((store: any) => store.nativeBalance);
 
   const [connecting, setConnecting] = useState<boolean>(isConnecting);
@@ -61,9 +62,32 @@ export function useConnectWallet() {
     ];
   }, [userInfo, address, userNativeBalance]);
 
+  const onDisconnect = () => {
+    disconnect();
+    setUserInfo({
+      user: {},
+      accessToken: {
+        access_token: '',
+        refresh_access_token: '',
+        token_type: 'bearer',
+      },
+    });
+  }
+
+  useEffect(() => {
+    let interval = setInterval(() => {
+      if (address && userInfo && userInfo.address && address.toLowerCase() !== userInfo.address.toLowerCase()) {
+        console.log('address:', address, userInfo);
+        onDisconnect()
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [address, userInfo]);
+
   return {
     onConnect,
-    onDisconnect: disconnect,
+    onDisconnect,
     onSwitchChain: switchChain,
     switching,
     chainId,
