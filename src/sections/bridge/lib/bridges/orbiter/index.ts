@@ -95,8 +95,6 @@ export async function getQuote(request: QuoteRequest, signer: Signer): Promise<Q
         return null
       }
 
-      console.log('currentRoute: ', currentRoute)
-
       const maxAmt = currentRoute.maxAmt === 'NaN' ? new Big(100) : new Big(currentRoute.maxAmt).mul(10 ** fromToken.decimals)
       const minAmt = currentRoute.minAmt === 'NaN' || currentRoute.withholdingFee === 'NaN' ? new Big(0) : new Big(currentRoute.minAmt).minus(currentRoute.withholdingFee).mul(10 ** fromToken.decimals)
 

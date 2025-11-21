@@ -8,7 +8,16 @@
     "color-convert": "2.0.1",
     "color-name": "1.1.4",
     "is-core-module": "2.13.1",
-    "error-ex": "1.3.2"
+    "error-ex": "1.3.2",
+    "@wormhole-foundation/sdk-evm-cctp": {
+      "ethers": "^6.5.1"
+    },
+    "@wormhole-foundation/sdk-evm-core": {
+      "ethers": "^6.5.1"
+    },
+    "@wormhole-foundation/sdk-evm": {
+      "ethers": "^6.5.1"
+    }
   },
   "scripts": {
     "dev": "next dev --port 3006 -H 0.0.0.0",
