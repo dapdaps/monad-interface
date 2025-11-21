@@ -1,4 +1,5 @@
 import { BoosterItems } from "@/sections/ranking/config";
+import clsx from "clsx";
 import { motion } from "framer-motion";
 
 const WelcomeNft = (props: any) => {
@@ -8,13 +9,16 @@ const WelcomeNft = (props: any) => {
     <>
       <div className="w-full px-[24px] mt-[170px]">
         <div className="w-full border-t border-b border-dashed border-[#6750FF] py-[10px]">
-          <div className="w-full h-[200px] p-[14px_23px_12px] border-t border-b border-dashed border-[#6750FF]">
-            <div className="w-full h-full grid grid-cols-3 gap-[10px]">
+          <div className="w-full h-[200px] p-[14px_23px_12px] border-t border-b border-dashed border-[#6750FF] flex justify-center items-center">
+            <div className="w-full grid grid-cols-3 gap-[0px]">
               {
                 BoosterItems.map((item, index) => (
                   <div
                     key={index}
-                    className="w-full h-full justify-center flex flex-col items-center gap-[20px]"
+                    className={clsx(
+                      "w-full h-full justify-center flex flex-col items-center gap-[10px]",
+                      index !== 0 ? "border-l border-dashed border-[#BFFF60]" : "",
+                    )}
                   >
                     <div className="relative flex justify-center items-center">
                       <motion.img
