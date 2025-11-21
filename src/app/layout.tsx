@@ -4,6 +4,8 @@ import ClientProviders from "@/components/client-providers";
 
 import "./globals.css";
 
+export const dynamic = 'force-dynamic';
+
 const BASE_URL = process.env.NEXT_PUBLIC_API || "https://mainnet-api-monad.dapdap.net";
 
 async function getApps() {
