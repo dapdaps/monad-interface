@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import WelcomeProgress from "./progress";
 import WelcomeTypewriter from "./typewriter";
 import { BoosterItems } from "@/sections/ranking/config";
 
@@ -39,26 +38,23 @@ const WelcomeLoading = (props: WelcomeLoadingProps) => {
   }, []);
 
   return (
-    <>
-      <div className="w-full px-[24px] mt-[170px]">
-        <div className="w-full border-t border-b border-dashed border-[#6750FF] py-[10px]">
-          <div className="w-full h-[222px] p-[14px_23px_12px] bg-black/50 border-t border-b border-dashed border-[#6750FF]">
-            {
-              showMessages.map((message: any, index: any) => {
-                return (
-                  <WelcomeTypewriter
-                    key={index}
-                    message={index === 6 ? { ...message, text: `STATUS_${progress}%...` } : message}
-                    className="text-[#8D7CFF]"
-                  />
-                );
-              })
-            }
-          </div>
+    <div className="w-full px-[24px] mt-[170px]">
+      <div className="w-full border-t border-b border-dashed border-[#6750FF] py-[10px]">
+        <div className="w-full h-[222px] p-[14px_23px_12px] bg-black/50 border-t border-b border-dashed border-[#6750FF]">
+          {
+            showMessages.map((message: any, index: any) => {
+              return (
+                <WelcomeTypewriter
+                  key={index}
+                  message={index === 6 ? { ...message, text: `STATUS_${progress}%...` } : message}
+                  className="text-[#8D7CFF]"
+                />
+              );
+            })
+          }
         </div>
       </div>
-      <WelcomeProgress progress={progress} className="mt-[10px]" />
-    </>
+    </div>
   );
 };
 

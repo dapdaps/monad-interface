@@ -4,6 +4,9 @@ import { useWelcomeContext } from "./context";
 import { EWelcomeStatus } from "./config";
 import { useBonus } from "@/sections/ranking/hooks/use-bonus";
 import { useDebounceFn, useRequest } from "ahooks";
+import WelcomeNft from "./nft";
+import WelcomeProgress from "./progress";
+import WelcomeResult from "./result";
 
 const WelcomeConnect = lazy(() => import("./connect"));
 const WelcomeLoading = lazy(() => import("./loading"));
@@ -13,7 +16,7 @@ const WelcomeContent = (props: any) => {
 
   const { account } = useCustomAccount();
   const { status, setStatus } = useWelcomeContext();
-  const { getBonus } = useBonus({ autoLoad: false });
+  const { allBonus, getBonus } = useBonus({ autoLoad: false });
   const [progress, setProgress] = useState(0);
   const minDuration = 3000; // Minimum 3 seconds
   const delayDuration = 4000;
@@ -62,23 +65,33 @@ const WelcomeContent = (props: any) => {
     manual: true,
   });
 
+  const { run: setReady, cancel: cancelSetReady } = useDebounceFn(() => {
+    setStatus?.(EWelcomeStatus.READY);
+    setRPReady();
+  }, { wait: 500 });
+
+  const { run: setRPReady, cancel: cancelSetRPReady } = useDebounceFn(() => {
+    setStatus?.(EWelcomeStatus.RP);
+  }, { wait: 5000 });
+
   const { run: startGetBonus, cancel: cancelStartGetBonus } = useDebounceFn(() => {
     setProgress(() => 0);
     updateProgress();
 
     // Start getBonus request
-    getBonusDelay().then((bonus) => {
-      console.log("bonus: %o", bonus);
+    getBonusDelay().then(() => {
       clearInterval(progressTimerRef.current);
       progressTimerRef.current = null;
       updateProgress(true);
-      setStatus?.(EWelcomeStatus.READY);
+      setReady();
     });
   }, { wait: delayDuration });
 
   useEffect(() => {
     setProgress(() => 0);
     cancelStartGetBonus();
+    cancelSetReady();
+    cancelSetRPReady();
 
     if (!account) {
       setStatus?.(EWelcomeStatus.CONNECTING);
@@ -91,6 +104,8 @@ const WelcomeContent = (props: any) => {
     return () => {
       cancelGetBonusDelay();
       cancelStartGetBonus();
+      cancelSetReady();
+      cancelSetRPReady();
       clearInterval(progressTimerRef.current);
       clearTimeout(minDurationTimerRef.current);
       progressTimerRef.current = null;
@@ -107,8 +122,23 @@ const WelcomeContent = (props: any) => {
           )
         }
         {
-          [EWelcomeStatus.LOADING, EWelcomeStatus.READY].includes(status as EWelcomeStatus) && (
+          [EWelcomeStatus.LOADING].includes(status as EWelcomeStatus) && (
             <WelcomeLoading progress={progress} />
+          )
+        }
+        {
+          [EWelcomeStatus.READY, EWelcomeStatus.RP].includes(status as EWelcomeStatus) && (
+            <WelcomeNft bonus={allBonus} />
+          )
+        }
+        {
+          [EWelcomeStatus.LOADING, EWelcomeStatus.READY].includes(status as EWelcomeStatus) && (
+            <WelcomeProgress progress={progress} className="mt-[10px]" />
+          )
+        }
+        {
+          [EWelcomeStatus.RP].includes(status as EWelcomeStatus) && (
+            <WelcomeResult className="mt-[10px]" bonus={allBonus} />
           )
         }
       </Suspense>

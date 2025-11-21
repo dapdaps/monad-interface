@@ -1,13 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import WelcomeTypewriter from "./typewriter";
 import { useRouter } from "next-nprogress-bar";
+import Big from "big.js";
+import { numberFormatter } from "@/utils/number-formatter";
 
 const WelcomeResult = (props: any) => {
-  const { } = props;
+  const { bonus } = props;
 
   const router = useRouter();
 
   const [showMessages, setShowMessages] = useState<any>([]);
+
+  const totalRP = useMemo(() => {
+    let sum = Big(0);
+    const bonusList = Object.entries(bonus ?? {});
+    bonusList.forEach(([key, value]) => {
+      if (!/_rp$/.test(key)) {
+        return;
+      }
+      sum = sum.plus(Big(value as number));
+    });
+    return sum;
+  }, [bonus]);
 
   useEffect(() => {
     let timer: any = null;
@@ -36,12 +50,12 @@ const WelcomeResult = (props: any) => {
   }, []);
 
   return (
-    <div className="w-full flex justify-between gap-[10px]">
+    <div className="w-full flex justify-between gap-[10px] mt-[10px] pl-[34px] pr-[24px]">
       <div className="w-0 flex-1">
         {
           showMessages.map((message: any, index: any) => {
             let suffix = (
-              <div className="text-[20px]">169 RP</div>
+              <div className="text-[20px]">{numberFormatter(totalRP, 2, true)} RP</div>
             );
             if (index === 1) {
               suffix = (
