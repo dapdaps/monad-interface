@@ -1,7 +1,7 @@
 import Modal from "@/components/modal";
 import { useWelcomeContext } from "./context";
 import useUser from "@/hooks/use-user";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { formatLongText, base64ToBlob, shareToX, uploadFile } from "@/utils/utils";
 import Big from "big.js";
 import { numberFormatter } from "@/utils/number-formatter";
@@ -9,6 +9,8 @@ import { BoosterItems } from "@/sections/ranking/config";
 import clsx from "clsx";
 import domtoimage from "dom-to-image";
 import useToast from "@/hooks/use-toast";
+import dayjs from "@/libs/day";
+import WelcomeTypewriter from "./typewriter";
 
 const WelcomeShare = (props: any) => {
   const { } = props;
@@ -20,6 +22,8 @@ const WelcomeShare = (props: any) => {
   const cardRef = useRef<any>(null);
   const [downloading, setDownloading] = useState(false);
   const [sharing, setSharing] = useState(false);
+  const [messages, setMessages] = useState<any>([]);
+  const [botMessages, setBotMessages] = useState<any>([]);
 
   const [avatar, name] = useMemo(() => {
     if (userInfo?.social?.twitter_avatar) {
@@ -28,61 +32,148 @@ const WelcomeShare = (props: any) => {
     return ["/images/wallet/ranking/default-avatar.png", formatLongText(userInfo?.address, 5, 4)];
   }, [userInfo]);
 
-  const totalRP = useMemo(() => {
+  const [totalRP, totalBoost, totalCount, bonusList] = useMemo(() => {
     let sum = Big(0);
+    let boost = Big(0);
+    let count = 0;
+    const list: any = [];
     const bonusList = Object.entries(bonus ?? {});
     bonusList.forEach(([key, value]) => {
       if (!/_rp$/.test(key)) {
+        if (value === true) {
+          const curr = BoosterItems.find((it) => it.key === key);
+          list.push({
+            ...curr,
+            rp: bonus[`${key}_rp`],
+          });
+          count++;
+          boost = boost.plus(Big(curr?.boost || 0));
+        }
         return;
       }
       sum = sum.plus(Big(value as number));
     });
-    return sum;
+    return [sum, boost, count, list.sort((a: any, b: any) => a.sort - b.sort)];
   }, [bonus]);
+
+  useEffect(() => {
+    const nextText = `Wallet [${formatLongText(userInfo?.address, 5, 0)}] was dropped with ${totalCount} file${totalCount > 1 ? "s" : ""} for holding.`;
+    setMessages([
+      {
+        key: 1,
+        text: "/view files drop...",
+        role: formatLongText(userInfo?.address, 5, 0),
+        timestamp: Date.now(),
+      },
+      {
+        key: 2,
+        text: nextText,
+        role: "SYSTEM",
+        timestamp: Date.now(),
+        charStyle: [[...new Array(nextText.length).fill(0)].map((_, idx) => {
+          let startIdx = 34;
+          if (idx <= startIdx) {
+            return {};
+          }
+          startIdx = startIdx + 7;
+          if (idx <= startIdx) {
+            return { color: "#BFFF60" };
+          }
+          return {};
+        })],
+      },
+    ]);
+    setBotMessages([
+      {
+        key: 1,
+        text: "total earned RP and booster",
+        role: "SYSTEM",
+        timestamp: Date.now(),
+      },
+    ]);
+  }, [totalCount, userInfo?.address]);
 
   return (
     <div className="w-[612px] font-Pixelmix text-[14px] text-[#BFFF60]">
       <div
         ref={cardRef}
-        className="w-full h-[375px] bg-[url('/images/mainnet/discover/welcome/share-card.png')] bg-no-repeat bg-contain bg-center"
+        className="w-full h-[375px] bg-[url('/images/mainnet/discover/welcome/share-card-2.png')] bg-no-repeat bg-contain bg-center"
       >
-        <div className="flex flex-col items-center pt-[60px]">
-          <div className="w-[64px] h-[64px] rounded-full border border-[#E7E2FF] shadow-[0_0_10px_0_#836EF9] shrink-0 p-[4px]">
-            <img
-              src={avatar}
-              alt=""
-              className="w-full h-full object-center object-cover rounded-full"
-            />
+        <div className="flex flex-col items-center pt-[70px]">
+          <div className="w-full flex justify-start pl-[50px]">
+            <div className="">
+              {
+                messages.map((m: any) => (
+                  <WelcomeTypewriter
+                    key={m.key}
+                    message={m}
+                    className="!text-[10px] text-[#C2B9FF] leading-[200%] font-[400] font-Pixelmix"
+                  />
+                ))
+              }
+            </div>
           </div>
-          <div className="mt-[6px] text-[14px] text-white font-Pixelmix leading-[200%]">
-            @{name}
-          </div>
-          <div className="mt-[5px] text-[32px] text-[#BFFF60] font-Pixelmix leading-[120%]">
-            {numberFormatter(totalRP, 2, true)} RP
-          </div>
-          <div className="grid grid-cols-3 mt-[50px]">
+          <div
+            className={clsx(
+              "grid mt-[25px]",
+              totalCount === 1 ? "grid-cols-1" : "",
+              totalCount === 2 ? "grid-cols-2" : "",
+              totalCount === 3 ? "grid-cols-3" : "",
+            )}
+          >
             {
-              BoosterItems.map((item, index) => (
+              bonusList.map((item: any, index: number) => (
                 <div
                   key={index}
                   className={clsx(
-                    "w-full h-full justify-center flex flex-col items-center gap-[5px] px-[40px]",
+                    "w-full h-full justify-center flex flex-col items-center gap-[5px] px-[20px]",
                     index !== 0 ? "border-l border-dashed border-[#836EF9]" : "",
                   )}
                 >
-                  <div className="relative flex justify-center items-center">
-                    <img
-                      src={item.icon}
-                      alt=""
-                      className="w-[78px] h-[58px] object-center object-contain shrink-0"
-                    />
-                  </div>
-                  <div className="max-w-[80px] text-center text-[10px] text-[#836EF9] font-Pixelmix leading-[120%] uppercase">
-                    {item.label}
+                  <div
+                    className="relative w-[120px] h-[88px] bg-center bg-contain bg-no-repeat shrink-0"
+                    style={{ backgroundImage: `url("${item.icon}")` }}
+                  >
+                    <div
+                      className={clsx(
+                        "w-[60px] h-[60px] right-[-20px] bottom-[-10px] font-Oxanium flex justify-center items-center text-[#BFFF60] text-[14px] font-[600] leading-[100%] bg-[url('/images/wallet/ranking/boost-bg.png')] bg-no-repeat bg-center bg-contain absolute",
+                        item.key === "golden" ? "translate-x-[-5px]" : "",
+                        item.key === "sequence" ? "translate-x-[-25px]" : "",
+                      )}
+                    >
+                      {numberFormatter(item.boost, 2, true, { prefix: "+" })}%
+                    </div>
                   </div>
                 </div>
               ))
             }
+          </div>
+          <div className="w-full flex justify-start pl-[50px] mt-[20px]">
+            <div className="">
+              {
+                botMessages.map((m: any) => (
+                  <WelcomeTypewriter
+                    key={m.key}
+                    message={m}
+                    className="!text-[10px] text-[#C2B9FF] leading-[200%] font-[400] font-Pixelmix"
+                  />
+                ))
+              }
+            </div>
+          </div>
+          <div className="mt-[30px] flex justify-center items-center gap-[22px] text-[#BFFF60] text-[26px] leading-[120%]">
+            <div className="">
+              {numberFormatter(totalRP, 2, true, { prefix: "+" })} RP
+            </div>
+            <div className="w-[2px] h-[26px] bg-[#BFFF60] shrink-0"></div>
+            <div className="flex items-center gap-[10px]">
+              <svg width="23" height="30" viewBox="0 0 23 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.6461 10.9227L17.1457 0H5.97064L0 16.3636H10.9537L6.91845 30L23 10.9227H11.6461Z" fill="#BFFF60" />
+              </svg>
+              <div className="">
+                {numberFormatter(totalBoost, 2, true, { prefix: "+" })}%
+              </div>
+            </div>
           </div>
         </div>
       </div>

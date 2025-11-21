@@ -20,6 +20,7 @@ const WelcomeModal = (props: any) => {
       }}
       className="backdrop-blur-sm"
       isMaskClose={false}
+      isShowCloseIcon={false}
     >
       <div className="relative w-[1023px] h-[740px] flex justify-center bg-[url('/images/mainnet/discover/welcome/welcome-card.png')] bg-no-repeat bg-center bg-contain">
         <div className="pointer-events-none w-[85%] h-[66.5%] overflow-hidden top-[15.5%] absolute z-[1] bg-[repeating-linear-gradient(to_bottom,_transparent_0px,_rgba(255,255,255,0.05)_1px,_transparent_2px,_rgba(255,255,255,0.05)_3px)]">
