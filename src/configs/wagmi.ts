@@ -22,6 +22,23 @@ export const metadata = {
 
 export const networks: any = Object.values(chains);
 
+const transports: any = {};
+networks.forEach((network: any) => {
+  if (network.id === DEFAULT_CHAIN_ID) {
+    transports[DEFAULT_CHAIN_ID] = fallback([http("https://rpc-mainnet.monadinfra.com/rpc/aXs4fXLNOkkrC4T6W8DU7F4SOJ12gst6")]);
+    return;
+  }
+  if (network.id === mainnet.id) {
+    transports[mainnet.id] = fallback([http("https://eth.merkle.io")]);
+    return;
+  }
+  if (network.id === sepolia.id) {
+    transports[sepolia.id] = fallback([http("https://eth-sepolia.api.onfinality.io/public")]);
+    return;
+  }
+  transports[network.id] = http();
+});
+
 export const config = getDefaultConfig({
   appName: metadata.name,
   appDescription: metadata.description,
@@ -33,12 +50,7 @@ export const config = getDefaultConfig({
   ssr: true,
   projectId: projectId,
   chains: networks,
-  transports: {
-    [DEFAULT_CHAIN_ID]: http("https://testnet-rpc.monad.xyz"),
-    [mainnet.id]: http("https://eth.merkle.io"),
-    [sepolia.id]: http("https://eth-sepolia.api.onfinality.io/public"),
-    [143]: http("https://rpc-mainnet.monadinfra.com/rpc/aXs4fXLNOkkrC4T6W8DU7F4SOJ12gst6"),
-  },
+  transports,
 });
 
 // export const wagmiAdapter = new WagmiAdapter({
