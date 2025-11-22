@@ -21,6 +21,8 @@ export default async function RootLayout({
         />
         <link rel="icon" href="/images/favicon.ico" />
         <link rel="icon" href="/favicon.ico" />
+        <meta name="twitter:site" content="@0xNADSA" />
+        <meta name="twitter:card" content="summary_large_image"></meta>
       </head>
       <body className="w-full h-full md:overflow-hidden">
         {/* <div id="page-loader" style={{
