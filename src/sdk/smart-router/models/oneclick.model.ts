@@ -49,8 +49,8 @@ export class OneClick {
     candidatesParams.set("slippage", slippage);
     candidatesParams.set("poolSafeMode", "true");
     candidatesParams.set("maxTickCount", "10");
-    candidatesParams.set("appFeeRate", FEE_RATE.toString());
-    candidatesParams.set("appFeeRecipient", FEE_RECIPIENT);
+    // candidatesParams.set("appFeeRate", FEE_RATE.toString());
+    // candidatesParams.set("appFeeRecipient", FEE_RECIPIENT);
 
     let bestTrade: any;
     try {
@@ -93,10 +93,10 @@ export class OneClick {
       min_amount_out: _minAmountOut,
       ...bestTrade,
       // chainId: this.chainId,
-      app_fee_rate: FEE_RATE,
-      app_fee_recipient: FEE_RECIPIENT,
-      appFeeRate: FEE_RATE,
-      appFeeRecipient: FEE_RECIPIENT,
+      // app_fee_rate: FEE_RATE,
+      // app_fee_recipient: FEE_RECIPIENT,
+      // appFeeRate: FEE_RATE,
+      // appFeeRecipient: FEE_RECIPIENT,
       // referral: "0x760AfE86e5de5fa0Ee542fc7B7B713e1c5425701",
       in_eth: inputCurrency.isNative ? 1 : 0,
       out_eth: outputCurrency.isNative ? 1 : 0,
@@ -154,18 +154,17 @@ export class OneClick {
       };
     }
 
-    console.log('oneclick txn', bestTrade);
-
     return {
       outputCurrencyAmount: BigNumber(bestTrade.amount_out || 0).div(10 ** outputCurrency.decimals).toFixed(outputCurrency.decimals).replace(/\.?0+$/, ""),
       noPair: false,
       routerAddress: this.ROUTER[inputCurrency.chainId],
       routes: bestTrade.routes,
-      fee: {
-        fee: Number(bestTrade.amount_out_no_fee) - Number(bestTrade.amount_out),
-        token: outputCurrency,
-        feeRate: (Number(FEE_RATE) / 10000).toString()
-      },
+      // fee: {
+      //   fee: Number(bestTrade.amount_out_no_fee) - Number(bestTrade.amount_out),
+      //   token: outputCurrency,
+      //   feeRate: (Number(FEE_RATE) / 10000).toString()
+      // },
+      fee: null,
       txn,
     };
   }
