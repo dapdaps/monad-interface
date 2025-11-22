@@ -362,6 +362,31 @@ input[type="number"]::-webkit-inner-spin-button {
   scrollbar-color: rgba(131, 110, 249, 0.3) transparent;
 }
 
+.wallet-summary-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.wallet-summary-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.wallet-summary-scroll::-webkit-scrollbar-thumb {
+  background: rgba(131, 110, 249, 0.3);
+  border-radius: 6px;
+  cursor: url("/images/cursor.svg") 12 0, auto;
+}
+
+.wallet-summary-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(131, 110, 249, 0.5);
+}
+
+/* Firefox */
+.wallet-summary-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(131, 110, 249, 0.3) transparent;
+}
+
 .invite-page-content {
   @media (max-width: 375px) {
     height: 610px;
