@@ -51,7 +51,7 @@ export default function Route({
             <div className="flex-1">
                 <div className="flex items-center justify-end gap-2 w-full">
                     <img className="w-[18px] h-[18px] rounded-[4px]" src={outputCurrency.icon} />
-                    <div className="text-[18px] max-w-[133px] font-[400] whitespace-nowrap overflow-hidden ">{receiveAmount}</div>
+                    <div className="text-[18px] max-w-[120px] font-[400] whitespace-nowrap overflow-hidden ">{receiveAmount}</div>
                 </div>
                 <div className="text-[12px] text-[#727D97] text-right">${ balanceFormated(prices[outputCurrency.symbol] * receiveAmount, 4) }</div>
             </div>
