@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import Modal from "@/components/modal";
 import { numberFormatter } from "@/utils/number-formatter";
 import useTokenAccountBalance from "@/hooks/use-token-account-balance";
-import { monadTestnet } from "viem/chains";
 import { useInterval } from "ahooks";
 import useToast from "@/hooks/use-toast";
 import CircleLoading from "@/components/circle-loading";
@@ -10,6 +9,8 @@ import MonadBaseCard from "@/components/card/monad-base-card";
 import useCustomAccount from "@/hooks/use-account";
 import { DEFAULT_CHAIN_ID } from "@/configs";
 import { Contract } from "ethers";
+import { useAccount, useSwitchChain } from "wagmi";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 
 interface BuyTimesModalProps {
     open: boolean;
@@ -42,7 +43,7 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
         "native",
         18,
         address,
-        monadTestnet.id
+        DEFAULT_CHAIN_ID
     );
 
     const handleSelectTimes = useCallback(async (selectedTimes: number) => {
@@ -238,6 +239,24 @@ const IconClose = () => {
 }
 
 const MainBtn = ({ onClick, isPending }: { onClick: any, isPending: boolean }) => {
+    const { address, chainId } = useAccount();
+    const { openConnectModal } = useConnectModal();
+    const { switchChain } = useSwitchChain();
+
+    if (!address) {
+        return (
+            <button onClick={() => openConnectModal?.()} className="w-full flex items-center justify-center gap-2 bg-[#BFFF60] text-[#23223A] text-[14px] py-4 rounded-[6px] mb-8 mt-[30px] border-[#000]">
+                Connect Wallet
+            </button>
+        )
+    }
+    if (chainId !== DEFAULT_CHAIN_ID) {
+        return (
+            <button onClick={() => switchChain({ chainId: DEFAULT_CHAIN_ID })} className="w-full flex items-center justify-center gap-2 bg-[#BFFF60] text-[#23223A] text-[14px] py-4 rounded-[6px] mb-8 mt-[30px] border-[#000]">
+                Switch to Monad
+            </button>
+        )
+    }
     return (
         <button onClick={onClick} className="w-full flex items-center justify-center gap-2 bg-[#BFFF60] text-[#23223A] text-[14px] py-4 rounded-[6px] mb-8 mt-[30px] border-[#000]">
             {isPending && <CircleLoading />} BUY
@@ -246,8 +265,22 @@ const MainBtn = ({ onClick, isPending }: { onClick: any, isPending: boolean }) =
 }
 
 const MoreBtn = ({ onClick, children, dataBp }: { onClick: any, children: any, dataBp?: string }) => {
+    const { address, chainId } = useAccount();
+    const { switchChain } = useSwitchChain();
+    const { openConnectModal } = useConnectModal();
+
     return (
-        <button data-bp={dataBp} onClick={onClick} className="bg-[#BFFF60] text-[#23223A] font-bold py-1 px-4 rounded">{children}</button>
+        <button data-bp={dataBp} onClick={() => {
+            if (!address) {
+                openConnectModal?.();
+                return;
+            }
+            if (chainId !== DEFAULT_CHAIN_ID) {
+                switchChain({ chainId: DEFAULT_CHAIN_ID });
+                return;
+            }
+            onClick();
+        }} className="bg-[#BFFF60] text-[#23223A] font-bold py-1 px-4 rounded">{children}</button>
     )
 }
 
