@@ -4,6 +4,9 @@ import { useDebounceFn } from 'ahooks';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useUserStore } from '@/stores/user';
 import { formatLongText } from '@/utils/utils';
+import { usePathname } from 'next/navigation';
+import useTokenBalance from './use-token-balance';
+import { DEFAULT_CHAIN_ID } from '@/configs';
 
 export function useConnectWallet() {
   const connectModal = useConnectModal();
@@ -12,7 +15,9 @@ export function useConnectWallet() {
   const { switchChain, isPending: switching } = useSwitchChain();
   const userInfo = useUserStore((store: any) => store.user);
   const setUserInfo = useUserStore((store: any) => store.set);
-  const userNativeBalance = useUserStore((store: any) => store.nativeBalance);
+  const pathname = usePathname();
+
+  const { tokenBalance: userNativeBalance, update: refetchUserNativeBalance } = useTokenBalance("native", 18, DEFAULT_CHAIN_ID);
 
   const [connecting, setConnecting] = useState<boolean>(isConnecting);
 
@@ -61,6 +66,12 @@ export function useConnectWallet() {
       _balance
     ];
   }, [userInfo, address, userNativeBalance]);
+
+  useEffect(() => {
+    if (address) {
+      refetchUserNativeBalance();
+    }
+  }, [address, pathname]);
 
   const onDisconnect = () => {
     disconnect();
