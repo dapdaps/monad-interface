@@ -82,6 +82,7 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
             outputCurrencyAmount: inputCurrencyAmount,
             noPair: false,
             txn,
+            isWrap: true,
             routerAddress: wethAddress,
             name: Array.isArray(template) ? template?.[0] : template,
           }

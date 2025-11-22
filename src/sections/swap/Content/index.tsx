@@ -191,7 +191,11 @@ export default function Swap({
       })
     }
 
-    onShowRoute?.(routes)
+    if (trade?.isWrap) {
+      onShowRoute?.([])
+    } else {
+      onShowRoute?.(routes)
+    }
   }, [routes, trade])
 
   return (
@@ -332,7 +336,7 @@ export default function Swap({
       />
 
       {
-        trade && routes.length > 0 && (
+        trade && routes.length > 0 && !trade.isWrap && (
           <div className="absolute top-0 right-[-385px] pt-[15px]">
             <RoutesModal
               routes={routes}
