@@ -188,7 +188,18 @@ const WelcomeShare = (props: any) => {
             setSharing(true);
             let toastId = toast.loading({ title: "Preparing to share..." });
 
+            const openWindow = window.open("", "_blank");
+
+            let origin = window?.location?.origin ?? "https://nadsa.space";
+            origin = origin.includes("localhost") ? "https://mainnet.nadsa.space" : origin;
+
             try {
+              openWindow?.document.write(`
+                <style>body{font-family:Pixelmix, familyOxanium, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;background:#000;color:#BFFF60;text-align:center;padding:60px}</style>
+                <h2>Preparing to share...</h2>
+                <p>The window will automatically jump to the X release page later...</p>
+              `);
+
               // Convert cardRef to image
               const dataUrl: string = await domtoimage.toPng(cardRef.current, {
                 quality: 1.0,
@@ -211,15 +222,16 @@ const WelcomeShare = (props: any) => {
               // const imageUrl = "https://assets.dapdap.net/monad/upload/47a465d1-47cd-4d0c-8933-568ff1e6f862";
 
               // Generate Twitter card URL
-              const tweetUrl = `${window?.location?.origin}/api/twitter?img=${encodeURIComponent(imageUrl)}`;
+              const tweetUrl = `${origin}/api/twitter?img=${encodeURIComponent(imageUrl)}`;
 
               // Share to Twitter
               const tweetText = `My NADSA RP balance just skyrocketed to ${numberFormatter(totalRP, 2, true)} RP!
 %0A
 The space station is calling—come aboard and grab your rewards!
 %0A
-🛸 ${window?.location?.origin}`;
-              shareToX(tweetText, tweetUrl);
+🛸 ${origin}`;
+              const xPath = shareToX(tweetText, tweetUrl, { isOpenOutside: true });
+              (openWindow as any).location = xPath;
 
               toast.dismiss(toastId);
             } catch (error: any) {

@@ -95,10 +95,15 @@ export async function uploadFile(file: File | Blob, url: string = "/upload") {
   }
 }
 
-export function shareToX(text: string, link?: string) {
+export function shareToX(text: string, link?: string, options?: { isOpenOutside?: boolean; }) {
+  const { isOpenOutside } = options ?? {};
+
   let xPath = `https://x.com/intent/tweet?text=${text}`;
   if (link) {
     xPath += `&url=${encodeURIComponent(link)}`;
+  }
+  if (isOpenOutside) {
+    return xPath;
   }
   window.open(xPath);
 }
