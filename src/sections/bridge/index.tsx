@@ -11,7 +11,7 @@ import Confirm from "./Confrim";
 import PageBack from "@/components/back";
 import useIsMobile from "@/hooks/use-isMobile";
 // import MenuButton from '@/components/mobile/menuButton';
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import History from "./History";
 import { useAccount, useSwitchChain } from "wagmi";
 import { formatLongText } from "@/utils/utils";
@@ -39,7 +39,7 @@ const DappHeader: React.FC = () => {
           alt={bridgeType.name}
           className="w-[30px] mr-2"
         />
-        <span className=" text-xl text-black">{bridgeType.name}</span>
+        <span className=" text-xl text-white">{bridgeType.name}</span>
       </div>
     );
   }
@@ -62,7 +62,7 @@ const DappHeader: React.FC = () => {
 
 const ComingSoon = false;
 const _chainList = Object.values(chains).filter((chain) =>
-  [1, 143, 56, 10, 43114, 5000, 8453, 42161, 59144, 1101].includes(chain.chainId)
+  [1, 143, 56, 10, 43114, 5000, 8453, 42161, 59144].includes(chain.chainId)
 );
 
 export default function Bridge() {
@@ -78,7 +78,10 @@ export default function Bridge() {
   const [targetX, setTargetX] = useState("0px");
   const [targetY, setTargetY] = useState("0px");
 
-  const { chains: pairChains, tokenPairs: tokenPairs } = useChainAndTokenPair({ bridgeType: 'orbiter' });
+  const params = useSearchParams();
+  const dapp = params.get("dapp");
+  
+  const { chains: pairChains, tokenPairs: tokenPairs, destDisabled } = useChainAndTokenPair({ bridgeType: dapp ||'all' });
 
 
   const {
@@ -110,14 +113,21 @@ export default function Bridge() {
     originToChain: chains[143],
     derection: 1,
     account: address,
-    defaultBridgeText: "Bridge"
+    defaultBridgeText: "Bridge",
+    engine: dapp ? [dapp as engineType] : null
   });
 
   const usedChainList = useMemo(() => {
+    if (!pairChains || pairChains.length === 0) {
+      return _chainList;
+    }
     return _chainList.filter((chain) => pairChains.includes(chain.chainId.toString()));
   }, [pairChains]);
 
   const useTokenList = useMemo(() => {
+    if (!tokenPairs || Object.keys(tokenPairs).length === 0) {
+      return __allTokens;
+    }
     const newTokenList: any = {};
     Object.keys(__allTokens).map((key: any) => {
       newTokenList[key] = __allTokens[key].filter((token: Token) => {
@@ -136,14 +146,15 @@ export default function Bridge() {
       return useTokenList;
     }
 
+    if (!tokenPairs || Object.keys(tokenPairs).length === 0) {
+      return useTokenList;
+    }
+
     const newAllTokens: any = {};
     Object.keys(useTokenList).map((key: any) => {
       newAllTokens[key] = useTokenList[key].filter((token: Token) => {
         let symbol = token.symbol.toUpperCase();
-        return (
-          tokenPairs[fromChain.chainId][fromToken.symbol.toUpperCase()] ===
-          symbol
-        );
+        return tokenPairs[fromChain.chainId][fromToken.symbol.toUpperCase()] === symbol;
       });
     });
 
@@ -155,8 +166,12 @@ export default function Bridge() {
       setToToken(undefined);
       return;
     }
-    const tokenPair =
-      tokenPairs[fromChain.chainId][fromToken?.symbol.toUpperCase()];
+
+    if (!tokenPairs || Object.keys(tokenPairs).length === 0) {
+      return;
+    }
+    
+    const tokenPair = tokenPairs[fromChain.chainId][fromToken?.symbol.toUpperCase()];
     if (tokenPair && useTokenList[toChain.chainId]) {
       const token = useTokenList[toChain.chainId].find(
         (token: Token) => token.symbol.toUpperCase() === tokenPair
@@ -313,6 +328,7 @@ export default function Bridge() {
                 chain={toChain}
                 token={toToken ?? null}
                 disabledInput={true}
+                destDisabled={destDisabled}
                 onChainChange={(chain: Chain) => {
                   setToChain(chain);
                 }}

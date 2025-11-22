@@ -1,7 +1,7 @@
 import { useDebounce } from 'ahooks';
 import Big from 'big.js';
 import { useCallback, useEffect, useState } from 'react';
-import type { ExecuteRequest, QuoteRequest, QuoteResponse } from '../lib/type';
+import type { engineType, ExecuteRequest, QuoteRequest, QuoteResponse } from '../lib/type';
 import { execute, getQuote, getStatus } from '../lib/index';
 
 import useAccount from '@/hooks/use-account';
@@ -23,9 +23,10 @@ interface BridgeProps {
   derection: number;
   account?: string | undefined;
   defaultBridgeText: string;
+  engine?: engineType[] | null;
 }
 
-export default function useBridge({ originFromChain, originToChain, derection, defaultBridgeText }: BridgeProps) {
+export default function useBridge({ originFromChain, originToChain, derection, defaultBridgeText, engine }: BridgeProps) {
   const [fromChain, setFromChain] = useState(originFromChain);
   const [toChain, setToChain] = useState(originToChain);
 
@@ -104,6 +105,7 @@ export default function useBridge({ originFromChain, originToChain, derection, d
       destAddress: account as string,
       amount: new Big(inputValue).mul(10 ** fromToken?.decimals),
       identification,
+      engine: engine || [],
       exclude: ['official'],
       UNIZEN_AUTH_KEY: process.env.NEXT_PUBLIC_UNIZEN_AUTH_KEY
     });

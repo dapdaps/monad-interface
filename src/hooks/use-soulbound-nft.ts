@@ -59,7 +59,8 @@ export const useSoulboundNFT = ({ nftAddress, autoChecking = true }: { nftAddres
     const [tokenIds, setTokenIds] = useState<string[]>([]);
     const [checkAllowlistLoading, setCheckAllowlistLoading] = useState<boolean>(false);
     const rpcStore = useRpcStore();
-    const rpc = useMemo(() => RPC_LIST[rpcStore.selected], [rpcStore.selected]);
+    // const rpc = useMemo(() => RPC_LIST[rpcStore.selected], [rpcStore.selected]);
+    const rpc = 'https://testnet-rpc.monad.xyz/'
 
     const getNFTMetadata = useCallback(async () => {
         try {

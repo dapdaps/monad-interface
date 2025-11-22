@@ -19,8 +19,17 @@ export default function useChainAndTokenPair({ bridgeType }: { bridgeType: strin
         return [];
     }, [bridgeType]);
 
+    const destDisabled = useMemo(() => {
+        if (bridgeType.toLowerCase() === 'orbiter') {
+            return true;
+        }
+
+        return ;
+    }, [bridgeType]);
+
     return { 
         chains,
         tokenPairs,
+        destDisabled,
      };
 }

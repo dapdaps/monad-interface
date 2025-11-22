@@ -6,13 +6,17 @@ import { getIcon, getAllToken, getChainScan, getBridgeMsg } from './util/index'
 import { getQuoteInfo, setQuote } from './util/routerController'
 import { getQuote as getOwltoRoute, execute as executeOwlto, getStatus as getOwltoStatus } from './bridges/owlto'
 import { getQuote as getOrbiterRoute, execute as executeOrbiter, getStatus as getOrbiterStatus } from './bridges/orbiter'
-// import { getQuote as getWormholeRoute, execute as executeWormhole, getStatus as getWormholeStatus } from './bridges/wormhole'
+import { getQuote as getWormholeRoute, execute as executeWormhole, getStatus as getWormholeStatus } from './bridges/wormhole'
+import { getQuote as getLifiRoute, execute as executeLifi, getStatus as getLifiStatus } from './bridges/lifi'
+// import { getQuote as getStargateRoute, execute as executeStargate, getStatus as getStargateStatus } from './bridges/stargate'
 
 import { ExecuteRequest, QuoteRequest, QuoteResponse, StatusParams, StatusRes } from './type'
 
 const executeTypes: any = {
     executeOwlto,
     executeOrbiter,
+    executeWormhole,
+    executeLifi,
 }
 
 
@@ -61,15 +65,23 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer, callb
         case 'orbiter':
           quoteP.push(getOrbiterRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('orbiter:', e)))
           break;
+        case 'lifi':
+          quoteP.push(getLifiRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('lifi:', e)))
+          break;
+        case 'wormhole':
+          quoteP.push(getWormholeRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('wormhole:', e)))
+          break;
       }
     }
   } else {
-    // const owltoRoute = getOwltoRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('owlto:', e))
+    const owltoRoute = getOwltoRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('owlto:', e))
+    quoteP.push(owltoRoute)
     const orbiterRoute = getOrbiterRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('orbiter:', e))
     quoteP.push(orbiterRoute)
-    // const { getQuote: getWormholeRoute } = await import('./bridges/wormhole/index')
-    // const wormholeRoute = getWormholeRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('wormhole:', e))
-    // quoteP.push(wormholeRoute)
+    const wormholeRoute = getWormholeRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('wormhole:', e))
+    quoteP.push(wormholeRoute)
+    const lifiRoute = getLifiRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('lifi:', e))
+    quoteP.push(lifiRoute)
   }
 
   const resList: (QuoteResponse | QuoteResponse[] | null | void)[] = await Promise.all(quoteP)
@@ -106,5 +118,9 @@ export async function getStatus(params: StatusParams, engine: string, signer: Si
   }
   if (_engine === 'orbiter') {
     return getOrbiterStatus(params)
+  }
+
+  if (_engine === 'wormhole') {
+    return getWormholeStatus(params)
   }
 }

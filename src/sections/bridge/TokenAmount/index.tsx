@@ -38,6 +38,7 @@ interface Props {
   limitBera: boolean;
   isDest: boolean;
   allTokens: any;
+  destDisabled?: boolean;
 }
 
 export default function TokenAmout({
@@ -52,7 +53,8 @@ export default function TokenAmout({
   chainList,
   limitBera,
   isDest,
-  allTokens
+  allTokens,
+  destDisabled = false
 }: Props) {
   const [tokenSelectorShow, setTokenSelectorShow] = useState(false);
   const [percent, setPercent] = useState<any>(0);
@@ -100,7 +102,7 @@ export default function TokenAmout({
         <div className='cursor-pointer border border-[#34304B] py-[5px] rounded-[4px] px-[7px] bg-[#151822]' onClick={() => {
           if (comingSoon) return;
 
-          if (isDest && limitBera) {
+          if (isDest && limitBera && destDisabled) {
             return;
           }
           setTokenSelectorShow(true);
