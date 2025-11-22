@@ -1,8 +1,10 @@
+import useCustomAccount from "@/hooks/use-account";
 import { useNftStore } from "@/stores/nft";
 
 const WelcomeStart = (props: any) => {
   const { } = props;
 
+  const { account } = useCustomAccount();
   const { setWelcomeOpen, setWelcomeDownloaded } = useNftStore();
 
   return (
@@ -15,7 +17,7 @@ const WelcomeStart = (props: any) => {
         }}
         onClick={() => {
           setWelcomeOpen?.(false);
-          setWelcomeDownloaded?.(true);
+          setWelcomeDownloaded?.(account, true);
         }}
       >
         Start Exploring Monad

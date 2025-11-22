@@ -7,6 +7,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import { EWelcomeStatus } from "./config";
 import { IShareOpen, WelcomeProvider } from "./context";
 import { useDebounceFn } from "ahooks";
+import useCustomAccount from "@/hooks/use-account";
 
 const WelcomeModal = lazy(() => import("./modal"));
 const WelcomeShareModal = lazy(() => import("./share"));
@@ -15,7 +16,8 @@ const WelcomeDownload = lazy(() => import("./download"));
 const Welcome = (props: any) => {
   const { className } = props;
 
-  const { setWelcomeOpen, welcomeDownloaded } = useNftStore();
+  const { account } = useCustomAccount();
+  const { setWelcomeOpen, welcomeDownloaded, getWelcomeDownloaded } = useNftStore();
 
   const [bonus, setBonus] = useState<any>();
   const [status, setStatus] = useState<EWelcomeStatus>(EWelcomeStatus.CONNECTING);
@@ -27,11 +29,11 @@ const Welcome = (props: any) => {
 
   useEffect(() => {
     cancelOpenWelcome();
-    if (welcomeDownloaded) {
+    if (getWelcomeDownloaded(account)) {
       return;
     }
     openWelcome();
-  }, [welcomeDownloaded]);
+  }, [welcomeDownloaded, account]);
 
   return (
     <WelcomeProvider

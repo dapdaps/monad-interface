@@ -7,10 +7,12 @@ interface NftStore {
   set: (params: any) => void;
   isWelcomeOpen: boolean;
   setWelcomeOpen: (isWelcomeOpen: boolean) => void;
-  welcomeDownloadMap: Record<string, { key: string; loading: boolean; opened: boolean; timestamp: number; }>;
-  setWelcomeDownloadMap: (key: string, downloadMap: any) => void;
-  welcomeDownloaded?: boolean;
-  setWelcomeDownloaded: (welcomeDownloaded: boolean) => void;
+  welcomeDownloadMap: Record<string, Record<string, { key: string; loading: boolean; opened: boolean; timestamp: number; }>>;
+  setWelcomeDownloadMap: (address: string, key: string, downloadMap: any) => void;
+  getWelcomeDownloadMap: (address: string) => Record<string, { key: string; loading: boolean; opened: boolean; timestamp: number; }>;
+  welcomeDownloaded?: Record<string, boolean>;
+  setWelcomeDownloaded: (address: string, welcomeDownloaded: boolean) => void;
+  getWelcomeDownloaded: (address: string) => boolean;
 }
 
 export const useNftStore = create(
@@ -22,26 +24,41 @@ export const useNftStore = create(
       set: (params: any) => set(() => ({ ...params })),
       setWelcomeOpen: (isWelcomeOpen: boolean) => set(() => ({ isWelcomeOpen })),
       welcomeDownloadMap: {},
-      setWelcomeDownloadMap: (key, downloadMap) => set((state) => {
+      setWelcomeDownloadMap: (address, key, downloadMap) => set((state) => {
         const next = { ...state.welcomeDownloadMap };
-        next[key] = downloadMap;
+        const nextMap = {
+          ...next[address || "DEFAULT"],
+          [key]: downloadMap,
+        };
+        next[address || "DEFAULT"] = nextMap;
+        next["DEFAULT"] = nextMap;
         return {
           ...state,
           welcomeDownloadMap: next,
         };
       }),
-      welcomeDownloaded: false,
-      setWelcomeDownloaded: (welcomeDownloaded: boolean) => set(() => ({ welcomeDownloaded })),
+      getWelcomeDownloadMap: (address) => get().welcomeDownloadMap[address || "DEFAULT"] || {},
+      welcomeDownloaded: {},
+      setWelcomeDownloaded: (address, welcomeDownloaded) => set((state) => {
+        const next = { ...state.welcomeDownloaded };
+        next[address || "DEFAULT"] = welcomeDownloaded;
+        next["DEFAULT"] = welcomeDownloaded;
+        return {
+          ...state,
+          welcomeDownloaded: next,
+        };
+      }),
+      getWelcomeDownloaded: (address) => get().welcomeDownloaded[address || "DEFAULT"] || false,
     }),
     {
       name: "_nft",
-      version: 0.2,
+      version: 0.3,
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => {
         return ({
           closeNFTModal: state.closeNFTModal,
           isFollowNADSA: state.isFollowNADSA,
-          downloadMap: state.welcomeDownloadMap,
+          welcomeDownloadMap: state.welcomeDownloadMap,
           welcomeDownloaded: state.welcomeDownloaded,
         } as any);
       }

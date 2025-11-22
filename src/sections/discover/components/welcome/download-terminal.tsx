@@ -7,10 +7,12 @@ import { useWelcomeContext } from "./context";
 import { useNftStore } from "@/stores/nft";
 import React from "react";
 import { EWelcomeStatus } from "./config";
+import useCustomAccount from "@/hooks/use-account";
 
 const WelcomeDownloadTerminal = (props: any, ref: any) => {
   const { bonusList, downloadedBonusList } = props;
 
+  const { account } = useCustomAccount();
   const router = useRouter();
   const { setShareOpen, setStatus } = useWelcomeContext();
   const { setWelcomeOpen, setWelcomeDownloaded } = useNftStore();
@@ -166,7 +168,7 @@ const WelcomeDownloadTerminal = (props: any, ref: any) => {
                   onClick={() => {
                     router.push("/rank");
                     setWelcomeOpen?.(false);
-                    setWelcomeDownloaded?.(true);
+                    setWelcomeDownloaded?.(account, true);
                   }}
                   className="underline"
                 >

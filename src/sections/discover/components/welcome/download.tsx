@@ -6,12 +6,14 @@ import clsx from "clsx";
 import { DownloadDuration } from "./config";
 import { numberFormatter } from "@/utils/number-formatter";
 import { useNftStore } from "@/stores/nft";
+import useCustomAccount from "@/hooks/use-account";
 
 const WelcomeDownload = (props: any) => {
   const { } = props;
 
+  const { account } = useCustomAccount();
   const { bonus } = useWelcomeContext();
-  const { welcomeDownloadMap } = useNftStore();
+  const { welcomeDownloadMap, getWelcomeDownloadMap } = useNftStore();
 
   const [downloadingBonus, downloadingBonusList] = useMemo(() => {
     let _bonus: any = {};
@@ -20,14 +22,14 @@ const WelcomeDownload = (props: any) => {
       if (!/_rp$/.test(key)) {
         if (value === true) {
           const curr = BoosterItems.find((it) => it.key === key);
-          const downloading = welcomeDownloadMap[key]?.loading;
+          const downloading = getWelcomeDownloadMap(account)?.[key]?.loading;
           if (downloading && curr) {
             _bonus[key] = value;
             _bonus[`${key}_rp`] = bonus[`${key}_rp`];
             _bonusList.push({
               ...curr,
               rp: bonus[`${key}_rp`],
-              timestamp: welcomeDownloadMap[key]?.timestamp,
+              timestamp: getWelcomeDownloadMap(account)?.[key]?.timestamp,
             });
           }
           return;
@@ -35,7 +37,7 @@ const WelcomeDownload = (props: any) => {
       }
     });
     return [_bonus, _bonusList.sort((a: any, b: any) => a.sort - b.sort)];
-  }, [bonus, welcomeDownloadMap]);
+  }, [bonus, welcomeDownloadMap, account]);
 
   if (!downloadingBonusList.length) {
     return null;

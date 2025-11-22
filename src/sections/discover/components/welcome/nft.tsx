@@ -6,6 +6,7 @@ import { DownloadDuration } from "./config";
 import WelcomeDownloadTerminal from "./download-terminal";
 import { numberFormatter } from "@/utils/number-formatter";
 import { useNftStore } from "@/stores/nft";
+import useCustomAccount from "@/hooks/use-account";
 
 // 3D Tilt Wrapper Component using Framer Motion
 const useTilt3D = () => {
@@ -97,7 +98,8 @@ const OpenedTiltCard = ({ item }: { item: any }) => {
 const WelcomeNft = (props: any) => {
   const { bonus } = props;
 
-  const { welcomeDownloadMap: downloadMap, setWelcomeDownloadMap: setDownloadMap } = useNftStore();
+  const { account } = useCustomAccount();
+  const { setWelcomeDownloadMap, getWelcomeDownloadMap } = useNftStore();
 
   const terminalRef = useRef<any>(null);
   const downloadTimerRef = useRef<any>({});
@@ -123,14 +125,14 @@ const WelcomeNft = (props: any) => {
   }, [bonus]);
 
   const onDownload = (bonu: any) => {
-    if (downloadMap[bonu.key]?.loading || downloadMap[bonu.key]?.opened) {
+    if (getWelcomeDownloadMap(account)?.[bonu.key]?.loading || getWelcomeDownloadMap(account)?.[bonu.key]?.opened) {
       return;
     }
-    setDownloadMap?.(bonu.key, { key: bonu.key, loading: true, opened: false, timestamp: Date.now() });
+    setWelcomeDownloadMap?.(account, bonu.key, { key: bonu.key, loading: true, opened: false, timestamp: Date.now() });
     terminalRef.current.onDownload(bonu);
 
     downloadTimerRef.current[bonu.key] = setTimeout(() => {
-      setDownloadMap?.(bonu.key, { key: bonu.key, loading: false, opened: true, timestamp: Date.now() });
+      setWelcomeDownloadMap?.(account, bonu.key, { key: bonu.key, loading: false, opened: true, timestamp: Date.now() });
     }, DownloadDuration);
   };
 
@@ -158,7 +160,7 @@ const WelcomeNft = (props: any) => {
             >
               {
                 validBonusList.map((item: any, index: number) => {
-                  const isOpened = downloadMap[item.key]?.opened;
+                  const isOpened = getWelcomeDownloadMap(account)?.[item.key]?.opened;
                   return (
                     <div
                       key={index}
@@ -184,12 +186,12 @@ const WelcomeNft = (props: any) => {
                           <button
                             type="button"
                             className="w-[137px] h-[42px] disabled:opacity-50 disabled:!cursor-not-allowed shrink-0 text-[14px] text-black mt-[0px] flex justify-center items-center bg-no-repeat bg-center bg-contain bg-[url('/images/mainnet/discover/welcome/button-card-2.png')]"
-                            disabled={downloadMap[item.key]?.loading}
+                            disabled={getWelcomeDownloadMap(account)?.[item.key]?.loading}
                             onClick={() => {
                               onDownload(item);
                             }}
                           >
-                            {downloadMap[item.key]?.loading ? "Downloading..." : "Download"}
+                            {getWelcomeDownloadMap(account)?.[item.key]?.loading ? "Downloading..." : "Download"}
                           </button>
                         )
                       }
@@ -205,7 +207,7 @@ const WelcomeNft = (props: any) => {
         ref={terminalRef}
         bonus={validBonus}
         bonusList={validBonusList}
-        downloadedBonusList={validBonusList.filter((it: any) => downloadMap[it.key]?.opened) ?? []}
+        downloadedBonusList={validBonusList.filter((it: any) => getWelcomeDownloadMap(account)?.[it.key]?.opened) ?? []}
       />
     </>
   );
