@@ -9,10 +9,12 @@ import WelcomeConnect from "./connect";
 import WelcomeLoading from "./loading";
 import WelcomeProgress from "./progress";
 import WelcomeStart from "./start";
+import { useNftStore } from "@/stores/nft";
 
 const WelcomeContent = (props: any) => {
   const { } = props;
 
+  const { setWelcomeDownloaded } = useNftStore();
   const { account } = useCustomAccount();
   const { status, setStatus, setBonus } = useWelcomeContext();
   const { allBonus, getBonus } = useBonus({ autoLoad: false });
@@ -109,6 +111,8 @@ const WelcomeContent = (props: any) => {
     cancelStartGetBonus();
     cancelSetReady();
     cancelSetBonusResult();
+
+    setWelcomeDownloaded?.(account, true);
 
     if (!account) {
       setStatus?.(EWelcomeStatus.CONNECTING);

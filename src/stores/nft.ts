@@ -52,7 +52,7 @@ export const useNftStore = create(
     }),
     {
       name: "_nft",
-      version: 0.3,
+      version: 0.4,
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => {
         return ({
