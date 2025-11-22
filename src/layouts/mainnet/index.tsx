@@ -1,3 +1,5 @@
+"use client";
+
 import MobileLayout from "./mobile";
 import LaptopLayout from "./laptop";
 import useIsMobile from "@/hooks/use-isMobile";

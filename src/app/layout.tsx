@@ -1,19 +1,12 @@
-"use client";
-
-import SceneContextProvider from "@/context/scene";
-import WagmiProvider from "@/context/wagmi";
-import MainnetLayout from "@/layouts/mainnet";
-import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 import Script from "next/script";
-import React, { Suspense } from "react";
-import { SkeletonTheme } from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "./globals.css";
-import InvitationContextProvider from "@/context/invitation";
+import React from "react";
+import ClientProviders from "@/components/client-providers";
 
-export default function RootLayout({
+import "./globals.css";
+
+const BASE_URL = process.env.NEXT_PUBLIC_API || "https://mainnet-api-monad.dapdap.net";
+
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
@@ -30,35 +23,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className="w-full h-full md:overflow-hidden">
-        <WagmiProvider>
-          <SkeletonTheme baseColor="#7990F4" highlightColor="#8B87FF">
-            <SceneContextProvider>
-              <InvitationContextProvider>
-                <Suspense>
-                  <MainnetLayout>{children}</MainnetLayout>
-                </Suspense>
-              </InvitationContextProvider>
-            </SceneContextProvider>
-          </SkeletonTheme>
-        </WagmiProvider>
-        <ToastContainer
-          position="top-right"
-          autoClose={5000}
-          hideProgressBar={true}
-          theme="light"
-          toastStyle={{ backgroundColor: "transparent", boxShadow: "none" }}
-          newestOnTop
-          rtl={false}
-          pauseOnFocusLoss
-          closeButton={false}
-          limit={3}
-        />
-        <ProgressBar
-          height="4px"
-          color="#8B87FF"
-          options={{ showSpinner: false }}
-          shallowRouting
-        />
+        <ClientProviders>{children}</ClientProviders>
       </body>
       <Script
         async

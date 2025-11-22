@@ -1,5 +1,4 @@
 import Card from "../components/card";
-import { AppList } from "../config";
 import Spotlight from "../components/spotlight";
 import Mouse from "../components/mouse";
 import clsx from "clsx";
@@ -8,7 +7,7 @@ import useClickTracking from "@/hooks/use-click-tracking";
 import { useMemo, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from 'swiper/modules';
-
+import { useAppsStore } from "@/stores/apps";
 import ExternalLinksModal from "@/sections/dapps/components/external-links-modal";
 
 import 'swiper/css';
@@ -20,6 +19,8 @@ const SpotlightApps = (props: any) => {
   const [showExternalLinksModal, setShowExternalLinksModal] = useState(false);
   const router = useProgressRouter();
   const { handleReportWithoutDebounce } = useClickTracking();
+  const AppList = useAppsStore((state) => state.apps);
+
   const [dapp, setDapp] = useState<any>(null);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(3);

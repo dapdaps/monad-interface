@@ -151,6 +151,8 @@ interface BoosterItem {
   boost: number;
   tip: string;
   key: string;
+  sort: number;
+  name: string;
 }
 
 export const BoosterItems: BoosterItem[] = [
@@ -160,6 +162,8 @@ export const BoosterItems: BoosterItem[] = [
       boost: 5,
       tip: "Members who received the Monad airdrop earn a 5% RP bonus",
       key: "golden",
+      sort: 1,
+      name: "Golden Ticket",
   },
   {
       icon: "/images/wallet/ranking/booster-3.png",
@@ -167,6 +171,8 @@ export const BoosterItems: BoosterItem[] = [
       boost: 10,
       tip: "Admission Ticket holders get a 10% RP bonus",
       key: "admission",
+      sort: 2,
+      name: "NADSA Admission Ticket",
   },
   {
       icon: "/images/wallet/ranking/booster-2.png",
@@ -174,5 +180,7 @@ export const BoosterItems: BoosterItem[] = [
       boost: 3,
       tip: "Sequence Number NFT holders get a 3% RP bonus",
       key: "sequence",
+      sort: 3,
+      name: "Soul_Bounded Sequence Number Nft",
   },
 ];

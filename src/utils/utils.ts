@@ -34,6 +34,9 @@ export function formatLongText(
   if (text.length <= front + ending) {
     return text;
   }
+  if (ending <= 0) {
+    return `${text.slice(0, front)}...`;
+  }
   return `${text.slice(0, front)}...${text.slice(-ending)}`;
 }
 

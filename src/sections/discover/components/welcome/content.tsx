@@ -1,15 +1,14 @@
 import useCustomAccount from "@/hooks/use-account";
-import { lazy, Suspense, useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useWelcomeContext } from "./context";
 import { EWelcomeStatus } from "./config";
 import { useBonus } from "@/sections/ranking/hooks/use-bonus";
 import { useDebounceFn, useRequest } from "ahooks";
 import WelcomeNft from "./nft";
+import WelcomeConnect from "./connect";
+import WelcomeLoading from "./loading";
 import WelcomeProgress from "./progress";
-import WelcomeResult from "./result";
-
-const WelcomeConnect = lazy(() => import("./connect"));
-const WelcomeLoading = lazy(() => import("./loading"));
+import WelcomeStart from "./start";
 
 const WelcomeContent = (props: any) => {
   const { } = props;
@@ -19,26 +18,27 @@ const WelcomeContent = (props: any) => {
   const { allBonus, getBonus } = useBonus({ autoLoad: false });
   const [progress, setProgress] = useState(0);
   const minDuration = 3000; // Minimum 3 seconds
-  const delayDuration = 4000;
   const maxWaitingProgress = 90;
   const progressTimerRef = useRef<any>(null);
   const minDurationTimerRef = useRef<any>(null);
 
-  const updateProgress = (is2Finish?: boolean) => {
+  const clearProgressTimer = () => {
     clearInterval(progressTimerRef.current);
     progressTimerRef.current = null;
+  };
+
+  const updateProgress = (is2Finish?: boolean) => {
+    clearProgressTimer();
 
     progressTimerRef.current = setInterval(() => {
       setProgress((prev) => {
         const next = prev + 5;
         if (prev >= maxWaitingProgress && !is2Finish) {
-          clearInterval(progressTimerRef.current);
-          progressTimerRef.current = null;
+          clearProgressTimer();
           return maxWaitingProgress;
         }
         if (next >= 100) {
-          clearInterval(progressTimerRef.current);
-          progressTimerRef.current = null;
+          clearProgressTimer();
           return 100;
         }
         return next;
@@ -65,34 +65,50 @@ const WelcomeContent = (props: any) => {
     manual: true,
   });
 
-  const { run: setReady, cancel: cancelSetReady } = useDebounceFn(() => {
+  const { run: setReady, cancel: cancelSetReady } = useDebounceFn((bonus: any) => {
+    const hasNFT = Object.values(bonus || {}).some((it: any) => it === true);
+    if (!hasNFT) {
+      setStatus?.(EWelcomeStatus.NOT_FOUND);
+      return;
+    }
     setStatus?.(EWelcomeStatus.READY);
-    setRPReady();
   }, { wait: 500 });
 
-  const { run: setRPReady, cancel: cancelSetRPReady } = useDebounceFn(() => {
-    setStatus?.(EWelcomeStatus.RP);
-  }, { wait: 5000 });
+  const { run: setBonusResult, cancel: cancelSetBonusResult } = useDebounceFn((bonus: any) => {
+    const hasNFT = Object.values(bonus || {}).some((it: any) => it === true);
+
+    if (hasNFT) {
+      updateProgress(true);
+    }
+
+    setReady(bonus);
+  }, { wait: 3000 });
 
   const { run: startGetBonus, cancel: cancelStartGetBonus } = useDebounceFn(() => {
     setProgress(() => 0);
-    updateProgress();
 
     // Start getBonus request
     getBonusDelay().then((bonus) => {
       setBonus?.(bonus);
-      clearInterval(progressTimerRef.current);
-      progressTimerRef.current = null;
-      updateProgress(true);
-      setReady();
+
+      const hasNFT = Object.values(bonus || {}).some((it: any) => it === true);
+
+      if (hasNFT) {
+        // start progress
+        updateProgress();
+        setBonusResult(bonus);
+        return;
+      }
+
+      setStatus?.(EWelcomeStatus.NOT_FOUND);
     });
-  }, { wait: delayDuration });
+  }, { wait: 0 });
 
   useEffect(() => {
     setProgress(() => 0);
     cancelStartGetBonus();
     cancelSetReady();
-    cancelSetRPReady();
+    cancelSetBonusResult();
 
     if (!account) {
       setStatus?.(EWelcomeStatus.CONNECTING);
@@ -106,43 +122,40 @@ const WelcomeContent = (props: any) => {
       cancelGetBonusDelay();
       cancelStartGetBonus();
       cancelSetReady();
-      cancelSetRPReady();
-      clearInterval(progressTimerRef.current);
+      cancelSetBonusResult();
+      clearProgressTimer();
       clearTimeout(minDurationTimerRef.current);
-      progressTimerRef.current = null;
       minDurationTimerRef.current = null;
     };
   }, [account]);
 
   return (
     <div className="w-full">
-      <Suspense fallback={null}>
-        {
-          status === EWelcomeStatus.CONNECTING && (
-            <WelcomeConnect />
-          )
-        }
-        {
-          [EWelcomeStatus.LOADING].includes(status as EWelcomeStatus) && (
-            <WelcomeLoading progress={progress} />
-          )
-        }
-        {
-          [EWelcomeStatus.READY, EWelcomeStatus.RP].includes(status as EWelcomeStatus) && (
-            <WelcomeNft bonus={allBonus} />
-          )
-        }
-        {
-          [EWelcomeStatus.LOADING, EWelcomeStatus.READY].includes(status as EWelcomeStatus) && (
-            <WelcomeProgress progress={progress} className="mt-[10px]" />
-          )
-        }
-        {
-          [EWelcomeStatus.RP].includes(status as EWelcomeStatus) && (
-            <WelcomeResult className="mt-[10px]" bonus={allBonus} />
-          )
-        }
-      </Suspense>
+      {
+        status === EWelcomeStatus.CONNECTING && (
+          <WelcomeConnect />
+        )
+      }
+      {
+        [EWelcomeStatus.LOADING, EWelcomeStatus.NOT_FOUND].includes(status as EWelcomeStatus) && (
+          <WelcomeLoading bonus={allBonus} progress={progress} />
+        )
+      }
+      {
+        [EWelcomeStatus.READY, EWelcomeStatus.OPENED].includes(status as EWelcomeStatus) && (
+          <WelcomeNft bonus={allBonus} />
+        )
+      }
+      {
+        [EWelcomeStatus.LOADING].includes(status as EWelcomeStatus) && (
+          <WelcomeProgress progress={progress} className="mt-[10px]" />
+        )
+      }
+      {
+        [EWelcomeStatus.NOT_FOUND, EWelcomeStatus.OPENED].includes(status as EWelcomeStatus) && (
+          <WelcomeStart />
+        )
+      }
     </div>
   );
 };
