@@ -146,7 +146,7 @@ const TokenList = styled.div`
   /* height: calc(100% - 120px);
     overflow: auto; */
     margin-top: 20px;
-    max-height: 540px;
+    max-height: 340px;
     overflow-y: auto;
     margin-bottom: 20px;
 `;
