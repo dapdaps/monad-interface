@@ -135,10 +135,24 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
           return;
         }
 
+        console.log('data:', data)
+
         const _markets = data
           .filter((item: any) => Big(item.outputCurrencyAmount || 0).gt(0))
           .sort(
-            (a: any, b: any) => b.outputCurrencyAmount - a.outputCurrencyAmount
+            (a: any, b: any) => {
+              const diff = b.outputCurrencyAmount - a.outputCurrencyAmount;
+              if (diff !== 0) {
+                return diff;
+              }
+              if (a.template === 'OneClick' ) {
+                return -1;
+              }
+              if (b.template === 'OneClick') {
+                return 1;
+              }
+              return 0;
+            }
           )
           .map((item: any) => {
 

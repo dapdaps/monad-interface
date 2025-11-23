@@ -34,7 +34,14 @@ export default function Routes({
 
   const RouteInfo = useMemo(() => {
     if (!trade) return null;
+
+    if (trade.isWrap) {
+      return '-'
+    }
+
     const dapp = dapps[trade.name.toLowerCase()];
+
+
     return <div className="flex gap-[10px] items-center" onClick={() => {
       // setShowRoutesModal(true);
     }}>
