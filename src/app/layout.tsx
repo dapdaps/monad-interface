@@ -25,7 +25,7 @@ export default async function RootLayout({
         <meta name="twitter:card" content="summary_large_image"></meta>
       </head>
       <body className="w-full h-full md:overflow-hidden">
-        {/* <div id="page-loader" style={{
+        <div id="page-loader" style={{
           position: 'fixed',
           top: 0,
           left: 0,
@@ -38,32 +38,11 @@ export default async function RootLayout({
           flexDirection: 'column',
           gap: '16px',
           zIndex: 9999,
-          transition: 'opacity 0.3s ease-out'
         }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            border: '2px solid rgba(255, 255, 255, 0.2)',
-            borderTop: '2px solid white',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite'
-          }}></div>
-          <p style={{
-            color: 'white',
-            fontSize: '18px',
-            fontWeight: 500,
-            margin: 0
-          }}>Loading...</p>
-        </div> */}
+          <img src="/images/mainnet/nadsa-loading-animation.gif" alt="page-loader"/>
+        </div>
         <ClientProviders>{children}</ClientProviders>
-        {/* <style dangerouslySetInnerHTML={{
-          __html: `
-            @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-          `
-        }} />
+       
         <Script id="page-loader-script" strategy="afterInteractive">
           {`
             (function() {
@@ -86,7 +65,7 @@ export default async function RootLayout({
               }
             })();
           `}
-        </Script> */}
+        </Script>
       </body>
       <Script
         async
