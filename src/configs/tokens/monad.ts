@@ -55,22 +55,22 @@ export const monad: { [key: string]: Token } = {
   //   name: "DROPS",
   //   icon: "https://assets.dapdap.net/monad/drops.png"
   // },
-  // weth: {
-  //   address: "0xee8c0e9f1bffb4eb878d8f15f368a02a35481242",
-  //   chainId: CHAIN_ID,
-  //   symbol: "WETH",
-  //   decimals: 18,
-  //   name: "Wrapped Ether",
-  //   icon: "https://assets.dapdap.net/monad/weth.png"
-  // },
-  // sol: {
-  //   address: "0xea17e5a9efebf1477db45082d67010e2245217f1",
-  //   chainId: CHAIN_ID,
-  //   symbol: "SOL",
-  //   decimals: 18,
-  //   name: "SOL",
-  //   icon: "https://assets.dapdap.net/monad/wsol.png"
-  // },
+  weth: {
+    address: "0xee8c0e9f1bffb4eb878d8f15f368a02a35481242",
+    chainId: CHAIN_ID,
+    symbol: "WETH",
+    decimals: 18,
+    name: "Wrapped Ether",
+    icon: "https://assets.dapdap.net/monad/weth.png"
+  },
+  sol: {
+    address: "0xea17e5a9efebf1477db45082d67010e2245217f1",
+    chainId: CHAIN_ID,
+    symbol: "SOL",
+    decimals: 18,
+    name: "SOL",
+    icon: "https://assets.dapdap.net/monad/wsol.png"
+  },
   // smon: {
   //   address: "0xa3227c5969757783154c60bf0bc1944180ed81b9",
   //   chainId: CHAIN_ID,
