@@ -24,7 +24,7 @@ interface BuyTimesModalProps {
 
 export const GAME_CONTRACT_ADDRESS_TEST = "0x689c6D62Eb29A3246c239F9a3281E77eF8F85721";
 // export const GAME_CONTRACT_ADDRESS_PROD = "0x5b2070744Ae6D53B1dE362796B3b8910E28893bA";
-export const GAME_CONTRACT_ADDRESS_PROD = " 0x7689696eB768100797084167d211865D9Ac9168c";
+export const GAME_CONTRACT_ADDRESS_PROD = "0x7689696eB768100797084167d211865D9Ac9168c";
 
 export const GAME_CONTRACT_ADDRESS = GAME_CONTRACT_ADDRESS_PROD;
 const amount = 1;
@@ -75,6 +75,7 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
                     "type": "function"
                 }
             ];
+
             const contract = new Contract(
                 GAME_CONTRACT_ADDRESS,
                 abi,
