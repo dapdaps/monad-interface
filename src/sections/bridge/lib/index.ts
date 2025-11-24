@@ -117,9 +117,11 @@ export async function preloadResource(engine?: string) {
 
 export async function getStatus(params: StatusParams, engine: string, signer: Signer): Promise<boolean | undefined | null | StatusRes> {
   const _engine = engine.toLocaleLowerCase()
+
   if (_engine === 'owlto') {
     return getOwltoStatus(params)
   }
+
   if (_engine === 'orbiter') {
     return getOrbiterStatus(params)
   }
@@ -128,7 +130,8 @@ export async function getStatus(params: StatusParams, engine: string, signer: Si
     return getWormholeStatus(params)
   }
 
-  if (_engine === 'lifi') {
+  // @ts-ignore
+  if (params?.bridgeType && params?.bridgeType?.toLowerCase() === 'lifi') {
     return getLifiStatus(params)
   }
 }
