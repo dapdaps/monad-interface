@@ -186,13 +186,13 @@ export default function useBridge({ originFromChain, originToChain, derection, d
           token_in: [{
             symbol: fromToken?.symbol,
             address: fromToken?.address,
-            amount: inputValue,
+            amount: new Big(inputValue).toFixed(fromToken?.decimals || 18, 0),
             decimal: fromToken?.decimals,
           }],
           token_out: [{
             symbol: toToken?.symbol,
             address: toToken?.address,
-            amount: reciveAmount,
+            amount: new Big(reciveAmount).toFixed(toToken?.decimals || 18, 0),
             decimal: toToken?.decimals,
           }],
         };
