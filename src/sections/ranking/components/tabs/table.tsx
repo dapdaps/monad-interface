@@ -34,7 +34,7 @@ const TabTable = (props: any) => {
       
       {
         showPage && (
-          <div className="flex justify-end items-center pl-[10px] py-[10px]">
+          <div className="flex justify-start items-center pl-[10px] py-[10px]">
             <Pagination
               page={page}
               totalPage={pageTotal}
