@@ -9,7 +9,7 @@ export default function GuessWho() {
     return (
         <div onClick={() => {
             // router.push("/arcade/guess-who");
-        }} className="opacity-30 w-[640px] h-[728px] absolute bottom-0 left-[calc(50%-900px)] bg-[url('/images/mainnet/game/guess_who.png')] bg-no-repeat bg-cover bg-center group">
+        }} className="w-[640px] h-[728px] absolute bottom-0 left-[calc(50%-900px)] bg-[url('/images/mainnet/game/guess_who.png')] bg-no-repeat bg-cover bg-center group saturate-[0.2]">
             {/* <img 
                 src="/images/mainnet/game/guess_who_hover.png" 
                 className="absolute top-[4px] left-[268px] w-[377px] h-[530px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
@@ -30,15 +30,15 @@ export default function GuessWho() {
             <motion.img
                 src="/images/mainnet/game/guess-p-1.png"
                 className="absolute top-[160px] left-[370px] w-[92px] pointer-events-none"
-                animate={{ y: [0, -20, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                // animate={{ y: [0, -20, 0] }}
+                // transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             />
 
             <motion.img
                 src="/images/mainnet/game/guess-p-2.png"
                 className="absolute top-[240px] left-[440px] w-[97px] pointer-events-none"
-                animate={{ y: [0, -25, 0] }}
-                transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                // animate={{ y: [0, -25, 0] }}
+                // transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
             />
 
             <div>
@@ -46,13 +46,13 @@ export default function GuessWho() {
                 <motion.img
                     src="/images/mainnet/game/guess-bullet.png"
                     className="absolute top-[381px] left-[438px] w-[12px] pointer-events-none"
-                    animate={{ x: [0, 5, 0] }}
-                    transition={{
-                        duration: 0.4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        repeatDelay: 2
-                    }}
+                    // animate={{ x: [0, 5, 0] }}
+                    // transition={{
+                    //     duration: 0.4,
+                    //     repeat: Infinity,
+                    //     ease: "easeInOut",
+                    //     repeatDelay: 2
+                    // }}
                 />
             </div>
         </div>

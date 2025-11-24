@@ -8,7 +8,7 @@ export default function ChartVoyager() {
     return (
         <div onClick={() => {
             // router.push("/arcade/chart-voyager");
-        }} className="opacity-30 w-[358px] h-[752px] absolute bottom-0 left-[calc(50%-320px)] bg-[url('/images/moon-or-doom/chart-voyager.png')] bg-no-repeat bg-cover bg-center group">
+        }} className="saturate-[0.2] w-[358px] h-[752px] absolute bottom-0 left-[calc(50%-320px)] bg-[url('/images/moon-or-doom/chart-voyager.png')] bg-no-repeat bg-cover bg-center group">
             {/* <img 
                 src="/images/moon-or-doom/chart-voyager-hover-1.png" 
                 className="absolute top-[-1px] left-[53px] w-[290px]  pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
