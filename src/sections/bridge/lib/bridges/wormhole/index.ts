@@ -8,7 +8,7 @@ import { ethers, Contract, Signer, providers, utils } from 'ethers'
 import chainConfig from '../../util/chainConfig';
 import Big from 'big.js'
 import { getQuoteInfo, setQuote } from '../../util/routerController'
-import { getIcon } from '../../util/index'
+import { getIcon, checkTransitionOnlineStatus } from '../../util/index'
 import { QuoteRequest, QuoteResponse, ExecuteRequest, StatusParams } from '../../type/index'
 import { FeeType } from '../../type/index'
 import { Chain, createWalletClient, custom } from 'viem';
@@ -38,8 +38,36 @@ const chainIdToWormholeChainName: { [key: number]: string } = {
     143: 'Monad'
 };
 
+// Wormhole chain ID mapping (used by Wormhole Scan API)
+// Reference: https://docs.wormhole.com/wormhole/explore-wormhole/contracts
+const chainIdToWormholeChainId: { [key: number]: number } = {
+    1: 2,           // Ethereum
+    42161: 23,      // Arbitrum
+    10: 24,         // Optimism
+    137: 5,         // Polygon
+    43114: 6,       // Avalanche
+    56: 4,          // BSC
+    59144: 29,      // Linea
+    1088: 37,       // Metis
+    1101: 31,       // Polygon zkEVM
+    324: 33,        // zkSync
+    100: 25,        // Gnosis
+    169: 36,        // Manta
+    534352: 34,     // Scroll
+    34443: 38,      // Mode
+    8453: 30,       // Base
+    5000: 16,       // Mantle
+    250: 10,        // Fantom
+    80094: 26,      // Berachain
+    143: 39,        // Monad
+};
+
 function getWormholeChainName(chainId: number): string | null {
     return chainIdToWormholeChainName[chainId] || null;
+}
+
+function getWormholeChainId(chainId: number): number | null {
+    return chainIdToWormholeChainId[chainId] || null;
 }
 
 let cachedWh: any = null;
@@ -130,9 +158,12 @@ export async function getQuote(
 
     const sendToken = Wormhole.tokenId(sendChain.chain,  quoteRequest.fromToken.address === '0x0000000000000000000000000000000000000000' ? 'native' : quoteRequest.fromToken.address);
 
+    console.log('sendToken', sendToken, sendChain, destChain);
+
     const destTokens = await resolver.supportedDestinationTokens(sendToken, sendChain, destChain);
 
     console.log('destTokens', destTokens);
+
     if (destTokens.length === 0) {
         return null;
     }
@@ -246,24 +277,103 @@ export async function execute(request: ExecuteRequest, signer: Signer): Promise<
     const { tr, wormholeSigner, route: bestRoute, receiver, quote } = route
 
     const receipt = await bestRoute.initiate(tr, wormholeSigner, quote, receiver);
-    console.log("Initiated transfer with receipt: ", receipt);
-    await routes.checkAndCompleteTransfer(bestRoute, receipt, wormholeSigner);
+    // console.log("Initiated transfer with receipt: ", receipt);
+    // await routes.checkAndCompleteTransfer(bestRoute, receipt, wormholeSigner);
 
     return receipt.hash;
 }
 
 export async function getStatus(params: StatusParams) {
-    // const res: any = await fetch(`https://li.quest/v1/status?txHash=${params.hash}`).then(res => res.json())
+    // If source chain transaction is confirmed, check cross-chain status via Wormhole Scan API
+    if (params.fromChainId && params.toChainId) {
+        try {
+            const fromChainId = Number(params.fromChainId);
+            const toChainId = Number(params.toChainId);
+            
+            const wormholeFromChainId = getWormholeChainId(fromChainId);
+            const wormholeToChainId = getWormholeChainId(toChainId);
 
-    // if (res.status === 'DONE') {
-    //     return {
-    //         status: 1
-    //     }
-    // }
+
+            // Calculate time range for query (from transaction time to now, with some buffer)
+            const fromTime = new Date(params.transitionTime - 24 * 60 * 60 * 1000); // 24 hours before
+            const toTime = new Date(); // now
+            
+            const fromTimeStr = fromTime.toISOString();
+            const toTimeStr = toTime.toISOString();
+
+            // Build API URL - try with address first if available, then with transaction hash
+            let apiUrl = new URL('https://api.wormholescan.io/api/v1/operations');
+            apiUrl.searchParams.set('page', '0');
+            apiUrl.searchParams.set('pageSize', '100');
+            apiUrl.searchParams.set('sortOrder', 'DESC');
+            apiUrl.searchParams.set('appId', 'PORTAL_TOKEN_BRIDGE');
+            apiUrl.searchParams.set('sourceChain', wormholeFromChainId.toString());
+            apiUrl.searchParams.set('targetChain', wormholeToChainId.toString());
+            apiUrl.searchParams.set('from', fromTimeStr);
+            apiUrl.searchParams.set('to', toTimeStr);
+
+            const response = await fetch(apiUrl.toString());
+            
+            if (!response.ok) {
+                console.error(`Wormhole Scan API error: ${response.status} ${response.statusText}`);
+                return {
+                    status: 0
+                };
+            }
+
+            const data = await response.json();
+
+            if (data && data.operations && Array.isArray(data.operations)) {
+                // Find the operation matching our transaction hash
+                const matchingOperation = data.operations.find((op: any) => {
+                    const sourceTxHash = op.sourceChain?.transaction?.txHash;
+                    if (!sourceTxHash) return false;
+                    
+                    // Normalize both hashes for comparison (handle case sensitivity)
+                    const normalizedSourceHash = sourceTxHash.toLowerCase();
+                    const normalizedParamsHash = params.hash?.toLowerCase();
+                    
+                    return normalizedSourceHash === normalizedParamsHash;
+                });
+
+                if (matchingOperation) {
+                    // Check target chain status
+                    const targetStatus = matchingOperation.targetChain?.status;
+                    
+                    if (targetStatus === 'completed') {
+                        return {
+                            status: 1 // Success
+                        };
+                    } else if (targetStatus && targetStatus !== 'pending') {
+                        // If there's a status but it's not completed, it's in progress
+                        return {
+                            status: 0 // In progress
+                        };
+                    }
+                } else {
+                    // If no matching operation found but source tx is confirmed,
+                    // the cross-chain operation might not have been indexed yet
+                    return {
+                        status: 0 // Pending
+                    };
+                }
+            }
+
+            // If no matching operation found, return pending
+            return {
+                status: 0
+            };
+        } catch (error) {
+            console.error('Failed to fetch Wormhole status:', error);
+            return {
+                status: 0
+            };
+        }
+    }
 
     return {
         status: 0
-    }
+    };
 }
 
 

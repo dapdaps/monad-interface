@@ -151,13 +151,13 @@ const chains: Record<number, Chain | any> = {
     nativeCurrency: { decimals: 18, name: "MON Token", symbol: "MON" },
     rpcUrls: {
       default: {
-        http: ["https://rpc-mainnet.monadinfra.com/rpc/aXs4fXLNOkkrC4T6W8DU7F4SOJ12gst6"]
+        http: ["https://rpc.monad.xyz"]
       }
     },
     blockExplorers: {
       default: {
         name: "Monad Mainnet",
-        url: "https://mainnet-beta.monvision.io"
+        url: "https://monadvision.com"
       }
     },
     isWalletSupport: true

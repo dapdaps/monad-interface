@@ -213,7 +213,7 @@ export default {
     chainName: 'Monad Mainnet',
     icon: '/images/monad.png',
     nativeCurrency: { name: 'MONAD', symbol: 'MONAD', decimals: 18 },
-    rpcUrls: ['https://rpc-mainnet.monadinfra.com/rpc/aXs4fXLNOkkrC4T6W8DU7F4SOJ12gst6'],
-    blockExplorers: 'https://mainnet-beta.monvision.io',
+    rpcUrls: ['https://rpc.monad.xyz'],
+    blockExplorers: 'https://monadvision.com',
   }
 } as { [key: number]: Chain };

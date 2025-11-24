@@ -25,7 +25,7 @@ export const networks: any = Object.values(chains);
 const transports: any = {};
 networks.forEach((network: any) => {
   if (network.id === DEFAULT_CHAIN_ID) {
-    transports[DEFAULT_CHAIN_ID] = fallback([http("https://rpc-mainnet.monadinfra.com/rpc/aXs4fXLNOkkrC4T6W8DU7F4SOJ12gst6")]);
+    transports[DEFAULT_CHAIN_ID] = fallback([http("https://rpc.monad.xyz")]);
     return;
   }
   if (network.id === mainnet.id) {
