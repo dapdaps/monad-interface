@@ -40,7 +40,7 @@ const TABS = [
 ];
 
 const ExploreAllApps = (props: any) => {
-  const { getVisits } = props;
+  const { getVisits, swiperRef } = props;
 
   const AppList = useAppsStore((state) => state.apps);
 
@@ -69,7 +69,9 @@ const ExploreAllApps = (props: any) => {
           alt=""
           className="w-[12px] h-[10px] object-center object-contain shrink-0 mt-[7px] rotate-[180deg]"
         />
-        <div className="text-[18px] text-white font-[400] uppercase mt-[7px] opacity-80">
+        <div onClick={() => {
+          swiperRef?.current?.swiper?.slidePrev();
+        }} className="text-[18px] text-white font-[400] uppercase mt-[7px] opacity-80 cursor-pointer">
           TRENDING TOKENS
         </div>
         <img

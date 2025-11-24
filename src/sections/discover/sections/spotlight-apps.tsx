@@ -104,7 +104,9 @@ const SpotlightApps = (props: any) => {
           alt=""
           className="w-[12px] h-[10px] object-center object-contain shrink-0 mt-[20px]"
         />
-        <div className="mt-[16px] text-[18px] text-white font-[400] uppercase opacity-80">
+        <div onClick={() => {
+          swiperRef?.current?.swiper?.slideNext();
+        }} className="mt-[16px] text-[18px] text-white font-[400] uppercase opacity-80 cursor-pointer">
           Trending tokens
         </div>
         <img
@@ -112,7 +114,9 @@ const SpotlightApps = (props: any) => {
           alt=""
           className="w-[12px] h-[10px] object-center object-contain shrink-0 mt-[13px]"
         />
-        <div className="mt-[16px] text-[16px] text-white/30 font-[400] uppercase">
+        <div onClick={() => {
+          swiperRef?.current?.swiper?.slideTo(2);
+        }} className="mt-[16px] text-[16px] text-white/30 font-[400] uppercase cursor-pointer">
           Explore All Apps
         </div>
       </div>
