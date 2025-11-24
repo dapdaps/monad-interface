@@ -12,7 +12,7 @@ export default function GuessWho() {
     return (
         <div onClick={() => {
             // router.push("/arcade/guess-who");
-        }} className="w-[640px] h-[728px] absolute bottom-0 left-[calc(50%-900px)] bg-[url('/images/mainnet/e-1.png')] bg-no-repeat bg-cover bg-center group">
+        }} className="w-[640px] h-[728px] absolute bottom-0 left-[calc(50%-900px)] bg-[url('/images/mainnet/e-1-1.png')] bg-no-repeat bg-cover bg-center group">
             {/* <img 
                 src="/images/mainnet/game/guess_who_hover.png" 
                 className="absolute top-[4px] left-[268px] w-[377px] h-[530px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
