@@ -13,6 +13,8 @@ export default function Xp({ data, xpBalance, xpLevel, maxXp }: { data: any, xpB
     const maxThan8 = level > 8;
     const prizeImg = level % 2 === 0 ? '8' : '7';
 
+    console.log("level", level);
+
     return (
         <>
             <div className="absolute top-[135px] left-[50%] -translate-x-1/2 z-[2] w-[335px] h-[24px]" >
@@ -62,7 +64,7 @@ export default function Xp({ data, xpBalance, xpLevel, maxXp }: { data: any, xpB
                     {
                         !maxThan8 && (
                             <img
-                                src={`${MAINNET_IMG_PATH}prize-${level}-1.png`}
+                                src={`${level % 2 !== 0 ? MAINNET_IMG_PATH : IMG_PATH}prize-${level}-1.png`}
                                 alt="xp-token"
                                 className="h-[42px] cursor-pointer"
                             />
