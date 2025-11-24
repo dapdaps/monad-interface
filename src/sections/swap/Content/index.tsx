@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import useTrade from "../useTrade";
 import { useImportTokensStore } from "@/stores/import-tokens";
 import { useDebounceFn } from "ahooks";
@@ -46,6 +46,7 @@ export default function Swap({
   const prices = usePriceStore((store: any) => store.price);
   const [selectedRoute, setSelectedRoute] = useState(null)
   const [refreshQuoter, setRefreshQuoter] = useState(Date.now())
+  const lastTimeoutRef = useRef<any>(null);
 
   const [selectType, setSelectType] = useState<"in" | "out">("in");
   const { loading, trade, tradeList, onQuoter, onSwap, setTrade, setTradeList } = useTrade({
@@ -64,8 +65,14 @@ export default function Swap({
   const { run: runQuoter } = useDebounceFn(
     () => {
       onQuoter({ inputCurrency, outputCurrency, inputCurrencyAmount }).then(() => {
-        setTimeout(() => {
+        if (lastTimeoutRef.current) {
+          clearTimeout(lastTimeoutRef.current);
+          lastTimeoutRef.current = null;
+        }
+        lastTimeoutRef.current = setTimeout(() => {
+          console.log('runQuoter', Date.now());
           setRefreshQuoter(Date.now());
+          lastTimeoutRef.current = null;
         }, 1000 * 60);
       });
       setOutputCurrencyAmount("");
