@@ -91,7 +91,8 @@ const Leaderboard = () => {
         }
       </div>
       <TabTable
-        headerRowClassName="!pt-[19px] !pb-[15px]"
+        headerRowClassName="!pt-[19px] !pb-[15px] !px-[45px]"
+        bodyRowClassName="!px-[45px]"
         columns={[
           {
             dataIndex: "rank",
@@ -130,26 +131,26 @@ const Leaderboard = () => {
               );
             },
           },
-          {
-            dataIndex: "military",
-            title: "Military rank",
-            width: 110,
-            sort: false,
-            render: (record: any) => {
-              return (
-                <div className="flex items-center gap-[5px]">
-                  <img
-                    src={MilitaryRank[record.tier as EMilitaryRank].icon}
-                    alt=""
-                    className="w-[15px] h-[24px] object-center object-contain shrink-0"
-                  />
-                  <div className="">
-                    {MilitaryRank[record.tier as EMilitaryRank].name}
-                  </div>
-                </div>
-              )
-            },
-          },
+          // {
+          //   dataIndex: "military",
+          //   title: "Military rank",
+          //   width: 110,
+          //   sort: false,
+          //   render: (record: any) => {
+          //     return (
+          //       <div className="flex items-center gap-[5px]">
+          //         <img
+          //           src={MilitaryRank[record.tier as EMilitaryRank].icon}
+          //           alt=""
+          //           className="w-[15px] h-[24px] object-center object-contain shrink-0"
+          //         />
+          //         <div className="">
+          //           {MilitaryRank[record.tier as EMilitaryRank].name}
+          //         </div>
+          //       </div>
+          //     )
+          //   },
+          // },
           {
             dataIndex: "reputationPoints",
             title: "Reputation Points",

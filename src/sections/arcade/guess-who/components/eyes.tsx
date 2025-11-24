@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 
 const Eyes = (props: any) => {
-  const { className, size = 64, border = 3, eyeClassName } = props;
+  const { className, size = 64, border = 3, eyeClassName, isAnimate } = props;
 
   const clipOffset = 1;
 
@@ -18,6 +18,7 @@ const Eyes = (props: any) => {
         style={{
           transform: `translateX(${border * 2 + clipOffset * 2}px)`,
         }}
+        isAnimate={isAnimate}
       />
       <Eye
         size={size}
@@ -25,6 +26,7 @@ const Eyes = (props: any) => {
         className={eyeClassName}
         clipDirection="both"
         clipOffset={clipOffset}
+        isAnimate={isAnimate}
       />
       <Eye
         size={size}
@@ -35,6 +37,7 @@ const Eyes = (props: any) => {
         style={{
           transform: `translateX(-${border * 2 + clipOffset * 2}px)`,
         }}
+        isAnimate={isAnimate}
       />
     </div>
   );
@@ -43,7 +46,7 @@ const Eyes = (props: any) => {
 export default Eyes;
 
 const Eye = (props: any) => {
-  const { className, style, size = 64, border = 3, clipDirection, clipOffset } = props;
+  const { className, style, size = 64, border = 3, clipDirection, clipOffset, isAnimate = true } = props;
   const shadowSize = 3;
   const clipBorder = useMemo(() => {
     return border + clipOffset;
@@ -70,6 +73,10 @@ const Eye = (props: any) => {
   };
 
   useEffect(() => {
+    if (!isAnimate) {
+      return;
+    }
+  
     // Set initial position
     setPosition(generateRandomPosition());
 
@@ -79,7 +86,7 @@ const Eye = (props: any) => {
     }, Math.random() * 1500 + 1000); // Random interval
 
     return () => clearInterval(moveInterval);
-  }, [size, clipBorder]);
+  }, [size, clipBorder, isAnimate]);
 
   const clipPath = useMemo(() => {
     if (clipDirection === "both") {
@@ -107,10 +114,10 @@ const Eye = (props: any) => {
     >
       <motion.div
         className="w-[31.25%] h-[31.25%] rounded-full bg-[#000] flex items-center justify-center shrink-0"
-        animate={{
+        animate={isAnimate ? {
           x: position.x,
           y: position.y,
-        }}
+        } : {}}
         transition={{
           type: "spring",
           stiffness: 200,

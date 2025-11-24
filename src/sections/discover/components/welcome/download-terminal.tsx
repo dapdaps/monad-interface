@@ -87,8 +87,8 @@ const WelcomeDownloadTerminal = (props: any, ref: any) => {
       const next = [...prev];
       const currIndex = next.findIndex((it: any) => it.key === "totalRP");
       const nextRP = numberFormatter(totalRP, 2, true);
-      const nextBoost = numberFormatter(totalBoost, 2, true);
-      const nextText = `CONGRATZ! YOU”VE EARNED A TOTAL OF ${nextRP} RP, boost ${nextBoost}x`;
+      const nextBoost = numberFormatter(totalBoost, 2, true, { prefix: "+" });
+      const nextText = `CONGRATZ! YOU”VE EARNED A TOTAL OF ${nextRP} RP, boost ${nextBoost}%`;
       const totalMessage = {
         key: "totalRP",
         text: nextText,

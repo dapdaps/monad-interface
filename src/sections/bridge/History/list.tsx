@@ -1,4 +1,3 @@
-import { useStatus } from '../Hooks/Stargate/useStatus'
 import { useEffect, useState, useRef } from 'react'
 import { icons } from '@/configs/chains'
 import { formatEnglishDate } from '@/utils/date'
