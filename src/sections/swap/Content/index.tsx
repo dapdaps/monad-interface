@@ -52,7 +52,7 @@ export default function Swap({
     chainId: DEFAULT_CHAIN_ID,
     // template: dapp.name,
     template: isSuperSwap ? ['UniswapV3', 'UniswapV2', 'PancakeV2', 'PancakeV3', 'OneClick', 'iZumi', 'Kuru', 'MondayTradeV3'] : dapp.name,
-    // template: isSuperSwap ? ['Pancake', 'PancakeV2', 'PancakeV3'， 'LFJ', 'MondayTrade',] : dapp.name,
+    // template: isSuperSwap ? ['UniswapV2', 'PancakeV2', 'OneClick'] : dapp.name,
     from,
     onSuccess: () => {
       setUpdater(Date.now());
@@ -63,7 +63,11 @@ export default function Swap({
 
   const { run: runQuoter } = useDebounceFn(
     () => {
-      onQuoter({ inputCurrency, outputCurrency, inputCurrencyAmount });
+      onQuoter({ inputCurrency, outputCurrency, inputCurrencyAmount }).then(() => {
+        setTimeout(() => {
+          setRefreshQuoter(Date.now());
+        }, 1000 * 30);
+      });
       setOutputCurrencyAmount("");
     },
     {
@@ -120,15 +124,15 @@ export default function Swap({
     setOutputCurrencyAmount("");
   }, [dapp]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setRefreshQuoter(Date.now());
-    }, 1000 * 30);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setRefreshQuoter(Date.now());
+  //   }, 1000 * 30);
 
-    return () => {
-      clearInterval(interval);
-    }
-  }, []);
+  //   return () => {
+  //     clearInterval(interval);
+  //   }
+  // }, []);
 
 
   useEffect(() => {
