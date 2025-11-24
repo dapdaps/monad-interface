@@ -22,6 +22,9 @@ const executeTypes: any = {
 
 export async function execute(executeRequest: ExecuteRequest, signer: Signer) {
   const quoteInfo = getQuoteInfo(executeRequest.uuid)
+
+  // console.log('quoteInfo', quoteInfo)
+
   const executeFn = executeTypes[`execute${quoteInfo.bridgeType}`]
 
   if (executeFn) {
@@ -74,14 +77,15 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer, callb
       }
     }
   } else {
+
     // const owltoRoute = getOwltoRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('owlto:', e))
     // quoteP.push(owltoRoute)
-    const orbiterRoute = getOrbiterRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('orbiter:', e))
-    quoteP.push(orbiterRoute)
-    const wormholeRoute = getWormholeRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('wormhole:', e))
-    quoteP.push(wormholeRoute)
-    // const lifiRoute = getLifiRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('lifi:', e))
-    // quoteP.push(lifiRoute)
+    // const orbiterRoute = getOrbiterRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('orbiter:', e))
+    // quoteP.push(orbiterRoute)
+    // const wormholeRoute = getWormholeRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('wormhole:', e))
+    // quoteP.push(wormholeRoute)
+    const lifiRoute = getLifiRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('lifi:', e))
+    quoteP.push(lifiRoute)
   }
 
   const resList: (QuoteResponse | QuoteResponse[] | null | void)[] = await Promise.all(quoteP)
