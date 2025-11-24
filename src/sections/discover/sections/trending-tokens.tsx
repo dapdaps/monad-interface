@@ -49,6 +49,7 @@ const TrendingTokens = (props: any) => {
         <div onClick={() => {
           swiperRef?.current?.swiper?.slidePrev();
         }} className="text-[18px] text-white font-[400] uppercase opacity-80 cursor-pointer">
+
           Spotlight apps
         </div>
         <img
@@ -144,7 +145,7 @@ const PriceChart = ({ data }: { data: { price: string; symbol: string; timestamp
   const yAxisMax = maxValue + padding;
 
   return (
-    <div className="w-[105px] h-[25px]">
+    <div className="w-full h-[25px]">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={chartData} margin={{ top: 2, right: 2, bottom: 2, left: 2 }}>
           <YAxis
@@ -279,7 +280,7 @@ const TokenItem = (props: any) => {
             </div>
           </div>
         </div>
-        <div className="shrink-0">
+        <div className="w-full">
           <PriceChart data={token.price_7day || []} />
         </div>
       </div>
