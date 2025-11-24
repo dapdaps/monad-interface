@@ -80,8 +80,8 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer, callb
 
     // const owltoRoute = getOwltoRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('owlto:', e))
     // quoteP.push(owltoRoute)
-    // const orbiterRoute = getOrbiterRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('orbiter:', e))
-    // quoteP.push(orbiterRoute)
+    const orbiterRoute = getOrbiterRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('orbiter:', e))
+    quoteP.push(orbiterRoute)
     // const wormholeRoute = getWormholeRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('wormhole:', e))
     // quoteP.push(wormholeRoute)
     const lifiRoute = getLifiRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('lifi:', e))
