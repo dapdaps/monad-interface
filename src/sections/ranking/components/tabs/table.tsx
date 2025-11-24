@@ -13,6 +13,7 @@ const TabTable = (props: any) => {
     onPageChange,
     className,
     headerRowClassName,
+    bodyRowClassName,
     bodyClassName,
     showPage = true,
     emptyText = "No data yet...",
@@ -24,7 +25,7 @@ const TabTable = (props: any) => {
         className={clsx("border-t border-b border-[#836EF9]", className)}
         bodyClassName={clsx("text-[14px] font-Oxanium font-[400]", bodyClassName)}
         headerRowClassName={clsx("", headerRowClassName)}
-        bodyRowClassName="odd:!bg-[rgba(131,110,249,0.20)]"
+        bodyRowClassName={clsx("odd:!bg-[rgba(131,110,249,0.20)]", bodyRowClassName)}
         columns={columns}
         data={data}
         loading={loading}
