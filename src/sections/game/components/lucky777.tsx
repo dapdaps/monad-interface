@@ -1,5 +1,6 @@
 import { motion } from "framer-motion"
 import { useRouter } from "next/navigation";
+import Tip from "./tip";
 
 export default function Lucky777() {
     const router = useRouter();
@@ -46,6 +47,9 @@ export default function Lucky777() {
                     ))
                 }
             </div>
+
+            <Tip content={<div>Pure luck · Win MON instantly</div>} />
+
         </div>
     )
 }

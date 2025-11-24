@@ -1,20 +1,22 @@
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Tip from "./tip";
 
 export default function Space() {
     const router = useRouter();
     
+    // /images/mainnet/game/space.png
     return (
         <div onClick={() => {
             // router.push("/arcade/space-invaders");
-        }} className="saturate-[0.2] w-[438px] h-[739px] absolute bottom-0 right-[calc(50%-500px)] bg-[url('/images/mainnet/game/space.png')] bg-no-repeat bg-cover bg-center group">
+        }} className="w-[438px] h-[739px] absolute bottom-0 right-[calc(50%-500px)] bg-[url('/images/mainnet/e-3.png')] bg-no-repeat bg-cover bg-center group">
             {/* <img 
                 src="/images/mainnet/game/space_hover.png" 
                 className="absolute top-[-10px] left-[8px] w-[320px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
             /> */}
 
-            { [1,2].map((item) => (
+            {/* { [1,2].map((item) => (
                 <motion.div
                     key={item}
                     className={clsx(
@@ -34,9 +36,12 @@ export default function Space() {
                 >
                     SPACE INVADERS
                 </motion.div>
-            ))}
+            ))} */}
 
-            <img src="/images/mainnet/game/space-icon.png" className="absolute top-[-14px] right-[125px] w-[85px] pointer-events-none" />
+            {/* <img src="/images/mainnet/game/space-icon.png" className="absolute top-[-14px] right-[125px] w-[85px] pointer-events-none" /> */}
+            <div className="absolute top-[200px] left-[100px] text-white text-[20px] font-[600] font-Oxanium uppercase">coming soon</div>
+
+            <Tip content={<div>Up to <span className='font-bold text-[24px]'>30,000×</span> · Massive multipliers</div>} />
         </div>
     )
 }

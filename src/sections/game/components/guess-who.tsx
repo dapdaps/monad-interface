@@ -2,24 +2,27 @@ import Eyes from "@/sections/arcade/guess-who/components/eyes";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Tip from "./tip";
 
 export default function GuessWho() {
     const router = useRouter();
-    
+
+    ///images/mainnet/game/guess_who.png
+
     return (
         <div onClick={() => {
             // router.push("/arcade/guess-who");
-        }} className="w-[640px] h-[728px] absolute bottom-0 left-[calc(50%-900px)] bg-[url('/images/mainnet/game/guess_who.png')] bg-no-repeat bg-cover bg-center group saturate-[0.2]">
+        }} className="w-[640px] h-[728px] absolute bottom-0 left-[calc(50%-900px)] bg-[url('/images/mainnet/e-1.png')] bg-no-repeat bg-cover bg-center group">
             {/* <img 
                 src="/images/mainnet/game/guess_who_hover.png" 
                 className="absolute top-[4px] left-[268px] w-[377px] h-[530px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
             /> */}
 
-            <div className="absolute top-[45px] left-[350px] -rotate-[12deg] rounded-full pointer-events-none">
-                <Eyes size={38} />
-            </div>
+            {/* <div className="absolute top-[45px] left-[350px] -rotate-[12deg] rounded-full pointer-events-none">
+                <Eyes size={38} isAnimate={false} />
+            </div> */}
 
-            {
+            {/* {
                 [1,2].map((item) => (
                     <div key={item} className={clsx("absolute pointer-events-none top-[68px] left-[310px] text-white text-[42px] font-[800] italic font-Oxanium uppercase -rotate-[12.5deg]", item === 1 ? "[-webkit-text-stroke:15px_#13AEAF]" : "[-webkit-text-stroke:5px_#fff]")}>
                         GuessWho
@@ -54,7 +57,11 @@ export default function GuessWho() {
                     //     repeatDelay: 2
                     // }}
                 />
-            </div>
+            </div> */}
+
+            <div className="absolute top-[240px] left-[370px] text-white text-[20px] font-[600] font-Oxanium uppercase">coming soon</div>
+
+            <Tip className="right-[40px]" content={<div>Simple play · Up to <span className='font-bold text-[24px]'>66.7%</span> win rate</div>} />
         </div>
     )
 }
