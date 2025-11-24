@@ -7,6 +7,7 @@ import routerV3Abi from "../config/abi/router-v3-2";
 import routerV2Abi from "../config/abi/router-v2-1";
 import weth from "../config/weth";
 import { uniq } from "lodash";
+import { DEFAULT_CHAIN_ID } from "@/configs";
 
 class UniversalV2 extends V2 {
   private pools: CandidatePool[];
@@ -93,7 +94,18 @@ export class PancakeSwap {
     143: [100, 500, 2500, 10000]
   };
   private MID_TOKENS: { [key: number]: any } = {
-    143: []
+    143: [
+      {
+        address: "0x754704Bc059F8C67012fEd69BC8A327a5aafb603",
+        chainId: DEFAULT_CHAIN_ID,
+        symbol: "USDC",
+        decimals: 6,
+        name: "USD Coin",
+        icon: "https://assets.dapdap.net/monad/usdc.png",
+        color: "#78350F"
+      }
+    ]
+    // 143: []
   };
   private V2_ROUTER: { [key: number]: string } = {
     143: "0xB1Bc24c34e88f7D43D5923034E3a14B24DaACfF9"
@@ -113,7 +125,7 @@ export class PancakeSwap {
     });
 
     this.v2 = new V2({
-      midTokens: [],
+      midTokens: this.MID_TOKENS[chainId],
       factoryAddress: this.V2_FACTORY[chainId],
       computablePairAddress: false,
       hasStable: false,

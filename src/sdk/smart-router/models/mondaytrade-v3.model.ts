@@ -3,6 +3,7 @@ import { utils, providers, Contract } from "ethers";
 import { V3 } from "../libs/v3.lib";
 import chains from "../config/chains";
 import routerV3Abi from "../config/abi/router-v3-4";
+import { DEFAULT_CHAIN_ID } from "@/configs";
 
 export class MondayTradeV3 {
   private v3: V3;
@@ -20,10 +21,20 @@ export class MondayTradeV3 {
     143: "0xFE951b693A2FE54BE5148614B109E316B567632F"
   };
   private FEES: { [key: number]: number[] } = {
-    10143: [100, 500, 3000, 10000]
+    143: [100, 500, 3000, 10000]
   };
   private MID_TOKENS: { [key: number]: any } = {
-    10143: []
+    143: [
+      {
+        address: "0x754704Bc059F8C67012fEd69BC8A327a5aafb603",
+        chainId: DEFAULT_CHAIN_ID,
+        symbol: "USDC",
+        decimals: 6,
+        name: "USD Coin",
+        icon: "https://assets.dapdap.net/monad/usdc.png",
+        color: "#78350F"
+      }
+    ]
   };
 
   constructor(chainId: number) {

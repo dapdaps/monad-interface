@@ -5,6 +5,7 @@ import { V2 } from "../libs/v2.lib";
 import chains from "../config/chains";
 import routerV3Abi from "../config/abi/router-v3-2";
 import routerV2Abi from "../config/abi/router-v2-1";
+import { DEFAULT_CHAIN_ID } from "@/configs";
 
 export class Uniswap {
   
@@ -24,7 +25,18 @@ export class Uniswap {
     143: [100, 500, 3000, 10000]
   };
   private MID_TOKENS: { [key: number]: any } = {
-    143: []
+    143: [
+      {
+        address: "0x754704Bc059F8C67012fEd69BC8A327a5aafb603",
+        chainId: DEFAULT_CHAIN_ID,
+        symbol: "USDC",
+        decimals: 6,
+        name: "USD Coin",
+        icon: "https://assets.dapdap.net/monad/usdc.png",
+        color: "#78350F"
+      }
+    ]
+    // 143: []
   };
   private V2_ROUTER: { [key: number]: string } = {
     143: "0x4b2ab38dbf28d31d467aa8993f6c2585981d6804"
@@ -44,7 +56,7 @@ export class Uniswap {
     });
 
     this.v2 = new V2({
-      midTokens: [],
+      midTokens: this.MID_TOKENS[chainId],
       factoryAddress: this.V2_FACTORY[chainId],
       computablePairAddress: false,
       hasStable: false,
