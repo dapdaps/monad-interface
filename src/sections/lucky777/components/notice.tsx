@@ -87,7 +87,7 @@ export default function Notice() {
                             }
 
                             {
-                                !item && <div className="h-[40px] w-[360px] text-left pt-[5px]">No Data</div>
+                                !item && <div className="h-[40px] w-[360px] text-left pt-[5px]"></div>
                             }
                         </div>
                     </div>
