@@ -18,6 +18,8 @@ const BRIDGE_ICONS: {
   'orbiter': 'https://s3.amazonaws.com/dapdap.prod/images/100-obiter.png',
   'owlto': 'https://s3.amazonaws.com/dapdap.prod/images/owlto.png',
   'liFi': 'https://s3.amazonaws.com/dapdap.prod/images/li.fi.png',
+  'stableflow': 'https://s3.amazonaws.com/dapdap.prod/images/stableflow.png',
+  'wormhole': 'https://s3.amazonaws.com/dapdap.prod/images/wormhole.png',
 }
 
 const BRIDGE_NAME: {
@@ -27,6 +29,8 @@ const BRIDGE_NAME: {
   'orbiter': 'Orbiter',
   'owlto': 'Owlto',
   'liFi': 'Li.fi',
+  'stableflow': 'Stableflow',
+  'wormhole': 'Wormhole',
 }
 
 const BRIDGE_COLOR: {

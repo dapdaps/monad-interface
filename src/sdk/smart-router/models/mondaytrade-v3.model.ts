@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 import { utils, providers, Contract } from "ethers";
 import { V3 } from "../libs/v3.lib";
 import chains from "../config/chains";
-import routerV3Abi from "../config/abi/router-v3-4";
+import routerV3Abi from "../config/abi/router-v3-2";
 import { DEFAULT_CHAIN_ID } from "@/configs";
 
 export class MondayTradeV3 {
@@ -64,13 +64,10 @@ export class MondayTradeV3 {
       }),
     ]);
 
-    console.log('bestTradeV3:', bestTradeV3);
 
     let bestTrade = bestTradeV3;
     let routerAddress = this.ROUTER[inputCurrency.chainId];
     let type = "v3";
-
-   
 
     if (!bestTrade) {
       return {
@@ -115,6 +112,7 @@ export class MondayTradeV3 {
       value: inputCurrency.isNative ? _amount : "0"
     };
 
+    const deadline = Math.ceil(Date.now() / 1000) + 120;
     const _amountOut = BigNumber(bestTrade.amountOut)
       .multipliedBy(1 - slippage)
       .toFixed(0);
@@ -126,6 +124,7 @@ export class MondayTradeV3 {
       recipient: outputCurrency.isNative
         ? this.ROUTER[inputCurrency.chainId]
         : account,
+      deadline,  
       amountIn: _amount,
       amountOutMinimum: _amountOut
     };
