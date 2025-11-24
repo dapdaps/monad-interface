@@ -2,6 +2,7 @@ import { useState } from "react";
 import XpLevel from "./xpLevel";
 
 const IMG_PATH = '/images/lucky777/xp/';
+const MAINNET_IMG_PATH = '/images/mainnet/lucky777/';
 export default function Xp({ data, xpBalance, xpLevel, maxXp }: { data: any, xpBalance: number, xpLevel: number, maxXp: number }) {
     const xpValue = xpBalance || 0;
     // const maxXp = data?.game_xp.xp || 10;
@@ -61,7 +62,7 @@ export default function Xp({ data, xpBalance, xpLevel, maxXp }: { data: any, xpB
                     {
                         !maxThan8 && (
                             <img
-                                src={`${IMG_PATH}prize-${level}-1.png`}
+                                src={`${MAINNET_IMG_PATH}prize-${level}-1.png`}
                                 alt="xp-token"
                                 className="h-[42px] cursor-pointer"
                             />
@@ -70,7 +71,7 @@ export default function Xp({ data, xpBalance, xpLevel, maxXp }: { data: any, xpB
                     {
                         maxThan8 && (
                             <img
-                                src={`${IMG_PATH}prize-${prizeImg}-1.png`}
+                                src={`${MAINNET_IMG_PATH}prize-${prizeImg}-1.png`}
                                 alt="xp-token"
                                 className="h-[42px] cursor-pointer"
                             />

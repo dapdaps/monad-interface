@@ -47,14 +47,14 @@ const RulesModal = ({ open, onClose }: RulesModalProps) => {
                         </div>
 
                         <div className="space-y-[12px] max-h-[60vh] overflow-y-auto">
-                            <div className="flex items-center gap-2">
+                            {/* <div className="flex items-center gap-2">
                                 <span className="w-[6px] h-[6px] rounded-1 bg-[#BFFF60]"></span>
                                 <span><span className="font-bold">1 free</span>  spin per day</span>
-                            </div>
+                            </div> */}
 
                             <div className="flex items-center gap-2">
                                 <span className="w-[6px] h-[6px] rounded-1 bg-[#BFFF60]"></span>
-                                <span>After that, each spin costs <span className="font-bold">1 MON</span></span>
+                                <span>each spin costs <span className="font-bold">1 MON</span></span>
                             </div>
 
                             <div className="flex items-center gap-2">
