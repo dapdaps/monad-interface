@@ -73,7 +73,7 @@ export default function Swap({
           console.log('runQuoter', Date.now());
           setRefreshQuoter(Date.now());
           lastTimeoutRef.current = null;
-        }, 1000 * 60);
+        }, 1000 * 30);
       });
       setOutputCurrencyAmount("");
     },
