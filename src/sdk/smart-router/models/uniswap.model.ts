@@ -59,8 +59,8 @@ export class Uniswap {
       midTokens: this.MID_TOKENS[chainId],
       factoryAddress: this.V2_FACTORY[chainId],
       computablePairAddress: false,
-      hasStable: true,
-      includeStable: true,
+      hasStable: false,
+      includeStable: false,
       amountOutType: 2,
       feeIn: true
     });
