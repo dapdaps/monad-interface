@@ -10,7 +10,7 @@ export default function Space() {
     return (
         <div onClick={() => {
             // router.push("/arcade/space-invaders");
-        }} className="w-[438px] h-[739px] absolute bottom-0 right-[calc(50%-500px)] bg-[url('/images/mainnet/e-3.png')] bg-no-repeat bg-cover bg-center group">
+        }} className="w-[438px] h-[739px] absolute bottom-0 right-[calc(50%-500px)] bg-[url('/images/mainnet/e-3-3.png')] bg-no-repeat bg-center bg-[length:100%_100%] group">
             {/* <img 
                 src="/images/mainnet/game/space_hover.png" 
                 className="absolute top-[-10px] left-[8px] w-[320px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"

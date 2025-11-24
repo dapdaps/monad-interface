@@ -66,7 +66,7 @@ export default function Swap({
       onQuoter({ inputCurrency, outputCurrency, inputCurrencyAmount }).then(() => {
         setTimeout(() => {
           setRefreshQuoter(Date.now());
-        }, 1000 * 30);
+        }, 1000 * 60);
       });
       setOutputCurrencyAmount("");
     },
