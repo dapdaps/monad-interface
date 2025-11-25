@@ -12,6 +12,8 @@ export default function Xp({ data, xpBalance, xpLevel, maxXp }: { data: any, xpB
     const maxThan8 = level > 8;
     const prizeImg = level % 2 === 0 ? '8' : '7';
 
+    console.log("level", level);
+
     return (
         <>
             <div className="absolute top-[135px] left-[50%] -translate-x-1/2 z-[2] w-[335px] h-[24px]" >

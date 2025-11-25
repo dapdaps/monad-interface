@@ -135,9 +135,9 @@ export async function getQuote(
     const { wh } = await init(signer);
 
     const resolver = wh.resolver([
-        // routes.TokenBridgeRoute, // manual token bridge
+        routes.TokenBridgeRoute, // manual token bridge
         routes.AutomaticTokenBridgeRoute, // automatic token bridge
-        // routes.CCTPRoute, // manual CCTP
+        routes.CCTPRoute, // manual CCTP
         routes.AutomaticCCTPRoute, // automatic CCTP
         routes.AutomaticPorticoRoute, // Native eth transfers
     ]);

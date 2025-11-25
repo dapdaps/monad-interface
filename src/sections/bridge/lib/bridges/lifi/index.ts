@@ -85,14 +85,14 @@ export async function getQuote(
             route: route,
             amount: quoteRequest.amount,
             isNative: false,
-            bridgeType: 'Jumper',
+            bridgeType: 'Lifi',
         })
 
         max = {
             uuid,
             icon: 'https://s3.amazonaws.com/dapdap.prod/images/li.fi.png',
             bridgeName: 'Li.Fi',
-            bridgeType: 'lifi',
+            bridgeType: 'Lifi',
             fee: computeFee(route),
             receiveAmount: new Big(route.toAmount).toString(),
             gas: route.gasCostUSD,
