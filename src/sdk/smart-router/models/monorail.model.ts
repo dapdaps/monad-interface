@@ -100,8 +100,11 @@ export class Monorail {
       if (gasEstimate) {
         txn.gasLimit = BigNumber(gasEstimate).multipliedBy(1.2).toFixed(0);
       }
+
     } catch (err) {
       console.log('estimateGas err: %o', err);
+      gasEstimate = 21000000;
+      txn.gasLimit = BigNumber(gasEstimate).multipliedBy(1.2).toFixed(0);
     }
 
     // txn.gasLimit = BigNumber(21000000).multipliedBy(1.2).toFixed(0);

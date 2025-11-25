@@ -79,14 +79,13 @@ export const monad: { [key: string]: Token } = {
     name: "sMON",
     icon: "https://assets.dapdap.net/monad/smon.png"
   },
-
   gmon: {
     address: "0x8498312a6b3cbd158bf0c93abdcf29e6e4f55081",
     chainId: CHAIN_ID,
     symbol: "gMON",
     decimals: 18,
     name: "gMON",
-    icon: "https://assets.dapdap.net/monad/gMON.png"
+    icon: "/assets/tokens/default_icon.png"
   },
   shmon: {
     address: "0x1b68626dca36c7fe922fd2d55e4f631d962de19c",
@@ -94,7 +93,7 @@ export const monad: { [key: string]: Token } = {
     symbol: "ShMonad",
     decimals: 18,
     name: "shMON",
-    icon: "https://assets.dapdap.net/monad/shMONlogo.png"
+    icon: "/assets/tokens/default_icon.png"
   },
   aprmon: {
     address: "0x0c65a0bc65a5d819235b71f554d210d3f80e0852",
