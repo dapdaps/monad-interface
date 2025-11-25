@@ -84,7 +84,7 @@ export default function History({ pendingCount, historyCount, list, setIsOpen, a
                     </div>
                 </div>
 
-                <div className="max-h-[324px] overflow-y-auto">
+                <div className="max-h-[324px] overflow-y-auto wallet-summary-scroll">
                     {filteredList.map((item: any) => (
                         <HistoryItem item={item} key={item.tx_id} />
                     ))}

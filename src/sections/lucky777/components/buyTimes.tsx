@@ -19,15 +19,15 @@ interface BuyTimesModalProps {
     spinUserData: any
 }
 
-// export const GAME_CONTRACT_ADDRESS_TEST = "0xC5CFB30A2840fC03a933894A733A163f557F2ae4";
-// export const GAME_CONTRACT_ADDRESS_PROD = "0xC5CFB30A2840fC03a933894A733A163f557F2ae4";
 
-export const GAME_CONTRACT_ADDRESS_TEST = "0x689c6D62Eb29A3246c239F9a3281E77eF8F85721";
-// export const GAME_CONTRACT_ADDRESS_PROD = "0x5b2070744Ae6D53B1dE362796B3b8910E28893bA";
+export const GAME_CONTRACT_ADDRESS_MAINNET = "0x395dC2ebf418417096a78FdD18EBC1Ce6c8Fe9FE";
 export const GAME_CONTRACT_ADDRESS_PROD = "0x7689696eB768100797084167d211865D9Ac9168c";
 
-export const GAME_CONTRACT_ADDRESS = GAME_CONTRACT_ADDRESS_PROD;
-const amount = 1;
+export const GAME_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_API === 'https://mainnet-api-monad.dapdap.net'
+    ? GAME_CONTRACT_ADDRESS_MAINNET
+    : GAME_CONTRACT_ADDRESS_PROD;
+
+const amount = process.env.NEXT_PUBLIC_API === 'https://mainnet-api-monad.dapdap.net' ? 0.1 : 1;
 
 const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesModalProps) => {
     const [times, setTimes] = useState<number | string>(1);
@@ -65,7 +65,7 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
 
             const signer = provider?.getSigner(address);
 
-           
+
             const abi = [
                 {
                     "inputs": [],
@@ -214,17 +214,17 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
                         <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">
                             <div className="text-[#BFFF60] font-bold mb-2">x10</div>
                             <img src="/images/lucky777/coin-10.svg" alt="10 coins" className="mb-2 mt-[20px]" />
-                            <MoreBtn onClick={() => handleSelectTimes(10)}>{ amount * 10 } MON</MoreBtn>
+                            <MoreBtn onClick={() => handleSelectTimes(10)}>{amount * 10} MON</MoreBtn>
                         </div>
                         <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">
                             <div className="text-[#BFFF60] font-bold mb-2">x50</div>
                             <img src="/images/lucky777/coin-50.svg" alt="50 coins" className="mb-2 mt-[11px]" />
-                            <MoreBtn onClick={() => handleSelectTimes(50)}>{ amount * 50 } MON</MoreBtn>
+                            <MoreBtn onClick={() => handleSelectTimes(50)}>{amount * 50} MON</MoreBtn>
                         </div>
                         <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">
                             <div className="text-[#BFFF60] font-bold mb-2">x100</div>
                             <img src="/images/lucky777/coin-100.svg" alt="100 coins" className="mb-2" />
-                            <MoreBtn onClick={() => handleSelectTimes(100)}>{ amount * 100 } MON</MoreBtn>
+                            <MoreBtn onClick={() => handleSelectTimes(100)}>{amount * 100} MON</MoreBtn>
                         </div>
                     </div>
                 </div>
