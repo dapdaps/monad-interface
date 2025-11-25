@@ -7,6 +7,7 @@ import { useRequest } from "ahooks";
 import { useMemo } from "react";
 import Big from "big.js";
 import useToast from "@/hooks/use-toast";
+import { ZeroAddress } from "@/hooks/use-add-action";
 
 
 const cls = 'w-full flex items-center justify-center rounded-[6px] text-[#fff] bg-[#8B87FF] text-[20px] font-[600] mt-[16px] cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed'
@@ -32,12 +33,12 @@ export default function SubmitBtn(props: any) {
 
   const [approveSpender, isNeedApprove] = useMemo(() => {
     const _approveSpender = selectedRoute?.quote?.approveSpender;
-    const _isNeedApprove = ["Oneclick"].includes(selectedRoute?.bridgeType);
+    const _isNeedApprove = ["Oneclick"].includes(selectedRoute?.bridgeType) && fromToken?.address && fromToken.address !== ZeroAddress;
     return [
       _approveSpender,
       _isNeedApprove,
     ];
-  }, [selectedRoute]);
+  }, [selectedRoute, fromToken?.address]);
 
   const { runAsync: checkAllowance, loading: checkingAllowance, data: needApprove } = useRequest(async () => {
     if (!fromToken?.address || !approveSpender || !address || !amount || Big(amount).lte(0) || !isNeedApprove) {
