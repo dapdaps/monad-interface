@@ -62,8 +62,9 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: any): Promise
   return {
     uuid,
     quote,
-    icon: '/images/mainnet/bridge/logo-near-intents.png',
-    bridgeName: 'Oneclick',
+    // icon: '/images/mainnet/bridge/logo-stableflow.svg',
+    icon: '/images/mainnet/logo.svg',
+    bridgeName: 'Monad intent',
     bridgeType: 'Oneclick',
     fee: quote.totalFeesUsd,
     receiveAmount: quote.quote?.amountOut,
