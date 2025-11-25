@@ -8,6 +8,7 @@ import { OneClick } from "./oneclick.model";
 import { MondayTrade } from "./mondaytrade.model";
 import { MondayTradeV3 } from "./mondaytrade-v3.model";
 import { Monorail } from "./monorail.model";
+import { CapricornV3 } from "./capricorn-v3.model";
 
 export default {
   iZumi: iZiSwap,
@@ -24,4 +25,5 @@ export default {
   MondayTrade,
   MondayTradeV3,
   Monorail,
+  CapricornV3,
 } as { [key: string]: any };

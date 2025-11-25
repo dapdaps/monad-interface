@@ -12,6 +12,7 @@ import oneclick from "./oneclick";
 import mondaytrade from "./mondaytrade";
 import mondaytradeV3 from "./mondaytrade-v3";
 import monorail from "./monorail";
+import capricornV3 from "./capricorn-v3";
 
 export default {
   izumi,
@@ -28,4 +29,5 @@ export default {
   mondaytrade: mondaytrade,
   mondaytradev3: mondaytradeV3,
   monorail: monorail,
+  capricornv3: capricornV3,
 } as Record<string, any>;
