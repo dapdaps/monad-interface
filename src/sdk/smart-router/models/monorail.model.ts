@@ -94,14 +94,16 @@ export class Monorail {
     );
 
     let gasEstimate: any = null
-    try {
-      gasEstimate = await provider.getSigner(account).estimateGas(txn);
-
-      if (gasEstimate) {
-        txn.gasLimit = BigNumber(gasEstimate.toString()).multipliedBy(1.2).toFixed(0);
+    if (inputCurrency.address.toLowerCase() !== weth[inputCurrency.chainId].toLowerCase()) {
+      try {
+        gasEstimate = await provider.getSigner(account).estimateGas(txn);
+  
+        if (gasEstimate) {
+          // txn.gasLimit = BigNumber(gasEstimate.toString()).multipliedBy(1.2).toFixed(0);
+        }
+      } catch (err) {
+        console.log('estimateGas err: %o', err);
       }
-    } catch (err) {
-      console.log('estimateGas err: %o', err);
     }
     
 
