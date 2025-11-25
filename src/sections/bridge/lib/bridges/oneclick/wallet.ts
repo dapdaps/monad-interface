@@ -177,8 +177,9 @@ export function useOneclickWallet(props?: any) {
 
     try {
       const tx = await contract.approve(spender, _amountWei);
-      const txReceipt = await tx.wait();
-      if (txReceipt.status === 1) {
+      const txHash = tx.hash || tx;
+      const receipt = await provider.waitForTransaction(txHash);
+      if (receipt.status === 1) {
         if (isCheckAllowance) {
           const _allowance = await allowance({
             contractAddress,
