@@ -9,6 +9,7 @@ import { getQuote as getOrbiterRoute, execute as executeOrbiter, getStatus as ge
 import { getQuote as getWormholeRoute, execute as executeWormhole, getStatus as getWormholeStatus } from './bridges/wormhole'
 import { getQuote as getLifiRoute, execute as executeLifi, getStatus as getLifiStatus } from './bridges/lifi'
 // import { getQuote as getStargateRoute, execute as executeStargate, getStatus as getStargateStatus } from './bridges/stargate'
+import { getQuote as getOneclickRoute, execute as executeOneclick, getStatus as getOneclickStatus } from './bridges/oneclick'
 
 import { ExecuteRequest, QuoteRequest, QuoteResponse, StatusParams, StatusRes } from './type'
 
@@ -17,10 +18,12 @@ const executeTypes: any = {
     executeOrbiter,
     executeWormhole,
     executeLifi,
+    executeOneclick,
 }
 
 
-export async function execute(executeRequest: ExecuteRequest, signer: Signer) {
+export async function execute(executeRequest: ExecuteRequest, signer: Signer, options?: { quoteRequest?: QuoteRequest | null; }) {
+  const { quoteRequest } = options ?? {};
   const quoteInfo = getQuoteInfo(executeRequest.uuid)
 
   // console.log('quoteInfo', quoteInfo)
@@ -29,7 +32,10 @@ export async function execute(executeRequest: ExecuteRequest, signer: Signer) {
 
   if (executeFn) {
     try {
-      return executeFn(executeRequest, signer)
+      return executeFn(executeRequest, signer, {
+        quoteRequest,
+        route: quoteInfo.route,
+      });
     } catch (e) {
       console.log(e)
       throw e
@@ -86,6 +92,8 @@ export async function getQuote(quoteRequest: QuoteRequest, signer: Signer, callb
     // quoteP.push(wormholeRoute)
     const lifiRoute = getLifiRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('lifi:', e))
     quoteP.push(lifiRoute)
+    const oneclickRoute = getOneclickRoute(quoteRequest, signer).then(emitRes).catch(e => console.log('oneclick:', e))
+    quoteP.push(oneclickRoute)
   }
 
   const resList: (QuoteResponse | QuoteResponse[] | null | void)[] = await Promise.all(quoteP)
@@ -133,5 +141,9 @@ export async function getStatus(params: StatusParams, engine: string, signer: Si
   // @ts-ignore
   if (params?.bridgeType && params?.bridgeType?.toLowerCase() === 'lifi') {
     return getLifiStatus(params)
+  }
+
+  if (_engine === "oneclick") {
+    return getOneclickStatus(params);
   }
 }

@@ -20,7 +20,9 @@ export interface QuoteRequest {
     amount: Big;
     engine?: engineType[] | bridgeEngineType[];
     identification?: string | number;
-    exclude?: engineType[]
+    exclude?: engineType[];
+
+    wallet?: any;
 }
 
 export interface QuoteResponse {
