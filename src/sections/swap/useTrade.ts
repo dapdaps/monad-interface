@@ -235,13 +235,13 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
           token_in: [{
             symbol: trade.inputCurrency?.symbol,
             address: trade.inputCurrency?.address,
-            amount: trade.inputCurrencyAmount,
+            amount: trade.inputCurrencyAmount + "",
             decimal: trade.inputCurrency?.decimals,
           }],
           token_out: [{
             symbol: trade.outputCurrency?.symbol,
             address: trade.outputCurrency?.address,
-            amount: trade.outputCurrencyAmount,
+            amount: trade.outputCurrencyAmount + "",
             decimal: trade.outputCurrency?.decimals,
           }],
           fee: trade.fee?.feeRate || '0',
