@@ -70,7 +70,6 @@ export default function Swap({
           lastTimeoutRef.current = null;
         }
         lastTimeoutRef.current = setTimeout(() => {
-          console.log('runQuoter', Date.now());
           setRefreshQuoter(Date.now());
           lastTimeoutRef.current = null;
         }, 1000 * 30);

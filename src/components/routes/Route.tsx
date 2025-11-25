@@ -34,16 +34,18 @@ export default function Route({
     // }, [gas])
 
 
-    return <div className={ `p-[10px] text-white border  bg-[#00000080] rounded-[4px] mt-[10px] cursor-pointer ${checked ? 'border-[#BFFF60]' : 'border-[#34304B]'}`} onClick={() => {
+    return <div className={`p-[10px] text-white border  bg-[#00000080] rounded-[4px] mt-[10px] cursor-pointer ${checked ? 'border-[#BFFF60]' : 'border-[#34304B]'}`} onClick={() => {
         onChange(true)
     }}>
         <div className="flex items-start gap-[10px] justify-between w-full whitespace-nowrap">
-            <div className="flex items-center gap-[10px]">
-                <img className="w-[20px] h-[20px] rounded-[4px]" src={icon} />
-                <div className="text-[14px] font-[400]">{name === 'OneClick' ? 'Conductor v0.1' : name}</div>
+            <div>
+                <div className="flex items-center gap-[10px]">
+                    <img className="w-[20px] h-[20px] rounded-[4px]" src={icon} />
+                    <div className="text-[14px] font-[400]">{name === 'OneClick' ? 'Conductor v0.1' : name}</div>
+                </div>
                 {
                     isBest && (
-                        <div className="text-[12px] text-[#BFFF60]">Best Price</div>
+                        <div className="text-[12px] text-[#BFFF60] mt-[5px]">Best Price</div>
                     )
                 }
             </div>
@@ -53,7 +55,7 @@ export default function Route({
                     <img className="w-[18px] h-[18px] rounded-[4px]" src={outputCurrency.icon} />
                     <div className="text-[18px] max-w-[120px] font-[400] whitespace-nowrap overflow-hidden ">{receiveAmount}</div>
                 </div>
-                <div className="text-[12px] text-[#727D97] text-right">${ balanceFormated(prices[outputCurrency.symbol] * receiveAmount, 4) }</div>
+                <div className="text-[12px] text-[#727D97] text-right">${balanceFormated(prices[outputCurrency.symbol] * receiveAmount, 4)}</div>
             </div>
         </div>
 

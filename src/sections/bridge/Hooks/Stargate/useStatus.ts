@@ -17,6 +17,7 @@ export const useStatus = ({ getStatus }: { getStatus: any }) => {
                 try {
                     const extra_data = JSON.parse(tx.extra_data)
 
+
                     const response = await getStatus(extra_data, tx.template, null)
                     if (response.status === 1) {
                         updateStatus(tx)

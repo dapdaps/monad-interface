@@ -61,7 +61,6 @@ export class Monorail {
       };
     }
 
-
     if (!quoteResponse || !quoteResponse.output) {
       return {
         outputCurrencyAmount: "",
@@ -81,8 +80,6 @@ export class Monorail {
       };
     }
 
-
-
     const transaction = quoteResponse.transaction || {};
     const txn: any = {
       to: transaction.to,
@@ -96,11 +93,17 @@ export class Monorail {
       chains[inputCurrency.chainId].rpcUrls[0]
     );
 
-    const gasEstimate = await provider.getSigner(account).estimateGas(txn);
+    let gasEstimate: any = null
+    try {
+      gasEstimate = await provider.getSigner(account).estimateGas(txn);
 
-    if (gasEstimate) {
-      txn.gasLimit = BigNumber(gasEstimate.toString()).multipliedBy(1.2).toFixed(0);
+      if (gasEstimate) {
+        txn.gasLimit = BigNumber(gasEstimate.toString()).multipliedBy(1.2).toFixed(0);
+      }
+    } catch (err) {
+      console.log('estimateGas err: %o', err);
     }
+    
 
     return {
       outputCurrencyAmount: outputAmount,
