@@ -220,11 +220,11 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
                     getUserRP();
                     getInvite();
                 }} className="absolute right-0 bottom-[20px] flex items-center justify-center w-[30px] h-[26px] border border-[#382F6F] rounded-[2px] cursor-pointer">
-                    <svg 
-                        width="15" 
-                        height="15" 
-                        viewBox="0 0 15 15" 
-                        fill="none" 
+                    <svg
+                        width="15"
+                        height="15"
+                        viewBox="0 0 15 15"
+                        fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                         className="transition-transform duration-[1000ms] ease-in-out"
                         style={{ transform: `rotate(${rotationAngle}deg)` }}
@@ -252,10 +252,13 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
                                 </div>
 
                                 <div className="flex items-center justify-between gap-[10px] flex-1 bg-[#836EF940] h-[48px] px-[10px]">
-                                    <button
-                                        type="button"
-                                        onClick={() => toggleSection(section.key)}
-                                        className="flex items-center gap-[8px] text-white text-[16px] font-Oxanium font-[600] uppercase hover:opacity-80 transition-opacity"
+                                    <div
+                                        onClick={() => {
+                                            if (isReferral) {
+                                                toggleSection(section.key)
+                                            }
+                                        }}
+                                        className={clsx("flex items-center gap-[8px] text-white text-[16px] font-Oxanium font-[600] uppercase transition-opacity", isReferral ? "cursor-pointer hover:opacity-80" : "cursor-default")}
                                     >
                                         {section.title}
                                         {
@@ -266,7 +269,7 @@ const EarnBP = ({ allBonus, allBonusLoading }: { allBonus: any, allBonusLoading:
                                                 <path d="M0.609375 6.26172L7.10938 1.26172L13.6094 6.26172" stroke="#A1AECB" stroke-width="2" />
                                             </svg>
                                         }
-                                    </button>
+                                    </div>
 
                                     <div className="flex items-center justify-center gap-[10px]">
                                         <span className="text-white text-[14px] font-[500]">
