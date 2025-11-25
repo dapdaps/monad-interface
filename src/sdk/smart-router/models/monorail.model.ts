@@ -10,7 +10,7 @@ export class Monorail {
   private chainId: number;
   private wrappedNativeAddress: string;
   private ROUTER: { [key: number]: string } = {
-   
+
   };
   private HOST = "https://pathfinder.monorail.xyz/v4";
 
@@ -32,10 +32,10 @@ export class Monorail {
     const inputCurrencyAddress = inputCurrency.isNative ? nativeAddress : inputCurrency.address.toLowerCase();
     const outputCurrencyAddress = outputCurrency.isNative ? nativeAddress : outputCurrency.address.toLowerCase();
 
-    const slippageBps = typeof slippage === 'number' 
-      ? Math.round(slippage * 10000) 
+    const slippageBps = typeof slippage === 'number'
+      ? Math.round(slippage * 10000)
       : parseInt(slippage) || 300;
-    
+
     const deadline = 180;
 
     const quoteParams = new URLSearchParams();
@@ -61,7 +61,7 @@ export class Monorail {
       };
     }
 
-   
+
     if (!quoteResponse || !quoteResponse.output) {
       return {
         outputCurrencyAmount: "",
@@ -81,7 +81,7 @@ export class Monorail {
       };
     }
 
-    
+
 
     const transaction = quoteResponse.transaction || {};
     const txn: any = {
@@ -105,15 +105,16 @@ export class Monorail {
     return {
       outputCurrencyAmount: outputAmount,
       noPair: false,
-      routerAddress: transaction.to ,
+      routerAddress: transaction.to,
       routes: quoteResponse.routes || [],
-      fee: quoteResponse.fees?.protocol_amount_formatted 
-        ? {
-            fee: quoteResponse.fees.protocol_amount_formatted,
-            token: outputCurrency,
-            feeRate: quoteResponse.fees.protocol_bps ? (Number(quoteResponse.fees.protocol_bps) / 10000).toString() : "0"
-          }
-        : null,
+      // fee: quoteResponse.fees?.protocol_amount_formatted 
+      //   ? {
+      //       fee: quoteResponse.fees.protocol_amount_formatted,
+      //       token: outputCurrency,
+      //       feeRate: quoteResponse.fees.protocol_bps ? (Number(quoteResponse.fees.protocol_bps) / 10000).toString() : "0"
+      //     }
+      //   : null,
+      fee: null,
       txn,
       gasEstimate,
       priceImpact: quoteResponse.compound_impact ? (Number(quoteResponse.compound_impact) * 100).toString() : undefined,

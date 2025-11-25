@@ -71,14 +71,14 @@ export const monad: { [key: string]: Token } = {
     name: "SOL",
     icon: "https://assets.dapdap.net/monad/wsol.png"
   },
-  // smon: {
-  //   address: "0xa3227c5969757783154c60bf0bc1944180ed81b9",
-  //   chainId: CHAIN_ID,
-  //   symbol: "sMON",
-  //   decimals: 18,
-  //   name: "sMON",
-  //   icon: "https://assets.dapdap.net/monad/smon.png"
-  // },
+  smon: {
+    address: "0xa3227c5969757783154c60bf0bc1944180ed81b9",
+    chainId: CHAIN_ID,
+    symbol: "sMON",
+    decimals: 18,
+    name: "sMON",
+    icon: "https://assets.dapdap.net/monad/smon.png"
+  },
   // lvusd: {
   //   address: "0xfd44b35139ae53fff7d8f2a9869c503d987f00d1",
   //   chainId: CHAIN_ID,
