@@ -74,7 +74,7 @@ export default function useQuote(
 
   useEffect(() => {
     getRoutes(quoteRequest);
-  }, [quoteRequest]);
+  }, [quoteRequest, provider]);
 
   useEffect(() => {
     if (identification) {
@@ -85,6 +85,7 @@ export default function useQuote(
   return {
     routes,
     loading,
-    quoteLoading
+    quoteLoading,
+    getRoutes,
   };
 }

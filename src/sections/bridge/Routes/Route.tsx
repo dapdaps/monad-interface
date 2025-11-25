@@ -28,7 +28,7 @@ export default function Route({ name, fee, receiveAmount, fromChain, toToken, ch
     return (
         <div className="flex items-center justify-between py-[10px] gap-1 text-white">
             <div className="flex items-center gap-[10px] shrink-0">
-                <img className="w-[30px] h-[30px] rounded-[10px]" src={icon} />
+                <img className="w-[30px] h-[30px] rounded-[10px] object-center object-contain" src={icon} />
                 <div className="text-[16px] font-[600]">{name}</div>
             </div>
 

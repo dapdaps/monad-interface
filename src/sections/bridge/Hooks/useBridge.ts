@@ -16,6 +16,8 @@ import useQuote from './useQuote';
 import useAddAction from '@/hooks/use-add-action';
 import { getChainScan } from '../lib/util';
 import useRouteSorted from './useRouteSorted';
+import { useOneClickTokenStore } from '../lib/bridges/oneclick/store';
+import { useOneclickWallet } from '../lib/bridges/oneclick/wallet';
 
 interface BridgeProps {
   originFromChain: Chain;
@@ -55,7 +57,9 @@ export default function useBridge({ originFromChain, originToChain, derection, d
   const { fail, success } = useToast();
   const [quoteReques, setQuoteRequest] = useState<QuoteRequest | null>(null);
 
-  const { routes, loading } = useQuote(quoteReques, identification, false);
+  const { tokens: oneclickTokens, fetchTokens: fetchOneclickTokens } = useOneClickTokenStore();
+  const oneclickWallet = useOneclickWallet();
+  const { routes, loading, getRoutes } = useQuote(quoteReques, identification, false);
 
   useRouteSorted(routes, 1, (route: QuoteResponse | null) => {
     setSelectedRoute(route);
@@ -89,6 +93,7 @@ export default function useBridge({ originFromChain, originToChain, derection, d
     const identification = Date.now();
     setIdentification(identification);
     setQuoteRequest({
+      wallet: oneclickWallet,
       fromChainId: fromChain?.chainId.toString(),
       toChainId: toChain?.chainId.toString(),
       fromToken: {
@@ -109,7 +114,7 @@ export default function useBridge({ originFromChain, originToChain, derection, d
       exclude: ['official'],
       UNIZEN_AUTH_KEY: process.env.NEXT_PUBLIC_UNIZEN_AUTH_KEY
     });
-  }, [fromChain, toChain, fromToken, toToken, account, inputValue]);
+  }, [provider, fromChain, toChain, fromToken, toToken, account, inputValue]);
 
   useEffect(() => {
     if (!fromChain || !toChain || !fromToken || !toToken || !account || !inputValue) {
@@ -149,11 +154,23 @@ export default function useBridge({ originFromChain, originToChain, derection, d
     }
   }, [selectedRoute, toToken]);
 
+  useEffect(() => {
+    fetchOneclickTokens();
+  }, []);
+
   const executeRoute = async () => {
     if (selectedRoute && !isSending) {
       setIsSending(true);
       try {
-        const txHash = await execute(selectedRoute, provider?.getSigner());
+        let txHash = await execute(selectedRoute, provider?.getSigner(), {
+          quoteRequest: quoteReques,
+        });
+
+        let depositAddress = "";
+        if (typeof txHash !== "string") {
+          depositAddress = txHash.depositAddress;
+          txHash = txHash.hash;
+        }
 
         if (!txHash) {
           return;
@@ -181,6 +198,9 @@ export default function useBridge({ originFromChain, originToChain, derection, d
           fromAddress: account,
           toAddress: account,
           status: 3,
+
+          // for oneclick
+          depositAddress,
 
           // new api structure
           token_in: [{
@@ -216,6 +236,8 @@ export default function useBridge({ originFromChain, originToChain, derection, d
           text: ''
         });
 
+        // reload the quote
+        getRoutes(quoteReques);
 
         setIsSending(false);
         return true;
