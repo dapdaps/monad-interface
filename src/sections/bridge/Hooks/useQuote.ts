@@ -74,7 +74,7 @@ export default function useQuote(
 
   useEffect(() => {
     getRoutes(quoteRequest);
-  }, [quoteRequest]);
+  }, [quoteRequest, provider]);
 
   useEffect(() => {
     if (identification) {

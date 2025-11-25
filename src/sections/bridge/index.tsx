@@ -356,9 +356,11 @@ export default function Bridge() {
               )}
 
               <SubmitBtn
+                fromToken={fromToken}
                 fromChainId={fromChain.chainId}
                 isLoading={quoteLoading || sendLoading}
                 disabled={sendDisabled || !selectedRoute}
+                selectedRoute={selectedRoute}
                 onClick={async () => {
                   const isSuccess = await executeRoute();
                   if (isSuccess) {
