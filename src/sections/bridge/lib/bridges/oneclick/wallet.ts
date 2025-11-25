@@ -96,12 +96,6 @@ export function useOneclickWallet(props?: any) {
       throw new Error("Transaction failed");
     }
     return receipt.transactionHash;
-
-    // const txReceipt = await tx.wait();
-    // if (txReceipt.status !== 1) {
-    //   throw new Error("Transaction failed");
-    // }
-    // return txReceipt.hash;
   };
 
   const transfer = async (params: {
@@ -113,21 +107,28 @@ export function useOneclickWallet(props?: any) {
 
     const signer = await provider.getSigner();
 
-    if (originAsset === "eth") {
+    if (originAsset === ZeroAddress) {
       const tx = await signer.sendTransaction({
         to: depositAddress,
-        value: parseEther(amount)
+        value: amount
       });
-      await tx.wait();
-      return tx;
+      const txHash = tx.hash || tx;
+      const receipt = await provider.waitForTransaction(txHash);
+      if (receipt.status !== 1) {
+        throw new Error("Transaction failed");
+      }
+      return receipt.transactionHash;
     }
 
     const contract = new Contract(originAsset, ERC20Abi, signer);
 
     const tx = await contract.transfer(depositAddress, amount);
-    const result = await tx.wait();
-
-    return result.hash;
+    const txHash = tx.hash || tx;
+    const receipt = await provider.waitForTransaction(txHash);
+    if (receipt.status !== 1) {
+      throw new Error("Transaction failed");
+    }
+    return receipt.transactionHash;
   };
 
   const allowance = async (params: any) => {

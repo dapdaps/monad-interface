@@ -92,7 +92,7 @@ export async function execute(request: ExecuteRequest, signer: Signer, options?:
 
   // transfer to deposit address
   const hash = await quoteRequest?.wallet.transfer({
-    originAsset: quoteRequest.fromAddress,
+    originAsset: quoteRequest.fromToken.address,
     depositAddress: quote.quote?.depositAddress,
     amount: quoteParams.amount,
   });
@@ -100,15 +100,12 @@ export async function execute(request: ExecuteRequest, signer: Signer, options?:
 }
 
 export async function getStatus(params: any) {
-  const extraData = params.extra_data;
-  const extraDataMap = extraData ? JSON.parse(extraData) : {};
-  if (!extraDataMap.depositAddress) {
+  if (!params.depositAddress) {
     return { status: 0 };
   }
   const result = await oneClickService.getStatus({
-    depositAddress: extraDataMap.depositAddress,
+    depositAddress: params.depositAddress,
   });
-  console.log("res: %o", result);
   const status = result.data.status;
   return status === "SUCCESS" ? { status: 1 } : { status: 0 };
 }
