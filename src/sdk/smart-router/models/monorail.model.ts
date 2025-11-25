@@ -85,7 +85,7 @@ export class Monorail {
       to: transaction.to,
       data: transaction.data || "0x",
       value: transaction.value,
-      gasLimit: undefined,
+      gasLimit: null,
       // gasLimit: quoteResponse.gas_estimate ? BigNumber(quoteResponse.gas_estimate).toString() : undefined,
     };
 
@@ -94,18 +94,17 @@ export class Monorail {
     );
 
     let gasEstimate: any = null
-    if (inputCurrency.address.toLowerCase() !== weth[inputCurrency.chainId].toLowerCase()) {
+    if (inputCurrency.address.toLowerCase() !== weth[this.chainId].toLowerCase()) {
       try {
         gasEstimate = await provider.getSigner(account).estimateGas(txn);
   
         if (gasEstimate) {
-          // txn.gasLimit = BigNumber(gasEstimate.toString()).multipliedBy(1.2).toFixed(0);
+          txn.gasLimit = BigNumber(gasEstimate.toString()).multipliedBy(1.2).toFixed(0);
         }
       } catch (err) {
         console.log('estimateGas err: %o', err);
       }
     }
-    
 
     return {
       outputCurrencyAmount: outputAmount,
