@@ -59,7 +59,7 @@ export default function useBridge({ originFromChain, originToChain, derection, d
 
   const { tokens: oneclickTokens, fetchTokens: fetchOneclickTokens } = useOneClickTokenStore();
   const oneclickWallet = useOneclickWallet();
-  const { routes, loading } = useQuote(quoteReques, identification, false);
+  const { routes, loading, getRoutes } = useQuote(quoteReques, identification, false);
 
   useRouteSorted(routes, 1, (route: QuoteResponse | null) => {
     setSelectedRoute(route);
@@ -236,6 +236,8 @@ export default function useBridge({ originFromChain, originToChain, derection, d
           text: ''
         });
 
+        // reload the quote
+        getRoutes(quoteReques);
 
         setIsSending(false);
         return true;
