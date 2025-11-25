@@ -85,6 +85,7 @@ export default function useQuote(
   return {
     routes,
     loading,
-    quoteLoading
+    quoteLoading,
+    getRoutes,
   };
 }

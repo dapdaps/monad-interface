@@ -357,6 +357,7 @@ export default function Bridge() {
 
               <SubmitBtn
                 fromToken={fromToken}
+                amount={sendAmount}
                 fromChainId={fromChain.chainId}
                 isLoading={quoteLoading || sendLoading}
                 disabled={sendDisabled || !selectedRoute}
