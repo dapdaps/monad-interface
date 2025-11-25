@@ -86,7 +86,7 @@ class OneClickService {
             price: getPrice(params.wallet.prices, params.fromToken.nativeToken.symbol),
             nativeToken: params.fromToken.nativeToken,
           });
-          res.data.fees.estimateDepositGasUsd = usd;
+          res.data.fees.sourceGasFeeUsd = usd;
           res.data.estimateSourceGas = wei;
           res.data.estimateSourceGasUsd = usd;
         }
