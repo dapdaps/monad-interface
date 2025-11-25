@@ -23,10 +23,11 @@ interface BuyTimesModalProps {
 // export const GAME_CONTRACT_ADDRESS_PROD = "0xC5CFB30A2840fC03a933894A733A163f557F2ae4";
 
 export const GAME_CONTRACT_ADDRESS_TEST = "0x689c6D62Eb29A3246c239F9a3281E77eF8F85721";
-export const GAME_CONTRACT_ADDRESS_PROD = "0x5b2070744Ae6D53B1dE362796B3b8910E28893bA";
+// export const GAME_CONTRACT_ADDRESS_PROD = "0x5b2070744Ae6D53B1dE362796B3b8910E28893bA";
+export const GAME_CONTRACT_ADDRESS_PROD = "0x7689696eB768100797084167d211865D9Ac9168c";
 
 export const GAME_CONTRACT_ADDRESS = GAME_CONTRACT_ADDRESS_PROD;
-const amount = 0.1;
+const amount = 1;
 
 const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesModalProps) => {
     const [times, setTimes] = useState<number | string>(1);
@@ -74,6 +75,7 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
                     "type": "function"
                 }
             ];
+
             const contract = new Contract(
                 GAME_CONTRACT_ADDRESS,
                 abi,
@@ -84,6 +86,8 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
                 value: BigInt(amount * selectedTimes * 1e18)
             });
 
+            console.log('tx:', tx)
+
 
             let gasLimit = 1000000;
             try {
@@ -92,6 +96,8 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
             } catch (err: any) {
                 console.log('estimateGas err: %o', err);
             }
+
+            console.log('gasLimit:', gasLimit)
 
             const txResponse = await signer.sendTransaction({
                 ...tx,
@@ -199,7 +205,7 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
                         <svg width="380" height="2" viewBox="0 0 380 2" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M0 1H380" stroke="white" stroke-opacity="0.2" stroke-dasharray="2 2" />
                         </svg>
-                        <div className="text-white">{numberFormatter(0.1 * Number(times), 1, true)}</div>
+                        <div className="text-white">{numberFormatter(amount * Number(times), 1, true)}</div>
                     </div>
 
                     <MainBtn isPending={isPending} onClick={() => handleSelectTimes(Number(times))} />
@@ -208,17 +214,17 @@ const BuyTimesModal = ({ open, onClose, refreshData, spinUserData }: BuyTimesMod
                         <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">
                             <div className="text-[#BFFF60] font-bold mb-2">x10</div>
                             <img src="/images/lucky777/coin-10.svg" alt="10 coins" className="mb-2 mt-[20px]" />
-                            <MoreBtn onClick={() => handleSelectTimes(10)}>1 MON</MoreBtn>
+                            <MoreBtn onClick={() => handleSelectTimes(10)}>{ amount * 10 } MON</MoreBtn>
                         </div>
                         <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">
                             <div className="text-[#BFFF60] font-bold mb-2">x50</div>
                             <img src="/images/lucky777/coin-50.svg" alt="50 coins" className="mb-2 mt-[11px]" />
-                            <MoreBtn onClick={() => handleSelectTimes(50)}>5 MON</MoreBtn>
+                            <MoreBtn onClick={() => handleSelectTimes(50)}>{ amount * 50 } MON</MoreBtn>
                         </div>
                         <div className="flex-1 bg-[#4D4D73] border-[#ACACE2] rounded-[6px] flex flex-col items-center py-4 gap-2">
                             <div className="text-[#BFFF60] font-bold mb-2">x100</div>
                             <img src="/images/lucky777/coin-100.svg" alt="100 coins" className="mb-2" />
-                            <MoreBtn onClick={() => handleSelectTimes(100)}>10 MON</MoreBtn>
+                            <MoreBtn onClick={() => handleSelectTimes(100)}>{ amount * 100 } MON</MoreBtn>
                         </div>
                     </div>
                 </div>
