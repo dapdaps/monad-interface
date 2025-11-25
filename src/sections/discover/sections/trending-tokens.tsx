@@ -162,7 +162,7 @@ const PriceChart = ({ data }: { data: { price: string; symbol: string; timestamp
                 return (
                   <div className="whitespace-nowrap bg-black border border-gray-600 rounded px-2 py-1 text-xs shadow-lg z-10">
                     <p className="text-white">
-                      Price: {numberFormatter(payload[0].value, 4, true, { prefix: "$", isZeroPrecision: true })}
+                      Price: {payload[0].value > 1 ? numberFormatter(payload[0].value, 4, true, { prefix: "$", isZeroPrecision: true }) : formatSmallDecimal(payload[0].value, "$", 4 )}
                     </p>
                     <p className="text-gray-300">
                       Time: {utcTime}
