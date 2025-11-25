@@ -13,6 +13,7 @@ import { ethers } from "ethers";
 import dayjs from "dayjs";
 import { AllowanceProvider, MaxAllowanceTransferAmount, PermitSingle, AllowanceTransfer } from "@uniswap/permit2-sdk";
 import { usePriceStore } from "@/stores/usePriceStore";
+import { numberRemoveEndZero } from "@/utils/number-formatter";
 
 export default function useTrade({ chainId, template, from, onSuccess }: any) {
   const slippage: any = useSettingsStore((store: any) => store.slippage);
@@ -235,13 +236,13 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
           token_in: [{
             symbol: trade.inputCurrency?.symbol,
             address: trade.inputCurrency?.address,
-            amount: trade.inputCurrencyAmount + "",
+            amount: numberRemoveEndZero(Big(trade.inputCurrencyAmount || 0).toFixed(trade.inputCurrency?.decimals || 18, 0)),
             decimal: trade.inputCurrency?.decimals,
           }],
           token_out: [{
             symbol: trade.outputCurrency?.symbol,
             address: trade.outputCurrency?.address,
-            amount: trade.outputCurrencyAmount + "",
+            amount: numberRemoveEndZero(Big(trade.outputCurrencyAmount || 0).toFixed(trade.outputCurrency?.decimals || 18, 0)),
             decimal: trade.outputCurrency?.decimals,
           }],
           fee: trade.fee?.feeRate || '0',
