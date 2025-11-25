@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import Chart from "./chart";
+import ChartDemo from "./chart/index-demo";
 import Leaderboard from "./leaderboard";
 import Back from "./back";
 import DoomButton from "./button";

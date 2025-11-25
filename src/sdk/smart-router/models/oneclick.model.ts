@@ -12,7 +12,8 @@ export class OneClick {
   private ROUTER: { [key: number]: string } = {
     // 10143: "0xc26484D2ce20e31e363e2f27782B4E9718fF918a",
     10143: "0x92493D26DDe5Edbd1660e0f49f1dd853B9623f80",
-    143: "0x3Ff9bE8f6EE484E44659e05bE52969AA85DBAEB5",
+    // 143: "0x3Ff9bE8f6EE484E44659e05bE52969AA85DBAEB5",
+    143: '0x592FeB6B3dAE615fa15636f8a839E8d25FECE630'
   };
   private HOST = "https://api-trade.nadsa.space";
 

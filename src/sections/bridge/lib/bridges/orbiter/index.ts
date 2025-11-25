@@ -5,7 +5,7 @@ import { erc20Abi } from 'viem'
 import { approve } from '../../util/approve'
 import { getQuoteInfo, setQuote } from '../../util/routerController'
 import { getIcon, getChainSigner, getFullNum, checkTransitionOnlineStatus } from '../../util/index'
-import {FeeType, StatusParams} from '../../type/index'
+import { FeeType, StatusParams } from '../../type/index'
 import chainConfig from '../../util/chainConfig'
 
 import type { QuoteRequest, QuoteResponse, ExecuteRequest } from '../../type/index'
@@ -69,9 +69,6 @@ export async function getQuote(request: QuoteRequest, signer: Signer): Promise<Q
   const _crossChainRouter = await getCrossChainRouter()
   const _tokens = await getAllTokens()
 
-  // console.log('request: ', _crossChainRouter, _tokens)
-
-  // request.toToken.symbol = 'ETH'
 
   for (let i = 0; i < _crossChainRouter.length; i++) {
     const currentRoute = _crossChainRouter[i]
@@ -98,13 +95,15 @@ export async function getQuote(request: QuoteRequest, signer: Signer): Promise<Q
       const maxAmt = currentRoute.maxAmt === 'NaN' ? new Big(100) : new Big(currentRoute.maxAmt).mul(10 ** fromToken.decimals)
       const minAmt = currentRoute.minAmt === 'NaN' || currentRoute.withholdingFee === 'NaN' ? new Big(0) : new Big(currentRoute.minAmt).minus(currentRoute.withholdingFee).mul(10 ** fromToken.decimals)
 
+      const isNative = request.fromToken.address === '0x0000000000000000000000000000000000000000'
+
       if (request.amount.lte(maxAmt) && request.amount.gte(minAmt)) {
         const chainFrom = chainConfig[request.fromChainId as any]
         const rpc = chainFrom.rpcUrls[0]
         const provider = new JsonRpcProvider(rpc);
         const newSigner = provider.getSigner(request.fromAddress)
-        
-        const gas = await computeGas(currentRoute, request.amount, request.fromAddress, fromToken.isNative, newSigner) 
+
+        const gas = await computeGas(currentRoute, request.amount, request.fromAddress, isNative, newSigner)
         // const withholdingFee = new Big(currentRoute.withholdingFee).mul(10 ** fromToken.decimals)
         // const tradeFee = request.amount.minus(withholdingFee).mul(new Big(currentRoute.tradeFee).div(10 ** 6))
 
@@ -120,7 +119,7 @@ export async function getQuote(request: QuoteRequest, signer: Signer): Promise<Q
         const uuid = setQuote({
           route: currentRoute,
           amount: request.amount.plus(withholdingFee),
-          isNative: fromToken.isNative,
+          isNative,
           bridgeType: 'Orbiter',
         })
 
@@ -138,7 +137,7 @@ export async function getQuote(request: QuoteRequest, signer: Signer): Promise<Q
           receiveAmount,
           gas,
           duration: currentRoute.spentTime + 's',
-          feeType: fromToken.isNative ? FeeType.origin : FeeType.usd,
+          feeType: isNative ? FeeType.origin : FeeType.usd,
           gasType: FeeType.origin,
           identification: request.identification,
         }
@@ -162,7 +161,7 @@ export async function computeGas(route: any, amount: Big, fromAddress: string, i
     } else {
       transactionData = await getRouteTransactionData(route, new Big(1), signer)
     }
-    
+
     const gasLimit = await signer.estimateGas({
       ...transactionData,
       value: transactionData.value || '0x00',
@@ -170,18 +169,21 @@ export async function computeGas(route: any, amount: Big, fromAddress: string, i
     });
 
     return getFullNum((Number(gasLimit.toString()) * Number(price.toString())) / (10 ** 18))
-  } catch(e) {
+  } catch (e) {
     console.log(e)
   }
-  
+
   return 0
 }
 
 export async function execute(request: ExecuteRequest, signer: Signer): Promise<string | null> {
   const quoteInfo = getQuoteInfo(request.uuid)
+
   const realAmount = getRealAmount(quoteInfo.amount, quoteInfo.route.vc)
 
   const account = await signer.getAddress()
+
+ 
 
   let transactionResponse
   if (quoteInfo.isNative) {
@@ -197,6 +199,7 @@ export async function execute(request: ExecuteRequest, signer: Signer): Promise<
     // }
 
     const transactionData = await getRouteTransactionData(quoteInfo.route, realAmount, signer)
+
     transactionResponse = await signer.sendTransaction({
       ...transactionData,
       value: '0x00',
@@ -223,6 +226,7 @@ function getRealAmount(
 }
 
 async function getRouteTransactionData(route: any, amount: Big, signer: Signer) {
+
   const routerContract = new Contract(
     route.srcToken,
     erc20Abi,
@@ -252,7 +256,7 @@ export async function getStatus(params: StatusParams) {
       };
     }
   }
-  
+
   return {
     status: 0
   };;

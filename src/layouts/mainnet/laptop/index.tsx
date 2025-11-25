@@ -18,10 +18,12 @@ const EXCLUDE_WALLET_INFO_PATHS = [
   /^\/arcade\/space-invaders$/,
   /^\/arcade\/lucky777$/,
   /^\/arcade\/chart-voyager$/,
+  /^\/arcade\/chart-voyager-demo$/,
 ];
 
 const EXCLUDE_SIDEBAR_PATHS = [
   /^\/arcade\/chart-voyager$/,
+  /^\/arcade\/chart-voyager-demo$/,
 ];
 
 const LaptopLayout = (props: any) => {

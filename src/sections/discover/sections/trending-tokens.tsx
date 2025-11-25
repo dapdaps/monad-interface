@@ -3,7 +3,7 @@ import Card from "../components/card";
 import Mouse from "../components/mouse";
 import { formatLongText } from "@/utils/utils";
 import { useState } from "react";
-import { numberFormatter } from "@/utils/number-formatter";
+import { formatSmallDecimal, numberFormatter } from "@/utils/number-formatter";
 import Big from "big.js";
 import Skeleton from "react-loading-skeleton";
 import SwapModal from "@/sections/swap/SwapModal";
@@ -162,7 +162,7 @@ const PriceChart = ({ data }: { data: { price: string; symbol: string; timestamp
                 return (
                   <div className="whitespace-nowrap bg-black border border-gray-600 rounded px-2 py-1 text-xs shadow-lg z-10">
                     <p className="text-white">
-                      Price: {numberFormatter(payload[0].value, 4, true, { prefix: "$", isZeroPrecision: true })}
+                      Price: {payload[0].value > 1 ? numberFormatter(payload[0].value, 4, true, { prefix: "$", isZeroPrecision: true }) : formatSmallDecimal(payload[0].value, "$", 4 )}
                     </p>
                     <p className="text-gray-300">
                       Time: {utcTime}
@@ -253,7 +253,7 @@ const TokenItem = (props: any) => {
       <div className="w-full flex justify-between items-center gap-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
         <div className="flex-1 flex items-center gap-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
           <div className="text-white text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] font-[400]">
-            {numberFormatter(token.price, 2, true, { isShort: true, prefix: "$", isZeroPrecision: true })}
+            {Number(token.price) > 1 ? numberFormatter(token.price, 2, true, { isShort: true, prefix: "$", isZeroPrecision: true }) : formatSmallDecimal(token.price, "$", 4)}
           </div>
           <div className="flex items-center gap-[clamp(1px,_0.26vw,_calc(var(--pc-1512)*0.0026))]">
             <svg

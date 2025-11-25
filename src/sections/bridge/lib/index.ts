@@ -131,7 +131,7 @@ export async function getStatus(params: StatusParams, engine: string, signer: Si
   }
 
   // @ts-ignore
-  if (params?.bridgeType && params?.bridgeType?.toLowerCase() === 'lifi') {
+  if (signer === 'li.fi' || (params?.bridgeType && params?.bridgeType?.toLowerCase() === 'lifi')) {
     return getLifiStatus(params)
   }
 }

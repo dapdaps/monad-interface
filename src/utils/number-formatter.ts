@@ -154,3 +154,88 @@ export const numberFormatter = (
 export const numberRemoveEndZero = (value: string) => {
   return value.replace("-", "").replace(/\.?0+$/, '');
 };
+
+export const formatSmallDecimal = (
+  value: string | number | Big.Big | undefined,
+  prefix: string = '',
+  maxDecimalPlaces: number = 6 
+): string => {
+  if (!value) {
+    return `${prefix}0`;
+  }
+
+  let bigValue: Big.Big;
+  try {
+    bigValue = Big(value);
+  } catch {
+    return `${prefix}0`;
+  }
+
+  if (bigValue.lte(0)) {
+    return `${prefix}0`;
+  }
+
+  if (bigValue.gte(0.001)) {
+    return `${prefix}${bigValue.toFixed(maxDecimalPlaces)}`;
+  }
+
+  const valueStr = bigValue.toFixed(20);
+  const parts = valueStr.split('.');
+  
+  if (parts.length !== 2) {
+    return `${prefix}${valueStr}`;
+  }
+
+  const decimalPart = parts[1];
+  
+  let zeroCount = 0;
+  let significantStart = -1;
+  
+  for (let i = 0; i < decimalPart.length; i++) {
+    if (decimalPart[i] === '0') {
+      zeroCount++;
+    } else {
+      significantStart = i;
+      break;
+    }
+  }
+
+  if (significantStart === -1) {
+    return `${prefix}0`;
+  }
+
+  let significantDigits = decimalPart.substring(significantStart).replace(/0+$/, '');
+
+  if (significantDigits.length > maxDecimalPlaces) {
+    significantDigits = significantDigits.substring(0, maxDecimalPlaces);
+  }
+
+  const subscriptMap: { [key: string]: string } = {
+    '0': '₀',
+    '1': '₁',
+    '2': '₂',
+    '3': '₃',
+    '4': '₄',
+    '5': '₅',
+    '6': '₆',
+    '7': '₇',
+    '8': '₈',
+    '9': '₉',
+  };
+
+  const toSubscript = (num: number): string => {
+    return num.toString().split('').map(digit => subscriptMap[digit] || digit).join('');
+  };
+
+  if (zeroCount > 0) {
+    const remainingZeros = zeroCount;
+    if (remainingZeros > 0) {
+      const subscript = toSubscript(remainingZeros);
+      return `${prefix}0.0${subscript}${significantDigits}`;
+    } else {
+      return `${prefix}0.0${significantDigits}`;
+    }
+  }
+
+  return `${prefix}0.${significantDigits}`;
+};

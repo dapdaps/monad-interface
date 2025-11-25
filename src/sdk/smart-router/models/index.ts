@@ -7,6 +7,7 @@ import { Kuru } from "./kuru.model";
 import { OneClick } from "./oneclick.model";
 import { MondayTrade } from "./mondaytrade.model";
 import { MondayTradeV3 } from "./mondaytrade-v3.model";
+import { Monorail } from "./monorail.model";
 
 export default {
   iZumi: iZiSwap,
@@ -22,4 +23,5 @@ export default {
   OneClick,
   MondayTrade,
   MondayTradeV3,
+  Monorail,
 } as { [key: string]: any };

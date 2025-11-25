@@ -159,8 +159,6 @@ export class MondayTradeV3 {
       // console.log('estimateGas err', err);
     }
 
-    console.log("estimateGas v3", estimateGas?.toString());
-
     const txn = await multicallContract.populateTransaction.multicall(
       multicallParams,
       {
