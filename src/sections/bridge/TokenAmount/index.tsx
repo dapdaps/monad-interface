@@ -39,6 +39,7 @@ interface Props {
   isDest: boolean;
   allTokens: any;
   destDisabled?: boolean;
+  balanceUpdate?: number;
 }
 
 export default function TokenAmout({
@@ -54,7 +55,8 @@ export default function TokenAmout({
   limitBera,
   isDest,
   allTokens,
-  destDisabled = false
+  destDisabled = false,
+  balanceUpdate
 }: Props) {
   const [tokenSelectorShow, setTokenSelectorShow] = useState(false);
   const [percent, setPercent] = useState<any>(0);
@@ -85,6 +87,12 @@ export default function TokenAmout({
       setPercent(0);
     }
   }, [amount, tokenBalance]);
+
+  useEffect(() => {
+    if (balanceUpdate && balanceUpdate > 0) {
+      update();
+    }
+  }, [balanceUpdate]);
 
 
   return (
