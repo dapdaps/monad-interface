@@ -52,8 +52,8 @@ export default function Swap({
   const { loading, trade, tradeList, onQuoter, onSwap, setTrade, setTradeList } = useTrade({
     chainId: DEFAULT_CHAIN_ID,
     // template: dapp.name,
-    template: isSuperSwap ? ['UniswapV3', 'UniswapV2', 'PancakeV2', 'PancakeV3', 'OneClick', 'iZumi', 'Kuru', 'MondayTradeV3', 'Monorail'] : dapp.name,
-    // template: isSuperSwap ? ['UniswapV2', 'PancakeV2', 'OneClick', 'MondayTradeV3'] : dapp.name,
+    template: isSuperSwap ? ['UniswapV3', 'UniswapV2', 'PancakeV2', 'PancakeV3', 'OneClick', 'iZumi', 'Kuru', 'MondayTradeV3', 'Monorail', 'CapricornV3'] : dapp.name,
+    // template: isSuperSwap ? ['CapricornV3'] : dapp.name,
     from,
     onSuccess: () => {
       setUpdater(Date.now());
