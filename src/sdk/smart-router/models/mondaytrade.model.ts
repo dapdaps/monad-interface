@@ -10,6 +10,7 @@ import { aggregatorPlugin, CONFIG_ADDRESS, QUERY_SINGLE_ROUTE_ADDRESS, QUERY_SPL
 import { parseUnits } from "ethers/lib/utils";
 import Big from "big.js";
 import { monadTestnet } from "viem/chains";
+import { getRpcUrl } from "../utils";
 
 CONFIG_ADDRESS[monadTestnet.id] = '0x619fae164701e536Be8e1D3A6aaEf35DC7A40fc7'
 QUERY_SINGLE_ROUTE_ADDRESS[monadTestnet.id] = '0xB03bB95FAA5DC18D66FAd10A38529f1430bd32e0'
@@ -38,7 +39,7 @@ export class MondayTrade {
       account
     } = params;
 
-    const ctx = new Context(this.chainId, { url: chains[this.chainId].rpcUrls[0] });
+    const ctx = new Context(this.chainId, { url: getRpcUrl(this.chainId) });
     ctx.use(aggregatorPlugin());
     ctx.use(txPlugin({ gasEstimator: new DefaultEthGasEstimator() }));
 

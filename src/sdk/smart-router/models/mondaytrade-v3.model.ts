@@ -4,6 +4,7 @@ import { V3 } from "../libs/v3.lib";
 import chains from "../config/chains";
 import routerV3Abi from "../config/abi/router-v3-2";
 import { DEFAULT_CHAIN_ID } from "@/configs";
+import { getRpcUrl } from "../utils";
 
 export class MondayTradeV3 {
   private v3: V3;
@@ -140,7 +141,7 @@ export class MondayTradeV3 {
     }
 
     const provider = new providers.JsonRpcProvider(
-      chains[inputCurrency.chainId].rpcUrls[0]
+      getRpcUrl(inputCurrency.chainId)
     );
     const multicallContract = new Contract(
       this.ROUTER[inputCurrency.chainId],

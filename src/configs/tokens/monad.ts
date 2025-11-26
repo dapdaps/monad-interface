@@ -109,7 +109,7 @@ export const monad: { [key: string]: Token } = {
     symbol: "wstETH",
     decimals: 18,
     name: "Wrapped liquid staked Ether 2.0",
-    icon: "https://assets.dapdap.net/monad/wstETHlogo.png"
+    icon: "https://assets.dapdap.net/monad/wsteth.png"
   },
   wbtc: {
     address: "0x0555e30da8f98308edb960aa94c0db47230d2b9c",

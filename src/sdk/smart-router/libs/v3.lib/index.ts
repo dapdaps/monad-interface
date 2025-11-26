@@ -6,6 +6,7 @@ import chains from "../../config/chains";
 import { nativeToWNative } from "../../utils/token";
 import defaultQuoterAbi from "../../config/abi/quoter-v2-1";
 import BigNumber from "bignumber.js";
+import { getRpcUrl } from "../../utils";
 
 export class V3 {
   private factoryAddress: string;
@@ -37,7 +38,7 @@ export class V3 {
     this.midTokens = midTokens;
     this.fees = fees ?? [];
     this.chainId = chainId;
-    const rpcUrl = chains[chainId].rpcUrls[0];
+    const rpcUrl = getRpcUrl(chainId) as string;
     this.provider = new providers.JsonRpcProvider(rpcUrl);
     this.type = type;
     if (quoterAbi) this.quoterAbi = quoterAbi;

@@ -77,7 +77,7 @@ export const monad: { [key: string]: Token } = {
     icon: "/assets/tokens/usdc.png",
     color: "#78350F"
   },
-  usdt: {
+  usdt0: {
     address: "0x88b8E2161DEDC77EF4ab7585569D2415a1C1055D",
     chainId: CHAIN_ID,
     symbol: "USDT",

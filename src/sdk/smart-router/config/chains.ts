@@ -164,7 +164,7 @@ export default {
     chainName: "Monad Mainnet",
     icon: "",
     nativeCurrency: { name: "MON", symbol: "MON", decimals: 18 },
-    rpcUrls: ["https://rpc.monad.xyz"],
+    rpcUrls: ["https://rpc.monad.xyz", "https://rpc-mainnet.monadinfra.com", "https://rpc1.monad.xyz","https://rpc2.monad.xyz","https://rpc3.monad.xyz", "https://rpc4.monad.xyz"],
     blockExplorers: "https://monadvision.com"
   }
 } as { [key: string]: any };
