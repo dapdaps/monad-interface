@@ -23,6 +23,7 @@ export default function Routes({ routes, fromChain, inputCurrency, outputCurrenc
                         duration={route.duration}
                         feeType={route.feeType}
                         gas={route.gas}
+                        routes={route.routes}
                         onChange={() => {
                             setSelectedRoute(route)
                         }}

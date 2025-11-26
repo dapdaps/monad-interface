@@ -183,6 +183,7 @@ export default function Swap({
         fee: route.fee,
         feeType: 2,
         duration: 10,
+        routes: route.routes || [],
         inputCurrencyAmount: route.inputCurrencyAmount,
         priceImpact: route.priceImpact || 0,
         priceImpactType: route.priceImpactType || 0,

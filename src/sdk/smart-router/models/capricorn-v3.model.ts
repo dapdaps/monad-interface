@@ -65,9 +65,6 @@ export class CapricornV3 {
       }),
     ]);
 
-    console.log('bestTradeV3', bestTradeV3);
-
-
     let bestTrade = bestTradeV3;
     let routerAddress = this.ROUTER[inputCurrency.chainId];
     let type = "v3";

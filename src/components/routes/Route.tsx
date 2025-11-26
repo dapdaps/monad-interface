@@ -1,7 +1,7 @@
 import { usePriceStore } from "@/stores/usePriceStore";
 import { balanceFormated } from "@/utils/balance";
 import Big from "big.js";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 export default function Route({
     name,
@@ -17,9 +17,11 @@ export default function Route({
     duration,
     feeType,
     gas,
-    isBest
+    isBest,
+    routes
 }: any) {
     const prices: any = usePriceStore(store => store.price);
+    const [showDexInfo, setShowDexInfo] = useState(true)
 
     // const feeText = useMemo(() => {
     //     if (feeType === 1) {
@@ -34,10 +36,10 @@ export default function Route({
     // }, [gas])
 
 
-    return <div className={`p-[10px] text-white border  bg-[#00000080] rounded-[4px] mt-[10px] cursor-pointer ${checked ? 'border-[#BFFF60]' : 'border-[#34304B]'}`} onClick={() => {
+    return <div className={`py-[10px] text-white border  bg-[#00000080] rounded-[4px] mt-[10px] cursor-pointer ${checked ? 'border-[#BFFF60]' : 'border-[#34304B]'}`} onClick={() => {
         onChange(true)
     }}>
-        <div className="flex items-start gap-[10px] justify-between w-full whitespace-nowrap">
+        <div className="flex items-start gap-[10px] justify-between w-full whitespace-nowrap px-[10px]">
             <div>
                 <div className="flex items-center gap-[10px]">
                     <img className="w-[20px] h-[20px] rounded-[4px]" src={icon} />
@@ -59,8 +61,10 @@ export default function Route({
             </div>
         </div>
 
-        <div className="flex justify-between items-center mt-[10px]">
-            <div className="text-[12px] text-[#727D97]">1 {inputCurrency.symbol} ≈ {
+        <div className="flex justify-between items-center mt-[10px] px-[10px]">
+            <div className="text-[12px] text-[#727D97]" onClick={() => {
+                setShowDexInfo(!showDexInfo)
+            }}>1 {inputCurrency.symbol} ≈ {
                 Big(receiveAmount || 0)
                     .div(Big(inputCurrencyAmount || 0).eq(0) ? 1 : inputCurrencyAmount)
                     .toFixed(4)} {outputCurrency.symbol}</div>
@@ -75,6 +79,43 @@ export default function Route({
                 <div>~{duration}s</div>
             </div>
         </div>
+
+        {
+            name === 'OneClick' && showDexInfo && <div className="pt-[10px] space-y-[10px] text-[10px] text-[#A1AECB] border-t border-[#34304B] mt-[10px] px-[10px]">
+                {
+                    routes.map((route: any, index: number) => (
+                        <div className="flex items-center gap-[10px]" key={index}>
+                            <div className="">{balanceFormated(route.percentage * 100, 2)}%</div>
+                            
+                            <div className="flex items-center gap-[4px] flex-1 justify-end"> 
+                                {
+                                    route.pools?.length > 0 && route.pools.map((pool: any, index: number) => (
+                                        <div className="flex items-center gap-[4px] relative" key={index}>
+                                            {/* <img className="w-[16px] h-[16px] rounded-[4px]" src={pool.tokenInInfo.logoURI} /> */}
+                                            <div className=" ">{pool.tokenInInfo}</div>
+                                            <div className="w-[30px] border-t border-dashed border-[#34304B]"></div>
+                                            <div className="absolute top-0 right-[7px] group">
+                                                <img className="w-[16px] h-[16px] rounded-[4px]" src={pool.dex.logo} />
+                                                <div className="text-[10px] text-white bg-[#00000080] rounded-[4px] px-[4px] py-[2px] absolute top-[-15px] left-[50%] -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">{pool.dex.name}</div>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+
+                                {
+                                    route.pools?.length > 0 && route.pools[route.pools.length - 1].tokenOutInfo && (
+                                        <div className="flex items-center gap-[4px]">
+                                            <div className=" ">{route.pools[route.pools.length - 1].tokenOutInfo}</div>
+                                        </div>
+                                    )
+                                }
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+        }
+
 
     </div>
 }
