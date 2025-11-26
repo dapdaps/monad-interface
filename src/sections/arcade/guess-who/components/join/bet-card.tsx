@@ -3,7 +3,7 @@ import Monsters from "../monsters";
 import BetToken from "./bet-token";
 
 const BetCard = (props: any) => {
-  const { betToken, betAmount, monster, betMonster, onSelectMonster } = props;
+  const { betToken, betAmount, monster, betMonster, onSelectMonster, monsters } = props;
 
   return (
     <div
@@ -16,6 +16,7 @@ const BetCard = (props: any) => {
         visibleMonsters={[monster]}
         betMonster={betMonster}
         onSelectMonster={onSelectMonster}
+        monsters={monsters}
       />
       <BetToken
         betToken={betToken}

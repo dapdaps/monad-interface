@@ -1,8 +1,5 @@
 import clsx from "clsx";
-import { Monster, MONSTERS } from "../../config";
-import MonsterEye1 from "./eye-1";
-import MonsterEye2 from "./eye-2";
-import MonsterEye3 from "./eye-3";
+import MonsterSelector from "./monster";
 
 const Monsters = (props: any) => {
   const {
@@ -10,63 +7,30 @@ const Monsters = (props: any) => {
     onSelectMonster,
     className,
     visibleMonsters,
+    monsters,
   } = props;
 
   return (
     <div className={clsx("w-full flex justify-center items-end gap-[40px] text-[#A6A6DB]", className)}>
       {
-        visibleMonsters?.includes(Monster.Eye1) && (
+        monsters?.filter?.((monster: any) => visibleMonsters?.includes(monster.value))?.map?.((monster: any, index: number) => (
           <button
+            key={index}
             type="button"
             className="flex flex-col justify-end items-center gap-[18px]"
             onClick={() => {
-              onSelectMonster(Monster.Eye1);
+              onSelectMonster(monster.value);
             }}
           >
-            <MonsterEye1
-              selected={betMonster?.includes(Monster.Eye1)}
+            <MonsterSelector
+              monster={monster}
+              selected={betMonster?.includes(monster.value)}
             />
-            <div className={clsx("text-[16px]", betMonster?.includes(Monster.Eye1) && "text-white")}>
-              {MONSTERS[Monster.Eye1].name}
+            <div className={clsx("text-[16px]", betMonster?.includes(monster.value) && "text-white")}>
+              {monster.name}
             </div>
           </button>
-        )
-      }
-      {
-        visibleMonsters?.includes(Monster.Eye2) && (
-          <button
-            type="button"
-            className="flex flex-col justify-end items-center gap-[18px]"
-            onClick={() => {
-              onSelectMonster(Monster.Eye2);
-            }}
-          >
-            <MonsterEye2
-              selected={betMonster?.includes(Monster.Eye2)}
-            />
-            <div className={clsx("text-[16px]", betMonster?.includes(Monster.Eye2) && "text-white")}>
-            {MONSTERS[Monster.Eye2].name}
-            </div>
-          </button>
-        )
-      }
-      {
-        visibleMonsters?.includes(Monster.Eye3) && (
-          <button
-            type="button"
-            className="flex flex-col justify-end items-center gap-[18px]"
-            onClick={() => {
-              onSelectMonster(Monster.Eye3);
-            }}
-          >
-            <MonsterEye3
-              selected={betMonster?.includes(Monster.Eye3)}
-            />
-            <div className={clsx("text-[16px]", betMonster?.includes(Monster.Eye3) && "text-white")}>
-            {MONSTERS[Monster.Eye3].name}
-            </div>
-          </button>
-        )
+        ))
       }
     </div>
   );

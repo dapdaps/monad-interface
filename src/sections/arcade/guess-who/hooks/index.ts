@@ -4,10 +4,10 @@ import useCustomAccount from "@/hooks/use-account";
 import { get } from "@/utils/http";
 import { useDebounceFn, useRequest } from "ahooks";
 import { useEffect, useRef, useState } from "react";
-import { ContractStatus, ContractStatus2Status, EmptyPlayer, PlayerAvatars, Room, Status, WinnerStatus } from "../config";
+import { ContractStatus, ContractStatus2Status, EmptyPlayer, Monster, MonsterInfo, MonsterMap, PlayerAvatars, Room, Status, WinnerStatus } from "../config";
 import { Contract, utils } from "ethers";
 import { RPS_CONTRACT_ADDRESS, RPS_CONTRACT_ADDRESS_ABI } from "../contract";
-import { cloneDeep } from "lodash";
+import { cloneDeep, range, sampleSize } from "lodash";
 import { multicall, multicallAddresses } from "@/utils/multicall";
 import { DEFAULT_CHAIN_ID } from "@/configs";
 import dayjs from "dayjs";
@@ -20,6 +20,7 @@ export function useGuessWho() {
   const { accountWithAk, account, provider } = useCustomAccount();
   const { nativeBalance, nativeBalanceLoading, getNativeBalance } = useLayoutContext();
   const soundStore = useSoundStore();
+  const [monsters, setMonsters] = useState<[MonsterInfo, MonsterInfo, MonsterInfo]>();
 
   const [listTab, setListTab] = useState("all");
   const [room, setRoom] = useState<Room>();
@@ -544,7 +545,29 @@ export function useGuessWho() {
     _play();
   };
 
+  const randomMonsters = () => {
+    const [index1, index2, index3] = sampleSize(range(0, 6), 3);
+    const monsterList = Object.values(MonsterMap);
+    const _monsters: [MonsterInfo, MonsterInfo, MonsterInfo] = [
+      {
+        ...monsterList[index1],
+        value: Monster.Eye1,
+      },
+      {
+        ...monsterList[index2],
+        value: Monster.Eye2,
+      },
+      {
+        ...monsterList[index3],
+        value: Monster.Eye3,
+      }
+    ];
+    setMonsters(_monsters);
+    return _monsters;
+  };
+
   useEffect(() => {
+    randomMonsters();
     playAudio({ type: "environment", action: "play" });
 
     return () => {
@@ -553,6 +576,8 @@ export function useGuessWho() {
   }, []);
 
   return {
+    monsters,
+    randomMonsters,
     list,
     getList,
     getListDelay,

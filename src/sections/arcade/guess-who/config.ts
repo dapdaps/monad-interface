@@ -4,36 +4,86 @@ export enum Monster {
   Eye3 = 2,
 }
 
-export const MONSTERS: Record<Monster, { name: string, avatar: string, value: Monster; img: string; outline: string; shadow: string; size: [number, number]; outlineSize: [number, number]; }> = {
-  [Monster.Eye1]: {
-    name: "Chog",
+export enum MonsterName {
+  Chog = "Chog",
+  Molandak = "Molandak",
+  Salmonad = "Salmonad",
+  Mouch = "Mouch",
+  Moyaki = "Moyaki",
+  Mokadel = "Mokadel",
+}
+
+export const DefaultMonsterList = [
+  MonsterName.Chog,
+  MonsterName.Molandak,
+  MonsterName.Salmonad,
+];
+
+export interface MonsterInfo {
+  name: MonsterName;
+  avatar: string;
+  img: string;
+  outline: string;
+  shadow: string;
+  size: [number, number];
+  outlineSize: [number, number];
+  value?: Monster;
+}
+
+export const MonsterMap: Record<MonsterName, MonsterInfo> = {
+  [MonsterName.Chog]: {
+    name: MonsterName.Chog,
     avatar: "/images/mainnet/arcade/guess-who/v2/nft-chog-sm.png",
     img: "/images/mainnet/arcade/guess-who/v2/nft-chog.png",
     outline: "/images/mainnet/arcade/guess-who/v2/nft-chog-outline.png",
     shadow: "/images/mainnet/arcade/guess-who/v2/nft-chog-shadow.png",
     size: [95, 91],
     outlineSize: [101, 97],
-    value: Monster.Eye1,
   },
-  [Monster.Eye2]: {
-    name: "Molandak",
+  [MonsterName.Molandak]: {
+    name: MonsterName.Molandak,
     avatar: "/images/mainnet/arcade/guess-who/v2/nft-molandak-sm.png",
     img: "/images/mainnet/arcade/guess-who/v2/nft-molandak.png",
     outline: "/images/mainnet/arcade/guess-who/v2/nft-molandak-outline.png",
     shadow: "/images/mainnet/arcade/guess-who/v2/nft-molandak-shadow.png",
     size: [87, 75],
     outlineSize: [93, 81],
-    value: Monster.Eye2,
   },
-  [Monster.Eye3]: {
-    name: "Salmonad",
+  [MonsterName.Salmonad]: {
+    name: MonsterName.Salmonad,
     avatar: "/images/mainnet/arcade/guess-who/v2/nft-salmonad-sm.png",
     img: "/images/mainnet/arcade/guess-who/v2/nft-salmonad.png",
     outline: "/images/mainnet/arcade/guess-who/v2/nft-salmonad-outline.png",
     shadow: "/images/mainnet/arcade/guess-who/v2/nft-salmonad-shadow.png",
     size: [91, 93],
     outlineSize: [97, 99],
-    value: Monster.Eye3,
+  },
+  [MonsterName.Mouch]: {
+    name: MonsterName.Mouch,
+    avatar: "/images/mainnet/arcade/guess-who/v2/nft-mouch-sm.png",
+    img: "/images/mainnet/arcade/guess-who/v2/nft-mouch.png",
+    outline: "/images/mainnet/arcade/guess-who/v2/nft-mouch-outline.png",
+    shadow: "/images/mainnet/arcade/guess-who/v2/nft-mouch-shadow.png",
+    size: [80, 84],
+    outlineSize: [84, 88],
+  },
+  [MonsterName.Moyaki]: {
+    name: MonsterName.Moyaki,
+    avatar: "/images/mainnet/arcade/guess-who/v2/nft-moyaki-sm.png",
+    img: "/images/mainnet/arcade/guess-who/v2/nft-moyaki.png",
+    outline: "/images/mainnet/arcade/guess-who/v2/nft-moyaki-outline.png",
+    shadow: "/images/mainnet/arcade/guess-who/v2/nft-moyaki-shadow.png",
+    size: [104, 63],
+    outlineSize: [110, 69],
+  },
+  [MonsterName.Mokadel]: {
+    name: MonsterName.Mokadel,
+    avatar: "/images/mainnet/arcade/guess-who/v2/nft-mokadel-sm.png",
+    img: "/images/mainnet/arcade/guess-who/v2/nft-mokadel.png",
+    outline: "/images/mainnet/arcade/guess-who/v2/nft-mokadel-outline.png",
+    shadow: "/images/mainnet/arcade/guess-who/v2/nft-mokadel-shadow.png",
+    size: [128, 56],
+    outlineSize: [134, 62],
   },
 };
 
