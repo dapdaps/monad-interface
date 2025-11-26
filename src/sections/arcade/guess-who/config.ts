@@ -4,25 +4,40 @@ export enum Monster {
   Eye3 = 2,
 }
 
-export const MONSTERS: Record<Monster, { name: string, avatar: string, value: Monster; }> = {
+export const MONSTERS: Record<Monster, { name: string, avatar: string, value: Monster; img: string; outline: string; shadow: string; size: [number, number]; outlineSize: [number, number]; }> = {
   [Monster.Eye1]: {
-    name: "One Eye",
-    avatar: "/images/mainnet/arcade/guess-who/avatar-monster-eye-1.png",
+    name: "Chog",
+    avatar: "/images/mainnet/arcade/guess-who/v2/nft-chog-sm.png",
+    img: "/images/mainnet/arcade/guess-who/v2/nft-chog.png",
+    outline: "/images/mainnet/arcade/guess-who/v2/nft-chog-outline.png",
+    shadow: "/images/mainnet/arcade/guess-who/v2/nft-chog-shadow.png",
+    size: [95, 91],
+    outlineSize: [101, 97],
     value: Monster.Eye1,
   },
   [Monster.Eye2]: {
-    name: "Two Eyes",
-    avatar: "/images/mainnet/arcade/guess-who/avatar-monster-eye-2.png",
+    name: "Molandak",
+    avatar: "/images/mainnet/arcade/guess-who/v2/nft-molandak-sm.png",
+    img: "/images/mainnet/arcade/guess-who/v2/nft-molandak.png",
+    outline: "/images/mainnet/arcade/guess-who/v2/nft-molandak-outline.png",
+    shadow: "/images/mainnet/arcade/guess-who/v2/nft-molandak-shadow.png",
+    size: [87, 75],
+    outlineSize: [93, 81],
     value: Monster.Eye2,
   },
   [Monster.Eye3]: {
-    name: "Three Eyes",
-    avatar: "/images/mainnet/arcade/guess-who/avatar-monster-eye-3.png",
+    name: "Salmonad",
+    avatar: "/images/mainnet/arcade/guess-who/v2/nft-salmonad-sm.png",
+    img: "/images/mainnet/arcade/guess-who/v2/nft-salmonad.png",
+    outline: "/images/mainnet/arcade/guess-who/v2/nft-salmonad-outline.png",
+    shadow: "/images/mainnet/arcade/guess-who/v2/nft-salmonad-shadow.png",
+    size: [91, 93],
+    outlineSize: [97, 99],
     value: Monster.Eye3,
   },
 };
 
-export const RPS_MIN_BET_AMOUNT = 1; // minBetAmount
+export const RPS_MIN_BET_AMOUNT = 50; // minBetAmount
 
 export interface Player {
   address: string;

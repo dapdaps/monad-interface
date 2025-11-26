@@ -124,10 +124,10 @@ const NotifyContent = (props: any) => {
                     <div
                       className=""
                       style={{
-                        color: StatusMap[it.status as Status].color,
+                        color: StatusMap[it.status as Status]?.color,
                       }}
                     >
-                      {StatusMap[it.status as Status].name}
+                      {StatusMap[it.status as Status]?.name}
                     </div>
                   )
                 }

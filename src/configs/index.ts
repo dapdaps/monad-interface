@@ -1,6 +1,6 @@
 import dayjs from "@/libs/day";
 
-export const DEFAULT_CHAIN_ID = 143
+export const DEFAULT_CHAIN_ID: number = 143
 
 // ⚠️ Now this constant is useless, it will be removed later
 export const IS_PRODUCTION = process.env.NEXT_PUBLIC_API === "https://mainnet-api-monad.dapdap.net";
