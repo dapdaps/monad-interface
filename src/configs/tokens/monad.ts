@@ -104,7 +104,7 @@ export const monad: { [key: string]: Token } = {
     icon: "https://assets.dapdap.net/monad/aprmon.png"
   },
   wsteth: {
-    address: "0x0c65a0bc65a5d819235b71f554d210d3f80e0852",
+    address: "0x10Aeaf63194db8d453d4D85a06E5eFE1dd0b5417",
     chainId: CHAIN_ID,
     symbol: "wstETH",
     decimals: 18,
