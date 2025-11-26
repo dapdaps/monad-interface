@@ -1,4 +1,4 @@
-import { Monster, MONSTERS } from "@/sections/arcade/guess-who/config";
+import { DefaultMonsterList, MonsterMap, MonsterName } from "@/sections/arcade/guess-who/config";
 import { numberFormatter } from "@/utils/number-formatter";
 import { useDebounceFn } from "ahooks";
 import Big from "big.js";
@@ -87,6 +87,11 @@ const Content = (props: any) => {
     };
   }, []);
 
+  const winnerMonster = useMemo(() => {
+    const icons = room?.icon?.split?.(",") ?? DefaultMonsterList;
+    return MonsterMap[icons[room?.winner_moves] as MonsterName];
+  }, [room]);
+
   return (
     <motion.div
       className="w-[273px] h-[68px] fixed text-white font-[600] flex flex-col justify-center gap-[0px] pl-[60px] bg-[url('/images/mainnet/arcade/guess-who/bg-guess-who-toast.png')] bg-no-repeat bg-center bg-contain"
@@ -108,7 +113,7 @@ const Content = (props: any) => {
           className="w-[119px] h-[107px] object-center object-contain shrink-0"
         />
         <img
-          src={MONSTERS[room?.winner_moves as Monster]?.avatar}
+          src={winnerMonster?.avatar}
           alt=""
           className="w-[48px] h-[36px] rotate-[-15deg] object-center object-contain shrink-0 absolute translate-y-[10px]"
         />

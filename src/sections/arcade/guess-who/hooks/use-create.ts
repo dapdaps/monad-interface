@@ -9,9 +9,12 @@ import { Contract, utils } from "ethers";
 import { RPS_CONTRACT_ADDRESS, RPS_CONTRACT_ADDRESS_ABI } from "../contract";
 import Big from "big.js";
 import { NotificationType, useNotificationContext } from "@/context/notification";
+import { post } from "@/utils/http";
 
 export function useCreate(props?: any) {
   const {
+    monsters,
+    randomMonsters,
     betToken,
     betTokenBalance,
     getBetTokenBalance,
@@ -47,6 +50,19 @@ export function useCreate(props?: any) {
       return _betMonster;
     });
   };
+
+  const { runAsync: onReport, loading: reporting } = useRequest(async (hash: string) => {
+    try {
+      await post("/game/rps/create", {
+        icon: monsters?.map((monster: any) => monster.name)?.join(","),
+        tx_hash: hash,
+      });
+    } catch (error) {
+      console.log("report icon failed: %o", error);
+    }
+  }, {
+    manual: true,
+  });
 
   const { runAsync: onCreate, loading: creating } = useRequest(async () => {
     playAudio({ type: "click", action: "play" });
@@ -116,6 +132,7 @@ export function useCreate(props?: any) {
         return;
       }
 
+      onReport(transactionHash);
       toast.success({
         title: "Created successful",
         tx: transactionHash,
@@ -156,6 +173,7 @@ export function useCreate(props?: any) {
             status: Status.Ongoing,
             winner_address: "",
             winner_moves: 0,
+            icon: monsters?.map((monster: any) => monster.name)?.join(","),
           };
           // double
           if (RoomJoinedBEvent) {
@@ -190,6 +208,7 @@ export function useCreate(props?: any) {
       setBetMonster([]);
       getBetTokenBalance();
       !isCrawlingRoomEvent && getListDelay();
+      randomMonsters();
     } catch (error: any) {
       console.log("create rps failed: %o", error);
       toast.dismiss(toastId);

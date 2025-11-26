@@ -1,8 +1,10 @@
 import clsx from "clsx";
-import { Monster, MONSTERS } from "../config";
+import { DefaultMonsterList, MonsterMap, MonsterName } from "../config";
 
 const PlayerAvatar = (props: any) => {
-  const { avatar, moves, className, avatarClassName } = props;
+  const { avatar, moves, className, avatarClassName, icon } = props;
+
+  const icons = icon?.split(",") ?? DefaultMonsterList;
 
   return (
     <div
@@ -16,7 +18,7 @@ const PlayerAvatar = (props: any) => {
       } : {}}
     >
       <img
-        src={moves !== void 0 ? MONSTERS[moves as Monster]?.avatar : "/images/mainnet/arcade/guess-who/v2/nft-unknow.png"}
+        src={moves !== void 0 ? MonsterMap[icons[moves] as MonsterName]?.avatar : "/images/mainnet/arcade/guess-who/v2/nft-unknow.png"}
         alt=""
         className={clsx(
           "object-center object-contain shrink-0 absolute top-[-10px] right-[-16px]",

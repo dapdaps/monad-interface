@@ -3,7 +3,7 @@ import useCustomAccount from "@/hooks/use-account";
 import { useConnectWallet } from "@/hooks/use-connect-wallet";
 import useToast from "@/hooks/use-toast";
 import { useRequest } from "ahooks";
-import { ContractStatus, Monster, MONSTERS, Room, Status } from "../config";
+import { ContractStatus, DefaultMonsterList, Monster, MonsterMap, MonsterName, Room, Status } from "../config";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Contract, utils } from "ethers";
 import { RPS_CONTRACT_ADDRESS, RPS_CONTRACT_ADDRESS_ABI } from "../contract";
@@ -36,8 +36,13 @@ export function useJoin(props?: any) {
   const [result, setResult] = useState<{ address: string; moves: Monster; }>();
 
   const [lastMonsters] = useMemo(() => {
+    const icons = room?.icon?.split(",") ?? DefaultMonsterList;
+    const monsterList = icons.map((icon: string, index: number) => ({
+      ...MonsterMap[icon as MonsterName],
+      value: index,
+    }));
     return [
-      Object.values(MONSTERS).map((it) => ({ ...it })).filter((it) => !room?.players?.some((player: any) => player.moves === it.value)),
+      monsterList.filter((it: any) => !room?.players?.some((player: any) => player.moves === it.value)),
     ];
   }, [room]);
 
@@ -270,10 +275,6 @@ export function useJoin(props?: any) {
       playAudio({ type: "error", action: "play" });
       return;
     }
-    // const _lastMonsters = Object.values(MONSTERS).map((it) => ({ ...it })).filter((it) => !_roomInfo?.players?.some((player: any) => player.moves === it.value));
-    // if (_lastMonsters?.length === 1 && !betMonster.length) {
-    //   onSelectMonster(_lastMonsters[0].value);
-    // }
     setOpen(true);
   };
 
