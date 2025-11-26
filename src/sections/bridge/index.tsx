@@ -78,7 +78,6 @@ export default function Bridge() {
   const targetRef = useRef<HTMLDivElement>(null);
   const [targetX, setTargetX] = useState("0px");
   const [targetY, setTargetY] = useState("0px");
-
   const params = useSearchParams();
   const dapp = params.get("dapp");
   
@@ -301,6 +300,7 @@ export default function Bridge() {
                   setFromToken(token);
                 }}
                 comingSoon={ComingSoon}
+                balanceUpdate={updateBanlance}
               />
               <div
                 className="h-[8px] md:h-4 flex justify-center items-center cursor-pointer"
@@ -337,6 +337,7 @@ export default function Bridge() {
                   setToToken(token);
                 }}
                 comingSoon={ComingSoon}
+                balanceUpdate={updateBanlance}
               />
               <div className="flex items-center justify-between pt-[17px] text-[12px] text-[#A6A6DB]">
                 <div>Receive address</div>
