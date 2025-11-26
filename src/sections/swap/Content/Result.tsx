@@ -107,7 +107,7 @@ export default function Result({
             <path d="M6 0C2.68697 0 0 2.68697 0 6C0 9.31303 2.68562 12 6 12C9.31438 12 12 9.31438 12 6C12 2.68697 9.31438 0 6 0ZM7.57322 6.6086H5.89924C5.56337 6.6086 5.29064 6.33587 5.29064 6V2.81997C5.29064 2.4841 5.56337 2.21137 5.89924 2.21137C6.23511 2.21137 6.50784 2.4841 6.50784 2.81997V5.39275H7.57322C7.90909 5.39275 8.18182 5.66547 8.18182 6.00134C8.18182 6.33721 7.90909 6.6086 7.57322 6.6086Z" fill="#727D97" />
           </svg>
           <div className="text-[#727D97] border-r border-[#34304B] pr-[10px] h-[12px] leading-[12px]">~10s</div>
-          <img src={outputCurrency.icon} className="w-[14px] h-[14px]" />
+          <img src={outputCurrency.icon || "/assets/tokens/default_icon.png"} className="w-[14px] h-[14px]" />
           <div>{balanceFormated(outputCurrencyAmount, 4)}</div>
         </div>
 
