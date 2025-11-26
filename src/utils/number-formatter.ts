@@ -228,7 +228,7 @@ export const formatSmallDecimal = (
   };
 
   if (zeroCount > 0) {
-    const remainingZeros = zeroCount - 1;
+    const remainingZeros = zeroCount;
     if (remainingZeros > 0) {
       const subscript = toSubscript(remainingZeros);
       return `${prefix}0.0${subscript}${significantDigits}`;
