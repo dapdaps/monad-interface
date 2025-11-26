@@ -21,6 +21,7 @@ export function useCreate(props?: any) {
     onChange2UserLatest,
     onChange2List,
     playAudio,
+    gameConfig,
   } = props ?? {};
 
   const { accountWithAk, account, chainId, provider } = useCustomAccount();
@@ -29,7 +30,7 @@ export function useCreate(props?: any) {
   const { add } = useNotificationContext();
 
   const [betMonster, setBetMonster] = useState<Monster[]>([]);
-  const [betAmount, setBetAmount] = useState<string>();
+  const [betAmount, setBetAmount] = useState<string>(RPS_MIN_BET_AMOUNT + "");
 
   const onSelectMonster = (monster: Monster) => {
     setBetMonster((prev) => {
@@ -225,8 +226,8 @@ export function useCreate(props?: any) {
       _result.text = "Insufficient balance";
       return _result;
     }
-    if (Big(betAmount || 0).lt(RPS_MIN_BET_AMOUNT)) {
-      _result.text = `Minimum ${RPS_MIN_BET_AMOUNT}`;
+    if (Big(betAmount || 0).lt(gameConfig?.minBetAmount || RPS_MIN_BET_AMOUNT)) {
+      _result.text = `Minimum ${gameConfig?.minBetAmount || RPS_MIN_BET_AMOUNT}`;
       return _result;
     }
     if (betMonster.length < 1) {
@@ -235,7 +236,7 @@ export function useCreate(props?: any) {
     }
     _result.disabled = false;
     return _result;
-  }, [betAmount, betMonster, creating, account, chainId, betTokenBalance]);
+  }, [betAmount, betMonster, creating, account, chainId, betTokenBalance, gameConfig]);
 
   return {
     betMonster,

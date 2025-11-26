@@ -51,7 +51,7 @@ const GuessWho = () => {
               <Monsters
                 betMonster={create.betMonster}
                 onSelectMonster={create.onSelectMonster}
-                className="absolute z-[1] top-[50px]"
+                className="absolute z-[1] top-[80px]"
                 visibleMonsters={[Monster.Eye1, Monster.Eye2, Monster.Eye3]}
               />
               <motion.img
@@ -83,6 +83,7 @@ const GuessWho = () => {
                 playAudio={guessWho.playAudio}
                 betAmount={create.betAmount}
                 setBetAmount={create.setBetAmount}
+                gameConfig={guessWho.gameConfig}
               />
               <div className="absolute bottom-[-50px] w-[480px] h-[166px] flex justify-center items-center bg-[url('/images/mainnet/arcade/guess-who/create-game-base.png')] bg-no-repeat bg-center bg-contain">
                 <motion.button
@@ -201,10 +202,10 @@ const GuessWho = () => {
                             <div
                               className=""
                               style={{
-                                color: StatusMap[it.status as Status].color,
+                                color: StatusMap[it.status as Status]?.color,
                               }}
                             >
-                              {StatusMap[it.status as Status].name}
+                              {StatusMap[it.status as Status]?.name}
                             </div>
                           )
                         }

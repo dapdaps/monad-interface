@@ -16,12 +16,13 @@ const PlayerAvatar = (props: any) => {
       } : {}}
     >
       <img
-        src={moves !== void 0 ? MONSTERS[moves as Monster]?.avatar : "/images/mainnet/arcade/guess-who/avatar-monster-empty.png"}
+        src={moves !== void 0 ? MONSTERS[moves as Monster]?.avatar : "/images/mainnet/arcade/guess-who/v2/nft-unknow.png"}
         alt=""
         className={clsx(
-          "w-[39px] h-[30px] object-center object-contain shrink-0 absolute top-[-10px] right-[-16px]",
+          "object-center object-contain shrink-0 absolute top-[-10px] right-[-16px]",
           avatarClassName,
           !avatar ? "" : "rotate-[24deg]",
+          moves !== void 0 ? "w-[39px] h-[30px]" : "w-[45px] h-[40px]",
         )}
       />
     </div>

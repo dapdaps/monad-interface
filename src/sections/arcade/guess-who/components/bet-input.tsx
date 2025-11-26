@@ -11,6 +11,7 @@ const BetInput = (props: any) => {
     setBetAmount,
     betAmount,
     playAudio,
+    gameConfig,
   } = props;
 
   return (
@@ -37,18 +38,18 @@ const BetInput = (props: any) => {
       <Button
         onClick={() => {
           playAudio({ type: "click", action: "play" });
-          setBetAmount((prev: any) => numberRemoveEndZero(Big(prev || 0).plus(RPS_MIN_BET_AMOUNT).toFixed(betToken.decimals)));
+          setBetAmount((prev: any) => numberRemoveEndZero(Big(prev || 0).plus(gameConfig?.minBetAmount || RPS_MIN_BET_AMOUNT).toFixed(betToken.decimals)));
         }}
       >
-        +{RPS_MIN_BET_AMOUNT}
+        +{Big(gameConfig?.minBetAmount || RPS_MIN_BET_AMOUNT).toFixed(0)}
       </Button>
       <Button
         onClick={() => {
           playAudio({ type: "click", action: "play" });
-          setBetAmount((prev: any) => numberRemoveEndZero(Big(prev || 0).plus(RPS_MIN_BET_AMOUNT * 10).toFixed(betToken.decimals)));
+          setBetAmount((prev: any) => numberRemoveEndZero(Big(prev || 0).plus(Big(gameConfig?.minBetAmount || RPS_MIN_BET_AMOUNT).times(10)).toFixed(betToken.decimals)));
         }}
       >
-        +{RPS_MIN_BET_AMOUNT * 10}
+        +{Big(gameConfig?.minBetAmount || RPS_MIN_BET_AMOUNT).times(10).toFixed(0)}
       </Button>
     </div>
   );

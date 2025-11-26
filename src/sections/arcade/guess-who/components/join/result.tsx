@@ -8,13 +8,30 @@ const Result = (props: any) => {
 
   return (
     <div className={clsx("flex flex-col justify-start items-center mt-[70px]", className)}>
-      <img
-        src={monster.avatar}
-        alt=""
-        className="w-[201px] h-[150px] object-center object-contain shrink-0"
-      />
+      <div
+        className={clsx(
+          "relative shrink-0 flex justify-center items-center",
+          "bg-no-repeat bg-center bg-contain",
+          className,
+        )}
+        style={{
+          backgroundImage: `url("${monster.outline}")`,
+          width: monster.outlineSize[0],
+          height: monster.outlineSize[1],
+        }}
+      >
+        <img
+          src={monster.img}
+          alt=""
+          className="object-center object-contain shrink-0"
+          style={{
+            width: monster.size[0],
+            height: monster.size[1],
+          }}
+        />
+      </div>
       <div className="text-[#FFF] text-[32px] mt-[20px] text-center">
-        {monster.name}
+        It's {monster.name}!
       </div>
     </div>
   );

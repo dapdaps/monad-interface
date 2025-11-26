@@ -5,63 +5,73 @@ import { useRouter } from "next/navigation";
 import Tip from "./tip";
 
 export default function GuessWho() {
-    const router = useRouter();
+  const router = useRouter();
 
-    ///images/mainnet/game/guess_who.png
+  ///images/mainnet/game/guess_who.png
 
-    return (
-        <div onClick={() => {
-            // router.push("/arcade/guess-who");
-        }} className="w-[640px] h-[728px] absolute bottom-0 left-[calc(50%-900px)] bg-[url('/images/mainnet/e-1-1.png')] bg-no-repeat bg-cover bg-center group">
-            {/* <img 
-                src="/images/mainnet/game/guess_who_hover.png" 
-                className="absolute top-[4px] left-[268px] w-[377px] h-[530px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-            /> */}
+  return (
+    <div
+      onClick={() => {
+        router.push("/arcade/guess-who");
+      }}
+      className="w-[640px] h-[728px] cursor-pointer absolute bottom-0 left-[calc(50%-900px)] bg-[url('/images/mainnet/game/guess_who.png')] bg-no-repeat bg-cover bg-center group"
+    >
+      <img
+        src="/images/mainnet/game/guess_who_hover.png"
+        className="absolute top-[4px] left-[268px] w-[377px] h-[530px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+      />
 
-            {/* <div className="absolute top-[45px] left-[350px] -rotate-[12deg] rounded-full pointer-events-none">
-                <Eyes size={38} isAnimate={false} />
-            </div> */}
+      <div className="absolute top-[45px] left-[350px] -rotate-[12deg] rounded-full pointer-events-none">
+        <Eyes size={38} isAnimate={true} />
+      </div>
 
-            {/* {
-                [1,2].map((item) => (
-                    <div key={item} className={clsx("absolute pointer-events-none top-[68px] left-[310px] text-white text-[42px] font-[800] italic font-Oxanium uppercase -rotate-[12.5deg]", item === 1 ? "[-webkit-text-stroke:15px_#13AEAF]" : "[-webkit-text-stroke:5px_#fff]")}>
-                        GuessWho
-                    </div>
-                ))
-            }
+      {
+        [1, 2].map((item) => (
+          <div key={item} className={clsx("absolute pointer-events-none top-[68px] left-[310px] text-white text-[42px] font-[800] italic font-Oxanium uppercase -rotate-[12.5deg]", item === 1 ? "[-webkit-text-stroke:15px_#13AEAF]" : "[-webkit-text-stroke:5px_#fff]")}>
+            GuessWho
+          </div>
+        ))
+      }
 
-            <motion.img
-                src="/images/mainnet/game/guess-p-1.png"
-                className="absolute top-[160px] left-[370px] w-[92px] pointer-events-none"
-                // animate={{ y: [0, -20, 0] }}
-                // transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            />
+      <motion.img
+        src="/images/mainnet/arcade/guess-who/v2/meteorite.png"
+        className="absolute top-[200px] left-[350px] w-[187px] h-[182px] object-center object-contain pointer-events-none"
+        animate={{ y: [0, -20, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      />
 
-            <motion.img
-                src="/images/mainnet/game/guess-p-2.png"
-                className="absolute top-[240px] left-[440px] w-[97px] pointer-events-none"
-                // animate={{ y: [0, -25, 0] }}
-                // transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-            />
+      {/* <motion.img
+        src="/images/mainnet/game/guess-p-1.png"
+        className="absolute top-[160px] left-[370px] w-[92px] pointer-events-none"
+      // animate={{ y: [0, -20, 0] }}
+      // transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      /> */}
 
-            <div>
-                <img src="/images/mainnet/game/guess-p-3.png" className="absolute top-[320px] left-[340px] w-[100px] pointer-events-none" />
-                <motion.img
-                    src="/images/mainnet/game/guess-bullet.png"
-                    className="absolute top-[381px] left-[438px] w-[12px] pointer-events-none"
-                    // animate={{ x: [0, 5, 0] }}
-                    // transition={{
-                    //     duration: 0.4,
-                    //     repeat: Infinity,
-                    //     ease: "easeInOut",
-                    //     repeatDelay: 2
-                    // }}
-                />
-            </div> */}
+      {/* <motion.img
+        src="/images/mainnet/game/guess-p-2.png"
+        className="absolute top-[240px] left-[440px] w-[97px] pointer-events-none"
+      // animate={{ y: [0, -25, 0] }}
+      // transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+      /> */}
 
-            <div className="absolute top-[240px] left-[370px] text-white text-[20px] font-[600] font-Oxanium uppercase">coming soon</div>
+      {/* <div>
+        <img src="/images/mainnet/game/guess-p-3.png" className="absolute top-[320px] left-[340px] w-[100px] pointer-events-none" />
+        <motion.img
+          src="/images/mainnet/game/guess-bullet.png"
+          className="absolute top-[381px] left-[438px] w-[12px] pointer-events-none"
+        // animate={{ x: [0, 5, 0] }}
+        // transition={{
+        //     duration: 0.4,
+        //     repeat: Infinity,
+        //     ease: "easeInOut",
+        //     repeatDelay: 2
+        // }}
+        />
+      </div> */}
 
-            <Tip className="right-[40px]" content={<div>Simple play · Up to <span className='font-bold text-[24px]'>66.7%</span> win rate</div>} />
-        </div>
-    )
+      {/* <div className="absolute top-[240px] left-[370px] text-white text-[20px] font-[600] font-Oxanium uppercase">coming soon</div> */}
+
+      <Tip className="right-[40px]" content={<div>Simple play · Up to <span className='font-bold text-[24px]'>66.7%</span> win rate</div>} />
+    </div>
+  )
 }
