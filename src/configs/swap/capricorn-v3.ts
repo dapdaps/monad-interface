@@ -3,7 +3,7 @@ import { monad as monadMainnet } from "../tokens/monad";
 
 export default {
   name: "Capricorn v3",
-  logo: "/images/mainnet/capricorn.png",
+  logo: "/images/mainnet/capricorn2.png",
   path: "/dex?dapp=capricorn-v3",
   defaultInputCurrency: monadMainnet["mon"],
   defaultOutputCurrency: monadMainnet["usdc"],

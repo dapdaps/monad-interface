@@ -32,7 +32,7 @@ const DEX_ID_MAP = {
     },
     "10": {
       name: "CapricornV3",
-      logo: "/images/mainnet/capricorn.png"
+      logo: "/images/mainnet/capricorn2.png"
     },
     "11": {
       name: "Dyorswapv2",
