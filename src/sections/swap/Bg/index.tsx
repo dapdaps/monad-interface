@@ -1,6 +1,8 @@
-export default function Bg() {
+import clsx from "clsx";
+
+export default function Bg({ className }: { className?: string }) {
   return (
-    <div className="absolute z-[1] inset-0 aspect-auto w-full h-full pointer-events-none">
+    <div className={clsx("absolute z-[1] inset-0 aspect-auto w-full h-full pointer-events-none", className)}>
       <img
         src="/images/mainnet/bridge/dapp-bg.png?r=2"
         className="absolute z-[1] inset-0 aspect-auto w-full h-full pointer-events-none"

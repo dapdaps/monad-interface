@@ -19,6 +19,7 @@ const formatTrade = ({
     ? Number(market.txn?.gasLimit.hex)
     : market.txn?.gasLimit;
 
+
   const { isGasEnough, gas } = checkGas({
     rawBalance,
     gasPrice,
@@ -93,7 +94,7 @@ const formatTrade = ({
     noPair: market.noPair,
     outputCurrencyAmount: market.outputCurrencyAmount,
     routerStr,
-    routes: market.routes?.[0]?.routes || [],
+    routes: market.template === "OneClick" ? market.routes : market.routes?.[0]?.routes || [],
     isGasEnough,
     priceImpact,
     priceImpactType,

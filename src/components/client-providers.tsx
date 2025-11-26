@@ -11,6 +11,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import InvitationContextProvider from "@/context/invitation";
 import { useApps } from "@/hooks/use-apps";
+import { initRpcCache } from "@/sdk/smart-router/utils";
 
 interface ClientProvidersProps {
   children: React.ReactNode;
@@ -23,6 +24,8 @@ export default function ClientProviders({
 
   useEffect(() => {
     fetchApps();
+    // 初始化 RPC 缓存
+    initRpcCache();
   }, []);
 
   return (

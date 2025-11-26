@@ -3,9 +3,42 @@ import weth from "../config/weth";
 import BigNumber from "bignumber.js";
 import chains from "../config/chains";
 import oneclickAbi from "../config/abi/oneclick";
+import { getRpcUrl } from "../utils";
+import { getTokenInfo } from "../utils/token";
 
 const FEE_RATE = 10;
 const FEE_RECIPIENT = "0xf9f2384fee12a3e31b3d61a262df9baa6b4e8a13";
+
+const DEX_ID_MAP = {
+    "1": {
+        name: "UniswapV2",
+        logo: "/images/dapps/icons/uniswap.png"
+    },
+    "2": {
+        name: "UniswapV3",
+        logo: "/images/dapps/icons/uniswap.png"
+    },
+    "3": {
+        name: "PancakeV2",
+        logo: "/images/dapps/icons/Pancake.svg"
+    },
+    "4": {
+        name: "PancakeV3",
+        logo: "/images/dapps/icons/Pancake.svg"
+    },
+    "8": {
+        name: "Kuru",
+        logo: "/images/dapps/icons/kuru.svg"
+    },
+    "10": {
+      name: "CapricornV3",
+      logo: "/images/mainnet/capricorn2.png"
+    },
+    "11": {
+      name: "Dyorswapv2",
+      logo: "/images/mainnet/dyorswap.ico"
+    }
+}
 export class OneClick {
   private chainId: number;
   private wrappedNativeAddress: string;
@@ -13,7 +46,8 @@ export class OneClick {
     // 10143: "0xc26484D2ce20e31e363e2f27782B4E9718fF918a",
     10143: "0x92493D26DDe5Edbd1660e0f49f1dd853B9623f80",
     // 143: "0x3Ff9bE8f6EE484E44659e05bE52969AA85DBAEB5",
-    143: '0x592FeB6B3dAE615fa15636f8a839E8d25FECE630'
+    // 143: '0x592FeB6B3dAE615fa15636f8a839E8d25FECE630'
+    143: '0x5fE80A45EE559B30f9EC1C8092247DF61c0a0a97'
   };
   private HOST = "https://api-trade.nadsa.space";
 
@@ -72,7 +106,7 @@ export class OneClick {
     }
 
     const provider = new providers.JsonRpcProvider(
-      chains[inputCurrency.chainId].rpcUrls[0]
+      getRpcUrl(inputCurrency.chainId)
     );
     const RouterContract = new Contract(
       this.ROUTER[inputCurrency.chainId],
@@ -155,11 +189,55 @@ export class OneClick {
       };
     }
 
+    const { routes } = bestTrade;
+
+    const tokenAddresses: string[] = []
+
+    const routesFormat = routes.map((route: any) => {
+      return {
+        percentage: Number(route.amount_in) / Number(bestTrade.amount_in),
+        amountIn: route.amount_in,
+        pools: route?.pools?.map((pool: any) => {
+          tokenAddresses.push(pool.token_in.toLowerCase())
+          tokenAddresses.push(pool.token_out.toLowerCase())
+          return {
+            dexId: pool.dex_id,
+            dex: DEX_ID_MAP[pool.dex_id as keyof typeof DEX_ID_MAP],
+            amountIn: pool.amount_in,
+            tokenIn: pool.token_in,
+            tokenOut: pool.token_out,
+          }
+        }),
+      }
+    })
+
+    const seen = new Set<string>();
+    const uniqueTokenAddresses = tokenAddresses.filter(addr => {
+      const lowerAddr = addr.toLowerCase();
+      if (seen.has(lowerAddr)) {
+        return false;
+      }
+      seen.add(lowerAddr);
+      return true;
+    });
+    tokenAddresses.length = 0;
+    tokenAddresses.push(...uniqueTokenAddresses);
+
+    const tokenInfo = await getTokenInfo(tokenAddresses);
+
+    routesFormat.forEach((route: any) => {
+      route.pools.forEach((pool: any) => {
+        pool.tokenInInfo = tokenInfo[pool.tokenIn.toLowerCase()];
+        pool.tokenOutInfo = tokenInfo[pool.tokenOut.toLowerCase()];
+      });
+    });
+
+
     return {
       outputCurrencyAmount: BigNumber(bestTrade.amount_out || 0).div(10 ** outputCurrency.decimals).toFixed(outputCurrency.decimals).replace(/\.?0+$/, ""),
       noPair: false,
       routerAddress: this.ROUTER[inputCurrency.chainId],
-      routes: bestTrade.routes,
+      routes: routesFormat,
       // fee: {
       //   fee: Number(bestTrade.amount_out_no_fee) - Number(bestTrade.amount_out),
       //   token: outputCurrency,

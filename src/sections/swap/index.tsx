@@ -11,8 +11,8 @@ export default function Swap({ dapp, isSuperSwap }: any) {
   const [showRoute, setShowRoute] = useState(false);
   return (
     <div className="pt-[150px] flex justify-center items-start gap-[15px]">
-      <div className="relative lg:w-[522px]">
-        <div className="relative z-[2] px-[34px] lg:py-[40px] font-Oxanium ">
+      <div className="relative lg:w-[550px]">
+        <div className="relative z-[2] px-[34px] py-[45px] font-Oxanium ">
           <Content
             dapp={dapp}
             isSuperSwap={isSuperSwap}
@@ -36,7 +36,7 @@ export default function Swap({ dapp, isSuperSwap }: any) {
                 // )
                 <DappIcon dapp={dapp} isSuperSwap={isSuperSwap} />
               }
-              <Bg />
+              <Bg className={showRoute ? "mt-[-12px]" : ""}/>
             </>
           )
         }

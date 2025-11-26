@@ -10,6 +10,7 @@ import BigNumber from "bignumber.js";
 import { nativeToWNative } from "../utils/token";
 import chains from "../config/chains";
 import weth from "../config/weth";
+import { getRpcUrl } from "../utils";
 
 type QuoterProps = {
   inputCurrency: any;
@@ -77,7 +78,7 @@ export class iZiSwap {
     account
   }: QuoterProps): Promise<any> {
     const chain = chains[inputCurrency.chainId];
-    const web3 = new Web3(new Web3.providers.HttpProvider(chain.rpcUrls[0]));
+    const web3 = new Web3(new Web3.providers.HttpProvider(getRpcUrl(inputCurrency.chainId)));
     const _amount = new BigNumber(inputAmount)
       .multipliedBy(10 ** inputCurrency.decimals)
       .toFixed(0);

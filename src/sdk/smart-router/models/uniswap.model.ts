@@ -6,6 +6,7 @@ import chains from "../config/chains";
 import routerV3Abi from "../config/abi/router-v3-2";
 import routerV2Abi from "../config/abi/router-v2-1";
 import { DEFAULT_CHAIN_ID } from "@/configs";
+import { getRpcUrl } from "../utils";
 
 export class Uniswap {
   
@@ -165,7 +166,7 @@ export class Uniswap {
     };
 
     const provider = new providers.JsonRpcProvider(
-      chains[inputCurrency.chainId].rpcUrls[0]
+      getRpcUrl(inputCurrency.chainId)
     );
     const RouterContract = new Contract(
       this.V2_ROUTER[inputCurrency.chainId],

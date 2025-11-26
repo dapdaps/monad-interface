@@ -51,7 +51,7 @@ export default function Transaction({ refresh }: { refresh: number }) {
                                             }
                                         </div>
                                         <div>
-                                            {item.assets && item.assets.length > 0 && item.assets[0]}
+                                            {item.assets && item.assets.length > 0 && item.assets.join(' to ')}
                                         </div>
                                     </div>
                                 </td>

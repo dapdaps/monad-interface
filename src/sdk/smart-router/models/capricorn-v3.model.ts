@@ -6,20 +6,20 @@ import routerV3Abi from "../config/abi/router-v3-2";
 import { DEFAULT_CHAIN_ID } from "@/configs";
 import { getRpcUrl } from "../utils";
 
-export class MondayTradeV3 {
+export class CapricornV3 {
   private v3: V3;
 
   private FACTORY: { [key: number]: string } = {
     10143: "0x749117280Ae615BEacD54Eea4E0d580d5c895538",
-    143: "0xC1e98D0A2a58fB8aBd10ccc30a58efff4080Aa21"
+    143: "0x6B5F564339DbAD6b780249827f2198a841FEB7F3"
   };
   private QUOTER: { [key: number]: string } = {
     10143: "0xb986260e95FF6C7C57c31B777613F25522D026FC",
-    143: "0xB97eCD41Aef0F842E773C8F9905919cDE49880C9"
+    143: "0xB430EDD2b54cdB3B25703fb3342ca3a88663A04D"
   };  
   private ROUTER: { [key: number]: string } = {
     10143: "0xE82aeD04aEb7EEF76CCB985Db73BEe73630fe523",
-    143: "0xFE951b693A2FE54BE5148614B109E316B567632F"
+    143: "0xdac97b6a3951641B177283028A8f428332333071"
   };
   private FEES: { [key: number]: number[] } = {
     143: [100, 500, 3000, 10000]
@@ -64,7 +64,6 @@ export class MondayTradeV3 {
         inputAmount: _amount
       }),
     ]);
-
 
     let bestTrade = bestTradeV3;
     let routerAddress = this.ROUTER[inputCurrency.chainId];

@@ -176,6 +176,9 @@ export default function useBridge({ originFromChain, originToChain, derection, d
           return;
         }
 
+
+        setUpdateBanlance(updateBanlance + 1);
+
         const actionParams = {
           hash: txHash,
           link: getChainScan(fromChain.chainId),

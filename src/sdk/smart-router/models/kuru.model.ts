@@ -2,6 +2,7 @@ import { utils, providers } from "ethers";
 import { PoolFetcher, PathFinder, TokenSwap } from "@kuru-labs/kuru-sdk";
 import BigNumber from "bignumber.js";
 import chains from "../config/chains";
+import { getRpcUrl } from "../utils";
 
 export class Kuru {
   private Api = "https://api.kuru.io";
@@ -32,7 +33,7 @@ export class Kuru {
     account
   }: any) {
     const chainId = inputCurrency.chainId;
-    const provider = new providers.JsonRpcProvider(chains[chainId].rpcUrls[0]);
+    const provider = new providers.JsonRpcProvider(getRpcUrl(chainId));
     const poolFetcher = new PoolFetcher(this.Api);
     const _inputCurrencyAddress = this.getTokenAddress(inputCurrency);
     const _outputCurrencyAddress = this.getTokenAddress(outputCurrency);

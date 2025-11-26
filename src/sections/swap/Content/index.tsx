@@ -53,7 +53,7 @@ export default function Swap({
     chainId: DEFAULT_CHAIN_ID,
     // template: dapp.name,
     template: isSuperSwap ? ['UniswapV3', 'UniswapV2', 'PancakeV2', 'PancakeV3', 'OneClick', 'iZumi', 'Kuru', 'MondayTradeV3', 'Monorail'] : dapp.name,
-    // template: isSuperSwap ? ['UniswapV2', 'PancakeV2', 'OneClick', 'MondayTradeV3'] : dapp.name,
+    // template: isSuperSwap ? ['CapricornV3'] : dapp.name,
     from,
     onSuccess: () => {
       setUpdater(Date.now());
@@ -183,6 +183,7 @@ export default function Swap({
         fee: route.fee,
         feeType: 2,
         duration: 10,
+        routes: route.routes || [],
         inputCurrencyAmount: route.inputCurrencyAmount,
         priceImpact: route.priceImpact || 0,
         priceImpactType: route.priceImpactType || 0,
