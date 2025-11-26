@@ -2,6 +2,7 @@ import { Contract, providers } from "ethers";
 import weth from "../config/weth";
 import BigNumber from "bignumber.js";
 import chains from "../config/chains";
+import { getRpcUrl } from "../utils";
 
 const FEE_RATE = 10;
 const FEE_RECIPIENT = "0xf9f2384fee12a3e31b3d61a262df9baa6b4e8a13";
@@ -90,7 +91,7 @@ export class Monorail {
     };
 
     const provider = new providers.JsonRpcProvider(
-      chains[inputCurrency.chainId].rpcUrls[0]
+      getRpcUrl(inputCurrency.chainId)
     );
 
     let gasEstimate: any = null

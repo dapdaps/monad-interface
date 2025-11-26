@@ -93,7 +93,7 @@ export default function Result({
               <div className="relative group">
                 <img src={icon} className="w-[14px] h-[14px]" />
                 <div className="absolute top-[-40px] whitespace-nowrap left-1/2 -translate-x-1/2 h-[36px] flex items-center justify-center px-[10px] bg-[#22202F] rounded-[4px] border border-[#34304B] backdrop-blur-[10px] opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200">
-                  Swap via {trade.name}
+                  Swap via {trade?.name === 'OneClick' ? 'Conductor v0.1' : trade.name}
                 </div>
               </div>
             )

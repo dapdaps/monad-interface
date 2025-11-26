@@ -8,6 +8,7 @@ import routerV2Abi from "../config/abi/router-v2-1";
 import weth from "../config/weth";
 import { uniq } from "lodash";
 import { DEFAULT_CHAIN_ID } from "@/configs";
+import { getRpcUrl } from "../utils";
 
 class UniversalV2 extends V2 {
   private pools: CandidatePool[];
@@ -233,7 +234,7 @@ export class PancakeSwap {
     };
 
     const provider = new providers.JsonRpcProvider(
-      chains[inputCurrency.chainId].rpcUrls[0]
+      getRpcUrl(inputCurrency.chainId)
     );
     const RouterContract = new Contract(
       this.V2_ROUTER[inputCurrency.chainId],

@@ -6,6 +6,7 @@ import { multicall } from "../../utils/multicall";
 import multicallAddresses from "../../config/multicall";
 import { nativeToWNative } from "../../utils/token";
 import getStableAmountOut from "./get-stable-amountout";
+import { getRpcUrl } from "../../utils";
 
 export class V2 {
   private midTokens: any[] = [];
@@ -71,7 +72,7 @@ export class V2 {
   }
 
   private async queryPairAddress(pairs: any, chainId: number) {
-    const rpcUrl = chains[chainId].rpcUrls[0];
+    const rpcUrl = getRpcUrl(chainId);
     const provider = new providers.JsonRpcProvider(rpcUrl);
     const calls = pairs.map((pair: any) => {
       return {
@@ -204,7 +205,7 @@ export class V2 {
       params: []
     }));
 
-    const rpcUrl = chains[inputCurrency.chainId].rpcUrls[0];
+    const rpcUrl = getRpcUrl(inputCurrency.chainId);
     const provider = new providers.JsonRpcProvider(rpcUrl);
 
     let multicallResults = [];

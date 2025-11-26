@@ -3,6 +3,7 @@ import BigNumber from "bignumber.js";
 import { nativeToWNative } from "../utils/token";
 import chains from "../config/chains";
 import routerAbi from "../config/abi/router-balancer";
+import { getRpcUrl } from "../utils";
 
 export class BalancerLib {
   private pools: any = [];
@@ -28,7 +29,7 @@ export class BalancerLib {
       .multipliedBy(10 ** inputCurrency.decimals)
       .toFixed(0);
     const provider = new providers.JsonRpcProvider(
-      chains[inputCurrency.chainId].rpcUrls[0]
+      getRpcUrl(inputCurrency.chainId)
     );
     const RouterContract = new Contract(
       this.routerAddress,
