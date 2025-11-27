@@ -106,7 +106,7 @@ export class Monorail {
       console.log('estimateGas err: %o', err);
     }
 
-    if (!gasEstimate && inputCurrency.isNative) {
+    if (!gasEstimate) {
       return {
         outputCurrencyAmount: "",
         noPair: true
