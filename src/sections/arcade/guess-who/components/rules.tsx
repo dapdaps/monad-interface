@@ -32,28 +32,34 @@ const RulesModal = (props: any) => {
           </div>
           <div className="w-[666px] mt-[15px] flex flex-col items-stretch gap-[6px] px-[22px] md:px-[10px] md:w-full">
             <Accordion
-              label="👽 How to Play"
+              label="🪐 How to Play"
               contentClassName=""
               defaultExpand={true}
             >
               <ul className="list-disc pl-[15px] pb-[10px]">
                 <li className="mb-[5px]">
-                  🛸 <strong className="text-white">Up to 3 players</strong> can join each round.
+                  ☄️ Somewhere in the galaxy, six completely unqualified creatures are hiding inside meteors: <strong className="text-white">Chog · Molandak · Salmonad · Mouch · Moyaki · Mokadel</strong>
                 </li>
                 <li className="mb-[5px]">
-                  👁️ Pick <strong className="text-white">1, 2, or 3 alien eyes</strong> — you can even pick multiple!
+                  🌌 Each round, your meteor <strong className="text-white">spits out 3 random creatures.</strong> No one knows which three
                 </li>
                 <li className="mb-[5px]">
-                  🔒 Once all players are in, the round locks.
+                  👁️ Pick <strong className="text-white">1 or up to 2</strong> of them to bet on — trust your gut, your vibes, or whatever cosmic nonsense you believe in.
                 </li>
                 <li className="mb-[5px]">
-                  🎲 The <strong className="text-white">smart contract randomly reveals</strong> one alien — fair and square!
+                  💰 <strong className="text-white">Minimum bet: 50 MON</strong>
                 </li>
                 <li className="mb-[5px]">
-                  🏆 <strong className="text-white">Only players who picked the winning eye take the entire pot.</strong> No ties, no splitting!
+                  🛸 Up to <strong className="text-white">3 players</strong> can join each round. Once it’s full, boom — <strong className="text-white">locked</strong>.
                 </li>
                 <li className="mb-[5px]">
-                  💰 Platform takes a <strong className="text-white">6.9% fee</strong> from the winnings.
+                  🎲 The smart contract then reveals the <strong className="text-white">actual creature crawling out of the meteor.</strong>
+                </li>
+                <li className="mb-[5px]">
+                  🏆 <strong className="text-white">Guess right? You take the whole pot. Guess wrong? The aliens giggle quietly.</strong>
+                </li>
+                <li className="mb-[5px]">
+                  💼 A <strong className="text-white">6.9% platform fee</strong> is taken from the winnings — because even space creatures pay taxes.
                 </li>
               </ul>
             </Accordion>
@@ -67,13 +73,13 @@ const RulesModal = (props: any) => {
                   ⏳ If the round doesn’t fill within <strong className="text-white">24 hours</strong>, any joined player can cancel.
                 </li>
                 <li className="mb-[5px]">
-                  💸 All bets are refunded <strong className="text-white">without fees</strong>.
+                  💸 All bets are <strong className="text-white">fully refunded — no fees, no drama.</strong>
                 </li>
               </ul>
             </Accordion>
           </div>
           <div className="mt-[15px]  text-[#A6A6DB] font-[SpaceGrotesk] text-[16px] font-normal leading-[120%] px-[32px]">
-            ✨ Are you ready to guess which alien eye will win? Let the cosmic fun begin! 👽🎉
+            ✨ So… which cosmic gremlin is about to pop out this time? Place your bets and let the <strong className="text-white">space chaos</strong> begin! 🚀👾
           </div>
         </div>
       </MonadBaseCard>
