@@ -1,4 +1,4 @@
-import { Monster, MONSTERS } from "../../config";
+import { DefaultMonsterList, MonsterMap, MonsterName } from "../../config";
 import Eyes from "../eyes";
 import Player from "./palyer";
 import BetCard from "./bet-card";
@@ -6,7 +6,7 @@ import HexagonButton from "@/components/button/hexagon";
 import BetOne from "./bet-one";
 import Pending from "./pending";
 import Result, { ResultUFO } from "./result";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import dayjs from "dayjs";
 
@@ -27,6 +27,14 @@ const JoinRoom = (props: any) => {
 
   const [isShowUFO, setIsShowUFO] = useState(false);
   const [isFinishedUFO, setIsFinishedUFO] = useState(false);
+
+  const [monsters] = useMemo(() => {
+    const icons = room?.icon?.split(",") ?? DefaultMonsterList;
+    return [icons.map((icon: string, index: number) => ({
+      ...MonsterMap[icon as MonsterName],
+      value: index,
+    }))];
+  }, [room]);
 
   useEffect(() => {
     setIsShowUFO(!!result);
@@ -58,6 +66,7 @@ const JoinRoom = (props: any) => {
           betToken={betToken}
           betAmount={room.bet_amount}
           player={room.players[0]}
+          icon={room.icon}
           moves={result?.moves}
           isWon={isFinishedUFO && !!result && room.players[0] && result?.address?.toLowerCase() === room.players[0].address.toLowerCase() && result?.moves === room.players[0].moves}
           isLost={isFinishedUFO && !!result && room.players[0] && (result?.address?.toLowerCase() !== room.players[0].address.toLowerCase() || result?.moves !== room.players[0].moves)}
@@ -66,6 +75,7 @@ const JoinRoom = (props: any) => {
           betToken={betToken}
           betAmount={room.bet_amount}
           player={room.players[1]}
+          icon={room.icon}
           moves={result?.moves}
           isWon={isFinishedUFO && !!result && room.players[1] && result?.address?.toLowerCase() === room.players[1].address.toLowerCase() && result?.moves === room.players[1].moves}
           isLost={isFinishedUFO && !!result && room.players[1] && (result?.address?.toLowerCase() !== room.players[1].address.toLowerCase() || result?.moves !== room.players[1].moves)}
@@ -74,6 +84,7 @@ const JoinRoom = (props: any) => {
           betToken={betToken}
           betAmount={room.bet_amount}
           player={room.players[2]}
+          icon={room.icon}
           moves={result?.moves}
           isWon={isFinishedUFO && !!result && room.players[2] && result?.address?.toLowerCase() === room.players[2].address.toLowerCase() && result?.moves === room.players[2].moves}
           isLost={isFinishedUFO && !!result && room.players[2] && (result?.address?.toLowerCase() !== room.players[2].address.toLowerCase() || result?.moves !== room.players[2].moves)}
@@ -91,7 +102,7 @@ const JoinRoom = (props: any) => {
           : (
             !!result
               ? (
-                <Result monster={MONSTERS[result.moves as Monster]} className="" />
+                <Result monster={MonsterMap[room.icon?.split(",")?.[result.moves] as MonsterName]} className="" />
               )
               : (
                 <>
@@ -108,6 +119,7 @@ const JoinRoom = (props: any) => {
                             onSelectMonster={() => {
                               onSelectMonster(betMonster[0]);
                             }}
+                            monsters={monsters}
                           />
                         </div>
                       ) : (
@@ -126,6 +138,7 @@ const JoinRoom = (props: any) => {
                               onSelectMonster={() => {
                                 onSelectMonster(monster.value);
                               }}
+                              monsters={monsters}
                             />
                           ))
                         }

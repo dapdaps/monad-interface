@@ -75,6 +75,7 @@ const NotifyContent = (props: any) => {
                         key={`${idx}-${playerIdx}`}
                         avatar={player.avatar}
                         moves={player.moves}
+                        icon={it.icon}
                         className="!w-[34px] !h-[34px] !rounded-[8px] translate-y-[8px]"
                       />
                     ))
@@ -84,18 +85,21 @@ const NotifyContent = (props: any) => {
                         key={`${idx}-${0}`}
                         avatar={it.players?.[0]?.avatar}
                         moves={it.players?.[0]?.moves}
+                        icon={it.icon}
                         className="!w-[34px] !h-[34px] !rounded-[8px] translate-y-[8px]"
                       />
                       <PlayerAvatar
                         key={`${idx}-${1}`}
                         avatar={it.players?.[1]?.avatar}
                         moves={it.players?.[1]?.moves}
+                        icon={it.icon}
                         className="!w-[34px] !h-[34px] !rounded-[8px] translate-y-[8px]"
                       />
                       <PlayerAvatar
                         key={`${idx}-${2}`}
                         avatar={it.players?.[2]?.avatar}
                         moves={it.players?.[2]?.moves}
+                        icon={it.icon}
                         className="!w-[34px] !h-[34px] !rounded-[8px] translate-y-[8px]"
                       />
                     </>
@@ -117,6 +121,7 @@ const NotifyContent = (props: any) => {
                       <PlayerAvatar
                         avatar={it.players?.find?.((player: any) => player.moves === it.winner_moves)?.avatar}
                         moves={it.players?.find?.((player: any) => player.moves === it.winner_moves)?.moves}
+                        icon={it.icon}
                         className="!w-[34px] !h-[34px] !rounded-[8px] translate-y-[8px]"
                       />
                     </div>
@@ -124,10 +129,10 @@ const NotifyContent = (props: any) => {
                     <div
                       className=""
                       style={{
-                        color: StatusMap[it.status as Status].color,
+                        color: StatusMap[it.status as Status]?.color,
                       }}
                     >
-                      {StatusMap[it.status as Status].name}
+                      {StatusMap[it.status as Status]?.name}
                     </div>
                   )
                 }

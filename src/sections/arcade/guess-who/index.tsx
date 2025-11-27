@@ -51,8 +51,9 @@ const GuessWho = () => {
               <Monsters
                 betMonster={create.betMonster}
                 onSelectMonster={create.onSelectMonster}
-                className="absolute z-[1] top-[50px]"
+                className="absolute z-[1] top-[80px]"
                 visibleMonsters={[Monster.Eye1, Monster.Eye2, Monster.Eye3]}
+                monsters={guessWho.monsters}
               />
               <motion.img
                 src="/images/mainnet/arcade/guess-who/ufo-light.png"
@@ -83,6 +84,7 @@ const GuessWho = () => {
                 playAudio={guessWho.playAudio}
                 betAmount={create.betAmount}
                 setBetAmount={create.setBetAmount}
+                gameConfig={guessWho.gameConfig}
               />
               <div className="absolute bottom-[-50px] w-[480px] h-[166px] flex justify-center items-center bg-[url('/images/mainnet/arcade/guess-who/create-game-base.png')] bg-no-repeat bg-center bg-contain">
                 <motion.button
@@ -151,7 +153,8 @@ const GuessWho = () => {
                                   key={`${idx}-${playerIdx}`}
                                   avatar={player.avatar}
                                   moves={player.moves}
-                                  className="!w-[26px] !h-[26px] !rounded-[8px] translate-y-[0px]"
+                                  icon={it.icon}
+                                  className="!w-[26px] !h-[26px] !rounded-[4px] translate-y-[0px]"
                                   avatarClassName="!right-[-10px] !top-[-15px]"
                                 />
                               ))
@@ -161,21 +164,24 @@ const GuessWho = () => {
                                   key={`${idx}-${0}`}
                                   avatar={it.players?.[0]?.avatar}
                                   moves={it.players?.[0]?.moves}
-                                  className="!w-[26px] !h-[26px] !rounded-[8px] translate-y-[0px]"
+                                  icon={it.icon}
+                                  className="!w-[26px] !h-[26px] !rounded-[4px] translate-y-[0px]"
                                   avatarClassName="!right-[-10px] !top-[-15px]"
                                 />
                                 <PlayerAvatar
                                   key={`${idx}-${1}`}
                                   avatar={it.players?.[1]?.avatar}
                                   moves={it.players?.[1]?.moves}
-                                  className="!w-[26px] !h-[26px] !rounded-[8px] translate-y-[0px]"
+                                  icon={it.icon}
+                                  className="!w-[26px] !h-[26px] !rounded-[4px] translate-y-[0px]"
                                   avatarClassName="!right-[-10px] !top-[-15px]"
                                 />
                                 <PlayerAvatar
                                   key={`${idx}-${2}`}
                                   avatar={it.players?.[2]?.avatar}
                                   moves={it.players?.[2]?.moves}
-                                  className="!w-[26px] !h-[26px] !rounded-[8px] translate-y-[0px]"
+                                  icon={it.icon}
+                                  className="!w-[26px] !h-[26px] !rounded-[4px] translate-y-[0px]"
                                   avatarClassName="!right-[-10px] !top-[-15px]"
                                 />
                               </>
@@ -193,7 +199,8 @@ const GuessWho = () => {
                               <PlayerAvatar
                                 avatar={it.players?.find?.((player: any) => player.moves === it.winner_moves)?.avatar}
                                 moves={it.players?.find?.((player: any) => player.moves === it.winner_moves)?.moves}
-                                className="!w-[26px] !h-[26px] !rounded-[8px] translate-y-[0px]"
+                                icon={it.icon}
+                                className="!w-[26px] !h-[26px] !rounded-[4px] translate-y-[0px]"
                                 avatarClassName="!right-[-10px] !top-[-15px]"
                               />
                             </div>
@@ -201,10 +208,10 @@ const GuessWho = () => {
                             <div
                               className=""
                               style={{
-                                color: StatusMap[it.status as Status].color,
+                                color: StatusMap[it.status as Status]?.color,
                               }}
                             >
-                              {StatusMap[it.status as Status].name}
+                              {StatusMap[it.status as Status]?.name}
                             </div>
                           )
                         }
@@ -403,14 +410,17 @@ const GuessWho = () => {
                               <PlayerAvatar
                                 avatar={record.players[0]?.avatar}
                                 moves={record.players[0]?.moves}
+                                icon={record.icon}
                               />
                               <PlayerAvatar
                                 avatar={record.players[1]?.avatar}
                                 moves={record.players[1]?.moves}
+                                icon={record.icon}
                               />
                               <PlayerAvatar
                                 avatar={record.players[2]?.avatar}
                                 moves={record.players[2]?.moves}
+                                icon={record.icon}
                               />
                             </div>
                           );
@@ -546,14 +556,17 @@ const GuessWho = () => {
                               <PlayerAvatar
                                 avatar={record.players[0]?.avatar}
                                 moves={record.players[0]?.moves}
+                                icon={record.icon}
                               />
                               <PlayerAvatar
                                 avatar={record.players[1]?.avatar}
                                 moves={record.players[1]?.moves}
+                                icon={record.icon}
                               />
                               <PlayerAvatar
                                 avatar={record.players[2]?.avatar}
                                 moves={record.players[2]?.moves}
+                                icon={record.icon}
                               />
                             </div>
                           );
@@ -602,6 +615,7 @@ const GuessWho = () => {
                                 avatar={record.players?.find((player: any) => player.moves === record.winner_moves)?.avatar}
                                 moves={record.players?.find((player: any) => player.moves === record.winner_moves)?.moves}
                                 className="!w-[34px] !h-[34px] !rounded-[8px] translate-y-[0px]"
+                                icon={record.icon}
                               />
                               <div className="text-[#BFFF60] text-[16px] font-[400]">
                                 <div className="max-w-[70px] overflow-hidden whitespace-nowrap">

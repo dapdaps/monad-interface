@@ -9,9 +9,12 @@ import { Contract, utils } from "ethers";
 import { RPS_CONTRACT_ADDRESS, RPS_CONTRACT_ADDRESS_ABI } from "../contract";
 import Big from "big.js";
 import { NotificationType, useNotificationContext } from "@/context/notification";
+import { post } from "@/utils/http";
 
 export function useCreate(props?: any) {
   const {
+    monsters,
+    randomMonsters,
     betToken,
     betTokenBalance,
     getBetTokenBalance,
@@ -21,6 +24,7 @@ export function useCreate(props?: any) {
     onChange2UserLatest,
     onChange2List,
     playAudio,
+    gameConfig,
   } = props ?? {};
 
   const { accountWithAk, account, chainId, provider } = useCustomAccount();
@@ -29,7 +33,7 @@ export function useCreate(props?: any) {
   const { add } = useNotificationContext();
 
   const [betMonster, setBetMonster] = useState<Monster[]>([]);
-  const [betAmount, setBetAmount] = useState<string>();
+  const [betAmount, setBetAmount] = useState<string>(RPS_MIN_BET_AMOUNT + "");
 
   const onSelectMonster = (monster: Monster) => {
     setBetMonster((prev) => {
@@ -46,6 +50,19 @@ export function useCreate(props?: any) {
       return _betMonster;
     });
   };
+
+  const { runAsync: onReport, loading: reporting } = useRequest(async (hash: string) => {
+    try {
+      await post("/game/rps/create", {
+        icon: monsters?.map((monster: any) => monster.name)?.join(","),
+        tx_hash: hash,
+      });
+    } catch (error) {
+      console.log("report icon failed: %o", error);
+    }
+  }, {
+    manual: true,
+  });
 
   const { runAsync: onCreate, loading: creating } = useRequest(async () => {
     playAudio({ type: "click", action: "play" });
@@ -115,6 +132,7 @@ export function useCreate(props?: any) {
         return;
       }
 
+      onReport(transactionHash);
       toast.success({
         title: "Created successful",
         tx: transactionHash,
@@ -155,6 +173,7 @@ export function useCreate(props?: any) {
             status: Status.Ongoing,
             winner_address: "",
             winner_moves: 0,
+            icon: monsters?.map((monster: any) => monster.name)?.join(","),
           };
           // double
           if (RoomJoinedBEvent) {
@@ -189,6 +208,7 @@ export function useCreate(props?: any) {
       setBetMonster([]);
       getBetTokenBalance();
       !isCrawlingRoomEvent && getListDelay();
+      randomMonsters();
     } catch (error: any) {
       console.log("create rps failed: %o", error);
       toast.dismiss(toastId);
@@ -225,8 +245,8 @@ export function useCreate(props?: any) {
       _result.text = "Insufficient balance";
       return _result;
     }
-    if (Big(betAmount || 0).lt(RPS_MIN_BET_AMOUNT)) {
-      _result.text = `Minimum ${RPS_MIN_BET_AMOUNT}`;
+    if (Big(betAmount || 0).lt(gameConfig?.minBetAmount || RPS_MIN_BET_AMOUNT)) {
+      _result.text = `Minimum ${gameConfig?.minBetAmount || RPS_MIN_BET_AMOUNT}`;
       return _result;
     }
     if (betMonster.length < 1) {
@@ -235,7 +255,7 @@ export function useCreate(props?: any) {
     }
     _result.disabled = false;
     return _result;
-  }, [betAmount, betMonster, creating, account, chainId, betTokenBalance]);
+  }, [betAmount, betMonster, creating, account, chainId, betTokenBalance, gameConfig]);
 
   return {
     betMonster,

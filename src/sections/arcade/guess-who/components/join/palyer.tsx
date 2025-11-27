@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { formatLongText } from "@/utils/utils";
 
 const Player = (props: any) => {
-  const { betToken, betAmount, className, isLost, isWon, player } = props;
+  const { betToken, betAmount, className, isLost, isWon, player, icon } = props;
 
   return (
     <div
@@ -20,6 +20,7 @@ const Player = (props: any) => {
         avatarClassName="!w-[58px] !h-[46px] !top-[-12px] !right-[-25px]"
         avatar={player?.avatar}
         moves={player?.moves}
+        icon={icon}
       />
       <div className="flex flex-col items-center gap-[5px]">
         <div className={clsx("max-w-[76px] whitespace-nowrap", player ? "" : "opacity-50")}>
