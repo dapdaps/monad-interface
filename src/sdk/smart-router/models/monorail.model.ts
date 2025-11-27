@@ -106,6 +106,13 @@ export class Monorail {
       console.log('estimateGas err: %o', err);
     }
 
+    if (!gasEstimate && inputCurrency.isNative) {
+      return {
+        outputCurrencyAmount: "",
+        noPair: true
+      };
+    }
+
     let routesFormat: any = [];
     if (quoteResponse.routes.length > 0) {
       routesFormat = [{
@@ -121,7 +128,7 @@ export class Monorail {
       }]
     }
 
-    console.log('monorail gasEstimate', gasEstimate, txn);
+    // console.log('monorail gasEstimate', gasEstimate, txn);
 
     return {
       outputCurrencyAmount: outputAmount,
