@@ -29,7 +29,7 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
 
   const onQuoter = useCallback(
     async ({ inputCurrency, outputCurrency, inputCurrencyAmount }: any) => {
-      setTrade(null);
+      // setTrade(null);
       if (
         !inputCurrency ||
         !outputCurrency ||

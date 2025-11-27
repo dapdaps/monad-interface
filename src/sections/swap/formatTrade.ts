@@ -94,7 +94,7 @@ const formatTrade = ({
     noPair: market.noPair,
     outputCurrencyAmount: market.outputCurrencyAmount,
     routerStr,
-    routes: market.template === "OneClick" ? market.routes : market.routes?.[0]?.routes || [],
+    routes: market.routes,
     isGasEnough,
     priceImpact,
     priceImpactType,

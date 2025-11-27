@@ -98,8 +98,6 @@ export class OneClick {
       console.log('get bestTrade failed: %o', err);
     }
 
-    console.log('bestTrade', bestTrade);
-
     if (!bestTrade) {
       return {
         outputCurrencyAmount: "",
@@ -226,7 +224,6 @@ export class OneClick {
     tokenAddresses.push(...uniqueTokenAddresses);
 
     const tokenInfo = await getTokenInfo(tokenAddresses);
-    console.log('routes format tokenInfo', tokenInfo);
 
     routesFormat.forEach((route: any) => {
       route.pools.forEach((pool: any) => {
@@ -234,8 +231,6 @@ export class OneClick {
         pool.tokenOutInfo = tokenInfo[pool.tokenOut.toLowerCase()];
       });
     });
-
-    console.log('routes format', routesFormat);
 
     return {
       outputCurrencyAmount: BigNumber(bestTrade.amount_out || 0).div(10 ** outputCurrency.decimals).toFixed(outputCurrency.decimals).replace(/\.?0+$/, ""),
