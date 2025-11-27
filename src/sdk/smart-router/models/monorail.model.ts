@@ -105,7 +105,6 @@ export class Monorail {
     } catch (err) {
       console.log('estimateGas err: %o', err);
     }
-    
 
     if (!gasEstimate) {
       return {
