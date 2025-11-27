@@ -154,10 +154,12 @@ export default function useTrade({ chainId, template, from, inputAmount, onSucce
         if (oneClickData && monorailData && oneClickData.outputCurrencyAmount && monorailData.outputCurrencyAmount) {
           const oneClickAmount = Big(oneClickData.outputCurrencyAmount);
           const monorailAmount = Big(monorailData.outputCurrencyAmount);
-          const oneClick95Percent = oneClickAmount.mul(0.95);
+          const oneClick100Percent = oneClickAmount;
+          const oneClick105Percent = oneClickAmount.mul(1.05);
+          const oneClick98Percent = oneClickAmount.mul(0.98);
 
-          if (monorailAmount.gt(oneClick95Percent)) {
-            monorailData.outputCurrencyAmount = oneClick95Percent.toString();
+          if (monorailAmount.gte(oneClick100Percent) && monorailAmount.lte(oneClick105Percent)) {
+            monorailData.outputCurrencyAmount = oneClick98Percent.toString();
           }
         }
 

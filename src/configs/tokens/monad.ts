@@ -352,7 +352,7 @@ export const monad: { [key: string]: Token } = {
     icon: "https://assets.dapdap.net/monad/CHASER.jpg"
   },
   chog: {
-    address: "0x5c57ea406ff244f0982e2dec5ab3fc20f7d42cf0",
+    address: "0x350035555e10d9afaf1566aaebfced5ba6c27777",
     chainId: CHAIN_ID,
     symbol: "CHOG",
     decimals: 18,
