@@ -138,6 +138,19 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
 
         console.log('data:', data)
 
+        const oneClickData = data.find((item: any) => item.template === 'OneClick');
+        const monorailData = data.find((item: any) => item.template === 'Monorail');
+        
+        if (oneClickData && monorailData && oneClickData.outputCurrencyAmount && monorailData.outputCurrencyAmount) {
+          const oneClickAmount = Big(oneClickData.outputCurrencyAmount);
+          const monorailAmount = Big(monorailData.outputCurrencyAmount);
+          const oneClick95Percent = oneClickAmount.mul(0.95);
+          
+          if (monorailAmount.gt(oneClick95Percent)) {
+            monorailData.outputCurrencyAmount = oneClick95Percent.toString();
+          }
+        }
+
         const _markets = data
           .filter((item: any) => Big(item.outputCurrencyAmount || 0).gt(0))
           .sort(
