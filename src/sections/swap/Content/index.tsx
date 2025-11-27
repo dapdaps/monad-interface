@@ -52,9 +52,10 @@ export default function Swap({
   const { loading, trade, tradeList, onQuoter, onSwap, setTrade, setTradeList } = useTrade({
     chainId: DEFAULT_CHAIN_ID,
     // template: dapp.name,
-    template: isSuperSwap ? ['UniswapV3', 'UniswapV2', 'PancakeV2', 'PancakeV3', 'OneClick', 'iZumi', 'Kuru', 'MondayTradeV3', 'Monorail'] : dapp.name,
+    template: isSuperSwap ? ['UniswapV3', 'UniswapV2', 'PancakeV2', 'PancakeV3', 'OneClick', 'iZumi', 'Kuru', 'MondayTradeV3', 'Monorail', 'CapricornV3'] : dapp.name,
     // template: isSuperSwap ? ['CapricornV3'] : dapp.name,
     from,
+    inputAmount: inputCurrencyAmount,
     onSuccess: () => {
       setUpdater(Date.now());
       runQuoter();
@@ -165,6 +166,7 @@ export default function Swap({
 
     runQuoter();
   }, [inputCurrency, outputCurrency, inputCurrencyAmount, maxInputBalance, refreshQuoter]);
+
 
   useEffect(() => {
     setOutputCurrencyAmount(trade?.outputCurrencyAmount || "");
@@ -348,7 +350,7 @@ export default function Swap({
 
       {
         trade && routes.length > 0 && !trade.isWrap && (
-          <div className="absolute top-0 right-[-385px] pt-[15px]">
+          <div className="absolute top-0 right-[-385px]">
             <RoutesModal
               routes={routes}
               fromChain={trade.fromChain}

@@ -86,7 +86,7 @@ export class Monorail {
       to: transaction.to,
       data: transaction.data || "0x",
       value: transaction.value,
-      gasLimit: BigNumber(2100000).multipliedBy(1.2).toFixed(0),
+      gasLimit: null,
       // gasLimit: quoteResponse.gas_estimate ? BigNumber(quoteResponse.gas_estimate).toString() : undefined,
     };
 
@@ -95,23 +95,46 @@ export class Monorail {
     );
 
     let gasEstimate: any = null
-    // try {
-    //   gasEstimate = await provider.getSigner(account).estimateGas(txn);
+    try {
+      gasEstimate = await provider.getSigner(account).estimateGas(txn);
 
-    //   if (gasEstimate) {
-    //     // txn.gasLimit = BigNumber(gasEstimate).multipliedBy(1.2).toFixed(0);
-    //   }
+      if (gasEstimate) {
+        txn.gasLimit = gasEstimate;
+      }
 
-    // } catch (err) {
-    //   console.log('estimateGas err: %o', err);
-    // }
+    } catch (err) {
+      console.log('estimateGas err: %o', err);
+    }
 
+    if (!gasEstimate) {
+      return {
+        outputCurrencyAmount: "",
+        noPair: true
+      };
+    }
+
+    let routesFormat: any = [];
+    if (quoteResponse.routes.length > 0) {
+      routesFormat = [{
+        percentage: 1,
+        pools: quoteResponse.routes[0].map((route: any) => {
+          return {
+            dex: route.splits,
+            amountIn: route.amount_in,
+            tokenInInfo: route.from_symbol,
+            tokenOutInfo: route.to_symbol,
+          }
+        })
+      }]
+    }
+
+    // console.log('monorail gasEstimate', gasEstimate, txn);
 
     return {
       outputCurrencyAmount: outputAmount,
       noPair: false,
       routerAddress: transaction.to,
-      routes: quoteResponse.routes || [],
+      routes: routesFormat,
       // fee: quoteResponse.fees?.protocol_amount_formatted 
       //   ? {
       //       fee: quoteResponse.fees.protocol_amount_formatted,
@@ -121,7 +144,7 @@ export class Monorail {
       //   : null,
       fee: null,
       txn,
-      gasEstimate,
+      gasEstimate: txn.gasLimit,
       priceImpact: quoteResponse.compound_impact ? (Number(quoteResponse.compound_impact) * 100).toString() : undefined,
     };
   }

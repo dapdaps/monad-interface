@@ -232,7 +232,6 @@ export class OneClick {
       });
     });
 
-
     return {
       outputCurrencyAmount: BigNumber(bestTrade.amount_out || 0).div(10 ** outputCurrency.decimals).toFixed(outputCurrency.decimals).replace(/\.?0+$/, ""),
       noPair: false,

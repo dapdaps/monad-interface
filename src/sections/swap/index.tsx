@@ -36,7 +36,7 @@ export default function Swap({ dapp, isSuperSwap }: any) {
                 // )
                 <DappIcon dapp={dapp} isSuperSwap={isSuperSwap} />
               }
-              <Bg className={showRoute ? "mt-[-12px]" : ""}/>
+              <Bg className={showRoute ? "mt-[-15px]" : "mt-[-5px]"}/>
             </>
           )
         }

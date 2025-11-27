@@ -24,7 +24,6 @@ export default function ClientProviders({
 
   useEffect(() => {
     fetchApps();
-    // 初始化 RPC 缓存
     initRpcCache();
   }, []);
 
