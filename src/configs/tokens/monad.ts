@@ -47,14 +47,6 @@ export const monad: { [key: string]: Token } = {
     name: "AUSD",
     icon: "https://assets.dapdap.net/monad/ausd.png"
   },
-  // drops: {
-  //   address: "0x68b571f834c9853d2a7e8e364d28db52de47d46d",
-  //   chainId: CHAIN_ID,
-  //   symbol: "DROPS",
-  //   decimals: 18,
-  //   name: "DROPS",
-  //   icon: "https://assets.dapdap.net/monad/drops.png"
-  // },
   weth: {
     address: "0xee8c0e9f1bffb4eb878d8f15f368a02a35481242",
     chainId: CHAIN_ID,
