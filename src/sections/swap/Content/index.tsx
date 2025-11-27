@@ -348,7 +348,7 @@ export default function Swap({
 
       {
         trade && routes.length > 0 && !trade.isWrap && (
-          <div className="absolute top-0 right-[-385px] pt-[15px]">
+          <div className="absolute top-0 right-[-385px]">
             <RoutesModal
               routes={routes}
               fromChain={trade.fromChain}

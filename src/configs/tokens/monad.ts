@@ -90,7 +90,7 @@ export const monad: { [key: string]: Token } = {
   shmon: {
     address: "0x1b68626dca36c7fe922fd2d55e4f631d962de19c",
     chainId: CHAIN_ID,
-    symbol: "ShMonad",
+    symbol: "shMON",
     decimals: 18,
     name: "shMON",
     icon: "https://assets.dapdap.net/monad/shmon.png"
