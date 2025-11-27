@@ -1,5 +1,5 @@
 import Big from "big.js";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import weth from "@/configs/contract/weth";
 import useAccount from "@/hooks/use-account";
 import useAddAction from "@/hooks/use-add-action";
@@ -15,7 +15,7 @@ import { AllowanceProvider, MaxAllowanceTransferAmount, PermitSingle, AllowanceT
 import { usePriceStore } from "@/stores/usePriceStore";
 import { numberRemoveEndZero } from "@/utils/number-formatter";
 
-export default function useTrade({ chainId, template, from, onSuccess }: any) {
+export default function useTrade({ chainId, template, from, inputAmount, onSuccess }: any) {
   const slippage: any = useSettingsStore((store: any) => store.slippage);
   const [loading, setLoading] = useState(false);
   const [trade, setTrade] = useState<any>();
@@ -26,6 +26,12 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
   const lastestCachedKey = useRef("");
   const cachedTokens = useRef<any>();
   const prices = usePriceStore(store => store.price);
+  const inputRef = useRef<any>(null);
+
+  useEffect(() => {
+    inputRef.current = inputAmount;
+  }, [inputAmount]);
+
 
   const onQuoter = useCallback(
     async ({ inputCurrency, outputCurrency, inputCurrencyAmount }: any) => {
@@ -88,6 +94,10 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
             name: Array.isArray(template) ? template?.[0] : template,
           }
 
+          if (inputRef.current !== inputCurrencyAmount) {
+            return
+          }
+
           setTrade(_trade);
           setTradeList([_trade]);
           setLoading(false);
@@ -140,12 +150,12 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
 
         const oneClickData = data.find((item: any) => item.template === 'OneClick');
         const monorailData = data.find((item: any) => item.template === 'Monorail');
-        
+
         if (oneClickData && monorailData && oneClickData.outputCurrencyAmount && monorailData.outputCurrencyAmount) {
           const oneClickAmount = Big(oneClickData.outputCurrencyAmount);
           const monorailAmount = Big(monorailData.outputCurrencyAmount);
           const oneClick95Percent = oneClickAmount.mul(0.95);
-          
+
           if (monorailAmount.gt(oneClick95Percent)) {
             monorailData.outputCurrencyAmount = oneClick95Percent.toString();
           }
@@ -159,7 +169,7 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
               if (diff !== 0) {
                 return diff;
               }
-              if (a.template === 'OneClick' ) {
+              if (a.template === 'OneClick') {
                 return -1;
               }
               if (b.template === 'OneClick') {
@@ -180,6 +190,10 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
               inputCurrencyAmount
             });
           });
+
+        if (inputRef.current !== inputCurrencyAmount) {
+          return
+        }
 
         setTrade(_markets[0]);
         setTradeList(_markets);
@@ -486,6 +500,8 @@ export default function useTrade({ chainId, template, from, onSuccess }: any) {
 
     return contract.execute(commands, inputs, deadline, options);
   }, [account, provider, trade]);
+
+
 
   return { loading, trade, tradeList, onQuoter, onSwap, setTrade, setTradeList };
 }
