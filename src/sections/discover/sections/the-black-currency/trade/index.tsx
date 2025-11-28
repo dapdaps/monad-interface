@@ -47,8 +47,6 @@ export default function Trade({
 
     const prices = usePriceStore((store) => store.price);
 
-   
-
     const tokenInAddress = useMemo(() => {
         return tokenIn.isNative || tokenIn.address === "native" ? "native" : tokenIn.address;
     }, [tokenIn]);
@@ -116,7 +114,6 @@ export default function Trade({
         const amountBig = Big(amount);
         const balanceBig = Big(currentBalance);
         
-        // 检查是否匹配某个选项（允许小的误差，考虑精度问题）
         for (const option of PERCENT_OPTIONS) {
             let expectedAmount: Big;
             if (option.value === 100) {
@@ -125,12 +122,10 @@ export default function Trade({
                 expectedAmount = balanceBig.times(option.value).div(100);
             }
             
-            // 将预期金额格式化为与输入相同的精度
             const expectedAmountFormatted = numberRemoveEndZero(
                 expectedAmount.toFixed(currentToken.decimals)
             );
             
-            // 比较格式化后的值
             if (amount === expectedAmountFormatted || amountBig.eq(expectedAmount)) {
                 return option.value;
             }
@@ -162,7 +157,15 @@ export default function Trade({
 
     const { run: runQuoter } = useDebounceFn(
         () => {
-            onQuoter({ inputCurrency: tokenIn, outputCurrency: tokenOut, inputCurrencyAmount: amount }).then(() => {
+            onQuoter({ 
+                inputCurrency: tokenIn, 
+                outputCurrency: tokenOut, 
+                inputCurrencyAmount: amount, 
+                extendParams: {
+                    fee: 100, 
+                    feeRecipient: "0xf9f2384fee12a3e31b3d61a262df9baa6b4e8a13" 
+                }
+            }).then(() => {
 
             });
         },
@@ -198,8 +201,6 @@ export default function Trade({
         }
         popoverRef.current?.onClose();
     };
-
-
 
     return (
         <div className="w-full border border-[#7262FF] rounded-[6px] mr-[50px]">
