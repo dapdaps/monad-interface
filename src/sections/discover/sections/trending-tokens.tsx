@@ -212,7 +212,7 @@ const TokenItem = (props: any) => {
           <img
             src={token.icon}
             alt=""
-            className="w-[clamp(1px,_2.51vw,_calc(var(--pc-1512)*0.0251))] h-[clamp(1px,_2.51vw,_calc(var(--pc-1512)*0.0251))] object-center object-contain shrink-0"
+            className="rounded-full w-[clamp(1px,_2.51vw,_calc(var(--pc-1512)*0.0251))] h-[clamp(1px,_2.51vw,_calc(var(--pc-1512)*0.0251))] object-center object-contain shrink-0"
           />
           <div className="flex-1 w-0">
             <div className="overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] text-white font-[500]">
