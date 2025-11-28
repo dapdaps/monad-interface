@@ -203,9 +203,9 @@ export default function Trade({
     };
 
     return (
-        <div className="w-full border border-[#7262FF] rounded-[6px] mr-[50px]">
+        <div className="w-full border border-[#7262FF] rounded-[6px]">
             {/* Tabs */}
-            <div className="flex items-center gap-0 bg-[#836EF940] h-[37px] rounded-t-[6px] uppercase text-[16px] overflow-hidden text-white text-center text-base font-medium ">
+            <div className="flex items-center gap-0 bg-[#836EF940] h-[clamp(1px,_2.45vw,_calc(var(--pc-1512)*0.0245))] rounded-t-[6px] uppercase text-[clamp(1px,_1.06vw,_calc(var(--pc-1512)*0.0106))] overflow-hidden text-white text-center text-base font-medium ">
                 <div
                     onClick={() => handleTabChange("buy")}
                     className={clsx(
@@ -238,9 +238,9 @@ export default function Trade({
             </div>
 
             {/* Content */}
-            <div className="space-y-4 px-[16px] py-[20px]">
+            <div className="px-[clamp(1px,_1.06vw,_calc(var(--pc-1512)*0.0106))] py-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))]">
                 {/* Balance */}
-                <div className="text-[#A6A6DB] text-sm flex items-center gap-2">
+                <div className="text-[#A6A6DB] text-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] flex items-center gap-2">
                     <span>Balance:</span>
                     {activeTab === "buy" ? (
                         balanceInLoading ? (
@@ -258,8 +258,8 @@ export default function Trade({
                 </div>
 
                 {/* Amount Input */}
-                <div className="relative">
-                    <div className="flex items-center justify-between h-[38px] bg-[#151822] rounded-[4px] border border-[#34304B] pl-[10px]">
+                <div className="relative mt-[clamp(1px,_0.26vw,_calc(var(--pc-1512)*0.0026))]">
+                    <div className="flex items-center justify-between h-[clamp(1px,_2.51vw,_calc(var(--pc-1512)*0.0251))] bg-[#151822] rounded-[4px] border border-[#34304B] pl-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
                         <InputNumber
                             value={amount}
                             onNumberChange={setAmount}
@@ -282,25 +282,25 @@ export default function Trade({
                                 }
                                 contentClassName="bg-transparent"
                             >
-                                <div className="flex items-center justify-end gap-2 shrink-0 border-l border-[#34304B] px-[10px] h-full cursor-pointer">
+                                <div className="flex items-center justify-end gap-2 shrink-0 border-l border-[#34304B] px-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] h-full cursor-pointer">
                                     <img
                                         src={currentToken.icon}
                                         alt={currentToken.symbol}
-                                        className="w-[20px] h-[20px] rounded-full"
+                                        className="w-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] h-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] rounded-full"
                                     />
-                                    <span className="text-white font-semibold text-[18px]">{currentToken.symbol}</span>
+                                    <span className="text-white font-semibold text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))]">{currentToken.symbol}</span>
 
                                     <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M0.5 0.5L5.5 4.5L10.5 0.5" stroke="#888888" strokeLinecap="round" />
                                     </svg>
                                 </div>
-                            </Popover> : <div className="flex items-center justify-end gap-2 shrink-0 border-l border-[#34304B] px-[10px] h-full cursor-pointer">
+                            </Popover> : <div className="flex items-center justify-end gap-2 shrink-0 border-l border-[#34304B] px-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] h-full cursor-pointer">
                                 <img
                                     src={currentToken.icon}
                                     alt={currentToken.symbol}
-                                    className="w-[20px] h-[20px] rounded-full"
+                                    className="w-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] h-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] rounded-full"
                                 />
-                                <span className="text-white font-semibold text-[18px]">{currentToken.symbol}</span>
+                                <span className="text-white font-semibold text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))]">{currentToken.symbol}</span>
 
                             </div>
                         }
@@ -308,11 +308,11 @@ export default function Trade({
                 </div>
 
                 {/* Price and Percent Options */}
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mt-[clamp(1px,_0.40vw,_calc(var(--pc-1512)*0.0040))]">
                     <div className="text-[#727D97] text-[12px]">
                         ${balanceFormated(price, 2)}
                     </div>
-                    <div className="flex items-center gap-1 text-[12px] text-[#727D97]">
+                    <div className="flex items-center gap-1 text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] text-[#727D97]">
                         {PERCENT_OPTIONS.map((option, index) => (
                             <div key={option.value} className="flex items-center">
                                 {index > 0 && (
@@ -334,16 +334,16 @@ export default function Trade({
                 </div>
 
                 {/* Expected Output */}
-                <div className="flex items-center justify-between">
-                    <span className="text-[#727D97] text-[12px]">Expected</span>
-                    <span className="text-[#BFFF60] text-[18px] font-medium">
+                <div className="flex items-center justify-between mt-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
+                    <span className="text-[#727D97] text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))]">Expected</span>
+                    <span className="text-[#BFFF60] text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] font-medium">
                         {balanceFormated(trade?.outputCurrencyAmount, 2)} {outputToken.symbol}
                     </span>
                 </div>
 
                 {/* Slippage */}
-                <div className="flex items-center justify-between">
-                    <span className="text-[#727D97] text-[12px]">Slippage</span>
+                <div className="flex items-center justify-between mt-[clamp(1px,_0.33vw,_calc(var(--pc-1512)*0.0033))]">
+                    <span className="text-[#727D97] text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))]">Slippage</span>
                     <Popover
                         ref={slippagePopoverRef}
                         placement={PopoverPlacement.BottomRight}
@@ -358,7 +358,7 @@ export default function Trade({
                         contentClassName="bg-transparent"
                     >
                         <div className="flex items-center gap-1 cursor-pointer">
-                            <div className="px-2 py-1 bg-[#151822] border border-[#34304B] rounded text-white text-[12px] flex items-center gap-1">
+                            <div className="px-2 py-1 bg-[#151822] border border-[#34304B] rounded text-white text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] flex items-center gap-1">
                                 <span className="text-[#727D97]">Slippage</span>
                                 <span className="text-white">{slippage}%</span>
                             </div>
@@ -380,6 +380,7 @@ export default function Trade({
                         runQuoter();
                     }}
                     updater={[tokenIn, tokenOut, amount, trade]}
+                    className="mt-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))]"
                 />
             </div>
         </div>

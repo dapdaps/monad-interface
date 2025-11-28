@@ -78,7 +78,7 @@ export default function PlaceOrderButton({
                 onClick={onClickHandler}
                 disabled={isDisabled || isLoading}
                 className={clsx(
-                    "relative w-full h-[35px] rounded-[6px] font-medium border border-[#836EF9] text-white transition-all duration-200 flex items-center justify-center gap-2 [background:radial-gradient(66%_50%_at_46%_50%,_#553BE4_0%,_#221662_100%)]",
+                    "relative w-full h-[clamp(1px,_2.31vw,_calc(var(--pc-1512)*0.0231))] rounded-[6px] font-medium border border-[#836EF9] text-white transition-all duration-200 flex items-center justify-center gap-2 [background:radial-gradient(66%_50%_at_46%_50%,_#553BE4_0%,_#221662_100%)]",
                     !isDisabled && !isLoading
                         ? "hover:opacity-90"
                         : "cursor-not-allowed opacity-80",

@@ -8,7 +8,6 @@ import * as d3 from "d3";
 import clsx from "clsx";
 import Big from "big.js";
 import { useInterval } from "ahooks";
-import { wait } from "@derivation-tech/context";
 import dayjs from "dayjs";
 
 const Price = (props: any) => {
@@ -468,7 +467,7 @@ const Price = (props: any) => {
           </div>
           <div
             ref={containerRef}
-            className="w-full mt-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] h-[clamp(1px,_20.70vw,_calc(var(--pc-1512)*0.2070))] overflow-hidden relative"
+            className="w-full mt-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] h-[clamp(1px,_15.70vw,_calc(var(--pc-1512)*0.1570))] overflow-hidden relative"
           >
             <div ref={chartRef} className="w-full h-full">
               {priceLoading && dataRef.current.length === 0 ? (
