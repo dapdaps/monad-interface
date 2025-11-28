@@ -19,8 +19,8 @@ interface SocialCardProps {
 const SocialCard = ({
     className,
     style,
-    tokenName = 'MBC',
-    tokenSymbol = 'MBC',
+    tokenName = 'BC',
+    tokenSymbol = 'BC',
     twitterHandle = '@0xMarlock',
     marketCap = '$54.5M',
     description = 'Discribe meme token here...',

@@ -31,8 +31,7 @@ const RulesModal = (props: any) => {
               </svg>
             </div>
             <div>
-              <div className="font-bold">Moon or Doom: Ride the trend.</div>
-              <div className="font-normal">Defy the odds.</div>
+              <div className="font-bold">Chart Voyager: Navigate the Market, Seize the Moment.</div>
             </div>
           </div>
           <div className="w-[666px] mt-[20px] flex flex-col items-stretch gap-[6px] px-[32px] md:px-[10px] md:w-full">
@@ -42,7 +41,9 @@ const RulesModal = (props: any) => {
               defaultExpand={true}
             >
               <div className="pb-[10px]">
-                Predict whether the ETH/USDT price will <strong className="text-white">rise (Moon)</strong> or <strong className="text-white">fall (Doom)</strong> in the next few steps. Choose your bet (0.1 / 1 / 10 MON) and place it on your target grid.
+                Predict the next move of the ETH/USDT price — will it rise or fall in the upcoming steps?
+                <br /><br />
+                Choose your wager (50 / 200 / 500 MON) and place it on the grid where you believe the price will go.
               </div>
             </Accordion>
             <Accordion
@@ -51,21 +52,29 @@ const RulesModal = (props: any) => {
               defaultExpand={true}
             >
               <div className="pb-[10px]">
-                If the price hits your chosen grid, you earn a reward = <strong className="text-white">Multiplier</strong> x <strong className="text-white">Bet Amount</strong>. The farther the grid, the higher the multiplier — higher risk, higher reward!
+                If the price reaches your chosen grid, you win:
+                <br /><br />
+                Reward = <strong className="text-white">Multiplier</strong> × <strong className="text-white">Bet Amount</strong>
+                <br /><br />
+                The farther your grid is from the current price, the higher the multiplier — higher risk, higher reward.
               </div>
             </Accordion>
             <Accordion
-              label="3. Join Anytime"
+              label="3. Jump In Anytime"
               contentClassName=""
               defaultExpand={true}
             >
               <div className="pb-[10px]">
-                There's no fixed round. Jump in anytime, exit anytime, and follow the market in real time. Every click is a <strong className="text-white">bold prediction</strong> — will you catch the next move?
+                No fixed rounds. Enter or exit at any moment, and track the market in real time.
+                <br /><br />
+                Every move is a voyage — will you chart the right path?
               </div>
             </Accordion>
           </div>
           <div className="mt-[15px] text-[#A6A6DB] font-[SpaceGrotesk] text-[16px] font-normal leading-[120%] px-[32px] md:px-[10px] pb-[32px]">
-            <strong className="text-white">Note:</strong> Prices are sourced from Binance. Multipliers are capped for fairness. Predict smart, play bold, and enjoy the thrill!
+            <strong className="text-white">Note:</strong> Prices are sourced from Binance. Multipliers are capped to ensure fairness.
+            <br /><br />
+            Predict wisely, play boldly, and enjoy the adventure with Chart Voyager!
           </div>
         </div>
       </MonadBaseCard>
