@@ -203,7 +203,7 @@ export default function MoonOrDoom() {
 
         {/* AUDIT Button - Fixed at bottom left */}
         <a
-            href="https://example.com/audit"
+            href="/images/mainnet/blocksec_dapdap_monad_game_v1.0-signed.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="fixed left-[30px] bottom-[30px] z-50 inline-flex items-center gap-2 px-4 h-10 rounded-md border border-[#34304B] bg-[#1a1a1a] text-[#A1AECB] hover:bg-white/5 hover:border-white/25 transition-colors select-none"
