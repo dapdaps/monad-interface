@@ -36,10 +36,10 @@ export default function Tokens(props: any) {
                                         <div className="flex items-center gap-2">
                                             {
                                                 token.icon && (
-                                                    <img src={token.icon} alt={token.name} className="w-6 h-6" />
+                                                    <img src={token.icon} alt={token.name} className="w-6 h-6 rounded-full" />
                                                 ) 
                                             }
-                                            <span>{ token.name }</span>
+                                            <span className="pt-[5px]">{ token.name }</span>
                                         </div>
                                     </td>
                                     <td className="pl-[30px]">${ token.price || '-' }</td>

@@ -32,7 +32,7 @@ export default function useWalletTokens() {
             const _provider = new ethers.providers.JsonRpcProvider(rpc);
             const res = await get('/token/all');
             if (res.code === 200 && res.data) {
-                const _tokens = res.data.map((item: any) => {
+                const _tokens = res.data.filter((item: any) => item.address !== '0x0000000000000000000000000000000000000000').map((item: any) => {
                     item.balance = 0;
                     return {
                         address: item.address,

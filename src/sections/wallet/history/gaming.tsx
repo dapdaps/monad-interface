@@ -154,7 +154,7 @@ function getGameAmount(item: any) {
 }
 
 const CashOut = ({ text }: { text?: string }) => <div className="flex items-center gap-2">
-    <img src="/images/monad.svg" alt="MON" className="w-6 h-6" />
+    <img src="/images/monad.svg" alt="MON" className="rounded-full w-6 h-6" />
     <span>{text || 'Cash out'}</span>
 </div>
 

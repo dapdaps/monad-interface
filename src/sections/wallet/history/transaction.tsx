@@ -44,7 +44,7 @@ export default function Transaction({ refresh }: { refresh: number }) {
                                                 item.assets && item.assets.length > 0 && item.assets.map((asset: any, index: number) => {
                                                     return <img
                                                         key={asset}
-                                                        className={clsx("w-[20px] h-[20px]", index > 0 && "ml-[-15px]")}
+                                                        className={clsx("w-[20px] h-[20px] rounded-full", index > 0 && "ml-[-15px]")}
                                                         src={monad[asset.toLowerCase()]?.icon}
                                                         alt="" />
                                                 })
