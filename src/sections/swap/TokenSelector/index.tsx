@@ -205,8 +205,30 @@ export default function CurrencySelect({
             ?.sort((a: any, b: any) => {
               const balanceA = balances[a.address] || "0";
               const balanceB = balances[b.address] || "0";
+              const hasBalanceA = Big(balanceA || 0).gt(0);
+              const hasBalanceB = Big(balanceB || 0).gt(0);
+              const isWETHA = a.symbol === "WETH";
+              const isWETHB = b.symbol === "WETH";
 
-              return Big(balanceA || 0)?.gt(balanceB || 0) ? -1 : 1;
+              if (hasBalanceA && hasBalanceB) {
+                return Big(balanceA || 0).gt(balanceB || 0) ? -1 : 1;
+              }
+
+              if (hasBalanceA && !hasBalanceB) {
+                return -1;
+              }
+
+              if (!hasBalanceA && hasBalanceB) {
+                return 1;
+              }
+
+              if (!hasBalanceA && !hasBalanceB) {
+                if (isWETHA && !isWETHB) return -1;
+                if (!isWETHA && isWETHB) return 1;
+                return 0;
+              }
+
+              return 0;
             })
             ?.map((currency: any) => (
               <CurrencyRow

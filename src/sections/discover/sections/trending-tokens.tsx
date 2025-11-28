@@ -67,7 +67,7 @@ const TrendingTokens = (props: any) => {
           {
             loading ? [...new Array(12).fill(0)].map((_, idx) => (
               <TokenItemLoading key={idx} />
-            )) : tokens?.map((token: any, index: number) => (
+            )) : tokens?.slice(0, 12).map((token: any, index: number) => (
               <TokenItem
                 key={index}
                 token={token}
@@ -287,7 +287,7 @@ const TokenItem = (props: any) => {
         </div>
       </div>
       {
-        token.symbol === 'MON' && <>
+        token.symbol.toUpperCase() === 'MBC' && <>
           <img src="/images/game/Fire.gif" className='absolute w-[80%] bottom-[50%] left-0' />
           <div className="absolute top-[-30px] left-[20%] text-[18px] text-[#FFE760] font-[500] italic">HOT</div>
         </>

@@ -13,6 +13,8 @@ import ExternalLinksModal from "@/sections/dapps/components/external-links-modal
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import SwapModal from "@/sections/swap/SwapModal";
+import { monad } from "@/configs/tokens/monad";
 
 const SpotlightApps = (props: any) => {
   const { getVisits, swiperRef } = props;
@@ -24,12 +26,31 @@ const SpotlightApps = (props: any) => {
   const [dapp, setDapp] = useState<any>(null);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(3);
+  const [showSwapModal, setShowSwapModal] = useState(false);
 
   const SpotlightList = useMemo(() => {
-    return AppList.filter((item) => item.isSpotlight);
+    const originList = AppList.filter((item) => item.isSpotlight);
+
+    originList.splice(2, 0, {
+      isSpotlight: true,
+      isOutlink: false,
+      id: 1000,
+      name: 'MBC',
+      description: 'Meme token',
+      category: 'Spotlight',
+      icon: 'https://assets.dapdap.net/monad/mbc_icon.png',
+      banner: 'https://assets.dapdap.net/monad/mbc_banner.png',
+      link: '',
+      bp: '',
+      bpContent: '',
+    });
+
+    return originList
   }, [AppList]);
 
+
   return (
+    <>
     <div className="pt-[clamp(1px,_6.65vw,_calc(var(--pc-1512)*0.0665))]">
       <Card
         title="Spotlight Apps"
@@ -73,6 +94,11 @@ const SpotlightApps = (props: any) => {
                           index === lastIndex ? "[transform:perspective(clamp(1px,_66.14vw,_calc(var(--pc-1512)*0.6614)))_rotateY(-24deg)_scale(1.05)] origin-[center_center_clamp(calc(var(--pc-1512)*-0.0265),_-2.65vw,_1px)] backface-hidden" : "",
                         )}
                         onClick={() => {
+                          if (item.id === 1000) {
+                            setShowSwapModal(true);
+                            return;
+                          }
+
                           handleReportWithoutDebounce(item.bp, item.bpContent);
 
                           if (/^https?:\/\//.test(item.link)) {
@@ -132,6 +158,20 @@ const SpotlightApps = (props: any) => {
         )
       }
     </div>
+
+    {showSwapModal && (
+        <SwapModal
+          show={showSwapModal}
+          defaultOutputCurrency={monad['mon']}
+          outputCurrencyReadonly
+          onClose={() => {
+            setShowSwapModal(false);
+          }}
+          from="marketplace"
+          isAutoExchange={false}
+        />
+      )}
+    </>
   );
 };
 
