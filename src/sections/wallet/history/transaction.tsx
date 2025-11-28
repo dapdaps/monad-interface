@@ -6,7 +6,7 @@ import Empty from "@/components/empty";
 import Loading from "@/components/loading";
 import HashLink from "../hash-link";
 import { formatDisplayCurrency } from "@/utils/formatMoney";
-import { monad } from "@/configs/tokens/monad-testnet";
+import { monad } from "@/configs/tokens/monad";
 import clsx from "clsx";
 import { balanceFormated } from "@/utils/balance";
 
