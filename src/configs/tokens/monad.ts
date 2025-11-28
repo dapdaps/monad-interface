@@ -263,4 +263,12 @@ export const monad: { [key: string]: Token } = {
     name: "Lemonjak",
     icon: "https://assets.dapdap.net/monad/lemon.png"
   },
+  bc: {
+    address: "0xa485d7409bdac5a504d487ce4d0f2af40e64d80b",
+    chainId: CHAIN_ID,
+    symbol: "BC",
+    decimals: 18,
+    name: "bc",
+    icon: "https://assets.dapdap.net/monad/mbc_icon.png"
+  }
 }

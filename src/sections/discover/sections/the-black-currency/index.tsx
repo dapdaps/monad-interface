@@ -75,9 +75,9 @@ const TheBlackCurrency = (props: any) => {
             <div className="w-[clamp(1px,_24.80vw,_calc(var(--pc-1512)*0.2480))]">
               <Trade tokenList={[
                 monad["mon"],
-                monad["usdt0"],
                 monad["usdc"],
-              ]} tokenOut={monad["usdc"]} />
+                monad["usdt0"],
+              ]} tokenOut={monad["bc"]} />
 
               <TokenDistribution />
             </div>

@@ -116,6 +116,7 @@ const TrendingTokens = (props: any) => {
       {showSwapModal && (
         <SwapModal
           show={showSwapModal}
+          defaultInputCurrency={clickedToken.symbol.toUpperCase() === 'BC' ?  monad['mon'] : null}
           defaultOutputCurrency={clickedToken}
           outputCurrencyReadonly
           onClose={() => {
