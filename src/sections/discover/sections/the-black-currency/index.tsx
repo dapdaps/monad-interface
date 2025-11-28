@@ -3,6 +3,8 @@ import Card from "../../components/card";
 import Mouse from "../../components/mouse";
 import { useState } from "react";
 import Swap from "./swap";
+import Trade from "./trade";
+import { monad } from "@/configs/tokens/monad";
 
 const TheBlackCurrency = (props: any) => {
   const { getVisits, swiperRef } = props;
@@ -19,7 +21,11 @@ const TheBlackCurrency = (props: any) => {
         >
           <div className="w-full flex justify-center gap-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))] mt-[-30px] pl-[20px] text-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] font-[400]">
             <div className="w-0 flex-1"></div>
-            <Swap activeTab={activeTab} setActiveTab={setActiveTab} />
+            <Trade tokenList={[
+              monad["mon"],
+              monad["usdt0"],
+              monad["usdc"],
+            ]} tokenOut={monad["usdc"]} />
           </div>
         </Card>
         <div className="flex flex-col items-center translate-y-[clamp(calc(var(--pc-1512)*-0.0397),_-3.97vw,_1px)]">
