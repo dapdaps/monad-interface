@@ -25,11 +25,15 @@ const TheBlackCurrency = (props: any) => {
           </div>
           <div className="w-full flex justify-center gap-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] mt-[clamp(calc(var(--pc-1512)*-0.0132),_-1.32vw,_1px)] pr-[clamp(1px,_7.94vw,_calc(var(--pc-1512)*0.0794))] pl-[clamp(1px,_6.61vw,_calc(var(--pc-1512)*0.0661))] text-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] font-[400]">
             <Price />
-            <Trade tokenList={[
-              monad["mon"],
-              monad["usdt0"],
-              monad["usdc"],
-            ]} tokenOut={monad["usdc"]} />
+            <div>
+              <Trade tokenList={[
+                monad["mon"],
+                monad["usdt0"],
+                monad["usdc"],
+              ]} tokenOut={monad["usdc"]} />
+
+              
+            </div>
 
           </div>
         </Card>
