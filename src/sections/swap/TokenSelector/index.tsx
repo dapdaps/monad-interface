@@ -207,8 +207,8 @@ export default function CurrencySelect({
               const balanceB = balances[b.address] || "0";
               const hasBalanceA = Big(balanceA || 0).gt(0);
               const hasBalanceB = Big(balanceB || 0).gt(0);
-              const isWETHA = a.symbol === "WETH";
-              const isWETHB = b.symbol === "WETH";
+              const isWETHA = a.symbol === "BC";
+              const isWETHB = b.symbol === "BC";
 
               if (hasBalanceA && hasBalanceB) {
                 return Big(balanceA || 0).gt(balanceB || 0) ? -1 : 1;
