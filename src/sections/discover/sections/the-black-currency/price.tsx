@@ -1,7 +1,11 @@
 import useToast from "@/hooks/use-toast";
+import { formatTimeAgo } from "@/utils/date";
+import { numberFormatter } from "@/utils/number-formatter";
+import { formatLongText } from "@/utils/utils";
+import Skeleton from "react-loading-skeleton";
 
 const Price = (props: any) => {
-  const { } = props;
+  const { token, tokenMarket, marketLoading, tokenPrice, priceLoading } = props;
 
   const toast = useToast();
 
@@ -11,27 +15,27 @@ const Price = (props: any) => {
         <div className="w-full flex justify-between items-center pl-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] pr-[clamp(1px,_1.06vw,_calc(var(--pc-1512)*0.0106))] h-[clamp(1px,_4.96vw,_calc(var(--pc-1512)*0.0496))] bg-[url('/images/mainnet/discover/bg-card-border-full-2-min.png')] bg-no-repeat bg-center bg-[length:100%_100%]">
           <div className="flex items-center gap-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))]">
             <img
-              src="/images/mainnet/discover/token-the-black-currency-min.png"
+              src={token.icon}
               alt=""
               className="shrink-0 object-center object-contain w-[clamp(1px,_3.84vw,_calc(var(--pc-1512)*0.0384))] h-[clamp(1px,_3.84vw,_calc(var(--pc-1512)*0.0384))]"
             />
             <div className="">
               <div className="text-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] text-white font-[500]">
-                The Black Currency
+                {token.name}
               </div>
               <div className="mt-[clamp(1px,_0.20vw,_calc(var(--pc-1512)*0.0020))] flex items-stretch h-[clamp(1px,_1.98vw,_calc(var(--pc-1512)*0.0198))]">
                 <div className="h-full flex justify-center items-center bg-[rgba(131,110,249,0.50)] text-[clamp(1px,_1.06vw,_calc(var(--pc-1512)*0.0106))] font-[500] px-[clamp(1px,_0.60vw,_calc(var(--pc-1512)*0.0060))]">
-                  BC
+                  {token.symbol}
                 </div>
                 <div className="h-full flex items-center gap-[clamp(1px,_0.40vw,_calc(var(--pc-1512)*0.0040))] px-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] text-[#A6A6DB] bg-[rgba(131,110,249,0.25)]">
                   <div className="">
-                    0x350...0023
+                    {formatLongText(token.address)}
                   </div>
                   <button
                     type="button"
                     className="shrink-0"
                     onClick={() => {
-                      navigator.clipboard.writeText("0x350...0023");
+                      navigator.clipboard.writeText(token.address);
                       toast.success({
                         title: "Copied to clipboard",
                       });
@@ -46,7 +50,7 @@ const Price = (props: any) => {
             </div>
           </div>
           <div className="text-[#A6A6DB] pt-[clamp(1px,_1.98vw,_calc(var(--pc-1512)*0.0198))]">
-            Created 2d ago
+            Created {formatTimeAgo(token.createdAt)}
           </div>
         </div>
         <div className="w-full px-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] pt-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))]">
@@ -72,7 +76,23 @@ const Price = (props: any) => {
             <div className="flex justify-end items-end gap-[clamp(1px,_4.63vw,_calc(var(--pc-1512)*0.0463))]">
               <div className="text-white">
                 <div className="">
-                  $956.2K
+                  {
+                    !tokenMarket && marketLoading ? (
+                      <Skeleton width="clamp(1px, 3.30vw, calc(var(--pc-1512)*0.0330))" height="clamp(1px, 1.06vw, calc(var(--pc-1512)*0.0106))" />
+                    ) : numberFormatter(tokenMarket?.market_cap, 2, true, { isShort: true, prefix: "$", isShortUppercase: true })
+                  }
+                </div>
+                <div className="text-[#727D97] text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))]">
+                  Market cap
+                </div>
+              </div>
+              <div className="text-white">
+                <div className="">
+                  {
+                    !tokenMarket && marketLoading ? (
+                      <Skeleton width="clamp(1px, 3.30vw, calc(var(--pc-1512)*0.0330))" height="clamp(1px, 1.06vw, calc(var(--pc-1512)*0.0106))" />
+                    ) : numberFormatter(tokenMarket?.volume_24h, 2, true, { isShort: true, prefix: "$", isShortUppercase: true })
+                  }
                 </div>
                 <div className="text-[#727D97] text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))]">
                   1D Volume
@@ -81,7 +101,7 @@ const Price = (props: any) => {
             </div>
           </div>
           <div className="w-full border mt-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] h-[clamp(1px,_12.70vw,_calc(var(--pc-1512)*0.1270))]">
-
+            {/*create a price chart here*/}
           </div>
         </div>
       </div>

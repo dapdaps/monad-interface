@@ -35,7 +35,7 @@ const SpotlightApps = (props: any) => {
       isSpotlight: true,
       isOutlink: false,
       id: 1000,
-      name: 'MBC',
+      name: 'BC',
       description: 'Meme token',
       category: 'Spotlight',
       icon: 'https://assets.dapdap.net/monad/mbc_icon.png',
