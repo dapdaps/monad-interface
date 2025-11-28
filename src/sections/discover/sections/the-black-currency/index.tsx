@@ -1,6 +1,5 @@
 import Card from "../../components/card";
 import Mouse from "../../components/mouse";
-import { useState } from "react";
 import Trade from "./trade";
 import { monad } from "@/configs/tokens/monad";
 import Price from "./price";
@@ -21,8 +20,6 @@ const BlackCurrency = {
 const TheBlackCurrency = (props: any) => {
   const { getVisits, swiperRef } = props;
 
-  const [activeTab, setActiveTab] = useState<any>("buy");
-
   const { runAsync: getTokenMarket, loading: marketLoading, data: tokenMarket } = useRequest(async () => {
     try {
       const res = await get("/token/market", {
@@ -38,7 +35,7 @@ const TheBlackCurrency = (props: any) => {
       console.log("get black currency market failed: %o", error);
     }
   }, {
-    pollingInterval: 60000, // 1 minute
+    pollingInterval: 150000, // 2.5min
   });
 
   const { runAsync: getTokenPrice, loading: priceLoading, data: tokenPrice } = useRequest(async () => {
@@ -56,10 +53,8 @@ const TheBlackCurrency = (props: any) => {
       console.log("get black currency price failed: %o", error);
     }
   }, {
-    pollingInterval: 10000, // 5s
+    pollingInterval: 150000, // 2.5min
   });
-
-  console.log("tokenPrice: %o", tokenPrice);
 
   return (
     <>
