@@ -373,7 +373,7 @@ const Price = (props: any) => {
                 </div>
                 <div className="h-full flex items-center gap-[clamp(1px,_0.40vw,_calc(var(--pc-1512)*0.0040))] px-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] text-[#A6A6DB] bg-[rgba(131,110,249,0.25)]">
                   <div className="">
-                    {formatLongText(token.address)}
+                    {formatLongText(token.address, 5, 4)}
                   </div>
                   <button
                     type="button"

@@ -48,9 +48,6 @@ const SpotlightApps = (props: any) => {
     return originList
   }, [AppList]);
 
-  console.log("SpotlightList:", SpotlightList);
-
-
   return (
     <>
       <div className="pt-[clamp(1px,_6.65vw,_calc(var(--pc-1512)*0.0665))]">
@@ -87,7 +84,7 @@ const SpotlightApps = (props: any) => {
                 setFirstIndex(params.realIndex);
                 setLastIndex((params.realIndex + 3) % SpotlightList.length);
               }}
-              autoplay={{
+              autoplay={showSwapModal ? false : {
                 delay: 3000,
                 disableOnInteraction: false,
                 pauseOnMouseEnter: true,

@@ -207,8 +207,8 @@ export default function CurrencySelect({
               const balanceB = balances[b.address] || "0";
               const hasBalanceA = Big(balanceA || 0).gt(0);
               const hasBalanceB = Big(balanceB || 0).gt(0);
-              const isMemeTokenA = a.address.toLowerCase() === "0xa485d7409bdac5a504d487ce4d0f2af40e64d80b";
-              const isMemeTokenB = b.address.toLowerCase() === "0xa485d7409bdac5a504d487ce4d0f2af40e64d80b";
+              const isMemeTokenA = a.symbol.toLowerCase() === "bc";
+              const isMemeTokenB = b.symbol.toLowerCase() === "bc";
 
               if (hasBalanceA && hasBalanceB) {
                 return Big(balanceA || 0).gt(balanceB || 0) ? -1 : 1;
