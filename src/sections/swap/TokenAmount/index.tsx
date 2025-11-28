@@ -118,7 +118,7 @@ export default function TokenAmout({
             <div className="flex items-center gap-[10px]">
               <div className="relative shrink-0">
                 <img
-                  className="w-[26px] h-[26px]"
+                  className="rounded-full w-[26px] h-[26px]"
                   src={currency.icon || "/assets/tokens/default_icon.png"}
                 />
               </div>
