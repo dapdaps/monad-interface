@@ -8,10 +8,8 @@ import { get } from "@/utils/http";
 import TokenDistribution from "./token-distribution";
 
 const BlackCurrency = {
-  address: "0xa485d7409bdac5a504d487ce4d0f2af40e64d80b",
-  symbol: "BC",
+  ...monad["bc"],
   name: "The Black Currency",
-  icon: "/images/mainnet/discover/token-the-black-currency-min.png",
   createdAt: "2025-11-28T02:00:00Z",
 };
 
