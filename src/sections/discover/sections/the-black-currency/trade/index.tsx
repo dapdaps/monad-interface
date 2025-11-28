@@ -18,6 +18,7 @@ import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover"
 import TokenSelector from "./token-selector";
 import SlippageSelector from "./slippage-selector";
 import PlaceOrderButton from "./PlaceOrderButton";
+import { useSettingsStore } from "@/stores/settings";
 
 interface TradeProps {
     tokenList: Token[];
@@ -39,11 +40,11 @@ export default function Trade({
 }: TradeProps) {
     const [activeTab, setActiveTab] = useState<"buy" | "sell">("buy");
     const [amount, setAmount] = useState("");
-    const [slippage, setSlippage] = useState("10");
     const [tokenIn, setTokenIn] = useState<Token>(tokenList[0]);
     const popoverRef = useRef<any>(null);
     const slippagePopoverRef = useRef<any>(null);
     const [errorTips, setErrorTips] = useState("");
+    const settingStore: any = useSettingsStore();
 
     const prices = usePriceStore((store) => store.price);
 
@@ -134,10 +135,6 @@ export default function Trade({
         return null;
     }, [amount, currentBalance, currentToken.decimals]);
 
-    const handlePlaceOrder = () => {
-        if (!amount || Big(amount).lte(0)) return;
-        onPlaceOrder?.(activeTab, amount, slippage);
-    };
 
     const canPlaceOrder = useMemo(() => {
         if (!amount || Big(amount).lte(0)) return false;
@@ -201,6 +198,16 @@ export default function Trade({
         }
         popoverRef.current?.onClose();
     };
+
+    useEffect(() => {
+        if (settingStore) {
+            settingStore.setSlippage("10");
+        }
+
+        return () => {
+            settingStore.setSlippage("0.5");
+        }
+    }, []);
 
     return (
         <div className="w-full border border-[#7262FF] rounded-[6px]">
@@ -350,8 +357,8 @@ export default function Trade({
                         trigger={PopoverTrigger.Click}
                         content={
                             <SlippageSelector
-                                slippage={slippage}
-                                onSlippageChange={setSlippage}
+                                slippage={settingStore.getSlippage()}
+                                onSlippageChange={settingStore.setSlippage}
                                 onClose={() => slippagePopoverRef.current?.onClose()}
                             />
                         }
@@ -360,7 +367,7 @@ export default function Trade({
                         <div className="flex items-center gap-1 cursor-pointer">
                             <div className="px-2 py-1 bg-[#151822] border border-[#34304B] rounded text-white text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] flex items-center gap-1">
                                 <span className="text-[#727D97]">Slippage</span>
-                                <span className="text-white">{slippage}%</span>
+                                <span className="text-white">{settingStore.getSlippage()}%</span>
                             </div>
                         </div>
                     </Popover>

@@ -48,6 +48,8 @@ const SpotlightApps = (props: any) => {
     return originList
   }, [AppList]);
 
+  console.log("SpotlightList:", SpotlightList);
+
 
   return (
     <>
@@ -178,7 +180,8 @@ const SpotlightApps = (props: any) => {
       {showSwapModal && (
         <SwapModal
           show={showSwapModal}
-          defaultOutputCurrency={monad['mon']}
+          defaultInputCurrency={monad['mon']}
+          defaultOutputCurrency={monad['bc']}
           outputCurrencyReadonly
           onClose={() => {
             setShowSwapModal(false);

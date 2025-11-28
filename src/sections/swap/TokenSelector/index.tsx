@@ -207,8 +207,8 @@ export default function CurrencySelect({
               const balanceB = balances[b.address] || "0";
               const hasBalanceA = Big(balanceA || 0).gt(0);
               const hasBalanceB = Big(balanceB || 0).gt(0);
-              const isWETHA = a.symbol === "BC";
-              const isWETHB = b.symbol === "BC";
+              const isMemeTokenA = a.address.toLowerCase() === "0xa485d7409bdac5a504d487ce4d0f2af40e64d80b";
+              const isMemeTokenB = b.address.toLowerCase() === "0xa485d7409bdac5a504d487ce4d0f2af40e64d80b";
 
               if (hasBalanceA && hasBalanceB) {
                 return Big(balanceA || 0).gt(balanceB || 0) ? -1 : 1;
@@ -223,8 +223,8 @@ export default function CurrencySelect({
               }
 
               if (!hasBalanceA && !hasBalanceB) {
-                if (isWETHA && !isWETHB) return -1;
-                if (!isWETHA && isWETHB) return 1;
+                if (isMemeTokenA && !isMemeTokenB) return -1;
+                if (!isMemeTokenA && isMemeTokenB) return 1;
                 return 0;
               }
 
