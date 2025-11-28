@@ -1,14 +1,22 @@
 import { motion } from "framer-motion"
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Tip from "./tip";
+import VideoAd from "./video-ad";
 
 export default function Lucky777() {
     const router = useRouter();
+    const [showVideoAd, setShowVideoAd] = useState(false);
 
     return (
-        <div onClick={() => {
-            router.push("/arcade/lucky777");
-        }} className="w-[577px] h-[754px] absolute bottom-0 right-[calc(50%-1020px)] cursor-pointer bg-[url('/images/mainnet/game/lucky777.png')] bg-no-repeat bg-cover bg-center group">
+        <>
+        <div 
+            onClick={() => {
+                router.push("/arcade/lucky777");
+            }} 
+            onMouseEnter={() => setShowVideoAd(true)}
+            onMouseLeave={() => setShowVideoAd(false)}
+            className="w-[577px] h-[754px] absolute bottom-0 right-[calc(50%-1020px)] cursor-pointer bg-[url('/images/mainnet/game/lucky777.png')] bg-no-repeat bg-cover bg-center group">
             <img src="/images/mainnet/game/lucky777_hover.png" className="absolute top-[-10px] left-[-10px] w-[330px] h-[594px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
             
             <div
@@ -48,9 +56,20 @@ export default function Lucky777() {
                 }
             </div>
 
-            <Tip content={<div>Pure luck · Win MON instantly</div>} />
+            {/* <Tip content={<div>Pure luck · Win MON instantly</div>} /> */}
 
         </div>
+        <motion.div
+            animate={{ 
+                y: showVideoAd ? 0 : 400,
+                opacity: showVideoAd ? 1 : 0
+            }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="absolute w-[520px] bottom-[-40px] left-1/2 z-50"
+        >
+            <VideoAd src="/images/mainnet/777-demo-1.mp4" tipContent={<div>Pure luck · Win MON instantly</div>} />
+        </motion.div>
+        </>
     )
 }
 
