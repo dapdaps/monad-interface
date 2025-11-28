@@ -202,7 +202,7 @@ export default function Trade({
 
 
     return (
-        <div className="w-[375px] border border-[#7262FF] rounded-[6px] mr-[50px]">
+        <div className="w-full border border-[#7262FF] rounded-[6px] mr-[50px]">
             {/* Tabs */}
             <div className="flex items-center gap-0 bg-[#836EF940] h-[37px] rounded-t-[6px] uppercase text-[16px] overflow-hidden text-white text-center text-base font-medium ">
                 <div
