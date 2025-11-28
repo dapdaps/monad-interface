@@ -220,7 +220,10 @@ export default function Trade({
                     BUY
                 </div>
                 <div
-                    onClick={() => handleTabChange("sell")}
+                    onClick={() => {
+                        setTokenIn(tokenList.find(token => token.symbol.toUpperCase() === "MON")!);
+                        handleTabChange("sell")
+                    }}
                     className={clsx(
                         "flex-1 h-full flex items-center justify-center cursor-pointer",
                     )}
