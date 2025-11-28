@@ -46,9 +46,25 @@ const TrendingTokens = (props: any) => {
   return (
     <div className="pt-[clamp(1px,_5.16vw,_calc(var(--pc-1512)*0.0516))]">
       <div className="flex flex-col items-center">
-        <div onClick={() => {
-          swiperRef?.current?.swiper?.slidePrev();
-        }} className="text-[18px] text-white font-[400] uppercase opacity-80 cursor-pointer">
+        <div
+          onClick={() => {
+            swiperRef?.current?.swiper?.slideTo(0);
+          }}
+          className="text-[16px] text-white/30 font-[400] uppercase"
+        >
+          THE BLACK CURRENCY
+        </div>
+        <img
+          src="/images/mainnet/discover/icon-down2.svg"
+          alt=""
+          className="w-[12px] h-[10px] object-center object-contain shrink-0 mt-[7px] rotate-[180deg]"
+        />
+        <div
+          onClick={() => {
+            swiperRef?.current?.swiper?.slidePrev();
+          }}
+          className="text-[18px] text-white font-[400] mt-[7px] uppercase opacity-80 cursor-pointer"
+        >
 
           Spotlight apps
         </div>
