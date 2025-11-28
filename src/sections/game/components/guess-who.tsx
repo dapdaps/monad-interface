@@ -61,7 +61,7 @@ export default function GuessWho() {
 
             <div className="absolute top-[240px] left-[370px] text-white text-[20px] font-[600] font-Oxanium uppercase">coming soon</div>
 
-            <Tip className="right-[40px]" content={<div>Simple play · Up to <span className='font-bold text-[24px]'>66.7%</span> win rate</div>} />
+            {/* <Tip className="right-[40px]" content={<div>Simple play · Up to <span className='font-bold text-[24px]'>66.7%</span> win rate</div>} /> */}
         </div>
     )
 }

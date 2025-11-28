@@ -41,7 +41,7 @@ export default function Space() {
             {/* <img src="/images/mainnet/game/space-icon.png" className="absolute top-[-14px] right-[125px] w-[85px] pointer-events-none" /> */}
             <div className="absolute top-[200px] left-[100px] text-white text-[20px] font-[600] font-Oxanium uppercase">coming soon</div>
 
-            <Tip content={<div>Up to <span className='font-bold text-[24px]'>30,000×</span> · Massive multipliers</div>} />
+            {/* <Tip content={<div>Up to <span className='font-bold text-[24px]'>30,000×</span> · Massive multipliers</div>} /> */}
         </div>
     )
 }
