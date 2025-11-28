@@ -468,7 +468,7 @@ const Price = (props: any) => {
           </div>
           <div
             ref={containerRef}
-            className="w-full mt-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] h-[clamp(1px,_12.70vw,_calc(var(--pc-1512)*0.1270))] overflow-hidden relative"
+            className="w-full mt-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] h-[clamp(1px,_20.70vw,_calc(var(--pc-1512)*0.2070))] overflow-hidden relative"
           >
             <div ref={chartRef} className="w-full h-full">
               {priceLoading && dataRef.current.length === 0 ? (
