@@ -10,6 +10,7 @@ import { useRef, useEffect, useState, lazy, Suspense } from "react";
 import { useClick } from "./hooks/use-click";
 import { Virtual, Navigation, Pagination } from 'swiper/modules';
 import Welcome from "./components/welcome";
+import SocialCard from "./components/meme/social-card";
 
 const Discover = (props: any) => {
   const { } = props;
@@ -92,6 +93,8 @@ const Discover = (props: any) => {
           <Bottom />
         </div>
       </div>
+
+      <SocialCard tokenName="MBC" tokenSymbol="MBC" twitterHandle="@0xMarlock" marketCap="$54.5M" description="Discribe meme token here..." iconUrl="/images/mainnet/discover/bg.png" onBuyClick={() => {}} />
     </>
   );
 };

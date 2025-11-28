@@ -8,7 +8,7 @@ type BetProps = {
     onChange?: (value: number) => void
 }
 
-const BET_AMOUNTS = [0.1, 1, 10]
+const BET_AMOUNTS = [50, 200, 500]
 
 export default function Bet(props: BetProps) {
     const { bet, onChange } = props

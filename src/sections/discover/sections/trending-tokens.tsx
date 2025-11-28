@@ -162,7 +162,7 @@ const PriceChart = ({ data }: { data: { price: string; symbol: string; timestamp
                 return (
                   <div className="whitespace-nowrap bg-black border border-gray-600 rounded px-2 py-1 text-xs shadow-lg z-10">
                     <p className="text-white">
-                      Price: {payload[0].value > 1 ? numberFormatter(payload[0].value, 4, true, { prefix: "$", isZeroPrecision: true }) : formatSmallDecimal(payload[0].value, "$", 4 )}
+                      Price: {payload[0].value > 1 ? numberFormatter(payload[0].value, 4, true, { prefix: "$", isZeroPrecision: true }) : formatSmallDecimal(payload[0].value, "$", 4)}
                     </p>
                     <p className="text-gray-300">
                       Time: {utcTime}
@@ -200,90 +200,98 @@ const TokenItem = (props: any) => {
   const { token, onClick } = props;
 
   return (
-    <div
-      className="w-full flex cursor-pointer flex-col gap-[clamp(1px,_0.99vw,_calc(var(--pc-1512)*0.0099))] p-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))_clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))_clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] border border-[#27272A] hover:border-[#7262FF] hover:bg-[rgba(53,52,112,0.60)] hover:bg-[url('')] transition-all duration-150 bg-black rounded-[8px] bg-[radial-gradient(21.57%_137.97%_at_2.76%_0%,_rgba(80,70,229,0.30)_0%,_rgba(1,1,1,0.30)_100%)]"
-      onClick={(e) => {
-        e.stopPropagation();
-        onClick();
-      }}
-    >
-      <div className="w-full flex justify-between items-center gap-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
-        <div className="flex items-center gap-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] flex-1">
-          <img
-            src={token.icon}
-            alt=""
-            className="rounded-full w-[clamp(1px,_2.51vw,_calc(var(--pc-1512)*0.0251))] h-[clamp(1px,_2.51vw,_calc(var(--pc-1512)*0.0251))] object-center object-contain shrink-0"
-          />
-          <div className="flex-1 w-0">
-            <div className="overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] text-white font-[500]">
-              {token.symbol}
-            </div>
-            <div className="flex-1 text-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] font-[400] text-[#8E97AD] flex items-end gap-[clamp(1px,_0.33vw,_calc(var(--pc-1512)*0.0033))] whitespace-nowrap">
-              <div className="max-w-[clamp(1px,_5.69vw,_calc(var(--pc-1512)*0.0569))] overflow-hidden text-ellipsis">
-                {formatLongText(token.name, 5, 4)}
+    <div className="relative">
+      <div
+        className="relative z-[2] w-full flex cursor-pointer flex-col gap-[clamp(1px,_0.99vw,_calc(var(--pc-1512)*0.0099))] p-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))_clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))_clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] border border-[#27272A] hover:border-[#7262FF] hover:bg-[rgba(53,52,112,0.60)] hover:bg-[url('')] transition-all duration-150 bg-black rounded-[8px] bg-[radial-gradient(21.57%_137.97%_at_2.76%_0%,_rgba(80,70,229,0.30)_0%,_rgba(1,1,1,0.30)_100%)]"
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick();
+        }}
+      >
+        <div className="w-full flex justify-between items-center gap-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
+          <div className="flex items-center gap-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] flex-1">
+            <img
+              src={token.icon}
+              alt=""
+              className="rounded-full w-[clamp(1px,_2.51vw,_calc(var(--pc-1512)*0.0251))] h-[clamp(1px,_2.51vw,_calc(var(--pc-1512)*0.0251))] object-center object-contain shrink-0"
+            />
+            <div className="flex-1 w-0">
+              <div className="overflow-hidden text-ellipsis whitespace-nowrap text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] text-white font-[500]">
+                {token.symbol}
               </div>
-              <div className="overflow-hidden text-ellipsis text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] translate-y-[-1px]">
-                {formatLongText(token.address === "native" ? "0x0000000000000000000000000000000000000000" : token.address, 5, 4)}
+              <div className="flex-1 text-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] font-[400] text-[#8E97AD] flex items-end gap-[clamp(1px,_0.33vw,_calc(var(--pc-1512)*0.0033))] whitespace-nowrap">
+                <div className="max-w-[clamp(1px,_5.69vw,_calc(var(--pc-1512)*0.0569))] overflow-hidden text-ellipsis">
+                  {formatLongText(token.name, 5, 4)}
+                </div>
+                <div className="overflow-hidden text-ellipsis text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] translate-y-[-1px]">
+                  {formatLongText(token.address === "native" ? "0x0000000000000000000000000000000000000000" : token.address, 5, 4)}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="shrink-0 flex justify-end items-center">
-          <button
-            type="button"
-            className="group w-[clamp(1px,_2.31vw,_calc(var(--pc-1512)*0.0231))] h-[clamp(1px,_2.31vw,_calc(var(--pc-1512)*0.0231))] text-[#8E97AD] transition-all duration-150 hover:border-[#836EF9] hover:bg-[radial-gradient(50%_66%_at_46%_50%,_#553BE4_0%,_#221662_100%)] hover:text-[#FFF] flex justify-center items-center shrink-0 border border-[#2F3543] rounded-[6px] backdrop-blur-[15px] bg-[rgba(25,25,26,0.60)]"
-            onClick={(e) => {
-              e.stopPropagation();
-              onClick();
-            }}
-          >
-            <svg
-              width="10"
-              height="12"
-              viewBox="0 0 10 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] h-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] shrink-0 group-hover:[filter:drop-shadow(0_0_10px_rgba(255,255,255,0.60))]"
-            >
-              <path d="M9.5 5.06218C10.1667 5.44708 10.1667 6.40933 9.5 6.79423L2.23205 10.9904C1.34602 11.5019 0.354474 10.5104 0.866025 9.62436L2.71133 6.4282C2.88996 6.1188 2.88996 5.7376 2.71132 5.4282L0.866025 2.23205C0.354474 1.34602 1.34602 0.354474 2.23205 0.866025L9.5 5.06218Z" fill="currentColor" />
-            </svg>
-          </button>
-        </div>
-      </div>
-      <div className="w-full flex justify-between items-center gap-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
-        <div className="flex-1 flex items-center gap-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
-          <div className="text-white text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] font-[400]">
-            {Number(token.price) > 1 ? numberFormatter(token.price, 2, true, { isShort: true, prefix: "$", isZeroPrecision: true }) : formatSmallDecimal(token.price, "$", 4)}
-          </div>
-          <div className="flex items-center gap-[clamp(1px,_0.26vw,_calc(var(--pc-1512)*0.0026))]">
-            <svg
-              width="9"
-              height="7"
-              viewBox="0 0 9 7"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-[clamp(1px,_0.60vw,_calc(var(--pc-1512)*0.0060))] h-[clamp(1px,_0.46vw,_calc(var(--pc-1512)*0.0046))] shrink-0"
-              style={{
-                color: Big(token.price_change_percent_24h || 0).gte(0) ? "#BFFF60" : "#FF008A",
-                transform: Big(token.price_change_percent_24h || 0).gte(0) ? "rotate(0deg)" : "rotate(180deg)",
+          <div className="shrink-0 flex justify-end items-center">
+            <button
+              type="button"
+              className="group w-[clamp(1px,_2.31vw,_calc(var(--pc-1512)*0.0231))] h-[clamp(1px,_2.31vw,_calc(var(--pc-1512)*0.0231))] text-[#8E97AD] transition-all duration-150 hover:border-[#836EF9] hover:bg-[radial-gradient(50%_66%_at_46%_50%,_#553BE4_0%,_#221662_100%)] hover:text-[#FFF] flex justify-center items-center shrink-0 border border-[#2F3543] rounded-[6px] backdrop-blur-[15px] bg-[rgba(25,25,26,0.60)]"
+              onClick={(e) => {
+                e.stopPropagation();
+                onClick();
               }}
             >
-              <path d="M4.5 0L8.39711 6.75H0.602886L4.5 0Z" fill="currentColor" />
-            </svg>
-            <div
-              className="text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))]"
-              style={{
-                color: Big(token.price_change_percent_24h || 0).gte(0) ? "#BFFF60" : "#FF008A",
-              }}
-            >
-              {numberFormatter(token.price_change_percent_24h, 2, true, { isShort: true, isZeroPrecision: true, isLessPrecision: false })}%
-            </div>
+              <svg
+                width="10"
+                height="12"
+                viewBox="0 0 10 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] h-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] shrink-0 group-hover:[filter:drop-shadow(0_0_10px_rgba(255,255,255,0.60))]"
+              >
+                <path d="M9.5 5.06218C10.1667 5.44708 10.1667 6.40933 9.5 6.79423L2.23205 10.9904C1.34602 11.5019 0.354474 10.5104 0.866025 9.62436L2.71133 6.4282C2.88996 6.1188 2.88996 5.7376 2.71132 5.4282L0.866025 2.23205C0.354474 1.34602 1.34602 0.354474 2.23205 0.866025L9.5 5.06218Z" fill="currentColor" />
+              </svg>
+            </button>
           </div>
         </div>
-        <div className="w-full">
-          <PriceChart data={token.price_7day || []} />
+        <div className="w-full flex justify-between items-center gap-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
+          <div className="flex-1 flex items-center gap-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
+            <div className="text-white text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] font-[400]">
+              {Number(token.price) > 1 ? numberFormatter(token.price, 2, true, { isShort: true, prefix: "$", isZeroPrecision: true }) : formatSmallDecimal(token.price, "$", 4)}
+            </div>
+            <div className="flex items-center gap-[clamp(1px,_0.26vw,_calc(var(--pc-1512)*0.0026))]">
+              <svg
+                width="9"
+                height="7"
+                viewBox="0 0 9 7"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-[clamp(1px,_0.60vw,_calc(var(--pc-1512)*0.0060))] h-[clamp(1px,_0.46vw,_calc(var(--pc-1512)*0.0046))] shrink-0"
+                style={{
+                  color: Big(token.price_change_percent_24h || 0).gte(0) ? "#BFFF60" : "#FF008A",
+                  transform: Big(token.price_change_percent_24h || 0).gte(0) ? "rotate(0deg)" : "rotate(180deg)",
+                }}
+              >
+                <path d="M4.5 0L8.39711 6.75H0.602886L4.5 0Z" fill="currentColor" />
+              </svg>
+              <div
+                className="text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))]"
+                style={{
+                  color: Big(token.price_change_percent_24h || 0).gte(0) ? "#BFFF60" : "#FF008A",
+                }}
+              >
+                {numberFormatter(token.price_change_percent_24h, 2, true, { isShort: true, isZeroPrecision: true, isLessPrecision: false })}%
+              </div>
+            </div>
+          </div>
+          <div className="w-full">
+            <PriceChart data={token.price_7day || []} />
+          </div>
         </div>
       </div>
+      {
+        token.symbol === 'MON' && <>
+          <img src="/images/game/Fire.gif" className='absolute w-[80%] bottom-[50%] left-0' />
+          <div className="absolute top-[-30px] left-[20%] text-[18px] text-[#FFE760] font-[500] italic">HOT</div>
+        </>
+      }
     </div>
   );
 };
