@@ -158,8 +158,8 @@ export default function Trade({
     const { run: runQuoter } = useDebounceFn(
         () => {
             onQuoter({ 
-                inputCurrency: tokenIn, 
-                outputCurrency: tokenOut, 
+                inputCurrency: activeTab === "buy" ? tokenIn : tokenOut, 
+                outputCurrency: activeTab === "buy" ? tokenOut : tokenIn, 
                 inputCurrencyAmount: amount, 
                 extendParams: {
                     fee: 100, 
