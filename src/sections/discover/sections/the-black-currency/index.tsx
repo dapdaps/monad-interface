@@ -1,8 +1,8 @@
-import clsx from "clsx";
 import Card from "../../components/card";
 import Mouse from "../../components/mouse";
 import { useState } from "react";
 import Swap from "./swap";
+import Price from "./price";
 
 const TheBlackCurrency = (props: any) => {
   const { getVisits, swiperRef } = props;
@@ -17,8 +17,8 @@ const TheBlackCurrency = (props: any) => {
           className="mx-auto"
           backdropClassName="!block [clip-path:polygon(0.9%_15%,99%_15%,99%_92.8%,96.7%_97.8%,78%_93.5%,76.5%_89.2%,70%_88.5%,60%_88%,50%_87.6%,35%_88%,23.4%_88.5%,21%_93%,2.7%_96.4%,2.7%_82%,0.9%_74.9%)]"
         >
-          <div className="w-full flex justify-center gap-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))] mt-[-30px] pl-[20px] text-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] font-[400]">
-            <div className="w-0 flex-1"></div>
+          <div className="w-full flex justify-center gap-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] mt-[clamp(calc(var(--pc-1512)*-0.0132),_-1.32vw,_1px)] pr-[clamp(1px,_7.94vw,_calc(var(--pc-1512)*0.0794))] pl-[clamp(1px,_6.61vw,_calc(var(--pc-1512)*0.0661))] text-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] font-[400]">
+            <Price />
             <Swap activeTab={activeTab} setActiveTab={setActiveTab} />
           </div>
         </Card>
