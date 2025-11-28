@@ -60,6 +60,7 @@ const TheBlackCurrency = (props: any) => {
     <>
       <div className="pt-[clamp(1px,_6.65vw,_calc(var(--pc-1512)*0.0665))]">
         <Card
+        type="2"
           title="⚠️ THE BLACK CURRENCY"
           className="mx-auto"
           backdropClassName="!block [clip-path:polygon(0.9%_15%,99%_15%,99%_92.8%,96.7%_97.8%,78%_93.5%,76.5%_89.2%,70%_88.5%,60%_88%,50%_87.6%,35%_88%,23.4%_88.5%,21%_93%,2.7%_96.4%,2.7%_82%,0.9%_74.9%)]"
