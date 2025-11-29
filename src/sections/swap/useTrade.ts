@@ -131,6 +131,10 @@ export default function useTrade({ chainId, template, from, inputAmount, onSucce
           lastestCachedKey.current
         )
           return;
+
+        if (!data.outputCurrencyAmount) {
+          return
+        }
         if (typeof template === "string") {
           const _trade = {
             ...formatTrade({
