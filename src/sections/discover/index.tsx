@@ -78,7 +78,7 @@ const Discover = (props: any) => {
 
   return (
     <>
-      <Welcome className="fixed z-[31] top-[0px] left-[50%] -translate-x-1/2" />
+      {/* <Welcome className="fixed z-[31] top-[0px] left-[50%] -translate-x-1/2" /> */}
       <div className="relative mainnet-content !pb-0 !pt-0 overflow-y-auto bg-no-repeat bg-top bg-cover text-white bg-[#000000] bg-[url(/images/mainnet/discover/bg.png)]">
         <div className="relative w-full h-full flex flex-col items-center">
           <div className="w-full h-full relative z-[2]">
