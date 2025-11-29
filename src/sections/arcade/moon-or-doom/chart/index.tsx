@@ -36,6 +36,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     const isScrollRef = useRef(false);
     const isCenterXRef = useRef(true);
     const translationXRef = useRef<number>(-1);
+    const nowRef = useRef<dayjs.Dayjs>(dayjs());
 
     const [gridNumber, setGridNumber] = useState(16);
 
@@ -229,6 +230,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
 
         if (list.length > 0) {
             lastPriceRef.current = Number(list[list.length - 1].price);
+            nowRef.current = dayjs(list[list.length - 1].time);
         }
         return data;
     }, [list]);
@@ -622,7 +624,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const lineGroup = chartGroup.select('.line-group');
         const pointGroup = chartGroup.select('.point-group');
 
-        const now = dayjs().add(5, 'second');
+        const now = nowRef.current.add(5, 'second');
+
 
         const pastData = initialHistoricalData
 
