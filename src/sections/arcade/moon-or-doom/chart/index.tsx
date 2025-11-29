@@ -4,13 +4,13 @@ import dayjs from "dayjs";
 import { useDebounceFn, useThrottleEffect } from "ahooks";
 import { numberFormatter } from "@/utils/number-formatter";
 import { preloadAudio, cleanupAudio } from "../lib/sound";
+import { PRICE_STEP } from "../hooks/usePriceAndBets";
 
 interface PricePoint {
     time: Date;
     price: number;
 }
 
-const PRICE_STEP = 0.5;
 export default function Chart({ bet, list = [], betList = [], handleBet, betLoading, userBet, winObj, allTimePrice }: { bet: number, list: any[], betList: any[], handleBet: (bet: any) => void, betLoading: boolean, userBet: any, winObj: any, allTimePrice: any }) {
     const containerRef = useRef<HTMLDivElement>(null);
     const svgRef = useRef<SVGSVGElement>(null);
@@ -197,6 +197,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             priceMax = priceMin + PRICE_STEP * 16;
         }
 
+        console.log('priceMin:', priceMin)
+
         return {
             viewportWidth,
             viewportHeight,
@@ -282,7 +284,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         const y1 = yScale(price);
                         const y2 = yScale(price + PRICE_STEP);
 
-                        createGridRect(futureGridGroup as any, x1, x2, y1, y2, gridTime, price, isPast, !isPast);
+                        createGridRect(futureGridGroup as any, x1, x2, y1, y2, gridTime, Math.floor(price * 10) / 10, isPast, !isPast);
                     }
                 }
 
@@ -359,7 +361,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         (rect.node() as any).__gridTime__ = gridTime.format('HH:mm:ss');
         (rect.node() as any).__gridPrice__ = price;
         (rect.node() as any).__isPast__ = isPast;
-
 
         rect
             .on('mouseenter', function (event) {
@@ -848,11 +849,12 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 if (x1 < configRef.current.plotWidth && x2 > 0) {
                     const isPast = gridTime.isBefore(now) || gridTime.isSame(now, 'second');
 
+
                     for (let price = configRef.current.priceMin; price <= configRef.current.priceMax; price += PRICE_STEP) {
                         const y1 = yScale(price);
                         const y2 = yScale(price + PRICE_STEP);
 
-                        createGridRect(futureGridGroup, x1, x2, y1, y2, gridTime, price, isPast, !isPast);
+                        createGridRect(futureGridGroup, x1, x2, y1, y2, gridTime, Math.floor(price * 10) / 10, isPast, !isPast);
                     }
                 }
 
@@ -906,8 +908,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             if (!isNaN(rectY1)) {
                 const calculatedPrice = yScale.invert(rectY1);
                 const alignedPrice = Math.floor(calculatedPrice / PRICE_STEP) * PRICE_STEP;
-                gridPrice = alignedPrice - PRICE_STEP;
-                (this as any).__gridPrice__ = gridPrice;
+                gridPrice = alignedPrice;
+                (this as any).__gridPrice__ = Math.floor(gridPrice * 10) / 10;
             }
 
             if (gridTimeStr) {

@@ -6,6 +6,7 @@ import { playSound5, playSound6 } from "../lib/sound";
 
 const WS_URL = (process.env.NEXT_PUBLIC_WS_URL || "wss://mainnet-stream-monad.dapdap.net") + "/ws";
 
+export const PRICE_STEP = 0.2;
 export default function usePriceAndBets({ userBet }: { userBet: any }) {
     const wsClientRef = useRef<WSClient | null>(null);
     const [list, setList] = useState<any[]>([]);
@@ -70,7 +71,7 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                         }
 
                         const prev5sTimestamp = data.timestamp - (data.timestamp % 5000);
-                        const roundedPrice = Math.floor(data.price / 0.5) * 0.5;
+                        const roundedPrice = Math.floor(data.price / PRICE_STEP) * PRICE_STEP;
                         allTimePriceRef.current[prev5sTimestamp + '-' + roundedPrice] = true;
 
                         return [
