@@ -622,7 +622,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const lineGroup = chartGroup.select('.line-group');
         const pointGroup = chartGroup.select('.point-group');
 
-        const now = dayjs().add(5, 'second');
+        const now = dayjs().add(9, 'second');
 
         const pastData = initialHistoricalData
 
