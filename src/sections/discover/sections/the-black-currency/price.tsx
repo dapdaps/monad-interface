@@ -190,7 +190,14 @@ const Price = (props: any) => {
       .ticks(d3.timeMinute.every(tickInterval))
       .tickFormat((d) => {
         const date = d as Date;
-        return d3.timeFormat("%I:%M %p")(date).replace(/^0/, ""); // Format as "6:00 PM" or "6:10 PM"
+        const minutes = date.getMinutes();
+        if (minutes === 0) {
+          // If it's a full hour, show only hour and AM/PM without :00
+          return d3.timeFormat("%I %p")(date).replace(/^0/, ""); // Format as "6 PM"
+        } else {
+          // Otherwise show full time with minutes
+          return d3.timeFormat("%I:%M %p")(date).replace(/^0/, ""); // Format as "6:10 PM"
+        }
       });
 
     // Generate y-axis ticks based on actual price values
