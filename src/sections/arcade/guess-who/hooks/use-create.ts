@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { Monster, RPS_MIN_BET_AMOUNT, Status } from "../config";
 import useCustomAccount from "@/hooks/use-account";
-import { useConnectWallet } from "@/hooks/use-connect-wallet";
 import useToast from "@/hooks/use-toast";
 import { useRequest } from "ahooks";
 import { DEFAULT_CHAIN_ID } from "@/configs";
@@ -10,6 +9,7 @@ import { RPS_CONTRACT_ADDRESS, RPS_CONTRACT_ADDRESS_ABI } from "../contract";
 import Big from "big.js";
 import { NotificationType, useNotificationContext } from "@/context/notification";
 import { post } from "@/utils/http";
+import { useAuth } from "@/context/auth";
 
 export function useCreate(props?: any) {
   const {
@@ -27,8 +27,8 @@ export function useCreate(props?: any) {
     gameConfig,
   } = props ?? {};
 
-  const { accountWithAk, account, chainId, provider } = useCustomAccount();
-  const { onConnect, onSwitchChain } = useConnectWallet();
+  const { account, chainId, provider } = useCustomAccount();
+  const { login, isLogin, onSwitchChain } = useAuth();
   const toast = useToast();
   const { add } = useNotificationContext();
 
@@ -67,8 +67,8 @@ export function useCreate(props?: any) {
   const { runAsync: onCreate, loading: creating } = useRequest(async () => {
     playAudio({ type: "click", action: "play" });
 
-    if (!account) {
-      onConnect();
+    if (!isLogin) {
+      login();
       return;
     }
     if (chainId !== DEFAULT_CHAIN_ID) {

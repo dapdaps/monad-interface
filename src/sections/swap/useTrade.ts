@@ -129,9 +129,15 @@ export default function useTrade({ chainId, template, from, inputAmount, onSucce
         if (
           `${inputCurrency.address}-${outputCurrency.address}-${inputCurrencyAmount}` !==
           lastestCachedKey.current
-        )
+        ) {
           return;
+        }
+
         if (typeof template === "string") {
+          if (!data.outputCurrencyAmount) {
+            return
+          }
+
           const _trade = {
             ...formatTrade({
               market: { ...data, template },

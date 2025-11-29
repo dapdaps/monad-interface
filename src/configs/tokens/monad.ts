@@ -264,7 +264,7 @@ export const monad: { [key: string]: Token } = {
     icon: "https://assets.dapdap.net/monad/lemon.png"
   },
   bc: {
-    address: "0xa485d7409bdac5a504d487ce4d0f2af40e64d80b",
+    address: "0x228c673cae7aaD0F4D9F309616D6b546356b7777",
     chainId: CHAIN_ID,
     symbol: "BC",
     decimals: 18,

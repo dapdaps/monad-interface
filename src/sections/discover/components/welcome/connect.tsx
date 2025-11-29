@@ -1,10 +1,10 @@
-import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useAuth } from "@/context/auth";
 import { motion } from "framer-motion";
 
 const WelcomeConnect = (props: any) => {
-  const { } = props;
+  const {} = props;
 
-  const { openConnectModal } = useConnectModal();
+  const { login } = useAuth();
 
   return (
     <div className="w-full px-[24px] mt-[190px]">
@@ -14,15 +14,15 @@ const WelcomeConnect = (props: any) => {
             type="button"
             className="p-5 text-[#BFFF60] text-center font-[pixelmix] text-[14px] not-italic font-normal leading-[28px]"
             onClick={() => {
-              openConnectModal?.();
+              login();
             }}
             animate={{
-              opacity: [1, 0.1, 1],
+              opacity: [1, 0.1, 1]
             }}
             transition={{
               duration: 1.5,
               repeat: Infinity,
-              ease: "easeInOut",
+              ease: "easeInOut"
             }}
           >
             [Connect wallet]

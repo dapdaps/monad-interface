@@ -1,6 +1,5 @@
 import { DEFAULT_CHAIN_ID } from "@/configs";
 import useCustomAccount from "@/hooks/use-account";
-import { useConnectWallet } from "@/hooks/use-connect-wallet";
 import useToast from "@/hooks/use-toast";
 import { useRequest } from "ahooks";
 import { ContractStatus, DefaultMonsterList, Monster, MonsterMap, MonsterName, Room, Status } from "../config";
@@ -8,7 +7,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Contract, utils } from "ethers";
 import { RPS_CONTRACT_ADDRESS, RPS_CONTRACT_ADDRESS_ABI } from "../contract";
 import Big from "big.js";
-import { NotificationType, useNotificationContext } from "@/context/notification";
+import {
+  NotificationType,
+  useNotificationContext
+} from "@/context/notification";
+import { useAuth } from "@/context/auth";
 
 export function useJoin(props?: any) {
   const {
@@ -25,8 +28,8 @@ export function useJoin(props?: any) {
     playAudio,
   } = props ?? {};
 
-  const { accountWithAk, account, chainId, provider } = useCustomAccount();
-  const { onConnect, onSwitchChain } = useConnectWallet();
+  const { account, chainId, provider } = useCustomAccount();
+  const { login, isLogin, onSwitchChain } = useAuth();
   const toast = useToast();
   const { add } = useNotificationContext();
 
@@ -56,8 +59,8 @@ export function useJoin(props?: any) {
     }
     onRoomLoading(_room.room_id, true);
 
-    if (!account) {
-      onConnect();
+    if (!isLogin) {
+      login();
       onRoomLoading(_room.room_id, false);
       return;
     }

@@ -1,7 +1,6 @@
 import { useNFT } from "@/hooks/use-nft";
 import CircleLoading from "../circle-loading";
 import { useMemo, useState } from "react";
-import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useAccount } from "wagmi";
 import { useSwitchChain } from "wagmi";
 import { monadTestnet } from "viem/chains";
@@ -16,9 +15,12 @@ import useXFollow, { IS_REAL_FOLLOW } from "./use-x-follow";
 import { shareToX } from "@/utils/utils";
 import TimeLocked from "../time-locked";
 import useClickTracking from "@/hooks/use-click-tracking";
+import { useAuth } from "@/context/auth";
 
-const XWrqapper: any = IS_REAL_FOLLOW ? TimeLocked : ({ children }: any) => children
-const IS_TEST = !process.env.NEXT_PUBLIC_API?.includes('testnet')
+const XWrqapper: any = IS_REAL_FOLLOW
+  ? TimeLocked
+  : ({ children }: any) => children;
+const IS_TEST = !process.env.NEXT_PUBLIC_API?.includes("testnet");
 export default function NadsaPassCard({ onLoginOut, className }: any) {
   const {
     nftMetadata,
@@ -30,10 +32,12 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
     address,
     checkAllowlistLoading
   } = useNFT({
-    // nftAddress: "0x378d216463a2245bf4b70a1730579e4da175dd0f" 
-    nftAddress: process.env.NEXT_PUBLIC_CHART_NFT || "0x2d298c1f3a52af45ab3d34637aa293cf8a988c71"
+    // nftAddress: "0x378d216463a2245bf4b70a1730579e4da175dd0f"
+    nftAddress:
+      process.env.NEXT_PUBLIC_CHART_NFT ||
+      "0x2d298c1f3a52af45ab3d34637aa293cf8a988c71"
   });
-  const { openConnectModal } = useConnectModal();
+  const { login, isLogin } = useAuth();
   const { tokenBalance, isLoading: isTokenBalanceLoading } = useTokenBalance(
     "native",
     18,
@@ -48,7 +52,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
 
   const { isFollow, isLoadingFollow, checkFollowX, setFollowX } = useXFollow();
 
-  const { handleReport, handleReportWithoutDebounce } = useClickTracking()
+  const { handleReport, handleReportWithoutDebounce } = useClickTracking();
 
   const status = useMemo(() => {
     if (!address) {
@@ -72,16 +76,16 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
   }, [hasNFT, nftMetadata, address, isFollow, isLoadingFollow]);
 
   return (
-    <div onClick={(e) => e.stopPropagation()} className={clsx("w-[308px] p-4 relative", className)}>
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className={clsx("w-[308px] p-4 relative", className)}
+    >
       <div className="absolute top-0 left-0 w-full h-full">
         <img src="/images/nft/bg.png" alt="bg" className="w-full h-full" />
       </div>
       <div className="relative pt-[65px] z-10 px-[10px]">
         <div className="absolute top-[0px] left-[38px] ">
-          <img
-            src="/images/nft/data-override.gif"
-            className="w-[50px]"
-          />
+          <img src="/images/nft/data-override.gif" className="w-[50px]" />
         </div>
 
         <div className="text-[#00FF11] text-[22px] font-HackerNoonV2 text-center  drop-shadow-[0px_0px_10px_#BFFF6099]">
@@ -155,7 +159,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
             ) : (
               <button
                 onClick={() => {
-                  handleReportWithoutDebounce("1006-003")
+                  handleReportWithoutDebounce("1006-003");
                   if (buttonText === "Please switch X") {
                     onLoginOut?.();
                     return;
@@ -164,7 +168,7 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
                     handleBind();
                     return;
                   }
-                  if (!address) openConnectModal?.();
+                  !isLogin && login();
                 }}
                 className="flex items-center justify-center mt-[10px] text-[12px] text-[#FFFFFF] w-full h-[40px] px-[10px] bg-[#7663F4] rounded-[2px] font-Pixelmix"
               >
@@ -176,13 +180,13 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
               {!isFollow || buttonText ? (
                 <button
                   onClick={() => {
-                    handleReportWithoutDebounce("1006-004")
+                    handleReportWithoutDebounce("1006-004");
                     if (buttonText) return;
                     window.open(
                       "https://x.com/intent/follow?screen_name=0xNADSA",
                       "_blank"
                     );
-                    setFollowX()
+                    setFollowX();
                   }}
                   className={clsx(
                     "flex relative items-center justify-center mt-[10px] text-[12px] w-full h-[40px] px-[10px] bg-[#7663F4] rounded-[2px] font-Pixelmix",
@@ -190,29 +194,42 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
                   )}
                 >
                   <div className="text-[#FFFFFF]">Follow 0xNADSA on X</div>
-                  {
-                    !buttonText && <div
+                  {!buttonText && (
+                    <div
                       className="absolute right-[10px] top-[50%] translate-y-[-50%]"
                       onClick={(e) => {
                         e.stopPropagation();
-
                       }}
                     >
                       <XWrqapper className="text-white">
-                        <div className="" onClick={(e) => {
-                          checkFollowX()
-                      }}>
                         <div
-                            className={`loader-arrow ${isLoadingFollow ? 'animate' : 'animate-none'}`}
+                          className=""
+                          onClick={(e) => {
+                            checkFollowX();
+                          }}
+                        >
+                          <div
+                            className={`loader-arrow ${
+                              isLoadingFollow ? "animate" : "animate-none"
+                            }`}
                           >
-                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path d="M0.200195 7.79231C0.200195 4.35144 3.12325 1.58462 6.7002 1.58462C7.69535 1.58462 8.63844 1.79947 9.48249 2.18189L9.01418 0.490781L10.9102 0L12.4169 5.43795L6.95411 6.85242L6.44628 5.02009L9.32319 4.27466C8.58308 3.77546 7.67892 3.48061 6.7002 3.48061C4.18094 3.48061 2.16205 5.42385 2.16205 7.79231C2.16228 10.1606 4.18108 12.1029 6.7002 12.1029C9.21931 12.1029 11.2381 10.1606 11.2383 7.79231H13.2002C13.2 11.233 10.277 14 6.7002 14C3.12339 14 0.200421 11.233 0.200195 7.79231Z" fill="#fff" />
+                            <svg
+                              width="14"
+                              height="14"
+                              viewBox="0 0 14 14"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M0.200195 7.79231C0.200195 4.35144 3.12325 1.58462 6.7002 1.58462C7.69535 1.58462 8.63844 1.79947 9.48249 2.18189L9.01418 0.490781L10.9102 0L12.4169 5.43795L6.95411 6.85242L6.44628 5.02009L9.32319 4.27466C8.58308 3.77546 7.67892 3.48061 6.7002 3.48061C4.18094 3.48061 2.16205 5.42385 2.16205 7.79231C2.16228 10.1606 4.18108 12.1029 6.7002 12.1029C9.21931 12.1029 11.2381 10.1606 11.2383 7.79231H13.2002C13.2 11.233 10.277 14 6.7002 14C3.12339 14 0.200421 11.233 0.200195 7.79231Z"
+                                fill="#fff"
+                              />
                             </svg>
                           </div>
-                      </div>
+                        </div>
                       </XWrqapper>
                     </div>
-                  }
+                  )}
                 </button>
               ) : (
                 <div className="flex items-center justify-between mt-[10px] text-[12px] h-[40px] px-[10px] bg-[#212041] rounded-[2px] font-Pixelmix">
@@ -226,32 +243,43 @@ export default function NadsaPassCard({ onLoginOut, className }: any) {
           </>
         )}
 
-        {status === 1 && (<div>
-          <div className="flex items-center justify-center gap-[10px] text-[12px] h-[40px] mt-[10px] mb-[10px] text-[#00FF11] font-Pixelmix">
-            <RightArrow /> Mint Successfully
-          </div>
-          <MainBtn
-            disabled={false}
-            onClick={() => {
-              handleReportWithoutDebounce("1006-005")
-              const tweetUrl = `https://${IS_TEST ? 'test.' : ''}nadsa.space/api/twitter?img=${encodeURIComponent(
-                'https://gateway.pinata.cloud/ipfs/bafkreib7px3v7yrhapt5x6ivnz2mk74k32gnr47qjghyhbvic73r57w4fe'
-              )}`;
-              shareToX(`NADSA_ADMISSION_TICKET logged. %0A
+        {status === 1 && (
+          <div>
+            <div className="flex items-center justify-center gap-[10px] text-[12px] h-[40px] mt-[10px] mb-[10px] text-[#00FF11] font-Pixelmix">
+              <RightArrow /> Mint Successfully
+            </div>
+            <MainBtn
+              disabled={false}
+              onClick={() => {
+                handleReportWithoutDebounce("1006-005");
+                const tweetUrl = `https://${
+                  IS_TEST ? "test." : ""
+                }nadsa.space/api/twitter?img=${encodeURIComponent(
+                  "https://gateway.pinata.cloud/ipfs/bafkreib7px3v7yrhapt5x6ivnz2mk74k32gnr47qjghyhbvic73r57w4fe"
+                )}`;
+                shareToX(
+                  `NADSA_ADMISSION_TICKET logged. %0A
 
 Something’s brewing at @0xNADSA — I’m already in. %0A
 
-See you on the inside. %0A`, tweetUrl)
-            }}
-            tokenBalance={'10'}
-          >
-            Share on X
-          </MainBtn>
-        </div>
+See you on the inside. %0A`,
+                  tweetUrl
+                );
+              }}
+              tokenBalance={"10"}
+            >
+              Share on X
+            </MainBtn>
+          </div>
         )}
         {status === 0 && (
           <MainBtn
-            disabled={!!buttonText || isLoadingFollow || !isFollow || checkAllowlistLoading}
+            disabled={
+              !!buttonText ||
+              isLoadingFollow ||
+              !isFollow ||
+              checkAllowlistLoading
+            }
             onClick={() => mintNFT()}
             tokenBalance={tokenBalance}
           >
@@ -302,13 +330,13 @@ const MainBtn = ({
   dataBp?: string;
 }) => {
   const { switchChain, isPending: switching } = useSwitchChain();
-  const { address, chainId } = useAccount();
-  const { openConnectModal } = useConnectModal();
+  const { chainId } = useAccount();
+  const { login, isLogin } = useAuth();
 
-  if (!address) {
+  if (!isLogin) {
     return (
       <button
-        onClick={() => openConnectModal?.()}
+        onClick={() => login()}
         className={clsx(
           "flex w-full items-center justify-center text-[12px] h-[40px] mt-[10px] mb-[10px] bg-[#7663F4] text-[#fff] rounded-[2px] font-Pixelmix opacity-30",
           "!cursor-not-allowed"
@@ -338,9 +366,8 @@ const MainBtn = ({
           return;
         }
 
-
         if (Number(tokenBalance) <= 1.3) {
-          toast.error('Insufficient balance');
+          toast.error("Insufficient balance");
           return;
         }
 
