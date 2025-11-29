@@ -59,7 +59,7 @@ const SpotlightApps = (props: any) => {
             className="text-[18px] text-white font-[400] uppercase opacity-80 cursor-pointer"
           >
 
-            THE BLACK CURRENCY
+            SYSTEM OVERRIDE
           </div>
           <img
             src="/images/mainnet/discover/icon-down.svg"
