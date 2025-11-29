@@ -85,7 +85,8 @@ export default function Leaderboard(props: LeaderboardProps) {
         const fetchEntries = async () => {
             setLoading(true)
             const res = await get('/game/euphoria/leaderboard/day', {
-                address: userInfo.address
+                address: userInfo?.address || '',
+                newQuery: 1,
             })
             if (res.code !== 200) {
                 return
@@ -98,10 +99,11 @@ export default function Leaderboard(props: LeaderboardProps) {
         }
 
         if (userInfo?.address) {
-            fetchEntries()
+            // fetchEntries()
         } else {
             setMyEntry(undefined)
         }
+        fetchEntries()
     }, [userInfo])
 
     return (

@@ -83,6 +83,7 @@ export default function HistoryModal({
             const res = await get('/game/euphoria/user/orders', {
                 page: bidRecordsPage,
                 page_size: PAGE_SIZE,
+                newQuery: 1
             });
 
             if (res.code === 200) {
@@ -123,6 +124,7 @@ export default function HistoryModal({
             const res = await get('/game/euphoria/user/deposits', {
                 page: depositPage,
                 page_size: PAGE_SIZE,
+                newQuery: 1
             });
 
             if (res.code === 200) {
@@ -144,6 +146,7 @@ export default function HistoryModal({
             const res = await get('/game/euphoria/user/withdraws', {
                 page: withdrawPage,
                 page_size: PAGE_SIZE,
+                newQuery: 1
             });
 
             if (res.code === 200) {
