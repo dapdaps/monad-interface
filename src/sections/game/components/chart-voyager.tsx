@@ -16,7 +16,7 @@ export default function ChartVoyager() {
                 className="absolute top-[-1px] left-[53px] w-[290px]  pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200"
             /> */}
             <div className="absolute top-[200px] left-[130px] text-white text-[20px] font-[600] font-Oxanium uppercase">coming soon</div>
-            <Tip className="right-[-20px]" content={<div>Updates every second · Ultra-fast pace</div>} />
+            {/* <Tip className="right-[-20px]" content={<div>Updates every second · Ultra-fast pace</div>} /> */}
 
         </div>
     )
