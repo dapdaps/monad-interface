@@ -245,28 +245,32 @@ export default function Trade({
             </div>
 
             {/* Content */}
-            <div className="px-[clamp(1px,_1.06vw,_calc(var(--pc-1512)*0.0106))] py-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))]">
+            <div className="px-[clamp(1px,_1.06vw,_calc(var(--pc-1512)*0.0106))] py-[clamp(1px,_1.62vw,_calc(var(--pc-1512)*0.0162))]">
                 {/* Balance */}
-                <div className="text-[#A6A6DB] text-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] flex items-center gap-2">
-                    <span>Balance:</span>
-                    {activeTab === "buy" ? (
-                        balanceInLoading ? (
-                            <Loading size={12} />
+                <div className="flex items-center justify-between">
+                    <div className="text-[clamp(1px,_1.23vw,_calc(var(--pc-1512)*0.0123))]">{ activeTab === "buy" ? "BUY" : "SELL" } BD by</div>
+                    <div className="text-[#A6A6DB] text-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] flex items-center gap-2">
+                        <span>Balance:</span>
+                        {activeTab === "buy" ? (
+                            balanceInLoading ? (
+                                <Loading size={12} />
+                            ) : (
+                                <span>{balanceFormated(currentBalance, 2)}</span>
+                            )
                         ) : (
-                            <span>{balanceFormated(currentBalance, 2)}</span>
-                        )
-                    ) : (
-                        balanceOutLoading ? (
-                            <Loading size={12} />
-                        ) : (
-                            <span>{balanceFormated(currentBalance, 2)}</span>
-                        )
-                    )}
+                            balanceOutLoading ? (
+                                <Loading size={12} />
+                            ) : (
+                                <span>{balanceFormated(currentBalance, 2)}</span>
+                            )
+                        )}
+                    </div>
                 </div>
+                
 
                 {/* Amount Input */}
-                <div className="relative mt-[clamp(1px,_0.26vw,_calc(var(--pc-1512)*0.0026))]">
-                    <div className="flex items-center justify-between h-[clamp(1px,_2.51vw,_calc(var(--pc-1512)*0.0251))] bg-[#151822] rounded-[4px] border border-[#34304B] pl-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
+                <div className="relative mt-[clamp(1px,_0.56vw,_calc(var(--pc-1512)*0.0056))]">
+                    <div className="flex items-center justify-between h-[clamp(1px,_3.51vw,_calc(var(--pc-1512)*0.0951))] bg-[#151822] rounded-[4px] border border-[#34304B] pl-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
                         <InputNumber
                             value={amount}
                             onNumberChange={setAmount}
@@ -289,7 +293,7 @@ export default function Trade({
                                 }
                                 contentClassName="bg-transparent"
                             >
-                                <div className="flex items-center justify-end gap-2 shrink-0 border-l border-[#34304B] px-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] h-full cursor-pointer">
+                                <div className="flex items-center justify-end gap-2 shrink-0 border-l border-[#34304B] px-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] h-[clamp(1px,_3.51vw,_calc(var(--pc-1512)*0.0951))] cursor-pointer">
                                     <img
                                         src={currentToken.icon}
                                         alt={currentToken.symbol}
@@ -340,16 +344,10 @@ export default function Trade({
                     </div>
                 </div>
 
-                {/* Expected Output */}
-                <div className="flex items-center justify-between mt-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
-                    <span className="text-[#727D97] text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))]">Expected</span>
-                    <span className="text-[#BFFF60] text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] font-medium">
-                        {balanceFormated(trade?.outputCurrencyAmount, 2)} {outputToken.symbol}
-                    </span>
-                </div>
+              
 
                 {/* Slippage */}
-                <div className="flex items-center justify-between mt-[clamp(1px,_0.33vw,_calc(var(--pc-1512)*0.0033))]">
+                <div className="flex items-center justify-between mt-[clamp(1px,_1.93vw,_calc(var(--pc-1512)*0.0193))]">
                     <span className="text-[#727D97] text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))]">Slippage</span>
                     <Popover
                         ref={slippagePopoverRef}
@@ -371,6 +369,14 @@ export default function Trade({
                             </div>
                         </div>
                     </Popover>
+                </div>
+
+                  {/* Expected Output */}
+                  <div className="flex items-center justify-between mt-[clamp(1px,_2.66vw,_calc(var(--pc-1512)*0.266))]">
+                    <span className="text-[#727D97] text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))]">Expected</span>
+                    <span className="text-[#BFFF60] text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] font-medium">
+                        {balanceFormated(trade?.outputCurrencyAmount, 2)} {outputToken.symbol}
+                    </span>
                 </div>
 
                 {/* Place Order Button */}
