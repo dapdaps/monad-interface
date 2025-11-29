@@ -8,9 +8,10 @@ import useToast from "@/hooks/use-toast";
 import { get, post } from "@/utils/http";
 import useUser from "@/hooks/use-user";
 import { playSound3 } from "../lib/sound";
+import { IS_PRODUCTION } from "@/configs";
 
 const CONTRACT_ADDRESS = "0xff6174156e98aa0a7124c26cda402C7b40682070";
-const CONTRACT_ADDRESS_MAINNET = "0xc277eE4A10692E0E8022B87f29974d99E118f1C0";
+const CONTRACT_ADDRESS_MAINNET = IS_PRODUCTION ? "0xb03dFB99E21E5b212655DbBC18cb4742F496a109" : "0xc277eE4A10692E0E8022B87f29974d99E118f1C0";
 export default function useWallet() {
     const { provider, chainId } = useCustomAccount();
     const { userInfo } = useUser();
