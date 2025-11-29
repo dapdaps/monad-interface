@@ -136,7 +136,6 @@ export default function Trade({
         return null;
     }, [amount, currentBalance, currentToken.decimals]);
 
-
     const canPlaceOrder = useMemo(() => {
         try {
             if (!amount || Big(amount).lte(0)) return false;
@@ -191,7 +190,7 @@ export default function Trade({
           return;
         }
         if (Big(amount).gt(currentBalance || 0)) {
-          setErrorTips(`Insufficient ${tokenIn?.symbol} Balance`);
+          setErrorTips(`Insufficient ${activeTab === "buy" ? tokenIn?.symbol : tokenOut?.symbol} Balance`);
           setTrade(null);
         } else {
           setErrorTips("");
