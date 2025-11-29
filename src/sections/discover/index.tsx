@@ -22,6 +22,33 @@ const Discover = (props: any) => {
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       const target = e.target as HTMLElement;
+      
+      // Check if this is a horizontal scroll (left/right)
+      const isHorizontalScroll = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+      
+      if (isHorizontalScroll) {
+        // Check if the target is inside a horizontally scrollable container
+        const scrollableContainer = target.closest('[class*="overflow-x-auto"], [class*="overflow-x-scroll"]') as HTMLElement;
+        
+        if (scrollableContainer) {
+          // Check if we can actually scroll horizontally
+          const canScrollLeft = e.deltaX < 0 && scrollableContainer.scrollLeft > 0;
+          const canScrollRight = e.deltaX > 0 && 
+            scrollableContainer.scrollLeft < scrollableContainer.scrollWidth - scrollableContainer.clientWidth;
+          
+          if (canScrollLeft || canScrollRight) {
+            // We're scrolling horizontally and can scroll, prevent Swiper from handling it
+            e.stopPropagation();
+            return;
+          }
+        } else {
+          // Horizontal scroll but not in a scrollable container, prevent Swiper
+          e.stopPropagation();
+          return;
+        }
+      }
+      
+      // Handle vertical scroll for explore-all-apps-content
       const scrollableContent = target.closest('.explore-all-apps-content') as HTMLElement;
 
       if (scrollableContent) {
@@ -42,7 +69,7 @@ const Discover = (props: any) => {
       }
     };
 
-    document.addEventListener('wheel', handleWheel, { passive: true, capture: true });
+    document.addEventListener('wheel', handleWheel, { passive: false, capture: true });
 
     return () => {
       document.removeEventListener('wheel', handleWheel, true);
@@ -71,6 +98,7 @@ const Discover = (props: any) => {
                 thresholdTime: 150,
               }}
               allowTouchMove={false}
+              touchRatio={0}
             >
               <SwiperSlide>
                 <TheBlackCurrency
