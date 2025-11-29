@@ -1,6 +1,5 @@
 "use client";
 
-import MobileNetworks from "@/components/connect-wallet/networks";
 import MobileUser from "@/components/connect-wallet/user";
 import Popover, {
   PopoverPlacement,
@@ -10,8 +9,9 @@ import allTokens from "@/configs/allTokens";
 import useIsMobile from "@/hooks/use-isMobile";
 import useToast from "@/hooks/use-toast";
 import useUser from "@/hooks/use-user";
+import { useAuth } from "@/context/auth";
 import { useWalletName } from "@/hooks/use-wallet-name";
-import { useConnectModal } from '@rainbow-me/rainbowkit';
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useDebounceFn } from "ahooks";
 import Big from "big.js";
 import { utils } from "ethers";
@@ -19,7 +19,13 @@ import { motion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { useAccount, useBalance, useDisconnect, useConfig, useBlockNumber } from "wagmi";
+import {
+  useAccount,
+  useBalance,
+  useDisconnect,
+  useConfig,
+  useBlockNumber
+} from "wagmi";
 import MobileChain from "./chain/mobile";
 import { monadTestnet } from "viem/chains";
 import useAudioPlay from "@/hooks/use-audio";
@@ -42,10 +48,10 @@ const ConnectWallet = ({ className }: { className?: string }) => {
   const modal = useConnectModal();
   const [_, setUpdater] = useState({});
 
-  const pathname = usePathname();
+  const { login, isLogin } = useAuth();
   const isMobile = useIsMobile();
   const total = useToast();
-  const { address, isConnected, chainId, chain, isConnecting } = useAccount();
+  const { address, chainId, chain, isConnecting } = useAccount();
   const balance = useBalance({
     address,
     chainId: DEFAULT_CHAIN_ID
@@ -55,11 +61,11 @@ const ConnectWallet = ({ className }: { className?: string }) => {
   const { userInfo } = useUser();
   const walletInfo = useWalletName();
   const config = useConfig();
-  const { play } = useAudioPlay()
+  const { play } = useAudioPlay();
 
   const handlePlay = () => {
-    play('/audios/press_button.mp3')
-  }
+    play("/audios/press_button.mp3");
+  };
 
   const [connecting, setConnecting] = useState<boolean>(isConnecting);
   const [mobileUserInfoVisible, setMobileUserInfoVisible] =
@@ -70,27 +76,26 @@ const ConnectWallet = ({ className }: { className?: string }) => {
   const currentChainInfo = config.chains.find((c) => c.id === chainId);
 
   const handleConnect = function () {
-    if (isMobile && isConnected) {
+    if (isMobile && isLogin) {
       setMobileUserInfoVisible(true);
       return;
     }
-
-    !address && modal.openConnectModal?.();
+    !isLogin && login();
   };
 
   const addressShown = useMemo(() => {
     if (!address) return "";
 
     if (userInfo?.twitter?.twitter_user_name) {
-      const name = userInfo?.twitter?.twitter_user_name
-      return `${name}`
+      const name = userInfo?.twitter?.twitter_user_name;
+      return `${name}`;
     }
 
     return `${address.slice(0, 5)}...${address.slice(-4)}`;
   }, [userInfo, address, isMobile]);
 
   const handleCopy = () => {
-    handlePlay()
+    handlePlay();
     navigator.clipboard.writeText(address as string);
     total.success({
       title: `Copied address ${address}`
@@ -171,7 +176,7 @@ const ConnectWallet = ({ className }: { className?: string }) => {
           borderRadius={21}
           style={{ transform: "translateY(-4px)" }}
         />
-      ) : isConnected ? (
+      ) : isLogin ? (
         <div className="flex items-center justify-center w-[165px] lg:h-[43px] md:h-[36px] lg:bg-[url('/images/header/user_bg.svg')] bg-no-repeat bg-center">
           <User
             handleConnect={handleConnect}
@@ -215,11 +220,7 @@ const ConnectWallet = ({ className }: { className?: string }) => {
   );
 };
 
-const ConnectLayout = ({
-  onConnect
-}: {
-  onConnect: () => void;
-}) => {
+const ConnectLayout = ({ onConnect }: { onConnect: () => void }) => {
   const isMobile = useIsMobile();
 
   if (isMobile) {
@@ -228,8 +229,9 @@ const ConnectLayout = ({
         onClick={onConnect}
         data-click-sound
         data-bp="1001-001"
-        className="w-[128px] h-[36px] bg-no-repeat bg-[url(/images/mobile/connect.svg)]"></div>
-    )
+        className="w-[128px] h-[36px] bg-no-repeat bg-[url(/images/mobile/connect.svg)]"
+      ></div>
+    );
   }
 
   return (
@@ -243,8 +245,8 @@ const ConnectLayout = ({
         Connect
       </button>
     </div>
-  )
-}
+  );
+};
 
 export default memo(ConnectWallet);
 
@@ -273,14 +275,17 @@ const User = (props: any) => {
       <div className="px-2.5 mt-[28px]">
         <div className="flex justify-between mb-5">
           <div className="flex gap-2">
-            <AvatarDisplay hasAvatar={address && !!userInfo?.twitter?.twitter_avatar} userInfo={userInfo} />
+            <AvatarDisplay
+              hasAvatar={address && !!userInfo?.twitter?.twitter_avatar}
+              userInfo={userInfo}
+            />
             {/* <div className="w-[30px] h-[30px] rounded-[50%] border-2 border-black bg-[conic-gradient(from_180deg_at_50%_50%,#00D1FF_0deg,#FF008A_360deg)]" /> */}
             <div className="flex flex-col gap-[6px] justify-center">
               <div className="text-white w-[140px] text-[12px] font-[400] leading-[1] font-Unbounded whitespace-nowrap overflow-hidden text-ellipsis">
                 {addressShown}
               </div>
-              {
-                !!userInfo?.twitter?.twitter_user_name && <div className="flex items-center text-white text-[10px] gap-2">
+              {!!userInfo?.twitter?.twitter_user_name && (
+                <div className="flex items-center text-white text-[10px] gap-2">
                   <div>{`${address.slice(0, 5)}...${address.slice(-4)}`}</div>
                   <img
                     className="cursor-pointer"
@@ -289,7 +294,7 @@ const User = (props: any) => {
                     alt=""
                   />
                 </div>
-              }
+              )}
 
               {/*<div className="flex items-center gap-1">
                 <img
@@ -308,7 +313,6 @@ const User = (props: any) => {
               </div>*/}
             </div>
           </div>
-
         </div>
         <div className="flex px-[6px] h-[40px] items-center justify-between w-full bg-white bg-opacity-20 rounded-[6px]">
           <div className="flex items-center gap-1">
@@ -325,8 +329,8 @@ const User = (props: any) => {
           <img src="/images/icon-faucet.svg" alt="" />
           <div
             onClick={() => {
-              handlePlay()
-              router.push("/faucet")
+              handlePlay();
+              router.push("/faucet");
             }}
             className="text-[12px] font-[300] leading-[1] font-Unbounded text-[#A6A6DB] underline hover:text-white cursor-pointer"
           >
@@ -335,7 +339,10 @@ const User = (props: any) => {
         </div>
       </div>
       <div className="w-full h-[1px] bg-[#A6A6DB] bg-opacity-10 mt-3"></div>
-      <DisconnectButton handlePlay={handlePlay} setMobileUserInfoVisible={setMobileUserInfoVisible} />
+      <DisconnectButton
+        handlePlay={handlePlay}
+        setMobileUserInfoVisible={setMobileUserInfoVisible}
+      />
     </div>
   );
 
@@ -355,18 +362,24 @@ const User = (props: any) => {
           zIndex: 100
         }}
       >
-      {isMobile ? (
-            <div className="flex items-center gap-1" onClick={handleConnect}>
-              <AvatarDisplay hasAvatar={address && !!userInfo?.twitter?.twitter_avatar} userInfo={userInfo} />
-              <div className="w-[1px] h-[23px] bg-[#A6A6DB] bg-opacity-30 mx-[14px]"></div>
-              <BalanceDisplay balanceShown={balanceShown} />
-            </div>
-          ) : (
-            <div className="flex items-center gap-1">
-              <BalanceDisplay balanceShown={balanceShown} />
-              <AvatarDisplay hasAvatar={address && !!userInfo?.twitter?.twitter_avatar} userInfo={userInfo} />
-            </div>
-          )}
+        {isMobile ? (
+          <div className="flex items-center gap-1" onClick={handleConnect}>
+            <AvatarDisplay
+              hasAvatar={address && !!userInfo?.twitter?.twitter_avatar}
+              userInfo={userInfo}
+            />
+            <div className="w-[1px] h-[23px] bg-[#A6A6DB] bg-opacity-30 mx-[14px]"></div>
+            <BalanceDisplay balanceShown={balanceShown} />
+          </div>
+        ) : (
+          <div className="flex items-center gap-1">
+            <BalanceDisplay balanceShown={balanceShown} />
+            <AvatarDisplay
+              hasAvatar={address && !!userInfo?.twitter?.twitter_avatar}
+              userInfo={userInfo}
+            />
+          </div>
+        )}
       </Popover>
     </motion.div>
   );
@@ -376,7 +389,7 @@ const DisconnectButton = ({ setMobileUserInfoVisible, handlePlay }: any) => {
   const { disconnect } = useDisconnect();
 
   const handleDisconnect = () => {
-    handlePlay()
+    handlePlay();
     disconnect();
     setMobileUserInfoVisible(false);
   };
@@ -412,18 +425,14 @@ const DisconnectButton = ({ setMobileUserInfoVisible, handlePlay }: any) => {
 
 const BalanceDisplay = ({ className = "", balanceShown }: any) => (
   <div className={`flex items-center gap-1 ${className}`}>
-    <img
-      src='/images/monad.svg'
-      className="w-5 h-5"
-      alt=""
-    />
+    <img src="/images/monad.svg" className="w-5 h-5" alt="" />
     <div className="text-[12px] text-white font-[400] font-Unbounded">
       {balanceShown || "-"}
     </div>
   </div>
 );
 
-export const AvatarDisplay = ({ hasAvatar = false, userInfo }: any) => (
+export const AvatarDisplay = ({ hasAvatar = false, userInfo }: any) =>
   hasAvatar ? (
     <img
       src={userInfo?.twitter?.twitter_avatar}
@@ -432,5 +441,4 @@ export const AvatarDisplay = ({ hasAvatar = false, userInfo }: any) => (
     />
   ) : (
     <div className="w-[28px] h-[28px] rounded-[50%] border-[2px] border-black bg-[conic-gradient(from_180deg_at_50%_50%,#00D1FF_0deg,#FF008A_360deg)]" />
-  )
-);
+  );

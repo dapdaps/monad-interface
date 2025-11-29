@@ -2,19 +2,28 @@ import Loading from "@/components/circle-loading";
 import useApprove from "@/hooks/use-approve";
 import useAccount from "@/hooks/use-account";
 import { useSwitchChain } from "wagmi";
-import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useEffect } from "react";
-import clsx from 'clsx';
-import Big from 'big.js';
+import clsx from "clsx";
+import Big from "big.js";
 import HexagonButton from "@/components/button/hexagon";
+import { useAuth } from "@/context/auth";
 
-export const BaseButton = ({ loading, onClick, children, disabled = false, className }: any) => {
+export const BaseButton = ({
+  loading,
+  onClick,
+  children,
+  disabled = false,
+  className
+}: any) => {
   return (
     <button
       onClick={onClick}
       disabled={disabled}
       data-hover-sound
-      className={clsx("h-[60px] md:h-[46px] w-full text-white duration-500 hover:opacity-70 active:opacity-90 flex items-center justify-center border border-[#8B87FF] rounded-[10px] bg-[#8B87FF] text-[18px] md:text-[16px] font-[600] mt-[16px] cursor-pointer", className)}
+      className={clsx(
+        "h-[60px] md:h-[46px] w-full text-white duration-500 hover:opacity-70 active:opacity-90 flex items-center justify-center border border-[#8B87FF] rounded-[10px] bg-[#8B87FF] text-[18px] md:text-[16px] font-[600] mt-[16px] cursor-pointer",
+        className
+      )}
     >
       {loading ? <Loading /> : children}
     </button>
@@ -50,18 +59,17 @@ export default function SubmitBtn({
     isMax: isApproveMax
   });
   const { isPending: switching, switchChain } = useSwitchChain();
-  const { openConnectModal } = useConnectModal();
-  const { account, chainId } = useAccount();
-
+  const { chainId } = useAccount();
+  const { login, isLogin } = useAuth();
   useEffect(() => {
     checkApproved();
   }, [updater]);
 
-  if (!account || !chainId) {
+  if (!isLogin) {
     return (
       <HexagonButton
         onClick={() => {
-          openConnectModal?.();
+          login?.();
         }}
         className={className}
       >
@@ -99,13 +107,26 @@ export default function SubmitBtn({
   }
 
   if (errorTips) {
-    return <HexagonButton className={className} disabled>{errorTips}</HexagonButton>;
+    return (
+      <HexagonButton className={className} disabled>
+        {errorTips}
+      </HexagonButton>
+    );
   }
 
-  if (!spender) return <HexagonButton className={className} disabled>Insufficient Liquidity</HexagonButton>;
+  if (!spender)
+    return (
+      <HexagonButton className={className} disabled>
+        Insufficient Liquidity
+      </HexagonButton>
+    );
 
   if (!approved) {
-    return <HexagonButton className={className} onClick={approve}>Approve {token?.symbol}</HexagonButton>;
+    return (
+      <HexagonButton className={className} onClick={approve}>
+        Approve {token?.symbol}
+      </HexagonButton>
+    );
   }
 
   return (
