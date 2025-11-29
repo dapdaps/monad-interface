@@ -160,7 +160,7 @@ export default function Trade({
                 inputCurrencyAmount: amount, 
                 extendParams: {
                     fee: 100, 
-                    feeRecipient: "0xf9f2384fee12a3e31b3d61a262df9baa6b4e8a13" 
+                    feeRecipient: "0x1c7c07f5b03d4d73098d025e46497e93a8b8ec72" 
                 }
             }).then(() => {
 

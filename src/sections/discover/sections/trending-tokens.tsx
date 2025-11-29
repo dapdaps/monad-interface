@@ -52,7 +52,7 @@ const TrendingTokens = (props: any) => {
           }}
           className="text-[16px] text-white/30 font-[400] uppercase"
         >
-          THE BLACK CURRENCY
+          SYSTEM OVERRIDE
         </div>
         <img
           src="/images/mainnet/discover/icon-down2.svg"
