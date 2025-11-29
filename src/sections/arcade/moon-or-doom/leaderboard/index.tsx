@@ -84,8 +84,9 @@ export default function Leaderboard(props: LeaderboardProps) {
     useEffect(() => {
         const fetchEntries = async () => {
             setLoading(true)
-            const res = await get('/game/euphoria/leaderboard/day?newQuery=1', {
-                address: userInfo?.address || ''
+            const res = await get('/game/euphoria/leaderboard/day', {
+                address: userInfo?.address || '',
+                newQuery: 1,
             })
             if (res.code !== 200) {
                 return
