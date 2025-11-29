@@ -372,7 +372,7 @@ export default function Trade({
                 </div>
 
                   {/* Expected Output */}
-                  <div className="flex items-center justify-between mt-[clamp(1px,_1.46vw,_calc(var(--pc-1512)*0.146))]">
+                  <div className="flex items-center justify-between mt-[clamp(1px,_1.56vw,_calc(var(--pc-1512)*0.116))]">
                     <span className="text-[#727D97] text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))]">Expected</span>
                     <span className="text-[#BFFF60] text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] font-medium">
                         {balanceFormated(trade?.outputCurrencyAmount, 2)} {outputToken.symbol}
