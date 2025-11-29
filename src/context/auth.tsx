@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useMemo, useRef } from "react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import useUser from "@/hooks/use-user";
+import { useConnectWallet } from "@/hooks/use-connect-wallet";
 import { useUserStore } from "@/stores/user";
 
 export const AuthContext = React.createContext<any | null>(null);
@@ -9,6 +10,18 @@ export const AuthContext = React.createContext<any | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { address } = useAccount();
   const { getAccessToken } = useUser();
+  const {
+    onDisconnect,
+    onSwitchChain,
+    switching,
+    chainId,
+    chain,
+    connecting,
+    connected: isConnected,
+    name,
+    avatar,
+    balance
+  } = useConnectWallet();
   const accessToken = useUserStore((store: any) => store.accessToken);
   const modal = useConnectModal();
   const logininning = useRef(false);
@@ -33,7 +46,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [address]);
 
   return (
-    <AuthContext.Provider value={{ login, isLogin }}>
+    <AuthContext.Provider
+      value={{
+        login,
+        isLogin,
+        onDisconnect,
+        onSwitchChain,
+        switching,
+        chainId,
+        chain,
+        connecting,
+        connected: isConnected,
+        name,
+        avatar,
+        balance
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

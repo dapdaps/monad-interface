@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Room } from "../config";
 import useCustomAccount from "@/hooks/use-account";
-import { useConnectWallet } from "@/hooks/use-connect-wallet";
 import useToast from "@/hooks/use-toast";
 import { useDebounceFn, useRequest } from "ahooks";
 import { DEFAULT_CHAIN_ID } from "@/configs";
@@ -13,8 +12,7 @@ export function useClaim(props?: any) {
   const { getBetTokenBalance, onUserListClaimed, playAudio } = props ?? {};
 
   const { account, chainId, provider } = useCustomAccount();
-  const { onSwitchChain } = useConnectWallet();
-  const { login, isLogin } = useAuth();
+  const { login, isLogin, onSwitchChain } = useAuth();
   const toast = useToast();
 
   const [claimData, setClaimData] = useState<{ open: boolean; room?: Room }>({

@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { Monster, RPS_MIN_BET_AMOUNT, Status } from "../config";
 import useCustomAccount from "@/hooks/use-account";
-import { useConnectWallet } from "@/hooks/use-connect-wallet";
 import useToast from "@/hooks/use-toast";
 import { useRequest } from "ahooks";
 import { DEFAULT_CHAIN_ID } from "@/configs";
@@ -28,8 +27,7 @@ export function useCreate(props?: any) {
   } = props ?? {};
 
   const { account, chainId, provider } = useCustomAccount();
-  const { onSwitchChain } = useConnectWallet();
-  const { login, isLogin } = useAuth();
+  const { login, isLogin, onSwitchChain } = useAuth();
   const toast = useToast();
   const { add } = useNotificationContext();
 

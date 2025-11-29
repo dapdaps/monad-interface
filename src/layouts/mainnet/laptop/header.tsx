@@ -3,7 +3,6 @@ import Popover, {
   PopoverTrigger
 } from "@/components/popover";
 import { useAuth } from "@/context/auth";
-import { useConnectWallet } from "@/hooks/use-connect-wallet";
 import useUser from "@/hooks/use-user";
 import { useUserStore } from "@/stores/user";
 import { numberFormatter } from "@/utils/number-formatter";
@@ -44,10 +43,8 @@ const Account = (props: any) => {
 
   const { userInfo } = useUser();
 
-  const { connecting, name, avatar, onDisconnect, balance } =
-    useConnectWallet();
-
-  const { isLogin, login } = useAuth();
+  const { connecting, name, avatar, onDisconnect, balance, isLogin, login } =
+    useAuth();
 
   const setUserInfo = useUserStore((store: any) => store.set);
 
