@@ -2,7 +2,7 @@ import { useProgressRouter } from "@/hooks/use-progress-router";
 import Card from "../components/card";
 import Mouse from "../components/mouse";
 import { formatLongText } from "@/utils/utils";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { formatSmallDecimal, numberFormatter } from "@/utils/number-formatter";
 import Big from "big.js";
 import Skeleton from "react-loading-skeleton";
@@ -42,6 +42,17 @@ const TrendingTokens = (props: any) => {
 
   const [showSwapModal, setShowSwapModal] = useState(false);
   const [clickedToken, setClickedToken] = useState<any>(null);
+
+  const outToken = useMemo(() => {
+    if (!clickedToken) {
+      return null;
+    }
+    const token = Object.values(monad).find((_token: any) => _token.address.toLowerCase() === clickedToken.address.toLowerCase());
+    if (!token) {
+      return clickedToken;
+    }
+    return token
+  }, [clickedToken]);
 
   return (
     <div className="pt-[clamp(1px,_5.16vw,_calc(var(--pc-1512)*0.0516))]">
@@ -117,7 +128,7 @@ const TrendingTokens = (props: any) => {
         <SwapModal
           show={showSwapModal}
           defaultInputCurrency={clickedToken.symbol.toUpperCase() === 'BC' ?  monad['mon'] : null}
-          defaultOutputCurrency={clickedToken}
+          defaultOutputCurrency={outToken}
           outputCurrencyReadonly
           onClose={() => {
             setShowSwapModal(false);
