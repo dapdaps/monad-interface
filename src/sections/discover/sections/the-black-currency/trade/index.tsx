@@ -7,7 +7,6 @@ import InputNumber from "@/components/input-number";
 import { Token } from "@/types";
 import { balanceFormated } from "@/utils/balance";
 import { numberFormatter, numberRemoveEndZero } from "@/utils/number-formatter";
-import useCustomAccount from "@/hooks/use-account";
 import useTokenBalance from "@/hooks/use-token-balance";
 import Loading from "@/components/loading";
 import { usePriceStore } from "@/stores/usePriceStore";
@@ -55,6 +54,7 @@ export default function Trade({
     const {
         tokenBalance: balanceIn,
         isLoading: balanceInLoading,
+        update: balanceInUpdate,
     } = useTokenBalance(tokenInAddress, tokenIn.decimals, tokenIn.chainId || DEFAULT_CHAIN_ID);
 
     const tokenOutAddress = useMemo(() => {
@@ -64,6 +64,7 @@ export default function Trade({
     const {
         tokenBalance: balanceOut,
         isLoading: balanceOutLoading,
+        update: balanceOutUpdate,
     } = useTokenBalance(tokenOutAddress, tokenOut.decimals, tokenOut.chainId || DEFAULT_CHAIN_ID);
 
     const handleTabChange = (tab: "buy" | "sell") => {
@@ -137,11 +138,13 @@ export default function Trade({
 
 
     const canPlaceOrder = useMemo(() => {
-        if (currentBalance) {
-            return false
+        try {
+            if (!amount || Big(amount).lte(0)) return false;
+            if (Big(amount).gt(currentBalance)) return false;
+        } catch (error) {
+            return true;
         }
-        if (!amount || Big(amount).lte(0)) return false;
-        if (Big(amount).gt(currentBalance)) return false;
+        
         return true;
     }, [amount, currentBalance]);
 
@@ -152,6 +155,8 @@ export default function Trade({
         inputAmount: amount,
         onSuccess: () => {
             runQuoter();
+            balanceInUpdate();
+            balanceOutUpdate();
         }
     });
 
