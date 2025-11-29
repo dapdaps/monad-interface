@@ -48,7 +48,6 @@ const SpotlightApps = (props: any) => {
     return originList
   }, [AppList]);
 
-
   return (
     <>
       <div className="pt-[clamp(1px,_6.65vw,_calc(var(--pc-1512)*0.0665))]">
@@ -60,7 +59,7 @@ const SpotlightApps = (props: any) => {
             className="text-[18px] text-white font-[400] uppercase opacity-80 cursor-pointer"
           >
 
-            THE BLACK CURRENCY
+            SYSTEM OVERRIDE
           </div>
           <img
             src="/images/mainnet/discover/icon-down.svg"
@@ -85,7 +84,7 @@ const SpotlightApps = (props: any) => {
                 setFirstIndex(params.realIndex);
                 setLastIndex((params.realIndex + 3) % SpotlightList.length);
               }}
-              autoplay={{
+              autoplay={showSwapModal ? false : {
                 delay: 3000,
                 disableOnInteraction: false,
                 pauseOnMouseEnter: true,
@@ -178,7 +177,8 @@ const SpotlightApps = (props: any) => {
       {showSwapModal && (
         <SwapModal
           show={showSwapModal}
-          defaultOutputCurrency={monad['mon']}
+          defaultInputCurrency={monad['mon']}
+          defaultOutputCurrency={monad['bc']}
           outputCurrencyReadonly
           onClose={() => {
             setShowSwapModal(false);

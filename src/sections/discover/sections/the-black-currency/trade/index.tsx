@@ -18,6 +18,7 @@ import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover"
 import TokenSelector from "./token-selector";
 import SlippageSelector from "./slippage-selector";
 import PlaceOrderButton from "./PlaceOrderButton";
+import { useSettingsStore } from "@/stores/settings";
 
 interface TradeProps {
     tokenList: Token[];
@@ -39,11 +40,11 @@ export default function Trade({
 }: TradeProps) {
     const [activeTab, setActiveTab] = useState<"buy" | "sell">("buy");
     const [amount, setAmount] = useState("");
-    const [slippage, setSlippage] = useState("10");
     const [tokenIn, setTokenIn] = useState<Token>(tokenList[0]);
     const popoverRef = useRef<any>(null);
     const slippagePopoverRef = useRef<any>(null);
     const [errorTips, setErrorTips] = useState("");
+    const settingStore: any = useSettingsStore();
 
     const prices = usePriceStore((store) => store.price);
 
@@ -134,10 +135,6 @@ export default function Trade({
         return null;
     }, [amount, currentBalance, currentToken.decimals]);
 
-    const handlePlaceOrder = () => {
-        if (!amount || Big(amount).lte(0)) return;
-        onPlaceOrder?.(activeTab, amount, slippage);
-    };
 
     const canPlaceOrder = useMemo(() => {
         if (!amount || Big(amount).lte(0)) return false;
@@ -158,12 +155,12 @@ export default function Trade({
     const { run: runQuoter } = useDebounceFn(
         () => {
             onQuoter({ 
-                inputCurrency: tokenIn, 
-                outputCurrency: tokenOut, 
+                inputCurrency: activeTab === "buy" ? tokenIn : tokenOut, 
+                outputCurrency: activeTab === "buy" ? tokenOut : tokenIn, 
                 inputCurrencyAmount: amount, 
                 extendParams: {
                     fee: 100, 
-                    feeRecipient: "0xf9f2384fee12a3e31b3d61a262df9baa6b4e8a13" 
+                    feeRecipient: "0x1c7c07f5b03d4d73098d025e46497e93a8b8ec72" 
                 }
             }).then(() => {
 
@@ -202,10 +199,20 @@ export default function Trade({
         popoverRef.current?.onClose();
     };
 
+    useEffect(() => {
+        if (settingStore) {
+            settingStore.setSlippage("10");
+        }
+
+        return () => {
+            settingStore.setSlippage("0.5");
+        }
+    }, []);
+
     return (
-        <div className="w-full border border-[#7262FF] rounded-[6px] mr-[50px]">
+        <div className="w-full border border-[#7262FF] rounded-[6px]">
             {/* Tabs */}
-            <div className="flex items-center gap-0 bg-[#836EF940] h-[37px] rounded-t-[6px] uppercase text-[16px] overflow-hidden text-white text-center text-base font-medium ">
+            <div className="flex items-center gap-0 bg-[#836EF940] h-[clamp(1px,_2.45vw,_calc(var(--pc-1512)*0.0245))] rounded-t-[6px] uppercase text-[clamp(1px,_1.06vw,_calc(var(--pc-1512)*0.0106))] overflow-hidden text-white text-center text-base font-medium ">
                 <div
                     onClick={() => handleTabChange("buy")}
                     className={clsx(
@@ -220,7 +227,10 @@ export default function Trade({
                     BUY
                 </div>
                 <div
-                    onClick={() => handleTabChange("sell")}
+                    onClick={() => {
+                        setTokenIn(tokenList.find(token => token.symbol.toUpperCase() === "MON")!);
+                        handleTabChange("sell")
+                    }}
                     className={clsx(
                         "flex-1 h-full flex items-center justify-center cursor-pointer",
                     )}
@@ -235,9 +245,9 @@ export default function Trade({
             </div>
 
             {/* Content */}
-            <div className="space-y-4 px-[16px] py-[20px]">
+            <div className="px-[clamp(1px,_1.06vw,_calc(var(--pc-1512)*0.0106))] py-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))]">
                 {/* Balance */}
-                <div className="text-[#A6A6DB] text-sm flex items-center gap-2">
+                <div className="text-[#A6A6DB] text-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] flex items-center gap-2">
                     <span>Balance:</span>
                     {activeTab === "buy" ? (
                         balanceInLoading ? (
@@ -255,8 +265,8 @@ export default function Trade({
                 </div>
 
                 {/* Amount Input */}
-                <div className="relative">
-                    <div className="flex items-center justify-between h-[38px] bg-[#151822] rounded-[4px] border border-[#34304B] pl-[10px]">
+                <div className="relative mt-[clamp(1px,_0.26vw,_calc(var(--pc-1512)*0.0026))]">
+                    <div className="flex items-center justify-between h-[clamp(1px,_2.51vw,_calc(var(--pc-1512)*0.0251))] bg-[#151822] rounded-[4px] border border-[#34304B] pl-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
                         <InputNumber
                             value={amount}
                             onNumberChange={setAmount}
@@ -279,25 +289,25 @@ export default function Trade({
                                 }
                                 contentClassName="bg-transparent"
                             >
-                                <div className="flex items-center justify-end gap-2 shrink-0 border-l border-[#34304B] px-[10px] h-full cursor-pointer">
+                                <div className="flex items-center justify-end gap-2 shrink-0 border-l border-[#34304B] px-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] h-full cursor-pointer">
                                     <img
                                         src={currentToken.icon}
                                         alt={currentToken.symbol}
-                                        className="w-[20px] h-[20px] rounded-full"
+                                        className="w-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] h-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] rounded-full"
                                     />
-                                    <span className="text-white font-semibold text-[18px]">{currentToken.symbol}</span>
+                                    <span className="text-white font-semibold text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))]">{currentToken.symbol}</span>
 
                                     <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M0.5 0.5L5.5 4.5L10.5 0.5" stroke="#888888" strokeLinecap="round" />
                                     </svg>
                                 </div>
-                            </Popover> : <div className="flex items-center justify-end gap-2 shrink-0 border-l border-[#34304B] px-[10px] h-full cursor-pointer">
+                            </Popover> : <div className="flex items-center justify-end gap-2 shrink-0 border-l border-[#34304B] px-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] h-full cursor-pointer">
                                 <img
                                     src={currentToken.icon}
                                     alt={currentToken.symbol}
-                                    className="w-[20px] h-[20px] rounded-full"
+                                    className="w-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] h-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] rounded-full"
                                 />
-                                <span className="text-white font-semibold text-[18px]">{currentToken.symbol}</span>
+                                <span className="text-white font-semibold text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))]">{currentToken.symbol}</span>
 
                             </div>
                         }
@@ -305,11 +315,11 @@ export default function Trade({
                 </div>
 
                 {/* Price and Percent Options */}
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mt-[clamp(1px,_0.40vw,_calc(var(--pc-1512)*0.0040))]">
                     <div className="text-[#727D97] text-[12px]">
                         ${balanceFormated(price, 2)}
                     </div>
-                    <div className="flex items-center gap-1 text-[12px] text-[#727D97]">
+                    <div className="flex items-center gap-1 text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] text-[#727D97]">
                         {PERCENT_OPTIONS.map((option, index) => (
                             <div key={option.value} className="flex items-center">
                                 {index > 0 && (
@@ -331,33 +341,33 @@ export default function Trade({
                 </div>
 
                 {/* Expected Output */}
-                <div className="flex items-center justify-between">
-                    <span className="text-[#727D97] text-[12px]">Expected</span>
-                    <span className="text-[#BFFF60] text-[18px] font-medium">
+                <div className="flex items-center justify-between mt-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
+                    <span className="text-[#727D97] text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))]">Expected</span>
+                    <span className="text-[#BFFF60] text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] font-medium">
                         {balanceFormated(trade?.outputCurrencyAmount, 2)} {outputToken.symbol}
                     </span>
                 </div>
 
                 {/* Slippage */}
-                <div className="flex items-center justify-between">
-                    <span className="text-[#727D97] text-[12px]">Slippage</span>
+                <div className="flex items-center justify-between mt-[clamp(1px,_0.33vw,_calc(var(--pc-1512)*0.0033))]">
+                    <span className="text-[#727D97] text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))]">Slippage</span>
                     <Popover
                         ref={slippagePopoverRef}
                         placement={PopoverPlacement.BottomRight}
                         trigger={PopoverTrigger.Click}
                         content={
                             <SlippageSelector
-                                slippage={slippage}
-                                onSlippageChange={setSlippage}
+                                slippage={settingStore.getSlippage()}
+                                onSlippageChange={settingStore.setSlippage}
                                 onClose={() => slippagePopoverRef.current?.onClose()}
                             />
                         }
                         contentClassName="bg-transparent"
                     >
                         <div className="flex items-center gap-1 cursor-pointer">
-                            <div className="px-2 py-1 bg-[#151822] border border-[#34304B] rounded text-white text-[12px] flex items-center gap-1">
+                            <div className="px-2 py-1 bg-[#151822] border border-[#34304B] rounded text-white text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] flex items-center gap-1">
                                 <span className="text-[#727D97]">Slippage</span>
-                                <span className="text-white">{slippage}%</span>
+                                <span className="text-white">{settingStore.getSlippage()}%</span>
                             </div>
                         </div>
                     </Popover>
@@ -377,6 +387,7 @@ export default function Trade({
                         runQuoter();
                     }}
                     updater={[tokenIn, tokenOut, amount, trade]}
+                    className="mt-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))]"
                 />
             </div>
         </div>

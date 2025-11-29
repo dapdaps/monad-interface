@@ -8,7 +8,6 @@ import * as d3 from "d3";
 import clsx from "clsx";
 import Big from "big.js";
 import { useInterval } from "ahooks";
-import { wait } from "@derivation-tech/context";
 import dayjs from "dayjs";
 
 const Price = (props: any) => {
@@ -374,7 +373,7 @@ const Price = (props: any) => {
                 </div>
                 <div className="h-full flex items-center gap-[clamp(1px,_0.40vw,_calc(var(--pc-1512)*0.0040))] px-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] text-[#A6A6DB] bg-[rgba(131,110,249,0.25)]">
                   <div className="">
-                    {formatLongText(token.address)}
+                    {formatLongText(token.address, 5, 4)}
                   </div>
                   <button
                     type="button"
@@ -468,7 +467,7 @@ const Price = (props: any) => {
           </div>
           <div
             ref={containerRef}
-            className="w-full mt-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] h-[clamp(1px,_20.70vw,_calc(var(--pc-1512)*0.2070))] overflow-hidden relative"
+            className="w-full mt-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] h-[clamp(1px,_15.70vw,_calc(var(--pc-1512)*0.1570))] overflow-hidden relative"
           >
             <div ref={chartRef} className="w-full h-full">
               {priceLoading && dataRef.current.length === 0 ? (
