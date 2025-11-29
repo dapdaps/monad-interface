@@ -137,6 +137,9 @@ export default function Trade({
 
 
     const canPlaceOrder = useMemo(() => {
+        if (currentBalance) {
+            return false
+        }
         if (!amount || Big(amount).lte(0)) return false;
         if (Big(amount).gt(currentBalance)) return false;
         return true;
