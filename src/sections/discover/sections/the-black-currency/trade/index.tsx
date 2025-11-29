@@ -248,7 +248,7 @@ export default function Trade({
             <div className="px-[clamp(1px,_1.06vw,_calc(var(--pc-1512)*0.0106))] py-[clamp(1px,_1.62vw,_calc(var(--pc-1512)*0.0162))]">
                 {/* Balance */}
                 <div className="flex items-center justify-between">
-                    <div className="text-[clamp(1px,_1.23vw,_calc(var(--pc-1512)*0.0123))]">{ activeTab === "buy" ? "BUY" : "SELL" } BC by</div>
+                    <div className="text-[clamp(1px,_1.23vw,_calc(var(--pc-1512)*0.0123))]">{ activeTab === "buy" ? "BUY BC by" : "SELL BC" }</div>
                     <div className="text-[#A6A6DB] text-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] flex items-center gap-2">
                         <span>Balance:</span>
                         {activeTab === "buy" ? (
