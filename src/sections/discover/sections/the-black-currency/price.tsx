@@ -164,30 +164,24 @@ const Price = (props: any) => {
     }
 
     // Draw axes (remove tick lines, keep labels only)
-    // Calculate appropriate tick interval based on chart width
-    // Aim for approximately one tick per 100-150px to avoid overlap
-    const targetTickCount = Math.max(3, Math.floor(chartWidth / 120));
-    const timeRange = data[data.length - 1].timestamp - data[0].timestamp;
-    const timeRangeMinutes = timeRange / (1000 * 60);
-    const minutesPerTick = Math.ceil(timeRangeMinutes / targetTickCount);
-
-    // Round to nearest 10, 15, 30, or 60 minutes for cleaner labels
-    let tickInterval: number;
-    if (minutesPerTick <= 10) {
-      tickInterval = 10;
-    } else if (minutesPerTick <= 15) {
-      tickInterval = 15;
-    } else if (minutesPerTick <= 30) {
-      tickInterval = 30;
-    } else if (minutesPerTick <= 60) {
-      tickInterval = 60;
+    // Calculate tick interval based on data length
+    let tickIntervalHours: number;
+    const dataLength = data.length;
+    if (dataLength <= 100) {
+      tickIntervalHours = 1; // 1 hour
+    } else if (dataLength <= 200) {
+      tickIntervalHours = 2; // 2 hours
+    } else if (dataLength <= 300) {
+      tickIntervalHours = 3; // 3 hours
+    } else if (dataLength <= 400) {
+      tickIntervalHours = 3; // 3 hours
     } else {
-      tickInterval = Math.ceil(minutesPerTick / 60) * 60; // Round to nearest hour
+      tickIntervalHours = 4; // 4 hours
     }
 
     const xAxis = d3.axisBottom(xScale)
       .tickSize(0) // Remove tick lines
-      .ticks(d3.timeMinute.every(tickInterval))
+      .ticks(d3.timeHour.every(tickIntervalHours))
       .tickFormat((d) => {
         const date = d as Date;
         const minutes = date.getMinutes();
