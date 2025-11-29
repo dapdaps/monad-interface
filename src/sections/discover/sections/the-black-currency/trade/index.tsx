@@ -7,7 +7,6 @@ import InputNumber from "@/components/input-number";
 import { Token } from "@/types";
 import { balanceFormated } from "@/utils/balance";
 import { numberFormatter, numberRemoveEndZero } from "@/utils/number-formatter";
-import useCustomAccount from "@/hooks/use-account";
 import useTokenBalance from "@/hooks/use-token-balance";
 import Loading from "@/components/loading";
 import { usePriceStore } from "@/stores/usePriceStore";
@@ -55,6 +54,7 @@ export default function Trade({
     const {
         tokenBalance: balanceIn,
         isLoading: balanceInLoading,
+        update: balanceInUpdate,
     } = useTokenBalance(tokenInAddress, tokenIn.decimals, tokenIn.chainId || DEFAULT_CHAIN_ID);
 
     const tokenOutAddress = useMemo(() => {
@@ -64,6 +64,7 @@ export default function Trade({
     const {
         tokenBalance: balanceOut,
         isLoading: balanceOutLoading,
+        update: balanceOutUpdate,
     } = useTokenBalance(tokenOutAddress, tokenOut.decimals, tokenOut.chainId || DEFAULT_CHAIN_ID);
 
     const handleTabChange = (tab: "buy" | "sell") => {
@@ -135,10 +136,14 @@ export default function Trade({
         return null;
     }, [amount, currentBalance, currentToken.decimals]);
 
-
     const canPlaceOrder = useMemo(() => {
-        if (!amount || Big(amount).lte(0)) return false;
-        if (Big(amount).gt(currentBalance)) return false;
+        try {
+            if (!amount || Big(amount).lte(0)) return false;
+            if (Big(amount).gt(currentBalance)) return false;
+        } catch (error) {
+            return true;
+        }
+        
         return true;
     }, [amount, currentBalance]);
 
@@ -149,6 +154,8 @@ export default function Trade({
         inputAmount: amount,
         onSuccess: () => {
             runQuoter();
+            balanceInUpdate();
+            balanceOutUpdate();
         }
     });
 
@@ -183,7 +190,7 @@ export default function Trade({
           return;
         }
         if (Big(amount).gt(currentBalance || 0)) {
-          setErrorTips(`Insufficient ${tokenIn?.symbol} Balance`);
+          setErrorTips(`Insufficient ${activeTab === "buy" ? tokenIn?.symbol : tokenOut?.symbol} Balance`);
           setTrade(null);
         } else {
           setErrorTips("");
@@ -245,28 +252,32 @@ export default function Trade({
             </div>
 
             {/* Content */}
-            <div className="px-[clamp(1px,_1.06vw,_calc(var(--pc-1512)*0.0106))] py-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))]">
+            <div className="px-[clamp(1px,_1.06vw,_calc(var(--pc-1512)*0.0106))] py-[clamp(1px,_1.62vw,_calc(var(--pc-1512)*0.0162))]">
                 {/* Balance */}
-                <div className="text-[#A6A6DB] text-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] flex items-center gap-2">
-                    <span>Balance:</span>
-                    {activeTab === "buy" ? (
-                        balanceInLoading ? (
-                            <Loading size={12} />
+                <div className="flex items-center justify-between">
+                    <div className="text-[clamp(1px,_1.23vw,_calc(var(--pc-1512)*0.0123))]">{ activeTab === "buy" ? "BUY BC by" : "SELL BC" }</div>
+                    <div className="text-[#A6A6DB] text-[clamp(1px,_0.93vw,_calc(var(--pc-1512)*0.0093))] flex items-center gap-2">
+                        <span>Balance:</span>
+                        {activeTab === "buy" ? (
+                            balanceInLoading ? (
+                                <Loading size={12} />
+                            ) : (
+                                <span>{balanceFormated(currentBalance, 2)}</span>
+                            )
                         ) : (
-                            <span>{balanceFormated(currentBalance, 2)}</span>
-                        )
-                    ) : (
-                        balanceOutLoading ? (
-                            <Loading size={12} />
-                        ) : (
-                            <span>{balanceFormated(currentBalance, 2)}</span>
-                        )
-                    )}
+                            balanceOutLoading ? (
+                                <Loading size={12} />
+                            ) : (
+                                <span>{balanceFormated(currentBalance, 2)}</span>
+                            )
+                        )}
+                    </div>
                 </div>
+                
 
                 {/* Amount Input */}
-                <div className="relative mt-[clamp(1px,_0.26vw,_calc(var(--pc-1512)*0.0026))]">
-                    <div className="flex items-center justify-between h-[clamp(1px,_2.51vw,_calc(var(--pc-1512)*0.0251))] bg-[#151822] rounded-[4px] border border-[#34304B] pl-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
+                <div className="relative mt-[clamp(1px,_0.56vw,_calc(var(--pc-1512)*0.0056))]">
+                    <div className="flex items-center justify-between h-[clamp(1px,_3.51vw,_calc(var(--pc-1512)*0.0951))] bg-[#151822] rounded-[4px] border border-[#34304B] pl-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
                         <InputNumber
                             value={amount}
                             onNumberChange={setAmount}
@@ -289,7 +300,7 @@ export default function Trade({
                                 }
                                 contentClassName="bg-transparent"
                             >
-                                <div className="flex items-center justify-end gap-2 shrink-0 border-l border-[#34304B] px-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] h-full cursor-pointer">
+                                <div className="flex items-center justify-end gap-2 shrink-0 border-l border-[#34304B] px-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))] h-[clamp(1px,_3.51vw,_calc(var(--pc-1512)*0.0951))] cursor-pointer">
                                     <img
                                         src={currentToken.icon}
                                         alt={currentToken.symbol}
@@ -305,7 +316,7 @@ export default function Trade({
                                 <img
                                     src={currentToken.icon}
                                     alt={currentToken.symbol}
-                                    className="w-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] h-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] rounded-full"
+                                    className="w-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] h-[clamp(1px, _1.32vw,_calc(var(--pc-1512)*0.0132))] rounded-full"
                                 />
                                 <span className="text-white font-semibold text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))]">{currentToken.symbol}</span>
 
@@ -340,16 +351,10 @@ export default function Trade({
                     </div>
                 </div>
 
-                {/* Expected Output */}
-                <div className="flex items-center justify-between mt-[clamp(1px,_0.66vw,_calc(var(--pc-1512)*0.0066))]">
-                    <span className="text-[#727D97] text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))]">Expected</span>
-                    <span className="text-[#BFFF60] text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] font-medium">
-                        {balanceFormated(trade?.outputCurrencyAmount, 2)} {outputToken.symbol}
-                    </span>
-                </div>
+              
 
                 {/* Slippage */}
-                <div className="flex items-center justify-between mt-[clamp(1px,_0.33vw,_calc(var(--pc-1512)*0.0033))]">
+                <div className="flex items-center justify-between mt-[clamp(1px,_1.93vw,_calc(var(--pc-1512)*0.0193))]">
                     <span className="text-[#727D97] text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))]">Slippage</span>
                     <Popover
                         ref={slippagePopoverRef}
@@ -371,6 +376,14 @@ export default function Trade({
                             </div>
                         </div>
                     </Popover>
+                </div>
+
+                  {/* Expected Output */}
+                  <div className="flex items-center justify-between mt-[clamp(1px,_1.56vw,_calc(var(--pc-1512)*0.116))]">
+                    <span className="text-[#727D97] text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))]">Expected</span>
+                    <span className="text-[#BFFF60] text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] font-medium">
+                        {balanceFormated(trade?.outputCurrencyAmount, 2)} {outputToken.symbol}
+                    </span>
                 </div>
 
                 {/* Place Order Button */}

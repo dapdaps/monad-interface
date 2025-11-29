@@ -71,7 +71,7 @@ const Price = (props: any) => {
     const container = chartRef.current;
     const width = container.clientWidth;
     const height = container.clientHeight;
-    const margin = { top: 20, right: 20, bottom: 30, left: 10 };
+    const margin = { top: 20, right: 10, bottom: 30, left: 10 };
     const chartWidth = width - margin.left - margin.right;
     const chartHeight = height - margin.top - margin.bottom;
 
@@ -164,33 +164,46 @@ const Price = (props: any) => {
     }
 
     // Draw axes (remove tick lines, keep labels only)
-    // Calculate appropriate tick interval based on chart width
-    // Aim for approximately one tick per 100-150px to avoid overlap
-    const targetTickCount = Math.max(3, Math.floor(chartWidth / 120));
-    const timeRange = data[data.length - 1].timestamp - data[0].timestamp;
-    const timeRangeMinutes = timeRange / (1000 * 60);
-    const minutesPerTick = Math.ceil(timeRangeMinutes / targetTickCount);
-
-    // Round to nearest 10, 15, 30, or 60 minutes for cleaner labels
-    let tickInterval: number;
-    if (minutesPerTick <= 10) {
-      tickInterval = 10;
-    } else if (minutesPerTick <= 15) {
-      tickInterval = 15;
-    } else if (minutesPerTick <= 30) {
-      tickInterval = 30;
-    } else if (minutesPerTick <= 60) {
-      tickInterval = 60;
-    } else {
-      tickInterval = Math.ceil(minutesPerTick / 60) * 60; // Round to nearest hour
+    // Calculate tick count based on data length and chart width for even distribution
+    const dataLength = data.length;
+    let tickCount: number;
+    
+    // Calculate appropriate tick count based on chart width and data length
+    // Aim for approximately 80-120px spacing between ticks
+    const desiredTickSpacing = 100;
+    tickCount = Math.max(3, Math.min(10, Math.floor(chartWidth / desiredTickSpacing)));
+    
+    // Adjust tick count based on data length for smaller datasets
+    if (dataLength <= 6) {
+      tickCount = Math.min(dataLength + 1, 6); // Show all data points + 1
+    } else if (dataLength <= 12) {
+      tickCount = Math.min(6, tickCount);
+    } else if (dataLength <= 24) {
+      tickCount = Math.min(8, tickCount);
     }
 
+    // Use tick count to ensure even visual distribution
     const xAxis = d3.axisBottom(xScale)
       .tickSize(0) // Remove tick lines
-      .ticks(d3.timeMinute.every(tickInterval))
+      .ticks(tickCount)
       .tickFormat((d) => {
         const date = d as Date;
-        return d3.timeFormat("%I:%M %p")(date).replace(/^0/, ""); // Format as "6:00 PM" or "6:10 PM"
+        const minutes = date.getMinutes();
+        
+        // Determine format based on data length
+        if (dataLength <= 24) {
+          // For smaller datasets, always show full time with minutes
+          return d3.timeFormat("%I:%M%p")(date).replace(/^0/, ""); // Format as "6:10 PM"
+        } else {
+          // For larger datasets
+          if (minutes === 0) {
+            // If it's a full hour, show only hour and AM/PM without :00
+            return d3.timeFormat("%I%p")(date).replace(/^0/, ""); // Format as "6 PM"
+          } else {
+            // Otherwise show full time with minutes
+            return d3.timeFormat("%I:%M%p")(date).replace(/^0/, ""); // Format as "6:10 PM"
+          }
+        }
       });
 
     // Generate y-axis ticks based on actual price values
@@ -200,7 +213,23 @@ const Price = (props: any) => {
       xAxisGroup = chartGroup.append("g").attr("class", "x-axis");
     }
     xAxisGroup.attr("transform", `translate(0,${chartHeight})`).call(xAxis);
-    xAxisGroup.selectAll("text").attr("fill", "#727D97").attr("font-size", "12px");
+    xAxisGroup.selectAll("text")
+      .attr("fill", "#727D97")
+      .attr("font-size", "12px")
+      .each(function(d, i, nodes) {
+        const text = d3.select(this);
+        const totalNodes = nodes.length;
+        if (i === 0) {
+          // First label: left align
+          text.attr("text-anchor", "start").attr("dx", "0");
+        } else if (i === totalNodes - 1) {
+          // Last label: right align
+          text.attr("text-anchor", "end").attr("dx", "0");
+        } else {
+          // Middle labels: center align
+          text.attr("text-anchor", "middle").attr("dx", "0");
+        }
+      });
     xAxisGroup.selectAll("line").remove(); // Remove tick lines
     xAxisGroup.selectAll("path").remove(); // Remove axis line
 

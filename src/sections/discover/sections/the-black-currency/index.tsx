@@ -10,7 +10,7 @@ import TokenDistribution from "./token-distribution";
 const BlackCurrency = {
   ...monad["bc"],
   name: "The Black Currency",
-  createdAt: "2025-11-28T02:00:00Z",
+  createdAt: "2025-11-29T03:06:07Z",
 };
 
 
