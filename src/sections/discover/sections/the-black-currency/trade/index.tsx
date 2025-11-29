@@ -309,7 +309,7 @@ export default function Trade({
                                 <img
                                     src={currentToken.icon}
                                     alt={currentToken.symbol}
-                                    className="w-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] h-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] rounded-full"
+                                    className="w-[clamp(1px,_1.32vw,_calc(var(--pc-1512)*0.0132))] h-[clamp(1px, _1.32vw,_calc(var(--pc-1512)*0.0132))] rounded-full"
                                 />
                                 <span className="text-white font-semibold text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))]">{currentToken.symbol}</span>
 
@@ -372,7 +372,7 @@ export default function Trade({
                 </div>
 
                   {/* Expected Output */}
-                  <div className="flex items-center justify-between mt-[clamp(1px,_2.66vw,_calc(var(--pc-1512)*0.266))]">
+                  <div className="flex items-center justify-between mt-[clamp(1px,_1.46vw,_calc(var(--pc-1512)*0.146))]">
                     <span className="text-[#727D97] text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))]">Expected</span>
                     <span className="text-[#BFFF60] text-[clamp(1px,_1.19vw,_calc(var(--pc-1512)*0.0119))] font-medium">
                         {balanceFormated(trade?.outputCurrencyAmount, 2)} {outputToken.symbol}
