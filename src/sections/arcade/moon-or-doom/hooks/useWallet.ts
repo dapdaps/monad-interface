@@ -69,7 +69,7 @@ export default function useWallet() {
         
         try {
             setWithdrawLoading(true);
-            const res = await post('/game/euphoria/withdraw', {
+            const res = await post('/game/euphoria/withdraw?newQuery=1', {
                 amount,
             })
             if (res.code === 200) {
@@ -91,7 +91,7 @@ export default function useWallet() {
             setGameBalance(0);
             return;
         }
-        const res = await get('/game/euphoria/user');
+        const res = await get('/game/euphoria/user?newQuery=1');
         if (res.code === 200) {
             setGameBalance(res.data.balance || 0);
         } else {

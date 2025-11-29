@@ -168,7 +168,7 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
     }, [userInfo]);
 
     const getAllBet = useCallback(async () => {
-        const res = await get('/game/euphoria/latest');
+        const res = await get('/game/euphoria/latest?newQuery=1');
         if (res.code === 200) {
             betListRef.current = res.data || [];
             setBetList(res.data || []);

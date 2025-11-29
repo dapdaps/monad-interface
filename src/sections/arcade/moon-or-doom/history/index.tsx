@@ -80,7 +80,7 @@ export default function HistoryModal({
 
         setBidRecordsLoading(true);
         try {
-            const res = await get('/game/euphoria/user/orders', {
+            const res = await get('/game/euphoria/user/orders?newQuery=1', {
                 page: bidRecordsPage,
                 page_size: PAGE_SIZE,
             });
@@ -120,7 +120,7 @@ export default function HistoryModal({
 
         setDepositListLoading(true);
         try {
-            const res = await get('/game/euphoria/user/deposits', {
+            const res = await get('/game/euphoria/user/deposits?newQuery=1', {
                 page: depositPage,
                 page_size: PAGE_SIZE,
             });
@@ -141,7 +141,7 @@ export default function HistoryModal({
 
         setWithdrawListLoading(true);
         try {
-            const res = await get('/game/euphoria/user/withdraws', {
+            const res = await get('/game/euphoria/user/withdraws?newQuery=1', {
                 page: withdrawPage,
                 page_size: PAGE_SIZE,
             });
