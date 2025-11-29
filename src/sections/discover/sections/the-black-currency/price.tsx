@@ -434,7 +434,12 @@ const Price = (props: any) => {
                   {
                     !tokenPrice && priceLoading ? (
                       <Skeleton width="clamp(1px, 3.30vw, calc(var(--pc-1512)*0.0330))" height="clamp(1px, 1.06vw, calc(var(--pc-1512)*0.0106))" />
-                    ) : numberFormatter(!tokenPrice ? 0 : tokenPrice[tokenPrice.length - 1]?.price, 20, true, { prefix: "$" })
+                    ) : numberFormatter(
+                      !tokenPrice ? 0 : (tooltipData ? tooltipData.price : tokenPrice[tokenPrice.length - 1]?.price),
+                      20,
+                      true,
+                      { prefix: "$" }
+                    )
                   }
                 </div>
                 <div
