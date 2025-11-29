@@ -17,7 +17,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     chainId,
     chain,
     connecting,
-    connected: isConnected,
     name,
     avatar,
     balance
@@ -56,7 +55,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         chainId,
         chain,
         connecting,
-        connected: isConnected,
         name,
         avatar,
         balance

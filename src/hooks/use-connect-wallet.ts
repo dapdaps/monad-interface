@@ -9,7 +9,7 @@ import { DEFAULT_CHAIN_ID } from "@/configs";
 
 export function useConnectWallet() {
   const { disconnect } = useDisconnect();
-  const { address, isConnected, chainId, chain, isConnecting } = useAccount();
+  const { address, chainId, chain, isConnecting } = useAccount();
   const { switchChain, isPending: switching } = useSwitchChain();
   const userInfo = useUserStore((store: any) => store.user);
   const setUserInfo = useUserStore((store: any) => store.set);
@@ -100,7 +100,6 @@ export function useConnectWallet() {
     chainId,
     chain,
     connecting,
-    connected: isConnected,
     name,
     avatar,
     balance
