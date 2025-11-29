@@ -4,9 +4,10 @@ import { get, post } from "@/utils/http";
 import Big from "big.js";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { playSound3, playSound4, playSound5 } from "../lib/sound";
+import { BET_AMOUNTS } from "../bet";
 
 export default function useBet({ gameBalance }: { gameBalance: number }) {
-    const [bet, setBet] = useState<number>(0.1);
+    const [bet, setBet] = useState<number>(BET_AMOUNTS[0]);
     const [betLoading, setBetLoading] = useState<boolean>(false);
     const [userBetObj, setUserBetObj] = useState<any>({});
     const [insufficientBalance, setInsufficientBalance] = useState<boolean>(false);

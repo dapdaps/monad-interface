@@ -34,7 +34,7 @@ export default function useTrade({ chainId, template, from, inputAmount, onSucce
 
 
   const onQuoter = useCallback(
-    async ({ inputCurrency, outputCurrency, inputCurrencyAmount }: any) => {
+    async ({ inputCurrency, outputCurrency, inputCurrencyAmount, extendParams }: any) => {
       // setTrade(null);
       if (
         !inputCurrency ||
@@ -110,7 +110,8 @@ export default function useTrade({ chainId, template, from, inputAmount, onSucce
           outputCurrency,
           inputAmount: inputCurrencyAmount,
           slippage: slippage / 100 || 0.005,
-          account
+          account,
+          extendParams
         };
 
         if (typeof template === "string") {
@@ -130,6 +131,10 @@ export default function useTrade({ chainId, template, from, inputAmount, onSucce
           lastestCachedKey.current
         )
           return;
+
+        if (!data.outputCurrencyAmount) {
+          return
+        }
         if (typeof template === "string") {
           const _trade = {
             ...formatTrade({

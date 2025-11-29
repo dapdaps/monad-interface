@@ -2,13 +2,14 @@
 
 import { useState, useCallback } from 'react'
 import { playSound1 } from '../lib/sound'
+import { IS_PRODUCTION } from '@/configs'
 
 type BetProps = {
     bet?: number
     onChange?: (value: number) => void
 }
 
-const BET_AMOUNTS = [0.1, 1, 10]
+export const BET_AMOUNTS = IS_PRODUCTION ? [50, 200, 500] : [5, 20, 50]
 
 export default function Bet(props: BetProps) {
     const { bet, onChange } = props

@@ -13,6 +13,8 @@ import ExternalLinksModal from "@/sections/dapps/components/external-links-modal
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import SwapModal from "@/sections/swap/SwapModal";
+import { monad } from "@/configs/tokens/monad";
 
 const SpotlightApps = (props: any) => {
   const { getVisits, swiperRef } = props;
@@ -24,114 +26,168 @@ const SpotlightApps = (props: any) => {
   const [dapp, setDapp] = useState<any>(null);
   const [firstIndex, setFirstIndex] = useState(0);
   const [lastIndex, setLastIndex] = useState(3);
+  const [showSwapModal, setShowSwapModal] = useState(false);
 
   const SpotlightList = useMemo(() => {
-    return AppList.filter((item) => item.isSpotlight);
+    const originList = AppList.filter((item) => item.isSpotlight);
+
+    originList.splice(2, 0, {
+      isSpotlight: true,
+      isOutlink: false,
+      id: 1000,
+      name: 'BC',
+      description: 'Meme token',
+      category: 'Meme token',
+      icon: 'https://assets.dapdap.net/monad/mbc_icon.png',
+      banner: 'https://assets.dapdap.net/monad/mbc_banner.png',
+      link: '',
+      bp: '',
+      bpContent: '',
+    });
+
+    return originList
   }, [AppList]);
 
   return (
-    <div className="pt-[clamp(1px,_6.65vw,_calc(var(--pc-1512)*0.0665))]">
-      <Card
-        title="Spotlight Apps"
-        className="mx-auto"
-        backdropClassName="!block [clip-path:polygon(0.9%_15%,99%_15%,99%_92.8%,96.7%_97.8%,78%_93.5%,76.5%_89.2%,70%_88.5%,60%_88%,50%_87.6%,35%_88%,23.4%_88.5%,21%_93%,2.7%_96.4%,2.7%_82%,0.9%_74.9%)]"
-        onExploreAll={() => {
-          swiperRef?.current?.swiper?.slideTo(2);
-        }}
-      >
-        <div className="w-full flex justify-center gap-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))] mt-[-30px] pl-[20px]">
-          <Swiper
-            spaceBetween={30}
-            slidesPerView={4}
-            loop={true}
-            onSlideChange={(params) => {
-              setFirstIndex(params.realIndex);
-              setLastIndex((params.realIndex + 3) % SpotlightList.length);
+    <>
+      <div className="pt-[clamp(1px,_6.65vw,_calc(var(--pc-1512)*0.0665))]">
+        <div className="flex flex-col items-center">
+          <div
+            onClick={() => {
+              swiperRef?.current?.swiper?.slidePrev();
             }}
-            autoplay={{
-              delay: 3000,
-              disableOnInteraction: false,
-              pauseOnMouseEnter: true,
-            }}
-            direction="horizontal"
-            className="w-full"
-            allowTouchMove={true}
-            modules={[Autoplay]}
+            className="text-[18px] text-white font-[400] uppercase opacity-80 cursor-pointer"
           >
-            {
-              SpotlightList.map((item, index) => {
-                const visits = getVisits(item.bpContent);
 
-                return (
-                  <SwiperSlide key={index}>
-                    <div className="py-[30px]">
-                      <Spotlight
-                        type={index === firstIndex ? "left" : index === lastIndex ? "right" : ""}
-                        data={item}
-                        className={clsx(
-                          index === firstIndex ? "[transform:perspective(clamp(1px,_66.14vw,_calc(var(--pc-1512)*0.6614)))_rotateY(24deg)_scale(1.05)] origin-[center_center_clamp(calc(var(--pc-1512)*-0.0265),_-2.65vw,_1px)] backface-hidden" : "",
-                          index === lastIndex ? "[transform:perspective(clamp(1px,_66.14vw,_calc(var(--pc-1512)*0.6614)))_rotateY(-24deg)_scale(1.05)] origin-[center_center_clamp(calc(var(--pc-1512)*-0.0265),_-2.65vw,_1px)] backface-hidden" : "",
-                        )}
-                        onClick={() => {
-                          handleReportWithoutDebounce(item.bp, item.bpContent);
-
-                          if (/^https?:\/\//.test(item.link)) {
-                            setDapp(item);
-                            setShowExternalLinksModal(true);
-                            return;
-                          }
-
-                          router.push(item.link);
-                        }}
-                        visits={visits}
-                      />
-                    </div>
-                  </SwiperSlide>
-                );
-              })
-            }
-          </Swiper>
+            SYSTEM OVERRIDE
+          </div>
+          <img
+            src="/images/mainnet/discover/icon-down.svg"
+            alt=""
+            className="w-[12px] h-[10px] object-center object-contain shrink-0 mt-[16px] rotate-[180deg]"
+          />
         </div>
-      </Card>
-      <div className="flex flex-col items-center translate-y-[clamp(calc(var(--pc-1512)*-0.0397),_-3.97vw,_1px)]">
-        <Mouse
-          onClick={() => {
-            swiperRef?.current?.swiper?.slideNext();
+        <Card
+          title="Spotlight Apps"
+          className="mx-auto"
+          backdropClassName="!block [clip-path:polygon(0.9%_15%,99%_15%,99%_92.8%,96.7%_97.8%,78%_93.5%,76.5%_89.2%,70%_88.5%,60%_88%,50%_87.6%,35%_88%,23.4%_88.5%,21%_93%,2.7%_96.4%,2.7%_82%,0.9%_74.9%)]"
+          onExploreAll={() => {
+            swiperRef?.current?.swiper?.slideTo(3);
           }}
-        />
-        <img
-          src="/images/mainnet/discover/icon-down.svg"
-          alt=""
-          className="w-[12px] h-[10px] object-center object-contain shrink-0 mt-[20px]"
-        />
-        <div onClick={() => {
-          swiperRef?.current?.swiper?.slideNext();
-        }} className="mt-[16px] text-[18px] text-white font-[400] uppercase opacity-80 cursor-pointer">
-          Trending tokens
-        </div>
-        <img
-          src="/images/mainnet/discover/icon-down2.svg"
-          alt=""
-          className="w-[12px] h-[10px] object-center object-contain shrink-0 mt-[13px]"
-        />
-        <div onClick={() => {
-          swiperRef?.current?.swiper?.slideTo(2);
-        }} className="mt-[16px] text-[16px] text-white/30 font-[400] uppercase cursor-pointer">
-          Explore All Apps
-        </div>
-      </div>
+        >
+          <div className="w-full flex justify-center gap-[clamp(1px,_3.31vw,_calc(var(--pc-1512)*0.0331))] mt-[-30px] pl-[20px]">
+            <Swiper
+              spaceBetween={30}
+              slidesPerView={4}
+              loop={true}
+              onSlideChange={(params) => {
+                setFirstIndex(params.realIndex);
+                setLastIndex((params.realIndex + 3) % SpotlightList.length);
+              }}
+              autoplay={showSwapModal ? false : {
+                delay: 3000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              }}
+              direction="horizontal"
+              className="w-full"
+              allowTouchMove={true}
+              modules={[Autoplay]}
+            >
+              {
+                SpotlightList.map((item, index) => {
+                  const visits = getVisits(item.bpContent);
 
-      {
-        showExternalLinksModal && (
-          <ExternalLinksModal
-            dapp={dapp}
-            onClose={() => {
-              setShowExternalLinksModal(false);
+                  return (
+                    <SwiperSlide key={index}>
+                      <div className="py-[30px]">
+                        <Spotlight
+                          type={index === firstIndex ? "left" : index === lastIndex ? "right" : ""}
+                          data={item}
+                          className={clsx(
+                            index === firstIndex ? "[transform:perspective(clamp(1px,_66.14vw,_calc(var(--pc-1512)*0.6614)))_rotateY(24deg)_scale(1.05)] origin-[center_center_clamp(calc(var(--pc-1512)*-0.0265),_-2.65vw,_1px)] backface-hidden" : "",
+                            index === lastIndex ? "[transform:perspective(clamp(1px,_66.14vw,_calc(var(--pc-1512)*0.6614)))_rotateY(-24deg)_scale(1.05)] origin-[center_center_clamp(calc(var(--pc-1512)*-0.0265),_-2.65vw,_1px)] backface-hidden" : "",
+                          )}
+                          onClick={() => {
+                            if (item.id === 1000) {
+                              setShowSwapModal(true);
+                              return;
+                            }
+
+                            handleReportWithoutDebounce(item.bp, item.bpContent);
+
+                            if (/^https?:\/\//.test(item.link)) {
+                              setDapp(item);
+                              setShowExternalLinksModal(true);
+                              return;
+                            }
+
+                            router.push(item.link);
+                          }}
+                          visits={visits}
+                        />
+                      </div>
+                    </SwiperSlide>
+                  );
+                })
+              }
+            </Swiper>
+          </div>
+        </Card>
+        <div className="flex flex-col items-center translate-y-[clamp(calc(var(--pc-1512)*-0.0397),_-3.97vw,_1px)]">
+          <Mouse
+            onClick={() => {
+              swiperRef?.current?.swiper?.slideNext();
             }}
           />
-        )
-      }
-    </div>
+          <img
+            src="/images/mainnet/discover/icon-down.svg"
+            alt=""
+            className="w-[12px] h-[10px] object-center object-contain shrink-0 mt-[20px]"
+          />
+          <div onClick={() => {
+            swiperRef?.current?.swiper?.slideNext();
+          }} className="mt-[16px] text-[18px] text-white font-[400] uppercase opacity-80 cursor-pointer">
+            Trending tokens
+          </div>
+          <img
+            src="/images/mainnet/discover/icon-down2.svg"
+            alt=""
+            className="w-[12px] h-[10px] object-center object-contain shrink-0 mt-[13px]"
+          />
+          <div onClick={() => {
+            swiperRef?.current?.swiper?.slideTo(2);
+          }} className="mt-[16px] text-[16px] text-white/30 font-[400] uppercase cursor-pointer">
+            Explore All Apps
+          </div>
+        </div>
+
+        {
+          showExternalLinksModal && (
+            <ExternalLinksModal
+              dapp={dapp}
+              onClose={() => {
+                setShowExternalLinksModal(false);
+              }}
+            />
+          )
+        }
+      </div>
+
+      {showSwapModal && (
+        <SwapModal
+          show={showSwapModal}
+          defaultInputCurrency={monad['mon']}
+          defaultOutputCurrency={monad['bc']}
+          outputCurrencyReadonly
+          onClose={() => {
+            setShowSwapModal(false);
+          }}
+          from="marketplace"
+          isAutoExchange={false}
+        />
+      )}
+    </>
   );
 };
 

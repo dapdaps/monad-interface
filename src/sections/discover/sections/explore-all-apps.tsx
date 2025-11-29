@@ -69,9 +69,12 @@ const ExploreAllApps = (props: any) => {
           alt=""
           className="w-[12px] h-[10px] object-center object-contain shrink-0 mt-[7px] rotate-[180deg]"
         />
-        <div onClick={() => {
+        <div
+         onClick={() => {
           swiperRef?.current?.swiper?.slidePrev();
-        }} className="text-[18px] text-white font-[400] uppercase mt-[7px] opacity-80 cursor-pointer">
+        }} 
+        className="text-[18px] text-white font-[400] uppercase mt-[7px] opacity-80 cursor-pointer"
+        >
           TRENDING TOKENS
         </div>
         <img

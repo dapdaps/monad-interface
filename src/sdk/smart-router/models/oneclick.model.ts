@@ -62,7 +62,8 @@ export class OneClick {
       outputCurrency,
       inputAmount,
       slippage,
-      account
+      account,
+      extendParams
     } = params;
 
     // 5%
@@ -75,6 +76,7 @@ export class OneClick {
     const inputCurrencyAddress = inputCurrency.address.toLowerCase();
     const outputCurrencyAddress = outputCurrency.address.toLowerCase();
 
+
     const candidatesParams = new URLSearchParams();
     candidatesParams.set("chainId", this.chainId + "");
     candidatesParams.set("amountIn", _inputAmount);
@@ -86,6 +88,10 @@ export class OneClick {
     candidatesParams.set("maxTickCount", "10");
     // candidatesParams.set("appFeeRate", FEE_RATE.toString());
     // candidatesParams.set("appFeeRecipient", FEE_RECIPIENT);
+    if (extendParams && extendParams.fee) {
+      candidatesParams.set("appFeeRate", extendParams.fee.toString());
+      candidatesParams.set("appFeeRecipient", extendParams.feeRecipient);
+    }
 
     let bestTrade: any;
     try {
@@ -136,6 +142,13 @@ export class OneClick {
       in_eth: inputCurrency.isNative ? 1 : 0,
       out_eth: outputCurrency.isNative ? 1 : 0,
     };
+    if (extendParams && extendParams.fee) {
+      swapPathParams.app_fee_rate = Number(extendParams.fee);
+      swapPathParams.app_fee_recipient = extendParams.feeRecipient;
+
+      swapPathParams.appFeeRate = extendParams.fee.toString();
+      swapPathParams.appFeeRecipient = extendParams.feeRecipient;
+    }
 
     let tx: any;
     let swapPathGasLimit: any;

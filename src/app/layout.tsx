@@ -23,27 +23,7 @@ export default async function RootLayout({
         <link rel="icon" href="/favicon.ico" />
         <meta name="twitter:site" content="@0xNADSA" />
         <meta name="twitter:card" content="summary_large_image"></meta>
-      </head>
-      <body className="w-full h-full md:overflow-hidden">
-        <div id="page-loader" style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: '#0A0A0F',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          gap: '16px',
-          zIndex: 9999,
-        }}>
-          <img src="/images/mainnet/nadsa-loading-animation.gif" alt="page-loader"/>
-        </div>
-        <ClientProviders>{children}</ClientProviders>
-       
-        <Script id="page-loader-script" strategy="afterInteractive">
+        <Script id="page-loader-script" strategy="beforeInteractive">
           {`
             (function() {
               function hideLoader() {
@@ -66,6 +46,27 @@ export default async function RootLayout({
             })();
           `}
         </Script>
+      </head>
+      <body className="w-full h-full md:overflow-hidden">
+        <div id="page-loader" style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: '#0A0A0F',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          gap: '16px',
+          zIndex: 9999,
+        }}>
+          <img src="/images/mainnet/nadsa-loading-animation.gif" alt="page-loader"/>
+        </div>
+        <ClientProviders>{children}</ClientProviders>
+       
+        
       </body>
       <Script
         async
