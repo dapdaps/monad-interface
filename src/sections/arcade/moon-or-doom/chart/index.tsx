@@ -908,8 +908,9 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             if (!isNaN(rectY1)) {
                 const calculatedPrice = yScale.invert(rectY1);
                 const alignedPrice = Math.floor(calculatedPrice / PRICE_STEP) * PRICE_STEP;
-                gridPrice = alignedPrice - PRICE_STEP;
-                (this as any).__gridPrice__ = Math.floor(gridPrice * 10) / 10;
+                // gridPrice = alignedPrice - PRICE_STEP;
+                gridPrice = Math.floor(alignedPrice * 10) / 10;
+                (this as any).__gridPrice__ = gridPrice;
             }
 
             if (gridTimeStr) {
