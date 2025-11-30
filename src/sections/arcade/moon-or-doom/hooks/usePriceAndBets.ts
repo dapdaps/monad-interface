@@ -71,7 +71,10 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                         }
 
                         const prev5sTimestamp = data.timestamp - (data.timestamp % 5000);
-                        const roundedPrice = Math.floor(data.price / PRICE_STEP) * PRICE_STEP;
+                        const roundedPriceValue = Math.floor(data.price / PRICE_STEP) * PRICE_STEP;
+                        const roundedPrice = roundedPriceValue % 1 === 0 
+                            ? roundedPriceValue.toString() 
+                            : roundedPriceValue.toFixed(1);
                         allTimePriceRef.current[prev5sTimestamp + '-' + roundedPrice] = true;
 
                         return [

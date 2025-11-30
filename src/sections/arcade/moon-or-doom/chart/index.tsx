@@ -197,8 +197,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             priceMax = priceMin + PRICE_STEP * 16;
         }
 
-        console.log('priceMin:', priceMin)
-
         return {
             viewportWidth,
             viewportHeight,
@@ -1081,7 +1079,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             // const translationX = viewportWidth / 2 - nowX;
             let translationX = 0;
 
-            let deltaX = viewportWidth / 2 - nowX;
+            let deltaX = viewportWidth / 3 - nowX;
             // if (deltaX < 0) {
             //     console.log('viewportWidth / 2 - nowX:', deltaX)
             // }
