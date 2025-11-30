@@ -6,7 +6,7 @@ import { playSound5, playSound6 } from "../lib/sound";
 
 const WS_URL = (process.env.NEXT_PUBLIC_WS_URL || "wss://mainnet-stream-monad.dapdap.net") + "/ws";
 
-export const PRICE_STEP = 0.5;
+export const PRICE_STEP = 0.2;
 export default function usePriceAndBets({ userBet }: { userBet: any }) {
     const wsClientRef = useRef<WSClient | null>(null);
     const [list, setList] = useState<any[]>([]);
@@ -171,8 +171,27 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
     const getAllBet = useCallback(async () => {
         const res = await get('/game/euphoria/latest?newQuery=1');
         if (res.code === 200) {
-            betListRef.current = res.data || [];
-            setBetList(res.data || []);
+            if (res.data.length > 0) {
+                const startTimeMap = new Map<string, any>();
+                
+                res.data.forEach((item: any) => {
+                    const startTime = String(item.start_time);
+                    
+                    if (!startTimeMap.has(startTime) || 
+                        Number(item.source_time || 0) > Number(startTimeMap.get(startTime)?.source_time || 0)) {
+                        startTimeMap.set(startTime, item);
+                    }
+                });
+                
+                const filteredData: any[] = [];
+                startTimeMap.forEach((item) => {
+                    filteredData.push(item);
+                });
+                
+
+                betListRef.current = filteredData;
+                setBetList(filteredData);
+            }
         }
     }, []);
 
