@@ -4,9 +4,10 @@ import { config, projectId } from "@/configs/wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { type ReactNode } from "react";
 import { cookieToInitialState, WagmiProvider, type Config } from "wagmi";
-import { DEFAULT_CHAIN_ID } from '@/configs';
+import { DEFAULT_CHAIN_ID } from "@/configs";
 import { RainbowKitProvider, darkTheme } from "@rainbow-me/rainbowkit";
 import "@rainbow-me/rainbowkit/styles.css";
+import { AuthProvider } from "./auth";
 
 const queryClient = new QueryClient();
 
@@ -64,16 +65,10 @@ function ContextProvider({
   children: ReactNode;
   cookies?: string | null;
 }) {
-  const initialState = cookieToInitialState(
-    config as Config,
-    cookies
-  );
+  const initialState = cookieToInitialState(config as Config, cookies);
 
   return (
-    <WagmiProvider
-      config={config as Config}
-      initialState={initialState}
-    >
+    <WagmiProvider config={config as Config} initialState={initialState}>
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider
           locale="en-US"
@@ -81,7 +76,7 @@ function ContextProvider({
           theme={darkTheme()}
           modalSize="compact"
         >
-          {children}
+          <AuthProvider>{children}</AuthProvider>
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

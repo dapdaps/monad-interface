@@ -4,11 +4,9 @@ import withSound from "@/hoc/withSound";
 import useClickTracking from "@/hooks/use-click-tracking";
 import useRem from "@/hooks/use-rem";
 import useTokenPrice from "@/hooks/use-token-price";
-import useUser from "@/hooks/use-user";
 import MainLayoutFooter from "@/layouts/main/footer";
 import MainLayoutHeader from "@/layouts/main/header";
 import React, { useEffect, useMemo } from "react";
-import { useAccount } from "wagmi";
 import clsx from "clsx";
 import { useInvitationContext } from "@/context/invitation";
 import useIsMobile from "@/hooks/use-isMobile";
@@ -39,13 +37,6 @@ const MainLayout = (props: Props) => {
     initializePrice();
   }, []);
 
-  const { address } = useAccount();
-  const { getAccessToken } = useUser();
-
-  useEffect(() => {
-    getAccessToken("main layout");
-  }, [address]);
-
   return (
     <div
       id="layout"
@@ -57,17 +48,9 @@ const MainLayout = (props: Props) => {
         ...style
       }}
     >
-      {
-        validUser && (
-          <MainLayoutHeader />
-        )
-      }
+      {validUser && <MainLayoutHeader />}
       <div className="relative grow">{children}</div>
-      {
-        (validUser && isFooter) && (
-          <MainLayoutFooter />
-        )
-      }
+      {validUser && isFooter && <MainLayoutFooter />}
     </div>
   );
 };

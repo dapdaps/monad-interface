@@ -5,6 +5,7 @@ import Button from "@/components/button";
 import { useAccount, useSwitchChain } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { monadTestnet } from "viem/chains";
+import { useAuth } from "@/context/auth";
 
 const CommonForm = (props: any) => {
   const { className, foot } = props;
@@ -21,13 +22,18 @@ const CommonForm = (props: any) => {
     outputTokenBalanceLoading,
     buttonValid,
     onStake,
-    currentTab,
+    currentTab
   } = useStakeContext();
 
   return (
-    <div className={clsx("w-full px-[37px] md:px-[10px] pt-8 md:pt-4", className)}>
+    <div
+      className={clsx("w-full px-[37px] md:px-[10px] pt-8 md:pt-4", className)}
+    >
       <div className="text-[18px] text-white mb-2">
-        {currentTab.value === "stake" ? "Stake" : "Unstake"} {currentTab.value === "stake" ? inputToken?.symbol : outputToken?.symbol}
+        {currentTab.value === "stake" ? "Stake" : "Unstake"}{" "}
+        {currentTab.value === "stake"
+          ? inputToken?.symbol
+          : outputToken?.symbol}
       </div>
       <StakeInput
         className=""
@@ -71,37 +77,41 @@ export default CommonForm;
 
 export const Actiontn = ({
   buttonValid,
-  onStake,
+  onStake
 }: {
   buttonValid: any;
   onStake: () => void;
 }) => {
-  const { address, chainId } = useAccount()
-  const { openConnectModal } = useConnectModal();
-  const { switchChain } = useSwitchChain()
-
-  if (!address) {
-    return <Button
-      type="primary"
-      className="w-full mt-2 !h-[60px]"
-      onClick={() => {
-        openConnectModal?.()
-      }}
-    >
-      Connect Wallet
-    </Button>
+  const { chainId } = useAccount();
+  const { switchChain } = useSwitchChain();
+  const { login, isLogin } = useAuth();
+  if (!isLogin) {
+    return (
+      <Button
+        type="primary"
+        className="w-full mt-2 !h-[60px]"
+        onClick={() => {
+          login?.();
+        }}
+      >
+        Connect Wallet
+      </Button>
+    );
   }
 
   if (chainId !== monadTestnet.id) {
-    return <Button
-      type="primary"
-      className="w-full mt-2 !h-[60px]"
-      onClick={() => {
-        switchChain({ chainId: monadTestnet.id })
-      }}
-    >Switch Chain</Button>
+    return (
+      <Button
+        type="primary"
+        className="w-full mt-2 !h-[60px]"
+        onClick={() => {
+          switchChain({ chainId: monadTestnet.id });
+        }}
+      >
+        Switch Chain
+      </Button>
+    );
   }
-
 
   return (
     <Button
@@ -113,5 +123,5 @@ export const Actiontn = ({
     >
       {buttonValid.text}
     </Button>
-  )
-}
+  );
+};

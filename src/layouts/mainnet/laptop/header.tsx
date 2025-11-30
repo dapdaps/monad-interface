@@ -1,5 +1,8 @@
-import Popover, { PopoverPlacement, PopoverTrigger } from "@/components/popover";
-import { useConnectWallet } from "@/hooks/use-connect-wallet";
+import Popover, {
+  PopoverPlacement,
+  PopoverTrigger
+} from "@/components/popover";
+import { useAuth } from "@/context/auth";
 import useUser from "@/hooks/use-user";
 import { useUserStore } from "@/stores/user";
 import { numberFormatter } from "@/utils/number-formatter";
@@ -15,11 +18,13 @@ const LaptopHeader = (props: any) => {
   const { className } = props;
 
   return (
-    <div className={clsx("fixed pr-[0px] pl-[31px] z-[30] left-0 top-0 w-full h-[65px] flex justify-between items-center", className)}>
-      <Link
-        href="/"
-        className="block"
-      >
+    <div
+      className={clsx(
+        "fixed pr-[0px] pl-[31px] z-[30] left-0 top-0 w-full h-[65px] flex justify-between items-center",
+        className
+      )}
+    >
+      <Link href="/" className="block">
         <img
           src="/images/mainnet/logo.svg"
           alt=""
@@ -34,102 +39,88 @@ const LaptopHeader = (props: any) => {
 export default LaptopHeader;
 
 const Account = (props: any) => {
-  const { } = props;
+  const {} = props;
 
   const { userInfo } = useUser();
 
-  const {
-    connecting,
-    connected,
-    name,
-    avatar,
-    onConnect,
-    onDisconnect,
-    balance,
-  } = useConnectWallet();
+  const { connecting, name, avatar, onDisconnect, balance, isLogin, login } =
+    useAuth();
 
   const setUserInfo = useUserStore((store: any) => store.set);
 
   const newAvatar = useMemo(() => {
     if (userInfo?.social?.twitter_avatar) {
-      return `url("${userInfo?.social?.twitter_avatar.replace('normal', '400x400')}")`;
+      return `url("${userInfo?.social?.twitter_avatar.replace(
+        "normal",
+        "400x400"
+      )}")`;
     }
     return avatar;
   }, [userInfo, avatar]);
 
-
   return (
     <div className="flex h-full items-start justify-end gap-[10px]">
-      {
-        connecting ? (
-          <div className="h-[64px] flex justify-center items-center gap-[8px] pl-[29px] pr-[12px] shrink-0 text-[18px] leading-[100%] text-white bg-[url('/images/mainnet/layout/corner-connected.svg')] bg-no-repeat bg-left-bottom bg-cover">
-            <div className="flex flex-col items-end justify-center gap-[6px]">
-              <Skeleton width={85} height={18} borderRadius={4} />
-              <div className="flex justify-end items-center gap-[6px]">
-                <Skeleton width={18} height={18} borderRadius={9} />
-                <Skeleton width={50} height={18} borderRadius={4} />
-              </div>
+      {connecting ? (
+        <div className="h-[64px] flex justify-center items-center gap-[8px] pl-[29px] pr-[12px] shrink-0 text-[18px] leading-[100%] text-white bg-[url('/images/mainnet/layout/corner-connected.svg')] bg-no-repeat bg-left-bottom bg-cover">
+          <div className="flex flex-col items-end justify-center gap-[6px]">
+            <Skeleton width={85} height={18} borderRadius={4} />
+            <div className="flex justify-end items-center gap-[6px]">
+              <Skeleton width={18} height={18} borderRadius={9} />
+              <Skeleton width={50} height={18} borderRadius={4} />
             </div>
-            <Skeleton width={40} height={40} borderRadius={4} />
           </div>
-        ) : (
-          connected ? (
-            <>
-              <Suspense fallback={null}>
-                <Notification />
-              </Suspense>
-              <Popover
-                placement={PopoverPlacement.BottomRight}
-                trigger={PopoverTrigger.Hover}
-                content={(
-                  <AccountMenu
-                    name={name}
-                    avatar={avatar}
-                    balance={balance}
-                    onDisconnect={() => {
-                      onDisconnect();
-                      setUserInfo({
-                        user: {},
-                        accessToken: {
-                          access_token: '',
-                          refresh_access_token: '',
-                          token_type: 'bearer',
-                        },
-                        accessTokenLoading: false,
-                      });
-                    }}
-                  />
-                )}
-              >
-                <ConnectedAccount
-                  name={name}
-                  avatar={newAvatar}
-                  balance={balance}
-                />
-              </Popover>
-            </>
-          ) : (
-            <button
-              type="button"
-              className="shrink-0 text-[16px] flex justify-center items-center text-white font-[600] font-[Oxanium] [text-shadow:0_0_10px_rgba(255,255,255,0.60)] h-[50px] pl-[42px] pr-[31px] bg-[url('/images/mainnet/layout/corner-connect.svg')] bg-no-repeat bg-left-bottom bg-cover"
-              onClick={onConnect}
-            >
-              Connect
-            </button>
-          )
-        )
-      }
-    </div >
+          <Skeleton width={40} height={40} borderRadius={4} />
+        </div>
+      ) : isLogin ? (
+        <>
+          <Suspense fallback={null}>
+            <Notification />
+          </Suspense>
+          <Popover
+            placement={PopoverPlacement.BottomRight}
+            trigger={PopoverTrigger.Hover}
+            content={
+              <AccountMenu
+                name={name}
+                avatar={avatar}
+                balance={balance}
+                onDisconnect={() => {
+                  onDisconnect();
+                  setUserInfo({
+                    user: {},
+                    accessToken: {
+                      access_token: "",
+                      refresh_access_token: "",
+                      token_type: "bearer"
+                    },
+                    accessTokenLoading: false
+                  });
+                }}
+              />
+            }
+          >
+            <ConnectedAccount
+              name={name}
+              avatar={newAvatar}
+              balance={balance}
+            />
+          </Popover>
+        </>
+      ) : (
+        <button
+          type="button"
+          className="shrink-0 text-[16px] flex justify-center items-center text-white font-[600] font-[Oxanium] [text-shadow:0_0_10px_rgba(255,255,255,0.60)] h-[50px] pl-[42px] pr-[31px] bg-[url('/images/mainnet/layout/corner-connect.svg')] bg-no-repeat bg-left-bottom bg-cover"
+          onClick={login}
+        >
+          Connect
+        </button>
+      )}
+    </div>
   );
 };
 
 const AccountMenu = (props: any) => {
-  const {
-    name,
-    avatar,
-    balance,
-    onDisconnect,
-  } = props;
+  const { name, avatar, balance, onDisconnect } = props;
 
   return (
     <div className="w-[200px] h-[185px] text-white leading-[100%] p-[1px] backdrop-blur-[10px] [clip-path:polygon(0_0,100%_0,100%_100%,10%_100%,0_90%,0_0)] bg-[linear-gradient(230deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_100%)]">
@@ -138,12 +129,10 @@ const AccountMenu = (props: any) => {
           <div
             className="w-[30px] h-[30px] rounded-full border border-[#727D97] shrink-0"
             style={{
-              backgroundImage: avatar,
+              backgroundImage: avatar
             }}
           />
-          <div className="text-[14px]">
-            {name}
-          </div>
+          <div className="text-[14px]">{name}</div>
         </div>
         <div className="mt-[20px] px-[10px]">
           <div className="flex justify-between items-center bg-[rgba(255,255,255,0.2)] rounded-[4px] p-[10px_5px]">
@@ -153,15 +142,13 @@ const AccountMenu = (props: any) => {
                 alt=""
                 className="w-[18px] h-[18px] object-contain object-center shrink-0"
               />
-              <div className="">
-                MON
-              </div>
+              <div className="">MON</div>
             </div>
             <div className="">
               {numberFormatter(balance, 4, true, {
                 isShort: Big(balance || 0).gt(999999.9999),
                 isShortUppercase: true,
-                isZeroPrecision: true,
+                isZeroPrecision: true
               })}
             </div>
           </div>
@@ -187,18 +174,12 @@ const AccountMenu = (props: any) => {
 };
 
 const ConnectedAccount = (props: any) => {
-  const {
-    name,
-    avatar,
-    balance,
-  } = props;
+  const { name, avatar, balance } = props;
 
   return (
     <div className="h-[64px] backdrop-blur-[10px] [clip-path:polygon(0_0,100%_0,100%_100%,15%_100%,0_0)] flex justify-center items-center gap-[8px] pl-[29px] pr-[12px] shrink-0 text-[18px] leading-[100%] text-white bg-[url('/images/mainnet/layout/corner-connected.svg')] bg-no-repeat bg-left-bottom bg-cover">
       <div className="flex flex-col items-end justify-center gap-[6px]">
-        <div className="text-[#8E97AD] text-[14px]">
-          {name}
-        </div>
+        <div className="text-[#8E97AD] text-[14px]">{name}</div>
         <div className="flex justify-end items-center gap-[6px]">
           <img
             src="/images/monad.svg"
@@ -209,7 +190,7 @@ const ConnectedAccount = (props: any) => {
             {numberFormatter(balance, 2, true, {
               isShort: true,
               isShortUppercase: true,
-              isZeroPrecision: true,
+              isZeroPrecision: true
             })}
           </div>
         </div>
@@ -218,9 +199,9 @@ const ConnectedAccount = (props: any) => {
         className="w-[40px] h-[40px] rounded-[4px] border border-[#727D97] shrink-0"
         style={{
           backgroundImage: avatar,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat"
         }}
       />
     </div>

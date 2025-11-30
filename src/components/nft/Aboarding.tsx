@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import Modal from "@/components/modal";
 import { useSoulboundNFT } from "@/hooks/use-soulbound-nft";
-import { useConnectModal } from "@rainbow-me/rainbowkit";
 import CircleLoading from "../circle-loading";
 import { useAccount } from "wagmi";
 import { useSwitchChain } from "wagmi";
@@ -20,6 +19,7 @@ import { useNftStore } from "@/stores/nft";
 import useXFollow, { IS_REAL_FOLLOW } from "./use-x-follow";
 import useIsMobile from "@/hooks/use-isMobile";
 import TimeLocked from "../time-locked";
+import { useAuth } from "@/context/auth";
 
 const slides = [
   {
@@ -415,7 +415,11 @@ export default function Aboarding({
                                         if (
                                           buttonText === "Connect X to access"
                                         ) {
-                                          const redirectUri = window.location.origin === 'https://nadsa.space' ? 'https://www.nadsa.space' : window.location.origin;
+                                          const redirectUri =
+                                            window.location.origin ===
+                                            "https://nadsa.space"
+                                              ? "https://www.nadsa.space"
+                                              : window.location.origin;
                                           window.open(
                                             `https://x.com/i/oauth2/authorize?response_type=code&client_id=ZzZNZEw5UWdyQWRNMlU5UHRlRVE6MTpjaQ&redirect_uri=${redirectUri}&scope=tweet.read%20users.read%20follows.read%20like.read&state=state&code_challenge=challenge&code_challenge_method=plain`,
                                             "_blank"
@@ -763,17 +767,17 @@ const MainBtn = ({
   tokenBalance: string;
 }) => {
   const { switchChain, isPending: switching } = useSwitchChain();
-  const { address, chainId } = useAccount();
-  const { openConnectModal } = useConnectModal();
+  const { chainId } = useAccount();
+  const { login, isLogin } = useAuth();
   const isMobile = useIsMobile();
   const mainBtnCls = clsx(
     "w-full flex items-center justify-center bg-[#00FF00] text-black py-2 px-4 rounded font-Pixelmix text-[12px] shadow-[0px_0px_10px_0px_#03E212]",
     isMobile ? "h-[27px]" : "h-[44px]"
   );
 
-  if (!address) {
+  if (!isLogin) {
     return (
-      <button onClick={() => openConnectModal?.()} className={mainBtnCls}>
+      <button onClick={() => login()} className={mainBtnCls}>
         Connect
       </button>
     );

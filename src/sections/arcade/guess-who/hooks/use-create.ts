@@ -1,14 +1,17 @@
 import { useMemo, useState } from "react";
 import { Monster, RPS_MIN_BET_AMOUNT, Status } from "../config";
 import useCustomAccount from "@/hooks/use-account";
-import { useConnectWallet } from "@/hooks/use-connect-wallet";
 import useToast from "@/hooks/use-toast";
 import { useRequest } from "ahooks";
 import { DEFAULT_CHAIN_ID } from "@/configs";
 import { Contract, utils } from "ethers";
 import { RPS_CONTRACT_ADDRESS, RPS_CONTRACT_ADDRESS_ABI } from "../contract";
 import Big from "big.js";
-import { NotificationType, useNotificationContext } from "@/context/notification";
+import {
+  NotificationType,
+  useNotificationContext
+} from "@/context/notification";
+import { useAuth } from "@/context/auth";
 
 export function useCreate(props?: any) {
   const {
@@ -20,11 +23,11 @@ export function useCreate(props?: any) {
     setPlayersAvatar,
     onChange2UserLatest,
     onChange2List,
-    playAudio,
+    playAudio
   } = props ?? {};
 
-  const { accountWithAk, account, chainId, provider } = useCustomAccount();
-  const { onConnect, onSwitchChain } = useConnectWallet();
+  const { account, chainId, provider } = useCustomAccount();
+  const { login, isLogin, onSwitchChain } = useAuth();
   const toast = useToast();
   const { add } = useNotificationContext();
 
@@ -47,160 +50,191 @@ export function useCreate(props?: any) {
     });
   };
 
-  const { runAsync: onCreate, loading: creating } = useRequest(async () => {
-    playAudio({ type: "click", action: "play" });
+  const { runAsync: onCreate, loading: creating } = useRequest(
+    async () => {
+      playAudio({ type: "click", action: "play" });
 
-    if (!account) {
-      onConnect();
-      return;
-    }
-    if (chainId !== DEFAULT_CHAIN_ID) {
-      onSwitchChain({ chainId: DEFAULT_CHAIN_ID });
-      return;
-    }
-    let toastId = toast.loading({
-      title: "Creating...",
-    });
-
-    const isDouble = betMonster.length > 1;
-    const parsedAmount = utils.parseUnits(Big(betAmount || "0").times(isDouble ? 2 : 1).toFixed(betToken.decimals), betToken.decimals);
-    const signer = provider.getSigner(account);
-
-    const contract = new Contract(RPS_CONTRACT_ADDRESS, RPS_CONTRACT_ADDRESS_ABI, signer);
-    const options: any = {
-      value: parsedAmount,
-    };
-
-    let params = [
-      parsedAmount,
-      betMonster[0],
-    ];
-    if (isDouble) {
-      params = [
-        utils.parseUnits(betAmount || "0", betToken.decimals),
-        betMonster[0],
-        betMonster[1],
-      ];
-    }
-
-    let method = "initRoom";
-    if (isDouble) {
-      method = "initAndJoinRoom";
-    }
-
-    try {
-      const estimatedGas = await contract.estimateGas[method](...params, options);
-      options.gasLimit = Math.floor(Number(estimatedGas) * 1.2);
-    } catch (err) {
-      options.gasLimit = 10000000;
-      console.log("estimate gas failed: %o", err);
-    }
-
-    try {
-      const tx = await contract[method](...params, options);
-
-      toast.dismiss(toastId);
-      toastId = toast.loading({ title: "Confirming...", chainId, tx: tx.hash });
-      const txReceipt = await tx.wait();
-      const { status, transactionHash } = txReceipt;
-      toast.dismiss(toastId);
-
-      if (status !== 1) {
-        playAudio({ type: "error", action: "play" });
-        toast.fail({
-          title: "Created failed",
-          tx: transactionHash,
-          chainId,
-        });
+      if (!isLogin) {
+        login();
         return;
       }
-
-      toast.success({
-        title: "Created successful",
-        tx: transactionHash,
-        chainId,
+      if (chainId !== DEFAULT_CHAIN_ID) {
+        onSwitchChain({ chainId: DEFAULT_CHAIN_ID });
+        return;
+      }
+      let toastId = toast.loading({
+        title: "Creating..."
       });
-      playAudio({ type: "success", action: "play" });
 
-      // block crawling
-      let isCrawlingRoomEvent = false;
-      try {
-        const events = txReceipt.logs.map((log: any) => {
-          try {
-            return contract.interface.parseLog(log);
-          } catch (e) {
-            return null;
-          }
-        }).filter(Boolean);
+      const isDouble = betMonster.length > 1;
+      const parsedAmount = utils.parseUnits(
+        Big(betAmount || "0")
+          .times(isDouble ? 2 : 1)
+          .toFixed(betToken.decimals),
+        betToken.decimals
+      );
+      const signer = provider.getSigner(account);
 
-        const roomCreatedEvent = events.find((event: any) => event.name === "RoomCreated");
-        const RoomJoinedBEvent = events.find((event: any) => event.name === "RoomJoinedB");
-        if (roomCreatedEvent) {
-          const roomCreatedData = roomCreatedEvent.args;
-          const createdNewRoom = {
-            address: roomCreatedData.entrantA,
-            bet_amount: utils.formatUnits(roomCreatedData.betAmount, betToken.decimals),
-            create_time: +roomCreatedData.createTime.toString(),
-            create_tx_hash: transactionHash,
-            end_tx_hash: "",
-            players: [
-              {
-                address: roomCreatedData.entrantA,
-                moves: +roomCreatedData.numberA.toString(),
-                tx_hash: transactionHash,
-                tx_time: +roomCreatedData.createTime.toString(),
-              },
-            ],
-            room_id: +roomCreatedData.roomId.toString(),
-            status: Status.Ongoing,
-            winner_address: "",
-            winner_moves: 0,
-          };
-          // double
-          if (RoomJoinedBEvent) {
-            const roomJoinedBEventData = RoomJoinedBEvent.args;
-            createdNewRoom.players.push({
-              address: roomJoinedBEventData.entrant,
-              moves: +roomJoinedBEventData.number.toString(),
-              tx_hash: transactionHash,
-              tx_time: +roomCreatedData.createTime.toString(),
-            });
-          }
-          console.log("%cBlock crawling new room: %o", "background:#3A6F43;color:#fff;", createdNewRoom);
-          setPlayersAvatar(createdNewRoom.players);
-          onChange2UserLatest("create", createdNewRoom);
-          onChange2List("create", createdNewRoom);
+      const contract = new Contract(
+        RPS_CONTRACT_ADDRESS,
+        RPS_CONTRACT_ADDRESS_ABI,
+        signer
+      );
+      const options: any = {
+        value: parsedAmount
+      };
 
-          add?.({
-            id: `guessWho-${createdNewRoom.room_id}`,
-            type: NotificationType.GuessWho,
-            data: {
-              ...createdNewRoom,
-            },
-          });
-
-          isCrawlingRoomEvent = true;
-        }
-      } catch (err) {
-        console.log("Block crawling new room failed: %o", err);
+      let params = [parsedAmount, betMonster[0]];
+      if (isDouble) {
+        params = [
+          utils.parseUnits(betAmount || "0", betToken.decimals),
+          betMonster[0],
+          betMonster[1]
+        ];
       }
 
-      // reload list
-      setBetMonster([]);
-      getBetTokenBalance();
-      !isCrawlingRoomEvent && getListDelay();
-    } catch (error: any) {
-      console.log("create rps failed: %o", error);
-      toast.dismiss(toastId);
-      toast.fail({
-        title: "Create failed",
-        text: error?.message?.includes("user rejected transaction") ? "User rejected transaction" : "",
-      });
-      playAudio({ type: "error", action: "play" });
+      let method = "initRoom";
+      if (isDouble) {
+        method = "initAndJoinRoom";
+      }
+
+      try {
+        const estimatedGas = await contract.estimateGas[method](
+          ...params,
+          options
+        );
+        options.gasLimit = Math.floor(Number(estimatedGas) * 1.2);
+      } catch (err) {
+        options.gasLimit = 10000000;
+        console.log("estimate gas failed: %o", err);
+      }
+
+      try {
+        const tx = await contract[method](...params, options);
+
+        toast.dismiss(toastId);
+        toastId = toast.loading({
+          title: "Confirming...",
+          chainId,
+          tx: tx.hash
+        });
+        const txReceipt = await tx.wait();
+        const { status, transactionHash } = txReceipt;
+        toast.dismiss(toastId);
+
+        if (status !== 1) {
+          playAudio({ type: "error", action: "play" });
+          toast.fail({
+            title: "Created failed",
+            tx: transactionHash,
+            chainId
+          });
+          return;
+        }
+
+        toast.success({
+          title: "Created successful",
+          tx: transactionHash,
+          chainId
+        });
+        playAudio({ type: "success", action: "play" });
+
+        // block crawling
+        let isCrawlingRoomEvent = false;
+        try {
+          const events = txReceipt.logs
+            .map((log: any) => {
+              try {
+                return contract.interface.parseLog(log);
+              } catch (e) {
+                return null;
+              }
+            })
+            .filter(Boolean);
+
+          const roomCreatedEvent = events.find(
+            (event: any) => event.name === "RoomCreated"
+          );
+          const RoomJoinedBEvent = events.find(
+            (event: any) => event.name === "RoomJoinedB"
+          );
+          if (roomCreatedEvent) {
+            const roomCreatedData = roomCreatedEvent.args;
+            const createdNewRoom = {
+              address: roomCreatedData.entrantA,
+              bet_amount: utils.formatUnits(
+                roomCreatedData.betAmount,
+                betToken.decimals
+              ),
+              create_time: +roomCreatedData.createTime.toString(),
+              create_tx_hash: transactionHash,
+              end_tx_hash: "",
+              players: [
+                {
+                  address: roomCreatedData.entrantA,
+                  moves: +roomCreatedData.numberA.toString(),
+                  tx_hash: transactionHash,
+                  tx_time: +roomCreatedData.createTime.toString()
+                }
+              ],
+              room_id: +roomCreatedData.roomId.toString(),
+              status: Status.Ongoing,
+              winner_address: "",
+              winner_moves: 0
+            };
+            // double
+            if (RoomJoinedBEvent) {
+              const roomJoinedBEventData = RoomJoinedBEvent.args;
+              createdNewRoom.players.push({
+                address: roomJoinedBEventData.entrant,
+                moves: +roomJoinedBEventData.number.toString(),
+                tx_hash: transactionHash,
+                tx_time: +roomCreatedData.createTime.toString()
+              });
+            }
+            console.log(
+              "%cBlock crawling new room: %o",
+              "background:#3A6F43;color:#fff;",
+              createdNewRoom
+            );
+            setPlayersAvatar(createdNewRoom.players);
+            onChange2UserLatest("create", createdNewRoom);
+            onChange2List("create", createdNewRoom);
+
+            add?.({
+              id: `guessWho-${createdNewRoom.room_id}`,
+              type: NotificationType.GuessWho,
+              data: {
+                ...createdNewRoom
+              }
+            });
+
+            isCrawlingRoomEvent = true;
+          }
+        } catch (err) {
+          console.log("Block crawling new room failed: %o", err);
+        }
+
+        // reload list
+        setBetMonster([]);
+        getBetTokenBalance();
+        !isCrawlingRoomEvent && getListDelay();
+      } catch (error: any) {
+        console.log("create rps failed: %o", error);
+        toast.dismiss(toastId);
+        toast.fail({
+          title: "Create failed",
+          text: error?.message?.includes("user rejected transaction")
+            ? "User rejected transaction"
+            : ""
+        });
+        playAudio({ type: "error", action: "play" });
+      }
+    },
+    {
+      manual: true
     }
-  }, {
-    manual: true,
-  });
+  );
 
   const buttonValid = useMemo(() => {
     const _result = { disabled: true, text: "CREATE GAME", loading: false };
@@ -244,6 +278,6 @@ export function useCreate(props?: any) {
     betAmount,
     onCreate,
     creating,
-    buttonValid,
+    buttonValid
   };
 }
