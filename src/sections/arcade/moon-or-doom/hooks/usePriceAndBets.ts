@@ -75,7 +75,79 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                         const roundedPrice = roundedPriceValue % 1 === 0 
                             ? roundedPriceValue.toString() 
                             : roundedPriceValue.toFixed(1);
+
                         allTimePriceRef.current[prev5sTimestamp + '-' + roundedPrice] = true;
+
+                        if (last50Items.length > 0) {
+                            const lastItem = last50Items[last50Items.length - 1];
+                            const lastPrev5sTimestamp = lastItem.time - (lastItem.time % 5000);
+                            const lastRoundedPriceValue = Math.floor(lastItem.price / PRICE_STEP) * PRICE_STEP;
+                            const lastRoundedPrice = lastRoundedPriceValue % 1 === 0 
+                                ? lastRoundedPriceValue.toString() 
+                                : lastRoundedPriceValue.toFixed(1);
+
+                            if (prev5sTimestamp === lastPrev5sTimestamp) {
+                                const _roundedPrice = Number(roundedPrice);
+                                const _lastRoundedPrice = Number(lastRoundedPrice);
+                                const priceDiff = Number((Math.round(Math.abs(_roundedPrice - _lastRoundedPrice) / PRICE_STEP) * PRICE_STEP).toFixed(1));
+                                if (priceDiff > PRICE_STEP) {
+                                    const minPrice = Math.min(_roundedPrice, _lastRoundedPrice);
+                                    const maxPrice = Math.max(_roundedPrice, _lastRoundedPrice);
+                                    const steps = Math.floor((maxPrice - minPrice) / PRICE_STEP) - 1;
+                                    for (let i = 1; i <= steps; i++) {
+                                        const currentPrice = minPrice + i * PRICE_STEP;
+                                        const intermediateRoundedPrice = currentPrice % 1 === 0 
+                                            ? currentPrice.toString() 
+                                            : currentPrice.toFixed(1);
+                                        allTimePriceRef.current[prev5sTimestamp + '-' + intermediateRoundedPrice] = true;
+                                    }
+
+                                }
+                            }
+
+
+                            if (roundedPrice === lastRoundedPrice) {
+                                const timestampDiff = prev5sTimestamp - lastPrev5sTimestamp;
+                                if (timestampDiff > 5000) {
+                                    let currentTimestamp = lastPrev5sTimestamp + 5000;
+                                    while (currentTimestamp < prev5sTimestamp) {
+                                        allTimePriceRef.current[currentTimestamp + '-' + roundedPrice] = true;
+                                        currentTimestamp += 5000;
+                                    }
+                                }
+                            }
+
+                            // if (prev5sTimestamp !== lastPrev5sTimestamp && roundedPrice !== lastRoundedPrice) {
+                            //     const timestampDiff = prev5sTimestamp - lastPrev5sTimestamp;
+                            //     const priceDiff = roundedPriceValue - lastRoundedPriceValue;
+                                
+                            //     const timeSteps = Math.abs(timestampDiff) / 5000;
+                                
+                            //     if (timeSteps > 1) {
+                            //         const minPrice = Math.min(lastRoundedPriceValue, roundedPriceValue);
+                            //         const maxPrice = Math.max(lastRoundedPriceValue, roundedPriceValue);
+                                    
+                            //         for (let i = 1; i < timeSteps; i++) {
+                            //             const currentTimestamp = lastPrev5sTimestamp + (timestampDiff > 0 ? i * 5000 : -i * 5000);
+                                        
+                            //             const t = i / timeSteps;
+                            //             const interpolatedPrice = lastRoundedPriceValue + priceDiff * t;
+                                        
+                            //             const priceAtTime = Math.floor(interpolatedPrice / PRICE_STEP) * PRICE_STEP;
+                            //             const priceAtTimeNext = priceAtTime + PRICE_STEP;
+                                        
+                            //             let currentPrice = minPrice;
+                            //             while (currentPrice <= maxPrice) {
+                            //                 const formattedPrice = currentPrice % 1 === 0 
+                            //                     ? currentPrice.toString() 
+                            //                     : currentPrice.toFixed(1);
+                            //                 allTimePriceRef.current[currentTimestamp + '-' + formattedPrice] = true;
+                            //                 currentPrice += PRICE_STEP;
+                            //             }
+                            //         }
+                            //     }
+                            // }
+                        }
 
                         return [
                             ...last50Items,
