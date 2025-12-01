@@ -38,7 +38,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     const translationXRef = useRef<number>(-1);
     const nowRef = useRef<dayjs.Dayjs>(dayjs());
 
-    const [gridNumber, setGridNumber] = useState(16);
+    const [gridNumber, setGridNumber] = useState(32);
 
     const gridCellSize = useMemo(() => {
         const chartGroup = d3.select(chartGroupRef.current);
@@ -173,7 +173,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const timeRange = endTime.diff(startTime, 'second');
         const chartWidth = timeRange * pixelsPerSecond;
 
-        const chartHeight = PRICE_STEP * 16 * pixelsPerUnit;
+        const chartHeight = PRICE_STEP * 20 * pixelsPerUnit;
 
         const marginLeft = 0;
         const marginRight = 0;
@@ -193,8 +193,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             priceMin = configRef.current.priceMin;
             priceMax = configRef.current.priceMax;
         } else {
-            priceMin = Math.floor((lastPrice - PRICE_STEP * 8));
-            priceMax = priceMin + PRICE_STEP * 16;
+            priceMin = Math.floor((lastPrice - PRICE_STEP * 10));
+            priceMax = priceMin + PRICE_STEP * 20;
         }
 
         return {
@@ -864,7 +864,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         futureGridRectsForCleanup.each(function () {
             const gridTimeStr = (this as any).__gridTime__;
             const gridPrice = (this as any).__gridPrice__;
-            const beforeCleanTime = dayjs().subtract(60, 'second');
+            const beforeCleanTime = dayjs().subtract(90, 'second');
             if (gridTimeStr && beforeCleanTime) {
                 const [hours, minutes, seconds] = gridTimeStr.split(':').map(Number);
                 const fullGridTime = dayjs(configRef.current.startTime)
