@@ -93,7 +93,7 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                                 if (priceDiff > PRICE_STEP) {
                                     const minPrice = Math.min(_roundedPrice, _lastRoundedPrice);
                                     const maxPrice = Math.max(_roundedPrice, _lastRoundedPrice);
-                                    const steps = Math.floor((maxPrice - minPrice) / PRICE_STEP) - 1;
+                                    const steps = Math.floor((maxPrice - minPrice) / PRICE_STEP);
                                     for (let i = 1; i <= steps; i++) {
                                         const currentPrice = minPrice + i * PRICE_STEP;
                                         const intermediateRoundedPrice = currentPrice % 1 === 0 
@@ -104,7 +104,6 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
 
                                 }
                             }
-
 
                             if (roundedPrice === lastRoundedPrice) {
                                 const timestampDiff = prev5sTimestamp - lastPrev5sTimestamp;

@@ -373,7 +373,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     .second(seconds)
                     .millisecond(0);
 
-                d3.select(this).attr('data-key', gridTime + '-' + (price));
+                d3.select(this).attr('data-key', gridTime + '-' + (price)).attr('test-key', fullGridTime + '-' + (price));
                 const betMultiplier = betRef.current?.[fullGridTime.valueOf() + '-' + (price)]?.multiplier;
                 const userBet = userBetRef.current?.[fullGridTime.valueOf() + '-' + (price)];
 
