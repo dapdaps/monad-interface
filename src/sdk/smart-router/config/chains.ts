@@ -137,9 +137,7 @@ export default {
     icon: "",
     nativeCurrency: { name: "BERA", symbol: "BERA", decimals: 18 },
     rpcUrls: [
-      "https://bartio.rpc.berachain.com/",
       "https://bartio.drpc.org",
-      "https://bera-testnet.nodeinfra.com"
     ],
     blockExplorers: "https://bartio.beratrail.io"
   },

@@ -13,6 +13,8 @@ import mondaytrade from "./mondaytrade";
 import mondaytradeV3 from "./mondaytrade-v3";
 import monorail from "./monorail";
 import capricornV3 from "./capricorn-v3";
+import kuruAgg from "./kuru-agg";
+import lfjAgg from "./lfj-agg";
 
 export default {
   izumi,
@@ -30,4 +32,6 @@ export default {
   mondaytradev3: mondaytradeV3,
   monorail: monorail,
   capricornv3: capricornV3,
+  kuruagg: kuruAgg,
+  lfjagg: lfjAgg,
 } as Record<string, any>;

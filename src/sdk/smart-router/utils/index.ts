@@ -1,5 +1,6 @@
 import chains from "../config/chains";
 import { providers } from "ethers";
+import { DEFAULT_CHAIN_ID } from "@/configs"; 
 
 const RPC_TIMEOUT = 10000;
 
@@ -20,29 +21,24 @@ async function checkRpcAvailable(url: string): Promise<boolean> {
 }
 
 export async function initRpcCache(): Promise<void> {
-  const chainIds = Object.keys(chains).map(Number);
+  const chainId = DEFAULT_CHAIN_ID;
+  const rpcUrls = chains[chainId]?.rpcUrls || [];
+  if (rpcUrls.length === 0) return;
   
-  await Promise.all(
-    chainIds.map(async (chainId) => {
-      const rpcUrls = chains[chainId]?.rpcUrls || [];
-      if (rpcUrls.length === 0) return;
-      
-      const availabilityChecks = await Promise.all(
-        rpcUrls.map(async (rpcUrl: string) => ({
-          url: rpcUrl,
-          available: await checkRpcAvailable(rpcUrl)
-        }))
-      );
-      
-      const availableRpcUrls = availabilityChecks
-        .filter(check => check.available)
-        .map(check => check.url);
-      
-      if (availableRpcUrls.length > 0) {
-        rpcUrlCache[chainId] = availableRpcUrls;
-      }
-    })
+  const availabilityChecks = await Promise.all(
+    rpcUrls.map(async (rpcUrl: string) => ({
+      url: rpcUrl,
+      available: await checkRpcAvailable(rpcUrl)
+    }))
   );
+  
+  const availableRpcUrls = availabilityChecks
+    .filter(check => check.available)
+    .map(check => check.url);
+  
+  if (availableRpcUrls.length > 0) {
+    rpcUrlCache[chainId] = availableRpcUrls;
+  }
 }
 
 export function getRpcUrl(chainId: number): string {

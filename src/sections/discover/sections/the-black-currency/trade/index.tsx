@@ -20,7 +20,6 @@ import Popover, {
 import TokenSelector from "./token-selector";
 import SlippageSelector from "./slippage-selector";
 import PlaceOrderButton from "./PlaceOrderButton";
-import { useSettingsStore } from "@/stores/settings";
 
 interface TradeProps {
   tokenList: Token[];
@@ -50,7 +49,8 @@ export default function Trade({
   const popoverRef = useRef<any>(null);
   const slippagePopoverRef = useRef<any>(null);
   const [errorTips, setErrorTips] = useState("");
-  const settingStore: any = useSettingsStore();
+  const [slippage, setSlippage] = useState("10");
+  
 
   const prices = usePriceStore((store) => store.price);
 
@@ -187,7 +187,8 @@ export default function Trade({
         extendParams: {
           fee: 100,
           feeRecipient: "0x1c7c07f5b03d4d73098d025e46497e93a8b8ec72"
-        }
+        },
+        slippage
       }).then(() => {});
     },
     {
@@ -227,15 +228,7 @@ export default function Trade({
     popoverRef.current?.onClose();
   };
 
-  useEffect(() => {
-    if (settingStore) {
-      settingStore.setSlippage("10");
-    }
-
-    return () => {
-      settingStore.setSlippage("0.5");
-    };
-  }, []);
+ 
 
   return (
     <div className="w-full border border-[#7262FF] rounded-[6px]">
@@ -407,8 +400,8 @@ export default function Trade({
             trigger={PopoverTrigger.Click}
             content={
               <SlippageSelector
-                slippage={settingStore.getSlippage()}
-                onSlippageChange={settingStore.setSlippage}
+                slippage={slippage}
+                onSlippageChange={setSlippage}
                 onClose={() => slippagePopoverRef.current?.onClose()}
               />
             }
@@ -418,7 +411,7 @@ export default function Trade({
               <div className="px-2 py-1 bg-[#151822] border border-[#34304B] rounded text-white text-[clamp(1px,_0.79vw,_calc(var(--pc-1512)*0.0079))] flex items-center gap-1">
                 <span className="text-[#727D97]">Slippage</span>
                 <span className="text-white">
-                  {settingStore.getSlippage()}%
+                  {slippage}%
                 </span>
               </div>
             </div>

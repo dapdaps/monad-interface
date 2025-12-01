@@ -9,6 +9,8 @@ import { MondayTrade } from "./mondaytrade.model";
 import { MondayTradeV3 } from "./mondaytrade-v3.model";
 import { Monorail } from "./monorail.model";
 import { CapricornV3 } from "./capricorn-v3.model";
+import { KuruAgg } from "./kuru-agg.model";
+import { LFJAgg } from "./lfj-agg.model";
 
 export default {
   iZumi: iZiSwap,
@@ -26,4 +28,6 @@ export default {
   MondayTradeV3,
   Monorail,
   CapricornV3,
+  KuruAgg,
+  LFJAgg,
 } as { [key: string]: any };
