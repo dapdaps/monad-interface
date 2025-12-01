@@ -16,7 +16,7 @@ import { usePriceStore } from "@/stores/usePriceStore";
 import { numberRemoveEndZero } from "@/utils/number-formatter";
 
 export default function useTrade({ chainId, template, from, inputAmount, onSuccess }: any) {
-  const slippage: any = useSettingsStore((store: any) => store.slippage);
+  // const slippage: any = useSettingsStore((store: any) => store.slippage);
   const [loading, setLoading] = useState(false);
   const [trade, setTrade] = useState<any>();
   const [tradeList, setTradeList] = useState<any>();
@@ -34,7 +34,7 @@ export default function useTrade({ chainId, template, from, inputAmount, onSucce
 
 
   const onQuoter = useCallback(
-    async ({ inputCurrency, outputCurrency, inputCurrencyAmount, extendParams }: any) => {
+    async ({ inputCurrency, outputCurrency, inputCurrencyAmount, slippage, extendParams }: any) => {
       // setTrade(null);
       if (
         !inputCurrency ||
@@ -212,7 +212,7 @@ export default function useTrade({ chainId, template, from, inputAmount, onSucce
         setLoading(false);
       }
     },
-    [account, provider, slippage, prices, cachedTokens]
+    [account, provider, prices, cachedTokens]
   );
 
   const onSwap = useCallback(async () => {

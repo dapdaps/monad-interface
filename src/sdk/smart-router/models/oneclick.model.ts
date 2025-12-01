@@ -10,34 +10,34 @@ const FEE_RATE = 10;
 const FEE_RECIPIENT = "0xf9f2384fee12a3e31b3d61a262df9baa6b4e8a13";
 
 const DEX_ID_MAP = {
-    "1": {
-        name: "UniswapV2",
-        logo: "/images/dapps/icons/uniswap.png"
-    },
-    "2": {
-        name: "UniswapV3",
-        logo: "/images/dapps/icons/uniswap.png"
-    },
-    "3": {
-        name: "PancakeV2",
-        logo: "/images/dapps/icons/Pancake.svg"
-    },
-    "4": {
-        name: "PancakeV3",
-        logo: "/images/dapps/icons/Pancake.svg"
-    },
-    "8": {
-        name: "Kuru",
-        logo: "/images/dapps/icons/kuru.svg"
-    },
-    "10": {
-      name: "CapricornV3",
-      logo: "/images/mainnet/capricorn2.png"
-    },
-    "11": {
-      name: "Dyorswapv2",
-      logo: "/images/mainnet/dyorswap.ico"
-    }
+  "1": {
+    name: "UniswapV2",
+    logo: "/images/dapps/icons/uniswap.png"
+  },
+  "2": {
+    name: "UniswapV3",
+    logo: "/images/dapps/icons/uniswap.png"
+  },
+  "3": {
+    name: "PancakeV2",
+    logo: "/images/dapps/icons/Pancake.svg"
+  },
+  "4": {
+    name: "PancakeV3",
+    logo: "/images/dapps/icons/Pancake.svg"
+  },
+  "8": {
+    name: "Kuru",
+    logo: "/images/dapps/icons/kuru.svg"
+  },
+  "10": {
+    name: "CapricornV3",
+    logo: "/images/mainnet/capricorn2.png"
+  },
+  "11": {
+    name: "Dyorswapv2",
+    logo: "/images/mainnet/dyorswap.ico"
+  }
 }
 export class OneClick {
   private chainId: number;
@@ -245,6 +245,19 @@ export class OneClick {
       });
     });
 
+    let fee = null
+    try {
+      if (extendParams && extendParams.fee) {
+        fee = {
+          fee: Number(bestTrade.amount_out_no_fee) - Number(bestTrade.amount_out),
+          token: outputCurrency,
+          feeRate: (Number(extendParams.fee) / 10000).toString()
+        }
+      }
+    } catch (err: any) {
+      console.log('get fee failed: %o', err);
+    }
+
     return {
       outputCurrencyAmount: BigNumber(bestTrade.amount_out || 0).div(10 ** outputCurrency.decimals).toFixed(outputCurrency.decimals).replace(/\.?0+$/, ""),
       noPair: false,
@@ -255,7 +268,7 @@ export class OneClick {
       //   token: outputCurrency,
       //   feeRate: (Number(FEE_RATE) / 10000).toString()
       // },
-      fee: null,
+      fee,
       txn,
     };
   }
