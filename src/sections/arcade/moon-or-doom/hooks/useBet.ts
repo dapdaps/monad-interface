@@ -66,7 +66,7 @@ export default function useBet({ gameBalance }: { gameBalance: number }) {
 
         try {
             setBetLoading(true)
-            const res = await post('/game/euphoria/order?newQuery=1', {
+            const res = await post('/game/chartvoyager/order?newQuery=1', {
                 "bet_amount": betRef.current.toString(),
                 "min_price": minPrice,
                 "multiplier": multiplier,

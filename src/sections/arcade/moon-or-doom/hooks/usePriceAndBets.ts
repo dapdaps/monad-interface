@@ -243,7 +243,7 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
     }, [userInfo]);
 
     const getAllBet = useCallback(async () => {
-        const res = await get('/game/euphoria/latest?newQuery=1');
+        const res = await get('/game/chartvoyager/latest?newQuery=1');
         if (res.code === 200) {
             if (res.data.length > 0) {
                 const startTimeMap = new Map<string, any>();
