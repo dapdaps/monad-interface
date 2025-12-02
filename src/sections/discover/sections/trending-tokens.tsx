@@ -61,9 +61,9 @@ const TrendingTokens = (props: any) => {
           onClick={() => {
             swiperRef?.current?.swiper?.slideTo(0);
           }}
-          className="text-[16px] text-white/30 font-[400] uppercase"
+          className="text-[16px] text-white/30 font-[400] uppercase cursor-pointer"
         >
-          SYSTEM OVERRIDE
+          Spotlight apps
         </div>
         <img
           src="/images/mainnet/discover/icon-down2.svg"
@@ -76,8 +76,7 @@ const TrendingTokens = (props: any) => {
           }}
           className="text-[18px] text-white font-[400] mt-[7px] uppercase opacity-80 cursor-pointer"
         >
-
-          Spotlight apps
+          SYSTEM OVERRIDE
         </div>
         <img
           src="/images/mainnet/discover/icon-down.svg"
@@ -127,7 +126,7 @@ const TrendingTokens = (props: any) => {
       {showSwapModal && (
         <SwapModal
           show={showSwapModal}
-          defaultInputCurrency={clickedToken.symbol.toUpperCase() === 'BC' ?  monad['mon'] : null}
+          defaultInputCurrency={clickedToken.symbol.toUpperCase() === 'BC' ? monad['mon'] : null}
           defaultOutputCurrency={outToken}
           outputCurrencyReadonly
           onClose={() => {
