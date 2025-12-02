@@ -982,8 +982,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         .attr('x', Number(d3.select(this).attr('x')) + configRef.current?.gridCellSize / 2)
                         .attr('y', Number(d3.select(this).attr('y')) + configRef.current?.gridCellSize / 2)
                         .attr('fill', '#000')
-                        .attr('font-size', '12px')
-                        .attr('font-weight', '500')
+                        .attr('font-size', '10px')
+                        .attr('font-weight', '400')
                         .attr('text-anchor', 'middle')
                         .text(userBetRef.current?.[key]?.betAmount + ' MON');
 
