@@ -4,13 +4,14 @@ import dayjs from "dayjs";
 import { useDebounceFn, useThrottleEffect } from "ahooks";
 import { numberFormatter } from "@/utils/number-formatter";
 import { preloadAudio, cleanupAudio } from "../lib/sound";
+import { PRICE_STEP } from "../hooks/usePriceAndBets";
+import Big from "big.js";
 
 interface PricePoint {
     time: Date;
     price: number;
 }
 
-const PRICE_STEP = 0.5;
 export default function Chart({ bet, list = [], betList = [], handleBet, betLoading, userBet, winObj, allTimePrice }: { bet: number, list: any[], betList: any[], handleBet: (bet: any) => void, betLoading: boolean, userBet: any, winObj: any, allTimePrice: any }) {
     const containerRef = useRef<HTMLDivElement>(null);
     const svgRef = useRef<SVGSVGElement>(null);
@@ -38,7 +39,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     const translationXRef = useRef<number>(-1);
     const nowRef = useRef<dayjs.Dayjs>(dayjs());
 
-    const [gridNumber, setGridNumber] = useState(16);
+    const [gridNumber, setGridNumber] = useState(36);
 
     const gridCellSize = useMemo(() => {
         const chartGroup = d3.select(chartGroupRef.current);
@@ -52,7 +53,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         let _gridCellSize = containerSize.width / gridNumber;
 
 
-        return Math.max(60, _gridCellSize);
+        return Math.max(48, _gridCellSize);
     }, [containerSize, gridNumber]);
 
     // console.log('userBetRef', userBetRef);
@@ -108,7 +109,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
     }, [winObj]);
 
     const updateTranslation = (tr: { x: number; y: number }) => {
-        // console.log('updateTranslation:', tr.x, tr.y)
         translationRef.current = tr;
         setTranslation(tr);
     };
@@ -173,7 +173,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const timeRange = endTime.diff(startTime, 'second');
         const chartWidth = timeRange * pixelsPerSecond;
 
-        const chartHeight = PRICE_STEP * 16 * pixelsPerUnit;
+        const chartHeight = PRICE_STEP * 20 * pixelsPerUnit;
 
         const marginLeft = 0;
         const marginRight = 0;
@@ -189,12 +189,12 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const lastPrice = list.length > 0 ? Number(list[list.length - 1].price) : 0;
         let priceMin = 0;
         let priceMax = 0;
-        if (configRef.current && lastPrice > configRef.current.priceMin + PRICE_STEP && lastPrice < configRef.current.priceMax - PRICE_STEP) {
+        if (configRef.current && lastPrice > configRef.current.priceMin + PRICE_STEP * 4 && lastPrice < configRef.current.priceMax - PRICE_STEP * 4) {
             priceMin = configRef.current.priceMin;
             priceMax = configRef.current.priceMax;
         } else {
-            priceMin = Math.floor((lastPrice - PRICE_STEP * 8));
-            priceMax = priceMin + PRICE_STEP * 16;
+            priceMin = Math.floor((lastPrice - PRICE_STEP * 10));
+            priceMax = Big(priceMin).plus(Big(PRICE_STEP).times(20)).toNumber();
         }
 
         return {
@@ -268,6 +268,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 .attr('d', 'M20.0371 0C20.8069 0 21.4373 0.719787 21.4375 1.59961V2.78223C25.5402 3.10292 29.3924 4.88316 32.2959 7.7998C33.8833 9.37856 35.1468 11.2531 36.0137 13.3174C36.7151 14.9973 37.151 16.7761 37.3076 18.5898H38.4404C39.3003 18.5899 40 19.2202 40 19.9902C39.9995 20.1362 39.9765 20.2813 39.9307 20.4199C39.7907 20.9748 39.2805 21.3944 38.6807 21.3945H37.3027C37.1728 23.282 36.7181 25.1124 35.9883 26.8623C35.1196 28.9255 33.8572 30.7999 32.2715 32.3799C30.6937 33.9673 28.82 35.2305 26.7568 36.0977C25.0623 36.8055 23.2675 37.244 21.4375 37.3975V38.375C21.4436 38.6553 21.3782 38.9324 21.248 39.1807C21.1178 39.429 20.9265 39.6406 20.6924 39.7949C20.4925 39.9248 20.2577 39.9999 20.0029 40C19.3931 40 18.8781 39.5651 18.748 38.9902C18.6831 38.8003 18.6426 38.5952 18.6426 38.3828V37.3828C14.5234 37.0713 10.6535 35.2885 7.73926 32.3604C6.13955 30.7655 4.89735 28.9176 4.02246 26.8428C3.29255 25.0978 2.8569 23.277 2.71191 21.3945H1.60938C1.51462 21.3945 1.41986 21.3851 1.33008 21.3701H1.29492C1.04717 21.3725 0.803866 21.3028 0.594727 21.1699C0.385653 21.0371 0.21931 20.8464 0.116211 20.6211C0.0131834 20.3959 -0.0224439 20.1454 0.0136719 19.9004C0.0498219 19.6553 0.156606 19.4262 0.320312 19.2402C0.468026 19.0388 0.66136 18.8754 0.884766 18.7637C1.10812 18.652 1.3548 18.595 1.60449 18.5977H2.72168C2.86838 16.7814 3.30563 15 4.0166 13.3223C5.7812 9.15711 9.09556 5.84044 13.2588 4.07227C14.9713 3.35517 16.787 2.91487 18.6377 2.76758V1.59961C18.6379 0.719973 19.2675 0.000304008 20.0371 0ZM21.502 7.76953C21.502 8.68186 20.8527 9.43233 20.0605 9.43262C19.2681 9.43262 18.6182 8.68453 18.6182 7.76953V5C15.1402 5.32259 11.8816 6.84306 9.40039 9.30176C6.91922 11.7605 5.36928 15.0053 5.01465 18.4805H8.0791C8.94381 18.4805 9.65111 19.1348 9.65137 19.9346C9.65137 20.7345 8.94396 21.3896 8.0791 21.3896H5.00391C5.33322 24.8887 6.87407 28.1638 9.35938 30.6484C11.8446 33.133 15.1195 34.6719 18.6182 35V32.0947C18.6183 31.1824 19.2657 30.4326 20.0605 30.4326C20.8527 30.4329 21.5018 31.18 21.502 32.0947V34.9902C24.9799 34.641 28.2289 33.0933 30.6914 30.6123C33.1539 28.1312 34.6775 24.8705 35.001 21.3896H31.8838C30.9989 21.3896 30.2793 20.7346 30.2793 19.9346C30.2796 19.1348 31.0041 18.4805 31.8838 18.4805H34.9912C34.6387 15.0238 33.104 11.7939 30.6465 9.33789C28.189 6.88196 24.9584 5.34996 21.502 5V7.76953ZM19.79 15C21.0596 15 22.2771 15.5045 23.1748 16.4023C24.0724 17.3001 24.577 18.5175 24.5771 19.7871C24.5771 21.0568 24.0725 22.275 23.1748 23.1729C22.2771 24.0706 21.0596 24.5752 19.79 24.5752C18.5205 24.5752 17.303 24.0706 16.4053 23.1729C15.5076 22.275 15.0029 21.0568 15.0029 19.7871C15.003 18.5175 15.5076 17.3001 16.4053 16.4023C17.303 15.5045 18.5205 15 19.79 15ZM19.79 17.6621C19.2272 17.6621 18.6871 17.8861 18.2891 18.2842C17.8912 18.6822 17.668 19.2223 17.668 19.7852C17.668 20.348 17.8911 20.8881 18.2891 21.2861C18.6871 21.6842 19.2272 21.9072 19.79 21.9072C20.3529 21.9072 20.893 21.6842 21.291 21.2861C21.689 20.8881 21.9121 20.348 21.9121 19.7852C21.9121 19.2223 21.6889 18.6822 21.291 18.2842C20.893 17.8861 20.3529 17.6621 19.79 17.6621Z')
                 .attr('fill', '#31FFA6')
                 .style('pointer-events', 'none')
+                
 
             let gridTime = configRef.current?.startTime;
             while (gridTime.isBefore(configRef.current?.endTime)) {
@@ -282,7 +283,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         const y1 = yScale(price);
                         const y2 = yScale(price + PRICE_STEP);
 
-                        createGridRect(futureGridGroup as any, x1, x2, y1, y2, gridTime, price, isPast, !isPast);
+                        createGridRect(futureGridGroup as any, x1, x2, y1, y2, gridTime, Math.floor(price * 10) / 10, isPast, !isPast);
                     }
                 }
 
@@ -360,7 +361,6 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         (rect.node() as any).__gridPrice__ = price;
         (rect.node() as any).__isPast__ = isPast;
 
-
         rect
             .on('mouseenter', function (event) {
                 const isPastRect = (this as any).__isPast__;
@@ -374,7 +374,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     .second(seconds)
                     .millisecond(0);
 
-                d3.select(this).attr('data-key', gridTime + '-' + (price));
+                d3.select(this).attr('data-key', gridTime + '-' + (price)).attr('test-key', fullGridTime + '-' + (price));
                 const betMultiplier = betRef.current?.[fullGridTime.valueOf() + '-' + (price)]?.multiplier;
                 const userBet = userBetRef.current?.[fullGridTime.valueOf() + '-' + (price)];
 
@@ -459,7 +459,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const centerY = y2 + (y1 - y2 - 40) / 2;
         const shotIcon = d3.select('.shot-icon');
         shotIcon
-            .attr('transform', `translate(${centerX}, ${centerY})`)
+            .attr('transform', `translate(${centerX + 20}, ${centerY + 20}) scale(0.5) translate(-20, -20)`)
             .style('display', null);
 
         const node = shotIcon.node();
@@ -624,7 +624,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const lineGroup = chartGroup.select('.line-group');
         const pointGroup = chartGroup.select('.point-group');
 
-        const now = nowRef.current.add(5 * 3, 'second');
+        const now = nowRef.current.add(5 * 2, 'second');
 
 
         const pastData = initialHistoricalData
@@ -848,11 +848,12 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 if (x1 < configRef.current.plotWidth && x2 > 0) {
                     const isPast = gridTime.isBefore(now) || gridTime.isSame(now, 'second');
 
+
                     for (let price = configRef.current.priceMin; price <= configRef.current.priceMax; price += PRICE_STEP) {
                         const y1 = yScale(price);
                         const y2 = yScale(price + PRICE_STEP);
 
-                        createGridRect(futureGridGroup, x1, x2, y1, y2, gridTime, price, isPast, !isPast);
+                        createGridRect(futureGridGroup, x1, x2, y1, y2, gridTime, Math.floor(price * 10) / 10, isPast, !isPast);
                     }
                 }
 
@@ -864,7 +865,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         futureGridRectsForCleanup.each(function () {
             const gridTimeStr = (this as any).__gridTime__;
             const gridPrice = (this as any).__gridPrice__;
-            const beforeCleanTime = dayjs().subtract(60, 'second');
+            const beforeCleanTime = dayjs().subtract(90, 'second');
             if (gridTimeStr && beforeCleanTime) {
                 const [hours, minutes, seconds] = gridTimeStr.split(':').map(Number);
                 const fullGridTime = dayjs(configRef.current.startTime)
@@ -907,6 +908,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 const calculatedPrice = yScale.invert(rectY1);
                 const alignedPrice = Math.floor(calculatedPrice / PRICE_STEP) * PRICE_STEP;
                 gridPrice = alignedPrice - PRICE_STEP;
+                gridPrice = Math.floor(gridPrice * 10) / 10;
                 (this as any).__gridPrice__ = gridPrice;
             }
 
@@ -980,8 +982,8 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                         .attr('x', Number(d3.select(this).attr('x')) + configRef.current?.gridCellSize / 2)
                         .attr('y', Number(d3.select(this).attr('y')) + configRef.current?.gridCellSize / 2)
                         .attr('fill', '#000')
-                        .attr('font-size', '12px')
-                        .attr('font-weight', '500')
+                        .attr('font-size', '10px')
+                        .attr('font-weight', '400')
                         .attr('text-anchor', 'middle')
                         .text(userBetRef.current?.[key]?.betAmount + ' MON');
 
@@ -1078,7 +1080,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             // const translationX = viewportWidth / 2 - nowX;
             let translationX = 0;
 
-            let deltaX = viewportWidth / 2 - nowX;
+            let deltaX = viewportWidth / 2.15 - nowX;
             // if (deltaX < 0) {
             //     console.log('viewportWidth / 2 - nowX:', deltaX)
             // }

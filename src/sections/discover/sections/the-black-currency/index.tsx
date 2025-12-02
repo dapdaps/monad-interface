@@ -57,6 +57,21 @@ const TheBlackCurrency = (props: any) => {
   return (
     <>
       <div className="pt-[clamp(1px,_6.65vw,_calc(var(--pc-1512)*0.0665))]">
+        <div className="flex flex-col items-center">
+          <div
+            onClick={() => {
+              swiperRef?.current?.swiper?.slidePrev();
+            }}
+            className="text-[18px] text-white font-[400] uppercase opacity-80 cursor-pointer"
+          >
+            Spotlight Apps
+          </div>
+          <img
+            src="/images/mainnet/discover/icon-down.svg"
+            alt=""
+            className="w-[12px] h-[10px] object-center object-contain shrink-0 mt-[16px] rotate-[180deg]"
+          />
+        </div>
         <Card
           type="1"
           title="⚠️ SYSTEM OVERRIDE"
@@ -98,7 +113,7 @@ const TheBlackCurrency = (props: any) => {
             }}
             className="mt-[16px] text-[18px] text-white font-[400] uppercase opacity-80 cursor-pointer"
           >
-            Spotlight Apps
+            Trending tokens
           </div>
           <img
             src="/images/mainnet/discover/icon-down2.svg"
@@ -107,11 +122,11 @@ const TheBlackCurrency = (props: any) => {
           />
           <div
             onClick={() => {
-              swiperRef?.current?.swiper?.slideTo(2);
+              swiperRef?.current?.swiper?.slideTo(3);
             }}
             className="mt-[16px] text-[16px] text-white/30 font-[400] uppercase cursor-pointer"
           >
-            Trending tokens
+            EXPLORE ALL APPS
           </div>
         </div>
       </div>

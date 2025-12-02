@@ -1,10 +1,13 @@
 'use client';
-import Game from '@/sections/game';
-export default function GamePage() {
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
-  return (
-    <div>
-      <Game />
-    </div>
-  );
+export default function GamePage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push('/');
+  }, [router]);
+
+  return null;
 }

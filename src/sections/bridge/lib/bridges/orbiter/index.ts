@@ -136,7 +136,7 @@ export async function getQuote(request: QuoteRequest, signer: Signer): Promise<Q
           fee: _fee,
           receiveAmount,
           gas,
-          duration: currentRoute.spentTime + 's',
+          duration: 1,
           feeType: isNative ? FeeType.origin : FeeType.usd,
           gasType: FeeType.origin,
           identification: request.identification,

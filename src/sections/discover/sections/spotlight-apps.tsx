@@ -51,22 +51,6 @@ const SpotlightApps = (props: any) => {
   return (
     <>
       <div className="pt-[clamp(1px,_6.65vw,_calc(var(--pc-1512)*0.0665))]">
-        <div className="flex flex-col items-center">
-          <div
-            onClick={() => {
-              swiperRef?.current?.swiper?.slidePrev();
-            }}
-            className="text-[18px] text-white font-[400] uppercase opacity-80 cursor-pointer"
-          >
-
-            SYSTEM OVERRIDE
-          </div>
-          <img
-            src="/images/mainnet/discover/icon-down.svg"
-            alt=""
-            className="w-[12px] h-[10px] object-center object-contain shrink-0 mt-[16px] rotate-[180deg]"
-          />
-        </div>
         <Card
           title="Spotlight Apps"
           className="mx-auto"
@@ -145,10 +129,15 @@ const SpotlightApps = (props: any) => {
             alt=""
             className="w-[12px] h-[10px] object-center object-contain shrink-0 mt-[20px]"
           />
-          <div onClick={() => {
+          {/* <div onClick={() => {
             swiperRef?.current?.swiper?.slideNext();
           }} className="mt-[16px] text-[18px] text-white font-[400] uppercase opacity-80 cursor-pointer">
             Trending tokens
+          </div> */}
+          <div onClick={() => {
+            swiperRef?.current?.swiper?.slideNext();
+          }} className="mt-[16px] text-[18px] text-white font-[400] uppercase opacity-80 cursor-pointer">
+            SYSTEM OVERRIDE
           </div>
           <img
             src="/images/mainnet/discover/icon-down2.svg"
@@ -158,7 +147,7 @@ const SpotlightApps = (props: any) => {
           <div onClick={() => {
             swiperRef?.current?.swiper?.slideTo(2);
           }} className="mt-[16px] text-[16px] text-white/30 font-[400] uppercase cursor-pointer">
-            Explore All Apps
+            Trending tokens
           </div>
         </div>
 

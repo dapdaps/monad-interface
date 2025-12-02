@@ -1,5 +1,5 @@
-import Discover from "@/sections/discover";
+import Arcade from "@/sections/game";
 
 export default function Index() {
-  return <Discover />;
+  return <Arcade />;
 }

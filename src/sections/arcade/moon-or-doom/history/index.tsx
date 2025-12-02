@@ -80,7 +80,7 @@ export default function HistoryModal({
 
         setBidRecordsLoading(true);
         try {
-            const res = await get('/game/euphoria/user/orders', {
+            const res = await get('/game/chartvoyager/user/orders', {
                 page: bidRecordsPage,
                 page_size: PAGE_SIZE,
                 newQuery: 1
@@ -121,7 +121,7 @@ export default function HistoryModal({
 
         setDepositListLoading(true);
         try {
-            const res = await get('/game/euphoria/user/deposits', {
+            const res = await get('/game/chartvoyager/user/deposits', {
                 page: depositPage,
                 page_size: PAGE_SIZE,
                 newQuery: 1
@@ -143,7 +143,7 @@ export default function HistoryModal({
 
         setWithdrawListLoading(true);
         try {
-            const res = await get('/game/euphoria/user/withdraws', {
+            const res = await get('/game/chartvoyager/user/withdraws', {
                 page: withdrawPage,
                 page_size: PAGE_SIZE,
                 newQuery: 1

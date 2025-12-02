@@ -14,20 +14,6 @@ const LaptopSidebar = (props: any) => {
 
   const [menuList, setMenuList] = useState([
     {
-      name: "Discover",
-      icon: (isActive?: boolean) => (
-        <IconDiscover
-          className={clsx(
-            "w-[26px] h-[26px] group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.60)] transition-all duration-150",
-            isActive ? "text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.60)]" : "text-[#A1AECB]",
-          )}
-        />
-      ),
-      path: "/",
-      reg: /^\/$/,
-      isActive: false,
-    },
-    {
       name: "Arcade",
       icon: (isActive?: boolean) => (
         <IconArcade
@@ -37,8 +23,22 @@ const LaptopSidebar = (props: any) => {
           )}
         />
       ),
-      path: "/arcade",
-      reg: /^\/arcade/,
+      path: "/",
+      reg: /^\/$/,
+      isActive: false,
+    },
+    {
+      name: "Discover",
+      icon: (isActive?: boolean) => (
+        <IconDiscover
+          className={clsx(
+            "w-[26px] h-[26px] group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.60)] transition-all duration-150",
+            isActive ? "text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.60)]" : "text-[#A1AECB]",
+          )}
+        />
+      ),
+      path: "/discover",
+      reg: /^\/discover$/,
       isActive: false,
     },
     {
