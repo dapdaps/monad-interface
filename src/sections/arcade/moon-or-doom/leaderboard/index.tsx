@@ -84,7 +84,7 @@ export default function Leaderboard(props: LeaderboardProps) {
     useEffect(() => {
         const fetchEntries = async () => {
             setLoading(true)
-            const res = await get('/game/euphoria/leaderboard/day', {
+            const res = await get('/game/chartvoyager/leaderboard/week', {
                 address: userInfo?.address || '',
                 newQuery: 1,
             })

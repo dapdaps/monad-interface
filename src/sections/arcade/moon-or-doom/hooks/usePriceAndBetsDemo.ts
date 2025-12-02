@@ -177,8 +177,8 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
     }, [userInfo]);
 
     const getAllBet = useCallback(async () => {
-        const res = await get('/game/euphoria/testBet?newQuery=1');
-        const res2 = await get('/game/euphoria/latest?newQuery=1');
+        const res = await get('/game/chartvoyager/testBet?newQuery=1');
+        const res2 = await get('/game/chartvoyager/latest?newQuery=1');
 
         console.log('betList res: ', res)
         console.log('betList res2: ', res2)
