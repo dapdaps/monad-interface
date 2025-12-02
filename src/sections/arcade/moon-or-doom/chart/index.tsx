@@ -624,7 +624,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const lineGroup = chartGroup.select('.line-group');
         const pointGroup = chartGroup.select('.point-group');
 
-        const now = nowRef.current.add(5 * 3, 'second');
+        const now = nowRef.current.add(5 * 2, 'second');
 
 
         const pastData = initialHistoricalData
