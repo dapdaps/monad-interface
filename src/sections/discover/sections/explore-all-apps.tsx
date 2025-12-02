@@ -61,8 +61,10 @@ const ExploreAllApps = (props: any) => {
   return (
     <div className="pt-[clamp(1px,_2.38vw,_calc(var(--pc-1512)*0.0238))]">
       <div className="flex flex-col items-center">
-        <div className="text-[16px] text-white/30 font-[400] uppercase">
-          Spotlight apps
+        <div className="text-[16px] text-white/30 font-[400] uppercase cursor-pointer" onClick={() => {
+          swiperRef?.current?.swiper?.slideTo(0);
+        }}>
+          SYSTEM OVERRIDE
         </div>
         <img
           src="/images/mainnet/discover/icon-down2.svg"
