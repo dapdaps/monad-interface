@@ -33,7 +33,7 @@ export const objectToQueryString = (obj: Record<string, any>): string => {
 const AUTH_TOKENS = `_user`;
 
 // FIXME
-const BASE_URL = process.env.NEXT_PUBLIC_API || "https://mainnet-api-monad.dapdap.net";
+const BASE_URL = process.env.NEXT_PUBLIC_API || "https://api-monad.dapdap.net";
 
 const getUrl = (url: string) => {
   return url.startsWith("http") ? url : `${BASE_URL}/api${url}`;

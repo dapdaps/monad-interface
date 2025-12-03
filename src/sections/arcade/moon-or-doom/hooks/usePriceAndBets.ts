@@ -4,7 +4,7 @@ import useUser from "@/hooks/use-user";
 import { get } from "@/utils/http";
 import { playSound5, playSound6 } from "../lib/sound";
 
-const WS_URL = (process.env.NEXT_PUBLIC_WS_URL || "wss://mainnet-stream-monad.dapdap.net") + "/ws";
+const WS_URL = (process.env.NEXT_PUBLIC_WS_URL || "wss://stream-monad.dapdap.net") + "/ws";
 
 export const PRICE_STEP = 0.5;
 export default function usePriceAndBets({ userBet }: { userBet: any }) {
