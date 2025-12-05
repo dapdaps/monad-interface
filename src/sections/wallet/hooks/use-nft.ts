@@ -29,14 +29,14 @@ export default function useNft({ refresh }: { refresh: number }) {
         try {
             const res = await get('/user/nft', {
                 limit: PAGE_SIZE,
-                sort_by: 'acquiredAt',
+                sort_by: 'receivedAt',
                 sort_direction: 'desc',
                 continuation: continuationRef.current,
             });
-            if (res.code === 200 && res.data.tokens) {
-                setNfts(res.data.tokens);
+            if (res.code === 200 && res.data.assets) {
+                setNfts(res.data.assets);
                 setPage(pageIndex);
-                pagedNfts.current.push(res.data.tokens)
+                pagedNfts.current.push(res.data.assets)
                 if (res.data.continuation) {
                     continuationRef.current = res.data.continuation;
                     setPageTotal(pageIndex + 1);

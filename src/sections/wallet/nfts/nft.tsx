@@ -1,3 +1,5 @@
+import { balanceFormated } from "@/utils/balance";
+
 export default function Nft({ data }: { data: any }) {
     return (
         <div>
@@ -9,23 +11,22 @@ export default function Nft({ data }: { data: any }) {
                     }}
                 >
                     {
-                        data.image && <img
-                            src={data.image}
+                        data.asset?.mediaV2?.main?.uri && <img
+                            src={data.asset?.mediaV2?.main?.uri}
                             className="w-full h-[200px] object-cover"
                         />
                     }
 
                     {
-                        !data.images && <div className="w-full h-[200px] bg-[#343b4a]"></div>
+                        !data.asset?.mediaV2?.main?.uri && <div className="w-full h-[200px] bg-[#343b4a]"></div>
                     }
                 </div>
             </div>
 
             <div className="text-[18px] font-[400] text-white w-full truncate flex items-center justify-between px-[10px] mt-[10px]">
-                <div className="truncate w-[70%] overflow-hidden text-ellipsis">{data.collection.name} #{data.tokenId}</div>
+                <div className="truncate w-[70%] overflow-hidden text-ellipsis">{data.asset?.name} #{data.asset?.tokenId}</div>
                 <svg onClick={() => {
-                    // TODO: change to mainnet
-                    window.open('https://magiceden.io/collections/monad-testnet/' + data.contract, '_blank');
+                    window.open('https://magiceden.io/collections/monad/' + data.asset?.contractAddress, '_blank');
                 }} className="cursor-pointer" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4.65217 9L13 1M13 1H6.46692M13 1V7.26087M3.6087 1H1V13H13V10.5" stroke="#727D97" stroke-width="1.5" />
                 </svg>
@@ -33,7 +34,7 @@ export default function Nft({ data }: { data: any }) {
 
             <div className="text-[14px] font-[400] text-[#727D97] w-full truncate flex items-center justify-between px-[10px] mt-[10px]">
                 <div className="truncate w-[70%] overflow-hidden text-ellipsis">Floor Price</div>
-                <div className="">{data.collection.floorAskPrice?.amount?.native || '-'} MON</div>
+                <div className="">{balanceFormated(data.floorAsk?.price?.amount?.native, 4) || '-'} MON</div>
             </div>
         </div>
     )
