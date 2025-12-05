@@ -24,7 +24,7 @@ export default function Nft({ data }: { data: any }) {
             </div>
 
             <div className="text-[18px] font-[400] text-white w-full truncate flex items-center justify-between px-[10px] mt-[10px]">
-                <div className="truncate w-[70%] overflow-hidden text-ellipsis">{data.asset?.name} #{data.asset?.tokenId}</div>
+                <div className="truncate w-[70%] overflow-hidden text-ellipsis">{data.asset?.name}</div>
                 <svg onClick={() => {
                     window.open('https://magiceden.io/collections/monad/' + data.asset?.contractAddress, '_blank');
                 }} className="cursor-pointer" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">

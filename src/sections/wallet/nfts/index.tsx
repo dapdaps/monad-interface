@@ -21,7 +21,7 @@ export default function Nfts({ refresh }: { refresh: number }) {
                         {
                             nfts.map((item: any) => (
                                 <Nft key={item.asset?.contract + item.asset?.tokenId} data={item} />
-                            ))  
+                            ))
                         }
                     </div>
                 )
@@ -35,11 +35,14 @@ export default function Nfts({ refresh }: { refresh: number }) {
                 )
             }
 
-            <div className="flex justify-end items-center mt-[20px]">
-                <Pagination totalPage={pageTotal} page={page} pageSize={PAGE_SIZE} showPage={false} canJump={false} onPageChange={(pageIndex: number) => {
-                    getNfts(pageIndex);
-                }} />
-            </div>
+            {
+                (nfts.length === PAGE_SIZE || pageTotal > 1) && <div className="flex justify-end items-center mt-[20px]">
+                    <Pagination totalPage={pageTotal} page={page} pageSize={PAGE_SIZE} showPage={false} canJump={false} onPageChange={(pageIndex: number) => {
+                        getNfts(pageIndex);
+                    }} />
+                </div>
+            }
+
         </div>
     )
 }
