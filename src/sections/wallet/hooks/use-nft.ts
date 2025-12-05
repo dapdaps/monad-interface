@@ -2,7 +2,7 @@ import useUser from "@/hooks/use-user";
 import { get } from "@/utils/http";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-const PAGE_SIZE = 1;
+const PAGE_SIZE = 12;
 export default function useNft({ refresh }: { refresh: number }) {
     const { userInfo } = useUser(); 
     const [nfts, setNfts] = useState<any[]>([]);
