@@ -6,7 +6,7 @@ import { playSound5, playSound6 } from "../lib/sound";
 
 const WS_URL = (process.env.NEXT_PUBLIC_WS_URL || "wss://mainnet-stream-monad.dapdap.net") + "/ws";
 
-export const PRICE_STEP = 0.2;
+export const PRICE_STEP = 0.5;
 export default function usePriceAndBets({ userBet }: { userBet: any }) {
     const wsClientRef = useRef<WSClient | null>(null);
     const [list, setList] = useState<any[]>([]);

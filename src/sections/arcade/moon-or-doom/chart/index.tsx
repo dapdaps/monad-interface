@@ -374,7 +374,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     .second(seconds)
                     .millisecond(0);
 
-                d3.select(this).attr('data-key', gridTime + '-' + (price)).attr('test-key', fullGridTime + '-' + (price));
+                // d3.select(this).attr('data-key', gridTime + '-' + (price)).attr('test-key', fullGridTime + '-' + (price));
                 const betMultiplier = betRef.current?.[fullGridTime.valueOf() + '-' + (price)]?.multiplier;
                 const userBet = userBetRef.current?.[fullGridTime.valueOf() + '-' + (price)];
 
@@ -904,11 +904,17 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             const isHover = (this as any).__isHover__;
 
             const rectY1 = Number(d3.select(this).attr('y'));
+            let calculatedPrice = 0;
             if (!isNaN(rectY1)) {
-                const calculatedPrice = yScale.invert(rectY1);
-                const alignedPrice = Math.floor(calculatedPrice / PRICE_STEP) * PRICE_STEP;
-                // gridPrice = alignedPrice - PRICE_STEP;
-                gridPrice = Math.floor(alignedPrice * 10) / 10;
+                calculatedPrice = yScale.invert(rectY1);
+                // const alignedPrice = Math.floor(calculatedPrice / PRICE_STEP) * PRICE_STEP;
+                gridPrice = new Big(calculatedPrice).minus(PRICE_STEP).toNumber();
+                // gridPrice = Math.floor(gridPrice * 10) / 10;
+
+                gridPrice = gridPrice % 1 === 0
+                            ? gridPrice.toString()
+                            : gridPrice.toFixed(1);
+
                 (this as any).__gridPrice__ = gridPrice;
             }
 
@@ -926,6 +932,13 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 const className = ('bet-text-' + key).replace('.', '-');
                 let betText: any = chartGroup.select('.future-grid').select('.' + className);
                 const betMultiplier = betRef.current?.[key]?.multiplier ?? 0;
+
+                d3.select(this)
+                    .attr('data-key', key)
+                    .attr('test-key', gridTimeStr + '-' + gridPrice)
+                    .attr('multiplier', betMultiplier)
+                    .attr('calculatedPrice', calculatedPrice.toFixed(2))
+
 
                 let baseOpacity = 0.25;
                 let strokeOpacity = 0.4;

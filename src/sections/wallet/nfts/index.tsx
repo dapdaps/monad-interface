@@ -20,7 +20,7 @@ export default function Nfts({ refresh }: { refresh: number }) {
                     <div className="grid grid-cols-4 gap-4 h-full">
                         {
                             nfts.map((item: any) => (
-                                <Nft key={item.token?.contract + item.token?.tokenId} data={item.token} />
+                                <Nft key={item.asset?.contract + item.asset?.tokenId} data={item} />
                             ))  
                         }
                     </div>
