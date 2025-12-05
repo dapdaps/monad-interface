@@ -37,7 +37,7 @@ export default function useNft({ refresh }: { refresh: number }) {
                 setNfts(res.data.assets);
                 setPage(pageIndex);
                 pagedNfts.current.push(res.data.assets)
-                if (res.data.continuation) {
+                if (res.data.continuation && res.data.assets.length === PAGE_SIZE) {
                     continuationRef.current = res.data.continuation;
                     setPageTotal(pageIndex + 1);
                     toalPageRef.current = pageIndex + 1;
