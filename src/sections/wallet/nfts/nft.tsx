@@ -32,10 +32,10 @@ export default function Nft({ data }: { data: any }) {
                 </svg>
             </div>
 
-            <div className="text-[14px] font-[400] text-[#727D97] w-full truncate flex items-center justify-between px-[10px] mt-[10px]">
+            {/* <div className="text-[14px] font-[400] text-[#727D97] w-full truncate flex items-center justify-between px-[10px] mt-[10px]">
                 <div className="truncate w-[70%] overflow-hidden text-ellipsis">Floor Price</div>
                 <div className="">{balanceFormated(data.floorAsk?.price?.amount?.native, 4) || '-'} MON</div>
-            </div>
+            </div> */}
         </div>
     )
 }
