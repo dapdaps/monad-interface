@@ -9,7 +9,7 @@ type BetProps = {
     onChange?: (value: number) => void
 }
 
-export const BET_AMOUNTS = IS_PRODUCTION ? [50, 200, 500] : [5, 20, 50]
+export const BET_AMOUNTS = IS_PRODUCTION ? [50, 200, 500] : [5, 10, 20, 50]
 
 export default function Bet(props: BetProps) {
     const { bet, onChange } = props
