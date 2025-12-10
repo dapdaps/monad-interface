@@ -143,7 +143,7 @@ export async function getStatus(params: StatusParams, engine: string, signer: Si
     return getLifiStatus(params)
   }
 
-  if (_engine === "oneclick") {
+  if (_engine === "monad intent") {
     return getOneclickStatus(params);
   }
 }
