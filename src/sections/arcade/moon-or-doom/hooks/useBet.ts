@@ -5,9 +5,10 @@ import Big from "big.js";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { playSound3, playSound4, playSound5 } from "../lib/sound";
 import { BET_AMOUNTS } from "../bet";
+import { IS_PRODUCTION } from "@/configs";
 
 export default function useBet({ gameBalance }: { gameBalance: number }) {
-    const [bet, setBet] = useState<number>(BET_AMOUNTS[0]);
+    const [bet, setBet] = useState<number>(IS_PRODUCTION ? BET_AMOUNTS[1] : BET_AMOUNTS[0]);
     const [betLoading, setBetLoading] = useState<boolean>(false);
     const [userBetObj, setUserBetObj] = useState<any>({});
     const [insufficientBalance, setInsufficientBalance] = useState<boolean>(false);
