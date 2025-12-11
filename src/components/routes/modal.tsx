@@ -27,7 +27,7 @@ export default function RoutesModal({
     </svg>
     }>
         {
-            outputCurrency && <Routes routes={routes} fromChain={fromChain} inputCurrency={inputCurrency} outputCurrency={outputCurrency} selectedRoute={selectedRoute} setSelectedRoute={setSelectedRoute} />
+            outputCurrency && inputCurrency && <Routes routes={routes} fromChain={fromChain} inputCurrency={inputCurrency} outputCurrency={outputCurrency} selectedRoute={selectedRoute} setSelectedRoute={setSelectedRoute} />
         }
     </Modal>
 }   
