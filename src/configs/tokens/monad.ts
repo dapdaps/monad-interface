@@ -111,14 +111,14 @@ export const monad: { [key: string]: Token } = {
     name: "Wrapped BTC",
     icon: "https://assets.dapdap.net/monad/wbtc.png"
   },
-  gmonad: {
-    address: "0x3ff60900b70db8d0bde4d4819f028673718c5d1b",
-    chainId: CHAIN_ID,
-    symbol: "GMONAD",
-    decimals: 18,
-    name: "Gmonad",
-    icon: "https://assets.dapdap.net/monad/gmonad.jpg"
-  },
+  // gmonad: {
+  //   address: "0x3ff60900b70db8d0bde4d4819f028673718c5d1b",
+  //   chainId: CHAIN_ID,
+  //   symbol: "GMONAD",
+  //   decimals: 18,
+  //   name: "Gmonad",
+  //   icon: "https://assets.dapdap.net/monad/gmonad.jpg"
+  // },
   molandak: {
     address: "0xd32e9ddd968b18e8429f2d1da7efb2cc1f01d42d",
     chainId: CHAIN_ID,

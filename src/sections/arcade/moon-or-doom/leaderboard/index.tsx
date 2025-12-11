@@ -73,8 +73,8 @@ function MyEntryRow({ entry }: { entry: LeaderboardEntry }) {
 }
 
 export default function Leaderboard(props: LeaderboardProps) {
-    const { title = '24H CLIMBING BOARD' } = props
-    const countdown = useCountdown(dayjs.utc().endOf('day').valueOf())
+    const { title = '7d CLIMBING BOARD' } = props
+    // const countdown = useCountdown(dayjs.utc().endOf('day').valueOf())
     const { userInfo } = useUser()
 
     const [entries, setEntries] = useState<LeaderboardEntry[]>([])
@@ -84,7 +84,7 @@ export default function Leaderboard(props: LeaderboardProps) {
     useEffect(() => {
         const fetchEntries = async () => {
             setLoading(true)
-            const res = await get('/game/euphoria/leaderboard/day', {
+            const res = await get('/game/chartvoyager/leaderboard/week', {
                 address: userInfo?.address || '',
                 newQuery: 1,
             })
@@ -110,7 +110,7 @@ export default function Leaderboard(props: LeaderboardProps) {
         <div className="w-full relative text-white bg-[#24242480] rounded-[8px] overflow-hidden backdrop-blur-[20px]">
             <div className="flex items-center justify-between text-[18px] h-[60px] font-semibold tracking-wide px-3 select-none bg-[#24242480]">
                 <div className="text-white text-[19px]">{title}</div>
-                <div className="text-[#BFFF60] text-[16px]">{countdown}</div>
+                {/* <div className="text-[#BFFF60] text-[16px]">{countdown}</div> */}
             </div>
 
             <div className="mt-2">

@@ -6,9 +6,48 @@ import Empty from "@/components/empty";
 import Loading from "@/components/loading";
 import HashLink from "../hash-link";
 import { formatDisplayCurrency } from "@/utils/formatMoney";
+import { polygonZkevm } from "@/configs/tokens/polygonZkevm";
+import { ethereum } from "@/configs/tokens/ethereum";
+import type { Token } from "@/types";
+import { arbitrum } from "@/configs/tokens/arbitrum";
+import { avalanche } from "@/configs/tokens/avalanche"; 
+import { base } from "@/configs/tokens/base";
+import { bsc } from "@/configs/tokens/bsc";
+import { gnosis } from "@/configs/tokens/gnosis";
+import { linea } from "@/configs/tokens/linea";
+import { manta } from "@/configs/tokens/manta";
+import { mantle } from "@/configs/tokens/mantle";
+import { metis } from "@/configs/tokens/metis";
+import { mode } from "@/configs/tokens/mode";
+import { polygon } from "@/configs/tokens/polygon";
+import { zkSync } from "@/configs/tokens/zkSync";
+import { optimism } from "@/configs/tokens/optimism";
+import { blast } from "@/configs/tokens/blast";
+import { scroll } from "@/configs/tokens/scroll";
 import { monad } from "@/configs/tokens/monad";
 import clsx from "clsx";
 import { balanceFormated } from "@/utils/balance";
+
+const chainsTokens: { [key: number]: { [key: string]: Token } } = {
+    1: ethereum,
+    534352: scroll,
+    42161: arbitrum,
+    43114: avalanche,
+    8453: base,
+    56: bsc,
+    100: gnosis,
+    59144: linea,
+    169: manta,
+    5000: mantle,
+    1088: metis,
+    34443: mode,
+    137: polygon,
+    1101: polygonZkevm,
+    324: zkSync,
+    10: optimism,
+    81457: blast,
+    143: monad,
+}
 
 export default function Transaction({ refresh }: { refresh: number }) {
     const { transaction, isLoading, page, pageTotal, PAGE_SIZE, setPage } = useTransaction({ type: "", refresh });
@@ -45,7 +84,7 @@ export default function Transaction({ refresh }: { refresh: number }) {
                                                     return <img
                                                         key={asset}
                                                         className={clsx("w-[20px] h-[20px] rounded-full", index > 0 && "ml-[-15px]")}
-                                                        src={monad[asset.toLowerCase()]?.icon}
+                                                        src={chainsTokens[item.chain_id as number]?.[asset.toLowerCase()]?.icon}
                                                         alt="" />
                                                 })
                                             }

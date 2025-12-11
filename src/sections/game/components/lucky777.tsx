@@ -16,7 +16,7 @@ export default function Lucky777() {
             }} 
             onMouseEnter={() => setShowVideoAd(true)}
             onMouseLeave={() => setShowVideoAd(false)}
-            className="w-[577px] h-[754px] absolute bottom-0 right-[calc(50%-1020px)] cursor-pointer bg-[url('/images/mainnet/game/lucky777.png')] bg-no-repeat bg-cover bg-center group">
+            className="w-[577px] h-[754px] absolute bottom-0 right-[calc(50%-1020px)] cursor-pointer bg-[url('/images/mainnet/game/lucky777.png')] bg-no-repeat bg-cover bg-center group cu">
             <img src="/images/mainnet/game/lucky777_hover.png" className="absolute top-[-10px] left-[-10px] w-[330px] h-[594px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
             
             <div
