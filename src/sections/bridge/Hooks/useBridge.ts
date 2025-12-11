@@ -44,6 +44,7 @@ export default function useBridge({ originFromChain, originToChain, derection, d
   const [sendDisabled, setSendDisabled] = useState<boolean>(false);
   const [disableText, setDisableText] = useState<string>(defaultBridgeText);
   const [isSending, setIsSending] = useState<boolean>(false);
+  const [refresh, setRefresh] = useState(0);
 
   const { tokenBalance: balance } = useTokenBalance(
     fromToken ? (fromToken.isNative ? 'native' : fromToken.address) : '',
@@ -114,7 +115,7 @@ export default function useBridge({ originFromChain, originToChain, derection, d
       exclude: ['official'],
       UNIZEN_AUTH_KEY: process.env.NEXT_PUBLIC_UNIZEN_AUTH_KEY
     });
-  }, [provider, fromChain, toChain, fromToken, toToken, account, inputValue]);
+  }, [provider, fromChain, toChain, fromToken, toToken, account, inputValue, refresh]);
 
   useEffect(() => {
     if (!fromChain || !toChain || !fromToken || !toToken || !account || !inputValue) {
@@ -280,6 +281,7 @@ export default function useBridge({ originFromChain, originToChain, derection, d
     selectedRoute,
     setSelectedRoute,
     executeRoute,
-    getStatus
+    getStatus,
+    refreshRoutes: () => setRefresh(refresh + 1),
   };
 }
