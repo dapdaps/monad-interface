@@ -26,9 +26,25 @@ const DEX_ID_MAP = {
     name: "PancakeV3",
     logo: "/images/dapps/icons/Pancake.svg"
   },
+  "5": {
+    name: "BaseSwapV2",
+    logo: "/images/mainnet/baseswap.webp"
+  },
+  "6": {
+    name: "BaseSwapV3",
+    logo: "/images/mainnet/baseswap.webp"
+  },
+  "7": {
+    name: "Crystal",
+    logo: "/images/mainnet/crystal.png"
+  },
   "8": {
     name: "Kuru",
     logo: "/images/dapps/icons/kuru.svg"
+  },
+  "9": {
+    name: "SushiV2",
+    logo: "/images/mainnet/sushi.png"
   },
   "10": {
     name: "CapricornV3",
@@ -37,6 +53,26 @@ const DEX_ID_MAP = {
   "11": {
     name: "Dyorswapv2",
     logo: "/images/mainnet/dyorswap.ico"
+  },
+  "12": {
+    name: "SwyrlV2",
+    logo: "/images/mainnet/swyrl.png"
+  },
+  "13": {
+    name: "SwyrlV3",
+    logo: "/images/mainnet/swyrl.png"
+  },
+  "15": {
+    name: "OctoV2",
+    logo: "/images/mainnet/octo.webp"
+  },
+  "16": {
+    name: "OctoV3",
+    logo: "/images/mainnet/octo.webp"
+  },
+  "17": {
+    name: "Curve",
+    logo: "/images/mainnet/curve.png"
   }
 }
 export class OneClick {
@@ -47,7 +83,8 @@ export class OneClick {
     10143: "0x92493D26DDe5Edbd1660e0f49f1dd853B9623f80",
     // 143: "0x3Ff9bE8f6EE484E44659e05bE52969AA85DBAEB5",
     // 143: '0x592FeB6B3dAE615fa15636f8a839E8d25FECE630'
-    143: '0x5fE80A45EE559B30f9EC1C8092247DF61c0a0a97'
+    // 143: '0x5fE80A45EE559B30f9EC1C8092247DF61c0a0a97',
+    143: '0x0BD8F65c490789E3D6E7f05a9242b5F81f065951'
   };
   private HOST = "https://api-trade.nadsa.space";
 
