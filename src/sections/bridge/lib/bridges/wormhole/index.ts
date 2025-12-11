@@ -5,6 +5,7 @@ import evm from "@wormhole-foundation/sdk/evm";
 import { getEvmSignerForSigner, getEvmSigner } from "@wormhole-foundation/sdk-evm";
 import { isSignAndSendSigner } from "@wormhole-foundation/sdk-definitions";
 import { ethers, Contract, Signer, providers, utils } from 'ethers'
+import { cctpExecutorRoute, cctpV2StandardExecutorRoute } from '@wormhole-labs/cctp-executor-route'
 import chainConfig from '../../util/chainConfig';
 import Big from 'big.js'
 import { getQuoteInfo, setQuote } from '../../util/routerController'
@@ -134,12 +135,16 @@ export async function getQuote(
 
     const { wh } = await init(signer);
 
+    const referrerFeeDbps = 0n;
+    const route = cctpV2StandardExecutorRoute({ referrerFeeDbps });
+
     const resolver = wh.resolver([
-        routes.TokenBridgeRoute, // manual token bridge
-        routes.AutomaticTokenBridgeRoute, // automatic token bridge
-        routes.CCTPRoute, // manual CCTP
-        routes.AutomaticCCTPRoute, // automatic CCTP
-        routes.AutomaticPorticoRoute, // Native eth transfers
+        // routes.TokenBridgeRoute, // manual token bridge
+        // routes.AutomaticTokenBridgeRoute, // automatic token bridge
+        // routes.CCTPRoute, // manual CCTP
+        // routes.AutomaticCCTPRoute, // automatic CCTP
+        // routes.AutomaticPorticoRoute, // Native eth transfers
+        route,
     ]);
 
     const fromChainName = getWormholeChainName(numFromChainId);
