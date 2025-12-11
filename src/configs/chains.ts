@@ -186,7 +186,7 @@ export const ChristmasActivityChains: Record<number, Chain | any> = {
     ...berachainTestnetbArtio,
     rpcUrls: {
       default: {
-        http: ["https://bartio.drpc.org", "https://bartio.rpc.berachain.com"]
+        http: ["https://bartio.drpc.org"]
       }
     }
   }

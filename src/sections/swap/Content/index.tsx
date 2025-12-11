@@ -17,6 +17,7 @@ import { DEFAULT_CHAIN_ID } from "@/configs/index";
 import chains from "@/configs/chains";
 import dapps from "@/configs/swap";
 import RoutesModal from '@/components/routes/index'
+import { useSettingsStore } from "@/stores/settings";
 export default function Swap({
   dapp,
   outputCurrencyReadonly = false,
@@ -47,13 +48,14 @@ export default function Swap({
   const [selectedRoute, setSelectedRoute] = useState(null)
   const [refreshQuoter, setRefreshQuoter] = useState(Date.now())
   const lastTimeoutRef = useRef<any>(null);
-
+  const slippage: any = useSettingsStore((store: any) => store.slippage);
+  
   const [selectType, setSelectType] = useState<"in" | "out">("in");
   const { loading, trade, tradeList, onQuoter, onSwap, setTrade, setTradeList } = useTrade({
     chainId: DEFAULT_CHAIN_ID,
     // template: dapp.name,
-    template: isSuperSwap ? ['UniswapV3', 'UniswapV2', 'PancakeV2', 'PancakeV3', 'OneClick', 'iZumi', 'Kuru', 'MondayTradeV3', 'CapricornV3'] : dapp.name,
-    // template: isSuperSwap ? ['CapricornV3'] : dapp.name,
+    template: isSuperSwap ? ['UniswapV3', 'UniswapV2', 'PancakeV2', 'PancakeV3', 'OneClick', 'iZumi', 'MondayTradeV3', 'CapricornV3', 'KuruAgg', 'LFJAgg'] : dapp.name,
+    // template: isSuperSwap ? ['KuruAgg', 'LFJAgg'] : dapp.name,
     from,
     inputAmount: inputCurrencyAmount,
     onSuccess: () => {
@@ -65,7 +67,7 @@ export default function Swap({
 
   const { run: runQuoter } = useDebounceFn(
     () => {
-      onQuoter({ inputCurrency, outputCurrency, inputCurrencyAmount }).then(() => {
+      onQuoter({ inputCurrency, outputCurrency, inputCurrencyAmount, slippage }).then(() => {
         if (lastTimeoutRef.current) {
           clearTimeout(lastTimeoutRef.current);
           lastTimeoutRef.current = null;
@@ -349,7 +351,7 @@ export default function Swap({
       />
 
       {
-        trade && routes.length > 0 && !trade.isWrap && (
+        trade && routes.length > 0 && !trade.isWrap && outputCurrency && inputCurrency && (
           <div className="absolute top-0 right-[-385px]">
             <RoutesModal
               routes={routes}

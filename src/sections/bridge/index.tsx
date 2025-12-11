@@ -83,7 +83,6 @@ export default function Bridge() {
   
   const { chains: pairChains, tokenPairs: tokenPairs, destDisabled } = useChainAndTokenPair({ bridgeType: dapp ||'all' });
 
-
   const {
     fromChain,
     setFromChain,
@@ -107,7 +106,8 @@ export default function Bridge() {
     selectedRoute,
     routes,
     executeRoute,
-    getStatus
+    getStatus,
+    refreshRoutes,
   } = useBridge({
     originFromChain: chains[56],
     originToChain: chains[143],
@@ -367,6 +367,7 @@ export default function Bridge() {
                   const isSuccess = await executeRoute();
                   if (isSuccess) {
                     setConfirmShow(true);
+                    refreshRoutes();
                   }
                 }}
                 comingSoon={ComingSoon}
