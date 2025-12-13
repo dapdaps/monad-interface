@@ -2,9 +2,10 @@
 import { Wormhole, canonicalAddress, routes, wormhole, evm as evmSdk, SignAndSendSigner } from "@wormhole-foundation/sdk";
 // @ts-nocheck
 import evm from "@wormhole-foundation/sdk/evm";
-import { getEvmSignerForSigner, getEvmSigner } from "@wormhole-foundation/sdk-evm";
+import { getEvmSignerForSigner, getEvmSigner, _platform } from "@wormhole-foundation/sdk-evm";
 import { isSignAndSendSigner } from "@wormhole-foundation/sdk-definitions";
 import { ethers, Contract, Signer, providers, utils } from 'ethers'
+import { cctpExecutorRoute, cctpV2StandardExecutorRoute } from '@wormhole-labs/cctp-executor-route'
 import chainConfig from '../../util/chainConfig';
 import Big from 'big.js'
 import { getQuoteInfo, setQuote } from '../../util/routerController'
@@ -70,9 +71,9 @@ function getWormholeChainId(chainId: number): number | null {
     return chainIdToWormholeChainId[chainId] || null;
 }
 
-let cachedWh: any = null;
+let cachedWh: Wormhole | null = null;
 
-export async function init(signer: Signer) {
+export async function init(signer: Signer): Promise<{ wh: Wormhole }> {
     if (!signer.provider) {
         throw new Error('Signer must have a provider. Please use a browser wallet signer.');
     }
@@ -82,7 +83,7 @@ export async function init(signer: Signer) {
     }
 
     return {
-        wh: cachedWh,
+        wh: cachedWh as Wormhole,
     };
 }
 
@@ -114,32 +115,20 @@ export async function getQuote(
         return null
     }
 
-    // const routesRequest: RoutesRequest = {
-    //     fromChainId: numFromChainId,
-    //     fromAmount: quoteRequest.amount.toString(),
-    //     fromTokenAddress: quoteRequest.fromToken.address,
-    //     fromAddress: quoteRequest.fromAddress,
-    //     toChainId: numToChainId,
-    //     toTokenAddress: quoteRequest.toToken.address,
-    //     toAddress: quoteRequest.destAddress,
-    //     options: {
-    //         allowSwitchChain: false,
-    //         allowDestinationCall: true,
-    //         integrator: 'DapDap',
-    //         order: 'CHEAPEST',
-    //     }
-    // }
-
     const wormholeSigner = await getWormholeSigner(signer);
 
-    const { wh } = await init(signer);
+    const { wh } = await init(signer) as { wh: Wormhole };
+
+    const referrerFeeDbps = 0n;
+    const route = cctpV2StandardExecutorRoute({ referrerFeeDbps });
 
     const resolver = wh.resolver([
-        routes.TokenBridgeRoute, // manual token bridge
-        routes.AutomaticTokenBridgeRoute, // automatic token bridge
-        routes.CCTPRoute, // manual CCTP
-        routes.AutomaticCCTPRoute, // automatic CCTP
-        routes.AutomaticPorticoRoute, // Native eth transfers
+        // routes.TokenBridgeRoute, // manual token bridge
+        // routes.AutomaticTokenBridgeRoute, // automatic token bridge
+        // routes.CCTPRoute, // manual CCTP
+        // routes.AutomaticCCTPRoute, // automatic CCTP
+        // routes.AutomaticPorticoRoute, // Native eth transfers
+        route,
     ]);
 
     const fromChainName = getWormholeChainName(numFromChainId);
@@ -158,29 +147,29 @@ export async function getQuote(
 
     const sendToken = Wormhole.tokenId(sendChain.chain,  quoteRequest.fromToken.address === '0x0000000000000000000000000000000000000000' ? 'native' : quoteRequest.fromToken.address);
 
-    console.log('sendToken', sendToken, sendChain, destChain);
+    const destinationToken = Wormhole.tokenId(destChain.chain, quoteRequest.toToken.address === '0x0000000000000000000000000000000000000000' ? 'native' : quoteRequest.toToken.address);
 
-    const destTokens = await resolver.supportedDestinationTokens(sendToken, sendChain, destChain);
+    // const destTokens = await resolver.supportedDestinationTokens(sendToken, sendChain, destChain);
 
-    console.log('destTokens', destTokens);
+    // console.log('destTokens', destTokens);
 
-    if (destTokens.length === 0) {
-        return null;
-    }
+    // if (destTokens.length === 0) {
+    //     return null;
+    // }
 
-    const toAddress = quoteRequest.toToken.address === '0x0000000000000000000000000000000000000000' ? 'native' : quoteRequest.toToken.address.toLowerCase();
-    let destinationToken = null;
-    for (const token of destTokens) {
-        const tokenAddress = token.address.address.toLowerCase();
-        if (tokenAddress === toAddress) {
-            destinationToken = token;
-            break;
-        }
-    }
+    // const toAddress = quoteRequest.toToken.address === '0x0000000000000000000000000000000000000000' ? 'native' : quoteRequest.toToken.address.toLowerCase();
+    // let destinationToken = null;
+    // for (const token of destTokens) {
+    //     const tokenAddress = token.address.address.toLowerCase();
+    //     if (tokenAddress === toAddress) {
+    //         destinationToken = token;
+    //         break;
+    //     }
+    // }
     
-    if (!destinationToken) {
-        return null;
-    }
+    // if (!destinationToken) {
+    //     return null;
+    // }
     
 
     const tr = await routes.RouteTransferRequest.create(wh, {
@@ -188,16 +177,13 @@ export async function getQuote(
         destination: destinationToken,
     });
 
-    console.log('tr', tr)
-
     const foundRoutes = await resolver.findRoutes(tr);
-    console.log("For the transfer parameters, we found these routes: ", foundRoutes);
 
     if (foundRoutes?.length === 0) {
         return null;
     }
 
-    const amt = quoteRequest.amount.toFixed(0, 0);
+    const amt = quoteRequest.amount.div(10 ** quoteRequest.fromToken.decimals).toFixed(quoteRequest.fromToken.decimals);
     const transferParams = { amount: amt, options: { nativeGas: 0 } };
 
     let bestRoute = null;
@@ -207,13 +193,11 @@ export async function getQuote(
         if (!validated.valid) {
             continue;
         }
-        console.log("Validated parameters: ", validated.params);
 
         const quote = await route.quote(tr, validated.params);
         if (!quote.success) {
             continue;
         }
-        console.log("Best route quote: ", quote);
         if (bestRoute) {
             if (Number(quote.destinationToken.amount.amount) > Number(bestQuote.destinationToken.amount.amount)) {
                 bestRoute = route;
@@ -225,30 +209,20 @@ export async function getQuote(
         }
     }
 
-    console.log('bestRoute', bestRoute);
-    
-    
     const receiverAddress = quoteRequest.destAddress
     const receiver = Wormhole.chainAddress(destChain.chain, receiverAddress);
 
-    // console.log('bestRoute', bestRoute)
-
-    // try {
-    //     const receipt = await bestRoute.initiate(tr, wormholeSigner, quote, receiver);
-    //     console.log("Initiated transfer with receipt: ", receipt);
-    //     await routes.checkAndCompleteTransfer(bestRoute, receipt, wormholeSigner);
-    // } catch (e) {
-    //     console.log("Initiate transfer failed: ", e);
-    // }
 
     if (bestRoute && bestQuote) {
         const uuid = setQuote({
             route: {
+                wh,
                 tr,
                 wormholeSigner,
                 route: bestRoute,
                 receiver,
                 quote: bestQuote,
+                sendChain,
             },
             amount: quoteRequest.amount,
             isNative: false,
@@ -257,14 +231,14 @@ export async function getQuote(
 
         return {
             uuid,
-            icon: 'https://wormhole.com/docs/assets/images/wormhole-button-logo.webp',
+            icon: '/images/mainnet/wormhole.svg',
             bridgeName: 'Wormhole',
             bridgeType: 'Wormhole',
-            fee: bestQuote.relayFee?.amount?.amount,
-            receiveAmount: bestQuote.destinationToken?.amount?.amount,
+            fee: new Big(bestQuote.relayFee?.amount?.amount).div(10 ** 18).toString(),
+            receiveAmount: new Big(bestQuote.destinationToken?.amount?.amount).toString(),
             gas: '',
-            duration: '10min',
-            feeType: FeeType.usd,
+            duration: '1',
+            feeType: FeeType.origin,
             gasType: FeeType.usd,
             identification: quoteRequest.identification,
         }
@@ -274,106 +248,41 @@ export async function getQuote(
 export async function execute(request: ExecuteRequest, signer: Signer): Promise<string | null> {
     const route = getQuoteInfo(request.uuid).route
 
-    const { tr, wormholeSigner, route: bestRoute, receiver, quote } = route
+    const { wh, tr, wormholeSigner, route: bestRoute, receiver, quote, sendChain } = route
+
+    const sendChainExecutor = await sendChain.getProtocol("CCTPv2Executor");
+    sendChainExecutor.provider = signer.provider as any;
 
     const receipt = await bestRoute.initiate(tr, wormholeSigner, quote, receiver);
     // console.log("Initiated transfer with receipt: ", receipt);
     // await routes.checkAndCompleteTransfer(bestRoute, receipt, wormholeSigner);
 
-    return receipt.hash;
+    return receipt.originTxs[receipt.originTxs.length - 1].txid;
 }
 
 export async function getStatus(params: StatusParams) {
-    // If source chain transaction is confirmed, check cross-chain status via Wormhole Scan API
-    if (params.fromChainId && params.toChainId) {
-        try {
-            const fromChainId = Number(params.fromChainId);
-            const toChainId = Number(params.toChainId);
-            
-            const wormholeFromChainId = getWormholeChainId(fromChainId);
-            const wormholeToChainId = getWormholeChainId(toChainId);
+    try {
+        const response = await fetch('https://executor.labsapis.com/v0/status/tx', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                txHash: params.hash
+            })
+        });
 
-
-            // Calculate time range for query (from transaction time to now, with some buffer)
-            const fromTime = new Date(params.transitionTime - 24 * 60 * 60 * 1000); // 24 hours before
-            const toTime = new Date(); // now
-            
-            const fromTimeStr = fromTime.toISOString();
-            const toTimeStr = toTime.toISOString();
-
-            // Build API URL - try with address first if available, then with transaction hash
-            let apiUrl = new URL('https://api.wormholescan.io/api/v1/operations');
-            apiUrl.searchParams.set('page', '0');
-            apiUrl.searchParams.set('pageSize', '100');
-            apiUrl.searchParams.set('sortOrder', 'DESC');
-            apiUrl.searchParams.set('appId', 'PORTAL_TOKEN_BRIDGE');
-            apiUrl.searchParams.set('sourceChain', wormholeFromChainId.toString());
-            apiUrl.searchParams.set('targetChain', wormholeToChainId.toString());
-            apiUrl.searchParams.set('from', fromTimeStr);
-            apiUrl.searchParams.set('to', toTimeStr);
-
-            const response = await fetch(apiUrl.toString());
-            
-            if (!response.ok) {
-                console.error(`Wormhole Scan API error: ${response.status} ${response.statusText}`);
-                return {
-                    status: 0
-                };
-            }
-
-            const data = await response.json();
-
-            if (data && data.operations && Array.isArray(data.operations)) {
-                // Find the operation matching our transaction hash
-                const matchingOperation = data.operations.find((op: any) => {
-                    const sourceTxHash = op.sourceChain?.transaction?.txHash;
-                    if (!sourceTxHash) return false;
-                    
-                    // Normalize both hashes for comparison (handle case sensitivity)
-                    const normalizedSourceHash = sourceTxHash.toLowerCase();
-                    const normalizedParamsHash = params.hash?.toLowerCase();
-                    
-                    return normalizedSourceHash === normalizedParamsHash;
-                });
-
-                if (matchingOperation) {
-                    // Check target chain status
-                    const targetStatus = matchingOperation.targetChain?.status;
-                    
-                    if (targetStatus === 'completed') {
-                        return {
-                            status: 1 // Success
-                        };
-                    } else if (targetStatus && targetStatus !== 'pending') {
-                        // If there's a status but it's not completed, it's in progress
-                        return {
-                            status: 0 // In progress
-                        };
-                    }
-                } else {
-                    // If no matching operation found but source tx is confirmed,
-                    // the cross-chain operation might not have been indexed yet
-                    return {
-                        status: 0 // Pending
-                    };
-                }
-            }
-
-            // If no matching operation found, return pending
-            return {
-                status: 0
-            };
-        } catch (error) {
-            console.error('Failed to fetch Wormhole status:', error);
-            return {
-                status: 0
-            };
+        const data = await response.json();
+        const statusInfo = data[0];
+        
+        if (statusInfo?.status === 'submitted') {
+            return { status: 1 };
         }
-    }
 
-    return {
-        status: 0
-    };
+        return { status: 0 };
+    } catch (error) {
+        return { status: 0 };
+    }
 }
 
 

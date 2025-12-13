@@ -21,6 +21,7 @@ export default function Routes({ routes, fromChain, toToken, selectedRoute, setS
                     onChange={() => {
                         setSelectedRoute(route)
                     }}
+                    feeType={route.feeType}
                 />
             ))
         }
