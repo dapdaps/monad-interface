@@ -89,7 +89,8 @@ const nextConfig = {
             resource.context &&
             (resource.context.includes('@wormhole-foundation/sdk-evm-cctp') ||
              resource.context.includes('@wormhole-foundation/sdk-evm-core') ||
-             resource.context.includes('@wormhole-foundation/sdk-evm'))
+             resource.context.includes('@wormhole-foundation/sdk-evm') ||
+             resource.context.includes('@wormhole-labs/cctp-executor-route'))
           ) {
             const ethers6Path = path.resolve(__dirname, 'node_modules', '@wormhole-foundation', 'sdk-evm-cctp', 'node_modules', 'ethers');
             try {

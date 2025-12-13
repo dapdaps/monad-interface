@@ -12,8 +12,10 @@ export default function Route({ name, fee, receiveAmount, fromChain, toToken, ch
     const isMobile = useIsMobile();
 
     const feeText = useMemo(() => {
+        console.log('feeType: ', feeType);
         if (feeType === FeeType.origin) {
-            return `${balanceFormated(prices[fromChain.nativeCurrency.symbol.toLowerCase()] * (fee as any), 4)}`
+            console.log('fee: ', fee, fromChain.nativeCurrency.symbol.toUpperCase(), prices[fromChain.nativeCurrency.symbol.toUpperCase()], prices);
+            return `${balanceFormated(prices[fromChain.nativeCurrency.symbol.toUpperCase()] * (fee as any), 4)}`
         }
 
         // console.log('fee', fee, feeType);
@@ -23,7 +25,7 @@ export default function Route({ name, fee, receiveAmount, fromChain, toToken, ch
         // }
 
         return (!fee || Number(fee) === 0) ? '0.00' : `${balanceFormated(fee, 4)}`
-    }, [fee, fromChain, prices])
+    }, [fee, fromChain, prices, feeType])
 
     return (
         <div className="flex items-center justify-between py-[10px] gap-1 text-white">

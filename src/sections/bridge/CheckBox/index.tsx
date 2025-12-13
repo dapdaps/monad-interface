@@ -24,7 +24,7 @@ export default function CheckBox({ checked, onChange, className }: Props) {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <circle cx="11" cy="11" r="10.5" fill="#BC9549" stroke="#373A53" />
+          <circle cx="11" cy="11" r="10.5" fill="#553BE4" stroke="#373A53" />
           <path
             d="M8 10.5L10.3333 13L15 8"
             stroke="black"

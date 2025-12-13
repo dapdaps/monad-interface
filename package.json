@@ -17,6 +17,9 @@
     },
     "@wormhole-foundation/sdk-evm": {
       "ethers": "^6.5.1"
+    },
+    "@wormhole-labs/cctp-executor-route": {
+      "ethers": "^6.5.1"
     }
   },
   "scripts": {
@@ -40,6 +43,7 @@
     "@wagmi/core": "^2.16.3",
     "@wormhole-foundation/sdk": "^4.0.2",
     "@wormhole-foundation/sdk-evm": "^4.0.2",
+    "@wormhole-labs/cctp-executor-route": "^0.23.0",
     "ahooks": "^3.8.1",
     "axios": "^1.7.7",
     "big.js": "^6.2.2",
