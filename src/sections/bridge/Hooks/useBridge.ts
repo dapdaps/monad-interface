@@ -46,7 +46,7 @@ export default function useBridge({ originFromChain, originToChain, derection, d
   const [isSending, setIsSending] = useState<boolean>(false);
   const [refresh, setRefresh] = useState(0);
 
-  const { tokenBalance: balance } = useTokenBalance(
+  const { tokenBalance: balance, update: updateBalance } = useTokenBalance(
     fromToken ? (fromToken.isNative ? 'native' : fromToken.address) : '',
     fromToken?.decimals ?? 0, 
     fromChain?.chainId ?? 0
@@ -177,8 +177,8 @@ export default function useBridge({ originFromChain, originToChain, derection, d
           return;
         }
 
-
         setUpdateBanlance(updateBanlance + 1);
+        updateBalance();
 
         const actionParams = {
           hash: txHash,
