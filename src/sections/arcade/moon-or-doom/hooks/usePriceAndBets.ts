@@ -6,18 +6,20 @@ import { playSound5, playSound6 } from "../lib/sound";
 
 const WS_URL = (process.env.NEXT_PUBLIC_WS_URL || "wss://mainnet-stream-monad.dapdap.net") + "/ws";
 
-export const PRICE_STEP = 0.5;
+// export const PRICE_STEP = 0.2;
 export default function usePriceAndBets({ userBet }: { userBet: any }) {
     const wsClientRef = useRef<WSClient | null>(null);
     const [list, setList] = useState<any[]>([]);
     const [betList, setBetList] = useState<any[]>([]);
     const [winObj, setWinObj] = useState<any>({});
     const [animationNumbers, setAnimationNumbers] = useState<Array<{ id: string; amount: number }>>([]);
+    const [priceStep, setPriceStep] = useState(0);
     const { userInfo } = useUser();
     const betListRef = useRef<any[]>([]);
     const allTimePriceRef = useRef<any>({});
     const userBetRef = useRef<any>({});
     const winObjRef = useRef<any>({});
+    const priceStepRef = useRef(0);
 
     useEffect(() => {
         userBetRef.current = userBet;
@@ -38,6 +40,9 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
             onMessage: (event: MessageEvent) => {
                 const data = JSON.parse(event.data);
                 if (data.e === 'price') {
+                    if (priceStepRef.current === 0) {
+                        return;
+                    }
                     setList((prev) => {
                         if (prev.length === 0) {
                             return [
@@ -71,7 +76,7 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                         }
 
                         const prev5sTimestamp = data.timestamp - (data.timestamp % 5000);
-                        const roundedPriceValue = Math.floor(data.price / PRICE_STEP) * PRICE_STEP;
+                        const roundedPriceValue = Math.floor(data.price / priceStepRef.current) * priceStepRef.current;
                         const roundedPrice = roundedPriceValue % 1 === 0 
                             ? roundedPriceValue.toString() 
                             : roundedPriceValue.toFixed(1);
@@ -81,7 +86,7 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                         if (last50Items.length > 0) {
                             const lastItem = last50Items[last50Items.length - 1];
                             const lastPrev5sTimestamp = lastItem.time - (lastItem.time % 5000);
-                            const lastRoundedPriceValue = Math.floor(lastItem.price / PRICE_STEP) * PRICE_STEP;
+                            const lastRoundedPriceValue = Math.floor(lastItem.price / priceStepRef.current) * priceStepRef.current;
                             const lastRoundedPrice = lastRoundedPriceValue % 1 === 0 
                                 ? lastRoundedPriceValue.toString() 
                                 : lastRoundedPriceValue.toFixed(1);
@@ -89,13 +94,13 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                             if (prev5sTimestamp === lastPrev5sTimestamp) {
                                 const _roundedPrice = Number(roundedPrice);
                                 const _lastRoundedPrice = Number(lastRoundedPrice);
-                                const priceDiff = Number((Math.round(Math.abs(_roundedPrice - _lastRoundedPrice) / PRICE_STEP) * PRICE_STEP).toFixed(1));
-                                if (priceDiff > PRICE_STEP) {
+                                const priceDiff = Number((Math.round(Math.abs(_roundedPrice - _lastRoundedPrice) / priceStepRef.current) * priceStepRef.current).toFixed(1));
+                                if (priceDiff > priceStepRef.current) {
                                     const minPrice = Math.min(_roundedPrice, _lastRoundedPrice);
                                     const maxPrice = Math.max(_roundedPrice, _lastRoundedPrice);
-                                    const steps = Math.floor((maxPrice - minPrice) / PRICE_STEP);
+                                    const steps = Math.floor((maxPrice - minPrice) / priceStepRef.current);
                                     for (let i = 1; i <= steps; i++) {
-                                        const currentPrice = minPrice + i * PRICE_STEP;
+                                        const currentPrice = minPrice + i * priceStepRef.current;
                                         const intermediateRoundedPrice = currentPrice % 1 === 0 
                                             ? currentPrice.toString() 
                                             : currentPrice.toFixed(1);
@@ -168,6 +173,20 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                     }
 
                     if (data.data.length > 0) {
+                        const bets = data.data[0].bets;
+                        if (bets && bets.length > 0) {
+                            const { max_price, min_price } = bets[0];
+                            const priceStep = Number(max_price) - Number(min_price);
+                            if (priceStep !== priceStepRef.current) {
+                                setBetList([]);
+                                betListRef.current = [];
+                                setWinObj({});
+                                winObjRef.current = {};
+                                priceStepRef.current = priceStep;
+                                setPriceStep(priceStep);
+                            }
+                        }
+
                         setBetList((prev) => {
                             const dataSourceTimeMap = new Map(
                                 data.data.map((item: any) => [
@@ -284,5 +303,6 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
         winObj,
         animationNumbers,
         allTimePrice: allTimePriceRef.current,
+        priceStep,
     };
 }

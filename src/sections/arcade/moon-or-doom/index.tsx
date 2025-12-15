@@ -36,7 +36,7 @@ export default function MoonOrDoom() {
         gameBalance: gameBalance || 0,
     });
 
-    const { list, betList, winObj, disconnect, animationNumbers, allTimePrice } = usePriceAndBets({
+    const { list, betList, winObj, disconnect, animationNumbers, allTimePrice, priceStep } = usePriceAndBets({
         userBet
     })
 
@@ -130,17 +130,22 @@ export default function MoonOrDoom() {
                         />
                     </div>
                 </div>
+
                 <div className="mt-[10px] h-[calc(100%-40px)]">
-                    <Chart
-                        list={list}
-                        betList={betList}
-                        handleBet={handleBet}
-                        winObj={winObj}
-                        betLoading={betLoading}
-                        bet={bet}
-                        userBet={userBet}
-                        allTimePrice={allTimePrice}
-                    />
+                    {
+                        priceStep > 0 && <Chart
+                            key={`chart-${priceStep}`}
+                            list={list}
+                            betList={betList}
+                            handleBet={handleBet}
+                            winObj={winObj}
+                            betLoading={betLoading}
+                            bet={bet}
+                            userBet={userBet}
+                            allTimePrice={allTimePrice}
+                            priceStep={priceStep}
+                        />
+                    }
                 </div>
             </div>
         </div>
