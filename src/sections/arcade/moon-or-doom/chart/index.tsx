@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import { useDebounceFn, useThrottleEffect } from "ahooks";
 import { numberFormatter } from "@/utils/number-formatter";
 import { preloadAudio, cleanupAudio } from "../lib/sound";
-import { PRICE_STEP } from "../hooks/usePriceAndBets";
 import Big from "big.js";
 
 interface PricePoint {
@@ -12,7 +11,7 @@ interface PricePoint {
     price: number;
 }
 
-export default function Chart({ bet, list = [], betList = [], handleBet, betLoading, userBet, winObj, allTimePrice }: { bet: number, list: any[], betList: any[], handleBet: (bet: any) => void, betLoading: boolean, userBet: any, winObj: any, allTimePrice: any }) {
+export default function Chart({ bet, list = [], betList = [], handleBet, betLoading, userBet, winObj, allTimePrice, priceStep }: { bet: number, list: any[], betList: any[], handleBet: (bet: any) => void, betLoading: boolean, userBet: any, winObj: any, allTimePrice: any, priceStep: number }) {
     const containerRef = useRef<HTMLDivElement>(null);
     const svgRef = useRef<SVGSVGElement>(null);
     const chartGroupRef = useRef<SVGGElement>(null);
@@ -168,12 +167,12 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         // const gridCellSize = (chartContainerHeight) / 16;
         // const gridCellSize = (viewportWidth) / 13;
         const pixelsPerSecond = gridCellSize / 5;
-        const pixelsPerUnit = gridCellSize / PRICE_STEP;
+        const pixelsPerUnit = gridCellSize / priceStep;
 
         const timeRange = endTime.diff(startTime, 'second');
         const chartWidth = timeRange * pixelsPerSecond;
 
-        const chartHeight = PRICE_STEP * 20 * pixelsPerUnit;
+        const chartHeight = priceStep * 20 * pixelsPerUnit;
 
         const marginLeft = 0;
         const marginRight = 0;
@@ -189,12 +188,12 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         const lastPrice = list.length > 0 ? Number(list[list.length - 1].price) : 0;
         let priceMin = 0;
         let priceMax = 0;
-        if (configRef.current && lastPrice > configRef.current.priceMin + PRICE_STEP * 4 && lastPrice < configRef.current.priceMax - PRICE_STEP * 4) {
+        if (configRef.current && lastPrice > configRef.current.priceMin + priceStep * 4 && lastPrice < configRef.current.priceMax - priceStep * 4) {
             priceMin = configRef.current.priceMin;
             priceMax = configRef.current.priceMax;
         } else {
-            priceMin = Math.floor((lastPrice - PRICE_STEP * 10));
-            priceMax = Big(priceMin).plus(Big(PRICE_STEP).times(20)).toNumber();
+            priceMin = Math.floor((lastPrice - priceStep * 10));
+            priceMax = Big(priceMin).plus(Big(priceStep).times(20)).toNumber();
         }
 
         return {
@@ -279,9 +278,9 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                 if (x1 < configRef.current?.plotWidth && x2 > 0) {
                     const isPast = gridTime.isBefore(initNow);
 
-                    for (let price = configRef.current?.priceMin; price < configRef.current?.priceMax; price += PRICE_STEP) {
+                    for (let price = configRef.current?.priceMin; price < configRef.current?.priceMax; price += priceStep) {
                         const y1 = yScale(price);
-                        const y2 = yScale(price + PRICE_STEP);
+                        const y2 = yScale(price + priceStep);
 
                         createGridRect(futureGridGroup as any, x1, x2, y1, y2, gridTime, Math.floor(price * 10) / 10, isPast, !isPast);
                     }
@@ -572,7 +571,7 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
         // }
 
         const yAxisTicks = [];
-        for (let price = configRef.current?.priceMin; price <= configRef.current?.priceMax; price += PRICE_STEP) {
+        for (let price = configRef.current?.priceMin; price <= configRef.current?.priceMax; price += priceStep) {
             const yPos = yScale(price);
             if (yPos >= visibleYStart - 50 && yPos <= visibleYEnd + 50) {
                 yAxisTicks.push({ price, y: yPos });
@@ -849,9 +848,9 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
                     const isPast = gridTime.isBefore(now) || gridTime.isSame(now, 'second');
 
 
-                    for (let price = configRef.current.priceMin; price <= configRef.current.priceMax; price += PRICE_STEP) {
+                    for (let price = configRef.current.priceMin; price <= configRef.current.priceMax; price += priceStep) {
                         const y1 = yScale(price);
-                        const y2 = yScale(price + PRICE_STEP);
+                        const y2 = yScale(price + priceStep);
 
                         createGridRect(futureGridGroup, x1, x2, y1, y2, gridTime, Math.floor(price * 10) / 10, isPast, !isPast);
                     }
@@ -908,12 +907,12 @@ export default function Chart({ bet, list = [], betList = [], handleBet, betLoad
             if (!isNaN(rectY1)) {
                 calculatedPrice = yScale.invert(rectY1);
                 // const alignedPrice = Math.floor(calculatedPrice / PRICE_STEP) * PRICE_STEP;
-                gridPrice = new Big(calculatedPrice).minus(PRICE_STEP).toNumber();
+                gridPrice = new Big(calculatedPrice).minus(priceStep).toFixed(1).replace(/\.0$/, '');
                 // gridPrice = Math.floor(gridPrice * 10) / 10;
 
-                gridPrice = gridPrice % 1 === 0
-                            ? gridPrice.toString()
-                            : gridPrice.toFixed(1);
+                // gridPrice = gridPrice % 1 === 0
+                //             ? gridPrice.toString()
+                //             : gridPrice.toFixed(1);
 
                 (this as any).__gridPrice__ = gridPrice;
             }
