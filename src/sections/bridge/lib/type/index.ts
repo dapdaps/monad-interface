@@ -51,6 +51,8 @@ export interface StatusParams {
     toChainId?: string;
     address?: string;
     fromToken?: string;
+    toToken?: string;
+    amount?: string;
     tool?: string;
     transitionTime: number;
 }

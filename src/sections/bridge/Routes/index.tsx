@@ -5,12 +5,12 @@ export default function Routes({ routes, fromChain, toToken, selectedRoute, setS
     
     console.log('routes', routes);
     
-    return <div className="border border-[#373A53] rounded-[12px] mt-[17px] px-[10px] route-wrapper">
+    return <div className="border border-[#373A53] rounded-[12px] mt-[17px] px-[10px] route-wrapper max-h-[190px] overflow-y-auto">
         {
             routes.map((route: any, index) => (
                 <Route
                     checked={selectedRoute === route}
-                    key={route.bridgeName}
+                    key={route.bridgeName} 
                     name={route.bridgeName}
                     toToken={toToken}
                     icon={route.icon}

@@ -195,6 +195,7 @@ export const tokenPairs: any = {
     },
     59144: {
         'ETH': 'WETH',
+        'USDC': 'USDC.E',
     },
     5000: {
         'WETH': 'WETH',
