@@ -3,6 +3,7 @@ import WSClient from "../lib/ws";
 import useUser from "@/hooks/use-user";
 import { get } from "@/utils/http";
 import { playSound5, playSound6 } from "../lib/sound";
+import Big from "big.js";
 
 const WS_URL = (process.env.NEXT_PUBLIC_WS_URL || "wss://mainnet-stream-monad.dapdap.net") + "/ws";
 
@@ -104,6 +105,7 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                                         const intermediateRoundedPrice = currentPrice % 1 === 0 
                                             ? currentPrice.toString() 
                                             : currentPrice.toFixed(1);
+                                        
                                         allTimePriceRef.current[prev5sTimestamp + '-' + intermediateRoundedPrice] = true;
                                     }
 
@@ -153,6 +155,9 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                             // }
                         }
 
+                        // @ts-ignore
+                        window.allTimePriceRef = allTimePriceRef.current
+
                         return [
                             ...last50Items,
                             {
@@ -176,14 +181,18 @@ export default function usePriceAndBets({ userBet }: { userBet: any }) {
                         const bets = data.data[0].bets;
                         if (bets && bets.length > 0) {
                             const { max_price, min_price } = bets[0];
-                            const priceStep = Number(max_price) - Number(min_price);
+                            const priceStep = new Big(max_price).minus(min_price).toNumber();
                             if (priceStep !== priceStepRef.current) {
+                                console.log('priceStep changed:', priceStep, priceStepRef.current);
                                 setBetList([]);
                                 betListRef.current = [];
                                 setWinObj({});
                                 winObjRef.current = {};
                                 priceStepRef.current = priceStep;
                                 setPriceStep(priceStep);
+                                setList([])
+                                allTimePriceRef.current = {};
+                                return
                             }
                         }
 
