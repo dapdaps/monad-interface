@@ -380,7 +380,7 @@ export async function getStatus(params: StatusParams) {
                 }
             }
 
-            if (dayjs(statusInfo.indexedAt).isBefore(dayjs().subtract(1, 'day'))) {
+            if (dayjs(statusInfo.indexedAt).isBefore(dayjs().subtract(6, 'hour'))) {
                 return { status: 1 };
             }
 
