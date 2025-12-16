@@ -14,6 +14,7 @@ import { QuoteRequest, QuoteResponse, ExecuteRequest, StatusParams } from '../..
 import { FeeType } from '../../type/index'
 import { Chain, createWalletClient, custom } from 'viem';
 import { mainnet, berachain, polygon, arbitrum, optimism, scroll, polygonZkEvm, metis, bsc, manta, mode, base, mantle, avalanche, fantom, gnosis, linea, zksync, } from 'viem/chains';
+import dayjs from "dayjs";
 
 const chains = [arbitrum, mainnet, optimism, polygon, scroll, metis, berachain, polygonZkEvm, manta, mode, bsc, base, mantle, avalanche, fantom, gnosis, linea, zksync]
 
@@ -133,7 +134,7 @@ export async function getQuote(
 
     const fromChainName = getWormholeChainName(numFromChainId);
     const toChainName = getWormholeChainName(numToChainId);
-    
+
     // const fromChainName = 'Ethereum';
     // const toChainName = 'Arbitrum';
 
@@ -145,7 +146,7 @@ export async function getQuote(
     const sendChain = wh.getChain(fromChainName);
     const destChain = wh.getChain(toChainName);
 
-    const sendToken = Wormhole.tokenId(sendChain.chain,  quoteRequest.fromToken.address === '0x0000000000000000000000000000000000000000' ? 'native' : quoteRequest.fromToken.address);
+    const sendToken = Wormhole.tokenId(sendChain.chain, quoteRequest.fromToken.address === '0x0000000000000000000000000000000000000000' ? 'native' : quoteRequest.fromToken.address);
 
     const destinationToken = Wormhole.tokenId(destChain.chain, quoteRequest.toToken.address === '0x0000000000000000000000000000000000000000' ? 'native' : quoteRequest.toToken.address);
 
@@ -166,11 +167,11 @@ export async function getQuote(
     //         break;
     //     }
     // }
-    
+
     // if (!destinationToken) {
     //     return null;
     // }
-    
+
 
     const tr = await routes.RouteTransferRequest.create(wh, {
         source: sendToken,
@@ -260,8 +261,94 @@ export async function execute(request: ExecuteRequest, signer: Signer): Promise<
     return receipt.originTxs[receipt.originTxs.length - 1].txid;
 }
 
+const ERC20_TRANSFER_TOPIC = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
+async function checkTargetChainTransactions(
+    address: string,
+    toChainId: string,
+    toToken: string,
+    amount: string
+): Promise<boolean> {
+    try {
+        const chainId = Number(toChainId);
+        const chain = chainConfig[chainId];
+
+        if (!chain || !chain.rpcUrls || chain.rpcUrls.length === 0) {
+            console.error(`Chain config not found for chainId: ${chainId}`);
+            return false;
+        }
+
+        const provider = new providers.JsonRpcProvider(chain.rpcUrls[0]);
+
+        const currentBlock = await provider.getBlockNumber();
+       
+        const fromBlock = Math.max(0, currentBlock - blocksPerDay);
+
+        if (toToken.toLowerCase() === '0x0000000000000000000000000000000000000000') {
+            return false;
+        }
+        
+        const toAddressPadded = utils.hexZeroPad(address.toLowerCase(), 32);
+
+        const filter = {
+            address: toToken.toLowerCase(),
+            topics: [
+                ERC20_TRANSFER_TOPIC,
+                null, 
+                toAddressPadded, 
+            ],
+            fromBlock,
+            toBlock: currentBlock,
+        };
+
+        let logs = [];
+        try {
+            logs = await provider.getLogs(filter);
+        } catch (error: any) {
+           
+        }
+
+        console.log('wormhole logs:', logs)
+
+        if (!logs || logs.length === 0) {
+            return false;
+        }
+
+        const iface = new utils.Interface([
+            'event Transfer(address indexed from, address indexed to, uint256 value)'
+        ]);
+
+        const amountBigInt = BigInt(amount);
+        const tolerance = amountBigInt / BigInt(1000);
+        const minAmount = amountBigInt - tolerance;
+        const maxAmount = amountBigInt + tolerance;
+
+        for (const log of logs) {
+            try {
+                const parsedLog = iface.parseLog(log);
+                const transferAmount = parsedLog.args.value;
+
+                if (transferAmount >= minAmount && transferAmount <= maxAmount) {
+                    return true;
+                }
+            } catch (error) {
+                console.error('Error parsing log:', error);
+                continue;
+            }
+        }
+
+        return false;
+    } catch (error) {
+        console.error('Error checking target chain transactions:', error);
+        return false;
+    }
+}
+
 export async function getStatus(params: StatusParams) {
     try {
+        
+
+        
+
         const response = await fetch('https://executor.labsapis.com/v0/status/tx', {
             method: 'POST',
             headers: {
@@ -274,9 +361,30 @@ export async function getStatus(params: StatusParams) {
 
         const data = await response.json();
         const statusInfo = data[0];
-        
+
         if (statusInfo?.status === 'submitted') {
             return { status: 1 };
+        }
+
+        if (statusInfo?.status === 'aborted' && statusInfo?.failureCause === 'evm_cctp_nonce_already_used') {
+            if (params.fromAddress && params.toChainId && params.token_out && params.fromAmount) {
+                const found = await checkTargetChainTransactions(
+                    params.fromAddress,
+                    params.toChainId,
+                    params.token_out[0].address,
+                    params.toAmout,
+                );
+
+                if (found) {
+                    return { status: 1 };
+                }
+            }
+
+            if (dayjs(statusInfo.indexedAt).isBefore(dayjs().subtract(1, 'day'))) {
+                return { status: 1 };
+            }
+
+            return { status: 0 };
         }
 
         return { status: 0 };
