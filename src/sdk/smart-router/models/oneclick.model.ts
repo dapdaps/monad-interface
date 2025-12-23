@@ -73,6 +73,10 @@ const DEX_ID_MAP = {
   "17": {
     name: "Curve",
     logo: "/images/mainnet/curve.png"
+  },
+  "19": {
+    name: "UniswapV4",
+    logo: "/images/dapps/icons/uniswap.png"
   }
 }
 export class OneClick {
@@ -84,9 +88,11 @@ export class OneClick {
     // 143: "0x3Ff9bE8f6EE484E44659e05bE52969AA85DBAEB5",
     // 143: '0x592FeB6B3dAE615fa15636f8a839E8d25FECE630'
     // 143: '0x5fE80A45EE559B30f9EC1C8092247DF61c0a0a97',
-    143: '0x0BD8F65c490789E3D6E7f05a9242b5F81f065951'
+    // 143: '0x0BD8F65c490789E3D6E7f05a9242b5F81f065951'
+    143: '0x4ADBbBE67e64f0c86c0a0C9dC7fb75FEfcF928C3'
   };
   private HOST = "https://api-trade.nadsa.space";
+  // private HOST = "https://smartex.oneclick.run";
 
   constructor(chainId: number) {
     this.chainId = chainId;
@@ -252,7 +258,7 @@ export class OneClick {
           tokenAddresses.push(pool.token_out.toLowerCase())
           return {
             dexId: pool.dex_id,
-            dex: DEX_ID_MAP[pool.dex_id as keyof typeof DEX_ID_MAP],
+            dex: DEX_ID_MAP[pool.dex_id as keyof typeof DEX_ID_MAP] || { name: 'Unknown', logo: '/images/mainnet/dex.jpg' },
             amountIn: pool.amount_in,
             tokenIn: pool.token_in,
             tokenOut: pool.token_out,
