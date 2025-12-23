@@ -91,8 +91,8 @@ export class OneClick {
     // 143: '0x0BD8F65c490789E3D6E7f05a9242b5F81f065951'
     143: '0x4ADBbBE67e64f0c86c0a0C9dC7fb75FEfcF928C3'
   };
-  // private HOST = "https://api-trade.nadsa.space";
-  private HOST = "https://smartex.oneclick.run";
+  private HOST = "https://api-trade.nadsa.space";
+  // private HOST = "https://smartex.oneclick.run";
 
   constructor(chainId: number) {
     this.chainId = chainId;
