@@ -63,22 +63,41 @@ const get = async (
       "Content-Type": "application/json"
     }
   };
+  let res: Response;
   if (!query) {
-    const res = await fetch(isSkipFormatUrl ? url : getUrl(url), options);
-    const result = (await res.json()) as any;
-    handleUpgrade(result);
-    return result;
+    res = await fetch(isSkipFormatUrl ? url : getUrl(url), options);
+  } else {
+    query = removeEmptyKeys(query);
+    const queryStr = objectToQueryString(query);
+    res = await fetch(
+      `${isSkipFormatUrl ? url : getUrl(url)}?${queryStr}`,
+      options
+    );
   }
 
-  query = removeEmptyKeys(query);
-  const queryStr = objectToQueryString(query);
-  const res = await fetch(
-    `${isSkipFormatUrl ? url : getUrl(url)}?${queryStr}`,
-    options
-  );
+  if (!res.ok) {
+    const errorResult = await res.json().catch(() => ({
+      code: res.status,
+      message: res.statusText || "Request failed",
+      data: null
+    }));
+    handleUpgrade(errorResult);
+    if (res.status === 401 || errorResult.code === 401) {
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("auth:logout", { detail: { reason: "401" } }));
+      }
+    }
+    return errorResult;
+  }
+
   const result = (await res.json()) as any;
   handleUpgrade(result);
+
+  console.log("result:", result);
+
   return result;
+
+
 };
 
 const getWithToken = async (
@@ -151,6 +170,22 @@ const post = async (url: string, data?: object, headers?: object) => {
     },
     body: data ? JSON.stringify(data) : undefined
   });
+
+  if (!res.ok) {
+    const errorResult = await res.json().catch(() => ({
+      code: res.status,
+      message: res.statusText || "Request failed",
+      data: null
+    }));
+    handleUpgrade(errorResult);
+    if (res.status === 401 || errorResult.code === 401) {
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("auth:logout", { detail: { reason: "401" } }));
+      }
+    }
+    return errorResult;
+  }
+
   const result = (await res.json()) as any;
   handleUpgrade(result);
   return result;

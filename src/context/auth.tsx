@@ -44,6 +44,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     logininning.current = false;
   }, [address]);
 
+  useEffect(() => {
+    const handleLogout = () => {
+      if (onDisconnect) {
+        onDisconnect();
+      }
+    };
+
+    window.addEventListener("auth:logout", handleLogout);
+    return () => {
+      window.removeEventListener("auth:logout", handleLogout);
+    };
+  }, [onDisconnect]);
+
   return (
     <AuthContext.Provider
       value={{
