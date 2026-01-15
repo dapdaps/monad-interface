@@ -10,6 +10,10 @@ export const RPC_LIST: any = {
   rpc1: {
     url: "https://rpc1.monad.xyz",
     simpleName: "rpc1"
+  },
+  blxrbdn: {
+    url: "https://monad.rpc.blxrbdn.com",
+    simpleName: "blxrbdn"
   }
 };
 
