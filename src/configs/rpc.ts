@@ -10,7 +10,20 @@ export const RPC_LIST: any = {
   rpc1: {
     url: "https://rpc1.monad.xyz",
     simpleName: "rpc1"
-  }
+  },
+  blxrbdn: {
+    url: "https://monad.rpc.blxrbdn.com",
+    simpleName: "blxrbdn"
+  },
+  spidernode: {
+    url: "https://monad-mainnet-rpc.spidernode.net",
+    simpleName: "spidernode"
+  },
+  // onfinality: {
+  //   url: "https://monad-mainnet.api.onfinality.io/public",
+  //   simpleName: "onfinality"
+  // }
+ 
 };
 
 export enum RpcStatus {
