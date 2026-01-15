@@ -1,7 +1,10 @@
 import { Contract, providers, utils } from "ethers";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useAccount from "@/hooks/use-account";
 import chains from "@/configs/chains";
+import { DEFAULT_CHAIN_ID } from "@/configs";
+import { useRpcStore } from "@/stores/rpc";
+import { RPC_LIST } from "@/configs/rpc";
 
 export const TOKEN_ABI = [
   {
@@ -36,6 +39,8 @@ export default function useTokenBalance(
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [fresh, setFresh] = useState(0);
+  const rpcStore = useRpcStore();
+  const rpc = useMemo(() => RPC_LIST[rpcStore.selected], [rpcStore.selected]);
 
   const getBalance = async () => {
     let _tokenBalance = "0";
@@ -43,7 +48,7 @@ export default function useTokenBalance(
     if (!account || !address) return _tokenBalance;
     // console.log('walletChainId:', walletChainId, chainId)
 
-    const rpcUrl = chains[chainId as number].rpcUrls.default.http[0];
+    const rpcUrl = chainId === DEFAULT_CHAIN_ID ? rpc : chains[chainId as number].rpcUrls.default.http[0];
     const rpcProvider = new providers.JsonRpcProvider(rpcUrl);
 
     const _provider = rpcProvider;

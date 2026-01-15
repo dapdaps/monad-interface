@@ -1,21 +1,28 @@
 import { providers, utils } from 'ethers';
 import { flatten } from 'lodash';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import chains from '@/configs/chains';
 import multicallAddresses from '@/configs/contract/multicall';
 import useAccount from '@/hooks/use-account';
 import { multicall } from '@/utils/multicall';
+import { DEFAULT_CHAIN_ID } from '@/configs';
+import { RPC_LIST } from '@/configs/rpc';
+import { useRpcStore } from '@/stores/rpc';
 
 export default function useTokensBalance(tokens: any) {
   const [loading, setLoading] = useState(false);
   const [balances, setBalances] = useState<any>({});
   const { account } = useAccount();
+  const rpcStore = useRpcStore();
+  const rpc = useMemo(() => RPC_LIST[rpcStore.selected], [rpcStore.selected]);
 
   const queryBalance = useCallback(async () => {
     if (!account || !tokens.length) return;
     const chainId = tokens[0].chainId;
 
-    const provider = new providers.JsonRpcProvider(chains[chainId].rpcUrls.default.http[0]);
+    const rpcUrl = chainId === DEFAULT_CHAIN_ID ? rpc : chains[chainId as number].rpcUrls.default.http[0];
+
+    const provider = new providers.JsonRpcProvider(rpcUrl);
 
     try {
       setLoading(true);
