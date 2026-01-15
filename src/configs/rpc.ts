@@ -19,10 +19,10 @@ export const RPC_LIST: any = {
     url: "https://monad-mainnet-rpc.spidernode.net",
     simpleName: "spidernode"
   },
-  onfinality: {
-    url: "https://monad-mainnet.api.onfinality.io/public",
-    simpleName: "onfinality"
-  }
+  // onfinality: {
+  //   url: "https://monad-mainnet.api.onfinality.io/public",
+  //   simpleName: "onfinality"
+  // }
  
 };
 
